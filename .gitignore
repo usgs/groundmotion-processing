@@ -9,5 +9,4 @@ build
 htmlcov
 gmprocess.egg-info/
 .pytest_cache
-*.c
 *.so
