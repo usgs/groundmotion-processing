@@ -1,0 +1,32 @@
+{
+  "name": "groundmotion-processing",
+  "organization": "U.S. Geological Survey",
+  "description": "Read and process strong motion waveform/peak amplitude data",
+  "status": "Beta",
+  "homepage": "https://github.com/usgs/groundmotion-processing",
+  "downloadURL": "https://github.com/usgs/groundmotion-processing/archive/master.zip",
+
+  "openSourceProject": 1,
+  "license": "https://github.com/usgs/groundmotion-processing/blob/master/LICENSE.md",
+  "vcs": "git",
+  "repository": "https://github.com/usgs/groundmotion-processing.git",
+
+  "tags": [
+    "earthquake",
+    "impact",
+    "strong motion",
+    "amplitudes",  
+    "ground motion"
+  ],
+  "languages": [
+    "python"
+  ],
+
+  "contact": {
+    "name": "Mike Hearne",
+    "email": "mhearne@usgs.gov"
+  },
+  "updated": {
+    "metadataLastUpdated": "2017-06-25"
+  }
+}
