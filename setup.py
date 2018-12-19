@@ -1,4 +1,5 @@
 import os
+import versioneer
 from distutils.core import setup
 from distutils.extension import Extension
 from Cython.Distutils import build_ext
@@ -18,12 +19,13 @@ ext_modules = [Extension("gmprocess.metrics.oscillators",
                          extra_compile_args=["-Ofast"])]
 
 setup(name='gmprocess',
-      version='0.1dev',
       description='USGS ShakeMap Ground Motion Processing Tools',
       include_package_data=True,
       author='Mike Hearne',
       author_email='mhearne@usgs.gov',
       url='',
+      version=versioneer.get_version(),
+      mdclass=versioneer.get_cmdclass(),
       packages=['gmprocess',
                 'gmprocess.io',
                 'gmprocess.io.cwb',
