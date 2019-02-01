@@ -12,6 +12,14 @@ from gmprocess.io.geonet.core import read_geonet
 from gmprocess.metrics.station_summary import StationSummary
 
 
+def cmp_dicts(adict, bdict):
+    for pgm, channels in adict.items():
+        for channel, avalue in channels.items():
+            bvalue = bdict[pgm][channel]
+            print('Comparing %s->%s...' % (pgm, channel))
+            np.testing.assert_almost_equal(avalue, bvalue)
+
+
 def test_stationsummary():
     homedir = os.path.dirname(os.path.abspath(
         __file__))  # where is this script?
@@ -88,7 +96,9 @@ def test_stationsummary():
     invalid_stream = read_geonet(datafile)
     station_code = 'WTMC'
     pgm_summary = StationSummary.from_pgms(station_code, test_pgms)
-    assert pgm_summary.pgms == stream_summary.pgms
+    adict = pgm_summary.pgms
+    bdict = stream_summary.pgms
+    cmp_dicts(adict, bdict)
 
     # oscillators cannot be calculated without a stream
     try:

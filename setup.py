@@ -42,6 +42,10 @@ setup(name='gmprocess',
                     'metrics': glob.glob('gmprocess/io/*.csv') +
                     glob.glob('tests/data/*/*')
                     },
+      scripts=['bin/fdsnfetch',
+               'bin/ftpfetch',
+               'bin/gmconvert',
+               'bin/ingvfetch'],
       cmdclass={"build_ext": build_ext},
       ext_modules=cythonize(ext_modules)
       )
