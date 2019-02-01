@@ -1,0 +1,122 @@
+#!/usr/bin/env python
+
+# stdlib imports
+import sys
+import os.path
+import re
+import argparse
+import glob
+
+# third party imports
+import pandas as pd
+import numpy as np
+from obspy.core.stream import read
+
+# local imports
+from gmprocess.io.cwb.core import read_cwb, is_cwb
+from gmprocess.io.geonet.core import read_geonet, is_geonet
+from gmprocess.io.knet.core import read_knet, is_knet
+
+
+FORMATS = ['AH',
+           'GSE2',
+           'MSEED',
+           'PICKLE',
+           'Q',
+           'SAC',
+           'SACXY',
+           'SEGY',
+           'SH_ASC',
+           'SLIST',
+           'SU',
+           'TSPAIR',
+           'WAV']
+
+
+def main(args):
+    # gather arguments
+    indir = args.indir
+    eventid = args.eventid
+    outdir = args.outdir
+    format = args.format
+
+    # get appropriate file reader/checker for format
+    data_files = []
+    split_files = False  # are three channels split into multiple files?
+    if format == 'cwb':
+        reader = read_cwb
+        checker = is_cwb
+    elif format == 'geonet':
+        reader = read_geonet
+        checker = is_geonet
+    elif format == 'knet':
+        reader = read_knet
+        checker = is_knet
+        split_files = True
+    else:
+        raise Exception('Unsupported format %s' % format)
+
+    # grab all the files in the input directory
+    allfiles = glob.glob(os.path.join(indir, '*'))
+
+    # check each file - if it isn't specified format, skip it
+    for afile in allfiles:
+        if checker(afile):
+            if split_files:
+                dfile, ext = os.path.splitext(afile)
+                if dfile not in data_files:
+                    data_files.append(dfile)
+            else:
+                data_files.append(afile)
+
+    # Bail if we didn't find any appropriate files
+    if not len(data_files):
+        print('No data files matching %s format found in %s.  Exiting.' %
+              (format, indir))
+        sys.exit(1)
+
+    # read all the data files, gather up a list of obspy Stream objects
+    streams = []
+    for dfile in data_files:
+        if args.verbose:
+            print('Parsing %s...' % dfile)
+        stream = reader(dfile)
+        if args.debug:
+            station = stream[0].stats['station']
+            stream_file = os.path.join(outdir, '%s_data.png' % station)
+            stream.plot(outfile=stream_file)
+        streams.append(stream)
+
+    # Extract station/peak information from each stream, save to a dataframe
+    dataframe, spectral_streams = streams_to_dataframe(streams)
+    if args.double_debug:
+        for stream in spectral_streams:
+            station = stream[0].stats['station']
+            stream_file = os.path.join(outdir, '%s_spectral.png' % station)
+            stream.plot(outfile=stream_file)
+
+    # If the user wants to see the peak info in spreadsheet form, save that for them
+    outfile_excel = os.path.join(outdir, '%s_dat.xlsx' % eventid)
+    dataframe.to_excel(outfile_excel)
+    print('Wrote debug Excel file %s' % outfile_excel)
+
+    # Write out the ShakeMap XML data format
+    outfile = dataframe_to_xml(dataframe, eventid, outdir)
+    print('Peak ground motions written to file %s.' % outfile)
+
+
+if __name__ == '__main__':
+    desc = '''Convert a directory of strong motion data files into any ObsPy supported format.
+
+https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supported-formats
+
+   
+    '''
+    parser = argparse.ArgumentParser(description=desc,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('indir', help='Directory containing input data.')
+    parser.add_argument('outdir', help='Output data directory.')
+    parser.add_argument('format', help='Output strong motion data format.',
+                        choices=FORMATS)
+    pargs = parser.parse_args()
+    main(pargs)

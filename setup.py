@@ -7,8 +7,6 @@ from Cython.Build import cythonize
 import numpy
 import glob
 
-os.environ['CC'] = 'gcc'
-
 sourcefiles = ["gmprocess/metrics/oscillators.pyx",
                "gmprocess/metrics/cfuncs.c"]
 
@@ -39,14 +37,15 @@ setup(name='gmprocess',
                 'gmprocess.metrics',
                 'gmprocess.metrics.imt',
                 'gmprocess.metrics.imc'],
-      scripts=['bin/ftpfetch',
-               'bin/fdsnfetch',
-               'bin/ingvfetch'],
       package_data={'gmprocess': glob.glob('gmprocess/io/*.csv') +
                     glob.glob('tests/data/*/*'),
                     'metrics': glob.glob('gmprocess/io/*.csv') +
                     glob.glob('tests/data/*/*')
                     },
+      scripts=['bin/fdsnfetch',
+               'bin/ftpfetch',
+               'bin/gmconvert',
+               'bin/ingvfetch'],
       cmdclass={"build_ext": build_ext},
       ext_modules=cythonize(ext_modules)
       )

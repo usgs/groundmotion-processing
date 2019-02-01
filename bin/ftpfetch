@@ -4,7 +4,7 @@ import argparse
 import ftplib
 from urllib.parse import urlparse
 import os.path
-import sys
+
 
 def main(args):
     url = args.url
