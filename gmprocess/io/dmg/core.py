@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # stdlib imports
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 import re
 import warnings
@@ -17,6 +17,10 @@ from gmprocess.exception import GMProcessException
 from gmprocess.io.usc.core import is_usc
 from gmprocess.io.seedname import get_channel_name
 
+V1_TEXT_HDR_ROWS = 13
+V1_INT_HDR_ROWS = 7
+V1_REAL_HDR_ROWS = 7
+
 V2_TEXT_HDR_ROWS = 25
 V2_INT_HDR_ROWS = 7
 V2_INT_FMT = [5] * 16
@@ -26,6 +30,18 @@ V2_REAL_FMT = [10] * 8
 V1_MARKER = 'UNCORRECTED ACCELEROGRAM DATA'
 V2_MARKER = 'CORRECTED ACCELEROGRAM'
 V3_MARKER = 'RESPONSE AND FOURIER AMPLITUDE SPECTRA'
+
+DATE_PATTERNS = ['[0-9]{2}/[0-9]{2}/[0-9]{2}',
+                 '[0-9]{2}/[0-9]{1}/[0-9]{2}',
+                 '[0-9]{1}/[0-9]{2}/[0-9]{2}',
+                 '[0-9]{1}/[0-9]{1}/[0-9]{2}',
+                 '[0-9]{2}-[0-9]{2}-[0-9]{2}',
+                 '[0-9]{2}-[0-9]{1}-[0-9]{2}',
+                 '[0-9]{1}-[0-9]{2}-[0-9]{2}',
+                 '[0-9]{1}-[0-9]{1}-[0-9]{2}',
+                 ]
+
+TIME_MATCH = '[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{1}'
 
 homedir = os.path.dirname(os.path.abspath(__file__))
 codedir = os.path.join(homedir, '..', 'fdsn_codes.csv')
@@ -38,6 +54,33 @@ UNITS = [
     'vel',
     'disp'
 ]
+
+
+def _get_date(line):
+    """Parse a datetime object with month/day/year info found from string.
+    """
+    for pattern in DATE_PATTERNS:
+        match = re.search(pattern, line)
+        if match is not None:
+            date = datetime.strptime(match.group(), '%m/%d/%y')
+            return date
+    return None
+
+
+def _get_time(line):
+    """Parse a timdelta object with hour, minute, fractional second info found from string.
+    """
+    match = re.search(TIME_MATCH, line)
+    if match is not None:
+        parts = match.group().split(':')
+        hour = int(parts[0])
+        minute = int(parts[1])
+        second = int(float(parts[2]))
+        microseconds = int((float(parts[2]) - second) * 1e6)
+        seconds = ((hour * 3600) + minute * 60) + second
+        dt = timedelta(seconds=seconds, microseconds=microseconds)
+        return dt
+    return None
 
 
 def is_dmg(filename):
@@ -120,6 +163,10 @@ def read_dmg(filename, **kwargs):
             traces, line_offset = _read_volume_two(filename, line_offset,
                                                    location=location)
             trace_list += traces
+        elif reader == 'V1':
+            traces, line_offset = _read_volume_one(filename, line_offset,
+                                                   location=location)
+            trace_list += traces
         else:
             raise GMProcessException('Not a supported volume.')
 
@@ -128,6 +175,49 @@ def read_dmg(filename, **kwargs):
         if trace.stats['standard']['units'] == units:
             stream.append(trace)
     return stream
+
+
+def _read_volume_one(filename, line_offset, location=''):
+    """Read channel data from DMG Volume 1 text file.
+
+    Args:
+        filename (str): Input DMG V1 filename.
+        line_offset (int): Line offset to beginning of channel text block.
+    Returns:
+        tuple: (list of obspy Trace, int line offset)
+    """
+    # read station, location, and process level from text header
+    with open(filename, 'rt') as f:
+        for _ in range(line_offset):
+            next(f)
+        lines = [next(f) for x in range(V1_TEXT_HDR_ROWS)]
+
+    # read in lines of integer data
+    skip_rows = V1_TEXT_HDR_ROWS + line_offset
+    int_data = _read_lines(skip_rows, V1_INT_HDR_ROWS, V2_INT_FMT, filename)
+    int_data = int_data[0:100].astype(np.int32)
+
+    # read in lines of float data
+    skip_rows += V1_INT_HDR_ROWS
+    flt_data = _read_lines(skip_rows, V1_REAL_HDR_ROWS, V2_REAL_FMT, filename)
+    skip_rows += V1_REAL_HDR_ROWS
+
+    # according to the powers that defined the Network.Station.Channel.Location
+    # "standard", Location is a two character field.  Most data providers,
+    # including csmip/dmg here, don't always provide this.  We'll flag it as "--".
+    hdr = _get_header_info_v1(int_data, flt_data,
+                              lines, 'V2', location=location)
+
+    # acceleration data is interleaved between time data
+    max_rows = int(np.ceil(hdr['npts'] / 5))
+    widths = [7] * 10
+    data = _read_lines(skip_rows, max_rows, widths, filename)
+    times = data[0::2]
+    acc_data = data[1::2][:hdr['npts']]
+    acc_trace = Trace(acc_data.copy(), Stats(hdr.copy()))
+    traces = [acc_trace]
+    new_offset = skip_rows + max_rows + 1  # there is an end of record line
+    return (traces, new_offset)
 
 
 def _read_volume_two(filename, line_offset, location=''):
@@ -198,6 +288,144 @@ def _read_volume_two(filename, line_offset, location=''):
         skip_rows += int(disp_rows) + 1
     new_offset = skip_rows + 1  # there is an 'end of record' line after the data]
     return (traces, new_offset)
+
+
+def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
+    """Return stats structure from various V1 headers.
+
+    Output is a dictionary like this:
+     - network (str): Default is 'ZZ'. Determined using COSMOS_NETWORKS
+     - station (str)
+     - channel (str)
+     - location (str): Default is '--'
+     - starttime (datetime)
+     - sampling_rate (float)
+     - delta (float)
+     - coordinates:
+       - latitude (float)
+       - longitude (float)
+       - elevation (float): Default is np.nan
+    - standard (Defaults are either np.nan or '')
+      - horizontal_orientation (float): Rotation from north (degrees)
+      - instrument_period (float): Period of sensor (Hz)
+      - instrument_damping (float): Fraction of critical
+      - process_time (datetime): Reported date of processing
+      - process_level: Either 'V0', 'V1', 'V2', or 'V3'
+      - station_name (str): Long form station description
+      - sensor_serial_number (str): Reported sensor serial
+      - instrument (str)
+      - comments (str): Processing comments
+      - structure_type (str)
+      - corner_frequency (float): Sensor corner frequency (Hz)
+      - units (str)
+      - source (str): Network source description
+      - source_format (str): Always dmg
+    - format_specific
+      - sensor_sensitivity (float): Transducer sensitivity (cm/g)
+      - time_sd (float): Standard deviaiton of time steop (millisecond)
+      - fractional_unit (float): Units of digitized acceleration
+            in file (fractions of g)
+      - scaling_factor (float): Scaling used for converting acceleration
+            from g/10 to cm/sec/sec
+      - low_filter_corner (float): Filter corner for low frequency
+            V2 filtering (Hz)
+      - high_filter_corner (float): Filter corner for high frequency
+            V2 filtering (Hz)
+
+    Args:
+        int_data (ndarray): Array of integer data
+        flt_data (ndarray): Array of float data
+        lines (list): List of text headers (str)
+        level (str): Process level code (V0, V1, V2, V3)
+
+    Returns:
+        dictionary: Dictionary of header/metadata information
+    """
+    hdr = {}
+    coordinates = {}
+    standard = {}
+    format_specific = {}
+
+    # Required metadata
+    code = ''
+    if lines[0].find('CDMG') > -1:
+        code = 'CDMG'
+
+    if code.upper() in CODES:
+        network = code.upper()
+        idx = np.argwhere(CODES == network)[0][0]
+        source = SOURCES1[idx].decode(
+            'utf-8') + ', ' + SOURCES2[idx].decode('utf-8')
+    else:
+        network = 'ZZ'
+        source = ''
+    hdr['network'] = network
+    station_line = lines[4]
+    station = station_line[12:17].strip()
+    hdr['station'] = station
+    angle = int_data[26]
+
+    hdr['npts'] = int_data[27]
+    reclen = flt_data[2]
+    hdr['sampling_rate'] = np.round(hdr['npts'] / reclen)
+    hdr['delta'] = 1 / hdr['sampling_rate']
+    hdr['channel'] = _get_channel(angle, hdr['sampling_rate'])
+
+    if location == '':
+        hdr['location'] = '--'
+    else:
+        hdr['location'] = location
+
+    # parse the trigger time
+    try:
+        trigger_time = _get_date(lines[3]) + _get_time(lines[3])
+        hdr['starttime'] = trigger_time
+    except:
+        warnings.warn('No start time provided on trigger line. '
+                      'This must be set manually for network/station: '
+                      '%s/%s.' % (hdr['network'], hdr['station']))
+        standard['comments'] = 'Missing start time.'
+
+    # Coordinates
+    latitude_str = station_line[20:27].strip()
+    longitude_str = station_line[29:37].strip()
+    latitude, longitude = _get_coords(latitude_str, longitude_str)
+    coordinates['latitude'] = latitude
+    coordinates['longitude'] = longitude
+    coordinates['elevation'] = np.nan
+
+    # Standard metadata
+    standard['horizontal_orientation'] = angle
+    standard['instrument_period'] = flt_data[0]
+    standard['instrument_damping'] = flt_data[1]
+
+    process_time = _get_date(lines[0])
+    standard['process_time'] = process_time
+
+    standard['process_level'] = level
+    if 'comments' not in standard:
+        standard['comments'] = ''
+    standard['structure_type'] = lines[7][46:80].strip()
+    standard['instrument'] = station_line[39:47].strip()
+    standard['sensor_serial_number'] = station_line[53:57].strip()
+    standard['corner_frequency'] = ''
+    standard['units'] = 'acc'
+    standard['source'] = source
+    standard['source_format'] = 'dmg'
+    standard['station_name'] = lines[5].strip()
+
+    # Format specific metadata
+    format_specific['fractional_unit'] = flt_data[4]
+    format_specific['sensor_sensitivity'] = flt_data[5]
+    if flt_data[13] == -999:
+        format_specific['time_sd'] = np.nan
+    else:
+        format_specific['time_sd'] = flt_data[13]
+    # Set dictionary
+    hdr['coordinates'] = coordinates
+    hdr['standard'] = standard
+    hdr['format_specific'] = format_specific
+    return hdr
 
 
 def _get_header_info(int_data, flt_data, lines, level, location=''):
@@ -276,73 +504,18 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
 
     hdr['delta'] = flt_data[60]
     hdr['sampling_rate'] = 1 / hdr['delta']
+    hdr['channel'] = _get_channel(angle, hdr['sampling_rate'])
 
-    if angle == 500 or angle == 600 or (angle >= 0 and angle <= 360):
-        if angle == 500 or angle == 600:
-            hdr['channel'] = get_channel_name(hdr['sampling_rate'],
-                                              is_acceleration=True,
-                                              is_vertical=True,
-                                              is_north=False)
-        elif angle > 315 or angle < 45 or (angle > 135 and angle < 225):
-            hdr['channel'] = get_channel_name(hdr['sampling_rate'],
-                                              is_acceleration=True,
-                                              is_vertical=False,
-                                              is_north=True)
-        else:
-            hdr['channel'] = get_channel_name(hdr['sampling_rate'],
-                                              is_acceleration=True,
-                                              is_vertical=False,
-                                              is_north=False)
-    else:
-        errstr = ('Not enough information to distinguish horizontal from '
-                  'vertical channels.')
-        raise GMProcessException(errstr)
     if location == '':
         hdr['location'] = '--'
     else:
         hdr['location'] = location
-    trigger_line = lines[4][35:77]
-    if trigger_line.find('-') >= 0 or trigger_line.find('/') >= 0:
-        if trigger_line.find('-') >= 0:
-            delimeter = '-'
-        elif trigger_line.find('/') >= 0:
-            delimeter = '/'
-        date = trigger_line.split(delimeter)
-        # look for dates
-        try:
-            month = int(date[0][-2:])
-            day = int(date[1])
-            time = trigger_line.split(':')
-            hour = int(time[1][-2:])
-            minute = int(time[2])
-            second = float(time[3][:2])
-            microsecond = int((second - int(second)) * 1e6)
-            year = int(date[2][:4])
-            if len(str(year)) < 4:
-                earthquake_line = lines[21]
-                print(re.search(r'\d{4}', earthquake_line))
-                year = re.search(r'\d{4}', earthquake_line)[0]
-            hdr['starttime'] = datetime(year, month, day, hour, minute,
-                                        int(second), microsecond)
-        except ValueError:
-            # Looking for full year in integer header
-            try:
-                month = int(date[0][-2:])
-                day = int(date[1])
-                time = trigger_line.split(':')
-                hour = int(time[1][-2:])
-                minute = int(time[2])
-                second = float(time[3][:2])
-                microsecond = int((second - int(second)) * 1e6)
-                year = int_data[23]
-                hdr['starttime'] = datetime(year, month, day, hour, minute,
-                                            int(second), microsecond)
-            except ValueError:
-                warnings.warn('No start time provided on trigger line. '
-                              'This must be set manually for network/station: '
-                              '%s/%s.' % (hdr['network'], hdr['station']))
-                standard['comments'] = 'Missing start time.'
-    else:
+
+    # parse the trigger time
+    try:
+        trigger_time = _get_date(lines[4]) + _get_time(lines[4])
+        hdr['starttime'] = trigger_time
+    except:
         warnings.warn('No start time provided on trigger line. '
                       'This must be set manually for network/station: '
                       '%s/%s.' % (hdr['network'], hdr['station']))
@@ -353,22 +526,7 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
     # Coordinates
     latitude_str = station_line[20:27].strip()
     longitude_str = station_line[29:37].strip()
-    try:
-        latitude = float(latitude_str[:-1])
-        if latitude_str.upper().find('S') >= 0:
-            latitude = -1 * latitude
-    except Exception:
-        warnings.warn('No latitude or invalid latitude format provided. '
-                      'Setting to np.nan.', Warning)
-        latitude = np.nan
-    try:
-        longitude = float(longitude_str[:-1])
-        if longitude_str.upper().find('W') >= 0:
-            longitude = -1 * longitude
-    except:
-        warnings.warn('No longitude or invalid longitude format provided.',
-                      'Setting to np.nan.', Warning)
-        longitude = np.nan
+    latitude, longitude = _get_coords(latitude_str, longitude_str)
     coordinates['latitude'] = latitude
     coordinates['longitude'] = longitude
     coordinates['elevation'] = np.nan
@@ -377,26 +535,8 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
     standard['horizontal_orientation'] = angle
     standard['instrument_period'] = flt_data[0]
     standard['instrument_damping'] = flt_data[1]
-    process_line = lines[1].lower()
-    if process_line.find('processed:') >= 0:
-        process_info = process_line[process_line.find('processed:'):]
 
-        try:
-            process_info = process_line[process_line.find('processed:'):]
-            date = process_info.split('/')
-            month = int(date[0][-2:])
-            day = int(date[1])
-            try:
-                process_year = int(date[2][:4])
-            except:
-                process_year = date[2][:2]
-            if len(process_year) == 2 and str(process_year) == str(year)[-2:]:
-                process_year = year
-            standard['process_time'] = datetime(process_year, month, day)
-        except:
-            standard['process_time'] = ''
-    else:
-        standard['process_time'] = ''
+    standard['process_time'] = _get_date(lines[1])
     standard['process_level'] = level
     if 'comments' not in standard:
         standard['comments'] = ''
@@ -424,6 +564,50 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
     hdr['standard'] = standard
     hdr['format_specific'] = format_specific
     return hdr
+
+
+def _get_coords(latitude_str, longitude_str):
+    try:
+        latitude = float(latitude_str[:-1])
+        if latitude_str.upper().find('S') >= 0:
+            latitude = -1 * latitude
+    except Exception:
+        warnings.warn('No latitude or invalid latitude format provided. '
+                      'Setting to np.nan.', Warning)
+        latitude = np.nan
+    try:
+        longitude = float(longitude_str[:-1])
+        if longitude_str.upper().find('W') >= 0:
+            longitude = -1 * longitude
+    except:
+        warnings.warn('No longitude or invalid longitude format provided.',
+                      'Setting to np.nan.', Warning)
+        longitude = np.nan
+    return (latitude, longitude)
+
+
+def _get_channel(angle, sampling_rate):
+    if angle == 500 or angle == 600 or (angle >= 0 and angle <= 360):
+        if angle == 500 or angle == 600:
+            channel = get_channel_name(sampling_rate,
+                                       is_acceleration=True,
+                                       is_vertical=True,
+                                       is_north=False)
+        elif angle > 315 or angle < 45 or (angle > 135 and angle < 225):
+            channel = get_channel_name(sampling_rate,
+                                       is_acceleration=True,
+                                       is_vertical=False,
+                                       is_north=True)
+        else:
+            channel = get_channel_name(sampling_rate,
+                                       is_acceleration=True,
+                                       is_vertical=False,
+                                       is_north=False)
+    else:
+        errstr = ('Not enough information to distinguish horizontal from '
+                  'vertical channels.')
+        raise GMProcessException(errstr)
+    return channel
 
 
 def _read_lines(skip_rows, max_rows, widths, filename):
@@ -463,5 +647,5 @@ def _get_data_format(filename, skip_rows, npts):
         cols = 8
         widths = 10
     fmt = [widths] * cols
-    rows = np.ceil(npts/cols)
+    rows = np.ceil(npts / cols)
     return (rows, fmt)
