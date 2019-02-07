@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+
+# stdlib imports
+import sys
+
+# local imports
+from gmprocess.io.read import _get_format
+from gmprocess.exception import GMProcessException
+
+if __name__ == '__main__':
+    filename = sys.argv[1]
+    try:
+        fmt = _get_format(filename)
+        print('%s is a %s format file.' % (filename, fmt))
+    except GMProcessException as gmpe:
+        print('%s is an unknown format.' % filename)
+    
