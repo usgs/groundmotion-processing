@@ -9,6 +9,7 @@ dependencies:
 - lxml
 - matplotlib
 - numpy>=1.14
+- openpyxl
 - obspy
 - pytest
 - pytest-cov
@@ -16,5 +17,3 @@ dependencies:
 - pyyaml
 - requests
 - vcrpy
-
-
