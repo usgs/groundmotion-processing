@@ -1,0 +1,70 @@
+#!/usr/bin/env python
+
+# stdlib imports
+import os.path
+import argparse
+
+# third party imports
+from openpyxl import load_workbook
+
+# local imports
+from gmprocess.stream import streams_to_dataframe
+
+
+FORMATS = ['csv', 'xlsx']
+DEFAULT_IMTS = ['PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
+DEFAULT_IMCS = ['GREATER_OF_TWO_HORIZONTALS', 'CHANNELS']
+
+
+def main(args):
+    # gather arguments
+    directory = args.directory
+    outfile = args.outfile
+    format = args.format
+    imcs = args.imcs
+    imts = args.imts
+    epi_dist = args.epicentral_distance
+    event_time = args.event_time
+    lat = args.lat
+    lon = args.lon
+
+    if not os.path.isdir(directory):
+        raise Exception('Input directory does not exist.')
+    dataframe = streams_to_dataframe(directory, imcs=imcs, imts=imts,
+            epi_dist=epi_dist, event_time=event_time, lat=lat, lon=lon)
+    if format == 'csv':
+        dataframe.to_csv(outfile, index=False)
+    elif format == 'xlsx':
+        dataframe.to_excel(outfile)
+
+if __name__ == '__main__':
+    desc = '''Create an Excel or CSV file of peak ground motions from a directory of files
+    '''
+    parser = argparse.ArgumentParser(description=desc,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('directory', help='Directory ground motion data.')
+    parser.add_argument('outfile', help='Output file.')
+    parser.add_argument('-f', '--format', help=('Output file format (csv or '
+                        'excel). Default is xlsx.'), choices=FORMATS,
+                        default='xlsx')
+    parser.add_argument('-c', '--imcs', help=('List of requested imcs. '
+                        'Defaults are: %s' % DEFAULT_IMCS),
+                        nargs='+', default=None)
+    parser.add_argument('-t', '--imts', help=('List of requested imts. '
+                        'Defaults are: %s' % DEFAULT_IMTS),
+                        nargs='+', default=None)
+    parser.add_argument('-d', '--epicentral-distance',
+                        help=('Epicentral distance to station. '
+                        'This is used for processing.'), default=None)
+    parser.add_argument('-v', '--event-time',
+                        help=('Time of the event. '
+                        'This is used for processing.'), default=None)
+    parser.add_argument('--lat',
+                        help=('Epicentral latitude. '
+                        'This is used to calculate distances.'), default=None)
+    parser.add_argument('--lon',
+                        help=('Epicentral longitude. '
+                        'This is used to calculate distances.'), default=None)
+    pargs = parser.parse_args()
+    print(pargs)
+    main(pargs)

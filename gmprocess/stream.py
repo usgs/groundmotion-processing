@@ -1,22 +1,24 @@
 # stdlib imports
+import glob
+import os
 import warnings
 
 # third party imports
 import numpy as np
 from obspy.core.stream import Stream
 from obspy.geodetics import gps2dist_azimuth
+import pandas as pd
 
 # local imports
-from gmprocess.process import filter_detrend
+from gmprocess.io.read import read_data
+from gmprocess.process import process_config
 from gmprocess.metrics.station_summary import StationSummary
 
-
-GAL_TO_PCTG = 1 / (9.8)
-
-FILTER_FREQ = 0.02
-CORNERS = 4
+# local imports
+from gmprocess.config import get_config
 
 DEFAULT_IMTS = ['PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
+DEFAULT_IMCS = ['GREATER_OF_TWO_HORIZONTALS', 'CHANNELS']
 
 
 def group_channels(streams):
@@ -131,3 +133,127 @@ def group_channels(streams):
             warnings.warn('One channel stream:\n%s' % (stream), Warning)
 
     return streams
+
+def streams_to_dataframe(directory, imcs=None, imts=None,
+        epi_dist=None, event_time=None, lat=None, lon=None):
+    """Extract peak ground motions from list of Stream objects.
+    Note: The PGM columns underneath each channel will be variable
+    depending on the units of the Stream being passed in (velocity
+    sensors can only generate PGV) and on the imtlist passed in by
+    user. Spectral acceleration columns will be formatted as SA(0.3)
+    for 0.3 second spectral acceleration, for example.
+    Args:
+        directory (str): Directory of ground motion files (streams).
+        imcs (list): Strings designating desired components to create
+                in table.
+        imts (list): Strings designating desired PGMs to create
+                in table.
+        epi_dist (float): Epicentral distance for processsing. If not included,
+                but the lat and lon are, the distance will be calculated.
+        event_time (float): Time of the event, used for processing.
+        lat (float): Epicentral latitude. Epicentral distance calculation.
+        lon (float): Epicentral longitude. Epicentral distance calculation.
+    Returns:
+        DataFrame: Pandas dataframe containing columns:
+            - STATION Station code.
+            - NAME Text description of station.
+            - LOCATION Two character location code.
+            - SOURCE Long form string containing source network.
+            - NETWORK Short network code.
+            - LAT Station latitude
+            - LON Station longitude
+            - DISTANCE Epicentral distance (km) (if epicentral lat/lon provided)
+            - HN1 East-west channel (or H1) (multi-index with pgm columns):
+                - PGA Peak ground acceleration (%g).
+                - PGV Peak ground velocity (cm/s).
+                - SA(0.3) Pseudo-spectral acceleration at 0.3 seconds (%g).
+                - SA(1.0) Pseudo-spectral acceleration at 1.0 seconds (%g).
+                - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).
+            - HN2 North-south channel (or H2) (multi-index with pgm columns):
+                - PGA Peak ground acceleration (%g).
+                - PGV Peak ground velocity (cm/s).
+                - SA(0.3) Pseudo-spectral acceleration at 0.3 seconds (%g).
+                - SA(1.0) Pseudo-spectral acceleration at 1.0 seconds (%g).
+                - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).
+            - HNZ Vertical channel (or HZ) (multi-index with pgm columns):
+                - PGA Peak ground acceleration (%g).
+                - PGV Peak ground velocity (cm/s).
+                - SA(0.3) Pseudo-spectral acceleration at 0.3 seconds (%g).
+                - SA(1.0) Pseudo-spectral acceleration at 1.0 seconds (%g).
+                - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).
+            - GREATER_OF_TWO_HORIZONTALS (multi-index with pgm columns):
+                - PGA Peak ground acceleration (%g).
+                - PGV Peak ground velocity (cm/s).
+                - SA(0.3) Pseudo-spectral acceleration at 0.3 seconds (%g).
+                - SA(1.0) Pseudo-spectral acceleration at 1.0 seconds (%g).
+                - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).
+    """
+    if imcs is None:
+        station_summary_imcs = DEFAULT_IMCS
+    else:
+        station_summary_imcs = imcs
+    if imts is None:
+        station_summary_imts = DEFAULT_IMTS
+    else:
+        station_summary_imts = imts
+    columns = ['STATION', 'NAME', 'SOURCE', 'NETID', 'LAT', 'LON']
+
+    # read and group streams
+    streams = []
+    for filepath in glob.glob(os.path.join(directory, "*")):
+        streams += [read_data(filepath)]
+    grouped_streams = group_channels(streams)
+    num_streams = len(grouped_streams)
+
+    if lat is not None:
+        meta_data = np.empty((num_streams, len(columns) + 1), dtype=list)
+    else:
+        meta_data = np.empty((num_streams, len(columns)), dtype=list)
+    station_pgms = []
+    imcs = []
+    imts = []
+    for idx, stream in enumerate(grouped_streams):
+        # set meta_data
+        meta_data[idx][0] = stream[0].stats['station']
+        name_str = stream[0].stats['standard']['station_name']
+        meta_data[idx][1] = name_str
+        source = stream[0].stats.standard['source']
+        meta_data[idx][2] = source
+        meta_data[idx][3] = stream[0].stats['network']
+        latitude = stream[0].stats['coordinates']['latitude']
+        meta_data[idx][4] = latitude
+        longitude = stream[0].stats['coordinates']['longitude']
+        meta_data[idx][5] = longitude
+        if lat is not None:
+            dist, _, _ = gps2dist_azimuth(lat, lon,
+                                          latitude,
+                                          longitude)
+            meta_data[idx][6] = dist/1000
+            if epi_dist is None:
+                epi_dist = dist/1000
+        stream = process_config(stream, event_time=event_time,
+                epi_dist=epi_dist)
+        stream_summary = StationSummary.from_stream(stream,
+                station_summary_imcs, station_summary_imts)
+        pgms = stream_summary.pgms
+        station_pgms += [pgms]
+        imcs += stream_summary.components
+        imts += stream_summary.imts
+
+    meta_columns = pd.MultiIndex.from_product([columns, ['']])
+    meta_dataframe = pd.DataFrame(meta_data, columns=meta_columns)
+    imcs = np.unique(imcs)
+    imts = np.unique(imts)
+    pgm_columns = pd.MultiIndex.from_product([imcs, imts])
+    pgm_data = np.zeros((num_streams, len(imts)*len(imcs)))
+    for idx, station in enumerate(station_pgms):
+        subindex = 0
+        for imc in imcs:
+            for imt in imts:
+                pgm_data[idx][subindex] = station[imt][imc]
+                subindex += 1
+    pgm_dataframe = pd.DataFrame(pgm_data, columns=pgm_columns)\
+
+    dataframe = pd.concat([meta_dataframe, pgm_dataframe], axis=1)
+
+    return dataframe

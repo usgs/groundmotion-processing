@@ -77,9 +77,6 @@ if [ $? -ne 0 ]; then
 fi
 
 
-env_file=environment.yml
-
-
 # Start in conda base environment
 echo "Activate base virtual environment"
 conda activate base
@@ -88,7 +85,7 @@ conda activate base
 conda remove -y -n $VENV --all
 
 package_list=(
-      
+
       "cython"
       "$CC"
       "ipython"
@@ -97,6 +94,7 @@ package_list=(
       "matplotlib"
       "numpy>=1.14"
       "obspy"
+      "openpyxl"
       "pandas"
       "pytest"
       "pytest-cov"
