@@ -1,7 +1,6 @@
 #!/bin/bash
 
 unamestr=`uname`
-env_file=environment.yml
 if [ "$unamestr" == 'Linux' ]; then
     prof=~/.bashrc
     mini_conda_url=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -85,9 +84,9 @@ conda activate base
 conda remove -y -n $VENV --all
 
 package_list=(
-
       "cython"
       "$CC"
+      "impactutils"
       "ipython"
       "jupyter"
       "lxml"
