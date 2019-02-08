@@ -46,7 +46,7 @@ setup(name='gmprocess',
                'bin/ftpfetch',
                'bin/gm2table',
                'bin/gmconvert',
-               'bin/gmfmt',
+               'bin/gminfo',
                'bin/ingvfetch'],
       cmdclass={"build_ext": build_ext},
       ext_modules=cythonize(ext_modules)
