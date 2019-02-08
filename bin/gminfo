@@ -1,0 +1,56 @@
+#!/usr/bin/env python
+
+# stdlib imports
+import sys
+import os.path
+from collections import OrderedDict
+import pprint
+
+# local imports
+from gmprocess.io.read import _get_format, read_data
+from gmprocess.exception import GMProcessException
+
+# third party imports
+import pandas as pd
+
+if __name__ == '__main__':
+    filename = sys.argv[1]
+    try:
+        fmt = _get_format(filename)
+        stream = read_data(filename)
+        stats = stream[0].stats
+        fpath, fname = os.path.split(filename)
+        tpl = (stats['coordinates']['latitude'],
+               stats['coordinates']['longitude'],
+               stats['coordinates']['elevation'])
+        locstr = 'Lat: %.4f Lon: %.4f Elev: %.1f' % tpl
+        mydict = OrderedDict([('Filename',fname),
+                              ('Format', fmt),
+                              ('Station',stats['station']),
+                              ('Network',stats['network']),
+                              ('Source', stats['standard']['source']),
+                              ('Location', stats['location']),
+                              ('Coordinates', locstr),
+                              ])
+        print()
+        pd.set_option("display.max_colwidth", 10000)
+        print(pd.Series(mydict).to_string())
+        channels = []
+        for trace in stream:
+            channel = OrderedDict()
+            stats = trace.stats
+            channel['Channel'] = stats['channel']
+            channel['Start Time'] = stats['starttime']
+            channel['End Time'] = stats['endtime']
+            channel['Number of Points'] = stats['npts']
+            channel['Units'] = stats['standard']['units']
+            channel['Peak Value'] = trace.max()
+            print()
+            chstr = pd.Series(channel).to_string()
+            parts = ['\t'+line for line in chstr.split('\n')]
+            chstr = '\n'.join(parts)
+            print(chstr)
+        x = 1
+    except GMProcessException as gmpe:
+        print('%s is an unknown format.' % filename)
+    
