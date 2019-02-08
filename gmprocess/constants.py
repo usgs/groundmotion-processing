@@ -1,6 +1,8 @@
 import scipy.constants as sp
 
+LOG_FILE = '.gmprocess/logs/gmprocess.log'
 CONFIG_FILE = '.gmprocess/config.yml'
+LOG_CONFIG_FILE = '.gmprocess/logging.conf'
 
 DEFAULT_CONFIG = {
     'processing_parameters': {
