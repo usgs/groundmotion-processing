@@ -59,14 +59,15 @@ The data file readers are modeled after obspy file readers, and have a standard 
 Data file readers are located in `gmprocess/io/[format]/core.py`.
 
 This core.py module should take the following form:
-```
-def is_format(filename):
-    # code to examine candidate file and determine if it is of the type specified.
-    # return True if file is correct type, False otherwise.
 
-def read_format(filename,**kwargs):
-    # code to read file and return an obspy Stream object.
-```
+.. code-block:: python
+
+    def is_format(filename):
+        # code to examine candidate file and determine if it is of the type specified.
+        # return True if file is correct type, False otherwise.
+
+    def read_format(filename,**kwargs):
+        # code to read file and return an obspy Stream object.
 
 
 Intensity measurement types
@@ -82,17 +83,18 @@ dictionary of each component and the resulting values.
 
 Example:
 
-```
-{
-    'HN2': 81.234,
-    'GMROTD0.0': 86.784,
-    'GMROTD100.0': 96.446,
-    'HN1': 99.249,
-    'HNZ': 183.772,
-    'GMROTD50.0': 92.177,
-    'GREATER_OF_TWO_HORIZONTALS': 99.249
-}
-```
+.. code-block:: python
+
+    {
+        'HN2': 81.234,
+        'GMROTD0.0': 86.784,
+        'GMROTD100.0': 96.446,
+        'HN1': 99.249,
+        'HNZ': 183.772,
+        'GMROTD50.0': 92.177,
+        'GREATER_OF_TWO_HORIZONTALS': 99.249
+    }
+
 
 StationSummary should be updated to handle the new IMT in `gather_pgms`.
 
@@ -111,27 +113,32 @@ one is returned. Otherwise, single values will automatically be
 handled.
 
 Greater of two horizontals example:
-```
-99.249
-```
+
+.. code-block:: python
+
+    99.249
+
 
 Channels example:
-```
-{
-    'HN1': 99.249,
-    'HN2': 81.234,
-    'HNZ': 183.772
-}
-```
+
+.. code-block:: python
+
+    {
+        'HN1': 99.249,
+        'HN2': 81.234,
+        'HNZ': 183.772
+    }
+
 
 GMRotD example:
-```
-{
-    0.0: 103.299,
-    50.0: 119.925,
+
+.. code-block:: python
+
+    {
+        0.0: 103.299,
+        50.0: 119.925,
     100.0: 125.406
-}
-```
+    }
 
 
 For examples of the API see the
