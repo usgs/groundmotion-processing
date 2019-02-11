@@ -1,4 +1,3 @@
-import warnings
 
 
 def get_channel_name(sample_rate, is_acceleration=True,

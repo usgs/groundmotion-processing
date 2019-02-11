@@ -1,7 +1,7 @@
 # stdlib imports
 import glob
 import os
-import warnings
+import logging
 
 # third party imports
 import numpy as np
@@ -130,12 +130,13 @@ def group_channels(streams):
         if idx not in duplicate_list:
             stream = Stream()
             streams += [stream.append(trace)]
-            warnings.warn('One channel stream:\n%s' % (stream), Warning)
+            logging.warning('One channel stream:\n%s' % (stream))
 
     return streams
 
+
 def streams_to_dataframe(directory, imcs=None, imts=None,
-        epi_dist=None, event_time=None, lat=None, lon=None):
+                         epi_dist=None, event_time=None, lat=None, lon=None):
     """Extract peak ground motions from list of Stream objects.
     Note: The PGM columns underneath each channel will be variable
     depending on the units of the Stream being passed in (velocity
@@ -232,9 +233,9 @@ def streams_to_dataframe(directory, imcs=None, imts=None,
             if epi_dist is None:
                 epi_dist = dist/1000
         stream = process_config(stream, event_time=event_time,
-                epi_dist=epi_dist)
+                                epi_dist=epi_dist)
         stream_summary = StationSummary.from_stream(stream,
-                station_summary_imcs, station_summary_imts)
+                                                    station_summary_imcs, station_summary_imts)
         pgms = stream_summary.pgms
         station_pgms += [pgms]
         imcs += stream_summary.components

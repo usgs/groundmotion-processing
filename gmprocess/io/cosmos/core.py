@@ -5,6 +5,7 @@ from datetime import datetime
 import os
 import re
 import warnings
+import pkg_resources
 
 # third party
 import numpy as np
@@ -20,10 +21,14 @@ TEXT_HDR_ROWS = 14
 VALID_MARKERS = ['CORRECTED ACCELERATION',
                  'UNCORRECTED ACCELERATION'
                  ]
-homedir = os.path.dirname(os.path.abspath(__file__))
-codedir = os.path.join(homedir, '..', 'fdsn_codes.csv')
-CODES, SOURCES1, SOURCES2 = np.genfromtxt(codedir, skip_header=1, usecols=(0, 1, 2),
-                                          encoding='latin-1', unpack=True, dtype=bytes, delimiter=',')
+
+code_file = pkg_resources.resource_filename('gmprocess', 'data/fdsn_codes.csv')
+
+CODES, SOURCES1, SOURCES2 = np.genfromtxt(
+    code_file, skip_header=1, usecols=(0, 1, 2),
+    encoding='latin-1', unpack=True, dtype=bytes, delimiter=','
+)
+
 CODES = CODES.astype(str)
 BUILDING_TYPES = {
     1: 'Small fiberglass shelter',

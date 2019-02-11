@@ -2,9 +2,9 @@
 
 # stdlib imports
 from datetime import datetime, timedelta
-import os
 import re
-import warnings
+import logging
+import pkg_resources
 
 # third party
 from obspy.core.trace import Trace
@@ -31,22 +31,25 @@ V1_MARKER = 'UNCORRECTED ACCELEROGRAM DATA'
 V2_MARKER = 'CORRECTED ACCELEROGRAM'
 V3_MARKER = 'RESPONSE AND FOURIER AMPLITUDE SPECTRA'
 
-DATE_PATTERNS = ['[0-9]{2}/[0-9]{2}/[0-9]{2}',
-                 '[0-9]{2}/[0-9]{1}/[0-9]{2}',
-                 '[0-9]{1}/[0-9]{2}/[0-9]{2}',
-                 '[0-9]{1}/[0-9]{1}/[0-9]{2}',
-                 '[0-9]{2}-[0-9]{2}-[0-9]{2}',
-                 '[0-9]{2}-[0-9]{1}-[0-9]{2}',
-                 '[0-9]{1}-[0-9]{2}-[0-9]{2}',
-                 '[0-9]{1}-[0-9]{1}-[0-9]{2}',
-                 ]
+DATE_PATTERNS = [
+    '[0-9]{2}/[0-9]{2}/[0-9]{2}',
+    '[0-9]{2}/[0-9]{1}/[0-9]{2}',
+    '[0-9]{1}/[0-9]{2}/[0-9]{2}',
+    '[0-9]{1}/[0-9]{1}/[0-9]{2}',
+    '[0-9]{2}-[0-9]{2}-[0-9]{2}',
+    '[0-9]{2}-[0-9]{1}-[0-9]{2}',
+    '[0-9]{1}-[0-9]{2}-[0-9]{2}',
+    '[0-9]{1}-[0-9]{1}-[0-9]{2}',
+]
 
 TIME_MATCH = '[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{1}'
 
-homedir = os.path.dirname(os.path.abspath(__file__))
-codedir = os.path.join(homedir, '..', 'fdsn_codes.csv')
-CODES, SOURCES1, SOURCES2 = np.genfromtxt(codedir, skip_header=1, usecols=(0, 1, 2),
-                                          encoding='latin-1', unpack=True, dtype=bytes, delimiter=',')
+code_file = pkg_resources.resource_filename('gmprocess', 'data/fdsn_codes.csv')
+
+
+CODES, SOURCES1, SOURCES2 = np.genfromtxt(
+    code_file, skip_header=1, usecols=(0, 1, 2),
+    encoding='latin-1', unpack=True, dtype=bytes, delimiter=',')
 CODES = CODES.astype(str)
 
 UNITS = [
@@ -68,7 +71,8 @@ def _get_date(line):
 
 
 def _get_time(line):
-    """Parse a timdelta object with hour, minute, fractional second info found from string.
+    """Parse a timdelta object with hour, minute, fractional second info found
+    from string.
     """
     match = re.search(TIME_MATCH, line)
     if match is not None:
@@ -108,7 +112,8 @@ def is_dmg(filename):
             if second_line.find(V1_MARKER) >= 0:
                 return True
         elif first_line.find(V3_MARKER) >= 0 and not is_usc(filename):
-            if second_line.find(V2_MARKER) >= 0 and third_line.find(V1_MARKER) >= 0:
+            if (second_line.find(V2_MARKER) >= 0 and
+                    third_line.find(V1_MARKER) >= 0):
                 return True
         else:
             return False
@@ -129,7 +134,8 @@ def read_dmg(filename, **kwargs):
                     options include 'acc', 'vel', 'disp'. Default is 'acc'.
             Other arguments will be ignored.
     Returns:
-        Stream: Obspy Stream containing three channels of acceleration data (cm/s**2).
+        Stream: Obspy Stream containing three channels of acceleration data
+        (cm/s**2).
     """
     if not is_dmg(filename):
         raise Exception('Not a DMG file format.')
@@ -204,9 +210,10 @@ def _read_volume_one(filename, line_offset, location=''):
 
     # according to the powers that defined the Network.Station.Channel.Location
     # "standard", Location is a two character field.  Most data providers,
-    # including csmip/dmg here, don't always provide this.  We'll flag it as "--".
-    hdr = _get_header_info_v1(int_data, flt_data,
-                              lines, 'V2', location=location)
+    # including csmip/dmg here, don't always provide this.  We'll flag it as
+    # "--".
+    hdr = _get_header_info_v1(
+        int_data, flt_data, lines, 'V2', location=location)
 
     # acceleration data is interleaved between time data
     max_rows = int(np.ceil(hdr['npts'] / 5))
@@ -248,7 +255,8 @@ def _read_volume_two(filename, line_offset, location=''):
 
     # according to the powers that defined the Network.Station.Channel.Location
     # "standard", Location is a two character field.  Most data providers,
-    # including csmip/dmg here, don't always provide this.  We'll flag it as "--".
+    # including csmip/dmg here, don't always provide this.  We'll flag it as
+    # "--".
     hdr = _get_header_info(int_data, flt_data, lines, 'V2', location=location)
 
     traces = []
@@ -381,9 +389,9 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
         trigger_time = _get_date(lines[3]) + _get_time(lines[3])
         hdr['starttime'] = trigger_time
     except:
-        warnings.warn('No start time provided on trigger line. '
-                      'This must be set manually for network/station: '
-                      '%s/%s.' % (hdr['network'], hdr['station']))
+        logging.warning('No start time provided on trigger line. '
+                        'This must be set manually for network/station: '
+                        '%s/%s.' % (hdr['network'], hdr['station']))
         standard['comments'] = 'Missing start time.'
 
     # Coordinates
@@ -516,9 +524,9 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
         trigger_time = _get_date(lines[4]) + _get_time(lines[4])
         hdr['starttime'] = trigger_time
     except:
-        warnings.warn('No start time provided on trigger line. '
-                      'This must be set manually for network/station: '
-                      '%s/%s.' % (hdr['network'], hdr['station']))
+        logging.warning('No start time provided on trigger line. '
+                        'This must be set manually for network/station: '
+                        '%s/%s.' % (hdr['network'], hdr['station']))
         standard['comments'] = 'Missing start time.'
 
     hdr['npts'] = int_data[52]
@@ -572,16 +580,16 @@ def _get_coords(latitude_str, longitude_str):
         if latitude_str.upper().find('S') >= 0:
             latitude = -1 * latitude
     except Exception:
-        warnings.warn('No latitude or invalid latitude format provided. '
-                      'Setting to np.nan.', Warning)
+        logging.warning('No latitude or invalid latitude format provided. '
+                        'Setting to np.nan.', Warning)
         latitude = np.nan
     try:
         longitude = float(longitude_str[:-1])
         if longitude_str.upper().find('W') >= 0:
             longitude = -1 * longitude
     except:
-        warnings.warn('No longitude or invalid longitude format provided.',
-                      'Setting to np.nan.', Warning)
+        logging.warning('No longitude or invalid longitude format provided.',
+                        'Setting to np.nan.', Warning)
         longitude = np.nan
     return (latitude, longitude)
 

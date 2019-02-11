@@ -2,7 +2,7 @@
 
 # stdlib imports
 import numpy as np
-import warnings
+import logging
 
 # third party imports
 from obspy.core.stream import Stream
@@ -75,8 +75,8 @@ def remove_clipped(stream, max_count=2000000):
         if abs(tr.max()) >= max_count:
             stream.traces.remove(tr)
             clipped_st.append(tr)
-            warnings.warn('Clipped trace was removed from the stream')
-            warnings.warn(tr.get_id())
+            logging.warning('Clipped trace was removed from the stream')
+            logging.warning(tr.get_id())
     return stream, clipped_st
 
 
@@ -111,8 +111,9 @@ def instrument_response(st, f1, f2, f3=None, f4=None, water_level=None,
             f4 = 0.50 / tr.stats.delta
         # Check if we have an instrument measuring velocity or accleration
         if tr.stats.channel[1] == 'H':
-            tr.remove_response(inventory=inv, output=output, water_level=water_level,
-                               pre_filt=(f1, f2, f3, f4))
+            tr.remove_response(
+                inventory=inv, output=output, water_level=water_level,
+                pre_filt=(f1, f2, f3, f4))
         elif tr.stats.channel[1] == 'N':
             tr.remove_sensitivity(inventory=inv)
         else:
@@ -236,10 +237,11 @@ def fft_smooth(trace, nfft):
     return spec_smooth, freqs
 
 
-def get_corner_frequencies(trace, event_time, epi_dist, ratio=3.0,
-                           max_low_corner=0.1, min_high_corner=5.0,
-                           taper_type='hann', taper_percentage=0.05,
-                           taper_side='both'):
+def get_corner_frequencies(
+        trace, event_time, epi_dist, ratio=3.0,
+        max_low_corner=0.1, min_high_corner=5.0,
+        taper_type='hann', taper_percentage=0.05,
+        taper_side='both'):
     """
     Returns the corner frequencies for a trace.
 
@@ -332,10 +334,12 @@ def get_corner_frequencies(trace, event_time, epi_dist, ratio=3.0,
         return [-3, -3]
     else:
         corner_frequencies = [low_corner, high_corner]
-        corners = {'get_dynamically': True,
-                   'ratio': ratio,
-                   'default_high_frequency': corner_frequencies[1],
-                   'default_low_frequency': corner_frequencies[0]}
+        corners = {
+            'get_dynamically': True,
+            'ratio': ratio,
+            'default_high_frequency': corner_frequencies[1],
+            'default_low_frequency': corner_frequencies[0]
+        }
         trace = _update_params(trace, 'corners', corners)
         return corner_frequencies
 
@@ -379,9 +383,9 @@ def filter_waveform(trace, filter_type, freqmax=None, freqmin=None,
             filter_params = {'type': filter_type, 'corners': corners,
                              'zerophase': zerophase}
         else:
-            warnings.warn('Low pass frequency is greater than or equal '
-                          'to the Nyquist frequency. Low pass filter will '
-                          'not be applied.')
+            logging.warning('Low pass frequency is greater than or equal '
+                            'to the Nyquist frequency. Low pass filter will '
+                            'not be applied.')
             filter_params = None
     elif filter_type in high_freq:
         if freqmin != 0.0:
@@ -390,12 +394,12 @@ def filter_waveform(trace, filter_type, freqmax=None, freqmin=None,
             filter_params = {'type': filter_type, 'corners': corners,
                              'zerophase': zerophase}
         else:
-            warnings.warn('High pass frequency is equal to zero. High pass '
-                          'filter will not be applied')
+            logging.warning('High pass frequency is equal to zero. High pass '
+                            'filter will not be applied')
             filter_params = None
     else:
-        warnings.warn('Filter type not available %r. Available filters: '
-                      '%r' % (filter_type, two_freq + low_freq + high_freq))
+        logging.warning('Filter type not available %r. Available filters: '
+                        '%r' % (filter_type, two_freq + low_freq + high_freq))
         filter_params = None
     try:
         if filter_params is not None:
@@ -523,17 +527,27 @@ def process(stream, amp_min, amp_max, window_vmin, taper_type,
     for trace in stream:
         trace_copy = trace.copy()
         # The stats need to be set even if the process checks fail
-        trace_copy = _update_params(trace_copy, 'amplitude', {'min': amp_min,
-                                                              'max': amp_min})
-        trace_copy = _update_params(trace_copy, 'window',
-                                    {'vmin': window_vmin})
-        trace_copy = _update_params(trace_copy, 'taper', {'type': taper_type,
-                                                          'side': taper_side, 'max_percentage': taper_percentage})
-        trace_copy = _update_params(trace_copy, 'corners',
-                                    {'get_dynamically': get_corners, 'sn_ratio': sn_ratio,
-                                     'max_low_freq': max_low_freq, 'min_high_freq': min_high_freq,
-                                     'default_low_frequency': default_low_frequency,
-                                     'default_high_frequency': default_high_frequency})
+        trace_copy = _update_params(
+            trace_copy, 'amplitude', {
+                'min': amp_min,
+                'max': amp_min
+            })
+        trace_copy = _update_params(
+            trace_copy, 'window',
+            {'vmin': window_vmin})
+        trace_copy = _update_params(
+            trace_copy, 'taper',
+            {'type': taper_type,
+             'side': taper_side, 'max_percentage': taper_percentage
+             })
+        trace_copy = _update_params(
+            trace_copy, 'corners',
+            {
+                'get_dynamically': get_corners, 'sn_ratio': sn_ratio,
+                'max_low_freq': max_low_freq, 'min_high_freq': min_high_freq,
+                'default_low_frequency': default_low_frequency,
+                'default_high_frequency': default_high_frequency
+            })
         trace_copy = _update_params(trace_copy, 'filters', [])
         trace_copy = _update_params(trace_copy, 'baseline_correct',
                                     baseline_correct)
@@ -544,8 +558,8 @@ def process(stream, amp_min, amp_max, window_vmin, taper_type,
             trace_copy.stats['passed_tests'] = False
             err_msg = ('Processing: Trace maximum amplitude is not '
                        'within the acceptable range: %r to %r. Skipping '
-                       'processing for trace: %r' % (amp_min,
-                                                     amp_max, trace))
+                       'processing for trace: %r' %
+                       (amp_min, amp_max, trace))
             trace_copy = _update_comments(trace_copy, err_msg)
             processed_streams.append(trace_copy)
             continue
@@ -574,9 +588,9 @@ def process(stream, amp_min, amp_max, window_vmin, taper_type,
                                         {'vmin': window_vmin})
             trace_trim = trace_copy
             # Corners cannot be calculated dynamically without windowing
-            warnings.warn('Missing event information. Continuing processing '
-                          'without windowing. Default frequencies will be '
-                          'used for filtering.')
+            logging.warning('Missing event information. Continuing processing '
+                            'without windowing. Default frequencies will be '
+                            'used for filtering.')
             windowed = False
 
         # Taper
@@ -584,9 +598,10 @@ def process(stream, amp_min, amp_max, window_vmin, taper_type,
 
         # Find corner frequencies
         if get_corners and windowed:
-            corners = get_corner_frequencies(trace_tap, event_time,
-                                             epi_dist, sn_ratio, max_low_freq, min_high_freq,
-                                             taper_type, taper_percentage, taper_side)
+            corners = get_corner_frequencies(
+                trace_tap, event_time,
+                epi_dist, sn_ratio, max_low_freq, min_high_freq,
+                taper_type, taper_percentage, taper_side)
             if (corners[0] < 0 or corners[1] < 0):
                 trace_tap.stats['passed_tests'] = False
                 dynamic = False
@@ -616,12 +631,13 @@ def process(stream, amp_min, amp_max, window_vmin, taper_type,
             low_freq = default_low_frequency
             dynamic = False
 
-        corner_params = {'get_dynamically': dynamic,
-                         'default_high_frequency': high_freq,
-                         'sn_ratio': sn_ratio,
-                         'default_low_frequency': low_freq,
-                         'max_low_freq': max_low_freq,
-                         'min_high_freq': min_high_freq}
+        corner_params = {
+            'get_dynamically': dynamic,
+            'default_high_frequency': high_freq,
+            'sn_ratio': sn_ratio,
+            'default_low_frequency': low_freq,
+            'max_low_freq': max_low_freq,
+            'min_high_freq': min_high_freq}
 
         channel = trace.stats.channel
         if channel in horizontals:
@@ -640,13 +656,14 @@ def process(stream, amp_min, amp_max, window_vmin, taper_type,
 
             # Filter
             trace_filt = trace_tap
-            for filter_dict in filters:
+            for filter_dict in filters.values():
                 filter_type = filter_dict['type']
                 corners = filter_dict['corners']
                 zerophase = filter_dict['zerophase']
-                trace_filt = filter_waveform(trace_filt, filter_type,
-                                             high_freq, low_freq, zerophase,
-                                             corners)
+                trace_filt = filter_waveform(
+                    trace_filt, filter_type,
+                    high_freq, low_freq, zerophase,
+                    corners)
             # Correct baseline
             if baseline_correct:
                 trace_cor = correct_baseline(trace_filt)
@@ -671,13 +688,14 @@ def process(stream, amp_min, amp_max, window_vmin, taper_type,
             trace_trim = _update_params(trace, 'corners', params)
             # Filter
             trace_filt = trace_trim
-            for filter_dict in filters:
+            for filter_dict in filters.values():
                 filter_type = filter_dict['type']
                 corners = filter_dict['corners']
                 zerophase = filter_dict['zerophase']
-                trace_filt = filter_waveform(trace_filt, filter_type,
-                                             high_freq, low_freq, zerophase,
-                                             corners)
+                trace_filt = filter_waveform(
+                    trace_filt, filter_type,
+                    high_freq, low_freq, zerophase,
+                    corners)
             # Correct baseline
             if baseline_correct:
                 trace_cor = correct_baseline(trace_filt)
@@ -743,13 +761,14 @@ def process_config(stream, config=None, event_time=None, epi_dist=None):
     max_low_freq = float(params['corners']['max_low_freq'])
     min_high_freq = float(params['corners']['min_high_freq'])
     filters = params['filters']
-    baseline_correct = params['baseline_correct']
+    baseline_correct = params['baseline']
 
-    corrected_stream = process(stream, amp_min, amp_max, window_vmin,
-                               taper_type, taper_percentage, taper_side, get_corners, sn_ratio,
-                               max_low_freq, min_high_freq, default_low_frequency,
-                               default_high_frequency, filters, baseline_correct,
-                               event_time=event_time, epi_dist=epi_dist)
+    corrected_stream = process(
+        stream, amp_min, amp_max, window_vmin,
+        taper_type, taper_percentage, taper_side, get_corners, sn_ratio,
+        max_low_freq, min_high_freq, default_low_frequency,
+        default_high_frequency, filters, baseline_correct,
+        event_time=event_time, epi_dist=epi_dist)
     return corrected_stream
 
 

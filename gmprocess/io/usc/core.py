@@ -75,7 +75,8 @@ def read_usc(filename, **kwargs):
         filename (str): Path to possible USC V1 data file.
         kwargs (ref): Ignored by this function.
     Returns:
-        Stream: Obspy Stream containing three channels of acceleration data (cm/s**2).
+        Stream: Obspy Stream containing three channels of acceleration data
+        (cm/s**2).
     """
     if not is_usc(filename):
         raise Exception('%s is not a valid USC file' % filename)
@@ -112,8 +113,8 @@ def read_volume_one(filename, location=''):
     while line_offset < line_count:
         trace, line_offset = _read_channel(filename, line_offset, volume,
                                            location=location)
-        # store the trace if the station type is in the valid_station_types list
-        # or store the trace if there is no valid_station_types list
+        # store the trace if the station type is in the valid_station_types
+        # list or store the trace if there is no valid_station_types list
         if trace is not None:
             stream.append(trace)
 
@@ -226,24 +227,27 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
             if horizontal_angle in USC_ORIENTATIONS:
                 channel = USC_ORIENTATIONS[horizontal_angle][1].upper()
                 if channel == 'UP' or channel == 'DOWN' or channel == 'VERT':
-                    channel = get_channel_name(hdr['sampling_rate'],
-                                               is_acceleration=True,
-                                               is_vertical=True,
-                                               is_north=False)
+                    channel = get_channel_name(
+                        hdr['sampling_rate'],
+                        is_acceleration=True,
+                        is_vertical=True,
+                        is_north=False)
             elif (
                 horizontal_angle > 315 or
                 horizontal_angle < 45 or
                 (horizontal_angle > 135 and horizontal_angle < 225)
             ):
-                channel = get_channel_name(hdr['sampling_rate'],
-                                           is_acceleration=True,
-                                           is_vertical=False,
-                                           is_north=True)
+                channel = get_channel_name(
+                    hdr['sampling_rate'],
+                    is_acceleration=True,
+                    is_vertical=False,
+                    is_north=True)
             else:
-                channel = get_channel_name(hdr['sampling_rate'],
-                                           is_acceleration=True,
-                                           is_vertical=False,
-                                           is_north=False)
+                channel = get_channel_name(
+                    hdr['sampling_rate'],
+                    is_acceleration=True,
+                    is_vertical=False,
+                    is_north=False)
             horizontal_orientation = horizontal_angle
             hdr['channel'] = channel
         else:
@@ -309,7 +313,8 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
         standard['structure_type'] = ''
         standard['process_level'] = 'V1'
         standard['corner_frequency'] = np.nan
-        standard['source'] = 'Los Angeles Basin Seismic Network, University of Southern California'
+        standard['source'] = ('Los Angeles Basin Seismic Network, University '
+                              'of Southern California')
         standard['source_format'] = 'usc'
         # Get format specific
         format_specific['fractional_unit'] = flt_data[4]

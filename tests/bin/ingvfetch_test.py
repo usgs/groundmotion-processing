@@ -2,7 +2,6 @@
 
 # stdlib imports
 import os
-import subprocess
 import tempfile
 
 # third party imports

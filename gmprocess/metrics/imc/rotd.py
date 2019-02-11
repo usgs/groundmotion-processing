@@ -12,13 +12,13 @@ def calculate_rotd(stream, percentiles, rotated=False, **kwargs):
         percentiles (list): list of percentiles (float).
             Example: [100, 50, 75] results in RotD100, RotD50, RotD75.
         rotated (bool): Wheter the stream is a rotation matrix. Used by
-                the arias intensity calculation. Default is False.
+            the arias intensity calculation. Default is False.
 
     Returns:
         dictionary: Dictionary of oienation indeendent nongeometric mean
-            measures for each percentile.
+        measures for each percentile.
     """
-    if rotated == True:
+    if rotated:
         rot_percentiles = get_max(stream[0], 'max', percentiles=percentiles)[1]
         rotd_dict = {}
         for idx, percent in enumerate(percentiles):

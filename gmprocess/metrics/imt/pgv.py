@@ -1,5 +1,5 @@
 # stdlib imports
-import warnings
+import logging
 
 # local imports
 from gmprocess.metrics.exception import PGMException
@@ -41,5 +41,5 @@ def calculate_pgv(stream, imcs):
             else:
                 pgv_dict[imc.upper()] = pgv
         else:
-            warnings.warn('Not a valid IMC: %r. Skipping...' % imc)
+            logging.warning('Not a valid IMC: %r. Skipping...' % imc)
     return pgv_dict

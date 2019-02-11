@@ -91,20 +91,23 @@ def read_knet(filename):
     # knet files have directions listed as N-S, E-W, or U-D,
     # whereas in kiknet those directions are '4', '5', or '6'.
     if dir_string in ['N-S', '4']:
-        hdr['channel'] = get_channel_name(hdr['sampling_rate'],
-                                          is_acceleration=True,
-                                          is_vertical=False,
-                                          is_north=True)
+        hdr['channel'] = get_channel_name(
+            hdr['sampling_rate'],
+            is_acceleration=True,
+            is_vertical=False,
+            is_north=True)
     elif dir_string in ['E-W', '5']:
-        hdr['channel'] = get_channel_name(hdr['sampling_rate'],
-                                          is_acceleration=True,
-                                          is_vertical=False,
-                                          is_north=False)
+        hdr['channel'] = get_channel_name(
+            hdr['sampling_rate'],
+            is_acceleration=True,
+            is_vertical=False,
+            is_north=False)
     elif dir_string in ['U-D', '6']:
-        hdr['channel'] = get_channel_name(hdr['sampling_rate'],
-                                          is_acceleration=True,
-                                          is_vertical=True,
-                                          is_north=False)
+        hdr['channel'] = get_channel_name(
+            hdr['sampling_rate'],
+            is_acceleration=True,
+            is_vertical=True,
+            is_north=False)
     else:
         raise Exception('Could not parse direction %s' %
                         lines[12].split()[1])

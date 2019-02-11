@@ -1,6 +1,6 @@
 # stdlib imports
 from collections import OrderedDict
-import warnings
+import logging
 import re
 
 # third party imports
@@ -13,8 +13,8 @@ from gmprocess.metrics.imt.pga import calculate_pga
 from gmprocess.metrics.imt.pgv import calculate_pgv
 from gmprocess.metrics.imt.sa import calculate_sa
 from gmprocess.metrics.gather import get_pgm_classes
-from gmprocess.metrics.oscillators import get_acceleration, get_spectral, get_velocity
-from gmprocess.metrics.rotation import rotate
+from gmprocess.metrics.oscillators import (
+    get_acceleration, get_spectral, get_velocity)
 
 
 class StationSummary(object):
@@ -194,22 +194,24 @@ class StationSummary(object):
             elif imt.upper().startswith('SA'):
                 try:
                     period = float(re.search('\d+\.*\d*', imt).group())
-                    oscillator = get_spectral(period, stream,
-                                              damping=damping)
+                    oscillator = get_spectral(
+                        period, stream,
+                        damping=damping)
                     oscillator_dict[imt.upper()] = oscillator
                     if rotate:
-                        oscillator = get_spectral(period, stream,
-                                                  damping=damping, rotation='nongm')
+                        oscillator = get_spectral(
+                            period, stream,
+                            damping=damping, rotation='nongm')
                         oscillator_dict[imt.upper() + '_ROT'] = oscillator
                 except Exception:
                     fmt = "Invalid period for imt: %r. Skipping..."
-                    warnings.warn(fmt % (imt), Warning)
+                    logging.warning(fmt % (imt))
             elif imt.upper() == 'ARIAS':
                 oscillator = get_acceleration(stream, units='m/s/s')
                 oscillator_dict['ARIAS'] = oscillator
             else:
                 fmt = "Invalid imt: %r. Skipping..."
-                warnings.warn(fmt % (imt), Warning)
+                logging.warning(fmt % (imt))
         imts = []
         for key in oscillator_dict:
             if key.find('ROT') < 0:
@@ -237,7 +239,8 @@ class StationSummary(object):
     @property
     def imts(self):
         """
-        Helper method returning a list of requested/calculated measurement types.
+        Helper method returning a list of requested/calculated measurement
+        types.
 
         Returns:
             list: List of requested/calculated measurement types (str).
@@ -313,9 +316,9 @@ class StationSummary(object):
             station_code (str): Station code for one station.
         """
         if self.station_code is not None:
-            warnings.warn('Setting failed: the station code cannot be '
-                          'changed. A new instance of StationSummary must be created. ',
-                          Warning)
+            logging.warning(
+                'Setting failed: the station code cannot be '
+                'changed. A new instance of StationSummary must be created.')
         else:
             self._station_code = station_code
 
@@ -338,15 +341,16 @@ class StationSummary(object):
             stream (obspy.core.stream.Stream): Stream for one station.
         """
         if self.stream is not None:
-            warnings.warn('Setting failed: the stream object cannot be '
-                          'changed. A new instance of StationSummary must be created. ',
-                          Warning)
+            logging.warning(
+                'Setting failed: the stream object cannot be '
+                'changed. A new instance of StationSummary must be created.')
         else:
             if not isinstance(stream, Stream):
-                warnings.warn('Setting failed: not a stream object.',
-                              Warning)
-            elif stream[0].stats['station'].upper() != self.station_code.upper():
-                warnings.warn('Setting failed: stream station does not match '
-                              'StationSummary.station_code.', Warning)
+                logging.warning('Setting failed: not a stream object.')
+            elif (stream[0].stats['station'].upper() !=
+                  self.station_code.upper()):
+                logging.warning(
+                    'Setting failed: stream station does not match '
+                    'StationSummary.station_code.')
             else:
                 self._stream = stream

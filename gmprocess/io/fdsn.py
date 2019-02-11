@@ -1,3 +1,4 @@
+import logging
 import numpy as np
 from gmprocess.io.seedname import get_channel_name
 from obspy import UTCDateTime
@@ -56,17 +57,18 @@ def request_raw_waveforms(fdsn_client, org_time, lat, lon,
     channels = ','.join(channels)
 
     # Get an inventory of all stations for the event
-    inventory = client.get_stations(starttime=t1, endtime=t2,
-                                    latitude=lat, longitude=lon,
-                                    minradius=dist_min, maxradius=dist_max,
-                                    network=networks,
-                                    channel=channels,
-                                    station=stations,
-                                    level='response', includerestricted=False)
+    inventory = client.get_stations(
+        starttime=t1, endtime=t2,
+        latitude=lat, longitude=lon,
+        minradius=dist_min, maxradius=dist_max,
+        network=networks,
+        channel=channels,
+        station=stations,
+        level='response', includerestricted=False)
 
     # Get the list of channels from the inventory
     channels = inventory.get_contents()['channels']
-    print('Found {0} channels.'.format(len(channels)))
+    logging.info('Found {0} channels.'.format(len(channels)))
 
     # Set up the bulk data for the bulk data request
     bulk = [chan.split('.') for chan in channels]
@@ -75,7 +77,8 @@ def request_raw_waveforms(fdsn_client, org_time, lat, lon,
         b.append(t2)
 
     # Perform the bulk data request
-    print('Requesting waveforms for {0} channels.'.format(len(channels)))
+    logging.info(
+        'Requesting waveforms for {0} channels.'.format(len(channels)))
     st = client.get_waveforms_bulk(bulk, attach_response=True)
     return st, inventory
 
@@ -100,47 +103,54 @@ def add_channel_metadata(tr, inv, client):
 
     metadata = inv.get_channel_metadata(id_string, time)
 
-    coordinates = {'latitude': metadata['latitude'],
-                   'longitude': metadata['longitude'],
-                   'elevation': metadata['elevation']}
+    coordinates = {
+        'latitude': metadata['latitude'],
+        'longitude': metadata['longitude'],
+        'elevation': metadata['elevation']
+    }
 
-    standard = {'horizontal_orientation': metadata['azimuth'],
-                'instrument_period': np.nan,
-                'instrument_damping': np.nan,
-                'process_level': 'V0',
-                'station_name': tr.stats.station,
-                'sensor_serial_number': '',
-                'instrument': '',
-                'comments': '',
-                'structure_type': '',
-                'corner_frequency': np.nan,
-                'units': 'raw',
-                'source': client,
-                'source_format': 'fdsn'}
+    standard = {
+        'horizontal_orientation': metadata['azimuth'],
+        'instrument_period': np.nan,
+        'instrument_damping': np.nan,
+        'process_level': 'V0',
+        'station_name': tr.stats.station,
+        'sensor_serial_number': '',
+        'instrument': '',
+        'comments': '',
+        'structure_type': '',
+        'corner_frequency': np.nan,
+        'units': 'raw',
+        'source': client,
+        'source_format': 'fdsn'
+    }
 
     tr.stats['coordinates'] = coordinates
     tr.stats['standard'] = standard
 
     if metadata['dip'] in [90, -90, 180, -180]:
-        tr.stats['channel'] = get_channel_name(tr.stats['sampling_rate'],
-                                               is_acceleration=True,
-                                               is_vertical=True,
-                                               is_north=False)
+        tr.stats['channel'] = get_channel_name(
+            tr.stats['sampling_rate'],
+            is_acceleration=True,
+            is_vertical=True,
+            is_north=False)
     else:
         ho = metadata['azimuth']
         quad1 = ho > 315 and ho <= 360
         quad2 = ho >= 0 and ho <= 45
         quad3 = ho > 135 and ho <= 225
         if quad1 or quad2 or quad3:
-            tr.stats['channel'] = get_channel_name(tr.stats['sampling_rate'],
-                                                   is_acceleration=True,
-                                                   is_vertical=False,
-                                                   is_north=True)
+            tr.stats['channel'] = get_channel_name(
+                tr.stats['sampling_rate'],
+                is_acceleration=True,
+                is_vertical=False,
+                is_north=True)
         else:
-            tr.stats['channel'] = get_channel_name(tr.stats['sampling_rate'],
-                                                   is_acceleration=True,
-                                                   is_vertical=False,
-                                                   is_north=False)
+            tr.stats['channel'] = get_channel_name(
+                tr.stats['sampling_rate'],
+                is_acceleration=True,
+                is_vertical=False,
+                is_north=False)
     return tr
 
 

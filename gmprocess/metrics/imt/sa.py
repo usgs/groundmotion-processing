@@ -1,5 +1,5 @@
 # stdlib imports
-import warnings
+import logging
 
 # local imports
 from gmprocess.metrics.exception import PGMException
@@ -15,7 +15,7 @@ def calculate_sa(stream, imcs, rotation_matrix=None):
             Traces in stream must be in units of %%g.
         imcs (list): list of imcs.
         rotation_matrix (ndarray): A rotation matrix for the rotd component.
-                This is required when the rotd component is requested.
+            This is required when the rotd component is requested.
 
     Returns:
         dictionary: Dictionary of sa for different components.
@@ -36,8 +36,9 @@ def calculate_sa(stream, imcs, rotation_matrix=None):
             sa = sa_func(stream, percentiles=grouped_imcs[imc])
             if imc == 'rotd':
                 if rotation_matrix is None:
-                    raise PGMException('The rotation matrix must be included '
-                                       'in order to calculate the rotd component.')
+                    raise PGMException(
+                        'The rotation matrix must be included '
+                        'in order to calculate the rotd component.')
                 sa = sa_func(rotation_matrix, percentiles=grouped_imcs[imc],
                              rotated=True)
                 for percentile in sa:
@@ -51,5 +52,5 @@ def calculate_sa(stream, imcs, rotation_matrix=None):
             else:
                 sa_dict[imc.upper()] = sa
         else:
-            warnings.warn('Not a valid IMC: %r. Skipping...' % imc)
+            logging.warning('Not a valid IMC: %r. Skipping...' % imc)
     return sa_dict

@@ -1,7 +1,7 @@
 # stdlib imports
 import importlib
 import os.path
-import warnings
+import logging
 
 # third party imports
 import numpy as np
@@ -73,13 +73,14 @@ def _get_format(filename):
     formats = np.asarray(formats)
     if len(formats) == 1:
         return formats[0]
-    elif len(formats) == 2 and 'obspy' in formats:
-        return formats[formats != 'obspy'][0]
+    elif len(formats) == 2 and 'gmobspy' in formats:
+        return formats[formats != 'gmobspy'][0]
     elif len(formats) == 0:
         raise GMProcessException('No format found for file %r.' % filename)
     else:
-        raise GMProcessException('Multiple formats passing: %r. Please retry file %r '
-                                 'with a specified format.' % (formats.tolist(), filename))
+        raise GMProcessException(
+            'Multiple formats passing: %r. Please retry file %r '
+            'with a specified format.' % (formats.tolist(), filename))
 
 
 def _validate_format(filename, read_format):
@@ -108,13 +109,13 @@ def _validate_format(filename, read_format):
         is_name = 'is_' + read_format
         is_method = getattr(reader_module, is_name)
     else:
-        warnings.warn('Not a supported format %r. '
-                      'Attempting to find a supported format.' % read_format)
+        logging.warning('Not a supported format %r. '
+                        'Attempting to find a supported format.' % read_format)
         return _get_format(filename)
     # Check that the format passes tests
     if is_method(filename):
         return read_format
     else:
-        warnings.warn('File did not match specified format. '
-                      'Attempting to find a supported format.')
+        logging.warning('File did not match specified format. '
+                        'Attempting to find a supported format.')
         return _get_format(filename)

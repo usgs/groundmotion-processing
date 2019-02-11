@@ -3,12 +3,12 @@
 # stdlib imports
 import os.path
 import argparse
-
-# third party imports
-from openpyxl import load_workbook
+import logging
 
 # local imports
 from gmprocess.stream import streams_to_dataframe
+from gmprocess.logging import setup_logger
+from gmprocess.args import add_shared_args
 
 
 FORMATS = ['csv', 'xlsx']
@@ -17,6 +17,9 @@ DEFAULT_IMCS = ['GREATER_OF_TWO_HORIZONTALS', 'CHANNELS']
 
 
 def main(args):
+    setup_logger(args)
+    logging.info("Running gm2table.")
+
     # gather arguments
     directory = args.directory
     outfile = args.outfile
@@ -30,41 +33,57 @@ def main(args):
 
     if not os.path.isdir(directory):
         raise Exception('Input directory does not exist.')
-    dataframe = streams_to_dataframe(directory, imcs=imcs, imts=imts,
-            epi_dist=epi_dist, event_time=event_time, lat=lat, lon=lon)
+    dataframe = streams_to_dataframe(
+        directory, imcs=imcs, imts=imts,
+        epi_dist=epi_dist, event_time=event_time, lat=lat, lon=lon)
     if format == 'csv':
         dataframe.to_csv(outfile, index=False)
     elif format == 'xlsx':
         dataframe.to_excel(outfile)
 
+
 if __name__ == '__main__':
     desc = '''Create an Excel or CSV file of peak ground motions from a directory of files
     '''
-    parser = argparse.ArgumentParser(description=desc,
-                                     formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('directory', help='Directory ground motion data.')
-    parser.add_argument('outfile', help='Output file.')
-    parser.add_argument('-f', '--format', help=('Output file format (csv or '
-                        'excel). Default is xlsx.'), choices=FORMATS,
-                        default='xlsx')
-    parser.add_argument('-c', '--imcs', help=('List of requested imcs. '
-                        'Defaults are: %s' % DEFAULT_IMCS),
-                        nargs='+', default=None)
-    parser.add_argument('-t', '--imts', help=('List of requested imts. '
-                        'Defaults are: %s' % DEFAULT_IMTS),
-                        nargs='+', default=None)
-    parser.add_argument('-d', '--epicentral-distance',
-                        help=('Epicentral distance to station. '
-                        'This is used for processing.'), default=None)
-    parser.add_argument('-v', '--event-time',
-                        help=('Time of the event. '
-                        'This is used for processing.'), default=None)
-    parser.add_argument('--lat',
-                        help=('Epicentral latitude. '
-                        'This is used to calculate distances.'), default=None)
-    parser.add_argument('--lon',
-                        help=('Epicentral longitude. '
-                        'This is used to calculate distances.'), default=None)
+    parser = argparse.ArgumentParser(
+        description=desc,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument(
+        'directory', help='Directory ground motion data.')
+    parser.add_argument(
+        'outfile', help='Output file.')
+    parser.add_argument(
+        '-f', '--format',
+        help='Output file format (csv or excel). Default is xlsx.',
+        choices=FORMATS, default='xlsx')
+    parser.add_argument(
+        '-c', '--imcs',
+        help='List of requested imcs. Defaults are: %s' % DEFAULT_IMCS,
+        nargs='+', default=None)
+    parser.add_argument(
+        '-t', '--imts',
+        help='List of requested imts. Defaults are: %s' % DEFAULT_IMTS,
+        nargs='+', default=None)
+    parser.add_argument(
+        '-d', '--epicentral-distance',
+        help='Epicentral distance to station. This is used for processing.',
+        default=None)
+    parser.add_argument(
+        '-v', '--event-time',
+        help='Time of the event. This is used for processing.',
+        default=None)
+    parser.add_argument(
+        '--lat',
+        help='Epicentral latitude. This is used to calculate distances.',
+        default=None)
+    parser.add_argument(
+        '--lon',
+        help='Epicentral longitude. This is used to calculate distances.',
+        default=None)
+
+    # Shared arguments
+    parser = add_shared_args(parser)
+
     pargs = parser.parse_args()
-    print(pargs)
+
     main(pargs)

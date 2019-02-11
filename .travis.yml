@@ -1,13 +1,13 @@
 language: python
 sudo: false
 python:
-    - "3.5"
+    - "3.6"
 
 install:
-    # Install shakemap and requirements
     - bash install.sh
     - . $HOME/miniconda/etc/profile.d/conda.sh
     - conda activate gmprocess
+    - gmsetup
 before_script:
     # This is to take care of Invalid DISPLAY variable
     - "export DISPLAY=:99.0"
