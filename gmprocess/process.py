@@ -527,12 +527,19 @@ def process(stream, amp_min, amp_max, window_vmin, taper_type,
     for trace in stream:
         trace_copy = trace.copy()
         # The stats need to be set even if the process checks fail
-        trace_copy = _update_params(trace_copy, 'amplitude', {'min': amp_min,
-                                                              'max': amp_min})
-        trace_copy = _update_params(trace_copy, 'window',
-                                    {'vmin': window_vmin})
-        trace_copy = _update_params(trace_copy, 'taper', {'type': taper_type,
-                                                          'side': taper_side, 'max_percentage': taper_percentage})
+        trace_copy = _update_params(
+            trace_copy, 'amplitude', {
+                'min': amp_min,
+                'max': amp_min
+            })
+        trace_copy = _update_params(
+            trace_copy, 'window',
+            {'vmin': window_vmin})
+        trace_copy = _update_params(
+            trace_copy, 'taper',
+            {'type': taper_type,
+             'side': taper_side, 'max_percentage': taper_percentage
+             })
         trace_copy = _update_params(
             trace_copy, 'corners',
             {

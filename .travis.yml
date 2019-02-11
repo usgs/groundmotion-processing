@@ -7,6 +7,7 @@ install:
     - bash install.sh
     - . $HOME/miniconda/etc/profile.d/conda.sh
     - conda activate gmprocess
+    - gmsetup
 before_script:
     # This is to take care of Invalid DISPLAY variable
     - "export DISPLAY=:99.0"
