@@ -16,7 +16,7 @@ def calculate_gmrotd(stream, percentiles, rotated=False, **kwargs):
     Returns:
         dictionary: Dictionary of geometric mean for each percentile.
     """
-    if rotated == True:
+    if rotated:
         gm_percentiles = get_max(stream[0], 'gm', stream[1], percentiles)[1]
         gmrotd_dict = {}
         for idx, percent in enumerate(percentiles):

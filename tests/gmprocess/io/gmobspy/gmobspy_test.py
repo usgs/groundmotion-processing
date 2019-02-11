@@ -7,26 +7,28 @@ from collections import OrderedDict
 # third party imports
 import numpy as np
 
-from gmprocess.io.obspy.core import is_obspy, read_obspy
+from gmprocess.io.gmobspy.core import is_gmobspy, read_gmobspy
 from gmprocess.stream import group_channels
 
 
-def test_obspy():
+def test_gmobspy():
     homedir = os.path.dirname(os.path.abspath(
         __file__))  # where is this script?
     datadir = os.path.join(homedir, '..', '..', '..', 'data', 'obspy')
 
-    files = OrderedDict([('51PJW_H1.mseed', (3.112445E-002, -8.906940E-001)),
-                         ('51PJW_H2.mseed', (-4.037475E-004, 2.463697E-001)),
-                         ('51PJW_Z.mseed', (7.293111E-003, -5.053943E-002))])
+    files = OrderedDict([
+        ('51PJW_H1.mseed', (3.112445E-002, -8.906940E-001)),
+        ('51PJW_H2.mseed', (-4.037475E-004, 2.463697E-001)),
+        ('51PJW_Z.mseed', (7.293111E-003, -5.053943E-002))
+    ])
 
     streams = []
     for tfilename, accvals in files.items():
         filename = os.path.join(datadir, tfilename)
-        assert is_obspy(filename)
+        assert is_gmobspy(filename)
 
         # test acceleration from the file
-        stream = read_obspy(filename)
+        stream = read_gmobspy(filename)
 
         # test for one trace per file
         assert stream.count() == 1
@@ -47,4 +49,4 @@ def test_obspy():
 
 
 if __name__ == '__main__':
-    test_obspy()
+    test_gmobspy()

@@ -9,8 +9,9 @@ from obspy.core.stream import Stream
 import numpy as np
 
 
-def is_obspy(filename):
-    """Check to see if file is a ObsPy supported (corrected, in acc.) strong motion file.
+def is_gmobspy(filename):
+    """Check to see if file is a ObsPy supported (corrected, in acc.) strong
+    motion file.
 
     Args:
         filename (str): Path to possible ObsPy supported corrected data file.
@@ -24,19 +25,20 @@ def is_obspy(filename):
         return False
 
 
-def read_obspy(filename):
+def read_gmobspy(filename):
     """Read ObsPy supported strong motion file.
     Args:
-        filename (str): Path to possible ObsPy supported data file.
+        filename (str):
+            Path to possible ObsPy supported data file.
         kwargs (ref):
             any_structure (bool): Read data from any type of structure,
                 raise Exception if False and structure type is not free-field.
             Other arguments will be ignored.
     Returns:
         Stream: Obspy Stream containing one channel of acceleration
-            data (cm/s**2).
+        data (cm/s**2).
     """
-    if not is_obspy(filename):
+    if not is_gmobspy(filename):
         raise Exception('%s is not an Obspy supported file format.' % filename)
 
     # find the accompanying geojson or station.xml file

@@ -1,3 +1,5 @@
+import logging
+
 # third party imports
 import numpy as np
 from scipy import integrate
@@ -64,7 +66,7 @@ def calculate_arias(stream, imcs, return_streams=False):
                 arias = arias_func(arias_stream)
                 arias_dict[imc.upper()] = arias
         else:
-            warnings.warn('Not a valid IMC: %r. Skipping...' % imc)
+            logging.warning('Not a valid IMC: %r. Skipping...' % imc)
     return arias_dict
 
 

@@ -78,20 +78,22 @@ def convert_ids(source_id, source_catalog, out_catalog, collect_dloc=1.5,
                 catalog_id = catalog_id_dict.popitem()[1]
                 return catalog_id
             if len(catalog_id_dict.keys()) == 0:
-                raise Exception('No event ids found. Check that the '
-                                'source_catalog and out_catalog values are valid.')
+                raise Exception(
+                    'No event ids found. Check that the '
+                    'source_catalog and out_catalog values are valid.')
         return catalog_id_dict
 
 
-def get_ingv_shakemap(eventid, catalog='INGV', output_format='event_dat', flag='0'):
+def get_ingv_shakemap(eventid, catalog='INGV', output_format='event_dat',
+                      flag='0'):
     """
     Retrieve a ShakeMap xml file from the INGV catalog.
 
     Args:
         eventid (str): Event identification code from the specified catalog.
         catalog (str): Catalog code. Default is 'INGV'.
-        output_format (str): Format of the retrieved data. 'event' will return a
-                short event description; 'event_data' will return the full
+        output_format (str): Format of the retrieved data. 'event' will return
+                a short event description; 'event_data' will return the full
                 ShakeMap xml. Default is 'event_data'.
         flag (str): Data flag. '0' will not return data flaged as problematic;
                 'all' will return all data including flagged data. Flagged

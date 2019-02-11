@@ -2,12 +2,12 @@
 
 # stdlib import
 import argparse
-
-# third party imports
-from lxml import etree
+import logging
 
 # local imports
 from gmprocess.io.catalog import convert_ids, get_ingv_shakemap
+from gmprocess.logging import setup_logger
+from gmprocess.args import add_shared_args
 
 
 INGV_CATALOGS = ['INGV', 'ESM', 'CNT']
@@ -15,9 +15,13 @@ VALID_CATALOGS = ['UNID', 'EMSC', 'INGV', 'USGS', 'ISC', 'CNT', 'ESM']
 
 
 def main(args):
+    setup_logger(args)
+    logging.info("Running ingvfetch.")
+
     if args.source_catalog in INGV_CATALOGS:
-        shakemal_xml = get_ingv_shakemap(args.eventid,
-                                         catalog=args.source_catalog, flag=args.flag)
+        shakemal_xml = get_ingv_shakemap(
+            args.eventid,
+            catalog=args.source_catalog, flag=args.flag)
     else:
         new_id = convert_ids(args.eventid, args.source_catalog, 'INGV')
         shakemal_xml = get_ingv_shakemap(new_id,
@@ -26,19 +30,26 @@ def main(args):
 
 
 if __name__ == '__main__':
-
     description = 'Fetch shakemap xml from the INGV catalog.'
     parser = argparse.ArgumentParser(description=description)
 
     # Required arguments
-    parser.add_argument('eventid', help='Event identification code.', type=str)
-    parser.add_argument('source_catalog', choices=VALID_CATALOGS,
-                        help="Source catalog code. Example: 'us'.", type=str)
-    parser.add_argument('file', help='File path where the shakemap xml '
-                        'will be written.', type=str)
-    parser.add_argument('-f', '--flag', choices=['0', 'all'],
-                        help="Data flag type. '0', problematic data is not included, or "
-                        "'all', problematic data is included and marked with flag=1.",
-                        type=str, default='0')
+    parser.add_argument(
+        'eventid', help='Event identification code.', type=str)
+    parser.add_argument(
+        'source_catalog', choices=VALID_CATALOGS,
+        help="Source catalog code. Example: 'us'.", type=str)
+    parser.add_argument(
+        'file',
+        help='File path where the shakemap xml will be written.', type=str)
+    parser.add_argument(
+        '-f', '--flag', choices=['0', 'all'],
+        help="Data flag type. '0', problematic data is not included, or "
+             "'all', problematic data is included and marked with flag=1.",
+        type=str, default='0')
+
+    # Shared arguments
+    parser = add_shared_args(parser)
+
     pargs = parser.parse_args()
     main(pargs)

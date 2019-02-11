@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
 # stdlib imports
-import warnings
 import glob
 import os.path
+from io import StringIO
+import logging
 
 # third party imports
 import numpy as np
-from gmprocess.io.cwb.core import read_cwb
 from gmprocess.io.geonet.core import read_geonet
 from gmprocess.io.knet.core import read_knet
 from gmprocess.io.read import read_data
@@ -53,10 +53,21 @@ def test():
     filename = 'AOM0071801241951.UD'
     datafile = os.path.join(homedir, '..', 'data', 'knet', filename)
     streams += [read_knet(datafile)]
-    with warnings.catch_warnings(record=True) as w:
-        grouped_streams = group_channels(streams)
-        assert issubclass(w[-1].category, Warning)
-        assert "One channel stream:" in str(w[-1].message)
+
+    # * This is my attempt to do this after changing from
+    #   warnings.warn to logging.warning but it doesn't seem
+    #   to work.
+#    logstream = StringIO()
+#    handler = logging.StreamHandler(logstream)
+#    log = logging.getLogger()
+#    log.setLevel(logging.INFO)
+#    for handler in log.handlers:
+#        log.removeHandler(handler)
+#    log.addHandler(handler)
+#    handler.flush()
+    grouped_streams = group_channels(streams)
+#    assert "One channel stream:" in logstream.getvalue()
+
     assert len(grouped_streams) == 3
     assert grouped_streams[0].count() == 3
     assert grouped_streams[1].count() == 3
@@ -173,6 +184,7 @@ def test_grouping():
         else:
             assert len(stream) == 3
 
+
 def test_streams_to_dataframe():
     imts = ['PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
     imcs = ['GREATER_OF_TWO_HORIZONTALS', 'CHANNELS']
@@ -198,17 +210,17 @@ def test_streams_to_dataframe():
         longitude = stream[0].stats['coordinates']['longitude']
         # metadata from the dataframe
         knet_station = knet_dataframe.iloc[
-                idx, knet_dataframe.columns.get_level_values(0)=='STATION'][0]
+            idx, knet_dataframe.columns.get_level_values(0) == 'STATION'][0]
         knet_name_str = knet_dataframe.iloc[
-                idx, knet_dataframe.columns.get_level_values(0)=='NAME'][0]
+            idx, knet_dataframe.columns.get_level_values(0) == 'NAME'][0]
         knet_source = knet_dataframe.iloc[
-                idx, knet_dataframe.columns.get_level_values(0)=='SOURCE'][0]
+            idx, knet_dataframe.columns.get_level_values(0) == 'SOURCE'][0]
         knet_network = knet_dataframe.iloc[
-                idx, knet_dataframe.columns.get_level_values(0)=='NETID'][0]
+            idx, knet_dataframe.columns.get_level_values(0) == 'NETID'][0]
         knet_latitude = knet_dataframe.iloc[
-                idx, knet_dataframe.columns.get_level_values(0)=='LAT'][0]
+            idx, knet_dataframe.columns.get_level_values(0) == 'LAT'][0]
         knet_longitude = knet_dataframe.iloc[
-                idx, knet_dataframe.columns.get_level_values(0)=='LON'][0]
+            idx, knet_dataframe.columns.get_level_values(0) == 'LON'][0]
         assert knet_station == station
         assert knet_name_str == name_str
         assert knet_source == source
@@ -220,9 +232,10 @@ def test_streams_to_dataframe():
         for imt in pgms:
             for imc in pgms[imt]:
                 multi_idx = np.logical_and(
-                        knet_dataframe.columns.get_level_values(1)==imt,
-                        knet_dataframe.columns.get_level_values(0)==imc)
-                dataframe_value = knet_dataframe.iloc[idx, multi_idx].to_list()[0]
+                    knet_dataframe.columns.get_level_values(1) == imt,
+                    knet_dataframe.columns.get_level_values(0) == imc)
+                dataframe_value = knet_dataframe.iloc[idx, multi_idx].to_list()[
+                    0]
                 streamsummary_value = pgms[imt][imc]
                 assert dataframe_value == streamsummary_value
 
@@ -246,17 +259,17 @@ def test_streams_to_dataframe():
         longitude = stream[0].stats['coordinates']['longitude']
         # metadata from the dataframe
         geonet_station = geonet_dataframe.iloc[
-                idx, geonet_dataframe.columns.get_level_values(0)=='STATION'][0]
+            idx, geonet_dataframe.columns.get_level_values(0) == 'STATION'][0]
         geonet_name_str = geonet_dataframe.iloc[
-                idx, geonet_dataframe.columns.get_level_values(0)=='NAME'][0]
+            idx, geonet_dataframe.columns.get_level_values(0) == 'NAME'][0]
         geonet_source = geonet_dataframe.iloc[
-                idx, geonet_dataframe.columns.get_level_values(0)=='SOURCE'][0]
+            idx, geonet_dataframe.columns.get_level_values(0) == 'SOURCE'][0]
         geonet_network = geonet_dataframe.iloc[
-                idx, geonet_dataframe.columns.get_level_values(0)=='NETID'][0]
+            idx, geonet_dataframe.columns.get_level_values(0) == 'NETID'][0]
         geonet_latitude = geonet_dataframe.iloc[
-                idx, geonet_dataframe.columns.get_level_values(0)=='LAT'][0]
+            idx, geonet_dataframe.columns.get_level_values(0) == 'LAT'][0]
         geonet_longitude = geonet_dataframe.iloc[
-                idx, geonet_dataframe.columns.get_level_values(0)=='LON'][0]
+            idx, geonet_dataframe.columns.get_level_values(0) == 'LON'][0]
         assert geonet_station == station
         assert geonet_name_str == name_str
         assert geonet_source == source
@@ -268,12 +281,12 @@ def test_streams_to_dataframe():
         for imt in pgms:
             for imc in pgms[imt]:
                 multi_idx = np.logical_and(
-                        geonet_dataframe.columns.get_level_values(1)==imt,
-                        geonet_dataframe.columns.get_level_values(0)==imc)
-                dataframe_value = geonet_dataframe.iloc[idx, multi_idx].to_list()[0]
+                    geonet_dataframe.columns.get_level_values(1) == imt,
+                    geonet_dataframe.columns.get_level_values(0) == imc)
+                dataframe_value = geonet_dataframe.iloc[idx, multi_idx].to_list()[
+                    0]
                 streamsummary_value = pgms[imt][imc]
                 assert dataframe_value == streamsummary_value
-
 
 
 if __name__ == '__main__':

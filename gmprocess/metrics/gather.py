@@ -1,7 +1,7 @@
 import importlib
 import inspect
 import os
-import warnings
+import logging
 
 
 EXCLUDED_MODULES = ['__init__.py']
@@ -49,28 +49,28 @@ def group_imcs(imcs):
                     imc_dict['rotd'] = []
                 imc_dict['rotd'] += [float(imc[4:])]
             except Exception:
-                warnings.warn('Invalid percentile for RotD: %r' % imc)
+                logging.warning('Invalid percentile for RotD: %r' % imc)
         elif imc.startswith('roti'):
             try:
                 if 'roti' not in imc_dict:
                     imc_dict['roti'] = []
                 imc_dict['roti'] += [float(imc[4:])]
             except Exception:
-                warnings.warn('Invalid percentile for RotI: %r' % imc)
+                logging.warning('Invalid percentile for RotI: %r' % imc)
         elif imc.startswith('gmrotd'):
             try:
                 if 'gmrotd' not in imc_dict:
                     imc_dict['gmrotd'] = []
                 imc_dict['gmrotd'] += [float(imc[6:])]
             except Exception:
-                warnings.warn('Invalid percentile for GMRotD: %r' % imc)
+                logging.warning('Invalid percentile for GMRotD: %r' % imc)
         elif imc.startswith('gmroti'):
             try:
                 if 'gmroti' not in imc_dict:
                     imc_dict['gmroti'] = []
                 imc_dict['gmroti'] += [float(imc[6:])]
             except Exception:
-                warnings.warn('Invalid percentile for GMRotI: %r' % imc)
+                logging.warning('Invalid percentile for GMRotI: %r' % imc)
         else:
             imc_dict[imc] = ''
     return imc_dict

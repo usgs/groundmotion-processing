@@ -2,7 +2,7 @@
 
 # stdlib imports
 from datetime import datetime
-import warnings
+import logging
 
 # third party
 from obspy.core.trace import Trace
@@ -23,73 +23,83 @@ FLOAT_DATA_WIDTHS = 10
 VALID_HEADERS = {'1 UNCORRECTED ACCELEROGRAM': 'V1',
                  '2 CORRECTED ACCELEROGRAM': 'V2'}
 
-INSTRUMENTS = {2: 'Sprengnether SA-3000 3-component fba',
-               30: 'Kinemetrics FBA-13 3-component fba',
-               31: 'Kinemetrics FBA-11 1-component fba',
-               101: 'SMA-1',
-               125: 'Kinemetrics FBA-23',
-               102: 'C&GS Standard',
-               126: 'Kinemetrics Episensor',
-               103: 'AR-240',
-               127: 'Kinemetrics FBA-4g',
-               104: 'RFT-250',
-               128: 'Kinemetrics FBA-2g',
-               105: 'RFT-350',
-               129: 'Kinemetrics FBA-1g',
-               106: 'MO-2',
-               130: 'Kinemetrics FBA-0.5g',
-               107: 'RMT-280',
-               131: 'Kinemetrics FBA-0.25g',
-               108: 'SMA-2/3',
-               132: 'Kinemetrics FBA-0.1g',
-               109: 'DSA-1/DSA-3	133 WR1',
-               110: 'DCA-300',
-               134: 'S6000',
-               111: 'DCA-333',
-               135: 'Mark Products L22',
-               112: 'A-700',
-               136: 'Products L4C',
-               113: 'SSA-1',
-               137: 'CMG3',
-               114: 'CRA-1',
-               138: 'CMG3T',
-               115: 'MO-2',
-               139: 'CMG40T',
-               116: 'FBA-3',
-               140: 'CMG5',
-               117: 'SMA-2',
-               141: 'KS-2000',
-               118: 'DCA-310',
-               900: 'custom instrument',
-               119: 'FBA-13',
-               1302: 'Reftek Model 130-ANSS/02',
-               120: 'SSA-2',
-               121: 'SSR-1',
-               122: 'BIDRA',
-               123: 'CR-1',
-               124: 'PDR-1'}
+INSTRUMENTS = {
+    2: 'Sprengnether SA-3000 3-component fba',
+    30: 'Kinemetrics FBA-13 3-component fba',
+    31: 'Kinemetrics FBA-11 1-component fba',
+    101: 'SMA-1',
+    125: 'Kinemetrics FBA-23',
+    102: 'C&GS Standard',
+    126: 'Kinemetrics Episensor',
+    103: 'AR-240',
+    127: 'Kinemetrics FBA-4g',
+    104: 'RFT-250',
+    128: 'Kinemetrics FBA-2g',
+    105: 'RFT-350',
+    129: 'Kinemetrics FBA-1g',
+    106: 'MO-2',
+    130: 'Kinemetrics FBA-0.5g',
+    107: 'RMT-280',
+    131: 'Kinemetrics FBA-0.25g',
+    108: 'SMA-2/3',
+    132: 'Kinemetrics FBA-0.1g',
+    109: 'DSA-1/DSA-3	133 WR1',
+    110: 'DCA-300',
+    134: 'S6000',
+    111: 'DCA-333',
+    135: 'Mark Products L22',
+    112: 'A-700',
+    136: 'Products L4C',
+    113: 'SSA-1',
+    137: 'CMG3',
+    114: 'CRA-1',
+    138: 'CMG3T',
+    115: 'MO-2',
+    139: 'CMG40T',
+    116: 'FBA-3',
+    140: 'CMG5',
+    117: 'SMA-2',
+    141: 'KS-2000',
+    118: 'DCA-310',
+    900: 'custom instrument',
+    119: 'FBA-13',
+    1302: 'Reftek Model 130-ANSS/02',
+    120: 'SSA-2',
+    121: 'SSR-1',
+    122: 'BIDRA',
+    123: 'CR-1',
+    124: 'PDR-1'
+}
 
-CONSTRUCTION_TYPES = {1: 'Reinforced concrete gravity',
-                      2: 'Reinforced concrete arch',
-                      3: 'earth fill',
-                      4: 'other'}
+CONSTRUCTION_TYPES = {
+    1: 'Reinforced concrete gravity',
+    2: 'Reinforced concrete arch',
+    3: 'earth fill',
+    4: 'other'
+}
 
-STRUCTURES = {1: 'building',
-              2: 'bridge',
-              3: 'dam',
-              4: 'other',
-              np.nan: 'not a structure'}
+STRUCTURES = {
+    1: 'building',
+    2: 'bridge',
+    3: 'dam',
+    4: 'other',
+    np.nan: 'not a structure'
+}
 
-BRIDGE_LOCATIONS = {0: 'free field',
-                    1: 'at the base of a pier or abutment',
-                    2: 'on an abutment',
-                    3: 'on the deck at the top of a pier',
-                    4: 'on the deck between piers or between an abutment and a pier'}
+BRIDGE_LOCATIONS = {
+    0: 'free field',
+    1: 'at the base of a pier or abutment',
+    2: 'on an abutment',
+    3: 'on the deck at the top of a pier',
+    4: 'on the deck between piers or between an abutment and a pier'
+}
 
-DAM_LOCATIONS = {0: 'upstream or downstream free field',
-                 1: 'at the base of the dam',
-                 2: 'on the crest of the dam',
-                 3: 'on the abutment of the dam'}
+DAM_LOCATIONS = {
+    0: 'upstream or downstream free field',
+    1: 'at the base of the dam',
+    2: 'on the crest of the dam',
+    3: 'on the abutment of the dam'
+}
 
 
 def is_smc(filename):
@@ -121,7 +131,8 @@ def read_smc(filename, **kwargs):
             set_location (str): Two character code for location.
             Other arguments will be ignored.
     Returns:
-        Stream: Obspy Stream containing one channel of acceleration data (cm/s**2).
+        Stream: Obspy Stream containing one channel of acceleration data
+        (cm/s**2).
     """
     any_structure = kwargs.get('any_structure', False)
     accept_flagged = kwargs.get('accept_flagged', False)
@@ -299,8 +310,9 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
             fmt = 'Record found in file %s has a problem flag!'
             raise Exception(fmt % filename)
         else:
-            warnings.warn('Data contains a problem flag for network/station: '
-                          '%s/%s. See comments.' % (hdr['network'], hdr['station']))
+            logging.warning(
+                'Data contains a problem flag for network/station: '
+                '%s/%s. See comments.' % (hdr['network'], hdr['station']))
     stype = intheader[2, 2]
     if stype == missing_data:
         stype = np.nan
@@ -320,7 +332,8 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     format_specific['bridge_transducer_location'] = BRIDGE_LOCATIONS[0]
     if intheader[3, 2] != missing_data:
         bridge_number = intheader[3, 2]
-        format_specific['bridge_transducer_location'] = BRIDGE_LOCATIONS[bridge_number]
+        format_specific['bridge_transducer_location'] = \
+            BRIDGE_LOCATIONS[bridge_number]
 
     format_specific['dam_transducer_location'] = DAM_LOCATIONS[0]
     if intheader[3, 3] != missing_data:
@@ -334,7 +347,8 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
 
     format_specific['construction_type'] = CONSTRUCTION_TYPES[4]
     if intheader[3, 4] != missing_data:
-        format_specific['construction_type'] = CONSTRUCTION_TYPES[intheader[3, 4]]
+        format_specific['construction_type'] = \
+            CONSTRUCTION_TYPES[intheader[3, 4]]
 
     # station is repeated here if all numeric
     if not len(stats['station']):
@@ -342,10 +356,11 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
 
     # read float header data
     skip = ASCII_HEADER_LINES + INTEGER_HEADER_LINES
-    floatheader = np.genfromtxt(filename,
-                                max_rows=FLOAT_HEADER_LINES,
-                                skip_header=skip,
-                                delimiter=FLOAT_HEADER_WIDTHS)
+    floatheader = np.genfromtxt(
+        filename,
+        max_rows=FLOAT_HEADER_LINES,
+        skip_header=skip,
+        delimiter=FLOAT_HEADER_WIDTHS)
 
     # float headers are 10 lines of 5 floats each
     missing_data = floatheader[0, 0]
@@ -358,25 +373,28 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
 
     # figure out the channel code
     if format_specific['vertical_orientation'] in [0, 180]:
-        stats['channel'] = get_channel_name(stats['sampling_rate'],
-                                            is_acceleration=True,
-                                            is_vertical=True,
-                                            is_north=False)
+        stats['channel'] = get_channel_name(
+            stats['sampling_rate'],
+            is_acceleration=True,
+            is_vertical=True,
+            is_north=False)
     else:
         ho = standard['horizontal_orientation']
         quad1 = ho > 315 and ho <= 360
         quad2 = ho > 0 and ho <= 45
         quad3 = ho > 135 and ho <= 225
         if quad1 or quad2 or quad3:
-            stats['channel'] = get_channel_name(stats['sampling_rate'],
-                                                is_acceleration=True,
-                                                is_vertical=False,
-                                                is_north=True)
+            stats['channel'] = get_channel_name(
+                stats['sampling_rate'],
+                is_acceleration=True,
+                is_vertical=False,
+                is_north=True)
         else:
-            stats['channel'] = get_channel_name(stats['sampling_rate'],
-                                                is_acceleration=True,
-                                                is_vertical=False,
-                                                is_north=False)
+            stats['channel'] = get_channel_name(
+                stats['sampling_rate'],
+                is_acceleration=True,
+                is_vertical=False,
+                is_north=False)
 
     sensor_frequency = floatheader[4, 1]
     standard['instrument_period'] = 1/sensor_frequency

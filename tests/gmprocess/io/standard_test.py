@@ -9,7 +9,7 @@ from gmprocess.io.cwb.core import read_cwb
 from gmprocess.io.dmg.core import read_dmg
 from gmprocess.io.geonet.core import read_geonet
 from gmprocess.io.knet.core import read_knet
-from gmprocess.io.obspy.core import read_obspy
+from gmprocess.io.gmobspy.core import read_gmobspy
 from gmprocess.io.smc.core import read_smc
 
 REQUIRED = ['horizontal_orientation',
@@ -38,7 +38,7 @@ def test_smc():
              'dmg': (read_dmg, 'CE89146.V2'),
              'geonet': (read_geonet, '20161113_110259_WTMC_20.V1A'),
              'knet': (read_knet, 'AOM0011801241951.EW'),
-             'obspy': (read_obspy, '51PJW_H1.mseed'),
+             'obspy': (read_gmobspy, '51PJW_H1.mseed'),
              'smc': (read_smc, '0111a.smc')}
 
     for ftype, ftuple in files.items():

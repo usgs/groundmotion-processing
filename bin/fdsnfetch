@@ -3,23 +3,30 @@
 import argparse
 import os
 import json
-import glob
+import logging
+
+from obspy import read
+
 from gmprocess.io import fdsn
 from gmprocess.process import remove_clipped, instrument_response
-from obspy import read
+from gmprocess.logging import setup_logger
+from gmprocess.args import add_shared_args
 
 
 def main(args):
+    setup_logger(args)
+    logging.info("Running fdsnfetch.")
 
     networks = [str(net) for net in args.n.split()]
     stations = [str(stn) for stn in args.s.split()]
     channels = [str(chn) for chn in args.c.split()]
 
     # Request waveforms using parameters, getting stream and inventory
-    st, inv = fdsn.request_raw_waveforms(args.client, args.org_time,
-                                         args.lat, args.lon, args.b, args.a,
-                                         args.dmin, args.dmax, networks,
-                                         stations, channels)
+    st, inv = fdsn.request_raw_waveforms(
+        args.client, args.org_time,
+        args.lat, args.lon, args.b, args.a,
+        args.dmin, args.dmax, networks,
+        stations, channels)
 
     if not os.path.exists(args.out + '/raw'):
         os.mkdir(args.out + '/raw')
@@ -56,8 +63,9 @@ def main(args):
         for tr in st:
             tr.detrend('demean')
         st_unclipped, st_clipped = remove_clipped(st)
-        st_res = instrument_response(st_unclipped, f1=args.f1, f2=args.f2, f3=args.f3, f4=args.f4,
-                                     water_level=args.w, output=args.o)
+        st_res = instrument_response(
+            st_unclipped, f1=args.f1, f2=args.f2, f3=args.f3, f4=args.f4,
+            water_level=args.w, output=args.o)
 
         for tr in st_res:
             trid = tr.get_id()
@@ -66,48 +74,70 @@ def main(args):
 
 
 if __name__ == '__main__':
-
     desc = 'Fetch data from an FDSN client.'
     parser = argparse.ArgumentParser(description=desc)
 
     # Required arguments
-    parser.add_argument('out', help='Output file directory', type=str)
-    parser.add_argument('client', help='FSDN client name', type=str)
-    parser.add_argument('org_time', help='Event origin time', type=str)
-    parser.add_argument('lat', help='Event latitude', type=float)
-    parser.add_argument('lon', help='Event longitude', type=float)
+    parser.add_argument(
+        'out', help='Output file directory', type=str)
+    parser.add_argument(
+        'client', help='FSDN client name', type=str)
+    parser.add_argument(
+        'org_time', help='Event origin time', type=str)
+    parser.add_argument(
+        'lat', help='Event latitude', type=float)
+    parser.add_argument(
+        'lon', help='Event longitude', type=float)
 
     # Optional arguments
-    parser.add_argument('-b', '-before_time', help='Time (s) before event',
-                        default=120, type=float)
-    parser.add_argument('-a', '-after_time', help='Time (s) after event',
-                        default=600, type=float)
-    parser.add_argument('-dmin', help='Minimum distance from event (km)',
-                        default=0, type=float)
-    parser.add_argument('-dmax', help='Maximum distance from event (km)',
-                        default=1.5, type=float)
-    parser.add_argument('-n', '-networks', help='Networks to request',
-                        default='*', type=str)
-    parser.add_argument('-s', '-stations', help='Stations to request',
-                        default='*', type=str)
-    parser.add_argument('-c', '-channels', help='Channels to request',
-                        default='*', type=str)
-    parser.add_argument('-f', '-format,', help='Format type to save data',
-                        default='MSEED', type=str)
-    parser.add_argument('-r', action='store_true',
-                        help='Whether to denconvolve instrument response')
-    parser.add_argument('-o', help='Output unit of instrument response correction',
-                        type=str)
-    parser.add_argument('-f1', help='Freq 1 for instrument response pre-filter',
-                        default=120, type=float)
-    parser.add_argument('-f2', help='Freq 2 for instrument response pre-filter',
-                        default=120, type=float)
-    parser.add_argument('-f3', help='Freq 3 for instrument response pre-filter',
-                        default=120, type=float)
-    parser.add_argument('-f4', help='Freq 4 for instrument response pre-filter',
-                        default=120, type=float)
-    parser.add_argument('-w', help='Water level for instrument response correction',
-                        default=120, type=float)
+    parser.add_argument(
+        '-b', '-before_time', help='Time (s) before event',
+        default=120, type=float)
+    parser.add_argument(
+        '-a', '-after_time', help='Time (s) after event',
+        default=600, type=float)
+    parser.add_argument(
+        '-dmin', help='Minimum distance from event (km)',
+        default=0, type=float)
+    parser.add_argument(
+        '-dmax', help='Maximum distance from event (km)',
+        default=1.5, type=float)
+    parser.add_argument(
+        '-n', '-networks', help='Networks to request',
+        default='*', type=str)
+    parser.add_argument(
+        '-s', '-stations', help='Stations to request',
+        default='*', type=str)
+    parser.add_argument(
+        '-c', '-channels', help='Channels to request',
+        default='*', type=str)
+    parser.add_argument(
+        '-f', '-format,', help='Format type to save data',
+        default='MSEED', type=str)
+    parser.add_argument(
+        '-r', action='store_true',
+        help='Whether to denconvolve instrument response')
+    parser.add_argument(
+        '-o', help='Output unit of instrument response correction',
+        type=str)
+    parser.add_argument(
+        '-f1', help='Freq 1 for instrument response pre-filter',
+        default=120, type=float)
+    parser.add_argument(
+        '-f2', help='Freq 2 for instrument response pre-filter',
+        default=120, type=float)
+    parser.add_argument(
+        '-f3', help='Freq 3 for instrument response pre-filter',
+        default=120, type=float)
+    parser.add_argument(
+        '-f4', help='Freq 4 for instrument response pre-filter',
+        default=120, type=float)
+    parser.add_argument(
+        '-w', help='Water level for instrument response correction',
+        default=120, type=float)
+
+    # Shared arguments
+    parser = add_shared_args(parser)
 
     pargs = parser.parse_args()
     main(pargs)

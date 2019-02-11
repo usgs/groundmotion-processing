@@ -56,8 +56,10 @@ def read_geonet(filename, **kwargs):
     Args:
         filename (str): Path to possible GNS V1/V2 data file.
         kwargs (ref): Other arguments will be ignored.
+
     Returns:
-        Stream: Obspy Stream containing three channels of acceleration data (cm/s**2).
+        Stream: Obspy Stream containing three channels of acceleration data
+        (cm/s**2).
     """
     trace1, offset1, _ = _read_channel(filename, 0)
     trace2, offset2, _ = _read_channel(filename, offset1)
@@ -76,15 +78,17 @@ def read_geonet(filename, **kwargs):
             trace2.stats['channel'] = trace2.stats['channel'][0:2]+'1'
         else:
             raise Exception(
-                'Could not resolve duplicate channels in %s' % trace1.stats['station'])
+                'Could not resolve duplicate channels in %s'
+                % trace1.stats['station'])
     if channel2 == channel3:
         if channel2.endswith('2'):
             trace3.stats['channel'] = trace2.stats['channel'][0:2]+'1'
-        elif channel2endswith('1'):
+        elif channel2.endswith('1'):
             trace3.stats['channel'] = trace2.stats['channel'][0:2]+'2'
         else:
             raise Exception(
-                'Could not resolve duplicate channels in %s' % trace1.stats['station'])
+                'Could not resolve duplicate channels in %s'
+                % trace1.stats['station'])
 
     traces = [trace1, trace2, trace3]
     stream = Stream(traces)
@@ -198,13 +202,16 @@ def _read_channel(filename, line_offset):
     return (trace, offset, velocity)
 
 
-def _read_header(hdr_data, station, name, component, data_format, instrument, resolution):
+def _read_header(hdr_data, station, name, component, data_format,
+                 instrument, resolution):
     """Construct stats dictionary from header lines.
 
     Args:
         hdr_data (ndarray): (10,10) numpy array containing header data.
-        station (str): Station code obtained from previous text portion of header.
-        location (str): Location string obtained from previous text portion of header.
+        station (str): Station code obtained from previous text portion of
+            header.
+        location (str): Location string obtained from previous text portion
+            of header.
         component (str): Component direction (N18E, S72W, etc.)
     Returns:
         Dictionary containing fields:
@@ -220,7 +227,8 @@ def _read_header(hdr_data, station, name, component, data_format, instrument, re
             - standard:
               - station_name
               - units "acc"
-              - source 'New Zealand Institute of Geological and Nuclear Science'
+              - source 'New Zealand Institute of Geological and Nuclear
+                Science'
               - horizontal_orientation
               - instrument_period
               - instrument_damping
@@ -266,23 +274,26 @@ def _read_header(hdr_data, station, name, component, data_format, instrument, re
     standard['source'] = ('New Zealand Institute of Geological and '
                           'Nuclear Science')
     if component == 'Up':
-        hdr['channel'] = get_channel_name(sampling_rate,
-                                          is_acceleration=True,
-                                          is_vertical=True,
-                                          is_north=False)
+        hdr['channel'] = get_channel_name(
+            sampling_rate,
+            is_acceleration=True,
+            is_vertical=True,
+            is_north=False)
     else:
         _, angle = _get_channel(component)
         standard['horizontal_orientation'] = angle
         if (angle > 315 or angle < 45) or (angle > 135 and angle < 225):
-            hdr['channel'] = get_channel_name(sampling_rate,
-                                              is_acceleration=True,
-                                              is_vertical=False,
-                                              is_north=True)
+            hdr['channel'] = get_channel_name(
+                sampling_rate,
+                is_acceleration=True,
+                is_vertical=False,
+                is_north=True)
         else:
-            hdr['channel'] = get_channel_name(sampling_rate,
-                                              is_acceleration=True,
-                                              is_vertical=False,
-                                              is_north=False)
+            hdr['channel'] = get_channel_name(
+                sampling_rate,
+                is_acceleration=True,
+                is_vertical=False,
+                is_north=False)
 
     hdr['location'] = '--'
 
