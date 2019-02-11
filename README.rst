@@ -142,5 +142,5 @@ GMRotD example:
 
 
 For examples of the API see the
-`example notebooks<https://github.com/usgs/groundmotion-processing/tree/master/notebooks>`_.
+`example notebooks <https://github.com/usgs/groundmotion-processing/tree/master/notebooks>`_.
 
