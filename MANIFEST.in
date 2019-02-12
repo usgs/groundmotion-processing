@@ -1,2 +1,3 @@
 include versioneer.py
 include gmprocess/_version.py
+include gmprocess/data/*
