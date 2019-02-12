@@ -100,7 +100,8 @@ def add_channel_metadata(tr, inv, client):
     time = tr.stats.starttime
     id_string = tr.stats.network + '.' + tr.stats.station + '.'
     id_string += tr.stats.location + '.' + tr.stats.channel
-
+    if tr.stats.location == '':
+        tr.stats.location = '--'
     metadata = inv.get_channel_metadata(id_string, time)
 
     coordinates = {

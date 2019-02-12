@@ -6,7 +6,7 @@ import argparse
 import logging
 
 # local imports
-from gmprocess.stream import streams_to_dataframe
+from gmprocess.stream import directory_to_dataframe
 from gmprocess.logging import setup_logger
 from gmprocess.args import add_shared_args
 
@@ -26,16 +26,17 @@ def main(args):
     format = args.format
     imcs = args.imcs
     imts = args.imts
-    epi_dist = args.epicentral_distance
+    epi_dist = args.distance
     event_time = args.event_time
     lat = args.lat
     lon = args.lon
+    process = args.process
 
     if not os.path.isdir(directory):
         raise Exception('Input directory does not exist.')
-    dataframe = streams_to_dataframe(
-        directory, imcs=imcs, imts=imts,
-        epi_dist=epi_dist, event_time=event_time, lat=lat, lon=lon)
+    dataframe = directory_to_dataframe(directory, imcs=imcs, imts=imts,
+        epi_dist=epi_dist, event_time=event_time, lat=lat, lon=lon,
+        process=process)
     if format == 'csv':
         dataframe.to_csv(outfile, index=False)
     elif format == 'xlsx':
@@ -65,7 +66,7 @@ if __name__ == '__main__':
         help='List of requested imts. Defaults are: %s' % DEFAULT_IMTS,
         nargs='+', default=None)
     parser.add_argument(
-        '-d', '--epicentral-distance',
+        '--distance',
         help='Epicentral distance to station. This is used for processing.',
         default=None)
     parser.add_argument(
@@ -80,6 +81,10 @@ if __name__ == '__main__':
         '--lon',
         help='Epicentral longitude. This is used to calculate distances.',
         default=None)
+    parser.add_argument(
+        '-p', '--process',
+        help='Process the streams. Default is True.',
+        default=True)
 
     # Shared arguments
     parser = add_shared_args(parser)
