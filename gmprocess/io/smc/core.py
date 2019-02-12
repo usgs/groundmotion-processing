@@ -312,7 +312,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
         else:
             logging.warning(
                 'Data contains a problem flag for network/station: '
-                '%s/%s. See comments.' % (hdr['network'], hdr['station']))
+                '%s/%s. See comments.' % (stats['network'], stats['station']))
     stype = intheader[2, 2]
     if stype == missing_data:
         stype = np.nan

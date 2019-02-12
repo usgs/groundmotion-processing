@@ -13,7 +13,7 @@ from gmprocess.io.knet.core import read_knet
 from gmprocess.io.read import read_data
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.process import process_config
-from gmprocess.stream import group_channels, streams_to_dataframe
+from gmprocess.stream import directory_to_dataframe, group_channels, streams_to_dataframe
 
 
 def test():
@@ -185,14 +185,14 @@ def test_grouping():
             assert len(stream) == 3
 
 
-def test_streams_to_dataframe():
+def test_to_dataframe():
     imts = ['PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
     imcs = ['GREATER_OF_TWO_HORIZONTALS', 'CHANNELS']
     homedir = os.path.dirname(os.path.abspath(__file__))
 
     knet_dir = os.path.join(homedir, '..', 'data', 'knet')
     # make dataframe
-    knet_dataframe = streams_to_dataframe(knet_dir)
+    knet_dataframe = directory_to_dataframe(knet_dir)
 
     # read and group streams
     streams = []
@@ -239,13 +239,13 @@ def test_streams_to_dataframe():
                 streamsummary_value = pgms[imt][imc]
                 assert dataframe_value == streamsummary_value
 
-    geonet_dir = os.path.join(homedir, '..', 'data', 'geonet')
+    cwb_dir = os.path.join(homedir, '..', 'data', 'cwb')
     # make dataframe
-    geonet_dataframe = streams_to_dataframe(geonet_dir)
+    cwb_dataframe = directory_to_dataframe(cwb_dir, lat=24.14, lon=121)
 
     # read and group streams
     streams = []
-    for filepath in glob.glob(os.path.join(geonet_dir, "*")):
+    for filepath in glob.glob(os.path.join(cwb_dir, "*")):
         streams += [read_data(filepath)]
     grouped_streams = group_channels(streams)
     for idx, stream in enumerate(grouped_streams):
@@ -258,32 +258,32 @@ def test_streams_to_dataframe():
         latitude = stream[0].stats['coordinates']['latitude']
         longitude = stream[0].stats['coordinates']['longitude']
         # metadata from the dataframe
-        geonet_station = geonet_dataframe.iloc[
-            idx, geonet_dataframe.columns.get_level_values(0) == 'STATION'][0]
-        geonet_name_str = geonet_dataframe.iloc[
-            idx, geonet_dataframe.columns.get_level_values(0) == 'NAME'][0]
-        geonet_source = geonet_dataframe.iloc[
-            idx, geonet_dataframe.columns.get_level_values(0) == 'SOURCE'][0]
-        geonet_network = geonet_dataframe.iloc[
-            idx, geonet_dataframe.columns.get_level_values(0) == 'NETID'][0]
-        geonet_latitude = geonet_dataframe.iloc[
-            idx, geonet_dataframe.columns.get_level_values(0) == 'LAT'][0]
-        geonet_longitude = geonet_dataframe.iloc[
-            idx, geonet_dataframe.columns.get_level_values(0) == 'LON'][0]
-        assert geonet_station == station
-        assert geonet_name_str == name_str
-        assert geonet_source == source
-        assert geonet_network == network
-        assert geonet_latitude == latitude
-        assert geonet_longitude == longitude
+        cwb_station = cwb_dataframe.iloc[
+            idx, cwb_dataframe.columns.get_level_values(0) == 'STATION'][0]
+        cwb_name_str = cwb_dataframe.iloc[
+            idx, cwb_dataframe.columns.get_level_values(0) == 'NAME'][0]
+        cwb_source = cwb_dataframe.iloc[
+            idx, cwb_dataframe.columns.get_level_values(0) == 'SOURCE'][0]
+        cwb_network = cwb_dataframe.iloc[
+            idx, cwb_dataframe.columns.get_level_values(0) == 'NETID'][0]
+        cwb_latitude = cwb_dataframe.iloc[
+            idx, cwb_dataframe.columns.get_level_values(0) == 'LAT'][0]
+        cwb_longitude = cwb_dataframe.iloc[
+            idx, cwb_dataframe.columns.get_level_values(0) == 'LON'][0]
+        assert cwb_station == station
+        assert cwb_name_str == name_str
+        assert cwb_source == source
+        assert cwb_network == network
+        assert cwb_latitude == latitude
+        assert cwb_longitude == longitude
         stream_summary = StationSummary.from_stream(stream, imcs, imts)
         pgms = stream_summary.pgms
         for imt in pgms:
             for imc in pgms[imt]:
                 multi_idx = np.logical_and(
-                    geonet_dataframe.columns.get_level_values(1) == imt,
-                    geonet_dataframe.columns.get_level_values(0) == imc)
-                dataframe_value = geonet_dataframe.iloc[idx, multi_idx].to_list()[
+                    cwb_dataframe.columns.get_level_values(1) == imt,
+                    cwb_dataframe.columns.get_level_values(0) == imc)
+                dataframe_value = cwb_dataframe.iloc[idx, multi_idx].to_list()[
                     0]
                 streamsummary_value = pgms[imt][imc]
                 assert dataframe_value == streamsummary_value
@@ -292,4 +292,4 @@ def test_streams_to_dataframe():
 if __name__ == '__main__':
     test_grouping()
     test()
-    test_streams_to_dataframe()
+    test_to_dataframe()

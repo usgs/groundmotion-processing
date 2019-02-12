@@ -10,6 +10,7 @@ from obspy.geodetics import gps2dist_azimuth
 import pandas as pd
 
 # local imports
+from gmprocess.exception import GMProcessException
 from gmprocess.io.read import read_data
 from gmprocess.process import process_config
 from gmprocess.metrics.station_summary import StationSummary
@@ -20,7 +21,72 @@ from gmprocess.config import get_config
 DEFAULT_IMTS = ['PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
 DEFAULT_IMCS = ['GREATER_OF_TWO_HORIZONTALS', 'CHANNELS']
 
+def directory_to_dataframe(directory, imcs=None, imts=None, epi_dist=None,
+        event_time=None, lat=None, lon=None, process=True):
+    """Extract peak ground motions from list of Stream objects.
+    Note: The PGM columns underneath each channel will be variable
+    depending on the units of the Stream being passed in (velocity
+    sensors can only generate PGV) and on the imtlist passed in by
+    user. Spectral acceleration columns will be formatted as SA(0.3)
+    for 0.3 second spectral acceleration, for example.
+    Args:
+        directory (str): Directory of ground motion files (streams).
+        imcs (list): Strings designating desired components to create
+                in table.
+        imts (list): Strings designating desired PGMs to create
+                in table.
+        epi_dist (float): Epicentral distance for processsing. If not included,
+                but the lat and lon are, the distance will be calculated.
+        event_time (float): Time of the event, used for processing.
+        lat (float): Epicentral latitude. Epicentral distance calculation.
+        lon (float): Epicentral longitude. Epicentral distance calculation.
+        process (bool): Process the stream using the config file.
+    Returns:
+        DataFrame: Pandas dataframe containing columns:
+            - STATION Station code.
+            - NAME Text description of station.
+            - LOCATION Two character location code.
+            - SOURCE Long form string containing source network.
+            - NETWORK Short network code.
+            - LAT Station latitude
+            - LON Station longitude
+            - DISTANCE Epicentral distance (km) (if epicentral lat/lon provided)
+            - HN1 East-west channel (or H1) (multi-index with pgm columns):
+                - PGA Peak ground acceleration (%g).
+                - PGV Peak ground velocity (cm/s).
+                - SA(0.3) Pseudo-spectral acceleration at 0.3 seconds (%g).
+                - SA(1.0) Pseudo-spectral acceleration at 1.0 seconds (%g).
+                - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).
+            - HN2 North-south channel (or H2) (multi-index with pgm columns):
+                - PGA Peak ground acceleration (%g).
+                - PGV Peak ground velocity (cm/s).
+                - SA(0.3) Pseudo-spectral acceleration at 0.3 seconds (%g).
+                - SA(1.0) Pseudo-spectral acceleration at 1.0 seconds (%g).
+                - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).
+            - HNZ Vertical channel (or HZ) (multi-index with pgm columns):
+                - PGA Peak ground acceleration (%g).
+                - PGV Peak ground velocity (cm/s).
+                - SA(0.3) Pseudo-spectral acceleration at 0.3 seconds (%g).
+                - SA(1.0) Pseudo-spectral acceleration at 1.0 seconds (%g).
+                - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).
+            - GREATER_OF_TWO_HORIZONTALS (multi-index with pgm columns):
+                - PGA Peak ground acceleration (%g).
+                - PGV Peak ground velocity (cm/s).
+                - SA(0.3) Pseudo-spectral acceleration at 0.3 seconds (%g).
+                - SA(1.0) Pseudo-spectral acceleration at 1.0 seconds (%g).
+                - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).
+    """
+    # read and group streams
+    streams = []
+    for filepath in glob.glob(os.path.join(directory, "*")):
+        streams += [read_data(filepath)]
+    grouped_streams = group_channels(streams)
 
+    dataframe = streams_to_dataframe(grouped_streams, imcs=imcs, imts=imts,
+            epi_dist=epi_dist, event_time=event_time, lat=lat, lon=lon,
+            process=True)
+    return dataframe
+    
 def group_channels(streams):
     """Consolidate streams for the same event.
 
@@ -41,6 +107,12 @@ def group_channels(streams):
     trace_list = []
     for stream in streams:
         for trace in stream:
+            if trace.stats.network == '' or str(trace.stats.network) == 'nan':
+                trace.stats.network = 'ZZ'
+            if str(trace.stats.location) == 'nan':
+                trace.stats.location = ''
+            if trace.stats.location == '' or str(trace.stats.location) == 'nan':
+                trace.stats.location = '--'
             trace_list += [trace]
 
     # Create a list of duplicate traces and event matches
@@ -132,11 +204,15 @@ def group_channels(streams):
             streams += [stream.append(trace)]
             logging.warning('One channel stream:\n%s' % (stream))
 
+    # Check for streams with more than three channels
+    for stream in streams:
+        if len(stream) > 3:
+            raise GMProcessException('Stream with more than 3 channels:\n%s.' % (stream))
+
     return streams
 
-
-def streams_to_dataframe(directory, imcs=None, imts=None,
-                         epi_dist=None, event_time=None, lat=None, lon=None):
+def streams_to_dataframe(streams, imcs=None, imts=None,
+        epi_dist=None, event_time=None, lat=None, lon=None, process=True):
     """Extract peak ground motions from list of Stream objects.
     Note: The PGM columns underneath each channel will be variable
     depending on the units of the Stream being passed in (velocity
@@ -154,6 +230,7 @@ def streams_to_dataframe(directory, imcs=None, imts=None,
         event_time (float): Time of the event, used for processing.
         lat (float): Epicentral latitude. Epicentral distance calculation.
         lon (float): Epicentral longitude. Epicentral distance calculation.
+        process (bool): Process the stream using the config file.
     Returns:
         DataFrame: Pandas dataframe containing columns:
             - STATION Station code.
@@ -189,6 +266,8 @@ def streams_to_dataframe(directory, imcs=None, imts=None,
                 - SA(1.0) Pseudo-spectral acceleration at 1.0 seconds (%g).
                 - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).
     """
+    num_streams = len(streams)
+
     if imcs is None:
         station_summary_imcs = DEFAULT_IMCS
     else:
@@ -197,23 +276,17 @@ def streams_to_dataframe(directory, imcs=None, imts=None,
         station_summary_imts = DEFAULT_IMTS
     else:
         station_summary_imts = imts
-    columns = ['STATION', 'NAME', 'SOURCE', 'NETID', 'LAT', 'LON']
-
-    # read and group streams
-    streams = []
-    for filepath in glob.glob(os.path.join(directory, "*")):
-        streams += [read_data(filepath)]
-    grouped_streams = group_channels(streams)
-    num_streams = len(grouped_streams)
 
     if lat is not None:
-        meta_data = np.empty((num_streams, len(columns) + 1), dtype=list)
+        columns = ['STATION', 'NAME', 'SOURCE', 'NETID', 'LAT', 'LON', 'DISTANCE']
+        meta_data = np.empty((num_streams, len(columns)), dtype=list)
     else:
+        columns = ['STATION', 'NAME', 'SOURCE', 'NETID', 'LAT', 'LON']
         meta_data = np.empty((num_streams, len(columns)), dtype=list)
     station_pgms = []
     imcs = []
     imts = []
-    for idx, stream in enumerate(grouped_streams):
+    for idx, stream in enumerate(streams):
         # set meta_data
         meta_data[idx][0] = stream[0].stats['station']
         name_str = stream[0].stats['standard']['station_name']
@@ -232,8 +305,9 @@ def streams_to_dataframe(directory, imcs=None, imts=None,
             meta_data[idx][6] = dist/1000
             if epi_dist is None:
                 epi_dist = dist/1000
-        stream = process_config(stream, event_time=event_time,
-                                epi_dist=epi_dist)
+        if process:
+            stream = process_config(stream, event_time=event_time,
+                                    epi_dist=epi_dist)
         stream_summary = StationSummary.from_stream(stream,
                                                     station_summary_imcs, station_summary_imts)
         pgms = stream_summary.pgms
