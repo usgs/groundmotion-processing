@@ -126,6 +126,7 @@ package_list=(
     "numpy>=1.14"
     "obspy"
     "openpyxl"
+    "openquake"
     "pandas"
     "pytest"
     "pytest-cov"
