@@ -13,7 +13,9 @@ from gmprocess.io.knet.core import read_knet
 from gmprocess.io.read import read_data
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.process import process_config
-from gmprocess.stream import group_channels, streams_to_dataframe
+from gmprocess.stream import (group_channels,
+                              streams_to_dataframe,
+                              directory_to_dataframe)
 
 
 def test():
@@ -185,14 +187,14 @@ def test_grouping():
             assert len(stream) == 3
 
 
-def test_streams_to_dataframe():
+def test_directory_to_dataframe():
     imts = ['PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
     imcs = ['GREATER_OF_TWO_HORIZONTALS', 'CHANNELS']
     homedir = os.path.dirname(os.path.abspath(__file__))
 
     knet_dir = os.path.join(homedir, '..', 'data', 'knet')
     # make dataframe
-    knet_dataframe = streams_to_dataframe(knet_dir)
+    knet_dataframe = directory_to_dataframe(knet_dir)
 
     # read and group streams
     streams = []
@@ -241,7 +243,7 @@ def test_streams_to_dataframe():
 
     geonet_dir = os.path.join(homedir, '..', 'data', 'geonet')
     # make dataframe
-    geonet_dataframe = streams_to_dataframe(geonet_dir)
+    geonet_dataframe = directory_to_dataframe(geonet_dir)
 
     # read and group streams
     streams = []
@@ -292,4 +294,4 @@ def test_streams_to_dataframe():
 if __name__ == '__main__':
     test_grouping()
     test()
-    test_streams_to_dataframe()
+    test_directory_to_dataframe()
