@@ -8,10 +8,12 @@ import logging
 from obspy.core.stream import Stream
 from obspy.signal.util import next_pow_2
 from obspy.signal.konnoohmachismoothing import konno_ohmachi_smoothing
+from obspy.signal.trigger import classic_sta_lta
 from scipy.optimize import curve_fit
 
 # local imports
 from gmprocess.config import get_config
+from gmprocess.phase import PowerPicker
 
 
 CONFIG = get_config()
@@ -147,6 +149,32 @@ def check_max_amplitude(trace, min_amp=10e-7, max_amp=5e3):
         return False
 
 
+def check_sta_lta(tr, sta_length=1.0, lta_length=20.0, threshold=5.0):
+    '''
+    Checks that the maximum STA/LTA ratio of the trace is above a certain
+    threshold.
+
+    Args:
+        trace (obspy.core.trace.Trace): Trace of strong motion data.
+        sta_length (float): Length of time window for STA (seconds).
+        lta_length (float): Length of time window for LTA (seconds).
+        threshold (float): Required maximum STA/LTA ratio to pass the test.
+
+    Returns:
+    bool: True if trace passes the check. False otherwise.
+    '''
+
+    sta_lta_params = {'sta_length': sta_length, 'lta_length': lta_length,
+                      'sta_lta_threshold': threshold}
+    tr = _update_params(tr, 'sta_lta', sta_lta_params)
+    df = tr.stats.sampling_rate
+    sta_lta = classic_sta_lta(tr, sta_length * df, lta_length * df)
+    if max(sta_lta) >= threshold:
+        return True
+    else:
+        return False
+
+
 def trim_total_window(trace, org_time, epi_dist, vmin=1.0):
     """
     Trims a trace to the window using the algorithm
@@ -176,17 +204,24 @@ def trim_total_window(trace, org_time, epi_dist, vmin=1.0):
         return trace
 
 
-def split_signal_and_noise(trace, event_time, epi_dist):
+def split_signal_and_noise(tr, event_time=None, epi_dist=None,
+                           split_method='p_arrival', vsplit=7.0):
     """
     Identifies the noise and signal windows for the waveform.
-    The noise window is defined from the start of the waveform through the
-    arrival time of a 7 km/s phase. The signal window is defned from the
-    arrival time of a 7 km/s phase through the end of the waveform.
+    If split_method is equal to 'velocity', then the split between the noise
+    and signal window is defined as the arrival time of a phase with velocity
+    equal to vsplit.
+    If split_method is equal to 'p_arrival', then the P-wave arrival is
+    used as the split between the noise and signal windows.
 
     Args:
-        trace (obspy.core.trace.Trace): Trace of strong motion data.
+        tr (obspy.core.trace.Trace): Trace of strong motion data. This is
+            the trace that will be split into signal and noise.
         event_time (UTCDateTime): Event origin time.
         epi_dist (float): Distance form event epicenter to station.
+        split_method (str): Method for splitting noise and signal windows.
+            Either 'p_arrival' or 'velocity'
+        vsplit (float): Velocity (km/s) for splitting noise and signal
 
     Returns:
         tuple of two traces:
@@ -194,22 +229,37 @@ def split_signal_and_noise(trace, event_time, epi_dist):
             2) Signal trace
         If cannot separate noise from signal, returns -1.
     """
+    if split_method == 'p_arrival':
+        p_picks = PowerPicker(tr)
+        if len(p_picks) > 1:
+            raise ValueError('More than one P-pick found.')
+        else:
+            time_to_split = p_picks[0]
+    elif split_method == 'velocity':
+        if event_time is None or epi_dist is None:
+            msg = 'Must provide event_time and epi_dist to use velocity split.'
+            raise ValueError(msg)
+        time_to_split = event_time + epi_dist / vsplit
+    else:
+        raise ValueError('Split method must be "p_arrival" or "velocity"')
 
-    # Calculate the arrival time of a 7 km/s phase
-    phase_arrival_time = event_time + epi_dist / 7.0
-
-    # Check if the arrival time is before or after the trace window
-    if (phase_arrival_time <= trace.stats.starttime):
+    # Split into noise trace and signal trace
+    if time_to_split <= tr.stats.starttime:
         return (-1, -1)
-    elif (phase_arrival_time >= trace.stats.endtime):
+    elif time_to_split >= tr.stats.endtime:
         return (-1, -1)
     else:
-        orig_trace_1 = trace.copy()
-        orig_trace_2 = trace.copy()
+        orig_trace_1 = tr.copy()
+        orig_trace_2 = tr.copy()
+        noise_trace = orig_trace_1.trim(endtime=time_to_split)
+        signal_trace = orig_trace_2.trim(starttime=time_to_split)
 
-    noise_trace = orig_trace_1.trim(endtime=phase_arrival_time)
-    signal_trace = orig_trace_2.trim(starttime=phase_arrival_time)
-    return (signal_trace, noise_trace)
+        # Update trace params
+        split_params = {'split_time': time_to_split,
+                        'split_method': split_method,
+                        'vsplit': vsplit}
+        tr = _update_params(tr, 'split', split_params)
+        return (signal_trace, noise_trace)
 
 
 def fft_smooth(trace, nfft):
@@ -238,10 +288,9 @@ def fft_smooth(trace, nfft):
 
 
 def get_corner_frequencies(
-        trace, event_time, epi_dist, ratio=3.0,
-        max_low_corner=0.1, min_high_corner=5.0,
-        taper_type='hann', taper_percentage=0.05,
-        taper_side='both'):
+        trace, event_time, epi_dist, ratio=3.0, split_method='p_arrival',
+        vsplit=7.0, max_low_corner=0.1, min_high_corner=5.0, taper_type='hann',
+        taper_percentage=0.05, taper_side='both'):
     """
     Returns the corner frequencies for a trace.
 
@@ -249,6 +298,9 @@ def get_corner_frequencies(
         trace (obspy.core.trace.Trace): Trace of strong motion data.
         event_time (UTCDateTime): Event origin time.
         epi_dist (float): Distance from event epicenter to station.
+        split_method (str): Method for splitting signal and noise.
+            Either 'p_arrival' or 'velocity'
+        vsplit (float): Velocity (km/s) for splitting noise and signal.
         ratio (float): Required signal-to-noise ratio.
             Default is 3.0.
         max_low_corner (float): Maxmimum low corner frequency allowed.
@@ -270,7 +322,8 @@ def get_corner_frequencies(
     """
 
     # Split the noise and signal into two separate traces
-    signal, noise = split_signal_and_noise(trace, event_time, epi_dist)
+    signal, noise = split_signal_and_noise(trace, event_time, epi_dist,
+                                           split_method, vsplit)
 
     # Check if signal and noise splitting failed
     if (signal == -1 and noise == -1):
@@ -458,11 +511,11 @@ def correct_baseline(trace):
     return orig_trace
 
 
-def process(stream, amp_min, amp_max, window_vmin, taper_type,
-            taper_percentage, taper_side, get_corners, sn_ratio,
-            max_low_freq, min_high_freq, default_low_frequency,
-            default_high_frequency, filters, baseline_correct, event_time=None,
-            epi_dist=None):
+def process(stream, amp_min, amp_max, sta_len, lta_len, sta_lta_threshold,
+            split_method, vsplit, vmin, taper_type, taper_percentage,
+            taper_side, get_corners, sn_ratio, max_low_freq, min_high_freq,
+            default_low_frequency, default_high_frequency, filters,
+            baseline_correct, event_time=None, epi_dist=None):
     """
     Processes an acceleration trace following the step-by-step process
     described in the Rennolet et al paper
@@ -493,12 +546,20 @@ def process(stream, amp_min, amp_max, window_vmin, taper_type,
         stream (obspy.core.stream.Stream): Stream for one station.
         amp_min (float): Lower amplitude limit for step 4.
         amp_max (float): Upper amplitude limit for step 4.
-        window_vmin (float): Minimum velocity for step 5.
+        sta_len (float): Length of time window for STA (seconds).
+        lta_len (float): Length of time window for LTA (seconds).
+        sta_lta_threshold (float): Required maximum STA/LTA ratio to pass test.
+        split_method (str): Method for splitting noise and signal windows.
+            Either "p_arrival" or "velocity"
+        vsplit (float): Velocity (km/s) for splitting signal noise and signal.
+        vmin (float): Velocity (km/s) for determining duration.
         taper_type (str): Type of taper for step 6.
         taper_percentage (float): Maximum taper percentage for step 6.
         taper_side (str): Sides to taper for step 6.
         get_corners (bool): Whether to complete step 8 or use defaults.
         sn_ratio (float): Signal to noise ratio.
+        use_p_picker (bool): If True, uses the CWB P-picker code to define
+            noise and signal window.
         max_low_freq (float): Maxmium low corner frequency allowed.
         min_high_freq (float): Minimum high corner frequency allowed.
         default_low_frequency (float): Default minimum frequency used in
@@ -534,7 +595,7 @@ def process(stream, amp_min, amp_max, window_vmin, taper_type,
             })
         trace_copy = _update_params(
             trace_copy, 'window',
-            {'vmin': window_vmin})
+            {'vmin': vmin})
         trace_copy = _update_params(
             trace_copy, 'taper',
             {'type': taper_type,
@@ -564,10 +625,20 @@ def process(stream, amp_min, amp_max, window_vmin, taper_type,
             processed_streams.append(trace_copy)
             continue
 
+        # Check STA/LTA
+        if not check_sta_lta(trace_copy, sta_len, lta_len,
+                             sta_lta_threshold):
+            trace_copy.stats['passed_tests'] = False
+            err_msg = ('Processing: Trace maximum STA/LTA is not above the '
+                       'required threshold of %r' % threshold)
+            trace_copy = _update_comments(trace_copy, err_msg)
+            processed_streams.append(trace_copy)
+            continue
+
         # Windowing
         if event_time is not None and epi_dist is not None:
             trace_trim = trim_total_window(trace_copy, event_time, epi_dist,
-                                           vmin=window_vmin)
+                                           vmin=vmin)
             windowed = True
             # Check if windowing failed
             if (trace_trim == -1):
@@ -585,7 +656,7 @@ def process(stream, amp_min, amp_max, window_vmin, taper_type,
                        'perform calculation.')
             trace_copy = _update_comments(trace_copy, err_msg)
             trace_copy = _update_params(trace_copy, 'window',
-                                        {'vmin': window_vmin})
+                                        {'vmin': vmin})
             trace_trim = trace_copy
             # Corners cannot be calculated dynamically without windowing
             logging.warning('Missing event information. Continuing processing '
@@ -599,9 +670,9 @@ def process(stream, amp_min, amp_max, window_vmin, taper_type,
         # Find corner frequencies
         if get_corners and windowed:
             corners = get_corner_frequencies(
-                trace_tap, event_time,
-                epi_dist, sn_ratio, max_low_freq, min_high_freq,
-                taper_type, taper_percentage, taper_side)
+                trace_tap, event_time, epi_dist, sn_ratio, split_method,
+                vsplit, max_low_freq, min_high_freq, taper_type,
+                taper_percentage, taper_side)
             if (corners[0] < 0 or corners[1] < 0):
                 trace_tap.stats['passed_tests'] = False
                 dynamic = False
@@ -707,7 +778,8 @@ def process(stream, amp_min, amp_max, window_vmin, taper_type,
 
 
 def process_config(stream, config=None, event_time=None, epi_dist=None):
-    """Implement the process method according to a config file.
+    '''
+    Implements the process method according to a config file.
 
     Args:
         stream (obspy.core.stream.Stream): Stream for one station.
@@ -717,33 +789,13 @@ def process_config(stream, config=None, event_time=None, epi_dist=None):
         epi_dist (float): Epicentral distance. Default is None.
 
     Notes:
-        This function looks for a config file ~/.amptools/config.yml, which
-        has a processing_parameters subdictionary which should be formatted
-        as follows:
-        processing_parameters:
-            amplitude:
-                min: <float>
-                max: <float>
-            window:
-                vmin: <float>
-            taper:
-                type: <str>
-                max_percentage:<float>
-                side: <str>
-            corners:
-                get_dynamically: <bool>
-                default_low_frequency: <float>
-                default_high_frequency: <float>
-            filters:
-                - type: <str>
-                  corners: <int>
-                  zerophase: <bool>
-                    ...
-            baseline_correct: <bool>
+        This function looks for a config file ~/.gmprocess/gmprocesss.conf,
+        which has a processing_parameters subdictionary (The config file
+        should be formatted according to gmprocess/data/gmprocess.conf)
         If no config file is available, the default config is used. Other
         packages (such as strongmotion-database) that use amptools as a
         dependency have the option of overriding the config dictionary.
-    """
+    '''
     if config is None:
         config = CONFIG
     # Set all float/int params in the correct format
@@ -756,20 +808,19 @@ def process_config(stream, config=None, event_time=None, epi_dist=None):
     taper_percentage = float(params['taper']['max_percentage'])
     taper_side = params['taper']['side']
     get_corners = params['corners']['get_dynamically']
-    sn_ratio = params['corners']['sn_ratio']
+    sn_ratio = float(params['corners']['sn_ratio'])
     default_low_frequency = float(params['corners']['default_low_frequency'])
     default_high_frequency = float(params['corners']['default_high_frequency'])
     max_low_freq = float(params['corners']['max_low_freq'])
     min_high_freq = float(params['corners']['min_high_freq'])
     filters = params['filters']
-    baseline_correct = params['baseline']
 
     corrected_stream = process(
-        stream, amp_min, amp_max, window_vmin,
-        taper_type, taper_percentage, taper_side, get_corners, sn_ratio,
-        max_low_freq, min_high_freq, default_low_frequency,
-        default_high_frequency, filters, baseline_correct,
-        event_time=event_time, epi_dist=epi_dist)
+        stream, amp_min, amp_max, sta_len, lta_len, sta_lta_threshold,
+        split_method, vsplit, vmin, taper_type, taper_percentage, taper_side,
+        get_corners, sn_ratio, max_low_freq, min_high_freq,
+        default_low_frequency, default_high_frequency, filters,
+        baseline_correct, event_time=event_time, epi_dist=epi_dist)
     return corrected_stream
 
 
