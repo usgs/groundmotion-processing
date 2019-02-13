@@ -20,8 +20,10 @@ FLOAT_HEADER_WIDTHS = 15
 DATA_COLUMNS = 8
 FLOAT_DATA_WIDTHS = 10
 
-VALID_HEADERS = {'1 UNCORRECTED ACCELEROGRAM': 'V1',
-                 '2 CORRECTED ACCELEROGRAM': 'V2'}
+VALID_HEADERS = {
+    '1 UNCORRECTED ACCELEROGRAM': 'V1',
+    '2 CORRECTED ACCELEROGRAM': 'V2'
+}
 
 INSTRUMENTS = {
     2: 'Sprengnether SA-3000 3-component fba',
@@ -259,13 +261,19 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     jday = intheader[0, 2]
     hour = intheader[0, 3]
     minute = intheader[0, 4]
-    second = intheader[0, 5]
+
+    # Handle second if missing
+    second = 0
+    if not intheader[0, 5] == missing_data:
+        second = intheader[0, 5]
+
+    # Handle microsecond if missing and convert milliseconds to microseconds
     microsecond = 0
     if not intheader[0, 6] == missing_data:
-        # convert milliseconds to microseconds
         microsecond = intheader[0, 6] / 1e3
     datestr = '%i %00i %i %i %i %i' % (
         year, jday, hour, minute, second, microsecond)
+
     stats['starttime'] = datetime.strptime(datestr, '%Y %j %H %M %S %f')
 
     standard['sensor_serial_number'] = ''
