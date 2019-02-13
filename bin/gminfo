@@ -53,10 +53,10 @@ def main(args):
             channel['Peak Value'] = trace.max()
             print()
             chstr = pd.Series(channel).to_string()
-            parts = ['\t'+line for line in chstr.split('\n')]
+            parts = ['\t' + line for line in chstr.split('\n')]
             chstr = '\n'.join(parts)
             print(chstr)
-        x = 1
+
     except GMProcessException as gmpe:
         logging.info('%s is an unknown format.' % filename)
 
