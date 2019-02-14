@@ -95,9 +95,11 @@ def is_dmg(filename):
 
     Args:
         filename (str): Path to possible COSMOS V0/V1 data file.
+
     Returns:
         bool: True if DMG , False otherwise.
     """
+    logging.debug("Checking if format is dmg.")
     try:
         f = open(filename, 'rt')
         first_line = f.readline().upper()
@@ -137,6 +139,7 @@ def read_dmg(filename, **kwargs):
         Stream: Obspy Stream containing three channels of acceleration data
         (cm/s**2).
     """
+    logging.debug("Starting read_dmg.")
     if not is_dmg(filename):
         raise Exception('Not a DMG file format.')
 
@@ -368,16 +371,20 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
         network = 'ZZ'
         source = ''
     hdr['network'] = network
+    logging.debug('network: %s' % network)
     station_line = lines[4]
     station = station_line[12:17].strip()
+    logging.debug('station: %s' % station)
     hdr['station'] = station
     angle = int_data[26]
+    logging.debug('angle: %s' % angle)
 
     hdr['npts'] = int_data[27]
     reclen = flt_data[2]
     hdr['sampling_rate'] = np.round(hdr['npts'] / reclen)
     hdr['delta'] = 1 / hdr['sampling_rate']
     hdr['channel'] = _get_channel(angle, hdr['sampling_rate'])
+    logging.debug('channel: %s' % hdr['channel'])
 
     if location == '':
         hdr['location'] = '--'
@@ -411,6 +418,7 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
     standard['process_time'] = process_time
 
     standard['process_level'] = level
+    logging.debug("process_level: %s" % standard['process_level'])
     if 'comments' not in standard:
         standard['comments'] = ''
     standard['structure_type'] = lines[7][46:80].strip()

@@ -112,6 +112,7 @@ def is_smc(filename):
     Returns:
         bool: True if SMC, False otherwise.
     """
+    logging.debug("Checking if format is smc.")
     try:
         line = open(filename, 'rt').readline().strip()
         if line in VALID_HEADERS:
@@ -136,6 +137,7 @@ def read_smc(filename, **kwargs):
         Stream: Obspy Stream containing one channel of acceleration data
         (cm/s**2).
     """
+    logging.debug("Starting read_smc.")
     any_structure = kwargs.get('any_structure', False)
     accept_flagged = kwargs.get('accept_flagged', False)
     location = kwargs.get('location', '')
@@ -143,9 +145,9 @@ def read_smc(filename, **kwargs):
     if not is_smc(filename):
         raise Exception('Not an SMC file.')
 
-    stats, num_comments = _get_header_info(filename,
-                                           any_structure=any_structure, accept_flagged=accept_flagged,
-                                           location=location)
+    stats, num_comments = _get_header_info(
+        filename, any_structure=any_structure,
+        accept_flagged=accept_flagged, location=location)
 
     skip = ASCII_HEADER_LINES + INTEGER_HEADER_LINES + \
         num_comments + FLOAT_HEADER_LINES
@@ -230,11 +232,13 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
         ascheader = [next(f).strip() for x in range(ASCII_HEADER_LINES)]
 
     standard['process_level'] = VALID_HEADERS[ascheader[0]]
+    logging.debug("process_level: %s" % standard['process_level'])
 
     # station code is in the third line
     stats['station'] = ''
     if len(ascheader[2]) >= 4:
         stats['station'] = ascheader[2][0:4]
+    logging.debug('station: %s' % stats['station'])
 
     standard['process_time'] = ''
     standard['station_name'] = ascheader[5][10:40].strip()
@@ -404,6 +408,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
                 is_vertical=False,
                 is_north=False)
 
+    logging.debug('channel: %s' % stats['channel'])
     sensor_frequency = floatheader[4, 1]
     standard['instrument_period'] = 1/sensor_frequency
     standard['instrument_damping'] = floatheader[4, 2]

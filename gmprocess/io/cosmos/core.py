@@ -2,10 +2,10 @@
 
 # stdlib imports
 from datetime import datetime
-import os
 import re
 import warnings
 import pkg_resources
+import logging
 
 # third party
 import numpy as np
@@ -18,9 +18,10 @@ from gmprocess.exception import GMProcessException
 from gmprocess.io.seedname import get_channel_name
 
 TEXT_HDR_ROWS = 14
-VALID_MARKERS = ['CORRECTED ACCELERATION',
-                 'UNCORRECTED ACCELERATION'
-                 ]
+VALID_MARKERS = [
+    'CORRECTED ACCELERATION',
+    'UNCORRECTED ACCELERATION'
+]
 
 code_file = pkg_resources.resource_filename('gmprocess', 'data/fdsn_codes.csv')
 
@@ -162,6 +163,7 @@ def is_cosmos(filename):
     Returns:
         bool: True if COSMOS V0/V1, False otherwise.
     """
+    logging.debug("Checking if format is cosmos.")
     try:
         line = open(filename, 'rt').readline()
         for marker in VALID_MARKERS:
@@ -176,7 +178,8 @@ def is_cosmos(filename):
 def read_cosmos(filename, **kwargs):
     """Read COSMOS V1/V2 strong motion file.
 
-    There is one extra key in the Stats object for each Trace - "process_level".
+    There is one extra key in the Stats object for each Trace -
+    "process_level".
     This will be set to either "V1" or "V2".
 
     Args:
@@ -187,8 +190,10 @@ def read_cosmos(filename, **kwargs):
                 station type codes.
             Other arguments will be ignored.
     Returns:
-        Stream: Obspy Stream containing three channels of acceleration data (cm/s**2).
+        Stream: Obspy Stream containing three channels of acceleration data
+        (cm/s**2).
     """
+    logging.debug("Starting read_cosmos.")
     # get list of valid stations
     valid_station_types = kwargs.get('valid_station_types', None)
     # get list of valid stations
@@ -202,10 +207,10 @@ def read_cosmos(filename, **kwargs):
     line_offset = 0
     stream = Stream([])
     while line_offset < line_count:
-        trace, line_offset = _read_channel(filename, line_offset,
-                                           location=location)
-        # store the trace if the station type is in the valid_station_types list
-        # or store the trace if there is no valid_station_types list
+        trace, line_offset = _read_channel(
+            filename, line_offset, location=location)
+        # store the trace if the station type is in the valid_station_types
+        # list or store the trace if there is no valid_station_types list
         if valid_station_types is not None:
             if trace.stats['format_specific']['station_code'] in valid_station_types:
                 stream.append(trace)
@@ -221,6 +226,7 @@ def _read_channel(filename, line_offset, location=''):
     Args:
         filename (str): Input COSMOS V1/V2 filename.
         line_offset (int): Line offset to beginning of channel text block.
+
     Returns:
         tuple: (obspy Trace, int line offset)
     """
@@ -356,8 +362,11 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
             network = 'ZZ'
             source = ''
     hdr['network'] = network
+    logging.debug('network: %s' % network)
     hdr['station'] = lines[4][28:34].strip()
+    logging.debug('station: %s' % hdr['station'])
     horizontal_angle = int_data[53]
+    logging.debug('horizontal_angle: %s' % horizontal_angle)
 
     # Store delta and duration. Use them to calculate npts and sampling_rate
     delta = flt_data[33]
@@ -372,31 +381,35 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
         if horizontal_angle in COSMOS_ORIENTATIONS:
             channel = COSMOS_ORIENTATIONS[horizontal_angle][1].upper()
             if channel == 'UP' or channel == 'DOWN' or channel == 'VERT':
-                channel = get_channel_name(hdr['sampling_rate'],
-                                           is_acceleration=True,
-                                           is_vertical=True,
-                                           is_north=False)
+                channel = get_channel_name(
+                    hdr['sampling_rate'],
+                    is_acceleration=True,
+                    is_vertical=True,
+                    is_north=False)
         elif horizontal_angle >= 0 and horizontal_angle <= 360:
             if (
                 horizontal_angle > 315 or
                 horizontal_angle < 45 or
                 (horizontal_angle > 135 and horizontal_angle < 225)
             ):
-                channel = get_channel_name(hdr['sampling_rate'],
-                                           is_acceleration=True,
-                                           is_vertical=False,
-                                           is_north=True)
+                channel = get_channel_name(
+                    hdr['sampling_rate'],
+                    is_acceleration=True,
+                    is_vertical=False,
+                    is_north=True)
             else:
-                channel = get_channel_name(hdr['sampling_rate'],
-                                           is_acceleration=True,
-                                           is_vertical=False,
-                                           is_north=False)
+                channel = get_channel_name(
+                    hdr['sampling_rate'],
+                    is_acceleration=True,
+                    is_vertical=False,
+                    is_north=False)
         horizontal_orientation = horizontal_angle
     else:
         errstr = ('Not enough information to distinguish horizontal from '
                   'vertical channels.')
         raise GMProcessException(errstr)
     hdr['channel'] = channel
+    logging.debug('channel: %s' % hdr['channel'])
     if location == '':
         location = int_data[55]
         location = str(_check_assign(location, unknown, '--'))
@@ -488,10 +501,11 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
         standard['process_level'] = 'V3'
     else:
         standard['process_level'] = ''
+    logging.debug("process_level: %s" % process_level)
     serial = int_data[52]
     if serial != unknown:
-        standard['sensor_serial_number'] = str(_check_assign(serial,
-                                                             unknown, ''))
+        standard['sensor_serial_number'] = str(_check_assign(
+            serial, unknown, ''))
     instrument = int_data[51]
     if instrument != unknown and instrument in SENSOR_TYPES:
         standard['instrument'] = SENSOR_TYPES[instrument]
@@ -525,37 +539,37 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     v30 = flt_data[3]
     format_specific['v30'] = _check_assign(v30, unknown, np.nan)
     least_significant_bit = flt_data[21]
-    format_specific['least_significant_bit'] = _check_assign(least_significant_bit,
-                                                             unknown, np.nan)
+    format_specific['least_significant_bit'] = _check_assign(
+        least_significant_bit, unknown, np.nan)
     low_filter_type = int_data[60]
     if low_filter_type in FILTERS:
         format_specific['low_filter_type'] = FILTERS[low_filter_type]
     else:
         format_specific['low_filter_type'] = ''
     low_filter_corner = flt_data[53]
-    format_specific['low_filter_corner'] = _check_assign(low_filter_corner,
-                                                         unknown, np.nan)
+    format_specific['low_filter_corner'] = _check_assign(
+        low_filter_corner, unknown, np.nan)
     low_filter_decay = flt_data[54]
-    format_specific['low_filter_decay'] = _check_assign(low_filter_decay,
-                                                        unknown, np.nan)
+    format_specific['low_filter_decay'] = _check_assign(
+        low_filter_decay, unknown, np.nan)
     high_filter_type = int_data[61]
     if high_filter_type in FILTERS:
         format_specific['high_filter_type'] = FILTERS[high_filter_type]
     else:
         format_specific['high_filter_type'] = ''
     high_filter_corner = flt_data[56]
-    format_specific['high_filter_corner'] = _check_assign(high_filter_corner,
-                                                          unknown, np.nan)
+    format_specific['high_filter_corner'] = _check_assign(
+        high_filter_corner, unknown, np.nan)
     high_filter_decay = flt_data[57]
-    format_specific['high_filter_decay'] = _check_assign(high_filter_decay,
-                                                         unknown, np.nan)
+    format_specific['high_filter_decay'] = _check_assign(
+        high_filter_decay, unknown, np.nan)
     maximum = flt_data[63]
     format_specific['maximum'] = _check_assign(maximum, unknown, np.nan)
     maximum_time = flt_data[64]
-    format_specific['maximum_time'] = _check_assign(maximum_time,
-                                                    unknown, np.nan)
-    format_specific['station_code'] = _check_assign(structure_type,
-                                                    unknown, np.nan)
+    format_specific['maximum_time'] = _check_assign(
+        maximum_time, unknown, np.nan)
+    format_specific['station_code'] = _check_assign(
+        structure_type, unknown, np.nan)
     record_flag = int_data[75]
     if record_flag == 0:
         format_specific['record_flag'] = 'No problem'
@@ -566,11 +580,11 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     else:
         format_specific['record_flag'] = ''
     scaling_factor = flt_data[87]
-    format_specific['scaling_factor'] = _check_assign(scaling_factor,
-                                                      unknown, np.nan)
+    format_specific['scaling_factor'] = _check_assign(
+        scaling_factor, unknown, np.nan)
     scaling_factor = flt_data[41]
-    format_specific['sensor_sensitivity'] = _check_assign(scaling_factor,
-                                                          unknown, np.nan)
+    format_specific['sensor_sensitivity'] = _check_assign(
+        scaling_factor, unknown, np.nan)
     # Set dictionary
     hdr['standard'] = standard
     hdr['coordinates'] = coordinates

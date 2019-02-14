@@ -3,6 +3,7 @@
 # stdlib imports
 from datetime import datetime
 import re
+import logging
 
 # third party
 from obspy.core.trace import Trace
@@ -35,6 +36,7 @@ def is_geonet(filename):
     Returns:
         bool: True if GNS V1/V2, False otherwise.
     """
+    logging.debug("Checking if format is geonet.")
     try:
         line = open(filename, 'rt').readline()
         if line.find('GNS Science') >= 0:
@@ -50,7 +52,8 @@ def is_geonet(filename):
 def read_geonet(filename, **kwargs):
     """Read New Zealand GNS V1/V2 strong motion file.
 
-    There is one extra key in the Stats object for each Trace - "process_level".
+    There is one extra key in the Stats object for each Trace -
+    "process_level".
     This will be set to either "V1" or "V2".
 
     Args:
@@ -61,6 +64,7 @@ def read_geonet(filename, **kwargs):
         Stream: Obspy Stream containing three channels of acceleration data
         (cm/s**2).
     """
+    logging.debug("Starting read_geonet.")
     trace1, offset1, _ = _read_channel(filename, 0)
     trace2, offset2, _ = _read_channel(filename, offset1)
     trace3, _, _ = _read_channel(filename, offset2)
@@ -119,6 +123,7 @@ def _read_channel(filename, line_offset):
     # parse out the station code, name, and component string
     # from text header
     station = lines[1].split()[1]
+    logging.debug('station: %s' % station)
     name = lines[2].replace(' ', '_').strip()
     component = lines[12].split()[1]
 
@@ -273,6 +278,7 @@ def _read_header(hdr_data, station, name, component, data_format,
     standard['units'] = 'acc'
     standard['source'] = ('New Zealand Institute of Geological and '
                           'Nuclear Science')
+    logging.debug('component: %s' % component)
     if component == 'Up':
         hdr['channel'] = get_channel_name(
             sampling_rate,
@@ -281,6 +287,7 @@ def _read_header(hdr_data, station, name, component, data_format,
             is_north=False)
     else:
         _, angle = _get_channel(component)
+        logging.debug('angle: %s' % angle)
         standard['horizontal_orientation'] = angle
         if (angle > 315 or angle < 45) or (angle > 135 and angle < 225):
             hdr['channel'] = get_channel_name(
@@ -295,6 +302,7 @@ def _read_header(hdr_data, station, name, component, data_format,
                 is_vertical=False,
                 is_north=False)
 
+    logging.debug('channel: %s' % hdr['channel'])
     hdr['location'] = '--'
 
     # figure out the start time
@@ -321,6 +329,7 @@ def _read_header(hdr_data, station, name, component, data_format,
     standard['instrument_damping'] = hdr_data[4, 1]
     standard['process_time'] = ''
     standard['process_level'] = data_format
+    logging.debug("process_level: %s" % data_format)
     standard['sensor_serial_number'] = ''
     standard['instrument'] = instrument
     standard['comments'] = ''
