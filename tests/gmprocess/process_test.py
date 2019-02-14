@@ -41,20 +41,24 @@ def test_corner_freqs():
     ALCT_tr = read(os.path.join(datadir, 'ALCTENE.UW..sac'))[0]
     ALCT_dist = 75.9559
 
-    corners_1 = process.get_corner_frequencies(ALCT_tr, event_time, ALCT_dist)
+    corners_1 = process.get_corner_frequencies(ALCT_tr, event_time, ALCT_dist,
+                                               split_method='velocity')
     np.testing.assert_allclose(corners_1, [0.036, 50.0], atol=0.001)
 
     ALCT_tr.stats.starttime += 300
-    corners_2 = process.get_corner_frequencies(ALCT_tr, event_time, ALCT_dist)
+    corners_2 = process.get_corner_frequencies(ALCT_tr, event_time, ALCT_dist,
+                                               split_method='velocity')
     assert corners_2 == [-1, -1]
 
     event_time = UTCDateTime('2016-10-22T17:17:05')
     ALKI_tr = read(os.path.join(datadir, 'ALKIENE.UW..sac'))[0]
     ALKI_dist = 37.87883
     corners_3 = process.get_corner_frequencies(ALKI_tr, event_time, ALKI_dist,
-                                               ratio=100000.0)
+                                               ratio=100000.0,
+                                               split_method='velocity')
     assert corners_3 == [-2, -2]
-    corners_4 = process.get_corner_frequencies(ALKI_tr, event_time, ALKI_dist)
+    corners_4 = process.get_corner_frequencies(ALKI_tr, event_time, ALKI_dist,
+                                               split_method='velocity')
     assert corners_4 == [-3, -3]
 
 
@@ -181,8 +185,8 @@ def test_sta_lta():
 
 
 if __name__ == '__main__':
-    # test_sta_lta()
-    # test_amp_check_trim()
-    # test_corner_freqs()
+    test_sta_lta()
+    test_amp_check_trim()
+    test_corner_freqs()
     test_all()
-    # test_horizontal_frequencies()
+    test_horizontal_frequencies()

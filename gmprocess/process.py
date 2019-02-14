@@ -205,7 +205,7 @@ def trim_total_window(trace, org_time, epi_dist, vmin=1.0):
 
 
 def split_signal_and_noise(tr, event_time=None, epi_dist=None,
-                           split_method='p_arrival', vsplit=7.0):
+                           split_method='velocity', vsplit=7.0):
     """
     Identifies the noise and signal windows for the waveform.
     If split_method is equal to 'velocity', then the split between the noise
@@ -288,7 +288,7 @@ def fft_smooth(trace, nfft):
 
 
 def get_corner_frequencies(
-        trace, event_time, epi_dist, ratio=3.0, split_method='p_arrival',
+        trace, event_time, epi_dist, ratio=3.0, split_method='velocity',
         vsplit=7.0, max_low_corner=0.1, min_high_corner=5.0, taper_type='hann',
         taper_percentage=0.05, taper_side='both'):
     """
@@ -630,7 +630,7 @@ def process(stream, amp_min, amp_max, sta_len, lta_len, sta_lta_threshold,
                              sta_lta_threshold):
             trace_copy.stats['passed_tests'] = False
             err_msg = ('Processing: Trace maximum STA/LTA is not above the '
-                       'required threshold of %r' % threshold)
+                       'required threshold of %r' % sta_lta_threshold)
             trace_copy = _update_comments(trace_copy, err_msg)
             processed_streams.append(trace_copy)
             continue

@@ -3,9 +3,6 @@ import numpy as np
 import datetime as dt
 from scipy.signal import butter, lfilter, hilbert
 
-# TODO:
-# comments, docstrings, and formatting
-
 
 def butter_bandpass(lowcut, highcut, fs, order=5):
     nyq = 0.5 * fs
