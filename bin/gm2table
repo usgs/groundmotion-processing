@@ -6,14 +6,14 @@ import argparse
 import logging
 
 # local imports
+from gmprocess.config import get_config
 from gmprocess.stream import directory_to_dataframe
 from gmprocess.logging import setup_logger
 from gmprocess.args import add_shared_args
 
 
 FORMATS = ['csv', 'xlsx']
-DEFAULT_IMTS = ['PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
-DEFAULT_IMCS = ['GREATER_OF_TWO_HORIZONTALS', 'CHANNELS']
+CONFIG = get_config()
 
 
 def main(args):
@@ -24,13 +24,13 @@ def main(args):
     directory = args.directory
     outfile = args.outfile
     format = args.format
-    imcs = args.imcs
-    imts = args.imts
     epi_dist = args.distance
     event_time = args.event_time
     lat = args.lat
     lon = args.lon
     process = args.process
+    imcs = CONFIG['output_imcs']['list']
+    imts = CONFIG['output_imts'][CONFIG['output_imts']['list']]
 
     if not os.path.isdir(directory):
         raise Exception('Input directory does not exist.')
@@ -56,15 +56,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '-f', '--format',
         help='Output file format (csv or excel). Default is xlsx.',
-        choices=FORMATS, default='xlsx')
-    parser.add_argument(
-        '-c', '--imcs',
-        help='List of requested imcs. Defaults are: %s' % DEFAULT_IMCS,
-        nargs='+', default=None)
-    parser.add_argument(
-        '-t', '--imts',
-        help='List of requested imts. Defaults are: %s' % DEFAULT_IMTS,
-        nargs='+', default=None)
+        choices=FORMATS, default='csv')
     parser.add_argument(
         '--distance',
         help='Epicentral distance to station. This is used for processing.',
