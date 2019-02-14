@@ -39,6 +39,7 @@ def is_usc(filename):
     Returns:
         bool: True if USC , False otherwise.
     """
+    logging.debug("Checking if format is usc.")
     # USC requires unique integer values
     # in column 73-74 on all text header lines
     # excluding the first file line
@@ -79,6 +80,7 @@ def read_usc(filename, **kwargs):
         Stream: Obspy Stream containing three channels of acceleration data
         (cm/s**2).
     """
+    logging.debug("Starting read_usc.")
     if not is_usc(filename):
         raise Exception('%s is not a valid USC file' % filename)
 
@@ -222,6 +224,7 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
         # Get required parameter number
         hdr['network'] = 'LA'
         hdr['station'] = str(int_data[8])
+        logging.debug('station: %s' % hdr['station'])
         horizontal_angle = int_data[26]
         logging.debug('horizontal: %s' % horizontal_angle)
         if (horizontal_angle in USC_ORIENTATIONS or
@@ -252,6 +255,7 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
                     is_north=False)
             horizontal_orientation = horizontal_angle
             hdr['channel'] = channel
+            logging.debug('channel: %s' % hdr['channel'])
         else:
             errstr = ('Not enough information to distinguish horizontal from '
                       'vertical channels.')

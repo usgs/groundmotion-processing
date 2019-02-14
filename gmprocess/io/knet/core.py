@@ -4,6 +4,7 @@
 from datetime import datetime, timedelta
 import re
 import os.path
+import logging
 
 # third party
 from obspy.core.trace import Trace
@@ -33,6 +34,7 @@ def is_knet(filename):
     Returns:
         bool: True if GNS V1, False otherwise.
     """
+    logging.debug("Checking if format is knet.")
     if not os.path.isfile(filename):
         return False
     try:
@@ -59,6 +61,7 @@ def read_knet(filename):
         Stream: Obspy Stream containing three channels of acceleration data
             (cm/s**2).
     """
+    logging.debug("Starting read_knet.")
     if not is_knet(filename):
         raise Exception('%s is not a valid KNET file' % filename)
 
@@ -71,6 +74,7 @@ def read_knet(filename):
     standard = {}
     hdr['network'] = 'BO'
     hdr['station'] = lines[5].split()[2]
+    logging.debug('station: %s' % hdr['station'])
     standard['station_name'] = ''
 
     # according to the powers that defined the Network.Station.Channel.Location
@@ -112,6 +116,7 @@ def read_knet(filename):
         raise Exception('Could not parse direction %s' %
                         lines[12].split()[1])
 
+    logging.debug('channel: %s' % hdr['channel'])
     scalestr = lines[13].split()[2]
     parts = scalestr.split('/')
     num = float(parts[0].replace('(gal)', ''))

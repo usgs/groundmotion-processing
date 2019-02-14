@@ -1,6 +1,7 @@
 # stdlib imports
 from collections import OrderedDict
 from datetime import datetime, timedelta
+import logging
 
 # third party imports
 import numpy as np
@@ -28,6 +29,7 @@ def is_cwb(filename):
     Returns:
         bool: True if CWB, False otherwise.
     """
+    logging.debug("Checking if format is cwb.")
     try:
         f = open(filename, 'rt')
         line = f.readline()
@@ -45,9 +47,12 @@ def read_cwb(filename, **kwargs):
     Args:
         filename (str): Path to possible CWB data file.
         kwargs (ref): Other arguments will be ignored.
+
     Returns:
-        Stream: Obspy Stream containing three channels of acceleration data (cm/s**2).
+        Stream: Obspy Stream containing three channels of acceleration
+        data (cm/s**2).
     """
+    logging.debug("Starting read_cwb.")
     if not is_cwb(filename):
         raise ValueError('%s is not a valid CWB strong motion data file.')
     f = open(filename, 'rt')
@@ -61,24 +66,27 @@ def read_cwb(filename, **kwargs):
     f.close()
 
     hdr_z = hdr.copy()
-    hdr_z['channel'] = get_channel_name(hdr['sampling_rate'],
-                                        is_acceleration=True,
-                                        is_vertical=True,
-                                        is_north=False)
+    hdr_z['channel'] = get_channel_name(
+        hdr['sampling_rate'],
+        is_acceleration=True,
+        is_vertical=True,
+        is_north=False)
     hdr_z['standard']['horizontal_orientation'] = np.nan
 
     hdr_h1 = hdr.copy()
-    hdr_h1['channel'] = get_channel_name(hdr['sampling_rate'],
-                                         is_acceleration=True,
-                                         is_vertical=False,
-                                         is_north=True)
+    hdr_h1['channel'] = get_channel_name(
+        hdr['sampling_rate'],
+        is_acceleration=True,
+        is_vertical=False,
+        is_north=True)
     hdr_h1['standard']['horizontal_orientation'] = np.nan
 
     hdr_h2 = hdr.copy()
-    hdr_h2['channel'] = get_channel_name(hdr['sampling_rate'],
-                                         is_acceleration=True,
-                                         is_vertical=False,
-                                         is_north=False)
+    hdr_h2['channel'] = get_channel_name(
+        hdr['sampling_rate'],
+        is_acceleration=True,
+        is_vertical=False,
+        is_north=False)
     hdr_h2['standard']['horizontal_orientation'] = np.nan
 
     stats_z = Stats(hdr_z)
@@ -145,8 +153,10 @@ def _get_header_info(file, data):
         line = file.readline()
         if line.startswith('#StationCode'):
             hdr['station'] = line.split(':')[1].strip()
+            logging.debug("station: %s" % hdr['station'])
         if line.startswith('#StationName'):
             standard['station_name'] = line.split(':')[1].strip()
+            logging.debug("station_name: %s" % hdr['station_name'])
         if line.startswith('#StationLongitude'):
             coordinates['longitude'] = float(line.split(':')[1].strip())
         if line.startswith('#StationLatitude'):
