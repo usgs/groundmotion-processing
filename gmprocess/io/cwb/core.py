@@ -156,7 +156,7 @@ def _get_header_info(file, data):
             logging.debug("station: %s" % hdr['station'])
         if line.startswith('#StationName'):
             standard['station_name'] = line.split(':')[1].strip()
-            logging.debug("station_name: %s" % hdr['station_name'])
+            logging.debug("station_name: %s" % standard['station_name'])
         if line.startswith('#StationLongitude'):
             coordinates['longitude'] = float(line.split(':')[1].strip())
         if line.startswith('#StationLatitude'):
