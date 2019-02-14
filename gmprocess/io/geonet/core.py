@@ -3,6 +3,7 @@
 # stdlib imports
 from datetime import datetime
 import re
+import logging
 
 # third party
 from obspy.core.trace import Trace
@@ -281,6 +282,7 @@ def _read_header(hdr_data, station, name, component, data_format,
             is_north=False)
     else:
         _, angle = _get_channel(component)
+        logging.debug('angle: %s' % angle)
         standard['horizontal_orientation'] = angle
         if (angle > 315 or angle < 45) or (angle > 135 and angle < 225):
             hdr['channel'] = get_channel_name(

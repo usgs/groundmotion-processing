@@ -2,10 +2,10 @@
 
 # stdlib imports
 from datetime import datetime
-import os
 import re
 import warnings
 import pkg_resources
+import logging
 
 # third party
 import numpy as np
@@ -18,9 +18,10 @@ from gmprocess.exception import GMProcessException
 from gmprocess.io.seedname import get_channel_name
 
 TEXT_HDR_ROWS = 14
-VALID_MARKERS = ['CORRECTED ACCELERATION',
-                 'UNCORRECTED ACCELERATION'
-                 ]
+VALID_MARKERS = [
+    'CORRECTED ACCELERATION',
+    'UNCORRECTED ACCELERATION'
+]
 
 code_file = pkg_resources.resource_filename('gmprocess', 'data/fdsn_codes.csv')
 
@@ -187,7 +188,8 @@ def read_cosmos(filename, **kwargs):
                 station type codes.
             Other arguments will be ignored.
     Returns:
-        Stream: Obspy Stream containing three channels of acceleration data (cm/s**2).
+        Stream: Obspy Stream containing three channels of acceleration data
+        (cm/s**2).
     """
     # get list of valid stations
     valid_station_types = kwargs.get('valid_station_types', None)
@@ -204,8 +206,8 @@ def read_cosmos(filename, **kwargs):
     while line_offset < line_count:
         trace, line_offset = _read_channel(filename, line_offset,
                                            location=location)
-        # store the trace if the station type is in the valid_station_types list
-        # or store the trace if there is no valid_station_types list
+        # store the trace if the station type is in the valid_station_types
+        # list or store the trace if there is no valid_station_types list
         if valid_station_types is not None:
             if trace.stats['format_specific']['station_code'] in valid_station_types:
                 stream.append(trace)
@@ -358,6 +360,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     hdr['network'] = network
     hdr['station'] = lines[4][28:34].strip()
     horizontal_angle = int_data[53]
+    logging.debug('horizontal_angle: %s' % horizontal_angle)
 
     # Store delta and duration. Use them to calculate npts and sampling_rate
     delta = flt_data[33]

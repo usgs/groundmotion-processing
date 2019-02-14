@@ -372,6 +372,7 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
     station = station_line[12:17].strip()
     hdr['station'] = station
     angle = int_data[26]
+    logging.debug('angle: %s' % angle)
 
     hdr['npts'] = int_data[27]
     reclen = flt_data[2]

@@ -1,5 +1,6 @@
 # stdlib imports
 from datetime import datetime
+import logging
 
 # third party imports
 import numpy as np
@@ -111,8 +112,8 @@ def read_volume_one(filename, location=''):
     line_offset = 0
     stream = Stream([])
     while line_offset < line_count:
-        trace, line_offset = _read_channel(filename, line_offset, volume,
-                                           location=location)
+        trace, line_offset = _read_channel(
+            filename, line_offset, volume, location=location)
         # store the trace if the station type is in the valid_station_types
         # list or store the trace if there is no valid_station_types list
         if trace is not None:
@@ -222,6 +223,7 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
         hdr['network'] = 'LA'
         hdr['station'] = str(int_data[8])
         horizontal_angle = int_data[26]
+        logging.debug('horizontal: %s' % horizontal_angle)
         if (horizontal_angle in USC_ORIENTATIONS or
                 (horizontal_angle >= 0 and horizontal_angle <= 360)):
             if horizontal_angle in USC_ORIENTATIONS:
