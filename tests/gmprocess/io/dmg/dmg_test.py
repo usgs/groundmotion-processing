@@ -5,6 +5,9 @@ import os.path
 import tempfile
 from datetime import datetime, timedelta
 
+# third party imports
+import numpy as np
+
 # local imports
 from gmprocess.exception import GMProcessException
 from gmprocess.io.dmg.core import is_dmg, read_dmg, _get_date, _get_time
@@ -25,6 +28,18 @@ def test_time():
     date = _get_date(line3)
     dtime = date + dt
     assert dtime == datetime(1994, 1, 17, 12, 30, 55, 399999)
+
+
+def test_dmg_non_spec():
+    # where is this script?
+    homedir = os.path.dirname(os.path.abspath(__file__))
+    datadir = os.path.join(homedir, '..', '..', '..', 'data', 'dmg')
+    file1 = os.path.join(datadir, 'ce23583r_HESPERIA.RAW')
+    assert is_dmg(file1)
+    stream = read_dmg(file1)
+    trace1 = stream[0]
+    np.testing.assert_almost_equal(trace1.data[0], -0.000116)
+    np.testing.assert_almost_equal(trace1.data[-8], -0.003018)
 
 
 def test_dmg_v1():
@@ -215,6 +230,7 @@ def test_dmg():
 
 
 if __name__ == '__main__':
+    test_dmg_non_spec()
     test_time()
     test_dmg_v1()
     test_dmg()
