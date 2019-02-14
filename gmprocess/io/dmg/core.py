@@ -218,12 +218,27 @@ def _read_volume_one(filename, line_offset, location=''):
     hdr = _get_header_info_v1(
         int_data, flt_data, lines, 'V2', location=location)
 
-    # acceleration data is interleaved between time data
-    max_rows = int(np.ceil(hdr['npts'] / 5))
-    widths = [7] * 10
-    data = _read_lines(skip_rows, max_rows, widths, filename)
-    times = data[0::2]
-    acc_data = data[1::2][:hdr['npts']]
+    # sometimes (??) a line of text is inserted in between the float header and the
+    # beginning of the data. Let's check for this...
+    with open(filename, 'rt') as f:
+        for _ in range(skip_rows):
+            next(f)
+        test_line = f.readline()
+
+    has_text = re.search('[A-Z]+|[a-z]+', test_line) is not None
+    if has_text:
+        skip_rows += 1
+        widths = [9] * 8
+        max_rows = int(np.ceil(hdr['npts'] / 8))
+        data = _read_lines(skip_rows, max_rows, widths, filename)
+        acc_data = data[:hdr['npts']]
+    else:
+        # acceleration data is interleaved between time data
+        max_rows = int(np.ceil(hdr['npts'] / 5))
+        widths = [7] * 10
+        data = _read_lines(skip_rows, max_rows, widths, filename)
+        acc_data = data[1::2][:hdr['npts']]
+
     acc_trace = Trace(acc_data.copy(), Stats(hdr.copy()))
     traces = [acc_trace]
     new_offset = skip_rows + max_rows + 1  # there is an end of record line
