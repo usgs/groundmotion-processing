@@ -750,7 +750,8 @@ def process_config(stream, config=None, event_time=None, epi_dist=None):
     params = config['processing_parameters']
     amp_min = float(params['amplitude']['min'])
     amp_max = float(params['amplitude']['max'])
-    window_vmin = float(params['window']['vmin'])
+    window_choice = params['windows']['signal_duration']['use']
+    window_vmin = float(params['windows']['signal_duration'][window_choice])
     taper_type = params['taper']['type']
     taper_percentage = float(params['taper']['max_percentage'])
     taper_side = params['taper']['side']
