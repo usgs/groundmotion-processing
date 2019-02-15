@@ -445,7 +445,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     if duration != unknown:
         hdr['duration'] = duration
     if duration != unknown and delta != unknown:
-        hdr['npts'] = int(hdr['sampling_rate'] * duration)
+        hdr['npts'] = int(hdr['sampling_rate'] * duration + 1)
 
     # coordinate information
     coordinates['latitude'] = flt_data[0]

@@ -219,7 +219,7 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
     if volume == 'V1':
         hdr['duration'] = flt_data[2]
         hdr['npts'] = int_data[27]
-        hdr['sampling_rate'] = hdr['npts'] / hdr['duration']
+        hdr['sampling_rate'] = (hdr['npts'] - 1) / hdr['duration']
 
         # Get required parameter number
         hdr['network'] = 'LA'

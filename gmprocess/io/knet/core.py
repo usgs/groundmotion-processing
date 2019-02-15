@@ -126,7 +126,7 @@ def read_knet(filename):
 
     duration = float(lines[11].split()[2])
 
-    hdr['npts'] = int(duration * hdr['sampling_rate'])
+    hdr['npts'] = int(duration * hdr['sampling_rate'] + 1)
 
     timestr = ' '.join(lines[9].split()[2:4])
     # The K-NET and KiK-Net data logger adds a 15s time delay
