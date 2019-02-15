@@ -80,7 +80,8 @@ def test_all():
     HAWA_calc_data = HAWA_array[1]
 
     # Compare the processing script with the data we've already processed
-    np.testing.assert_allclose(HAWA_processed.data, HAWA_calc_data, rtol=1000, atol=1000)
+    np.testing.assert_allclose(HAWA_processed.data, HAWA_calc_data, rtol=1000,
+                               atol=1000)
 
     # Test file that will conduct low-pass filter
     event_time = UTCDateTime('2001-02-28T18:54:32')
@@ -102,8 +103,8 @@ def test_all():
 
     GNW_tr = read(os.path.join(datadir, 'GNWBHE.UW..sac'))[0]
     GNW_dist = 46.7473
-    GNW_processed = process.process_config([GNW_tr], config=config,
-                                           event_time=event_time, epi_dist=GNW_dist)[0]
+    GNW_processed = process.process_config(
+        [GNW_tr], config=config, event_time=event_time, epi_dist=GNW_dist)[0]
     assert GNW_processed.stats['passed_tests'] is True
 
     # Test trace with invalid amplitudes
@@ -122,13 +123,15 @@ def test_all():
     ALKI_processed = process.process_config(
         [ALKI_tr], config=config,
         event_time=event_time, epi_dist=ALKI_dist)[0]
-    assert ALKI_processed.stats.processing_parameters.corners['default_low_frequency'] == 0.1
-    assert ALKI_processed.stats.processing_parameters.corners['default_high_frequency'] == 20.0
+
+    params = ALKI_processed.stats.processing_parameters
+    assert params.corners['default_low_frequency'] == 0.1
+    assert params.corners['default_high_frequency'] == 20.0
 
     # Test with invalid starttime
     ALKI_tr.stats.starttime += 500
-    ALKI_processed = process.process_config([ALKI_tr], config=config,
-                                            event_time=event_time, epi_dist=ALKI_dist)[0]
+    ALKI_processed = process.process_config(
+        [ALKI_tr], config=config, event_time=event_time, epi_dist=ALKI_dist)[0]
     assert ALKI_processed.stats['passed_tests'] is False
 
     ALKI_split = process.split_signal_and_noise(ALKI_tr, event_time, ALKI_dist,
@@ -184,8 +187,36 @@ def test_sta_lta():
     assert process.check_sta_lta(tr2) is False
 
 
+def test_split():
+    tr1 = read(os.path.join(datadir, 'CN.BBB..BHE.sac'))[0]
+    success = False
+    try:
+        process.split_signal_and_noise(tr1, split_method='p_arrival')
+        success = True
+    except ValueError:
+        pass
+    assert success is False
+
+    success = False
+    try:
+        process.split_signal_and_noise(tr1, split_method='velocity')
+        success = True
+    except ValueError:
+        pass
+    assert success is False
+
+    success = False
+    try:
+        process.split_signal_and_noise(tr1, split_method='invalid')
+        success = True
+    except ValueError:
+        pass
+    assert success is False
+
+
 if __name__ == '__main__':
     test_sta_lta()
+    test_split()
     test_amp_check_trim()
     test_corner_freqs()
     test_all()

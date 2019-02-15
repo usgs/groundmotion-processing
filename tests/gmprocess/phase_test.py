@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-
-from gmprocess.io.read import read_data
 from gmprocess.phase import PowerPicker
+from gmprocess.io.read import read_data
 from obspy import read, UTCDateTime
 import os
 
@@ -25,18 +24,12 @@ def test_p_pick():
     ppick = PowerPicker(tr)
     assert len(ppick) == 1
     ppick = ppick[0]
-    print(ppick)
     assert (abs(chosen_ppick - ppick)) < 0.2
 
-    # Testing Northridge data
-    tr = read_data(datadir + '/3822a.smc')[0]
-    chosen_ppick = UTCDateTime('1994-01-17T12:32:09')
+    # Test a Northridge file that should fail to return a P-pick
+    tr = read_data(datadir + '/017m30ah.m0a')[0]
     ppick = PowerPicker(tr)
-    print(ppick)
-    assert len(ppick) == 1
-    ppick = ppick[0]
-    print(ppick)
-    assert (abs(chosen_ppick - ppick)) < 0.2
+    assert ppick == []
 
 
 if __name__ == '__main__':

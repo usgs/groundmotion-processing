@@ -512,10 +512,11 @@ def correct_baseline(trace):
 
 
 def process(stream, amp_min, amp_max, sta_len, lta_len, sta_lta_threshold,
-            split_method, vsplit, vmin, taper_type, taper_percentage,
-            taper_side, get_corners, sn_ratio, max_low_freq, min_high_freq,
-            default_low_frequency, default_high_frequency, filters,
-            baseline_correct, event_time=None, epi_dist=None):
+            noise_duration_choice, split_choice, vsplit, picker,
+            signal_duration_choice, vmin, duration_model, baseline_correct,
+            taper_type, taper_percentage, taper_side, get_corners, sn_ratio,
+            default_low_frequency, default_high_frequency, max_low_freq,
+            min_high_freq, filters, event_time=None, epi_dist=None):
     """
     Processes an acceleration trace following the step-by-step process
     described in the Rennolet et al paper
@@ -670,7 +671,7 @@ def process(stream, amp_min, amp_max, sta_len, lta_len, sta_lta_threshold,
         # Find corner frequencies
         if get_corners and windowed:
             corners = get_corner_frequencies(
-                trace_tap, event_time, epi_dist, sn_ratio, split_method,
+                trace_tap, event_time, epi_dist, sn_ratio, split_choice,
                 vsplit, max_low_freq, min_high_freq, taper_type,
                 taper_percentage, taper_side)
             if (corners[0] < 0 or corners[1] < 0):
@@ -800,10 +801,21 @@ def process_config(stream, config=None, event_time=None, epi_dist=None):
         config = CONFIG
     # Set all float/int params in the correct format
     params = config['processing_parameters']
-    amp_min = float(params['amplitude']['min'])
-    amp_max = float(params['amplitude']['max'])
-    window_choice = params['windows']['signal_duration']['use']
-    window_vmin = float(params['windows']['signal_duration'][window_choice])
+    pretesting = config['pretesting']
+
+    amp_min = float(pretesting['amplitude']['min'])
+    amp_max = float(pretesting['amplitude']['max'])
+    sta_len = float(pretesting['stalta']['sta_length'])
+    lta_len = float(pretesting['stalta']['lta_length'])
+    sta_lta_threshold = float(pretesting['stalta']['threshold'])
+    noise_duration_choice = params['windows']['noise_duration']['use']
+    split_choice = params['windows']['noise_signal_split']['use']
+    vsplit = float(params['windows']['noise_signal_split']['vsplit'])
+    picker = params['windows']['noise_signal_split']['picker']
+    signal_duration_choice = params['windows']['signal_duration']['use']
+    vmin = float(params['windows']['signal_duration']['vmin'])
+    duration_model = params['windows']['signal_duration']['model']
+    baseline_correct = float(params['baseline']['run'])
     taper_type = params['taper']['type']
     taper_percentage = float(params['taper']['max_percentage'])
     taper_side = params['taper']['side']
@@ -817,10 +829,11 @@ def process_config(stream, config=None, event_time=None, epi_dist=None):
 
     corrected_stream = process(
         stream, amp_min, amp_max, sta_len, lta_len, sta_lta_threshold,
-        split_method, vsplit, vmin, taper_type, taper_percentage, taper_side,
-        get_corners, sn_ratio, max_low_freq, min_high_freq,
-        default_low_frequency, default_high_frequency, filters,
-        baseline_correct, event_time=event_time, epi_dist=epi_dist)
+        noise_duration_choice, split_choice, vsplit, picker,
+        signal_duration_choice, vmin, duration_model, baseline_correct,
+        taper_type, taper_percentage, taper_side, get_corners, sn_ratio,
+        default_low_frequency, default_high_frequency, max_low_freq,
+        min_high_freq, filters, event_time=event_time, epi_dist=epi_dist)
     return corrected_stream
 
 
