@@ -135,6 +135,7 @@ def read_dmg(filename, **kwargs):
             units (str): String determining which timeseries is return. Valid
                     options include 'acc', 'vel', 'disp'. Default is 'acc'.
             Other arguments will be ignored.
+
     Returns:
         Stream: Obspy Stream containing three channels of acceleration data
         (cm/s**2).
@@ -169,12 +170,12 @@ def read_dmg(filename, **kwargs):
     trace_list = []
     while line_offset < line_count:
         if reader == 'V2':
-            traces, line_offset = _read_volume_two(filename, line_offset,
-                                                   location=location)
+            traces, line_offset = _read_volume_two(
+                filename, line_offset, location=location)
             trace_list += traces
         elif reader == 'V1':
-            traces, line_offset = _read_volume_one(filename, line_offset,
-                                                   location=location)
+            traces, line_offset = _read_volume_one(
+                filename, line_offset, location=location)
             trace_list += traces
         else:
             raise GMProcessException('Not a supported volume.')
@@ -218,8 +219,8 @@ def _read_volume_one(filename, line_offset, location=''):
     hdr = _get_header_info_v1(
         int_data, flt_data, lines, 'V2', location=location)
 
-    # sometimes (??) a line of text is inserted in between the float header and the
-    # beginning of the data. Let's check for this...
+    # sometimes (??) a line of text is inserted in between the float header and
+    # the beginning of the data. Let's check for this...
     with open(filename, 'rt') as f:
         for _ in range(skip_rows):
             next(f)
@@ -396,7 +397,10 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
 
     hdr['npts'] = int_data[27]
     reclen = flt_data[2]
-    hdr['sampling_rate'] = np.round(hdr['npts'] / reclen)
+    logging.debug('reclen: %s' % reclen)
+    logging.debug('npts: %s' % hdr['npts'])
+    hdr['sampling_rate'] = np.round((hdr['npts'] - 1) / reclen)
+    logging.debug('sampling_rate: %s' % hdr['sampling_rate'])
     hdr['delta'] = 1 / hdr['sampling_rate']
     hdr['channel'] = _get_channel(angle, hdr['sampling_rate'])
     logging.debug('channel: %s' % hdr['channel'])

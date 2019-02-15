@@ -1,3 +1,6 @@
+.. WARNING::
+   This repository is currently under development and so functionality may change rapidly.
+
 +---------------+----------------------+ 
 | Linux build   | |Travis|             | 
 +---------------+----------------------+ 
