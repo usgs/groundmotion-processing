@@ -24,6 +24,8 @@ def main(args):
     if not os.path.exists(install_conf_path):
         # Copy from data dir
         logging.info("No existing config found, installing config file...")
+        print('data_conf_path: %s' % data_conf_path)
+        print('install_conf_path: %s' % install_conf_path)
         shutil.copy2(data_conf_path, install_conf_path)
     else:
         # Load installed config
