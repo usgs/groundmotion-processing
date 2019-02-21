@@ -8,38 +8,52 @@ import logging
 from obspy import read
 
 from gmprocess.io import fdsn
-from gmprocess.process import remove_clipped, instrument_response
 from gmprocess.logging import setup_logger
 from gmprocess.args import add_shared_args
+from gmprocess.config import get_config
+
+
+CONFIG = get_config()
+TIMEFMT = '%Y-%m-%dT%H:%M:%S'
 
 
 def main(args):
+    conf_org = CONFIG['origin']
+    conf_req = CONFIG['waveform_request']
     setup_logger(args)
-    logging.info("Running fdsnfetch.")
-
-    networks = [str(net) for net in args.n.split()]
-    stations = [str(stn) for stn in args.s.split()]
-    channels = [str(chn) for chn in args.c.split()]
+    save_format = conf_req['format']
+    logging.info("Running fdsnfetch2.")
 
     # Request waveforms using parameters, getting stream and inventory
     st, inv = fdsn.request_raw_waveforms(
-        args.client, args.org_time,
-        args.lat, args.lon, args.b, args.a,
-        args.dmin, args.dmax, networks,
-        stations, channels)
+        conf_req['client'],
+        conf_org['event_time'].strftime(TIMEFMT),
+        conf_org['event_lat'],
+        conf_org['event_lon'],
+        conf_req['before_time'],
+        conf_req['after_time'],
+        conf_req['dist_min'],
+        conf_req['dist_max'],
+        conf_req['networks'],
+        conf_req['stations'],
+        conf_req['channels'])
 
-    if not os.path.exists(args.out + '/raw'):
-        os.mkdir(args.out + '/raw')
+    raw_dir = os.path.join(args.out, 'raw')
+    if not os.path.exists(raw_dir):
+        os.mkdir(raw_dir)
 
     # Write the raw files to the raw directory
     for tr in st:
-        tr = fdsn.add_channel_metadata(tr, inv, args.client)
-        tr.write(args.out + '/raw/' + tr.get_id() + '.' + args.f,
-                 format=args.f)
+        tr = fdsn.add_channel_metadata(
+            tr, inv, conf_req['client'])
+        raw_file = os.path.join(
+            args.out, 'raw', tr.get_id() + '.' + save_format)
+        tr.write(raw_file, format=save_format)
 
     # Get a list of the stations that we have waveform data for
     stations = []
-    raw_st = read(args.out + '/raw/*.' + args.f)
+    pattern = '*.%s' % save_format
+    raw_st = read(os.path.join(args.out, 'raw', pattern))
     for tr in raw_st:
         if tr.stats.station not in stations:
             stations.append(tr.stats.station)
@@ -53,24 +67,10 @@ def main(args):
             stats = fdsn.clean_stats(tr.stats)
             meta_dict['properties'][tr.stats.channel] = fdsn.clean_stats(stats)
         for tr in stn_st:
-            with open(args.out + '/raw/' + tr.get_id() + '.json', 'w') as fp:
+            json_file = os.path.join(
+                args.out, 'raw', tr.get_id() + '.json')
+            with open(json_file, 'w') as fp:
                 json.dump(meta_dict, fp)
-
-    # Do instrument response correction if desired
-    if args.r:
-        if not os.path.exists(args.out + '/resp_cor'):
-            os.mkdir(args.out + '/resp_cor')
-        for tr in st:
-            tr.detrend('demean')
-        st_unclipped, st_clipped = remove_clipped(st)
-        st_res = instrument_response(
-            st_unclipped, f1=args.f1, f2=args.f2, f3=args.f3, f4=args.f4,
-            water_level=args.w, output=args.o)
-
-        for tr in st_res:
-            trid = tr.get_id()
-            tr.write(args.out + '/resp_cor/' + tr.get_id() + '.' + args.f,
-                     format=args.f)
 
 
 if __name__ == '__main__':
@@ -81,60 +81,11 @@ if __name__ == '__main__':
     parser.add_argument(
         'out', help='Output file directory', type=str)
     parser.add_argument(
-        'client', help='FSDN client name', type=str)
-    parser.add_argument(
         'org_time', help='Event origin time', type=str)
     parser.add_argument(
         'lat', help='Event latitude', type=float)
     parser.add_argument(
         'lon', help='Event longitude', type=float)
-
-    # Optional arguments
-    parser.add_argument(
-        '-b', '-before_time', help='Time (s) before event',
-        default=120, type=float)
-    parser.add_argument(
-        '-a', '-after_time', help='Time (s) after event',
-        default=600, type=float)
-    parser.add_argument(
-        '-dmin', help='Minimum distance from event (km)',
-        default=0, type=float)
-    parser.add_argument(
-        '-dmax', help='Maximum distance from event (km)',
-        default=1.5, type=float)
-    parser.add_argument(
-        '-n', '-networks', help='Networks to request',
-        default='*', type=str)
-    parser.add_argument(
-        '-s', '-stations', help='Stations to request',
-        default='*', type=str)
-    parser.add_argument(
-        '-c', '-channels', help='Channels to request',
-        default='*', type=str)
-    parser.add_argument(
-        '-f', '-format,', help='Format type to save data',
-        default='MSEED', type=str)
-    parser.add_argument(
-        '-r', action='store_true',
-        help='Whether to denconvolve instrument response')
-    parser.add_argument(
-        '-o', help='Output unit of instrument response correction',
-        type=str)
-    parser.add_argument(
-        '-f1', help='Freq 1 for instrument response pre-filter',
-        default=120, type=float)
-    parser.add_argument(
-        '-f2', help='Freq 2 for instrument response pre-filter',
-        default=120, type=float)
-    parser.add_argument(
-        '-f3', help='Freq 3 for instrument response pre-filter',
-        default=120, type=float)
-    parser.add_argument(
-        '-f4', help='Freq 4 for instrument response pre-filter',
-        default=120, type=float)
-    parser.add_argument(
-        '-w', help='Water level for instrument response correction',
-        default=120, type=float)
 
     # Shared arguments
     parser = add_shared_args(parser)

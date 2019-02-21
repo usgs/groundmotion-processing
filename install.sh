@@ -116,7 +116,6 @@ dev_list=(
 
 package_list=(
     "$CC"
-    "ConfigObj"
     "cython"
     "impactutils"
     "ipython"

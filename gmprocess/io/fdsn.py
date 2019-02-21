@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import logging
 import numpy as np
 from gmprocess.io.seedname import get_channel_name
@@ -5,66 +7,108 @@ from obspy import UTCDateTime
 from obspy.clients.fdsn import Client
 from obspy.core.util.attribdict import AttribDict
 
+from gmprocess.config import get_config
+
+
+CONFIG = get_config()
 TIMEFMT = '%Y-%m-%dT%H:%M:%S'
 
 
-def request_raw_waveforms(fdsn_client, org_time, lat, lon,
-                          before_time=120, after_time=600,
-                          dist_min=0, dist_max=1.5, networks=['*'],
-                          stations=['*'], channels=['*']):
+def request_raw_waveforms(
+        fdsn_client=None,
+        org_time=None,
+        lat=None,
+        lon=None,
+        before_time=None,
+        after_time=None,
+        dist_min=None,
+        dist_max=None,
+        networks=None,
+        stations=None,
+        channels=None):
     """
     Requests raw waveform data from an FDSN client.
     The requested data can be constrained by time, distance from event,
     network, station, and channels.
 
     Args:
-        fdsn_client (str): A string for the FDSN client. Valid choices are:
-            BGR, EMSC, ETH, GEONET, GFZ, ICGC, INGV, IPGP, IRIS, ISC,
-            KOERI, LMU, NCEDC, NIEP, NOA, ODC, ORFEUS, RESIF, SCEDC, TEXTNET,
-            USGS, and USP
-        org_time (str): Origin time of event. Must be able to convert to
-            UTCDateTime.
-        lat (float): Event latitude.
-        lon (float): Event longitude.
-        before_time (int): Number of seconds before origin time to request.
-            Default is 120.
-        after_time (int): Number of seconds after origin time to request.
-            Default is 600.
-        dist_min (float): Minimum distance from event epicenter.
-            Default is 0.
-        dist_max (float): Maximum distance from event epicenter.
-            Default is 1.5
-        network (list): List of strings for desired networks.
-            Default is ['*'].
-        channels (list): List of strings for desired channels.
-            Default is ['*'].
+        fdsn_client (str):
+            A string for the FDSN client. Valid choices are:
+                BGR, EMSC, ETH, GEONET, GFZ, ICGC, INGV, IPGP, IRIS, ISC,
+                KOERI, LMU, NCEDC, NIEP, NOA, ODC, ORFEUS, RESIF, SCEDC,
+                TEXTNET, USGS, and USP
+        org_time (str):
+            Origin time of event. Must be able to convert to UTCDateTime.
+        lat (float):
+            Event latitude.
+        lon (float):
+            Event longitude.
+        before_time (int):
+            Number of seconds before origin time to request. Default is 120.
+        after_time (int):
+            Number of seconds after origin time to request. Default is 600.
+        dist_min (float):
+            Minimum distance (dd) from event epicenter. Default is 0.
+        dist_max (float):
+            Maximum distance (dd) from event epicenter. Default is 0.1.
+        network (list):
+            List of strings for desired networks. Default is ['*'].
+        channels (list):
+            List of strings for desired channels. Default is ['*'].
 
     Returns:
         stream (obspy.core.trace.Trace): Stream of requested, raw data.
         inventory (obspy.core.inventory): Inventory object for the event.
     """
 
+    # If request options are None, use valeus in config file. This allows
+    # for the method to be used as a library or set through the config.
+    if before_time is None:
+        before_time = CONFIG['waveform_request']['before_time']
+    if after_time is None:
+        after_time = CONFIG['waveform_request']['after_time']
+    if dist_min is None:
+        dist_min = CONFIG['waveform_request']['dist_min']
+    if dist_max is None:
+        dist_max = CONFIG['waveform_request']['dist_max']
+    if networks is None:
+        networks = CONFIG['waveform_request']['networks']
+    if stations is None:
+        stations = CONFIG['waveform_request']['stations']
+    if channels is None:
+        channels = CONFIG['waveform_request']['channels']
+
+    logging.debug('fdsn_client: %s' % fdsn_client)
     client = Client(fdsn_client)
 
     # Time information
     origin_time = UTCDateTime(org_time)
     t1 = origin_time - before_time
     t2 = origin_time + after_time
+    logging.debug('t1: %s' % t1)
+    logging.debug('t2: %s' % t2)
 
     # Convert lists to comma-separated strings
     networks = ','.join(networks)
     stations = ','.join(stations)
     channels = ','.join(channels)
+    logging.debug('networks: %s' % networks)
+    logging.debug('stations: %s' % stations)
+    logging.debug('channels: %s' % channels)
 
     # Get an inventory of all stations for the event
     inventory = client.get_stations(
-        starttime=t1, endtime=t2,
-        latitude=lat, longitude=lon,
-        minradius=dist_min, maxradius=dist_max,
+        starttime=t1,
+        endtime=t2,
+        latitude=lat,
+        longitude=lon,
+        minradius=dist_min,
+        maxradius=dist_max,
         network=networks,
         channel=channels,
         station=stations,
-        level='response', includerestricted=False)
+        level='response',
+        includerestricted=False)
 
     # Get the list of channels from the inventory
     channels = inventory.get_contents()['channels']
@@ -88,10 +132,12 @@ def add_channel_metadata(tr, inv, client):
     Adds the channel metadata for each channel in the stream.
 
     Args:
-        tr (obspy.core.trace.Trace): Trace of requested data.
-        inv (obspy.core.inventory): Inventory object corresponding to
-            to the stream.
-        client (str): FDSN client indicator.
+        tr (obspy.core.trace.Trace):
+            Trace of requested data.
+        inv (obspy.core.inventory):
+            Inventory object corresponding to to the stream.
+        client (str):
+            FDSN client indicator.
 
     Returns:
         trace (obspy.core.trace.Trace): Trace with metadata added.

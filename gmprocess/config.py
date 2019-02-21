@@ -2,9 +2,7 @@
 
 import os.path
 import logging
-import pkg_resources
-from configobj import ConfigObj
-from validate import Validator
+import yaml
 
 from gmprocess.constants import CONFIG_FILE
 
@@ -24,10 +22,7 @@ def get_config():
                'default config file.')
         logging.info(fmt % config_file)
     else:
-        val = Validator()
-        spec_file = pkg_resources.resource_filename(
-            'gmprocess', 'data/gmprocess_spec.conf')
-        config = ConfigObj(config_file, configspec=spec_file)
-        config.validate(val)
+        with open(config_file, 'r') as f:
+            config = yaml.load(f)
 
     return config
