@@ -6,7 +6,7 @@ import argparse
 import pkg_resources
 import logging
 
-from gmprocess.config import CONFIG_FILE
+from gmprocess.constants import CONFIG_FILE
 from gmprocess.logging import setup_logger
 from gmprocess.args import add_shared_args
 
@@ -16,14 +16,9 @@ def main(args):
     logging.info("Running gmsetup.")
 
     home_path = os.path.expanduser("~")
-    install_path = os.path.join(home_path, ".gmprocess")
     data_path = pkg_resources.resource_filename('gmprocess', 'data/')
-    install_conf_path = os.path.join(install_path, CONFIG_FILE)
-    data_conf_path = os.path.join(data_path, CONFIG_FILE)
-
-    # Does the install dir exist?
-    if not os.path.exists(install_path):
-        os.makedirs(install_path)
+    install_conf_path = os.path.join(home_path, CONFIG_FILE)
+    data_conf_path = os.path.join(data_path, 'config.yml')
 
     # Does a conf file already exist?
     if not os.path.exists(install_conf_path):
