@@ -20,6 +20,10 @@ def main(args):
     install_conf_path = os.path.join(home_path, CONFIG_FILE)
     data_conf_path = os.path.join(data_path, 'config.yml')
 
+    install_dir = os.path.join(home_path, ".gmprocess")
+    if not os.path.exists(install_dir):
+        os.makedirs(install_dir)
+
     # Does a conf file already exist?
     if not os.path.exists(install_conf_path):
         # Copy from data dir
