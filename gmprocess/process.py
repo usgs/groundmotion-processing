@@ -783,11 +783,15 @@ def process_config(stream, config=None, event_time=None, epi_dist=None):
     Implements the process method according to a config file.
 
     Args:
-        stream (obspy.core.stream.Stream): Stream for one station.
-        config (dictionary): Config dictionary. Default is None.
-            When config is None, it will be set to the amptools config.
-        event_time (UTCDateTime): Origin time of the event. Default is None.
-        epi_dist (float): Epicentral distance. Default is None.
+        stream (obspy.core.stream.Stream):
+            Stream for one station.
+        config (dictionary):
+            Config dictionary. Default is None. When config is None, it will
+            be set to the amptools config.
+        event_time (UTCDateTime):
+            Origin time of the event. Default is None.
+        epi_dist (float):
+            Epicentral distance. Default is None.
 
     Notes:
         This function looks for a config file ~/.gmprocess/gmprocesss.conf,
@@ -800,7 +804,7 @@ def process_config(stream, config=None, event_time=None, epi_dist=None):
     if config is None:
         config = CONFIG
     # Set all float/int params in the correct format
-    params = config['processing_parameters']
+    params = config['processing']
     pretesting = config['pretesting']
 
     amp_min = float(pretesting['amplitude']['min'])
@@ -808,13 +812,12 @@ def process_config(stream, config=None, event_time=None, epi_dist=None):
     sta_len = float(pretesting['stalta']['sta_length'])
     lta_len = float(pretesting['stalta']['lta_length'])
     sta_lta_threshold = float(pretesting['stalta']['threshold'])
-    noise_duration_choice = params['windows']['noise_duration']['use']
-    split_choice = params['windows']['noise_signal_split']['use']
-    vsplit = float(params['windows']['noise_signal_split']['vsplit'])
-    picker = params['windows']['noise_signal_split']['picker']
-    signal_duration_choice = params['windows']['signal_duration']['use']
-    vmin = float(params['windows']['signal_duration']['vmin'])
-    duration_model = params['windows']['signal_duration']['model']
+    split_choice = params['windows']['split']['use']
+    vsplit = float(params['windows']['split']['vsplit'])
+    picker = params['windows']['split']['picker']
+    signal_duration_choice = params['windows']['signal_end']['use']
+    vmin = float(params['windows']['signal_end']['vmin'])
+    duration_model = params['windows']['signal_end']['model']
     baseline_correct = float(params['baseline']['run'])
     taper_type = params['taper']['type']
     taper_percentage = float(params['taper']['max_percentage'])

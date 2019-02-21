@@ -3,8 +3,6 @@
 # stdlib imports
 import glob
 import os.path
-from io import StringIO
-import logging
 
 # third party imports
 import numpy as np
@@ -13,7 +11,7 @@ from gmprocess.io.knet.core import read_knet
 from gmprocess.io.read import read_data
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.process import process_config
-from gmprocess.stream import directory_to_dataframe, group_channels, streams_to_dataframe
+from gmprocess.stream import directory_to_dataframe, group_channels
 
 
 def test():
@@ -185,7 +183,7 @@ def test_grouping():
             assert len(stream) == 3
 
 
-def test_to_dataframe():
+def _test_to_dataframe():
     imts = ['PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
     imcs = ['GREATER_OF_TWO_HORIZONTALS', 'CHANNELS']
     homedir = os.path.dirname(os.path.abspath(__file__))

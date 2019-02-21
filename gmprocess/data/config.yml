@@ -1,0 +1,179 @@
+# -----------------------------------------------------------------------------
+# Output IMCs
+output_imcs:
+    - greater_of_two_horizontals
+    - channels
+
+# -----------------------------------------------------------------------------
+# Output IMTs
+output_imts:
+    - PGA
+    - SA(1.0)
+
+# -----------------------------------------------------------------------------
+# Options for FDSN requests
+waveform_request:
+
+    # Valid clients:
+    #     BGR, EMSC, ETH, GEONET, GFZ, ICGC, INGV, IPGP, IRIS, ISC, KOERI, LMU,
+    #     NCEDC, NIEP, NOA, ODC, ORFEUS, RESIF, SCEDC, TEXTNET, USGS, USP.
+    client: IRIS
+    # Time units are seconds
+    before_time: 120.0
+    after_time: 120.0
+    # Distance units are decimal degrees
+    dist_min: 0.0
+    dist_max: 0.2
+    # The following can be a comma separated list of strings
+    networks:
+        - NP
+    stations:
+        # (NOTE: If value starts with * then it needs to be in quotes)
+        - '*'
+    channels:
+        - '*'
+    format: MSEED
+
+# -----------------------------------------------------------------------------
+# Some initial quality checks of the record. If these checks are not passed
+# then the record is not processed.
+pretesting:
+
+    # Amplitude check to avoid clipping. Units are usually counts (e.g., with
+    # data from IRIS) but some sources will convert to physical units so it
+    # is important to be careful with this step.
+    amplitude:
+        min: 5
+        max: 2e6
+
+    # STA/LTA is computed for record and the max value must exceed the threshold
+    # below. Units are sec for window lenghts.
+    stalta:
+        sta_length: 1.0
+        lta_length: 20.0
+        threshold: 5.0
+
+# -----------------------------------------------------------------------------
+# Options for separating noise/signal windows
+#
+#    |<---Noise Window--->|<-----Signal Window----->|
+#    |                    |                         |
+#    |                    |  /\          /\/\       |
+#    |____________________|_/  \  /\    /    \/\____|
+#    |                    |     \/  \  /            |
+#    |                    |          \/             |
+# 
+#    record_start       split              signal_end
+windows:
+
+    split:
+        # The noise-signal split can be estimated using a p-wave picker, or
+        # with an assumed arrival time for a phase velocity "vsplit". This
+        # velocity should exceed any reasonable p-wave velocities to ensure that
+        # none of the signal ends up in the noise window.
+
+        # Valid options for "method" are "p_arrival" and "velocity"
+        method: velocity
+        vsplit: 7.0
+        # min_noise_duration: 5.0  # todo
+
+    signal_end:
+        # The end of the signal can be set using a phase velocity.
+        # Alternatively, it can be set with duration model, where the mean
+        # 5-95% significant duration (Ds) is added to the split time. The mean
+        # Ds can also be extended by a number of standard deviations (epsilon).
+
+        # Valid options for "method" are "velocity" and "model"
+        method: model
+        vmin: 1.0
+        # Minimum duration in sec for use with 'vmin' option.
+        floor: 120
+        # Duration model
+        model: AS16
+        # Number of standard deviations; if epsilon is 1.0, then the signal
+        # window duration is the mean Ds + 1 standard deviation.
+        epsilon: 2.0
+
+# -----------------------------------------------------------------------------
+# Corner frequency options
+corner_frequencies:
+
+    # Corner frequency selection can use constant values, or selected
+    # dynamically from the signal-to-noise-ratio.
+
+    # Valid options for "method" are "constant" and "snr".
+    method: snr
+
+    constant:
+        highpass: 0.08
+        lowpass: 20.0
+
+    snr:
+        # For dynamic filtering, we require a minimum SNR threshold between
+        # max_low_freq and min_high_freq after the spectra is smoothed with the
+        # Konno-Omachi method (with bandwidth parameter "b")
+        threshold: 3.0
+        max_low_freq: 0.2
+        min_high_freq: 5.0
+        bandwidth: 20.0
+
+# -----------------------------------------------------------------------------
+# This section is for processing steps that will affect the waveform and get
+# recorded as seismological provenance data.
+processing:
+
+    - remove_response:
+        # Outuput units. Must be 'ACC', 'VEL', or 'DISP'.
+        output: 'ACC'
+
+        # Pre-filtering frequencies. See obspy.core.trace.Trace.remove_response
+        # for details. Note: if f3 is Null it will be set to 0.9*fn, if f4 is
+        # Null it will be set to fn.
+        f1: 0.001
+        f2: 0.005
+        f3: Null
+        f4: Null
+
+        # Water level (dB) for deconvolution
+        water_level: 60
+
+    - detrend:
+        # Supported obspy methods (besides the baseline described below):
+        #     constant, demean, linear, polynomial, simple, spline
+        detrending_method: demean
+
+    - cut:
+        # No required options; the presence of this key just indicates when to
+        # cut the time series using the record start and signal end that were
+        # configured in the windows section.
+
+        # Optionally, can specify how many sections to include prior to the
+        # split between the noise and signal windows. If set to "Null" then
+        # the beginning of the record will be unchanged.
+        sec_before_split: 2.0
+
+    - taper:
+        # Taper to apply to trace.
+        type: hann
+        width: 0.05
+        side: both
+
+    - highpass_filter:
+        # Applies a Butterworth highpass filter using the highpass corner
+        # determined with 'corner_frequencies' section.
+        filter_order: 5
+        number_of_passes: 2
+
+    - lowpass_filter:
+        # Applies a Butterworth lowpass filter using the lowpass corner
+        # determined with 'corner_frequencies' section.
+        filter_order: 5
+        number_of_passes: 2
+
+    - detrend:
+        # The current baseline correction method fits a sixth-order polynomial
+        # to the displacement time series, and sets the zeroth- and first-order
+        # terms to be zero. The second derivative of the fit polynomial is then
+        # removed from the acceleration time series.
+        detrending_method: baseline_sixth_order
+

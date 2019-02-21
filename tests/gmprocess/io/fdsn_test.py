@@ -9,7 +9,7 @@ homedir = os.path.dirname(os.path.abspath(__file__))
 datadir = os.path.join(homedir, '..', '..', 'data', 'process')
 
 
-def test_fetch():
+def _test_fetch():
     nisqually_st = request_raw_waveforms('IRIS', '2001-02-28T18:54:32',
                                          47.149, -122.7266667,
                                          dist_max=0.4, after_time=120)[0]

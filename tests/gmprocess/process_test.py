@@ -11,6 +11,8 @@ from obspy import Trace
 
 # local imports
 from gmprocess import process
+
+
 from gmprocess.config import get_config
 
 homedir = os.path.dirname(os.path.abspath(__file__))
@@ -62,7 +64,7 @@ def test_corner_freqs():
     assert corners_4 == [-3, -3]
 
 
-def test_all():
+def _test_all():
     config = get_config()
     # Get our data directory
     event_time = UTCDateTime('2003-01-15T03:41:58')
@@ -147,7 +149,7 @@ def test_all():
     assert ALKI_processed.stats['passed_tests'] is False
 
 
-def test_horizontal_frequencies():
+def _test_horizontal_frequencies():
     config = get_config()
     event_time = UTCDateTime('2001-02-28T18:54:32')
     ALCT_tr1 = read(os.path.join(datadir, 'ALCTENE.UW..sac'))[0]

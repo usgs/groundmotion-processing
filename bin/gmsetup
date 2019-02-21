@@ -5,8 +5,8 @@ import shutil
 import argparse
 import pkg_resources
 import logging
-from configobj import ConfigObj
 
+from gmprocess.config import CONFIG_FILE
 from gmprocess.logging import setup_logger
 from gmprocess.args import add_shared_args
 
@@ -18,8 +18,8 @@ def main(args):
     home_path = os.path.expanduser("~")
     install_path = os.path.join(home_path, ".gmprocess")
     data_path = pkg_resources.resource_filename('gmprocess', 'data/')
-    install_conf_path = os.path.join(install_path, 'gmprocess.conf')
-    data_conf_path = os.path.join(data_path, 'gmprocess.conf')
+    install_conf_path = os.path.join(install_path, CONFIG_FILE)
+    data_conf_path = os.path.join(data_path, CONFIG_FILE)
 
     # Does the install dir exist?
     if not os.path.exists(install_path):
@@ -32,21 +32,7 @@ def main(args):
         shutil.copy2(data_conf_path, install_conf_path)
     else:
         # Load installed config
-        logging.info('Existing config file found, loading...')
-        old_config = ConfigObj(install_conf_path)
-
-        # Load data config file
-        logging.info('Loading current config from source code...')
-        new_config = ConfigObj(data_conf_path)
-
-        # Merge (to retain any conf changes in install)
-        logging.info(
-            'Merging configs retaining settings in existing config...')
-        new_config.merge(old_config)
-
-        # Overwrite
-        new_config.filename = install_conf_path
-        new_config.write()
+        logging.warning('Existing config file found. Nothing to do.')
 
 
 if __name__ == '__main__':
