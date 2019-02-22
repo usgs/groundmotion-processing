@@ -8,7 +8,7 @@ from gmprocess.io.asdf.core import is_asdf, read_asdf, write_asdf
 from gmprocess.io.asdf.asdf_utils import inventory_from_stream, get_event_info
 from gmprocess.io.read import read_data
 from gmprocess.stream import group_channels
-from gmprocess.process import process_config
+from gmprocess.processing import process_config
 import tempfile
 
 
