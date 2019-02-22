@@ -12,7 +12,6 @@ PICKER_CONFIG = get_config(picker=True)
 
 knet_data = os.path.join('../tests/data/process')
 data_path = pkg_resources.resource_filename('gmprocess', knet_data)
-print(data_path)
 
 
 def test_signal_split():
