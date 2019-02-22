@@ -6,9 +6,11 @@ import argparse
 import pkg_resources
 import logging
 
-from gmprocess.constants import CONFIG_FILE
+from gmprocess.constants import CONFIG_FILE, PICKER_FILE
 from gmprocess.logging import setup_logger
 from gmprocess.args import add_shared_args
+
+CONFIG_FILES = [CONFIG_FILE, PICKER_FILE]
 
 
 def main(args):
@@ -17,23 +19,29 @@ def main(args):
 
     home_path = os.path.expanduser("~")
     data_path = pkg_resources.resource_filename('gmprocess', 'data/')
-    install_conf_path = os.path.join(home_path, CONFIG_FILE)
-    data_conf_path = os.path.join(data_path, 'config.yml')
+
+    install_data_path_dict = {}
+
+    for config in CONFIG_FILES:
+        install_conf_path = os.path.join(home_path, CONFIG_FILE)
+        data_conf_path = os.path.join(data_path, CONFIG_FILE.split('/')[1])
+        install_data_path_dict[install_conf_path] = data_conf_path
 
     install_dir = os.path.join(home_path, ".gmprocess")
     if not os.path.exists(install_dir):
         os.makedirs(install_dir)
 
-    # Does a conf file already exist?
-    if not os.path.exists(install_conf_path):
-        # Copy from data dir
-        logging.info("No existing config found, installing config file...")
-        print('data_conf_path: %s' % data_conf_path)
-        print('install_conf_path: %s' % install_conf_path)
-        shutil.copy2(data_conf_path, install_conf_path)
-    else:
-        # Load installed config
-        logging.warning('Existing config file found. Nothing to do.')
+    # Do conf files already exist?
+    for install_conf_path, data_conf_path in install_data_path_dict.items():
+        if not os.path.exists(install_conf_path):
+            # Copy from data dir
+            logging.info("No existing config found, installing config file...")
+            print('data_conf_path: %s' % data_conf_path)
+            print('install_conf_path: %s' % install_conf_path)
+            shutil.copy2(data_conf_path, install_conf_path)
+        else:
+            # Load installed config
+            logging.warning('Existing config file found. Nothing to do.')
 
 
 if __name__ == '__main__':

@@ -28,7 +28,7 @@ PICKER_CONFIG = get_config(picker=True)
 
 def signal_split(
         st, event_time=None, event_lon=None, event_lat=None,
-        method='velocity', vsplit=7.0):
+        method='velocity', vsplit=7.0, picker_config=None):
     """
     This method tries to identifies the boundary between the noise and signal
     for the waveform. The split time is placed inside the
@@ -62,9 +62,11 @@ def signal_split(
         trace with stats dict updated to include a
         stats['processing_parameters']['signal_split'] dictionary.
     """
+    if picker_config is None:
+        picker_config = PICKER_CONFIG
 
     if method == 'p_arrival':
-        preferred_picker = PICKER_CONFIG['order_of_preference'][0]
+        preferred_picker = picker_config['order_of_preference'][0]
 
         if preferred_picker == 'ar':
             # Get the east, north, and vertical components from the stream
@@ -77,32 +79,37 @@ def signal_split(
             if len(st_e) != 1 or len(st_n) != 1 or len(st_z) != 1:
                 logging.warning('Unable to perform AR picker.')
                 logging.warning('Using next available phase picker.')
-                preferred_picker = PICKER_CONFIG['order_of_preference'][1]
+                preferred_picker = picker_config['order_of_preference'][1]
             else:
-                # TODO: convert to appropriate time / samples if needed
-                tsplit = ar_pick(st_z[0].data, st_n[0].data, st_e[0].data,
-                                 st_z[0].stats.sampling_rate,
-                                 **PICKER_CONFIG['ar'])[0]
+                tdiff = ar_pick(st_z[0].data, st_n[0].data, st_e[0].data,
+                                st_z[0].stats.sampling_rate,
+                                **picker_config['ar'])[0]
+                tsplit = st[0].stats.starttime + tdiff
 
         if preferred_picker in ['baer', 'cwb']:
-            ppicks = []
+            tdiffs = []
             for tr in st:
                 if preferred_picker == 'baer':
-                    tr_ppick = pk_baer(tr.data, **PICKER_CONFIG['baer'])
+                    pick_sample = pk_baer(tr.data, tr.stats.sampling_rate,
+                                          **picker_config['baer'])[0]
+                    tr_tdiff = pick_sample * tr.stats.delta
                 else:
-                    tr_ppick = PowerPicker(tr)[0]
-                ppicks.append(tr_ppick)
-            tsplit = np.mean(ppicks)
-        else:
+                    tr_tdiff = PowerPicker(tr)[0] - tr.stats.starttime
+                tdiffs.append(tr_tdiff)
+            tdiff = min(tdiffs)
+            tsplit = st[0].stats.starttime + tdiff
+
+        if preferred_picker not in ['ar', 'baer', 'cwb']:
             raise ValueError('Not a valid picker.')
 
     elif method == 'velocity':
         epi_dist = gps2dist_azimuth(
             lat1=event_lat,
             lon1=event_lon,
-            lat2=tr.stats['coordinates']['latitude'],
-            lon2=tr.stats['coordinates']['longitude'])[0]/1000.0
+            lat2=st[0].stats['coordinates']['latitude'],
+            lon2=st[0].stats['coordinates']['longitude'])[0]/1000.0
         tsplit = event_time + epi_dist / vsplit
+        preferred_picker = None
     else:
         raise ValueError('Split method must be "p_arrival" or "velocity"')
 
@@ -110,9 +117,11 @@ def signal_split(
     split_params = {
         'split_time': tsplit,
         'method': method,
-        'vsplit': vsplit
+        'vsplit': vsplit,
+        'picker_type': preferred_picker
     }
-    tr = _update_params(tr, 'signal_split', split_params)
+    for tr in st:
+        tr = _update_params(tr, 'signal_split', split_params)
 
     return st
 
