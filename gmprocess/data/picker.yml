@@ -1,0 +1,64 @@
+# Options for phase pickers
+
+# Order of preference for the phase pickers. If the first choice picker fails,
+# then the following picker will be used, and so on.
+order_of_preference:
+    - ar
+    - baer
+    - cwb
+
+# Options for obspy.signal.trigger.ar_pick()
+ar:
+    # Frequency of the lower bandpass window (Hz)
+    f1: 1.0
+
+    # Frequency of the upper bandpass window (Hz)
+    f2: 20.0
+
+    # Length of LTA for the P arrival (seconds)
+    lta_p: 1.0
+
+    # Length of STA for the P arrival (seconds)
+    sta_p: 0.1
+
+    # Length of LTA for the S arrival (seconds)
+    lta_s: 4.0
+
+    # Length of STA for the S arrival (seconds)
+    sta_s: 1.0
+
+    # Number of AR coefficients for the P arrival
+    m_p: 2
+
+    # Number of AR coefficients for the S arrival
+    m_s: 8
+
+    # Length of variance window for the P arrival (seconds)
+    l_p: 0.1
+
+    # Length of variance window for the S arrival (seconds)
+    l_s: 0.2
+
+    # If True, also pick the S phase. Otherwise only the P phase.
+    s_pick: False
+
+
+# Options for obspy.signal.trigger.pk_baer()
+baer:
+    # If dtime exceeds tdownmax, the trigger is examined for validity
+    tdownmax: 20
+
+    # Minimum number of samples for itrm to be accepted as a pick
+    tupevent: 60
+
+    # Threshold to trigger for pick (c.f. paper)
+    thr1: 7.0
+
+    # Threshold for updating sigma
+    thr2: 12.0
+
+    # Number of points taken for the estimation of variance of SF(t) on preset()
+    preset_len: 100
+
+    # Time interval for which the maximum amplitude is evaluated
+    p_dur: 100
