@@ -8,11 +8,19 @@ import glob
 
 sourcefiles = ["gmprocess/metrics/oscillators.pyx",
                "gmprocess/metrics/cfuncs.c"]
+ko_sourcefiles = ["gmprocess/smoothing/konno_ohmachi.pyx",
+                  "gmprocess/smoothing/smoothing.c"]
 
 ext_modules = [
     Extension(
         "gmprocess.metrics.oscillators",
         sourcefiles,
+        libraries=["m"],
+        include_dirs=[numpy.get_include()],
+        extra_compile_args=["-Ofast"]),
+    Extension(
+        "gmprocess.smoothing.konno_ohmachi",
+        ko_sourcefiles,
         libraries=["m"],
         include_dirs=[numpy.get_include()],
         extra_compile_args=["-Ofast"])
@@ -40,7 +48,8 @@ setup(
         'gmprocess.io.usc',
         'gmprocess.metrics',
         'gmprocess.metrics.imt',
-        'gmprocess.metrics.imc'],
+        'gmprocess.metrics.imc',
+        'gmprocess.smoothing'],
     package_data={
         'gmprocess':
             glob.glob('gmprocess/data/*')
