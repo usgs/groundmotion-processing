@@ -21,6 +21,7 @@ def get_config():
         fmt = ('Missing config file %s, please run gmsetup to install '
                'default config file.')
         logging.info(fmt % config_file)
+        config = None
     else:
         with open(config_file, 'r') as f:
             config = yaml.load(f)

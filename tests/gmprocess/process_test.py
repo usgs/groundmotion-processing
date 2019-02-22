@@ -228,5 +228,5 @@ if __name__ == '__main__':
     test_split()
     test_amp_check_trim()
     test_corner_freqs()
-    test_all()
-    test_horizontal_frequencies()
+    # test_all()
+    # test_horizontal_frequencies()
