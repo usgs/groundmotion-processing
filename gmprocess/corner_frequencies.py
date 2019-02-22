@@ -57,7 +57,8 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
         bandwidth (float):
             Konno-Omachi  bandwidth parameter "b".
         same_horiz (bool):
-            If True,
+            If True, horizontal traces in the stream must have the same
+            corner frequencies.
 
     Returns:
         stream: stream with selected corner frequencies appended to records.
@@ -141,16 +142,18 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
             st.remove(tr)
 
     if same_horiz:
+
+        st_horiz = st.select(channel='??[12EN]')
         # Make sure that horiztontal traces in the stream have the same corner
         # frequencies, if desired.
         highpass_freqs = [tr.stats.processing_parameters.corner_frequencies
-                            .highpass for tr in st]
+                            .highpass for tr in st_horiz]
         lowpass_freqs = [tr.stats.processing_parameters.corner_frequencies
-                           .lowpass for tr in st]
+                           .lowpass for tr in st_horiz]
 
         # For all traces in the stream, set highpass corner to highest high
         # and set the lowpass corner to the lowest low
-        for tr in st:
+        for tr in st_horiz:
             tr.stats.processing_parameters \
               .corner_frequencies.highpass = max(highpass_freqs)
             tr.stats.processing_parameters \
