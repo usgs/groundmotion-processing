@@ -10,3 +10,5 @@ htmlcov
 gmprocess.egg-info/
 .pytest_cache
 *.so
+gmprocess/smoothing/konno_ohmachi.c
+gmprocess/metrics/oscillators.c
