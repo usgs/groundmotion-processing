@@ -3,6 +3,7 @@
 # stdlib imports
 import numpy as np
 import logging
+from collections import OrderedDict
 
 # third party imports
 from obspy.core.stream import Stream
@@ -142,7 +143,8 @@ def check_max_amplitude(trace, min_amp=10e-7, max_amp=5e3):
         bool: True if trace passes the check. False otherwise.
     """
     amplitude = {'min': min_amp, 'max': max_amp}
-    trace = _update_params(trace, 'amplitude', amplitude)
+    # commenting this out because it does not modify the data in any way
+    # trace = _update_params(trace, 'amplitude', amplitude)
     if (abs(trace.max()) >= min_amp and abs(trace.max()) <= max_amp):
         return True
     else:
@@ -191,9 +193,6 @@ def trim_total_window(trace, org_time, epi_dist, vmin=1.0):
         trace (obspy.core.trace.Trace) after windowing.
         If trim failure occurs: -1
     """
-    window = {'vmin': vmin}
-    trace = _update_params(trace, 'window', window)
-
     end_time = org_time + max(120, epi_dist / vmin)
     # Check to make sure that the trimming end time is after
     # the start time of our trace
@@ -201,6 +200,9 @@ def trim_total_window(trace, org_time, epi_dist, vmin=1.0):
         return -1
     else:
         trace.trim(endtime=end_time)
+        window_params = {'start_time':trace.stats.starttime,
+                         'end_time':trace.stats.endtime}
+        trace = _update_params(trace, 'window', window_params)
         return trace
 
 
@@ -399,7 +401,8 @@ def get_corner_frequencies(
             'default_high_frequency': corner_frequencies[1],
             'default_low_frequency': corner_frequencies[0]
         }
-        trace = _update_params(trace, 'corners', corners)
+        # retrieving corner frequencies does not alter the data
+        # trace = _update_params(trace, 'corners', corners)
         return corner_frequencies
 
 
@@ -595,30 +598,30 @@ def process(stream, amp_min, amp_max, sta_len, lta_len, sta_lta_threshold,
     for trace in stream:
         trace_copy = trace.copy()
         # The stats need to be set even if the process checks fail
-        trace_copy = _update_params(
-            trace_copy, 'amplitude', {
-                'min': amp_min,
-                'max': amp_min
-            })
-        trace_copy = _update_params(
-            trace_copy, 'window',
-            {'vmin': vmin})
-        trace_copy = _update_params(
-            trace_copy, 'taper',
-            {'type': taper_type,
-             'side': taper_side, 'max_percentage': taper_percentage
-             })
-        trace_copy = _update_params(
-            trace_copy, 'corners',
-            {
-                'get_dynamically': get_corners, 'sn_ratio': sn_ratio,
-                'max_low_freq': max_low_freq, 'min_high_freq': min_high_freq,
-                'default_low_frequency': default_low_frequency,
-                'default_high_frequency': default_high_frequency
-            })
-        trace_copy = _update_params(trace_copy, 'filters', [])
-        trace_copy = _update_params(trace_copy, 'baseline_correct',
-                                    baseline_correct)
+        # trace_copy = _update_params(
+        #     trace_copy, 'amplitude', {
+        #         'min': amp_min,
+        #         'max': amp_min
+        #     })
+        # trace_copy = _update_params(
+        #     trace_copy, 'window',
+        #     {'vmin': window_vmin})
+        # trace_copy = _update_params(
+        #     trace_copy, 'taper',
+        #     {'type': taper_type,
+        #      'side': taper_side, 'max_percentage': taper_percentage
+        #      })
+        # trace_copy = _update_params(
+        #     trace_copy, 'corners',
+        #     {
+        #         'get_dynamically': get_corners, 'sn_ratio': sn_ratio,
+        #         'max_low_freq': max_low_freq, 'min_high_freq': min_high_freq,
+        #         'default_low_frequency': default_low_frequency,
+        #         'default_high_frequency': default_high_frequency
+        #     })
+        # trace_copy = _update_params(trace_copy, 'filters', [])
+        # trace_copy = _update_params(trace_copy, 'baseline_correct',
+        #                             baseline_correct)
         trace_copy.stats['passed_tests'] = True
 
         # Check amplitude
@@ -662,8 +665,8 @@ def process(stream, amp_min, amp_max, sta_len, lta_len, sta_lta_threshold,
                        'event time and/or epicentral distance information to '
                        'perform calculation.')
             trace_copy = _update_comments(trace_copy, err_msg)
-            trace_copy = _update_params(trace_copy, 'window',
-                                        {'vmin': vmin})
+            # trace_copy = _update_params(trace_copy, 'window',
+            #                             {'vmin': window_vmin})
             trace_trim = trace_copy
             # Corners cannot be calculated dynamically without windowing
             logging.warning('Missing event information. Continuing processing '
@@ -906,6 +909,6 @@ def _update_params(trace, process_type, parameters):
         obspy.core.trace.Trace: Trace with updated processing_parameters.
     """
     if 'processing_parameters' not in trace.stats:
-        trace.stats['processing_parameters'] = {}
+        trace.stats['processing_parameters'] = OrderedDict()
     trace.stats['processing_parameters'][process_type] = parameters
     return trace

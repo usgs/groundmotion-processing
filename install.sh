@@ -120,6 +120,7 @@ package_list=(
     "impactutils"
     "ipython"
     "jupyter"
+    "libcomcat"
     "lxml"
     "matplotlib"
     "numpy>=1.14"

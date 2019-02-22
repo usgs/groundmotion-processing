@@ -2,10 +2,13 @@ import pyasdf
 import h5py
 import numpy as np
 
+from .asdf_utils import inventory_from_stream, stats_from_inventory
+from .provenance import get_provenance, extract_provenance
+
 
 def is_asdf(filename):
     try:
-        f = h5py.File(filename,'r')  
+        f = h5py.File(filename, 'r')
         if 'AuxiliaryData' in f:
             return True
         else:
@@ -16,7 +19,24 @@ def is_asdf(filename):
 
 
 def read_asdf(filename):
-    pass
+    ds = pyasdf.ASDFDataSet(filename)
+    streams = []
+    for waveform in ds.waveforms:
+        inventory = waveform['StationXML']
+        channel_stats = stats_from_inventory(inventory)
+        tags = waveform.get_waveform_tags()
+        for tag in tags:
+            stream = waveform[tag].copy()
+            for trace in stream:
+                stats = channel_stats[trace.stats.channel]
+                trace.stats['coordinates'] = stats['coordinates']
+                trace.stats['standard'] = stats['standard']
+                if 'format_specific' in stats:
+                    trace.stats = stats['format_specific']
+            if tag in ds.provenance.list():
+                provdoc = ds.provenance[tag]
+                extract_provenance(provdoc)
+            streams.append(stream)
 
 
 def write_asdf(filename, streams, event=None):
@@ -46,24 +66,15 @@ def write_asdf(filename, streams, event=None):
         else:
             tag = '%s_1' % station.lower()
             level = 'processed'
-        ds.add_waveforms(stream, tag=tag, event_id=event)
-        stats_extras = ['coordinates', 'standard',
-                        'format_specific', 'processing_parameters']
-        for trace in stream:
-            network = trace.stats['network']
-            channel = trace.stats['channel']
-            for extra in stats_extras:
-                if extra not in trace.stats:
-                    continue
-                path = '%s_%s/%s/%s/%s' % (network, station, channel, level, extra)
-                data_type_str = '%sXXX%s' % (network.upper(), station)
-                try:
-                    ds.add_auxiliary_data(np.zeros((1,1)),
-                                        data_type=data_type_str,
-                                        path=path,
-                                        parameters=dict(trace.stats[extra]))
-                except Exception as e:
-                    x = 1
+        ds.add_waveforms(stream, tag=tag, event_id=eventobj)
+
+        if level == 'processed':
+            provdocs = get_provenance(stream)
+            for provdoc in provdocs:
+                ds.add_provenance_document(provdoc, name=tag)
+
+        inventory = inventory_from_stream(stream)
+        ds.add_stationxml(inventory)
 
     # no close or other method for ASDF data sets?
     # this may force closing of the file...
