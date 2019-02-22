@@ -5,6 +5,7 @@ Helper functions for windowing singal and noise in a trace.
 from importlib import import_module
 import pkg_resources
 import yaml
+import logging
 
 import numpy as np
 
@@ -15,12 +16,14 @@ from openquake.hazardlib import const
 from openquake.hazardlib import imt
 
 from obspy.geodetics.base import gps2dist_azimuth
+from obspy.signal.trigger import ar_pick, pk_baer
 
 from gmprocess.phase import PowerPicker
 from gmprocess.utils import _update_params
 from gmprocess.config import get_config
 
 CONFIG = get_config()
+PICKER_CONFIG = get_config(picker=True)
 
 
 def signal_split(
@@ -38,7 +41,7 @@ def signal_split(
     If split_method is equal to 'p_arrival', then the P-wave arrival is
     used as the split between the noise and signal windows. Multiple picker
     methods are suppored and can be configured in the config file
-    '~/.gmprocess/picker.conf' (TODO!).
+    '~/.gmprocess/picker.yml
 
     Args:
         st (obspy.core.stream.Stream):
@@ -59,27 +62,58 @@ def signal_split(
         trace with stats dict updated to include a
         stats['processing_parameters']['signal_split'] dictionary.
     """
-    for tr in st:
-        if method == 'p_arrival':
-            p_picks = PowerPicker(tr)
-            time_to_split = p_picks[0]
-        elif method == 'velocity':
-            epi_dist = gps2dist_azimuth(
-                lat1=event_lat,
-                lon1=event_lon,
-                lat2=tr.stats['coordinates']['latitude'],
-                lon2=tr.stats['coordinates']['longitude'])[0]/1000.0
-            time_to_split = event_time + epi_dist / vsplit
-        else:
-            raise ValueError('Split method must be "p_arrival" or "velocity"')
 
-        # Update trace params
-        split_params = {
-            'split_time': time_to_split,
-            'method': method,
-            'vsplit': vsplit
-        }
-        tr = _update_params(tr, 'signal_split', split_params)
+    if method == 'p_arrival':
+        preferred_picker = PICKER_CONFIG['order_of_preference'][0]
+
+        if preferred_picker == 'ar':
+            # Get the east, north, and vertical components from the stream
+            st_e = st.select(channel='??[E1]')
+            st_n = st.select(channel='??[N2]')
+            st_z = st.select(channel='??[Z3]')
+
+            # Check if we found one of each component
+            # If not, use the next picker in the order of preference
+            if len(st_e) != 1 or len(st_n) != 1 or len(st_z) != 1:
+                logging.warning('Unable to perform AR picker.')
+                logging.warning('Using next available phase picker.')
+                preferred_picker = PICKER_CONFIG['order_of_preference'][1]
+            else:
+                # TODO: convert to appropriate time / samples if needed
+                tsplit = ar_pick(st_z[0].data, st_n[0].data, st_e[0].data,
+                                 st_z[0].stats.sampling_rate,
+                                 **PICKER_CONFIG['ar'])[0]
+
+        if preferred_picker in ['baer', 'cwb']:
+            ppicks = []
+            for tr in st:
+                if preferred_picker == 'baer':
+                    tr_ppick = pk_baer(tr.data, **PICKER_CONFIG['baer'])
+                else:
+                    tr_ppick = PowerPicker(tr)[0]
+                ppicks.append(tr_ppick)
+            tsplit = np.mean(ppicks)
+        else:
+            raise ValueError('Not a valid picker.')
+
+    elif method == 'velocity':
+        epi_dist = gps2dist_azimuth(
+            lat1=event_lat,
+            lon1=event_lon,
+            lat2=tr.stats['coordinates']['latitude'],
+            lon2=tr.stats['coordinates']['longitude'])[0]/1000.0
+        tsplit = event_time + epi_dist / vsplit
+    else:
+        raise ValueError('Split method must be "p_arrival" or "velocity"')
+
+    # Update trace params
+    split_params = {
+        'split_time': tsplit,
+        'method': method,
+        'vsplit': vsplit
+    }
+    tr = _update_params(tr, 'signal_split', split_params)
+
     return st
 
 
