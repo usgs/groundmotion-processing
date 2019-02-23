@@ -62,7 +62,7 @@ pretesting:
 #    |____________________|_/  \  /\    /    \/\____|
 #    |                    |     \/  \  /            |
 #    |                    |          \/             |
-# 
+#
 #    record_start       split              signal_end
 windows:
 
@@ -116,6 +116,7 @@ corner_frequencies:
         max_low_freq: 0.2
         min_high_freq: 5.0
         bandwidth: 20.0
+        same_horiz: True
 
 # -----------------------------------------------------------------------------
 # This section is for processing steps that will affect the waveform and get
@@ -176,4 +177,3 @@ processing:
         # terms to be zero. The second derivative of the fit polynomial is then
         # removed from the acceleration time series.
         detrending_method: baseline_sixth_order
-

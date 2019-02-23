@@ -42,7 +42,7 @@ def constant(st):
 
 
 def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
-        bandwidth=20.0):
+        bandwidth=20.0, same_horiz=True):
     """Use constant corner frequencies across all records.
 
     Args:
@@ -56,6 +56,9 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
             Minimum high frequency for SNR to exceed threshold.
         bandwidth (float):
             Konno-Omachi  bandwidth parameter "b".
+        same_horiz (bool):
+            If True, horizontal traces in the stream must have the same
+            corner frequencies.
 
     Returns:
         stream: stream with selected corner frequencies appended to records.
@@ -125,18 +128,6 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
                 high_corner = highs[idx]
                 found_valid = True
 
-        # If we find an extra low, add another high for the maximum frequency
-        if len(lows) > len(highs):
-            highs.append(max(freqs_signal))
-
-        # Check if any of the low/high pairs are valid
-        found_valid = False
-        for idx, val in enumerate(lows):
-            if (val <= max_low_freq and highs[idx] > min_high_freq):
-                low_corner = val
-                high_corner = highs[idx]
-                found_valid = True
-
         if found_valid:
             tr = _update_params(
                 tr, 'corner_frequencies',
@@ -149,6 +140,25 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
         else:
             logging.info('Removing trace: %s (failed SNR check)' % tr)
             st.remove(tr)
+
+    if same_horiz:
+
+        st_horiz = st.select(channel='??[12EN]')
+        # Make sure that horiztontal traces in the stream have the same corner
+        # frequencies, if desired.
+        highpass_freqs = [tr.stats.processing_parameters.corner_frequencies
+                            .highpass for tr in st_horiz]
+        lowpass_freqs = [tr.stats.processing_parameters.corner_frequencies
+                           .lowpass for tr in st_horiz]
+
+        # For all traces in the stream, set highpass corner to highest high
+        # and set the lowpass corner to the lowest low
+        for tr in st_horiz:
+            tr.stats.processing_parameters \
+              .corner_frequencies.highpass = max(highpass_freqs)
+            tr.stats.processing_parameters \
+              .corner_frequencies.lowpass = min(lowpass_freqs)
+
     return st
 
 
