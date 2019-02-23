@@ -2,7 +2,9 @@ import pyasdf
 import h5py
 import numpy as np
 
-from .asdf_utils import inventory_from_stream, stats_from_inventory
+from .asdf_utils import (inventory_from_stream,
+                         stats_from_inventory,
+                         get_event_info)
 from .provenance import get_provenance, extract_provenance
 
 
@@ -35,8 +37,10 @@ def read_asdf(filename):
                     trace.stats = stats['format_specific']
             if tag in ds.provenance.list():
                 provdoc = ds.provenance[tag]
-                extract_provenance(provdoc)
+                processing_params, software = extract_provenance(provdoc)
+                trace.stats['processing_params'] = processing_params
             streams.append(stream)
+    return streams
 
 
 def write_asdf(filename, streams, event=None):
@@ -45,13 +49,15 @@ def write_asdf(filename, streams, event=None):
     Args:
         filename (str): Path to the HDF file that should contain stream data.
         streams (list): List of Obspy Streams that should be written into the file.
-        event (Obspy Event): Obspy event object.
+        event (Obspy Event or dict): Obspy event object or dict (see get_event_dict())
     """
     ds = pyasdf.ASDFDataSet(filename, compression="gzip-3")
 
     # add event information to the dataset
     eventobj = None
     if event is not None:
+        if isinstance(event, dict):
+            event = get_event_info(event)
         ds.add_quakeml(event)
         eventobj = ds.events[0]
 

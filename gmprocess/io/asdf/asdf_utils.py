@@ -30,16 +30,21 @@ UNUSED_STANDARD_PARAMS = ['instrument_period',
                           'corner_frequency']
 
 
+def get_event_dict(eventid):
+    dict_or_id = get_event_by_id(eventid)
+    event_dict = {'id': dict_or_id.id,
+                  'time': UTCDateTime(dict_or_id.time),
+                  'lat': dict_or_id.latitude,
+                  'lon': dict_or_id.longitude,
+                  'depth': dict_or_id.depth,
+                  'magnitude': dict_or_id.magnitude,
+                  }
+    return event_dict
+
+
 def get_event_info(dict_or_id):
     if isinstance(dict_or_id, str):
-        dict_or_id = get_event_by_id(dict_or_id)
-        event_dict = {'id': dict_or_id.id,
-                      'time': UTCDateTime(dict_or_id.time),
-                      'lat': dict_or_id.latitude,
-                      'lon': dict_or_id.longitude,
-                      'depth': dict_or_id.depth,
-                      'magnitude': dict_or_id.magnitude,
-                      }
+        event_dict = get_event_dict(dict_or_id)
     elif isinstance(dict_or_id, dict):
         event_dict = dict_or_id.copy()
     else:
@@ -65,7 +70,9 @@ def channel_from_stats(stats):
                           serial_number=stats.standard.sensor_serial_number)
     depth = 0.0
     azimuth = None
-    if not np.isnan(stats.standard.horizontal_orientation):
+    c1 = 'horizontal_orientation' in stats.standard
+    c2 = c1 and not np.isnan(stats.standard.horizontal_orientation)
+    if c2:
         azimuth = stats.standard.horizontal_orientation
 
     response = None
@@ -167,7 +174,7 @@ def inventory_from_stream(stream):
 
     format_specific = {}
     if 'format_specific' in stream[0].stats:
-        format_specific = stream[0].stats.format_specific
+        format_specific = dict(stream[0].stats.format_specific)
 
     big_dict = {'standard': subdict,
                 'format_specific': format_specific}

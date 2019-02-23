@@ -5,10 +5,12 @@ import glob
 import shutil
 import numpy as np
 from gmprocess.io.asdf.core import is_asdf, read_asdf, write_asdf
-from gmprocess.io.asdf.asdf_utils import inventory_from_stream, get_event_info
+from gmprocess.io.asdf.asdf_utils import (inventory_from_stream,
+                                          get_event_info, get_event_dict)
 from gmprocess.io.read import read_data
 from gmprocess.stream import group_channels
-from gmprocess.processing import process_config
+from gmprocess.processing import process_streams
+from gmprocess.config import get_config
 import tempfile
 
 
@@ -16,37 +18,39 @@ def dummy_test():
     # where is this script?
     homedir = os.path.dirname(os.path.abspath(__file__))
     datadir = os.path.join(homedir, '..', '..', '..', 'data', 'asdf')
-    knetdir = os.path.join(homedir, '..', '..', '..', 'data', 'knet')
+    netdir = os.path.join(homedir, '..', '..', '..', 'data', 'geonet')
     tdir = tempfile.mkdtemp()
     eventid = 'us2000cnnl'
     try:
         tfile = os.path.join(tdir, 'test.hdf')
 
         streams = []
-        knetfiles = glob.glob(os.path.join(knetdir, 'AO*'))
-        for knetfile in knetfiles:
-            stream = read_data(knetfile)
-            streams.append(stream)
-
-        raw_streams = group_channels(streams)
+        netfile = os.path.join(netdir, '20161113_110259_WTMC_20.V1A')
+        stream = read_data(netfile)
+        streams.append(stream)
 
         # test the inventory_from_stream method
-        inventory = inventory_from_stream(raw_streams[0])
+        inventory = inventory_from_stream(streams[0])
         sfile = os.path.join(tdir, 'station.xml')
         inventory.write(sfile, format="stationxml", validate=True)
 
-        process_streams = []
-        for raw_stream in raw_streams:
-            process_stream = process_config(raw_stream)
-            process_streams.append(process_stream)
+        config = get_config()
+        processing = config['processing']
+        idx = -1
+        for i in range(0, len(processing)):
+            process = processing[i]
+            if 'remove_response' in process:
+                idx = i
+                break
+        processing.pop(idx)
 
-        process_streams = group_channels(process_streams)
+        origin = get_event_dict(eventid)
 
-        all_streams = raw_streams + process_streams
+        processed_streams = process_streams(streams, origin, config=config)
 
-        event = get_event_info(eventid)
+        all_streams = streams + processed_streams
 
-        write_asdf(tfile, all_streams, event=event)
+        write_asdf(tfile, all_streams, event=origin)
 
         assert is_asdf(tfile)
 
