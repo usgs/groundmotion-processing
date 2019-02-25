@@ -1,7 +1,8 @@
-.. warning::
+Warning
+=======
 
-   This repository is currently under development so the functionality
-   and organization of the code is changing rapidly.
+This repository is currently under development so the functionality and
+organization of the code is changing rapidly.
 
 
 +---------------+----------------------+ 
@@ -54,7 +55,7 @@ Current functionality includes:
   processing ground motion records. We are working towards logging each
   processing step with the
   `SEIS-PROV <http://seismicdata.github.io/SEIS-PROV/index.html>`_
-  standard
+  provenance standard.
 - We are also working towards storing records, event/station metadata, and
   provenance information in the
   `ASDF <https://seismic-data.org/>`_ format. 
