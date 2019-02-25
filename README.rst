@@ -34,8 +34,6 @@ organization of the code is changing rapidly.
 
 groundmotion-processing
 =======================
-Read and process ground motion amplitude data.
-
 
 
 Introduction
