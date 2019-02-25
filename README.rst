@@ -40,17 +40,17 @@ Introduction
 ------------
 This is a project designed to provide a number of functions related to parsing
 and processing ground motion data, building on top of the 
-`obspy <https://github.com/obspy/obspy/wiki>`_
+`ObsPy <https://github.com/obspy/obspy/wiki>`_
 library. Most of the extensions that we provide are to handle strong motion
 data and related issues.
 
 Current functionality includes:
 
-- Readers for a variety of formats not supported by obspy. See the
-  `gmprocess.io` subpackage. All readers return obspy streams.
+- Readers for a variety of formats not supported by ObsPy. See the
+  `gmprocess.io` subpackage. All readers return ObsPy streams.
 - Ground motion record summary methods (i.e., intensity measures, or metrics)
   in `gmprocess.metrics` subpackage.
-- The `gmprocess.processing.py` module uses obspy and our own methods for
+- The `gmprocess.processing.py` module uses ObsPy and our own methods for
   processing ground motion records. We are working towards logging each
   processing step with the
   `SEIS-PROV <http://seismicdata.github.io/SEIS-PROV/index.html>`_
@@ -79,7 +79,7 @@ Developer notes
 
 Readers
 ~~~~~~~
-The data file readers are modeled after obspy file readers, and have a
+The data file readers are modeled after ObsPy file readers, and have a
 standard interface.
 
 Data file readers are located in `gmprocess/io/[format]/core.py`.
@@ -93,7 +93,7 @@ This core.py module should take the following form:
         # return True if file is correct type, False otherwise.
 
     def read_format(filename,**kwargs):
-        # code to read file and return an obspy Stream object.
+        # code to read file and return an ObsPy Stream object.
 
 
 Intensity measurement types
