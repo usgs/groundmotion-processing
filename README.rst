@@ -1,5 +1,9 @@
-.. WARNING::
-   This repository is currently under development and so functionality may change rapidly.
+Warning
+=======
+
+This repository is currently under development so the functionality and
+organization of the code is changing rapidly.
+
 
 +---------------+----------------------+ 
 | Linux build   | |Travis|             | 
@@ -30,14 +34,29 @@
 
 groundmotion-processing
 =======================
-Read and process ground motion amplitude data.
-
 
 
 Introduction
 ------------
 This is a project designed to provide a number of functions related to parsing
-and processing strong ground motion data.
+and processing ground motion data, building on top of the obspy library. Most of
+the extensions that we provide are to handle strong motion data and related
+issues.
+
+Current functionality includes:
+
+- Readers for a variety of formats not supported by obspy. See the
+  `gmprocess.io` subpackage. All readers return obspy streams.
+- Ground motion record summary methods (i.e., intensity measures, or metrics)
+  in `gmprocess.metrics` subpackage.
+- The `gmprocess.processing.py` module uses obspy and our own methods for
+  processing ground motion records. We are working towards logging each
+  processing step with the
+  `SEIS-PROV <http://seismicdata.github.io/SEIS-PROV/index.html>`_
+  provenance standard.
+- We are also working towards storing records, event/station metadata, and
+  provenance information in the
+  `ASDF <https://seismic-data.org/>`_ format. 
 
 
 Installation and Dependencies
@@ -50,6 +69,8 @@ Installation and Dependencies
   including python and the required python libraries. It is regularly tested
   on OSX, CentOS, and Ubuntu.
 - Alternative install with conda: `conda install gmprocess`
+- Run `gmsetup` to install config files in the `.gmprocess` subdirectory under
+  the home directory.
 
 
 Developer notes
@@ -57,7 +78,8 @@ Developer notes
 
 Readers
 ~~~~~~~
-The data file readers are modeled after obspy file readers, and have a standard interface.
+The data file readers are modeled after obspy file readers, and have a
+standard interface.
 
 Data file readers are located in `gmprocess/io/[format]/core.py`.
 
