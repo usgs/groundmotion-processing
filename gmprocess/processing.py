@@ -18,24 +18,26 @@ from gmprocess import corner_frequencies
 
 CONFIG = get_config()
 
-TAPER_TYPES = {'cosine': 'Cosine',
-               'barthann': 'Bartlett-Hann',
-               'bartlett': 'Bartlett',
-               'blackman': 'Blackman',
-               'blackmanharris': 'Blackman-Harris',
-               'bohman': 'Bohman',
-               'boxcar': 'Boxcar',
-               'chebwin': 'Dolph-Chebyshev',
-               'flattop': 'Flat top',
-               'gaussian': 'Gaussian',
-               'general_gaussian': 'Generalized Gaussian',
-               'hamming': 'Hamming',
-               'hann': 'Hann',
-               'kaiser': 'Kaiser',
-               'nuttall': 'Blackman-Harris according to Nuttall',
-               'parzen': 'Parzen',
-               'slepian': 'Slepian',
-               'triang': 'Triangular'}
+TAPER_TYPES = {
+    'cosine': 'Cosine',
+    'barthann': 'Bartlett-Hann',
+    'bartlett': 'Bartlett',
+    'blackman': 'Blackman',
+    'blackmanharris': 'Blackman-Harris',
+    'bohman': 'Bohman',
+    'boxcar': 'Boxcar',
+    'chebwin': 'Dolph-Chebyshev',
+    'flattop': 'Flat top',
+    'gaussian': 'Gaussian',
+    'general_gaussian': 'Generalized Gaussian',
+    'hamming': 'Hamming',
+    'hann': 'Hann',
+    'kaiser': 'Kaiser',
+    'nuttall': 'Blackman-Harris according to Nuttall',
+    'parzen': 'Parzen',
+    'slepian': 'Slepian',
+    'triang': 'Triangular'
+}
 
 
 def process_streams(streams, origin, config=None):
@@ -78,19 +80,20 @@ def process_streams(streams, origin, config=None):
     streams_passed = []
 
     for stream in streams:
-        # Make a copy because python sucks
-        sp = stream.copy()
 
         # STA/LTA check
         logging.debug('len(stream): %s (before stalta)' % len(stream))
-        sp = pretesting.check_sta_lta(sp, **stalta_args)
-        logging.debug('len(sp): %s (after stalta)' % len(sp))
+        sta_lta_result = pretesting.check_sta_lta(stream, **stalta_args)
 
         # Aplitude check
-        sp = pretesting.check_max_amplitude(sp, **amplitude_args)
-        logging.debug('len(sp): %s (after amp check)' % len(sp))
-        if len(sp) > 0:
-            streams_passed.append(sp)
+        amp_result = pretesting.check_max_amplitude(stream, **amplitude_args)
+
+        if sta_lta_result and amp_result:
+            streams_passed.append(stream.copy())
+        else:
+            logging.info(
+                "The following stream did not pass pre-testing checks: %s"
+                % stream)
 
     if len(streams_passed) == 0:
         logging.info('No streams passed pre-testing checks. Exiting.')
@@ -98,6 +101,7 @@ def process_streams(streams, origin, config=None):
 
     # -------------------------------------------------------------------------
     # Begin noise/signal window steps
+
     logging.info('Windowing noise and signal...')
     window_conf = config['windows']
 
@@ -230,14 +234,18 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                 }
             )
         elif tr.stats.channel[1] == 'N':
-            tr.remove_sensitivity(inventory=inv)
-            tr = _update_provenance(
-                tr, 'remove_response',
-                {
-                    'method': 'remove_sensitivity',
-                    'inventory': inv
-                }
-            )
+            if isinstance(tr.data[0], int):
+                tr.remove_sensitivity(inventory=inv)
+                tr = _update_provenance(
+                    tr, 'remove_response',
+                    {
+                        'method': 'remove_sensitivity',
+                        'inventory': inv
+                    }
+                )
+            else:
+                logging.info('Skipping sensitivity removal because units '
+                             'are not counts (integers).')
         else:
             raise ValueError(
                 'This instrument type is not supported. '
@@ -344,7 +352,8 @@ def highpass_filter(st, filter_order=5, number_of_passes=2):
         raise ValueError("number_of_passes must be 1 or 2.")
 
     for tr in st:
-        freq = 0.08
+        freq_prov = _get_provenance(tr, 'corner_frequencies')[0]
+        freq = freq_prov['highpass']
         tr.filter(type="highpass",
                   freq=freq,
                   corners=filter_order,
@@ -383,7 +392,8 @@ def lowpass_filter(st, filter_order=5, number_of_passes=2):
         raise ValueError("number_of_passes must be 1 or 2.")
 
     for tr in st:
-        freq = 20.0
+        freq_prov = _get_provenance(tr, 'corner_frequencies')[0]
+        freq = freq_prov['lowpass']
         tr.filter(type="lowpass",
                   freq=freq,
                   corners=filter_order,
@@ -419,10 +429,13 @@ def taper(st, type="hann", width=0.05, side="both"):
     for tr in st:
         tr.taper(max_percentage=width, type=type, side=side)
         window_type = TAPER_TYPES[type]
-        tr = _update_provenance(tr, 'taper',
-                                {'window_type': window_type,
-                                 'taper_width': width,
-                                 'side': side})
+        tr = _update_provenance(
+            tr, 'taper',
+            {
+                'window_type': window_type,
+                'taper_width': width,
+                'side': side}
+        )
     return st
 
 
