@@ -13,13 +13,32 @@ from gmprocess.config import get_config
 import gmprocess.pretesting as pretesting
 from gmprocess.windows import signal_split
 from gmprocess.windows import signal_end
-from gmprocess.utils import _update_params
+from gmprocess.utils import _update_provenance, _get_provenance
 from gmprocess import corner_frequencies
 
 CONFIG = get_config()
 
+TAPER_TYPES = {'cosine': 'Cosine',
+               'barthann': 'Bartlett-Hann',
+               'bartlett': 'Bartlett',
+               'blackman': 'Blackman',
+               'blackmanharris': 'Blackman-Harris',
+               'bohman': 'Bohman',
+               'boxcar': 'Boxcar',
+               'chebwin': 'Dolph-Chebyshev',
+               'flattop': 'Flat top',
+               'gaussian': 'Gaussian',
+               'general_gaussian': 'Generalized Gaussian',
+               'hamming': 'Hamming',
+               'hann': 'Hann',
+               'kaiser': 'Kaiser',
+               'nuttall': 'Blackman-Harris according to Nuttall',
+               'parzen': 'Parzen',
+               'slepian': 'Slepian',
+               'triang': 'Triangular'}
 
-def process_streams(streams, origin):
+
+def process_streams(streams, origin, config=None):
     """Run processing steps from the config file.
 
     This method removes streams based on the 'pretesting' config section, and
@@ -40,17 +59,21 @@ def process_streams(streams, origin):
               - lon
               - lat
               - depth
+        config (dict): Configuration dictionary (or None). See get_config().
 
     Returns:
         list: List of processed obspy streams.
     """
+    if config is None:
+        config = CONFIG
+
     logging.info('Processing streams...')
 
     # -------------------------------------------------------------------------
     # Begin pre-testing steps
     logging.info('Starting pre-testing...')
-    stalta_args = CONFIG['pretesting']['stalta']
-    amplitude_args = CONFIG['pretesting']['amplitude']
+    stalta_args = config['pretesting']['stalta']
+    amplitude_args = config['pretesting']['amplitude']
 
     streams_passed = []
 
@@ -76,7 +99,7 @@ def process_streams(streams, origin):
     # -------------------------------------------------------------------------
     # Begin noise/signal window steps
     logging.info('Windowing noise and signal...')
-    window_conf = CONFIG['windows']
+    window_conf = config['windows']
 
     for stream in streams_passed:
         # Estimate noise/signal split time
@@ -106,7 +129,7 @@ def process_streams(streams, origin):
     # -------------------------------------------------------------------------
     # Begin corner frequency stuff
     logging.info('Setting corner frequencies...')
-    cf_config = CONFIG['corner_frequencies']
+    cf_config = config['corner_frequencies']
 
     for stream in streams_passed:
         if cf_config['method'] == 'constant':
@@ -118,7 +141,7 @@ def process_streams(streams, origin):
     # -------------------------------------------------------------------------
     # Begin processing steps
     logging.info('Starting processing...')
-    processing_steps = CONFIG['processing']
+    processing_steps = config['processing']
 
     # Loop over streams
     processed_streams = []
@@ -136,11 +159,11 @@ def process_streams(streams, origin):
             if step_name not in globals():
                 raise ValueError(
                     'Processing step %s is not valid.' % step_name)
-            proc_stream = globals()[step_name](
+            stream = globals()[step_name](
                 stream,
                 **step_args
             )
-            processed_streams.append([proc_stream])
+        processed_streams.append(stream)
     logging.info('Finished processing streams.')
     return processed_streams
 
@@ -184,7 +207,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
 
     # Check if the response information is already attached in the trace stats
     for tr in st:
-        f_n = 0.5/tr.stats.delta
+        f_n = 0.5 / tr.stats.delta
         if f3 is None:
             f3 = 0.9 * f_n
         if f4 is None:
@@ -194,7 +217,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
             tr.remove_response(
                 inventory=inv, output=output, water_level=water_level,
                 pre_filt=(f1, f2, f3, f4))
-            tr = _update_params(
+            tr = _update_provenance(
                 tr, 'remove_response',
                 {
                     'method': 'remove_sensitivity',
@@ -208,7 +231,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
             )
         elif tr.stats.channel[1] == 'N':
             tr.remove_sensitivity(inventory=inv)
-            tr = _update_params(
+            tr = _update_provenance(
                 tr, 'remove_response',
                 {
                     'method': 'remove_sensitivity',
@@ -247,10 +270,10 @@ def detrend(st, detrending_method=None):
         else:
             tr = tr.detrend(detrending_method)
 
-        tr = _update_params(
+        tr = _update_provenance(
             tr, 'detrend',
             {
-                'method': detrending_method
+                'detrending_method': detrending_method
             }
         )
 
@@ -280,17 +303,16 @@ def cut(st, sec_before_split=None):
     """
     for tr in st:
         logging.debug('Before cut end time: %s ' % tr.stats.endtime)
-        etime = tr.stats['processing_parameters']['signal_end']['end_time']
+        etime = _get_provenance(tr, 'signal_end')[0]['end_time']
         tr.trim(endtime=etime)
         logging.debug('After cut end time: %s ' % tr.stats.endtime)
         if sec_before_split is not None:
-            split_time = \
-                tr.stats['processing_parameters']['signal_split']['split_time']
+            split_time = _get_provenance(tr, 'signal_split')[0]['split_time']
             stime = split_time - sec_before_split
             logging.debug('Before cut start time: %s ' % tr.stats.starttime)
             tr.trim(starttime=stime)
             logging.debug('After cut start time: %s ' % tr.stats.starttime)
-        tr = _update_params(
+        tr = _update_provenance(
             tr, 'cut',
             {
                 'new_start_time': tr.stats.starttime,
@@ -327,7 +349,7 @@ def highpass_filter(st, filter_order=5, number_of_passes=2):
                   freq=freq,
                   corners=filter_order,
                   zerophase=zerophase)
-        tr = _update_params(
+        tr = _update_provenance(
             tr, 'highpass_filter',
             {
                 'filter_type': 'Butterworth',
@@ -366,7 +388,7 @@ def lowpass_filter(st, filter_order=5, number_of_passes=2):
                   freq=freq,
                   corners=filter_order,
                   zerophase=zerophase)
-        tr = _update_params(
+        tr = _update_provenance(
             tr, 'lowpass_filter',
             {
                 'filter_type': 'Butterworth',
@@ -396,7 +418,11 @@ def taper(st, type="hann", width=0.05, side="both"):
     """
     for tr in st:
         tr.taper(max_percentage=width, type=type, side=side)
-
+        window_type = TAPER_TYPES[type]
+        tr = _update_provenance(tr, 'taper',
+                                {'window_type': window_type,
+                                 'taper_width': width,
+                                 'side': side})
     return st
 
 
@@ -423,7 +449,7 @@ def _correct_baseline(trace):
 
     # Fit a sixth order polynomial to displacement time series, requiring
     # that the 1st and 0th order coefficients are zero
-    time_values = np.linspace(0, trace.stats.npts-1, trace.stats.npts)
+    time_values = np.linspace(0, trace.stats.npts - 1, trace.stats.npts)
     poly_cofs = list(curve_fit(_poly_func, time_values, disp_trace.data)[0])
     poly_cofs += [0, 0]
 
@@ -436,7 +462,7 @@ def _correct_baseline(trace):
     # acceleration trace
     for i in range(orig_trace.stats.npts):
         orig_trace.data[i] -= polynomial_second_derivative(i)
-    orig_trace = _update_params(
+    orig_trace = _update_provenance(
         orig_trace, 'baseline',
         {
             'polynomial_coefs': poly_cofs
@@ -450,4 +476,4 @@ def _poly_func(x, a, b, c, d, e):
     """
     Model polynomial function for polynomial baseline correction.
     """
-    return a*x**6 + b*x**5 + c*x**4 + d*x**3 + e*x**2
+    return a * x**6 + b * x**5 + c * x**4 + d * x**3 + e * x**2
