@@ -19,7 +19,7 @@ from obspy.geodetics.base import gps2dist_azimuth
 from obspy.signal.trigger import ar_pick, pk_baer
 
 from gmprocess.phase import PowerPicker
-from gmprocess.utils import _update_params
+from gmprocess.utils import _update_provenance, _get_provenance
 from gmprocess.config import get_config
 
 CONFIG = get_config()
@@ -107,7 +107,7 @@ def signal_split(
             lat1=event_lat,
             lon1=event_lon,
             lat2=st[0].stats['coordinates']['latitude'],
-            lon2=st[0].stats['coordinates']['longitude'])[0]/1000.0
+            lon2=st[0].stats['coordinates']['longitude'])[0] / 1000.0
         tsplit = event_time + epi_dist / vsplit
         preferred_picker = None
     else:
@@ -121,7 +121,7 @@ def signal_split(
         'picker_type': preferred_picker
     }
     for tr in st:
-        tr = _update_params(tr, 'signal_split', split_params)
+        tr = _update_provenance(tr, 'signal_split', split_params)
 
     return st
 
@@ -200,7 +200,7 @@ def signal_end(st, event_time, event_lon, event_lat, event_mag,
                 lat1=event_lat,
                 lon1=event_lon,
                 lat2=tr.stats['coordinates']['latitude'],
-                lon2=tr.stats['coordinates']['longitude'])[0]/1000.0
+                lon2=tr.stats['coordinates']['longitude'])[0] / 1000.0
             end_time = event_time + max(floor, epi_dist / vmin)
         elif method == "model":
             if model is None:
@@ -209,7 +209,7 @@ def signal_end(st, event_time, event_lon, event_lat, event_mag,
                 lat1=event_lat,
                 lon1=event_lon,
                 lat2=tr.stats['coordinates']['latitude'],
-                lon2=tr.stats['coordinates']['longitude'])[0]/1000.0
+                lon2=tr.stats['coordinates']['longitude'])[0] / 1000.0
             dctx = DistancesContext()
             # Repi >= Rrup, so substitution here should be conservative
             # (leading to larger durations).
@@ -218,8 +218,7 @@ def signal_end(st, event_time, event_lon, event_lat, event_mag,
                 sctx, rctx, dctx, dur_imt, stddev_types)
             duration = np.exp(lnmu + epsilon * lnstd[0])
             # Get split time
-            split_time = \
-                tr.stats['processing_parameters']['signal_split']['split_time']
+            split_time = _get_provenance(tr, 'signal_split')[0]['split_time']
             end_time = split_time + float(duration)
         else:
             raise ValueError('method must be either "velocity" or "model".')
@@ -232,6 +231,6 @@ def signal_end(st, event_time, event_lon, event_lat, event_mag,
             'model': model,
             'epsilon': epsilon
         }
-        tr = _update_params(tr, 'signal_end', end_params)
+        tr = _update_provenance(tr, 'signal_end', end_params)
 
     return st

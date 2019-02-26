@@ -105,16 +105,21 @@ def stats_from_inventory(inventory):
     for channel in station.channels:
         stats = {}
         standard = {}
+        standard['source'] = source
         if channel.sensor.type != 'None':
             standard['instrument'] = channel.sensor.type
-        if channel.sensor.serial_number != 'None':
-            standard['sensor_serial_number'] = channel.sensor.serial_number
+            if channel.sensor.serial_number != 'None':
+                standard['sensor_serial_number'] = channel.sensor.serial_number
+            else:
+                standard['sensor_serial_number'] = ''
         if channel.azimuth is not None:
             standard['horizontal_orientation'] = channel.azimuth
         standard['source_format'] = channel.storage_format
         standard['units'] = REVERSE_UNITS[channel.calibration_units]
         if len(channel.comments):
             standard['comments'] = channel.comments[0]
+        else:
+            standard['comments'] = ''
         if station.site.name != 'None':
             standard['station_name'] = station.site.name
         # extract the remaining standard info and format_specific info

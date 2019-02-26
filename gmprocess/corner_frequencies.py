@@ -8,7 +8,7 @@ import numpy as np
 from obspy.signal.util import next_pow_2
 
 from gmprocess.config import get_config
-from gmprocess.utils import _update_params
+from gmprocess.utils import _update_provenance
 from gmprocess.smoothing.konno_ohmachi import konno_ohmachi_smooth
 
 CONFIG = get_config()
@@ -30,7 +30,7 @@ def constant(st):
     """
     cf_config = CONFIG['corner_frequencies']
     for tr in st:
-        tr = _update_params(
+        tr = _update_provenance(
             tr, 'corner_frequencies',
             {
                 'type': 'constant',
@@ -129,7 +129,7 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
                 found_valid = True
 
         if found_valid:
-            tr = _update_params(
+            tr = _update_provenance(
                 tr, 'corner_frequencies',
                 {
                     'type': 'snr',

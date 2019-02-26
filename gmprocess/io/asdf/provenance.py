@@ -1,10 +1,9 @@
 # stdlib imports
 import hashlib
 import base64
-import re
 import logging
+from datetime import datetime
 from collections import OrderedDict
-import json
 
 # third party imports
 import prov
@@ -51,14 +50,35 @@ ACTIVITIES = {'waveform_simulation': {'code': 'ws',
               }
 
 
-def get_short_hash(instring):
+def _get_short_hash(instring):
+    '''Get a 12 character (maybe) unique hash for an input string.
+
+    Args:
+        instring (str): 
+            Any string.
+
+    Returns:
+        str: First 12 characters of md5 hash of input string.
+    '''
     hashstr = hashlib.md5(b"hello worlds").digest()
     hashstr = base64.b64encode(hashstr)
     endidx = min(len(hashstr), MAX_ID_LEN)
     return hashstr[0:endidx].decode('utf-8')
 
 
-def get_waveform_entity(trace, pr):
+def _get_waveform_entity(trace, pr):
+    '''Get the seis-prov entity for an input Trace.
+
+    Args:
+        trace (Trace): 
+            Input Obspy Trace object.
+        pr (Prov): 
+            prov.model.ProvDocument
+
+    Returns:
+        prov.model.ProvDocument:
+            Provenance document updated with waveform entity information.
+    '''
     tpl = (trace.stats.network, trace.stats.station,
            trace.stats.channel, trace.stats.location)
     nscl = '%s_%s_%s_%s' % tpl
@@ -66,7 +86,7 @@ def get_waveform_entity(trace, pr):
     if 'processing_parameters' in trace.stats:
         level = 'processed'
     idstring = 'waveform_%s_%s' % (nscl, level)
-    waveform_hash = get_short_hash(idstring)
+    waveform_hash = _get_short_hash(idstring)
     waveform_id = "seis_prov:sp001_wf_%s" % waveform_hash
     pr.entity(waveform_id, other_attributes=((
         ("prov:label", "Waveform Trace"),
@@ -76,10 +96,20 @@ def get_waveform_entity(trace, pr):
     return pr
 
 
-def get_software_agent(pr):
+def _get_software_agent(pr):
+    '''Get the seis-prov entity for the gmprocess software.
+
+    Args:
+        pr (prov.model.ProvDocument): 
+            Existing ProvDocument.
+
+    Returns:
+        prov.model.ProvDocument:
+            Provenance document updated with gmprocess software name/version.
+    '''
     software = 'gmprocess'
     version = get_versions()['version']
-    hashstr = get_short_hash('%s_%s' % (software, version))
+    hashstr = _get_short_hash('%s_%s' % (software, version))
     agent_id = "seis_prov:sp001_sa_%s" % hashstr
     giturl = 'https://github.com/usgs/groundmotion-processing'
     pr.agent(agent_id, other_attributes=((
@@ -96,6 +126,18 @@ def get_software_agent(pr):
 
 
 def extract_provenance(pr):
+    '''Extract provenance information from an existing ProvDocument data structure.
+
+    Args:
+        pr (prov.model.ProvDocument):
+            Existing provenance document extracted from an ASDF file.
+
+    Returns:
+        list: 
+            Sequence of dictionaries with keys 'prov_id' and 'prov_attributes'. The value for the latter key
+            is another dictionary of the attributes associated with the type of operation. See 
+            http://seismicdata.github.io/SEIS-PROV/_generated_details.html#activities.
+    '''
     processing_params = []
     software = {}
     for record in pr.get_records():
@@ -120,16 +162,40 @@ def extract_provenance(pr):
                 elif key == 'type':
                     _, sptype = attr_val.split(':')
                     continue
+                if isinstance(attr_val, datetime):
+                    attr_val = UTCDateTime(attr_val)
                 params[key] = attr_val
-            paramdict[sptype] = params
+            paramdict['prov_id'] = sptype
+            paramdict['prov_attributes'] = params
             processing_params.append(paramdict)
     return (processing_params, software)
 
 
 def _get_activity(pr, activity, attributes, sequence):
+    '''Get the seis-prov entity for an input processing "activity".
+
+    See
+    http://seismicdata.github.io/SEIS-PROV/_generated_details.html#activities
+
+    for details on the types of activities that are possible to capture.
+
+
+    Args:
+        pr (prov.model.ProvDocument): 
+            Existing ProvDocument.
+        activity (str): 
+            The prov:id for the input activity.
+        attributes (dict):
+            The attributes associated with the activity.
+        sequence (int): 
+            Integer used to identify the order in which the activities were performed.
+    Returns:
+        prov.model.ProvDocument:
+            Provenance document updated with input activity.
+    '''
     activity_dict = ACTIVITIES[activity]
     hashstr = '%s' % activity
-    hashid = get_short_hash(hashstr)
+    hashid = _get_short_hash(hashstr)
     code = activity_dict['code']
     label = activity_dict['label']
     activity_id = 'sp%03i_%s_%s' % (sequence, code, hashid)
@@ -147,31 +213,40 @@ def _get_activity(pr, activity, attributes, sequence):
 
         att_tuple = ('seis_prov:%s' % key, value)
         pr_attributes.append(att_tuple)
-    try:
-        pr.activity('seis_prov:%s' % activity_id,
-                    other_attributes=pr_attributes)
-    except Exception as e:
-        x = 1
+    pr.activity('seis_prov:%s' % activity_id,
+                other_attributes=pr_attributes)
+
     return pr
 
 
 def get_provenance(stream):
+    '''Get a list of ProvDocuments from an input stream.
+
+    Args:
+        stream (Stream):
+            Input Obspy Stream where Traces contain a processing_parameters list.
+
+    Returns:
+        list: Sequence of ProvDocument objects where processing activity has been documented.
+    '''
     provdocs = []
     if 'processing_parameters' not in stream[0].stats:
         return provdocs
     for trace in stream:
         pr = prov.model.ProvDocument()
         pr.add_namespace(*NS_SEIS)
-        pr = get_software_agent(pr)
-        pr = get_waveform_entity(trace, pr)
+        pr = _get_software_agent(pr)
+        pr = _get_waveform_entity(trace, pr)
         sequence = 1
-        param_dict = trace.stats.processing_parameters
-        for process_param, process_values in param_dict.items():
-            if process_param not in ACTIVITIES:
+        provdicts = trace.stats.processing_parameters
+        for provdict in provdicts:
+            provid = provdict['prov_id']
+            if provid not in ACTIVITIES:
                 fmt = 'Unknown or invalid processing parameter %s'
-                logging.debug(fmt % process_param)
+                logging.debug(fmt % provid)
                 continue
-            pr = _get_activity(pr, process_param, process_values, sequence)
+            prov_attributes = provdict['prov_attributes']
+            pr = _get_activity(pr, provid, prov_attributes, sequence)
             sequence += 1
         provdocs.append(pr)
     return provdocs

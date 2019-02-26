@@ -21,6 +21,14 @@ def is_asdf(filename):
 
 
 def read_asdf(filename):
+    """Read Streams of data (complete with processing metadata) from an ASDF file.
+
+    Args:
+        filename (str): Path to valid ASDF file.
+
+    Returns:
+        list: List of Streams containing processing and channel metadata.
+    """
     ds = pyasdf.ASDFDataSet(filename)
     streams = []
     for waveform in ds.waveforms:
@@ -34,11 +42,11 @@ def read_asdf(filename):
                 trace.stats['coordinates'] = stats['coordinates']
                 trace.stats['standard'] = stats['standard']
                 if 'format_specific' in stats:
-                    trace.stats = stats['format_specific']
-            if tag in ds.provenance.list():
-                provdoc = ds.provenance[tag]
-                processing_params, software = extract_provenance(provdoc)
-                trace.stats['processing_params'] = processing_params
+                    trace.stats['format_specific'] = stats['format_specific']
+                if tag in ds.provenance.list():
+                    provdoc = ds.provenance[tag]
+                    processing_params, software = extract_provenance(provdoc)
+                    trace.stats['processing_parameters'] = processing_params
             streams.append(stream)
     return streams
 
