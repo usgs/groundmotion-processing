@@ -31,7 +31,8 @@ def test_process_streams():
         'lon': 133.345
     }
 
-    data_files = glob.glob(os.path.join(datadir, 'kiknet', 'AICH04*'))
+    data_files = glob.glob(os.path.join(
+        datadir, 'kiknet', 'usp000a1b0', 'AICH04*'))
     streams = [read_data(f) for f in data_files]
     grouped_streams = group_channels(streams)
     test = process_streams(grouped_streams, origin)
@@ -49,7 +50,7 @@ def test_process_streams():
 
     np.testing.assert_allclose(
         trace_maxes,
-        np.array([1.30994939,  3.36651873,  4.87532321])
+        np.array([1.30994939, 3.36651873, 4.87532321])
     )
 
 

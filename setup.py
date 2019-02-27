@@ -44,7 +44,6 @@ setup(
         'gmprocess.io.knet',
         'gmprocess.io.cosmos',
         'gmprocess.io.smc',
-        'gmprocess.io.gmobspy',
         'gmprocess.io.usc',
         'gmprocess.metrics',
         'gmprocess.metrics.imt',
