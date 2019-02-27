@@ -13,7 +13,8 @@ from gmprocess.stream import group_channels
 def test_usc():
     homedir = os.path.dirname(os.path.abspath(
         __file__))  # where is this script?
-    datadir = os.path.join(homedir, '..', '..', '..', 'data', 'usc')
+    datadir = os.path.join(homedir, '..', '..', '..',
+                           'data', 'usc', 'ci3144585')
 
     files = {
         '017m30cc.y0a': (-.049, .086),

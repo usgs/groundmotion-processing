@@ -8,14 +8,14 @@ import matplotlib
 # third party imports
 from gmprocess.io.read import read_data
 from gmprocess.plot import plot_arias, plot_durations, plot_moveout
+from gmprocess.io.test_utils import read_data_dir
 
 
 def test_plot():
     # read in data
-    homedir = os.path.dirname(os.path.abspath(__file__))
-    datadir = os.path.join(homedir, '..', 'data', 'cwb')
+    datafiles, _ = read_data_dir('cwb', 'us1000chhc')
     streams = []
-    for filename in glob.glob(datadir + '/*'):
+    for filename in datafiles:
         streams += [read_data(filename)]
     # One plot arias
     axes = plot_arias(streams[3])

@@ -14,7 +14,8 @@ from gmprocess.stream import group_channels
 def test_smc():
     homedir = os.path.dirname(os.path.abspath(
         __file__))  # where is this script?
-    datadir = os.path.join(homedir, '..', '..', '..', 'data', 'smc')
+    datadir = os.path.join(homedir, '..', '..', '..',
+                           'data', 'smc', 'nc216859')
 
     files = OrderedDict([('0111a.smc', (1.5057E+0, -2.8745E-1)),
                          ('0111b.smc', (-1.2518E+1, -1.6806E+0)),

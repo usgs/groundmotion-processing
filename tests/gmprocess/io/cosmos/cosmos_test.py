@@ -3,14 +3,16 @@
 import os.path
 import numpy as np
 from gmprocess.io.cosmos.core import is_cosmos, read_cosmos
+from gmprocess.io.test_utils import read_data_dir
 
 
 def test_cosmos():
-    homedir = os.path.dirname(os.path.abspath(
-        __file__))  # where is this script?
-    datadir = os.path.join(homedir, '..', '..', '..', 'data', 'cosmos')
-    one_channel = os.path.join(datadir, 'Cosmos12TimeSeriesTest.v1')
-    two_channels = os.path.join(datadir, 'Cosmos12TimeSeriesTest2.v1')
+    one_channel, event = read_data_dir('cosmos', 'ci14155260', [
+        'Cosmos12TimeSeriesTest.v1'])
+    two_channels, _ = read_data_dir('cosmos', 'ci14155260', [
+        'Cosmos12TimeSeriesTest2.v1'])
+    one_channel = one_channel[0]
+    two_channels = two_channels[0]
 
     assert is_cosmos(one_channel)
     try:

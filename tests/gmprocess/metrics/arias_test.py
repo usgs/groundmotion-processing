@@ -53,7 +53,8 @@ def test_arias():
     np.testing.assert_almost_equal(Ia, target_IA, decimal=1)
 
     # Test other components
-    data_file = os.path.join(homedir, '..', '..', 'data', 'cwb', '2-ECU.dat')
+    data_file = os.path.join(homedir, '..', '..', 'data',
+                             'cwb', 'us1000chhc', '2-ECU.dat')
     stream = read_data(data_file)
     station = StationSummary.from_stream(stream,
                                          ['channels', 'gmrotd', 'rotd50',

@@ -14,7 +14,7 @@ from gmprocess.metrics.oscillators import get_acceleration, get_spectral, get_ve
 def test_acceleration():
     homedir = os.path.dirname(os.path.abspath(
         __file__))  # where is this script?
-    acc_file = os.path.join(homedir, '..', '..', 'data', 'geonet',
+    acc_file = os.path.join(homedir, '..', '..', 'data', 'geonet', 'us1000778i',
                             '20161113_110259_WTMC_20.V2A')
     acc = read_data(acc_file)
     target_g = acc[0].data * GAL_TO_PCTG
@@ -37,7 +37,7 @@ def test_acceleration():
 def test_spectral():
     homedir = os.path.dirname(os.path.abspath(
         __file__))  # where is this script?
-    acc_file = os.path.join(homedir, '..', '..', 'data', 'geonet',
+    acc_file = os.path.join(homedir, '..', '..', 'data', 'geonet', 'us1000778i',
                             '20161113_110259_WTMC_20.V2A')
     acc = read_data(acc_file)
     get_spectral(1.0, acc, 0.05, rotation='gm')
@@ -46,7 +46,7 @@ def test_spectral():
 def test_velocity():
     homedir = os.path.dirname(os.path.abspath(
         __file__))  # where is this script?
-    acc_file = os.path.join(homedir, '..', '..', 'data', 'geonet',
+    acc_file = os.path.join(homedir, '..', '..', 'data', 'geonet', 'us1000778i',
                             '20161113_110259_WTMC_20.V2A')
     acc = read_data(acc_file)
     target_v = acc.copy().integrate()[0]
