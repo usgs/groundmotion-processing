@@ -11,6 +11,7 @@ import numpy as np
 # local imports
 from gmprocess.exception import GMProcessException
 from gmprocess.io.dmg.core import is_dmg, read_dmg, _get_date, _get_time
+from gmprocess.io.test_utils import read_data_dir
 
 
 def test_time():
@@ -32,9 +33,9 @@ def test_time():
 
 def test_dmg_non_spec():
     # where is this script?
-    homedir = os.path.dirname(os.path.abspath(__file__))
-    datadir = os.path.join(homedir, '..', '..', '..', 'data', 'dmg')
-    file1 = os.path.join(datadir, 'ce23583r_HESPERIA.RAW')
+    file1, _ = read_data_dir('dmg', 'ci3031425', files=[
+                             'ce23583r_HESPERIA.RAW'])
+    file1 = file1[0]
     assert is_dmg(file1)
     stream = read_dmg(file1)
     trace1 = stream[0]
@@ -43,10 +44,9 @@ def test_dmg_non_spec():
 
 
 def test_dmg_v1():
-    homedir = os.path.dirname(os.path.abspath(
-        __file__))  # where is this script?
-    datadir = os.path.join(homedir, '..', '..', '..', 'data', 'dmg')
-    file1 = os.path.join(datadir, 'LA116TH.RAW')
+    file1, _ = read_data_dir('dmg', 'ci3144585', files=[
+                             'LA116TH.RAW'])
+    file1 = file1[0]
     assert is_dmg(file1)
 
     stream1 = read_dmg(file1)
@@ -92,12 +92,15 @@ def test_dmg_v1():
 
 
 def test_dmg():
-    homedir = os.path.dirname(os.path.abspath(
-        __file__))  # where is this script?
-    datadir = os.path.join(homedir, '..', '..', '..', 'data', 'dmg')
-    file1 = os.path.join(datadir, 'CE89146.V2')
-    file2 = os.path.join(datadir, 'CIWLT.V2')
-    file3 = os.path.join(datadir, 'CE58667.V2')
+    file1, _ = read_data_dir('dmg', 'nc71734741', files=[
+                             'CE89146.V2'])
+    file2, _ = read_data_dir('dmg', 'ci15481673', files=[
+                             'CIWLT.V2'])
+    file3, _ = read_data_dir('dmg', 'nc72282711', files=[
+                             'CE58667.V2'])
+    file1 = file1[0]
+    file2 = file2[0]
+    file3 = file3[0]
 
     for filename in [file1, file2]:
         assert is_dmg(file1)
@@ -192,8 +195,9 @@ def test_dmg():
     # Test for wrong format exception
     success = True
     try:
-        datadir = os.path.join(homedir, '..', '..', '..', 'data', 'cwb')
-        file3 = os.path.join(datadir, '1-EAS.dat')
+        file3, _ = read_data_dir('cwb', 'us1000chhc', files=[
+            '1-EAS.dat'])
+        file3 = file3[0]
         read_dmg(file3)
     except Exception:
         success = False
@@ -201,8 +205,9 @@ def test_dmg():
 
     # Test for bad date in header warning
     try:
-        datadir = os.path.join(homedir, '..', '..', '..', 'data', 'dmg')
-        file4 = os.path.join(datadir, 'BadHeader.V2')
+        file4, _ = read_data_dir('dmg', 'nc71734741', files=[
+            'BadHeader.V2'])
+        file4 = file4[0]
         read_dmg(file4)
     except Exception:
         success = False

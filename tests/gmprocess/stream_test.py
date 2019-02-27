@@ -12,6 +12,7 @@ from gmprocess.io.read import read_data
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.process import process_config
 from gmprocess.stream import directory_to_dataframe, group_channels
+from gmprocess.io.test_utils import read_data_dir
 
 
 def test():
@@ -20,10 +21,11 @@ def test():
 
     # Test for channel grouping with three unique channels
     streams = []
-    datadir = os.path.join(homedir, '..', 'data', 'knet')
+    datadir = os.path.join(homedir, '..', 'data', 'knet', 'us2000cnnl')
     for ext in ['.EW', '.NS', '.UD']:
         filename = 'AOM0031801241951' + ext
-        datafile = os.path.join(homedir, '..', 'data', 'knet', filename)
+        datafile = os.path.join(homedir, '..', 'data',
+                                'knet', 'us2000cnnl', filename)
         streams += [read_knet(datafile)]
     grouped_streams = group_channels(streams)
     assert len(grouped_streams) == 1
@@ -32,7 +34,8 @@ def test():
     # Test for channel grouping with three more duplicate channels
     for ext in ['.EW', '.NS', '.UD']:
         filename = 'AOM0031801241951' + ext
-        datafile = os.path.join(homedir, '..', 'data', 'knet', filename)
+        datafile = os.path.join(homedir, '..', 'data',
+                                'knet', 'us2000cnnl', filename)
         streams += [read_knet(datafile)]
     grouped_streams = group_channels(streams)
     assert len(grouped_streams) == 1
@@ -40,7 +43,8 @@ def test():
 
     # Test for channel grouping with more file types
     filename = '20161113_110313_THZ_20.V2A'
-    datafile = os.path.join(homedir, '..', 'data', 'geonet', filename)
+    datafile = os.path.join(homedir, '..', 'data',
+                            'geonet', 'us1000778i', filename)
     streams += [read_geonet(datafile)]
     grouped_streams = group_channels(streams)
     assert len(grouped_streams) == 2
@@ -49,7 +53,8 @@ def test():
 
     # Test for warning for one channel streams
     filename = 'AOM0071801241951.UD'
-    datafile = os.path.join(homedir, '..', 'data', 'knet', filename)
+    datafile = os.path.join(homedir, '..', 'data',
+                            'knet', 'us2000cnnl', filename)
     streams += [read_knet(datafile)]
 
     # * This is my attempt to do this after changing from
@@ -74,11 +79,9 @@ def test():
 
 def test_grouping():
     homedir = os.path.dirname(os.path.abspath(__file__))
-
-    # cwb
-    cwb_files = os.path.join(homedir, '..', 'data', 'cwb', '*')
+    cwb_files, _ = read_data_dir('cwb', 'us1000chhc')
     cwb_streams = []
-    for filename in glob.glob(cwb_files):
+    for filename in cwb_files:
         cwb_streams += [read_data(filename)]
     cwb_streams = group_channels(cwb_streams)
     assert len(cwb_streams) == 5
@@ -86,11 +89,18 @@ def test_grouping():
         assert len(stream) == 3
 
     # dmg
-    dmg_files = os.path.join(homedir, '..', 'data', 'dmg', '*.V2')
+    dmg_path = os.path.join(homedir, '..', 'data', 'dmg')
+    dmg_files = []
+    for (path, dirs, files) in os.walk(dmg_path):
+        for file in files:
+            if file.endswith('V2'):
+                fullfile = os.path.join(path, file)
+                dmg_files.append(fullfile)
+
     dmg_streams = []
-    for filename in glob.glob(dmg_files):
-        if (not os.path.basename(filename).startswith('Bad') and
-                not os.path.basename(filename).startswith('CE58667')):
+    for filename in dmg_files:
+        if (not os.path.basename(filename).startswith('Bad')
+                and not os.path.basename(filename).startswith('CE58667')):
             dmg_streams += [read_data(filename)]
     dmg_streams = group_channels(dmg_streams)
     assert len(dmg_streams) == 2
@@ -98,12 +108,12 @@ def test_grouping():
         assert len(stream) == 3
 
     # geonet
-    geonet_files = os.path.join(homedir, '..', 'data', 'geonet', '*')
+    geonet_files, _ = read_data_dir('geonet', 'us1000778i')
     geonet_streams = []
-    for filename in glob.glob(geonet_files):
+    for filename in geonet_files:
         geonet_streams += [read_data(filename)]
     geonet_streams = group_channels(geonet_streams)
-    assert len(geonet_streams) == 7
+    assert len(geonet_streams) == 6
     for stream in geonet_streams:
         assert len(stream) == 3
         assert len(stream.select(station=stream[0].stats.station)) == 3
@@ -112,9 +122,9 @@ def test_grouping():
             assert trace.stats.standard.process_level == level
 
     # kiknet
-    kiknet_files = os.path.join(homedir, '..', 'data', 'kiknet', '*')
+    kiknet_files, _ = read_data_dir('kiknet', 'usp000a1b0')
     kiknet_streams = []
-    for filename in glob.glob(kiknet_files):
+    for filename in kiknet_files:
         kiknet_streams += [read_data(filename)]
     kiknet_streams = group_channels(kiknet_streams)
     assert len(kiknet_streams) == 1
@@ -123,9 +133,9 @@ def test_grouping():
         assert len(stream.select(station=stream[0].stats.station)) == 3
 
     # knet
-    knet_files = os.path.join(homedir, '..', 'data', 'knet', '*')
+    knet_files, _ = read_data_dir('knet', 'us2000cnnl')
     knet_streams = []
-    for filename in glob.glob(knet_files):
+    for filename in knet_files:
         knet_streams += [read_data(filename)]
     knet_streams = group_channels(knet_streams)
     assert len(knet_streams) == 9
@@ -136,24 +146,11 @@ def test_grouping():
         for trace in stream:
             assert trace.stats.standard.process_level == pl
 
-    # obspy
-    obspy_files = os.path.join(homedir, '..', 'data', 'obspy', '*')
-    obspy_streams = []
-    for filename in glob.glob(obspy_files):
-        if not filename.endswith('.json'):
-            obspy_streams += [read_data(filename)]
-    obspy_streams = group_channels(obspy_streams)
-    assert len(obspy_streams) == 1
-    for stream in obspy_streams:
-        assert len(stream) == 3
-        assert len(stream.select(station=stream[0].stats.station)) == 3
-
     # smc
-    smc_files = os.path.join(homedir, '..', 'data', 'smc', '*')
+    smc_files, _ = read_data_dir('smc', 'nc216859')
     smc_streams = []
-    for filename in glob.glob(smc_files):
-        if not filename.endswith('.json'):
-            smc_streams += [read_data(filename, any_structure=True)]
+    for filename in smc_files:
+        smc_streams += [read_data(filename, any_structure=True)]
     smc_streams = group_channels(smc_streams)
     assert len(smc_streams) == 6
     for stream in smc_streams:
@@ -168,12 +165,11 @@ def test_grouping():
             assert len(stream.select(station=stream[0].stats.station)) == 3
 
     # usc
-    usc_files = os.path.join(homedir, '..', 'data', 'usc', '*')
+    usc_files, _ = read_data_dir('usc', 'ci3144585')
     usc_streams = []
-    for filename in glob.glob(usc_files):
-        if not filename.endswith('.json'):
-            if os.path.basename(filename) != '017m30bt.s0a':
-                usc_streams += [read_data(filename)]
+    for filename in usc_files:
+        if os.path.basename(filename) != '017m30bt.s0a':
+            usc_streams += [read_data(filename)]
     usc_streams = group_channels(usc_streams)
     assert len(usc_streams) == 3
     for stream in usc_streams:

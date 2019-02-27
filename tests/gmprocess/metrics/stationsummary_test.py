@@ -23,7 +23,7 @@ def cmp_dicts(adict, bdict):
 def test_stationsummary():
     homedir = os.path.dirname(os.path.abspath(
         __file__))  # where is this script?
-    datafile = os.path.join(homedir, '..', '..', 'data', 'geonet',
+    datafile = os.path.join(homedir, '..', '..', 'data', 'geonet', 'us1000778i',
                             '20161113_110259_WTMC_20.V2A')
     target_imcs = np.sort(np.asarray(['GREATER_OF_TWO_HORIZONTALS',
                                       'HN1', 'HN2', 'HNZ', 'ROTD50.0',
@@ -91,7 +91,7 @@ def test_stationsummary():
             'HN2': 84.69296738413021,
             'GREATER_OF_TWO_HORIZONTALS': 136.25041187387063}
     }
-    datafile = os.path.join(homedir, '..', '..', 'data', 'geonet',
+    datafile = os.path.join(homedir, '..', '..', 'data', 'geonet', 'us1000778i',
                             '20161113_110313_THZ_20.V2A')
     invalid_stream = read_geonet(datafile)
     station_code = 'WTMC'

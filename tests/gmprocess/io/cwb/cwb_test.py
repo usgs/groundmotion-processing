@@ -9,13 +9,12 @@ import numpy as np
 
 # local imports
 from gmprocess.io.cwb.core import is_cwb, read_cwb, _get_header_info
+from gmprocess.io.test_utils import read_data_dir
 
 
 def test():
-    homedir = os.path.dirname(os.path.abspath(
-        __file__))  # where is this script?
-    datadir = os.path.join(homedir, '..', '..', '..', 'data', 'cwb')
-    cwb_file = os.path.join(datadir, '1-EAS.dat')
+    cwb_file, _ = read_data_dir('cwb', 'us1000chhc', files=['1-EAS.dat'])
+    cwb_file = cwb_file[0]
     assert is_cwb(cwb_file)
     try:
         assert is_cwb(os.path.abspath(__file__))
@@ -26,7 +25,8 @@ def test():
         np.abs(stream[0].max()), 0.83699999999999997)
     assert stream[0].stats['sampling_rate'] == 50
 
-    cwb_file = os.path.join(datadir, '2-ECU.dat')
+    cwb_file, _ = read_data_dir('cwb', 'us1000chhc', files=['2-ECU.dat'])
+    cwb_file = cwb_file[0]
     assert is_cwb(cwb_file)
     try:
         assert is_cwb(os.path.abspath(__file__))
@@ -81,7 +81,7 @@ def test():
         f.write(missing_info)
     f = open(tmp.name, 'rt')
     data = stream[0].data
-    data = np.reshape(data, (int(len(data)/2), 2), order='C')
+    data = np.reshape(data, (int(len(data) / 2), 2), order='C')
     metadata = _get_header_info(open(tmp.name, 'rt'), data)
     tmp.close()
     assert str(metadata['coordinates']['longitude']) == 'nan'

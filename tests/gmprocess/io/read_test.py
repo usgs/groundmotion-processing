@@ -10,12 +10,14 @@ from gmprocess.exception import GMProcessException
 def test_read():
     homedir = os.path.dirname(os.path.abspath(
         __file__))  # where is this script?
-    cosmos_dir = os.path.join(homedir, '..', '..', 'data', 'cosmos')
-    cwb_dir = os.path.join(homedir, '..', '..', 'data', 'cwb')
-    dmg_dir = os.path.join(homedir, '..', '..', 'data', 'dmg')
-    geonet_dir = os.path.join(homedir, '..', '..', 'data', 'geonet')
-    knet_dir = os.path.join(homedir, '..', '..', 'data', 'knet')
-    smc_dir = os.path.join(homedir, '..', '..', 'data', 'smc')
+    cosmos_dir = os.path.join(
+        homedir, '..', '..', 'data', 'cosmos', 'ci14155260')
+    cwb_dir = os.path.join(homedir, '..', '..', 'data', 'cwb', 'us1000chhc')
+    dmg_dir = os.path.join(homedir, '..', '..', 'data', 'dmg', 'nc71734741')
+    geonet_dir = os.path.join(
+        homedir, '..', '..', 'data', 'geonet', 'us1000778i')
+    knet_dir = os.path.join(homedir, '..', '..', 'data', 'knet', 'us2000cnnl')
+    smc_dir = os.path.join(homedir, '..', '..', 'data', 'smc', 'nc216859')
     file_dict = {}
     file_dict['cosmos'] = os.path.join(cosmos_dir, 'Cosmos12TimeSeriesTest.v1')
     file_dict['cwb'] = os.path.join(cwb_dir, '1-EAS.dat')

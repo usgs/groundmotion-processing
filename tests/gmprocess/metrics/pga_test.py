@@ -15,7 +15,7 @@ from gmprocess.metrics.station_summary import StationSummary
 def test_pga():
     homedir = os.path.dirname(os.path.abspath(
         __file__))  # where is this script?
-    datafile_v2 = os.path.join(homedir, '..', '..', 'data', 'geonet',
+    datafile_v2 = os.path.join(homedir, '..', '..', 'data', 'geonet', 'us1000778i',
                                '20161113_110259_WTMC_20.V2A')
     stream_v2 = read_geonet(datafile_v2)
     with warnings.catch_warnings():
