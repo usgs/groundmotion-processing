@@ -73,7 +73,7 @@ windows:
         # none of the signal ends up in the noise window.
 
         # Valid options for "method" are "p_arrival" and "velocity"
-        method: velocity
+        method: p_arrival
         vsplit: 7.0
         # min_noise_duration: 5.0  # todo
 
@@ -102,7 +102,7 @@ corner_frequencies:
     # dynamically from the signal-to-noise-ratio.
 
     # Valid options for "method" are "constant" and "snr".
-    method: snr
+    method: constant
 
     constant:
         highpass: 0.08

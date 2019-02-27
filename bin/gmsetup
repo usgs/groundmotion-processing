@@ -18,7 +18,7 @@ def main(args):
     logging.info("Running gmsetup.")
 
     home_path = os.path.expanduser("~")
-    data_path = pkg_resources.resource_filename('gmprocess', 'data/')
+    data_path = pkg_resources.resource_filename('gmprocess', 'data')
 
     install_data_path_dict = {}
 

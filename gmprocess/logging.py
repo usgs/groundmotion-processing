@@ -2,7 +2,7 @@ import logging
 import logging.config
 
 
-def setup_logger(args):
+def setup_logger(args=None):
     """Setup the logger options.
 
     Args:
@@ -15,12 +15,15 @@ def setup_logger(args):
            '%(module)s.%(funcName)s: %(message)s')
     datefmt = '%Y-%m-%d %H:%M:%S'
     # create a console handler, with verbosity setting chosen by user
-    if args.debug:
+    if args is not None:
+        if args.debug:
+            level = logging.DEBUG
+        elif args.quiet:
+            level = logging.ERROR
+        else:  # default interactive
+            level = logging.INFO
+    else:
         level = logging.DEBUG
-    elif args.quiet:
-        level = logging.ERROR
-    else:  # default interactive
-        level = logging.INFO
 
     logdict = {
         'version': 1,

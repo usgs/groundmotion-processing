@@ -9,8 +9,8 @@ from obspy.signal.trigger import classic_sta_lta
 
 def check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0):
     '''
-    Checks that the maximum STA/LTA ratio of the trace is above a certain
-    threshold.
+    Checks that the maximum STA/LTA ratio for AT LEAST ONE of the stream's
+    traces is above a certain threshold.
 
     Args:
         st (obspy.core.stream.Stream):
@@ -23,37 +23,43 @@ def check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0):
             Required maximum STA/LTA ratio to pass the test.
 
     Returns:
-        stream: Stream with traces that meet the STA/LTA ratio criteria.
+        bool: Did the stream pass the check?
     '''
+
+    passed = False
     for tr in st:
         sr = tr.stats.sampling_rate
-        sta_lta = classic_sta_lta(tr, sta_length * sr, lta_length * sr)
-        if max(sta_lta) < threshold:
-            logging.info('Removing trace: %s (failed STA/LTA check)' % tr)
-            st.remove(tr)
-    return st
+        sta_lta = classic_sta_lta(tr, sta_length * sr + 1, lta_length * sr + 1)
+        if max(sta_lta) >= threshold:
+            passed = True
+    if not passed:
+        logging.info('Trace %s failed STA/LTA check.' % tr)
+    return passed
 
 
 def check_max_amplitude(st, min=5, max=2e6):
     """
-    Checks that the maximum amplitude of the trace is within a defined
-    range.
+    Checks that the maximum amplitude of the traces in the stream are ALL
+    within a defined range. Only applied to counts/raw data.
 
     Args:
         st (obspy.core.stream.Stream):
             Stream of data.
         min (float):
-            Minimum amplitude for the acceptable range. Default is 10e-7.
+            Minimum amplitude for the acceptable range. Default is 5.
         max (float):
-            Maximum amplitude for the acceptable range. Default is 5e3.
+            Maximum amplitude for the acceptable range. Default is 2e6.
 
     Returns:
-        stream: Stream with traces that meet the amplitude criteria.
+        bool: Did the stream pass the check?
     """
+    failed = False
     for tr in st:
-        logging.debug('%s max: %s' % (tr, tr.max()))
-        if (abs(tr.max()) < float(min) or
-                abs(tr.max()) > float(max)):
-            logging.info('Removing trace: %s (failed amplitude check)' % tr)
-            st.remove(tr)
-    return st
+        if isinstance(tr.data[0], int):
+            if (abs(tr.max()) < float(min) or
+                    abs(tr.max()) > float(max)):
+                logging.info(
+                    'Removing trace: %s (failed amplitude check)' % tr)
+                logging.debug('%s max: %s' % (tr, tr.max()))
+                failed = True
+    return not failed
