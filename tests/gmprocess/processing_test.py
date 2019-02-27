@@ -3,6 +3,7 @@
 # stdlib imports
 import os.path
 import glob
+import logging
 
 # third party imports
 from obspy.core.utcdatetime import UTCDateTime
@@ -34,6 +35,8 @@ def test_process_streams():
     streams = [read_data(f) for f in data_files]
     grouped_streams = group_channels(streams)
     test = process_streams(grouped_streams, origin)
+
+    logging.info('Testing trace: %s' % test[0][1])
 
     assert len(test) == 1
     assert len(test[0]) == 3

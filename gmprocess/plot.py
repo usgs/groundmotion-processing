@@ -19,14 +19,16 @@ def get_time_from_percent(NIa, p, dt):
     calculate the duration time associated with the percent.
 
     Args:
-        NIa (array): Array of normalized Arias intensity values with respect to
-            time.
-        p (float): Percent (0 to 1) of Arias Intensity.
-        dt (float): Time in between each record in s.
+        NIa (array):
+            Array of normalized Arias intensity values with respect to time.
+        p (float):
+            Percent (0 to 1) of Arias Intensity.
+        dt (float):
+            Time in between each record in s.
 
     Returns:
         time (float): Duration time to reach specified percent of Arias
-            intensity.
+        intensity.
     """
 
     npts = len(NIa)
@@ -43,19 +45,29 @@ def plot_arias(stream, axes=None, axis_index=None,
     Create plots of arias intensity.
 
     Args:
-        stream (obspy.core.stream.Stream): Set of acceleration data with
-                units of gal (cm/s/s).
-        axes (ndarray): Array of subplots. Default is None.
-        axis_index (int): First index of axes array to plot the traces.
-                Default is None. Required if axes is not None.
-        figsize (tuple): Tuple of height and width. Default is None.
-        file (str): File where the image will be saved. Default is None.
-        minfontsize (int): Minimum font size. Default is 14.
-        show (bool): Plot the figure. Default is False.
-        show_maximum (bool): Show the maximum value.
-        title (str): Title for plot. Default is None.
-        xlabel (str): Label for x axis. Default is None.
-        ylabel (str): Label for y axis. Default is None.
+        stream (obspy.core.stream.Stream):
+            Set of acceleration data with units of gal (cm/s/s).
+        axes (ndarray):
+            Array of subplots. Default is None.
+        axis_index (int):
+            First index of axes array to plot the traces. Default is None.
+            Required if axes is not None.
+        figsize (tuple):
+            Tuple of height and width. Default is None.
+        file (str):
+            File where the image will be saved. Default is None.
+        minfontsize (int):
+            Minimum font size. Default is 14.
+        show (bool):
+            Plot the figure. Default is False.
+        show_maximum (bool):
+            Show the maximum value.
+        title (str):
+            Title for plot. Default is None.
+        xlabel (str):
+            Label for x axis. Default is None.
+        ylabel (str):
+            Label for y axis. Default is None.
 
     Returns:
         numpy.ndarray: Array of matplotlib.axes._subplots.AxesSubplot.
@@ -68,8 +80,8 @@ def plot_arias(stream, axes=None, axis_index=None,
 
     starttime = stream[0].stats.starttime
     if title is None:
-        title = 'Event on ' + str(starttime.month) + '/' + str(starttime.day) + '/' + \
-                str(starttime.year)
+        title = ('Event on ' + str(starttime.month) + '/' +
+                 str(starttime.day) + '/' + str(starttime.year))
     if xlabel is None:
         xlabel = 'Time (s)'
     if ylabel is None:
@@ -120,24 +132,33 @@ def plot_arias(stream, axes=None, axis_index=None,
 
 
 def plot_durations(stream, durations, axes=None, axis_index=None,
-                   figsize=None, file=None, minfontsize=14, show=False, title=None,
-                   xlabel=None, ylabel=None):
+                   figsize=None, file=None, minfontsize=14, show=False,
+                   title=None, xlabel=None, ylabel=None):
     """
     Create plots of durations.
 
     Args:
-        stream (obspy.core.stream.Stream): Set of acceleration data with
-                units of gal (cm/s/s).
-        durations (list): List of percentage minimum and maximums (tuple).
-        axes (ndarray): Array of subplots. Default is None.
-        axis_index (int): First index of axes array to plot the traces.
-                Default is None. Required if axes is not None.
-        figsize (tuple): Tuple of height and width. Default is None.
-        file (str): File where the image will be saved. Default is None.
-        show (bool): Plot the figure. Default is False.
-        title (str): Title for plot. Default is None.
-        xlabel (str): Label for x axis. Default is None.
-        ylabel (str): Label for y axis. Default is None.
+        stream (obspy.core.stream.Stream):
+            Set of acceleration data with units of gal (cm/s/s).
+        durations (list):
+            List of percentage minimum and maximums (tuple).
+        axes (ndarray):
+            Array of subplots. Default is None.
+        axis_index (int):
+            First index of axes array to plot the traces. Default is None.
+            Required if axes is not None.
+        figsize (tuple):
+            Tuple of height and width. Default is None.
+        file (str):
+            File where the image will be saved. Default is None.
+        show (bool):
+            Plot the figure. Default is False.
+        title (str):
+            Title for plot. Default is None.
+        xlabel (str):
+            Label for x axis. Default is None.
+        ylabel (str):
+            Label for y axis. Default is None.
 
     Returns:
         numpy.ndarray: Array of matplotlib.axes._subplots.AxesSubplot.
@@ -150,8 +171,8 @@ def plot_durations(stream, durations, axes=None, axis_index=None,
 
     starttime = stream[0].stats.starttime
     if title is None:
-        title = 'Event on ' + str(starttime.month) + '/' + str(starttime.day) + '/' + \
-                str(starttime.year)
+        title = ('Event on ' + str(starttime.month) + '/' +
+                 str(starttime.day) + '/' + str(starttime.year))
     if xlabel is None:
         xlabel = 'Time (s)'
     if ylabel is None:
@@ -211,27 +232,39 @@ def plot_durations(stream, durations, axes=None, axis_index=None,
     return axs
 
 
-def plot_moveout(streams, epilat, epilon, channel, cmap='viridis', figsize=None,
-                 file=None, minfontsize=14, normalize=False, scale=1, title=None,
-                 xlabel=None, ylabel=None):
+def plot_moveout(streams, epilat, epilon, channel, cmap='viridis',
+                 figsize=None, file=None, minfontsize=14, normalize=False,
+                 scale=1, title=None, xlabel=None, ylabel=None):
     """
     Create moveout plots.
 
     Args:
-        stream (obspy.core.stream.Stream): Set of acceleration data with
-                units of gal (cm/s/s).
-        epilat (float): Epicenter latitude.
-        epilon (float): Epicenter longitude.
-        channel (list): List of channels (str) of each stream to view.
-        cmap (str): Colormap name.
-        figsize (tuple): Tuple of height and width. Default is None.
-        file (str): File where the image will be saved. Default is None.
-        minfontsize (int): Minimum font size. Default is 14.
-        normalize (bool): Normalize the data. Default is faulse.
-        scale (int, float): Value to scale the trace by. Default is 1.
-        title (str): Title for plot. Default is None.
-        xlabel (str): Label for x axis. Default is None.
-        ylabel (str): Label for y axis. Default is None.
+        stream (obspy.core.stream.Stream):
+            Set of acceleration data with units of gal (cm/s/s).
+        epilat (float):
+            Epicenter latitude.
+        epilon (float):
+            Epicenter longitude.
+        channel (list):
+            List of channels (str) of each stream to view.
+        cmap (str):
+            Colormap name.
+        figsize (tuple):
+            Tuple of height and width. Default is None.
+        file (str):
+            File where the image will be saved. Default is None.
+        minfontsize (int):
+            Minimum font size. Default is 14.
+        normalize (bool):
+            Normalize the data. Default is faulse.
+        scale (int, float):
+            Value to scale the trace by. Default is 1.
+        title (str):
+            Title for plot. Default is None.
+        xlabel (str):
+            Label for x axis. Default is None.
+        ylabel (str):
+            Label for y axis. Default is None.
 
     Returns:
         tuple: (Figure, matplotlib.axes._subplots.AxesSubplot)
@@ -269,8 +302,8 @@ def plot_moveout(streams, epilat, epilon, channel, cmap='viridis', figsize=None,
     ax.invert_yaxis()
     ax.legend(bbox_to_anchor=(1, 1), fontsize=minfontsize)
     if title is None:
-        title = 'Event on ' + str(starttime.month) + '/' + str(starttime.day) + '/' + \
-                str(starttime.year)
+        title = ('Event on ' + str(starttime.month) + '/' +
+                 str(starttime.day) + '/' + str(starttime.year))
         if scale != 1:
             title += ' scaled by ' + str(scale)
     if xlabel is None:

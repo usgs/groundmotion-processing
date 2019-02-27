@@ -2,6 +2,7 @@
 """
 Helper functions for windowing singal and noise in a trace.
 """
+import os
 from importlib import import_module
 import pkg_resources
 import yaml
@@ -171,7 +172,7 @@ def signal_end(st, event_time, event_lon, event_lat, event_mag,
     # Load openquake stuff if method="model"
     if method == "model":
         mod_file = pkg_resources.resource_filename(
-            'gmprocess', 'data/modules.yml')
+            'gmprocess', os.path.join('data', 'modules.yml'))
         with open(mod_file, 'r') as f:
             mods = yaml.load(f)
 
