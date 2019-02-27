@@ -40,9 +40,16 @@ def test_process_streams():
 
     assert len(test) == 1
     assert len(test[0]) == 3
+
+    # Apparently the traces end up in a different order on the Travis linux
+    # container than on my local mac. So testing individual traces need to
+    # not care about trace order.
+
+    trace_maxes = np.sort([np.max(t.data) for t in test[0]])
+
     np.testing.assert_allclose(
-        np.max(test[0][1].data),
-        4.8753232138021962
+        trace_maxes,
+        np.array([1.30994939,  3.36651873,  4.87532321])
     )
 
 
