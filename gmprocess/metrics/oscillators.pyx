@@ -77,6 +77,14 @@ cpdef list calculate_spectrals(np.ndarray[double, ndim=1, mode='c']times,
     return [spectral_acc, spectral_vel, spectral_dis]
 
 
+def get_fourier_amplitude_spectra(stream, smoothing='fft_smooth',
+    bandwidth=20.0):
+    """
+    Returns a stream of smoothed spectral amplitude spectra.
+    
+    """
+
+
 def get_spectral(period, stream, damping=0.05, rotation=''):
     """
     Returns a stream of spectral response with units of %%g.

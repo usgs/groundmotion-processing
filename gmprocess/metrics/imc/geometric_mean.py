@@ -5,7 +5,7 @@ import numpy as np
 from gmprocess.metrics.exception import PGMException
 
 
-def calculate_greater_of_two_horizontals(stream, **kwargs):
+def calculate_geometric_mean(stream, return_combined=False, **kwargs):
     """Return GREATER_OF_TWO_HORIZONTALS value for given input Stream.
 
     NB: The input Stream should have already been "processed",
@@ -19,15 +19,30 @@ def calculate_greater_of_two_horizontals(stream, **kwargs):
     Returns:
         float: GREATER_OF_TWO_HORIZONTALS (float).
     """
-    horizontal_vals = []
+    gm_data = _gm_combine(stream)
+    if return_combined:
+        return gm_data
+    else:
+        return np.max(gm_data)
+
+
+def _gm_combine(stream):
+    horizontals = []
     for trace in stream:
         # Group all of the max values from traces without
         # Z in the channel name
         if 'Z' not in trace.stats['channel'].upper():
-            horizontal_vals += [np.abs(trace.max())]
-    if len(horizontal_vals) > 2:
+            horizontals += [trace]
+    if len(horizontals) > 2:
         raise PGMException('More than two horizontal channels.')
-    elif len(horizontal_vals) < 2:
+    elif len(horizontals) < 2:
         raise PGMException('Less than two horizontal channels.')
-    greater_pgm = np.max(np.asarray(horizontal_vals))
-    return greater_pgm
+
+    if len(horizontals[0].data) != len(horizontals[1].data):
+        raise PGMException('Horizontal channels are not the same length.')
+    if horizontals[0].stats.sampling_rate != horizontals[1].stats.sampling_rate:
+        raise PGMException('Horizontal channels have different sampling rates.')
+
+    geometric_means = np.sqrt(np.mean(
+    [np.abs(trace.data)**2 for trace in horizontals], axis=0))
+    return geometric_means

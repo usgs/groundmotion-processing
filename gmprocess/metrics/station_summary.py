@@ -8,13 +8,18 @@ import numpy as np
 from obspy.core.stream import Stream
 
 # local imports
+from gmprocess.config import get_config
 from gmprocess.metrics.imt.arias import calculate_arias
 from gmprocess.metrics.imt.pga import calculate_pga
 from gmprocess.metrics.imt.pgv import calculate_pgv
 from gmprocess.metrics.imt.sa import calculate_sa
+from gmprocess.metrics.imt.fas import calculate_fas
 from gmprocess.metrics.gather import get_pgm_classes
 from gmprocess.metrics.oscillators import (
     get_acceleration, get_spectral, get_velocity)
+
+
+CONFIG = get_config()
 
 
 class StationSummary(object):
@@ -107,7 +112,8 @@ class StationSummary(object):
         return station
 
     @classmethod
-    def from_stream(cls, stream, components, imts, damping=0.05):
+    def from_stream(cls, stream, components=None, imts=None, damping=None,
+            smoothing=None, bandwidth=None):
         """
         Args:
             stream (obspy.core.stream.Stream): Strong motion timeseries
@@ -121,22 +127,47 @@ class StationSummary(object):
             No processing is done by this class.
         """
         station = cls()
-        components = set(np.sort(components))
-        damping = damping
-        imts = set(np.sort(imts))
+        if imts is None:
+            imts = set(np.sort(CONFIG['metrics']['output_imts']))
+            period_params = CONFIG['metrics']['periods']
+            if period_params['use_array']:
+                start = period_params['start']
+                stop = period_params['stop']
+                num = period_params['num']
+                if period_params['spacing'] == 'logspace':
+                    periods = np.logspace(start, stop, num)
+                else:
+                    periods = np.linspace(start, stop, num)
+                additional_periods = [p for p in period_params['additional_periods']]
+                periods = set(np.append(periods, additional_periods))
+        else:
+            periods, imts = station.get_periods(set(np.sort(imts)))
+        if components is None:
+            components = set(np.sort(CONFIG['metrics']['output_imcs']))
+        else:
+            components = set(np.sort(components))
+
+        if damping is None:
+            damping = CONFIG['metrics']['sa']['damping']
+        if smoothing is None:
+            smoothing = CONFIG['metrics']['fas']['smoothing']
+        if bandwidth is None:
+            bandwidth = CONFIG['metrics']['fas']['bandwidth']
+
         station.station_code = stream[0].stats['station']
         station.stream = stream
         # Get oscillators
         rot = False
         for component in components:
-            if component.lower().startswith('rotd'):
+            if component.upper().startswith('ROTD'):
                 rot = True
-        station.generate_oscillators(imts, damping, rot)
+        station.generate_oscillators(imts, periods, damping, rot)
         # Gather pgm/imt for each
-        station.pgms = station.gather_pgms(components)
+        station.pgms = station.gather_pgms(components, periods, smoothing,
+                bandwidth)
         return station
 
-    def gather_pgms(self, components):
+    def gather_pgms(self, components, periods, smoothing, bandwidth):
         """
         Gather pgms by getting components for each imt.
 
@@ -164,6 +195,13 @@ class StationSummary(object):
                     else:
                         sa = calculate_sa(stream, components)
                     pgm_dict[oscillator] = sa
+                elif oscillator.startswith('FAS'):
+                    fas = calculate_fas(stream, components, periods,
+                            smoothing, bandwidth)
+                    for period in fas:
+                        tag = 'FAS(' + str(period) + ')'
+                        pgm_dict[tag] = {}
+                        pgm_dict[tag]['GEOMETRIC_MEAN'] = fas[period]
                 elif oscillator.startswith('ARIAS'):
                     arias = calculate_arias(stream, components)
                     pgm_dict[oscillator] = arias
@@ -173,7 +211,7 @@ class StationSummary(object):
         self.components = set(components)
         return pgm_dict
 
-    def generate_oscillators(self, imts, damping, rotate=False):
+    def generate_oscillators(self, imts, periods, damping, rotate=False):
         """
         Create dictionary of requested imt and its coinciding oscillators.
 
@@ -191,21 +229,21 @@ class StationSummary(object):
             elif imt.upper() == 'PGV':
                 oscillator = get_velocity(stream)
                 oscillator_dict['PGV'] = oscillator
+            elif imt.upper() == 'FAS':
+                oscillator = get_acceleration(stream)
+                oscillator_dict['FAS'] = oscillator
             elif imt.upper().startswith('SA'):
-                try:
-                    period = float(re.search('\d+\.*\d*', imt).group())
+                for period in periods:
+                    tag = 'SA(' + str(period) + ')'
                     oscillator = get_spectral(
                         period, stream,
                         damping=damping)
-                    oscillator_dict[imt.upper()] = oscillator
+                    oscillator_dict[tag] = oscillator
                     if rotate:
                         oscillator = get_spectral(
                             period, stream,
                             damping=damping, rotation='nongm')
-                        oscillator_dict[imt.upper() + '_ROT'] = oscillator
-                except Exception:
-                    fmt = "Invalid period for imt: %r. Skipping..."
-                    logging.warning(fmt % (imt))
+                        oscillator_dict[tag + '_ROT'] = oscillator
             elif imt.upper() == 'ARIAS':
                 oscillator = get_acceleration(stream, units='m/s/s')
                 oscillator_dict['ARIAS'] = oscillator
@@ -214,10 +252,40 @@ class StationSummary(object):
                 logging.warning(fmt % (imt))
         imts = []
         for key in oscillator_dict:
-            if key.find('ROT') < 0:
+            if key == 'FAS':
+                for period in periods:
+                    imts += ['FAS(' + str(period) + ')']
+            elif key.find('ROT') < 0:
                 imts += [key]
+
         self.imts = imts
         self.oscillators = oscillator_dict
+
+    def get_periods(self, imts):
+        periods = []
+        stripped_imts = []
+        for imt in imts:
+            if imt.upper().startswith('SA'):
+                try:
+                    periods += [float(re.search('\d+\.*\d*', imt).group())]
+                    if 'SA' not in stripped_imts:
+                        stripped_imts += ['SA']
+                except Exception:
+                    fmt = "Invalid period for imt: %r. Skipping..."
+                    logging.warning(fmt % (imt))
+            if imt.upper().startswith('FAS'):
+                try:
+                    periods += [float(re.search('\d+\.*\d*', imt).group())]
+                    if 'FAS' not in stripped_imts:
+                        stripped_imts += ['FAS']
+                except Exception:
+                    fmt = "Invalid period for imt: %r. Skipping..."
+                    logging.warning(fmt % (imt))
+            else:
+                stripped_imts += [imt.upper()]
+        return periods, stripped_imts
+
+
 
     def get_pgm(self, imt, imc):
         """
