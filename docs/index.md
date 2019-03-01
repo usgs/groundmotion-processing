@@ -1,6 +1,4 @@
-# groundmotion-processing
-
-## Overview
+# Overview
 
 This is a project designed to provide a number of functions related to
 parsing and processing ground-motion data, building on top of the
@@ -8,6 +6,10 @@ parsing and processing ground-motion data, building on top of the
 the extensions that we provide are to import data from a variety of
 formats and perform standard processing, such as baseline correction,
 computing ground-motion intensity measures and station metrics.
+
+<figure>
+  <img width="600px" src="figs/workspace.png" alt="Digagram of workspace"/>
+</figure>
 
 Current functionality includes:
 
@@ -24,10 +26,11 @@ Current functionality includes:
   provenance information in the
   [ASDF](https://seismic-data.org/) format. 
 
-## Installation
+
+# Installation
 
 See the top-level [README](https://github.com/usgs/groundmotion-processing).
 
-## Workspace
+# Workspace
 
 * [Workspace](workspace.md)
