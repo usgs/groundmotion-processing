@@ -26,15 +26,24 @@ def check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0):
         bool: Did the stream pass the check?
     '''
 
-    passed = False
+    passed_checks = []
     for tr in st:
         sr = tr.stats.sampling_rate
         sta_lta = classic_sta_lta(tr, sta_length * sr + 1, lta_length * sr + 1)
         if max(sta_lta) >= threshold:
             passed = True
-    if not passed:
+        else:
+            passed = False
+        passed_checks.append(passed)
+        tr.setParameter('sta_lta_check_test', passed)
+
+    all_passed = True
+    if sum(passed_checks) < len(st):
+        all_passed = False
         logging.info('Trace %s failed STA/LTA check.' % tr)
-    return passed
+    for tr in st:
+        tr.setParameter('passed_checks', all_passed)
+    return st
 
 
 def check_max_amplitude(st, min=5, max=2e6):
@@ -53,7 +62,7 @@ def check_max_amplitude(st, min=5, max=2e6):
     Returns:
         bool: Did the stream pass the check?
     """
-    failed = False
+    passed_checks = []
     for tr in st:
         if isinstance(tr.data[0], int):
             if (abs(tr.max()) < float(min) or
@@ -61,5 +70,18 @@ def check_max_amplitude(st, min=5, max=2e6):
                 logging.info(
                     'Removing trace: %s (failed amplitude check)' % tr)
                 logging.debug('%s max: %s' % (tr, tr.max()))
-                failed = True
-    return not failed
+                passed = False
+            else:
+                passed = True
+            tr.setParameter('amp_check_test', passed)
+        else:
+            passed = True
+        passed_checks.append(passed)
+
+    all_passed = True
+    if sum(passed_checks) < len(st):
+        all_passed = False
+        logging.info('Trace %s failed STA/LTA check.' % tr)
+    for tr in st:
+        tr.setParameter('passed_checks', all_passed)
+    return st

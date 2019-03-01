@@ -8,7 +8,6 @@ import numpy as np
 from obspy.signal.util import next_pow_2
 
 from gmprocess.config import get_config
-from gmprocess.utils import _get_provenance, _update_provenance
 from gmprocess.smoothing.konno_ohmachi import konno_ohmachi_smooth
 
 CONFIG = get_config()
@@ -30,14 +29,13 @@ def constant(st):
     """
     cf_config = CONFIG['corner_frequencies']
     for tr in st:
-        tr = _update_provenance(
-            tr, 'corner_frequencies',
-            {
-                'type': 'constant',
-                'highpass': cf_config['constant']['highpass'],
-                'lowpass': cf_config['constant']['lowpass']
-            }
-        )
+        tr.setParameter('corner_frequencies',
+                        {
+                            'type': 'constant',
+                            'highpass': cf_config['constant']['highpass'],
+                            'lowpass': cf_config['constant']['lowpass']
+                        }
+                        )
     return st
 
 
@@ -67,7 +65,7 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
     for tr in st:
 
         # Split the noise and signal into two separate traces
-        split_prov = _get_provenance(tr, 'signal_split')[0]
+        split_prov = tr.getParameter('signal_split')[0]
         split_time = split_prov['split_time']
         noise = tr.copy().trim(endtime=split_time)
         signal = tr.copy().trim(starttime=split_time)
@@ -97,8 +95,8 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
         have_low = False
         for idx, freq in enumerate(freqs_signal):
             if have_low is False:
-                if ((sig_spec_smooth[idx] / noise_spec_smooth[idx]) >=
-                        threshold):
+                if ((sig_spec_smooth[idx] / noise_spec_smooth[idx])
+                        >= threshold):
                     lows.append(freq)
                     have_low = True
                 else:
@@ -134,14 +132,13 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
                 found_valid = True
 
         if found_valid:
-            tr = _update_provenance(
-                tr, 'corner_frequencies',
-                {
-                    'type': 'snr',
-                    'highpass': low_corner,
-                    'lowpass': high_corner
-                }
-            )
+            tr.setParameter('corner_frequencies',
+                            {
+                                'type': 'snr',
+                                'highpass': low_corner,
+                                'lowpass': high_corner
+                            }
+                            )
         else:
             logging.info('Removing trace: %s (failed SNR check)' % tr)
             st.remove(tr)
@@ -151,21 +148,20 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
         st_horiz = st.select(channel='??[12EN]')
         # Make sure that horiztontal traces in the stream have the same corner
         # frequencies, if desired.
-        corner_prov = _get_provenance(tr, 'corner_frequencies')[0]
+        corner_prov = tr.getProvenance('corner_frequencies')[0]
         highpass_freqs = [corner_prov['highpass'] for tr in st_horiz]
         lowpass_freqs = [corner_prov['lowpass'] for tr in st_horiz]
 
         # For all traces in the stream, set highpass corner to highest high
         # and set the lowpass corner to the lowest low
         for tr in st_horiz:
-            _update_provenance(
-                tr, 'corner_frequencies',
-                {
-                    'type': 'snr',
-                    'highpass': min(highpass_freqs),
-                    'lowpass': max(lowpass_freqs)
-                }
-            )
+            tr.setParameter('corner_frequencies',
+                            {
+                                'type': 'snr',
+                                'highpass': min(highpass_freqs),
+                                'lowpass': max(lowpass_freqs)
+                            }
+                            )
 
     return st
 

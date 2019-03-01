@@ -87,7 +87,7 @@ def directory_to_streams(directory):
     unprocessed_file_errors = []
     for filepath in glob.glob(os.path.join(directory, "*")):
         try:
-            streams += [read_data(filepath)]
+            streams += read_data(filepath)
         except Exception as ex:
             unprocessed_files += [filepath]
             unprocessed_file_errors += [ex]
@@ -219,7 +219,7 @@ def directory_to_dataframe(directory, imcs=None, imts=None, epi_dist=None,
     """
     streams = []
     for filepath in glob.glob(os.path.join(directory, "*")):
-        streams += [read_data(filepath)]
+        streams += read_data(filepath)
     grouped_streams = group_channels(streams)
 
     dataframe = streams_to_dataframe(
@@ -457,9 +457,9 @@ def streams_to_dataframe(streams, imcs=None, imts=None,
         if lat is not None:
             dist, _, _ = gps2dist_azimuth(
                 lat, lon, latitude, longitude)
-            meta_data[idx][6] = dist/1000
+            meta_data[idx][6] = dist / 1000
             if epi_dist is None:
-                epi_dist = dist/1000
+                epi_dist = dist / 1000
         if process:
             stream = process_config(stream, event_time=event_time,
                                     epi_dist=epi_dist)
@@ -475,7 +475,7 @@ def streams_to_dataframe(streams, imcs=None, imts=None,
     imcs = np.unique(imcs)
     imts = np.unique(imts)
     pgm_columns = pd.MultiIndex.from_product([imcs, imts])
-    pgm_data = np.zeros((num_streams, len(imts)*len(imcs)))
+    pgm_data = np.zeros((num_streams, len(imts) * len(imcs)))
     for idx, station in enumerate(station_pgms):
         subindex = 0
         for imc in imcs:

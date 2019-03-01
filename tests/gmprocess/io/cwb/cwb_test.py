@@ -20,7 +20,7 @@ def test():
         assert is_cwb(os.path.abspath(__file__))
     except AssertionError:
         assert 1 == 1
-    stream = read_cwb(cwb_file)
+    stream = read_cwb(cwb_file)[0]
     np.testing.assert_almost_equal(
         np.abs(stream[0].max()), 0.83699999999999997)
     assert stream[0].stats['sampling_rate'] == 50
@@ -32,7 +32,7 @@ def test():
         assert is_cwb(os.path.abspath(__file__))
     except AssertionError:
         assert 1 == 1
-    stream = read_cwb(cwb_file)
+    stream = read_cwb(cwb_file)[0]
     for trace in stream:
         stats = trace.stats
         assert stats['station'] == 'ECU'
@@ -47,10 +47,11 @@ def test():
         assert stats.format_specific['dc_offset_h1'] == -2.931
         assert stats.format_specific['dc_offset_h2'] == -2.811
         defaulted = ['instrument_period', 'instrument_damping',
-                     'process_time', 'corner_frequency']
+                     'corner_frequency']
         for default in defaulted:
             assert str(stats.standard[default]) == 'nan'
-        defaulted = ['comments', 'structure_type', 'sensor_serial_number']
+        defaulted = ['comments', 'structure_type',
+                     'sensor_serial_number', 'process_time']
         for default in defaulted:
             assert stats.standard[default] == ''
     # Test alternate defaults

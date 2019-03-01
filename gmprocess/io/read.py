@@ -2,6 +2,7 @@
 import importlib
 import os.path
 import logging
+import pkg_resources
 
 # third party imports
 import numpy as np
@@ -22,7 +23,7 @@ def read_data(filename, read_format=None, **kwargs):
         read_format (str): Format of file
 
     Returns:
-        obspy.core.stream.Stream: Stream read from file
+        list: Sequence of obspy.core.stream.Streams read from file
     """
     # Check if file exists
     if not os.path.exists(filename):
@@ -37,8 +38,8 @@ def read_data(filename, read_format=None, **kwargs):
     reader_module = importlib.import_module(reader)
     read_name = 'read_' + read_format
     read_method = getattr(reader_module, read_name)
-    stream = read_method(filename, **kwargs)
-    return stream
+    streams = read_method(filename, **kwargs)
+    return streams
 
 
 def _get_format(filename):
@@ -53,8 +54,7 @@ def _get_format(filename):
     """
     # Get the valid formats
     valid_formats = []
-    home = os.path.dirname(os.path.abspath(__file__))
-    io_directory = os.path.abspath(os.path.join(home, '..', 'io'))
+    io_directory = pkg_resources.resource_filename('gmprocess', 'io')
     # Create valid list
     for module in os.listdir(io_directory):
         if module.find('.') < 0 and module not in EXCLUDED:

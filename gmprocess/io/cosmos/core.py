@@ -9,12 +9,14 @@ import logging
 
 # third party
 import numpy as np
-from obspy.core.trace import Trace
-from obspy.core.stream import Stream
+# from obspy.core.trace import Trace
+# from obspy.core.stream import Stream
 from obspy.core.trace import Stats
 
 # local imports
 from gmprocess.exception import GMProcessException
+from gmprocess.stationstream import StationStream
+from gmprocess.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
 from gmprocess.io.seedname import get_channel_name
 
 TEXT_HDR_ROWS = 14
@@ -190,7 +192,7 @@ def read_cosmos(filename, **kwargs):
                 station type codes.
             Other arguments will be ignored.
     Returns:
-        Stream: Obspy Stream containing three channels of acceleration data
+        list: List of StationStreams containing three channels of acceleration data
         (cm/s**2).
     """
     logging.debug("Starting read_cosmos.")
@@ -205,7 +207,7 @@ def read_cosmos(filename, **kwargs):
 
     # read as many channels as are present in the file
     line_offset = 0
-    stream = Stream([])
+    stream = StationStream([])
     while line_offset < line_count:
         trace, line_offset = _read_channel(
             filename, line_offset, location=location)
@@ -217,7 +219,7 @@ def read_cosmos(filename, **kwargs):
         else:
             stream.append(trace)
 
-    return stream
+    return [stream]
 
 
 def _read_channel(filename, line_offset, location=''):
@@ -258,7 +260,12 @@ def _read_channel(filename, line_offset, location=''):
 
     # read in the data
     nrows, data = _read_lines(skiprows, filename)
-    trace = Trace(data.copy(), Stats(hdr.copy()))
+    trace = StationTrace(data.copy(), Stats(hdr.copy()))
+
+    # record that this data has been converted to gals, if it has
+    if hdr['process_level'] != PROCESS_LEVELS['V0']:
+        response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
+        trace.setProvenance('remove_response', response)
 
     # set new offset
     new_offset = skiprows + nrows
@@ -365,7 +372,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     logging.debug('network: %s' % network)
     hdr['station'] = lines[4][28:34].strip()
     logging.debug('station: %s' % hdr['station'])
-    horizontal_angle = int_data[53]
+    horizontal_angle = float(int_data[53])
     logging.debug('horizontal_angle: %s' % horizontal_angle)
 
     # Store delta and duration. Use them to calculate npts and sampling_rate
@@ -484,28 +491,31 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
             minute = int(time[1])
             second = float(time[2][:2])
             microsecond = int((second - int(second)) * 1e6)
-            standard['process_time'] = datetime(
-                year, month, day, hour, minute, int(second), microsecond)
+            etime = datetime(year, month, day, hour, minute,
+                             int(second), microsecond)
+            standard['process_time'] = etime.strftime(TIMEFMT)
         except Exception:
             standard['process_time'] = ''
     else:
         standard['process_time'] = ''
     process_level = int_data[0]
     if process_level == 0:
-        standard['process_level'] = 'V0'
+        standard['process_level'] = PROCESS_LEVELS['V0']
     elif process_level == 1:
-        standard['process_level'] = 'V1'
+        standard['process_level'] = PROCESS_LEVELS['V1']
     elif process_level == 2:
-        standard['process_level'] = 'V2'
+        standard['process_level'] = PROCESS_LEVELS['V2']
     elif process_level == 3:
-        standard['process_level'] = 'V3'
+        standard['process_level'] = PROCESS_LEVELS['V3']
     else:
-        standard['process_level'] = ''
+        standard['process_level'] = PROCESS_LEVELS['V1']
     logging.debug("process_level: %s" % process_level)
     serial = int_data[52]
     if serial != unknown:
         standard['sensor_serial_number'] = str(_check_assign(
             serial, unknown, ''))
+    else:
+        standard['sensor_serial_number'] = ''
     instrument = int_data[51]
     if instrument != unknown and instrument in SENSOR_TYPES:
         standard['instrument'] = SENSOR_TYPES[instrument]

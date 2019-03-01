@@ -20,7 +20,6 @@ from obspy.geodetics.base import gps2dist_azimuth
 from obspy.signal.trigger import ar_pick, pk_baer
 
 from gmprocess.phase import PowerPicker
-from gmprocess.utils import _update_provenance, _get_provenance
 from gmprocess.config import get_config
 
 CONFIG = get_config()
@@ -122,7 +121,7 @@ def signal_split(
         'picker_type': preferred_picker
     }
     for tr in st:
-        tr = _update_provenance(tr, 'signal_split', split_params)
+        tr.setParameter('signal_split', split_params)
 
     return st
 
@@ -219,7 +218,7 @@ def signal_end(st, event_time, event_lon, event_lat, event_mag,
                 sctx, rctx, dctx, dur_imt, stddev_types)
             duration = np.exp(lnmu + epsilon * lnstd[0])
             # Get split time
-            split_time = _get_provenance(tr, 'signal_split')[0]['split_time']
+            split_time = tr.getParameter('signal_split')['split_time']
             end_time = split_time + float(duration)
         else:
             raise ValueError('method must be either "velocity" or "model".')
@@ -232,6 +231,6 @@ def signal_end(st, event_time, event_lon, event_lat, event_mag,
             'model': model,
             'epsilon': epsilon
         }
-        tr = _update_provenance(tr, 'signal_end', end_params)
+        tr.setParameter('signal_end', end_params)
 
     return st

@@ -7,8 +7,10 @@ import logging
 import pkg_resources
 
 # third party
-from obspy.core.trace import Trace
-from obspy.core.stream import Stream
+# from obspy.core.trace import Trace
+from gmprocess.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
+# from obspy.core.stream import Stream
+from gmprocess.stationstream import StationStream
 from obspy.core.trace import Stats
 import numpy as np
 
@@ -180,11 +182,11 @@ def read_dmg(filename, **kwargs):
         else:
             raise GMProcessException('Not a supported volume.')
 
-    stream = Stream([])
+    stream = StationStream([])
     for trace in trace_list:
         if trace.stats['standard']['units'] == units:
             stream.append(trace)
-    return stream
+    return [stream]
 
 
 def _read_volume_one(filename, line_offset, location=''):
@@ -240,7 +242,11 @@ def _read_volume_one(filename, line_offset, location=''):
         data = _read_lines(skip_rows, max_rows, widths, filename)
         acc_data = data[1::2][:hdr['npts']]
 
-    acc_trace = Trace(acc_data.copy(), Stats(hdr.copy()))
+    acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()))
+
+    response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
+    acc_trace.setProvenance('remove_response', response)
+
     traces = [acc_trace]
     new_offset = skip_rows + max_rows + 1  # there is an end of record line
     return (traces, new_offset)
@@ -284,7 +290,7 @@ def _read_volume_two(filename, line_offset, location=''):
         acc_rows, acc_fmt = _get_data_format(filename, skip_rows, hdr['npts'])
         acc_data = _read_lines(skip_rows + 1, acc_rows, acc_fmt, filename)
         acc_data = acc_data[:hdr['npts']]
-        acc_trace = Trace(acc_data.copy(), Stats(hdr.copy()))
+        acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()))
         traces += [acc_trace]
         skip_rows += int(acc_rows) + 1
 
@@ -297,7 +303,7 @@ def _read_volume_two(filename, line_offset, location=''):
             filename, skip_rows, vel_hdr['npts'])
         vel_data = _read_lines(skip_rows + 1, vel_rows, vel_fmt, filename)
         vel_data = vel_data[:vel_hdr['npts']]
-        vel_trace = Trace(vel_data.copy(), Stats(vel_hdr.copy()))
+        vel_trace = StationTrace(vel_data.copy(), Stats(vel_hdr.copy()))
         traces += [vel_trace]
         skip_rows += int(vel_rows) + 1
 
@@ -310,7 +316,7 @@ def _read_volume_two(filename, line_offset, location=''):
             filename, skip_rows, disp_hdr['npts'])
         disp_data = _read_lines(skip_rows + 1, disp_rows, disp_fmt, filename)
         disp_data = disp_data[:disp_hdr['npts']]
-        disp_trace = Trace(disp_data.copy(), Stats(disp_hdr.copy()))
+        disp_trace = StationTrace(disp_data.copy(), Stats(disp_hdr.copy()))
         traces += [disp_trace]
         skip_rows += int(disp_rows) + 1
     new_offset = skip_rows + 1  # there is an 'end of record' line after the data]
@@ -385,7 +391,7 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
             'utf-8') + ', ' + SOURCES2[idx].decode('utf-8')
     else:
         network = 'ZZ'
-        source = ''
+        source = 'unknown'
     hdr['network'] = network
     logging.debug('network: %s' % network)
     station_line = lines[4]
@@ -429,21 +435,21 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
     coordinates['elevation'] = np.nan
 
     # Standard metadata
-    standard['horizontal_orientation'] = angle
+    standard['horizontal_orientation'] = float(angle)
     standard['instrument_period'] = flt_data[0]
     standard['instrument_damping'] = flt_data[1]
 
     process_time = _get_date(lines[0])
-    standard['process_time'] = process_time
+    standard['process_time'] = process_time.strftime(TIMEFMT)
 
-    standard['process_level'] = level
+    standard['process_level'] = PROCESS_LEVELS[level]
     logging.debug("process_level: %s" % standard['process_level'])
     if 'comments' not in standard:
         standard['comments'] = ''
     standard['structure_type'] = lines[7][46:80].strip()
     standard['instrument'] = station_line[39:47].strip()
     standard['sensor_serial_number'] = station_line[53:57].strip()
-    standard['corner_frequency'] = ''
+    standard['corner_frequency'] = np.nan
     standard['units'] = 'acc'
     standard['source'] = source
     standard['source_format'] = 'dmg'
@@ -530,7 +536,7 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
             'utf-8') + ', ' + SOURCES2[idx].decode('utf-8')
     else:
         network = 'ZZ'
-        source = ''
+        source = 'unknown'
     hdr['network'] = network
     station_line = lines[5]
     station = station_line[12:17].strip()
@@ -567,18 +573,18 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
     coordinates['elevation'] = np.nan
 
     # Standard metadata
-    standard['horizontal_orientation'] = angle
+    standard['horizontal_orientation'] = float(angle)
     standard['instrument_period'] = flt_data[0]
     standard['instrument_damping'] = flt_data[1]
 
-    standard['process_time'] = _get_date(lines[1])
-    standard['process_level'] = level
+    standard['process_time'] = _get_date(lines[1]).strftime(TIMEFMT)
+    standard['process_level'] = PROCESS_LEVELS[level]
     if 'comments' not in standard:
         standard['comments'] = ''
     standard['structure_type'] = lines[7][46:80].strip()
     standard['instrument'] = station_line[39:47].strip()
     standard['sensor_serial_number'] = station_line[53:57].strip()
-    standard['corner_frequency'] = ''
+    standard['corner_frequency'] = np.nan
     standard['units'] = 'acc'
     standard['source'] = source
     standard['source_format'] = 'dmg'

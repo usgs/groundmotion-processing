@@ -7,6 +7,9 @@ from .asdf_utils import (inventory_from_stream,
                          get_event_info)
 from .provenance import get_provenance, extract_provenance
 
+from gmprocess.stationtrace import StationTrace
+from gmprocess.stationstream import StationStream
+
 
 def is_asdf(filename):
     try:
@@ -33,20 +36,19 @@ def read_asdf(filename):
     streams = []
     for waveform in ds.waveforms:
         inventory = waveform['StationXML']
-        channel_stats = stats_from_inventory(inventory)
         tags = waveform.get_waveform_tags()
         for tag in tags:
-            stream = waveform[tag].copy()
-            for trace in stream:
-                stats = channel_stats[trace.stats.channel]
-                trace.stats['coordinates'] = stats['coordinates']
-                trace.stats['standard'] = stats['standard']
-                if 'format_specific' in stats:
-                    trace.stats['format_specific'] = stats['format_specific']
+            tstream = waveform[tag].copy()
+            traces = []
+            for ttrace in tstream:
+                trace = StationTrace(data=ttrace.data,
+                                     header=ttrace.stats,
+                                     inventory=inventory)
                 if tag in ds.provenance.list():
                     provdoc = ds.provenance[tag]
-                    processing_params, software = extract_provenance(provdoc)
-                    trace.stats['processing_parameters'] = processing_params
+                    trace = extract_provenance(trace, provdoc)
+                traces.append(trace)
+            stream = StationStream(traces=traces)
             streams.append(stream)
     return streams
 
@@ -55,11 +57,18 @@ def write_asdf(filename, streams, event=None):
     """Write a number of streams (raw or processed) into an ASDF file.
 
     Args:
-        filename (str): Path to the HDF file that should contain stream data.
-        streams (list): List of Obspy Streams that should be written into the file.
-        event (Obspy Event or dict): Obspy event object or dict (see get_event_dict())
+        filename (str): 
+            Path to the HDF file that should contain stream data.
+        streams (list): 
+            List of StationStream objects that should be written into the file.
+        event (Obspy Event or dict): 
+            Obspy event object or dict (see get_event_dict())
     """
     ds = pyasdf.ASDFDataSet(filename, compression="gzip-3")
+
+    # to allow for multiple processed versions of the same Stream
+    # let's keep a dictionary of stations and sequence number.
+    station_dict = {}
 
     # add event information to the dataset
     eventobj = None
@@ -72,13 +81,18 @@ def write_asdf(filename, streams, event=None):
     # add the streams and associated metadata for each one
     for stream in streams:
         station = stream[0].stats['station']
-        # is this a raw file? Check the trace.stats for a 'processing_parameters' dictionary.
-        is_raw = 'processing_parameters' not in stream[0].stats
+        # is this a raw file? Check the trace for provenance info.
+        is_raw = not len(stream[0].getProvenanceKeys())
         if is_raw:
             tag = 'raw_recording'
             level = 'raw'
         else:
-            tag = '%s_1' % station.lower()
+            if station.lower() in station_dict:
+                station_sequence = station_dict[station.lower()] + 1
+            else:
+                station_sequence = 1
+            station_dict[station.lower()] = station_sequence
+            tag = '%s_%i' % (station.lower(), station_sequence)
             level = 'processed'
         ds.add_waveforms(stream, tag=tag, event_id=eventobj)
 
@@ -87,7 +101,7 @@ def write_asdf(filename, streams, event=None):
             for provdoc in provdocs:
                 ds.add_provenance_document(provdoc, name=tag)
 
-        inventory = inventory_from_stream(stream)
+        inventory = stream.getInventory()
         ds.add_stationxml(inventory)
 
     # no close or other method for ASDF data sets?

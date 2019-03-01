@@ -17,9 +17,9 @@ data_path = pkg_resources.resource_filename('gmprocess', knet_data)
 
 def test_signal_split():
 
-    st1 = read_data(os.path.join(data_path, 'AOM0170806140843.EW'))
-    st2 = read_data(os.path.join(data_path, 'AOM0170806140843.NS'))
-    st3 = read_data(os.path.join(data_path, 'AOM0170806140843.UD'))
+    st1 = read_data(os.path.join(data_path, 'AOM0170806140843.EW'))[0]
+    st2 = read_data(os.path.join(data_path, 'AOM0170806140843.NS'))[0]
+    st3 = read_data(os.path.join(data_path, 'AOM0170806140843.UD'))[0]
     st = st1 + st2 + st3
 
     # Test the AR pick
@@ -34,7 +34,7 @@ def test_signal_split():
     # Test the AR pick without 3 components - defaulting to Baer picker
     # reset the processing parameters...
     for trace in st:
-        trace.stats.processing_parameters = []
+        trace.stats.parameters = []
     st[0].stats.channel = 'ZZZ'
     signal_split(st, method='p_arrival', picker_config=PICKER_CONFIG)
 
@@ -47,7 +47,7 @@ def test_signal_split():
     # Test CWB picker
     # reset the processing parameters...
     for trace in st:
-        trace.stats.processing_parameters = []
+        trace.stats.parameters = []
     PICKER_CONFIG['order_of_preference'][0] = 'cwb'
     signal_split(st, method='p_arrival', picker_config=PICKER_CONFIG)
     for tr in st:
@@ -59,7 +59,7 @@ def test_signal_split():
     # Test velocity split
     # reset the processing parameters...
     for trace in st:
-        trace.stats.processing_parameters = []
+        trace.stats.parameters = []
     signal_split(st, event_time=UTCDateTime('2008-06-13 23:43:45'),
                  event_lon=140.881, event_lat=39.030, method='velocity')
     for tr in st:

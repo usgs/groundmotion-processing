@@ -6,8 +6,10 @@ import re
 import logging
 
 # third party
-from obspy.core.trace import Trace
-from obspy.core.stream import Stream
+# from obspy.core.trace import Trace
+from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS, TIMEFMT
+# from obspy.core.stream import Stream
+from gmprocess.stationstream import StationStream
 from obspy.core.trace import Stats
 import numpy as np
 
@@ -77,27 +79,27 @@ def read_geonet(filename, **kwargs):
     channel3 = trace3.stats['channel']
     if channel1 == channel2:
         if channel1.endswith('1'):
-            trace2.stats['channel'] = trace2.stats['channel'][0:2]+'2'
+            trace2.stats['channel'] = trace2.stats['channel'][0:2] + '2'
         elif channel1.endswith('2'):
-            trace2.stats['channel'] = trace2.stats['channel'][0:2]+'1'
+            trace2.stats['channel'] = trace2.stats['channel'][0:2] + '1'
         else:
             raise Exception(
                 'Could not resolve duplicate channels in %s'
                 % trace1.stats['station'])
     if channel2 == channel3:
         if channel2.endswith('2'):
-            trace3.stats['channel'] = trace2.stats['channel'][0:2]+'1'
+            trace3.stats['channel'] = trace2.stats['channel'][0:2] + '1'
         elif channel2.endswith('1'):
-            trace3.stats['channel'] = trace2.stats['channel'][0:2]+'2'
+            trace3.stats['channel'] = trace2.stats['channel'][0:2] + '2'
         else:
             raise Exception(
                 'Could not resolve duplicate channels in %s'
                 % trace1.stats['station'])
 
     traces = [trace1, trace2, trace3]
-    stream = Stream(traces)
+    stream = StationStream(traces)
 
-    return stream
+    return [stream]
 
 
 def _read_channel(filename, line_offset):
@@ -201,7 +203,11 @@ def _read_channel(filename, line_offset):
         nrows = nrows + velrows + disrows
 
     data *= MMPS_TO_CMPS  # convert to cm/s**2
-    trace = Trace(data, Stats(hdr))
+    trace = StationTrace(data, Stats(hdr))
+
+    response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
+    trace.setProvenance('remove_response', response)
+
     offset = skip_header2 + nrows
 
     return (trace, offset, velocity)
@@ -268,7 +274,7 @@ def _read_header(hdr_data, station, name, component, data_format,
         hdr['sampling_rate'] = 1 / hdr['delta']
         # V2 files have been resampled, we need sensor rate for
         # channel naming.
-        sampling_rate = 1/hdr_data[6, 4]
+        sampling_rate = 1 / hdr_data[6, 4]
     hdr['calib'] = 1.0
     if data_format == 'V1':
         hdr['npts'] = int(hdr_data[3, 0])
@@ -280,6 +286,7 @@ def _read_header(hdr_data, station, name, component, data_format,
                           'Nuclear Science')
     logging.debug('component: %s' % component)
     if component == 'Up':
+        standard['horizontal_orientation'] = np.nan
         hdr['channel'] = get_channel_name(
             sampling_rate,
             is_acceleration=True,
@@ -288,7 +295,7 @@ def _read_header(hdr_data, station, name, component, data_format,
     else:
         _, angle = _get_channel(component)
         logging.debug('angle: %s' % angle)
-        standard['horizontal_orientation'] = angle
+        standard['horizontal_orientation'] = float(angle)
         if (angle > 315 or angle < 45) or (angle > 135 and angle < 225):
             hdr['channel'] = get_channel_name(
                 sampling_rate,
@@ -325,16 +332,16 @@ def _read_header(hdr_data, station, name, component, data_format,
     coordinates['elevation'] = 0.0
 
     # get other standard metadata
-    standard['instrument_period'] = 1/hdr_data[4, 0]
+    standard['instrument_period'] = 1 / hdr_data[4, 0]
     standard['instrument_damping'] = hdr_data[4, 1]
     standard['process_time'] = ''
-    standard['process_level'] = data_format
+    standard['process_level'] = PROCESS_LEVELS[data_format]
     logging.debug("process_level: %s" % data_format)
     standard['sensor_serial_number'] = ''
     standard['instrument'] = instrument
     standard['comments'] = ''
     standard['structure_type'] = ''
-    standard['corner_frequency'] = ''
+    standard['corner_frequency'] = np.nan
     standard['source_format'] = 'geonet'
 
     # get format specific metadata

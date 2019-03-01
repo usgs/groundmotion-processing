@@ -12,6 +12,8 @@ from obspy.core.utcdatetime import UTCDateTime
 
 # local imports
 from gmprocess._version import get_versions
+from gmprocess.stationstream import StationStream
+from gmprocess.stationtrace import StationTrace
 
 NS_PREFIX = "seis_prov"
 NS_SEIS = (NS_PREFIX, "http://seisprov.org/seis_prov/0.1/#")
@@ -125,7 +127,7 @@ def _get_software_agent(pr):
     return pr
 
 
-def extract_provenance(pr):
+def extract_provenance(trace, pr):
     '''Extract provenance information from an existing ProvDocument data structure.
 
     Args:
@@ -138,7 +140,6 @@ def extract_provenance(pr):
             is another dictionary of the attributes associated with the type of operation. See 
             http://seismicdata.github.io/SEIS-PROV/_generated_details.html#activities.
     '''
-    processing_params = []
     software = {}
     for record in pr.get_records():
         ident = record.identifier.localpart
@@ -165,10 +166,9 @@ def extract_provenance(pr):
                 if isinstance(attr_val, datetime):
                     attr_val = UTCDateTime(attr_val)
                 params[key] = attr_val
-            paramdict['prov_id'] = sptype
-            paramdict['prov_attributes'] = params
-            processing_params.append(paramdict)
-    return (processing_params, software)
+            trace.setProvenance(sptype, params)
+        trace.setParameter('software', software)
+    return trace
 
 
 def _get_activity(pr, activity, attributes, sequence):
@@ -223,14 +223,16 @@ def get_provenance(stream):
     '''Get a list of ProvDocuments from an input stream.
 
     Args:
-        stream (Stream):
-            Input Obspy Stream where Traces contain a processing_parameters list.
+        stream (StationStream):
+            StationStream where StationTraces contain provenance information.
 
     Returns:
-        list: Sequence of ProvDocument objects where processing activity has been documented.
+        list: 
+            Sequence of ProvDocument objects
+            where processing activity has been documented.
     '''
     provdocs = []
-    if 'processing_parameters' not in stream[0].stats:
+    if not len(stream[0].getProvenanceKeys()):
         return provdocs
     for trace in stream:
         pr = prov.model.ProvDocument()
@@ -238,14 +240,13 @@ def get_provenance(stream):
         pr = _get_software_agent(pr)
         pr = _get_waveform_entity(trace, pr)
         sequence = 1
-        provdicts = trace.stats.processing_parameters
-        for provdict in provdicts:
+        for provdict in trace.getAllProvenance():
             provid = provdict['prov_id']
+            prov_attributes = provdict['prov_attributes']
             if provid not in ACTIVITIES:
                 fmt = 'Unknown or invalid processing parameter %s'
                 logging.debug(fmt % provid)
                 continue
-            prov_attributes = provdict['prov_attributes']
             pr = _get_activity(pr, provid, prov_attributes, sequence)
             sequence += 1
         provdocs.append(pr)
