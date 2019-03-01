@@ -19,10 +19,9 @@ values, response spectra, and Fourier amplitude spectra.
 * `StationMetrics` for event station information, such as epicentral
 distance and rupture distance.
 
-* `SurfaceWaveforms` for waveform time histories on a surface.
-(potential)
+* (Potential) `SurfaceWaveforms` for waveform time histories on a surface.
 
-* `RuptureModels` for finite-fault earthquake rupture models.
+* (Potential) `RuptureModels` for finite-fault earthquake rupture models.
 (potential)
 
 <figure>
@@ -49,14 +48,14 @@ Following the ASDF layout for waveforms and station metadata, the
 hierarchy is
 
 `WaveformMetrics` (group) -> *NET.STA* (group)
--> *NET.STA.LOC__START__END__WTAG__TAG** (dataset)
+-> *NET.STA.LOC__START__END__WTAG__TAG* (dataset)
 
-**NET**: FDSN network code (or equivalent)
-**STA**: Station code
-**LOC**: Location code
-**START__END**: Channel start and end timestamps from `Waveforms`.
-**WTAG**: Tag associated with waveform processing
-**TAG**: Tag associated with process to compute metrics
+  * **NET**: FDSN network code (or equivalent)
+  * **STA**: Station code
+  * **LOC**: Location code
+  * **START__END**: Channel start and end timestamps from `Waveforms`.
+  * **WTAG**: Tag associated with waveform processing
+  * **TAG**: Tag associated with process to compute metrics
 
 We do not include the channel code, because many metrics involve
 multiple channels (horizontal components). The components are included
@@ -68,13 +67,13 @@ and `StationXML` datasets.
 The XML hierarchy follows the ShakeMap convention of intensity metric
 type followed by intensity metric (`waveform_metrics` -> *IMT* -> *IM*).
 
-**IMT**: Intensity metric type (maximum component, geometric mean,
+  * **IMT**: Intensity metric type (maximum component, geometric mean,
 RotD50, etc)
-**IM**: Intensity metric (peak ground acceleration, peak ground
+  * **IM**: Intensity metric (peak ground acceleration, peak ground
 velocity, response spectra, Fourier amplitude spectra) 
 
 Sample XML for a waveform metrics dataset:
-```
+```xml
 <waveform_metrics>
   <rot_d50>
     <pga units="m/s**2">0.45</pga>
@@ -88,12 +87,12 @@ Sample XML for a waveform metrics dataset:
     <pgv units="m/s">0.012</pga>
   </maximum_component>
   <component name="east">
-    <pga units="m/s**2>0.23</pga>
-    <pgv units="m/s">0.012</pga>
+    <pga units="m/s**2">0.23</pga>
+    <pgv units="m/s">0.012</pgv>
   </component>
   <component name="up">
-    <pga units="m/s**2>0.11</pga>
-    <pgv units="m/s">0.008</pga>
+    <pga units="m/s**2">0.11</pga>
+    <pgv units="m/s">0.008</pgv>
   </component>
 </waveform_metrics>
 ```
@@ -110,18 +109,18 @@ Following the ASDF layout for waveforms and station metadata, the
 hierarchy is
 
 `StationMetrics` (group) -> *NET.STA* (group)
--> *NET.STA__EVENTID__TAG** (dataset)
+-> *NET.STA__EVENTID__TAG* (dataset)
 
-**NET**: FDSN network code (or equivalent)
-**STA**: Station code
-**EVENTID**: ComCat event id (or equivalent)
-**TAG**: Tag associated with processing to compute metrics
+  * **NET**: FDSN network code (or equivalent)
+  * **STA**: Station code
+  * **EVENTID**: ComCat event id (or equivalent)
+  * **TAG**: Tag associated with processing to compute metrics
 
 The dataset is a string corresponding to XML, similar to the `QuakeML`
 and `StationXML` datasets.
 
 Sample XML for a station metrics dataset:
-```
+```xml
 <station_metrics>
   <hypocentral_distance units="km">10.2</hypocentral_distance>
   <epicentral_distance units="km">2.3</epicentral_distance>
