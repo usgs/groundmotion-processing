@@ -297,7 +297,7 @@ def resample(st, new_sampling_rate=None, method=None, a=None):
         sampling_rate (float):
             New sampling rate, in Hz.
         method (str):
-            Method for interpolation. Currently only supports Lanczos.
+            Method for interpolation. Currently only supports 'lanczos'.
         a (int):
             Width of the Lanczos window, in number of samples.
 
