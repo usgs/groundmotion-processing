@@ -12,5 +12,7 @@ gmprocess.egg-info/
 *.so
 gmprocess/smoothing/konno_ohmachi.c
 gmprocess/metrics/oscillators.c
+docs/_site
+docs/Gemfile.lock
 docs/figs/*.aux
 docs/figs/*.log
