@@ -47,10 +47,10 @@ data and related issues.
 Current functionality includes:
 
 - Readers for a variety of formats not supported by ObsPy. See the
-  `gmprocess.io` subpackage. All readers return ObsPy streams.
+  ``gmprocess.io`` subpackage. All readers return ObsPy streams.
 - Ground motion record summary methods (i.e., intensity measures, or metrics)
-  in `gmprocess.metrics` subpackage.
-- The `gmprocess.processing.py` module uses ObsPy and our own methods for
+  in ``gmprocess.metrics`` subpackage.
+- The ``gmprocess.processing.py`` module uses ObsPy and our own methods for
   processing ground motion records. We are working towards logging each
   processing step with the
   `SEIS-PROV <http://seismicdata.github.io/SEIS-PROV/index.html>`_
@@ -74,7 +74,7 @@ Installation and Dependencies
 
     conda install gmprocess
 
-- Run `gmsetup` to install config files in the `.gmprocess` subdirectory under
+- Run ``gmsetup`` to install config files in the ``.gmprocess`` subdirectory under
   the home directory.
 
 
@@ -86,7 +86,7 @@ Readers
 The data file readers are modeled after ObsPy file readers, and have a
 standard interface.
 
-Data file readers are located in `gmprocess/io/[format]/core.py`.
+Data file readers are located in ``gmprocess/io/[format]/core.py``.
 
 This core.py module should take the following form:
 
@@ -107,9 +107,9 @@ a file with the type as the file name under pgm/imt/. The calculation
 should be called calculate_[TYPE], where [TYPE] matches the file
 name. The argument should always be *stream*. The second function
 should always be *imcs* (a list of requested components). All other
-functions in the file should be hidden by an underscore (example `def
-_get_horizontals(stream)`). The calculate function should return a
-dictionary of each component and the resulting values.
+functions in the file should be hidden by an underscore (example 
+``def _get_horizontals(stream)``). The calculate function should return
+a dictionary of each component and the resulting values.
 
 Example:
 
@@ -126,7 +126,7 @@ Example:
     }
 
 
-StationSummary should be updated to handle the new IMT in `gather_pgms`.
+StationSummary should be updated to handle the new IMT in ``gather_pgms``.
 
 
 Intensity measurement components
@@ -136,7 +136,7 @@ add a file with the component as the file name under pgm/imc/. The
 calculation should be called calculate_[COMPONENT], where [COMPONENT]
 matches the file name. The argument should always be *stream*. All
 other functions in the file should be hidden by an underscore (example
-`def _get_horizontals(stream)`). The calculate function should return
+``def _get_horizontals(stream)``). The calculate function should return
 a single value or a dictionary of each component and the resulting
 values. Imt calculations should be updated to handle a dictionary if
 one is returned. Otherwise, single values will automatically be
