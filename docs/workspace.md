@@ -64,35 +64,34 @@ The dataset is a string corresponding to XML, similar to the `QuakeML`
 and `StationXML` datasets.
 
 The XML hierarchy follows the ShakeMap convention of intensity metric
-type followed by intensity metric (`waveform_metrics` -> *IMT* -> *IM*).
+followed by intensity metric type (`waveform_metrics` -> *IM* -> *IMT*).
 
+  * **IM**: Intensity metric (peak ground acceleration, peak ground
+velocity, response spectra, Fourier amplitude spectra)
   * **IMT**: Intensity metric type (maximum component, geometric mean,
 RotD50, etc)
-  * **IM**: Intensity metric (peak ground acceleration, peak ground
-velocity, response spectra, Fourier amplitude spectra) 
 
 Sample XML for a waveform metrics dataset:
 ```xml
 <waveform_metrics>
-  <rot_d50>
-    <pga units="m/s**2">0.45</pga>
-    <sa percent_damping="5.0" units="g">
-	  <value period="3.0">0.2</value>
-	  <value period="1.0">0.6</value>
-	  <value period="0.3">0.3</value>
-  </rot_d50>
-  <maximum_component>
-    <pga units="m/s**2">0.23</pga>
-    <pgv units="m/s">0.012</pga>
-  </maximum_component>
-  <component name="east">
-    <pga units="m/s**2">0.23</pga>
-    <pgv units="m/s">0.012</pgv>
-  </component>
-  <component name="up">
-    <pga units="m/s**2">0.11</pga>
-    <pgv units="m/s">0.008</pgv>
-  </component>
+    <pga>
+        <rot_d50 units="m/s**2">0.45</rot_d50>
+        <maximum_component units="m/s**2">0.23</maximum_component>
+        <component name="east" units="m/s**2">0.23</component>
+        <component name="up" units="m/s**2">0.11</component>
+    </pga>
+    <sa percent_damping="5.0">
+        <rot_d50 units="g">
+	        <value period="3.0">0.2</value>
+	        <value period="1.0">0.6</value>
+	        <value period="0.3">0.3</value>
+        </rot_d50>
+    </sa>
+    <pgv>
+        <maximum_component units="m/s">0.012</maximum_component>
+        <component name="east" units="m/s">0.012</component>
+        <component name="up" units="m/s">0.008</component>
+    </pgv>
 </waveform_metrics>
 ```
 
