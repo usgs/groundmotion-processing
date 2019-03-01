@@ -143,6 +143,19 @@ processing:
         #     constant, demean, linear, polynomial, simple, spline
         detrending_method: demean
 
+    - upsample:
+
+          # The new sampling rate, in Hz
+          new_sampling_rate: 200
+
+          # Currently only supporting Lanczos interpolation, which is generally
+          # the preferred method and offers the highest quality interpolation
+          method: lanczos
+
+          # Width of the Lanczos windows. Increasing "a" linearly increases
+          # run time, but also increases interpolation quality.
+          a: 50
+
     - cut:
         # No required options; the presence of this key just indicates when to
         # cut the time series using the record start and signal end that were

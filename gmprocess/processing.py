@@ -288,6 +288,44 @@ def detrend(st, detrending_method=None):
     return st
 
 
+def upsample(st, new_sampling_rate=None, method=None, a=None):
+    """Upsample stream.
+
+    Args:
+        st (obspy.core.stream.Stream):
+            Stream of data.
+        sampling_rate (float): New sampling rate, in Hz.
+        method (str): Method for interpolation. Currenly only supports
+            Lanczos interpolation.
+        a (int): Width of the Lanczos window, in number of samples.
+
+    Returns:
+        obspy.core.stream.Stream: Upsampled stream.
+    """
+
+    if method != 'lanczos':
+        raise ValueError('Only lanczos interpolation method is supported.')
+
+    for tr in st:
+
+        # Check to make sure that the new sampling rate is greater than
+        # previous sampling rate (downsampling not allowed)
+        if tr.stats.sampling_rate > new_sampling_rate:
+            msg = 'Trace sampling rate is greater than new sampling rate.'
+            msg += 'Interpolation will not be applied.'
+            logging.warning(msg)
+        else:
+            tr.interpolate(sampling_rate=new_sampling_rate, method=method, a=a)
+            tr = _update_provenance(
+                tr, 'resample',
+                {
+                    'new_sampling_rate': new_sampling_rate
+                }
+            )
+
+    return st
+
+
 def cut(st, sec_before_split=None):
     """ Cut/trim the record.
 
