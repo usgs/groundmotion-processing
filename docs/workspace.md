@@ -1,4 +1,4 @@
-# Ground-Motion Processing Workspace
+# Workspace
 
 The workspace serves as a container to hold the inputs, important
 intermediate results, and outputs. It also includes provenance
@@ -9,7 +9,7 @@ information, station metadata, and waveform time histories. We include
 information not explicitly covered in the ASDF format specification
 in the `AuxiliaryData` group.
 
-## Extension to ASDF HDF-5 Layout
+## Extension of ASDF HDF-5 Layout
 
 We add several additional groups to the `AuxiliaryData` section:
 
@@ -19,17 +19,16 @@ values, response spectra, and Fourier amplitude spectra.
 * `StationMetrics` for event station information, such as epicentral
 distance and rupture distance.
 
-* (Potential) `SurfaceWaveforms` for waveform time histories on a surface.
+* (Potential future addition) `SurfaceWaveforms` for waveform time histories on a surface.
 
-* (Potential) `RuptureModels` for finite-fault earthquake rupture models.
+* (Potential future addition) `RuptureModels` for finite-fault earthquake rupture models.
 (potential)
 
 <figure>
-<img width="600px" src="figs/asdf_layout.png" alt="ASDF layout"/>
-<figcaption>Diagram of group and dataset hierarchy in extension of the
+  <img width="600px" src="figs/asdf_layout.png" alt="ASDF layout"/>
+  <figcaption>Diagram of group and dataset hierarchy in extension of the
 ASDF HDF-5 layout</figcaption>
 </figure>
-
 
 
 ### Waveform Metrics
@@ -127,7 +126,7 @@ Sample XML for a station metrics dataset:
 </station_metrics>
 ```
 
-### Surface Waveforms (potential)
+### Surface Waveforms (potential future addition)
 
 **Use case**: Output from ground-motion simulations.
 
@@ -138,7 +137,7 @@ waveform time histories on the ground surface or vertical slices. This
 auxiliary data group would provide a standard layout for specifying
 the topology of the surface and the time histories on that surface.
 
-### Rupture Models (potential)
+### Rupture Models (potential future addition)
 
 **Use case**: Finite-source rupture models from inversions of real
 earthquakes and scenario (hypothetical) earthquakes.
