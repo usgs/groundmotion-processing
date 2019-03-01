@@ -110,6 +110,11 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
                 else:
                     continue
 
+        # Swap the highs and lows if our SNR at the first frequency was
+        # above the threshold
+        if sig_spec_smooth[0] / noise_spec_smooth[0] >= threshold:
+            lows, highs = highs, lows
+
         # If we didn't find any corners
         if not lows:
             logging.info('Removing trace: %s (failed SNR check)' % tr)
