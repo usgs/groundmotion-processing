@@ -102,11 +102,12 @@ This core.py module should take the following form:
 
 Intensity measurement types
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In order to add an intensity measurement types (IMT) calculation, add
-a file with the type as the file name under pgm/imt/. The calculation
-should be called calculate_[TYPE], where [TYPE] matches the file
+In order to add an intensity measurement type (IMT) calculation, add
+a file with the type as the file name under ``pgm/imt/``. The calculation
+should be called ``calculate_[TYPE]``, where ``[TYPE]`` matches the file
 name. The argument should always be *stream*. The second function
-should always be *imcs* (a list of requested components). All other
+should always be *imcs* (a list of requested intensity measure components, 
+e.g., ``CHANNELS`` or ``RotD50``). All other
 functions in the file should be hidden by an underscore (example 
 ``def _get_horizontals(stream)``). The calculate function should return
 a dictionary of each component and the resulting values.
@@ -132,13 +133,13 @@ StationSummary should be updated to handle the new IMT in ``gather_pgms``.
 Intensity measurement components
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 In order to add an intensity measurement component (IMC) calculation,
-add a file with the component as the file name under pgm/imc/. The
-calculation should be called calculate_[COMPONENT], where [COMPONENT]
+add a file with the component as the file name under ``pgm/imc/``. The
+calculation should be called ``calculate_[COMPONENT]``, where ``[COMPONENT]``
 matches the file name. The argument should always be *stream*. All
 other functions in the file should be hidden by an underscore (example
 ``def _get_horizontals(stream)``). The calculate function should return
 a single value or a dictionary of each component and the resulting
-values. Imt calculations should be updated to handle a dictionary if
+values. IMT calculations should be updated to handle a dictionary if
 one is returned. Otherwise, single values will automatically be
 handled.
 
