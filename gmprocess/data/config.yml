@@ -35,25 +35,6 @@ waveform_request:
     format: MSEED
 
 # -----------------------------------------------------------------------------
-# Some initial quality checks of the record. If these checks are not passed
-# then the record is not processed.
-pretesting:
-
-    # Amplitude check to avoid clipping. Units are usually counts (e.g., with
-    # data from IRIS) but some sources will convert to physical units so it
-    # is important to be careful with this step.
-    amplitude:
-        min: 5
-        max: 2e6
-
-    # STA/LTA is computed for record and the max value must exceed the threshold
-    # below. Units are sec for window lenghts.
-    stalta:
-        sta_length: 1.0
-        lta_length: 20.0
-        threshold: 5.0
-
-# -----------------------------------------------------------------------------
 # Options for separating noise/signal windows
 #
 #    |<---Noise Window--->|<-----Signal Window----->|
@@ -123,6 +104,9 @@ corner_frequencies:
 # recorded as seismological provenance data.
 processing:
 
+    # Amplitude check to avoid clipping. Units are usually counts (e.g., with
+    # data from IRIS) but some sources will convert to physical units so it
+    # is important to be careful with this step.
     - check_max_amplitude:
         min: 5
         max: 2e6
@@ -165,6 +149,9 @@ processing:
     #       # linearly increases run time, but also increases interpolation.
     #       # quality.
     #       a: 50
+
+    # STA/LTA is computed for record and the max value must exceed the threshold
+    # below. Units are sec for window lenghts.
     - check_sta_lta:
         sta_length: 1.0
         lta_length: 20.0
