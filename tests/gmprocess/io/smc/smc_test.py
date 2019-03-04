@@ -27,7 +27,7 @@ def test_smc():
         assert is_smc(filename)
 
         # test acceleration from the file
-        stream = read_smc(filename)
+        stream = read_smc(filename)[0]
 
         # test for one trace per file
         assert stream.count() == 1
@@ -44,7 +44,7 @@ def test_smc():
         streams.append(stream)
 
     # test location override
-    stream = read_smc(filename, location='test')
+    stream = read_smc(filename, location='test')[0]
     for trace in stream:
         assert trace.stats.location == 'test'
 
@@ -53,7 +53,7 @@ def test_smc():
 
     filename = os.path.join(datadir, '891018_1.sma-1.0444a.smc')
     try:
-        stream = read_smc(filename)
+        stream = read_smc(filename)[0]
         success = True
     except Exception:
         success = False

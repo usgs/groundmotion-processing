@@ -123,6 +123,10 @@ corner_frequencies:
 # recorded as seismological provenance data.
 processing:
 
+    - check_max_amplitude:
+        min: 5
+        max: 2e6
+
     - remove_response:
         # Outuput units. Must be 'ACC', 'VEL', or 'DISP'.
         output: 'ACC'
@@ -137,6 +141,11 @@ processing:
 
         # Water level (dB) for deconvolution
         water_level: 60
+
+    - detrend:
+        # Supported obspy methods (besides the baseline described below):
+        #     constant, demean, linear, polynomial, simple, spline
+        detrending_method: linear
 
     - detrend:
         # Supported obspy methods (besides the baseline described below):
@@ -156,6 +165,10 @@ processing:
     #       # linearly increases run time, but also increases interpolation.
     #       # quality.
     #       a: 50
+    - check_sta_lta:
+        sta_length: 1.0
+        lta_length: 20.0
+        threshold: 4.0
 
     - cut:
         # No required options; the presence of this key just indicates when to

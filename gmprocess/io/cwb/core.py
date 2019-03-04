@@ -5,12 +5,12 @@ import logging
 
 # third party imports
 import numpy as np
-from obspy.core.trace import Trace
 from obspy.core.trace import Stats
-from obspy.core.stream import Stream
 
 # local imports
 from gmprocess.io.seedname import get_channel_name
+from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.stationstream import StationStream
 
 DATE_FMT = '%Y/%m/%d-%H:%M:%S.%f'
 
@@ -93,11 +93,18 @@ def read_cwb(filename, **kwargs):
     stats_h1 = Stats(hdr_h1)
     stats_h2 = Stats(hdr_h2)
 
-    trace_z = Trace(data=data[:, 1], header=stats_z)
-    trace_h1 = Trace(data=data[:, 2], header=stats_h1)
-    trace_h2 = Trace(data=data[:, 3], header=stats_h2)
-    stream = Stream([trace_z, trace_h1, trace_h2])
-    return stream
+    response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
+    trace_z = StationTrace(data=data[:, 1], header=stats_z)
+    trace_z.setProvenance('remove_response', response)
+
+    trace_h1 = StationTrace(data=data[:, 2], header=stats_h1)
+    trace_h1.setProvenance('remove_response', response)
+
+    trace_h2 = StationTrace(data=data[:, 3], header=stats_h2)
+    trace_h2.setProvenance('remove_response', response)
+
+    stream = StationStream([trace_z, trace_h1, trace_h2])
+    return [stream]
 
 
 def _get_header_info(file, data):
@@ -202,8 +209,8 @@ def _get_header_info(file, data):
         coordinates['latitude'] = np.nan
     standard['instrument_period'] = np.nan
     standard['instrument_damping'] = np.nan
-    standard['process_time'] = np.nan
-    standard['process_level'] = 'V1'
+    standard['process_time'] = ''
+    standard['process_level'] = PROCESS_LEVELS['V1']
     standard['sensor_serial_number'] = ''
     standard['comments'] = ''
     standard['structure_type'] = ''

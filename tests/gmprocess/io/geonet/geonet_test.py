@@ -37,7 +37,7 @@ def test():
         print('Testing %s, %s...' % (fname, desc))
         geonet_file = os.path.join(datadir_2016, fname)
         assert is_geonet(geonet_file)
-        stream = read_geonet(geonet_file)
+        stream = read_geonet(geonet_file)[0]
         np.testing.assert_almost_equal(
             stream[0].max(), test_vals[0], decimal=1)
         np.testing.assert_almost_equal(
@@ -54,7 +54,7 @@ def test():
         print('Testing %s, %s...' % (fname, desc))
         geonet_file = os.path.join(datadir_2018, fname)
         assert is_geonet(geonet_file)
-        stream = read_geonet(geonet_file)
+        stream = read_geonet(geonet_file)[0]
         np.testing.assert_almost_equal(
             stream[0].max(), test_vals[0], decimal=1)
         np.testing.assert_almost_equal(
@@ -66,7 +66,7 @@ def test():
     comps = [('20180212_211557_WPWS_20.V2A', 0.165, 0.509, -0.091)]
     for comp in comps:
         geonet_file = os.path.join(datadir_2018, comp[0])
-        stream = read_geonet(geonet_file)
+        stream = read_geonet(geonet_file)[0]
         traces = []
         for trace in stream:
             vtrace = trace.copy()

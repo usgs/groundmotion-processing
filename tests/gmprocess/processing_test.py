@@ -14,6 +14,7 @@ from gmprocess.io.read import read_data
 from gmprocess.processing import process_streams
 from gmprocess.logging import setup_logger
 from gmprocess.stream import group_channels
+from gmprocess.io.test_utils import read_data_dir
 
 homedir = os.path.dirname(os.path.abspath(__file__))
 datadir = os.path.join(homedir, '..', 'data')
@@ -33,7 +34,12 @@ def test_process_streams():
 
     data_files = glob.glob(os.path.join(
         datadir, 'kiknet', 'usp000a1b0', 'AICH04*'))
-    streams = [read_data(f) for f in data_files]
+    data_files, origin = read_data_dir('geonet', 'us1000778i', '*.V1A')
+    data_files, origin = read_data_dir('kiknet', 'usp000a1b0', 'AICH04*')
+    streams = []
+    for f in data_files:
+        streams += read_data(f)
+
     grouped_streams = group_channels(streams)
     test = process_streams(grouped_streams, origin)
 
@@ -50,7 +56,8 @@ def test_process_streams():
 
     np.testing.assert_allclose(
         trace_maxes,
-        np.array([1.30994939, 3.36651873, 4.87532321])
+        np.array([1.30994939, 3.36651873, 4.87532321]),
+        rtol=1e-5
     )
 
 

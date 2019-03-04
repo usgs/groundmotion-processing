@@ -16,7 +16,7 @@ def test_plot():
     datafiles, _ = read_data_dir('cwb', 'us1000chhc')
     streams = []
     for filename in datafiles:
-        streams += [read_data(filename)]
+        streams += read_data(filename)
     # One plot arias
     axes = plot_arias(streams[3])
     assert len(axes) == 3

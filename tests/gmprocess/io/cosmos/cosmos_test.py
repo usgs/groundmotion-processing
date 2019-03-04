@@ -4,6 +4,7 @@ import os.path
 import numpy as np
 from gmprocess.io.cosmos.core import is_cosmos, read_cosmos
 from gmprocess.io.test_utils import read_data_dir
+from gmprocess.stationtrace import PROCESS_LEVELS
 
 
 def test_cosmos():
@@ -21,7 +22,7 @@ def test_cosmos():
         assert 1 == 1
 
     # test a one channel cosmos file
-    stream1 = read_cosmos(one_channel)
+    stream1 = read_cosmos(one_channel)[0]
 
     stats = stream1[0].stats
     assert stats['station'] == 'J2236'
@@ -37,13 +38,12 @@ def test_cosmos():
     assert stats.standard['instrument'] == 'Kinemetrics FBA-11 accelerometer'
     assert stats.standard['sensor_serial_number'] == '1889'
     dt = '%Y-%m-%dT%H:%M:%SZ'
-    assert stats.standard['process_time'].strftime(
-        dt) == '2005-06-17T12:01:00Z'
+    assert stats.standard['process_time'] == '2005-06-17T12:01:00Z'
     assert stats.format_specific['sensor_sensitivity'] == 220
     assert stats.standard['horizontal_orientation'] == 340
     assert stats.standard['instrument_period'] == 1.0 / 25
     assert stats.standard['instrument_damping'] == 0.20
-    assert stats.standard['process_level'] == 'V2'
+    assert stats.standard['process_level'] == PROCESS_LEVELS['V2']
     assert stats.standard['source_format'] == 'cosmos'
     assert stats.standard['structure_type'] == 'Building'
     assert stats.standard['source'] == 'California Geological Survey'
@@ -73,17 +73,17 @@ def test_cosmos():
     assert np.round(stream1[0].max(), 3) == float(file_max)
 
     # test a two channel cosmos file
-    stream2 = read_cosmos(two_channels)
+    stream2 = read_cosmos(two_channels)[0]
 
     # test that reading a file that is a valid station type returns a
     # stream with traces
     building_code = 10
-    stream3 = read_cosmos(two_channels, valid_station_types=[building_code])
+    stream3 = read_cosmos(two_channels, valid_station_types=[building_code])[0]
     assert stream3.count() == 1
 
     # test that reading a file that is not a valid station type returns an
     # empty stream
-    stream4 = read_cosmos(two_channels, valid_station_types=[1, 2, 3, 4])
+    stream4 = read_cosmos(two_channels, valid_station_types=[1, 2, 3, 4])[0]
     assert stream4.count() == 0
 
     # test that two channels are created
@@ -92,11 +92,11 @@ def test_cosmos():
     # test that reading a file that is a valid station type returns a
     # stream with traces
     building_code = 10
-    stream3 = read_cosmos(one_channel, valid_station_types=[building_code])
+    stream3 = read_cosmos(one_channel, valid_station_types=[building_code])[0]
     assert stream3.count() == 1
 
     # Test location overrride
-    stream = read_cosmos(one_channel, location='test')
+    stream = read_cosmos(one_channel, location='test')[0]
     assert stream[0].stats.location == 'test'
 
 

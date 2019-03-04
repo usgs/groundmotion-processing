@@ -27,7 +27,7 @@ def test_p_pick():
     assert (abs(chosen_ppick - ppick)) < 0.2
 
     # Test a Northridge file that should fail to return a P-pick
-    tr = read_data(datadir + '/017m30ah.m0a')[0]
+    tr = read_data(datadir + '/017m30ah.m0a')[0][0]
     ppick = PowerPicker(tr)
     assert ppick == []
 

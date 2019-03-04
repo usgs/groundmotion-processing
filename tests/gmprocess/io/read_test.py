@@ -37,14 +37,14 @@ def test_read():
     assert _validate_format(file_dict['cosmos'], 'invalid') == 'cosmos'
 
     for file_format in file_dict:
-        stream = read_data(file_dict[file_format], file_format)
+        stream = read_data(file_dict[file_format], file_format)[0]
         assert stream[0].stats.standard['source_format'] == file_format
-        stream = read_data(file_dict[file_format])
+        stream = read_data(file_dict[file_format])[0]
         assert stream[0].stats.standard['source_format'] == file_format
     # test exception
     try:
         file_path = os.path.join(smc_dir, 'not_a_file.smc')
-        read_data(file_path)
+        read_data(file_path)[0]
         success = True
     except GMProcessException:
         success = False

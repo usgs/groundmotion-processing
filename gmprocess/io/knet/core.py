@@ -7,13 +7,13 @@ import os.path
 import logging
 
 # third party
-from obspy.core.trace import Trace
-from obspy.core.stream import Stream
 from obspy.core.trace import Stats
 import numpy as np
 
 # local imports
 from gmprocess.io.seedname import get_channel_name
+from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.stationstream import StationStream
 
 TEXT_HDR_ROWS = 17
 TIMEFMT = '%Y/%m/%d %H:%M:%S'
@@ -163,7 +163,7 @@ def read_knet(filename):
     standard['instrument_period'] = np.nan
     standard['instrument_damping'] = np.nan
     standard['process_time'] = ''
-    standard['process_level'] = 'V1'
+    standard['process_level'] = PROCESS_LEVELS['V1']
     standard['sensor_serial_number'] = ''
     standard['instrument'] = ''
     standard['comments'] = ''
@@ -177,12 +177,9 @@ def read_knet(filename):
     hdr['standard'] = standard
 
     # create a Trace from the data and metadata
-    trace = Trace(data.copy(), Stats(hdr.copy()))
+    trace = StationTrace(data.copy(), Stats(hdr.copy()))
+    response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
+    trace.setProvenance('remove_response', response)
 
-    # to match the max values in the headers,
-    # we need to detrend/demean the data (??)
-    trace.detrend('linear')
-    trace.detrend('demean')
-
-    stream = Stream(trace)
-    return stream
+    stream = StationStream(traces=[trace])
+    return [stream]

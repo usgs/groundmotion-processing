@@ -12,6 +12,7 @@ import numpy as np
 from gmprocess.exception import GMProcessException
 from gmprocess.io.dmg.core import is_dmg, read_dmg, _get_date, _get_time
 from gmprocess.io.test_utils import read_data_dir
+from gmprocess.stationtrace import PROCESS_LEVELS
 
 
 def test_time():
@@ -37,7 +38,7 @@ def test_dmg_non_spec():
                              'ce23583r_HESPERIA.RAW'])
     file1 = file1[0]
     assert is_dmg(file1)
-    stream = read_dmg(file1)
+    stream = read_dmg(file1)[0]
     trace1 = stream[0]
     np.testing.assert_almost_equal(trace1.data[0], -0.000116)
     np.testing.assert_almost_equal(trace1.data[-8], -0.003018)
@@ -49,7 +50,7 @@ def test_dmg_v1():
     file1 = file1[0]
     assert is_dmg(file1)
 
-    stream1 = read_dmg(file1)
+    stream1 = read_dmg(file1)[0]
     assert stream1.count() == 3
 
     # test that the traces are acceleration
@@ -86,9 +87,9 @@ def test_dmg_v1():
             assert stats.standard['instrument_period'] == 0.039
             assert stats.standard['instrument_damping'] == 0.556
             assert stats.format_specific['time_sd'] == 0.114
-        assert stats.standard['process_level'] == 'V2'
+        assert stats.standard['process_level'] == PROCESS_LEVELS['V2']
         assert stats.standard['source_format'] == 'dmg'
-        assert stats.standard['source'] == ''
+        assert stats.standard['source'] == 'unknown'
 
 
 def test_dmg():
@@ -106,7 +107,7 @@ def test_dmg():
         assert is_dmg(file1)
 
         # test acceleration from the file
-        stream1 = read_dmg(filename)
+        stream1 = read_dmg(filename)[0]
 
         # test for three traces
         assert stream1.count() == 3
@@ -116,7 +117,7 @@ def test_dmg():
             assert trace.stats['standard']['units'] == 'acc'
 
         # test velocity from the file
-        stream2 = read_dmg(filename, units='vel')
+        stream2 = read_dmg(filename, units='vel')[0]
 
         # test for three traces
         assert stream2.count() == 3
@@ -126,7 +127,7 @@ def test_dmg():
             assert trace.stats['standard']['units'] == 'vel'
 
         # test displacement from the file
-        stream3 = read_dmg(filename, units='disp')
+        stream3 = read_dmg(filename, units='disp')[0]
 
         # test for three traces
         assert stream3.count() == 3
@@ -136,7 +137,7 @@ def test_dmg():
             assert trace.stats['standard']['units'] == 'disp'
 
     # Test metadata
-    stream = read_dmg(file1)
+    stream = read_dmg(file1)[0]
     for trace in stream:
         stats = trace.stats
         assert stats['station'] == '89146'
@@ -163,15 +164,15 @@ def test_dmg():
             assert stats.standard['horizontal_orientation'] == 500
             assert stats.standard['instrument_period'] == .0102354
             assert stats.standard['instrument_damping'] == .6700000
-        assert stats.standard['process_level'] == 'V2'
+        assert stats.standard['process_level'] == PROCESS_LEVELS['V2']
         assert stats.standard['source_format'] == 'dmg'
-        assert stats.standard['source'] == ''
+        assert stats.standard['source'] == 'unknown'
         assert str(stats.format_specific['time_sd']) == 'nan'
         assert stats.format_specific['scaling_factor'] == 980.665
         assert stats.format_specific['low_filter_corner'] == .3
         assert stats.format_specific['high_filter_corner'] == 40
 
-    stream = read_dmg(file2)
+    stream = read_dmg(file2)[0]
     for trace in stream:
         stats = trace.stats
         assert stats['station'] == 'WLT'
@@ -189,7 +190,7 @@ def test_dmg():
             'Network, California Institute of Technology (Caltech)'
 
     # test acceleration from the file
-    stream3 = read_dmg(filename)
+    stream3 = read_dmg(filename)[0]
     assert len(stream3) == 3
 
     # Test for wrong format exception
@@ -198,7 +199,7 @@ def test_dmg():
         file3, _ = read_data_dir('cwb', 'us1000chhc', files=[
             '1-EAS.dat'])
         file3 = file3[0]
-        read_dmg(file3)
+        read_dmg(file3)[0]
     except Exception:
         success = False
     assert success == False
@@ -208,7 +209,7 @@ def test_dmg():
         file4, _ = read_data_dir('dmg', 'nc71734741', files=[
             'BadHeader.V2'])
         file4 = file4[0]
-        read_dmg(file4)
+        read_dmg(file4)[0]
     except Exception:
         success = False
     assert success == False
@@ -221,7 +222,7 @@ def test_dmg():
         f.write(no_stream)
     f = open(tmp.name, 'rt')
     try:
-        read_dmg(tmp.name)
+        read_dmg(tmp.name)[0]
         success = True
     except GMProcessException:
         success = False
@@ -229,7 +230,7 @@ def test_dmg():
     tmp.close()
 
     # test location override
-    stream = read_dmg(filename, location='test')
+    stream = read_dmg(filename, location='test')[0]
     for trace in stream:
         assert trace.stats.location == 'test'
 

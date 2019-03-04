@@ -5,12 +5,12 @@ from datetime import datetime
 import logging
 
 # third party
-from obspy.core.trace import Trace
-from obspy.core.stream import Stream
 import numpy as np
 
 # local imports
 from gmprocess.io.seedname import get_channel_name
+from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.stationstream import StationStream
 
 ASCII_HEADER_LINES = 11
 INTEGER_HEADER_LINES = 6
@@ -153,7 +153,7 @@ def read_smc(filename, **kwargs):
         num_comments + FLOAT_HEADER_LINES
 
     # read float data (8 columns per line)
-    nrows = int(np.floor(stats['npts']/DATA_COLUMNS))
+    nrows = int(np.floor(stats['npts'] / DATA_COLUMNS))
     data = np.genfromtxt(filename,
                          max_rows=nrows,
                          skip_header=skip,
@@ -161,13 +161,17 @@ def read_smc(filename, **kwargs):
     data = data.flatten()
     if stats['npts'] % DATA_COLUMNS:
         lastrow = np.genfromtxt(filename, max_rows=1,
-                                skip_header=skip+nrows,
+                                skip_header=skip + nrows,
                                 delimiter=FLOAT_DATA_WIDTHS)
         data = np.append(data, lastrow)
 
-    trace = Trace(data, header=stats)
-    stream = Stream([trace])
-    return stream
+    trace = StationTrace(data, header=stats)
+
+    response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
+    trace.setProvenance('remove_response', response)
+
+    stream = StationStream(traces=[trace])
+    return [stream]
 
 
 def _get_header_info(filename, any_structure=False, accept_flagged=False,
@@ -231,7 +235,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     with open(filename) as f:
         ascheader = [next(f).strip() for x in range(ASCII_HEADER_LINES)]
 
-    standard['process_level'] = VALID_HEADERS[ascheader[0]]
+    standard['process_level'] = PROCESS_LEVELS[VALID_HEADERS[ascheader[0]]]
     logging.debug("process_level: %s" % standard['process_level'])
 
     # station code is in the third line
@@ -305,7 +309,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
 
     standard['horizontal_orientation'] = np.nan
     if intheader[1, 5] != missing_data:
-        standard['horizontal_orientation'] = intheader[1, 5]
+        standard['horizontal_orientation'] = float(intheader[1, 5])
 
     if intheader[1, 6] == missing_data:
         standard['instrument'] = ''
@@ -410,7 +414,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
 
     logging.debug('channel: %s' % stats['channel'])
     sensor_frequency = floatheader[4, 1]
-    standard['instrument_period'] = 1/sensor_frequency
+    standard['instrument_period'] = 1 / sensor_frequency
     standard['instrument_damping'] = floatheader[4, 2]
 
     standard['corner_frequency'] = floatheader[3, 4]

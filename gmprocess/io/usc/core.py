@@ -4,13 +4,13 @@ import logging
 
 # third party imports
 import numpy as np
-from obspy.core.trace import Trace
 from obspy.core.trace import Stats
-from obspy.core.stream import Stream
 
 # local imports
 from gmprocess.exception import GMProcessException
 from gmprocess.io.seedname import get_channel_name
+from gmprocess.stationstream import StationStream
+from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
 
 VOLUMES = {
     'V1': {
@@ -112,7 +112,7 @@ def read_volume_one(filename, location=''):
         line_count = sum(1 for _ in f)
     # read as many channels as are present in the file
     line_offset = 0
-    stream = Stream([])
+    stream = StationStream([])
     while line_offset < line_count:
         trace, line_offset = _read_channel(
             filename, line_offset, volume, location=location)
@@ -121,7 +121,7 @@ def read_volume_one(filename, location=''):
         if trace is not None:
             stream.append(trace)
 
-    return stream
+    return [stream]
 
 
 def _read_channel(filename, line_offset, volume, location=''):
@@ -161,7 +161,11 @@ def _read_channel(filename, line_offset, volume, location=''):
     data = np.genfromtxt(filename, skip_header=skiprows,
                          max_rows=nrows, dtype=np.float64,
                          delimiter=volume['COL_FMT']).flatten()[1::2]
-    trace = Trace(data.copy(), Stats(hdr.copy()))
+    trace = StationTrace(data.copy(), Stats(hdr.copy()))
+
+    response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
+    trace.setProvenance('remove_response', response)
+
     # set new offset
     new_offset = skiprows + nrows
     new_offset += 1  # there is an 'end of record' line after the data
@@ -304,7 +308,7 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
         coordinates['longitude'] = longitude
         coordinates['elevation'] = np.nan
         # Get standard paramaters
-        standard['horizontal_orientation'] = horizontal_orientation
+        standard['horizontal_orientation'] = float(horizontal_orientation)
         standard['instrument_period'] = flt_data[0]
         standard['instrument_damping'] = flt_data[1]
         standard['process_time'] = ''
@@ -317,7 +321,7 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
         standard['comments'] = ''
         standard['units'] = 'acc'
         standard['structure_type'] = ''
-        standard['process_level'] = 'V1'
+        standard['process_level'] = PROCESS_LEVELS['V1']
         standard['corner_frequency'] = np.nan
         standard['source'] = ('Los Angeles Basin Seismic Network, University '
                               'of Southern California')

@@ -16,7 +16,7 @@ def test_acceleration():
         __file__))  # where is this script?
     acc_file = os.path.join(homedir, '..', '..', 'data', 'geonet', 'us1000778i',
                             '20161113_110259_WTMC_20.V2A')
-    acc = read_data(acc_file)
+    acc = read_data(acc_file)[0]
     target_g = acc[0].data * GAL_TO_PCTG
     target_m = acc[0].data / 100
     target_cm = acc[0].data
@@ -39,7 +39,7 @@ def test_spectral():
         __file__))  # where is this script?
     acc_file = os.path.join(homedir, '..', '..', 'data', 'geonet', 'us1000778i',
                             '20161113_110259_WTMC_20.V2A')
-    acc = read_data(acc_file)
+    acc = read_data(acc_file)[0]
     get_spectral(1.0, acc, 0.05, rotation='gm')
 
 
@@ -48,7 +48,7 @@ def test_velocity():
         __file__))  # where is this script?
     acc_file = os.path.join(homedir, '..', '..', 'data', 'geonet', 'us1000778i',
                             '20161113_110259_WTMC_20.V2A')
-    acc = read_data(acc_file)
+    acc = read_data(acc_file)[0]
     target_v = acc.copy().integrate()[0]
     v = get_velocity(acc)
     np.testing.assert_allclose(v[0], target_v)

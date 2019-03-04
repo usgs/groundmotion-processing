@@ -8,6 +8,7 @@ import numpy as np
 from gmprocess.exception import GMProcessException
 from gmprocess.io.usc.core import is_usc, read_usc
 from gmprocess.stream import group_channels
+from gmprocess.stationtrace import PROCESS_LEVELS
 
 
 def test_usc():
@@ -32,7 +33,7 @@ def test_usc():
         assert is_usc(filename)
 
         # test acceleration from the file
-        stream = read_usc(filename)
+        stream = read_usc(filename)[0]
 
         # test for one trace per file
         assert stream.count() == 1
@@ -48,14 +49,14 @@ def test_usc():
         streams.append(stream)
 
     # test location override
-    stream = read_usc(filename, location='test')
+    stream = read_usc(filename, location='test')[0]
     for trace in stream:
         assert trace.stats.location == 'test'
 
     newstreams = group_channels(streams)
     assert len(newstreams) == 3
 
-    meta_stream = read_usc(os.path.join(datadir, '017m30cc.y0a'))
+    meta_stream = read_usc(os.path.join(datadir, '017m30cc.y0a'))[0]
     stats = meta_stream[0].stats
     assert stats['network'] == 'LA'
     assert stats['station'] == '57'
@@ -71,7 +72,7 @@ def test_usc():
     assert stats.standard['instrument_period'] == 0.039
     assert stats.standard['instrument_damping'] == .577
     assert stats.standard['process_time'] == ''
-    assert stats.standard['process_level'] == 'V1'
+    assert stats.standard['process_level'] == PROCESS_LEVELS['V1']
     assert stats.standard['station_name'] == '16628 W. LOST CANYON RD., CANYON COUNTRY, CA'
     assert stats.standard['sensor_serial_number'] == ''
     assert stats.standard['instrument'] == ''
@@ -87,7 +88,7 @@ def test_usc():
 
     # test that volume 2 is not available yet
     try:
-        read_usc(filename)
+        read_usc(filename)[0]
         success = True
     except GMProcessException:
         success = False
@@ -96,7 +97,7 @@ def test_usc():
     # test wrong format exception
     try:
         datadir = os.path.join(homedir, '..', '..', '..', 'data', 'smc')
-        read_usc(os.path.join(datadir, '0111b.smc'))
+        read_usc(os.path.join(datadir, '0111b.smc'))[0]
         success = True
     except Exception:
         success = False

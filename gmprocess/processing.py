@@ -10,10 +10,9 @@ import logging
 from scipy.optimize import curve_fit
 
 from gmprocess.config import get_config
-import gmprocess.pretesting as pretesting
+from gmprocess.pretesting import check_max_amplitude, check_sta_lta
 from gmprocess.windows import signal_split
 from gmprocess.windows import signal_end
-from gmprocess.utils import _update_provenance, _get_provenance
 from gmprocess import corner_frequencies
 
 CONFIG = get_config()
@@ -73,31 +72,31 @@ def process_streams(streams, origin, config=None):
 
     # -------------------------------------------------------------------------
     # Begin pre-testing steps
-    logging.info('Starting pre-testing...')
-    stalta_args = config['pretesting']['stalta']
-    amplitude_args = config['pretesting']['amplitude']
+    # logging.info('Starting pre-testing...')
+    # stalta_args = config['pretesting']['stalta']
+    # amplitude_args = config['pretesting']['amplitude']
 
-    streams_passed = []
+    # streams_passed = []
 
-    for stream in streams:
+    # for stream in streams:
 
-        # STA/LTA check
-        logging.debug('len(stream): %s (before stalta)' % len(stream))
-        sta_lta_result = pretesting.check_sta_lta(stream, **stalta_args)
+    #     # STA/LTA check
+    #     logging.debug('len(stream): %s (before stalta)' % len(stream))
+    #     sta_lta_result = pretesting.check_sta_lta(stream, **stalta_args)
 
-        # Aplitude check
-        amp_result = pretesting.check_max_amplitude(stream, **amplitude_args)
+    #     # Aplitude check
+    #     amp_result = pretesting.check_max_amplitude(stream, **amplitude_args)
 
-        if sta_lta_result and amp_result:
-            streams_passed.append(stream.copy())
-        else:
-            logging.info(
-                "The following stream did not pass pre-testing checks: %s"
-                % stream)
+    #     if sta_lta_result and amp_result:
+    #         streams_passed.append(stream.copy())
+    #     else:
+    #         logging.info(
+    #             "The following stream did not pass pre-testing checks: %s"
+    #             % stream)
 
-    if len(streams_passed) == 0:
-        logging.info('No streams passed pre-testing checks. Exiting.')
-        sys.exit(1)
+    # if len(streams_passed) == 0:
+    #     logging.info('No streams passed pre-testing checks. Exiting.')
+    #     sys.exit(1)
 
     # -------------------------------------------------------------------------
     # Begin noise/signal window steps
@@ -105,7 +104,9 @@ def process_streams(streams, origin, config=None):
     logging.info('Windowing noise and signal...')
     window_conf = config['windows']
 
-    for stream in streams_passed:
+    passed_streams = []
+    for tstream in streams:
+        stream = tstream.copy()
         # Estimate noise/signal split time
         split_conf = window_conf['split']
         event_time = origin['time']
@@ -129,13 +130,14 @@ def process_streams(streams, origin, config=None):
             event_mag=event_mag,
             **end_conf
         )
+        passed_streams.append(stream)
 
     # -------------------------------------------------------------------------
     # Begin corner frequency stuff
     logging.info('Setting corner frequencies...')
     cf_config = config['corner_frequencies']
 
-    for stream in streams_passed:
+    for stream in passed_streams:
         if cf_config['method'] == 'constant':
             stream = corner_frequencies.constant(stream)
         elif cf_config['method'] == 'snr':
@@ -149,7 +151,11 @@ def process_streams(streams, origin, config=None):
 
     # Loop over streams
     processed_streams = []
-    for stream in streams_passed:
+    for stream in passed_streams:
+        # pre-set passed_checks parameter to true
+        # checkers will unset this if they fail
+        for tr in stream:
+            tr.setParameter('passed_checks', True)
         for processing_step_dict in processing_steps:
             key_list = list(processing_step_dict.keys())
             if len(key_list) != 1:
@@ -167,7 +173,13 @@ def process_streams(streams, origin, config=None):
                 stream,
                 **step_args
             )
-        processed_streams.append(stream)
+            checks_false = not stream[0].getParameter('passed_checks')
+            if checks_false:
+                break
+        checks_true = stream[0].hasParameter('passed_checks')
+        if checks_true:
+            processed_streams.append(stream)
+
     logging.info('Finished processing streams.')
     return processed_streams
 
@@ -221,28 +233,26 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
             tr.remove_response(
                 inventory=inv, output=output, water_level=water_level,
                 pre_filt=(f1, f2, f3, f4))
-            tr = _update_provenance(
-                tr, 'remove_response',
-                {
-                    'method': 'remove_sensitivity',
-                    'inventory': inv,
-                    'f1': f1,
-                    'f2': f2,
-                    'f3': f3,
-                    'f4': f4,
-                    'water_level': water_level
-                }
-            )
+            tr.setProvenance('remove_response',
+                             {
+                                 'method': 'remove_sensitivity',
+                                 'inventory': inv,
+                                 'f1': f1,
+                                 'f2': f2,
+                                 'f3': f3,
+                                 'f4': f4,
+                                 'water_level': water_level
+                             }
+                             )
         elif tr.stats.channel[1] == 'N':
             if isinstance(tr.data[0], int):
                 tr.remove_sensitivity(inventory=inv)
-                tr = _update_provenance(
-                    tr, 'remove_response',
-                    {
-                        'method': 'remove_sensitivity',
-                        'inventory': inv
-                    }
-                )
+                tr.setProvenance('remove_response',
+                                 {
+                                     'method': 'remove_sensitivity',
+                                     'inventory': inv
+                                 }
+                                 )
             else:
                 logging.info('Skipping sensitivity removal because units '
                              'are not counts (integers).')
@@ -278,12 +288,11 @@ def detrend(st, detrending_method=None):
         else:
             tr = tr.detrend(detrending_method)
 
-        tr = _update_provenance(
-            tr, 'detrend',
-            {
-                'detrending_method': detrending_method
-            }
-        )
+        tr.setProvenance('detrend',
+                         {
+                             'detrending_method': detrending_method
+                         }
+                         )
 
     return st
 
@@ -310,12 +319,11 @@ def resample(st, new_sampling_rate=None, method=None, a=None):
 
     for tr in st:
         tr.interpolate(sampling_rate=new_sampling_rate, method=method, a=a)
-        tr = _update_provenance(
-            tr, 'resample',
-            {
-                'new_sampling_rate': new_sampling_rate
-            }
-        )
+        tr.setProvenance('resample',
+                         {
+                             'new_sampling_rate': new_sampling_rate
+                         }
+                         )
 
     return st
 
@@ -343,22 +351,21 @@ def cut(st, sec_before_split=None):
     """
     for tr in st:
         logging.debug('Before cut end time: %s ' % tr.stats.endtime)
-        etime = _get_provenance(tr, 'signal_end')[0]['end_time']
+        etime = tr.getParameter('signal_end')['end_time']
         tr.trim(endtime=etime)
         logging.debug('After cut end time: %s ' % tr.stats.endtime)
         if sec_before_split is not None:
-            split_time = _get_provenance(tr, 'signal_split')[0]['split_time']
+            split_time = tr.getParameter('signal_split')['split_time']
             stime = split_time - sec_before_split
             logging.debug('Before cut start time: %s ' % tr.stats.starttime)
             tr.trim(starttime=stime)
             logging.debug('After cut start time: %s ' % tr.stats.starttime)
-        tr = _update_provenance(
-            tr, 'cut',
-            {
-                'new_start_time': tr.stats.starttime,
-                'new_end_time': tr.stats.endtime
-            }
-        )
+        tr.setProvenance('cut',
+                         {
+                             'new_start_time': tr.stats.starttime,
+                             'new_end_time': tr.stats.endtime
+                         }
+                         )
     return st
 
 
@@ -384,21 +391,20 @@ def highpass_filter(st, filter_order=5, number_of_passes=2):
         raise ValueError("number_of_passes must be 1 or 2.")
 
     for tr in st:
-        freq_prov = _get_provenance(tr, 'corner_frequencies')[0]
+        freq_prov = tr.getParameter('corner_frequencies')
         freq = freq_prov['highpass']
         tr.filter(type="highpass",
                   freq=freq,
                   corners=filter_order,
                   zerophase=zerophase)
-        tr = _update_provenance(
-            tr, 'highpass_filter',
-            {
-                'filter_type': 'Butterworth',
-                'filter_order': filter_order,
-                'number_of_passes': number_of_passes,
-                'corner_frequency': freq
-            }
-        )
+        tr.setProvenance('highpass_filter',
+                         {
+                             'filter_type': 'Butterworth',
+                             'filter_order': filter_order,
+                             'number_of_passes': number_of_passes,
+                             'corner_frequency': freq
+                         }
+                         )
     return st
 
 
@@ -424,21 +430,20 @@ def lowpass_filter(st, filter_order=5, number_of_passes=2):
         raise ValueError("number_of_passes must be 1 or 2.")
 
     for tr in st:
-        freq_prov = _get_provenance(tr, 'corner_frequencies')[0]
+        freq_prov = tr.getParameter('corner_frequencies')
         freq = freq_prov['lowpass']
         tr.filter(type="lowpass",
                   freq=freq,
                   corners=filter_order,
                   zerophase=zerophase)
-        tr = _update_provenance(
-            tr, 'lowpass_filter',
-            {
-                'filter_type': 'Butterworth',
-                'filter_order': filter_order,
-                'number_of_passes': number_of_passes,
-                'corner_frequency': freq
-            }
-        )
+        tr.setProvenance('lowpass_filter',
+                         {
+                             'filter_type': 'Butterworth',
+                             'filter_order': filter_order,
+                             'number_of_passes': number_of_passes,
+                             'corner_frequency': freq
+                         }
+                         )
     return st
 
 
@@ -461,13 +466,12 @@ def taper(st, type="hann", width=0.05, side="both"):
     for tr in st:
         tr.taper(max_percentage=width, type=type, side=side)
         window_type = TAPER_TYPES[type]
-        tr = _update_provenance(
-            tr, 'taper',
-            {
-                'window_type': window_type,
-                'taper_width': width,
-                'side': side}
-        )
+        tr.setProvenance('taper',
+                         {
+                             'window_type': window_type,
+                             'taper_width': width,
+                             'side': side}
+                         )
     return st
 
 
@@ -507,12 +511,11 @@ def _correct_baseline(trace):
     # acceleration trace
     for i in range(orig_trace.stats.npts):
         orig_trace.data[i] -= polynomial_second_derivative(i)
-    orig_trace = _update_provenance(
-        orig_trace, 'baseline',
-        {
-            'polynomial_coefs': poly_cofs
-        }
-    )
+    orig_trace.setProvenance('baseline',
+                             {
+                                 'polynomial_coefs': poly_cofs
+                             }
+                             )
 
     return orig_trace
 
