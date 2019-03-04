@@ -5,14 +5,12 @@ import logging
 
 # third party imports
 import numpy as np
-# from obspy.core.trace import Trace
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
 from obspy.core.trace import Stats
-# from obspy.core.stream import Stream
-from gmprocess.stationstream import StationStream
 
 # local imports
 from gmprocess.io.seedname import get_channel_name
+from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.stationstream import StationStream
 
 DATE_FMT = '%Y/%m/%d-%H:%M:%S.%f'
 

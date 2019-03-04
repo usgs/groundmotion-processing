@@ -6,17 +6,14 @@ import re
 import logging
 
 # third party
-# from obspy.core.trace import Trace
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS, TIMEFMT
-# from obspy.core.stream import Stream
-from gmprocess.stationstream import StationStream
 from obspy.core.trace import Stats
 import numpy as np
 
 # local imports
 from gmprocess.io.seedname import get_channel_name
+from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.stationstream import StationStream
 
-TIMEFMT = '%Y-%m-%dT%H:%M:%S'
 NZCATWINDOW = 5 * 60  # number of seconds to search around in GeoNet EQ catalog
 
 TEXT_HDR_ROWS = 16

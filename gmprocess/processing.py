@@ -104,7 +104,9 @@ def process_streams(streams, origin, config=None):
     logging.info('Windowing noise and signal...')
     window_conf = config['windows']
 
-    for stream in streams:
+    passed_streams = []
+    for tstream in streams:
+        stream = tstream.copy()
         # Estimate noise/signal split time
         split_conf = window_conf['split']
         event_time = origin['time']
@@ -128,13 +130,14 @@ def process_streams(streams, origin, config=None):
             event_mag=event_mag,
             **end_conf
         )
+        passed_streams.append(stream)
 
     # -------------------------------------------------------------------------
     # Begin corner frequency stuff
     logging.info('Setting corner frequencies...')
     cf_config = config['corner_frequencies']
 
-    for stream in streams:
+    for stream in passed_streams:
         if cf_config['method'] == 'constant':
             stream = corner_frequencies.constant(stream)
         elif cf_config['method'] == 'snr':
@@ -148,7 +151,7 @@ def process_streams(streams, origin, config=None):
 
     # Loop over streams
     processed_streams = []
-    for stream in streams:
+    for stream in passed_streams:
         # pre-set passed_checks parameter to true
         # checkers will unset this if they fail
         for tr in stream:
@@ -316,12 +319,11 @@ def resample(st, new_sampling_rate=None, method=None, a=None):
 
     for tr in st:
         tr.interpolate(sampling_rate=new_sampling_rate, method=method, a=a)
-        tr = _update_provenance(
-            tr, 'resample',
-            {
-                'new_sampling_rate': new_sampling_rate
-            }
-        )
+        tr.setProvenance('resample',
+                         {
+                             'new_sampling_rate': new_sampling_rate
+                         }
+                         )
 
     return st
 

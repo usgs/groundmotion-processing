@@ -17,7 +17,7 @@ def test_sa():
         __file__))  # where is this script?
     datafile_v2 = os.path.join(homedir, '..', '..', 'data', 'geonet', 'us1000778i',
                                '20161113_110259_WTMC_20.V2A')
-    stream_v2 = read_geonet(datafile_v2)
+    stream_v2 = read_geonet(datafile_v2)[0]
     sa_target = {}
     for trace in stream_v2:
         vtrace = trace.copy()

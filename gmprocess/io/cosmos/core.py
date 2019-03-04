@@ -9,8 +9,6 @@ import logging
 
 # third party
 import numpy as np
-# from obspy.core.trace import Trace
-# from obspy.core.stream import Stream
 from obspy.core.trace import Stats
 
 # local imports
@@ -263,7 +261,7 @@ def _read_channel(filename, line_offset, location=''):
     trace = StationTrace(data.copy(), Stats(hdr.copy()))
 
     # record that this data has been converted to gals, if it has
-    if hdr['process_level'] != PROCESS_LEVELS['V0']:
+    if hdr['standard']['process_level'] != PROCESS_LEVELS['V0']:
         response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
         trace.setProvenance('remove_response', response)
 

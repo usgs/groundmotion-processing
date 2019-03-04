@@ -1,17 +1,31 @@
+# stdlib imports
+import json
+import re
+
+# third party imports
 import pyasdf
 import h5py
+from obspy.core.utcdatetime import UTCDateTime
 import numpy as np
 
-from .asdf_utils import (inventory_from_stream,
-                         stats_from_inventory,
-                         get_event_info)
+# local imports
+from .asdf_utils import (get_event_info)
 from .provenance import get_provenance, extract_provenance
-
-from gmprocess.stationtrace import StationTrace
+from gmprocess.stationtrace import StationTrace, TIMEFMT_MS
 from gmprocess.stationstream import StationStream
+
+TIMEPAT = '[0-9]{4}-[0-9]{2}-[0-9]{2}T'
 
 
 def is_asdf(filename):
+    """Verify that the input file is an ASDF file.
+
+    Args:
+        filename (str): Path to candidate ASDF file.
+
+    Returns:
+        bool: True if ASDF, False if not.
+    """
     try:
         f = h5py.File(filename, 'r')
         if 'AuxiliaryData' in f:
@@ -27,13 +41,17 @@ def read_asdf(filename):
     """Read Streams of data (complete with processing metadata) from an ASDF file.
 
     Args:
-        filename (str): Path to valid ASDF file.
+        filename (str):
+            Path to valid ASDF file.
 
     Returns:
-        list: List of Streams containing processing and channel metadata.
+        list:
+            List of StationStreams containing processing
+            and channel metadata.
     """
     ds = pyasdf.ASDFDataSet(filename)
     streams = []
+    auxholder = ds.auxiliary_data.EmptyArray
     for waveform in ds.waveforms:
         inventory = waveform['StationXML']
         tags = waveform.get_waveform_tags()
@@ -47,6 +65,15 @@ def read_asdf(filename):
                 if tag in ds.provenance.list():
                     provdoc = ds.provenance[tag]
                     trace = extract_provenance(trace, provdoc)
+                trace_path = '%s_%s' % (tag, trace.stats.channel)
+                if trace_path in auxholder:
+                    bytelist = auxholder[trace_path].data[:].tolist()
+                    jsonstr = ''.join([chr(b) for b in bytelist])
+                    jdict = json.loads(jsonstr)
+                    jdict = unstringify_dict(jdict)
+                    for key, value in jdict.items():
+                        trace.setParameter(key, value)
+
                 traces.append(trace)
             stream = StationStream(traces=traces)
             streams.append(stream)
@@ -57,11 +84,11 @@ def write_asdf(filename, streams, event=None):
     """Write a number of streams (raw or processed) into an ASDF file.
 
     Args:
-        filename (str): 
+        filename (str):
             Path to the HDF file that should contain stream data.
-        streams (list): 
+        streams (list):
             List of StationStream objects that should be written into the file.
-        event (Obspy Event or dict): 
+        event (Obspy Event or dict):
             Obspy event object or dict (see get_event_dict())
     """
     ds = pyasdf.ASDFDataSet(filename, compression="gzip-3")
@@ -101,9 +128,41 @@ def write_asdf(filename, streams, event=None):
             for provdoc in provdocs:
                 ds.add_provenance_document(provdoc, name=tag)
 
+        for trace in stream:
+            path = '%s_%s' % (tag, trace.stats.channel)
+            jdict = {}
+            for key in trace.getParameterKeys():
+                value = trace.getParameter(key)
+                jdict[key] = value
+            if len(jdict):
+                jdict = stringify_dict(jdict)
+                jsonbytes = json.dumps(jdict).encode('utf-8')
+                jsonarray = np.frombuffer(jsonbytes, dtype=np.uint8)
+                ds.add_auxiliary_data(jsonarray,
+                                      data_type='EmptyArray',
+                                      path=path,
+                                      parameters={})
         inventory = stream.getInventory()
         ds.add_stationxml(inventory)
 
     # no close or other method for ASDF data sets?
     # this may force closing of the file...
     del ds
+
+
+def stringify_dict(indict):
+    for key, value in indict.items():
+        if isinstance(value, UTCDateTime):
+            indict[key] = value.strftime(TIMEFMT_MS)
+        elif isinstance(value, dict):
+            indict[key] = stringify_dict(value)
+    return indict
+
+
+def unstringify_dict(indict):
+    for key, value in indict.items():
+        if isinstance(value, str) and re.match(TIMEPAT, value):
+            indict[key] = UTCDateTime(value)
+        elif isinstance(value, dict):
+            indict[key] = unstringify_dict(value)
+    return indict

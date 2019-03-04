@@ -5,12 +5,12 @@ from datetime import datetime
 import logging
 
 # third party
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
-from gmprocess.stationstream import StationStream
 import numpy as np
 
 # local imports
 from gmprocess.io.seedname import get_channel_name
+from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.stationstream import StationStream
 
 ASCII_HEADER_LINES = 11
 INTEGER_HEADER_LINES = 6

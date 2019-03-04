@@ -48,10 +48,25 @@ FLOAT_TYPES = [np.dtype('float32'),
                np.dtype('float64')]
 
 TIMEFMT = '%Y-%m-%dT%H:%M:%SZ'
+TIMEFMT_MS = '%Y-%m-%dT%H:%M:%S.%fZ'
 
 
 class StationTrace(Trace):
+    """Subclass of Obspy Trace object which holds more metadata.
+
+    """
+
     def __init__(self, data=np.array([]), header=None, inventory=None):
+        """Construct StationTrace.
+
+        Args:
+            data (ndarray):
+                numpy array of points.
+            header (dict-like):
+                Dictionary of metadata (see trace.stats docs).
+            inventory (Inventory):
+                Obspy Inventory object.
+        """
         if inventory is None and header is None:
             raise Exception(
                 'Cannot create StationTrace without header info or Inventory')
@@ -70,6 +85,14 @@ class StationTrace(Trace):
         self.validate()
 
     def validate(self):
+        """Ensure that all required metadata fields have been set.
+
+        Raises:
+            KeyError: 
+                - When standard dictionary is missing required fields
+                - When standard values are of the wrong type
+                - When required values are set to a default.
+        """
         # are all of the defined standard keys in the standard dictionary?
         req_keys = set(STANDARD_KEYS.keys())
         std_keys = set(list(self.stats.standard.keys()))
@@ -81,10 +104,7 @@ class StationTrace(Trace):
         required_errors = []
         for key in req_keys:
             keydict = STANDARD_KEYS[key]
-            try:
-                value = self.stats.standard[key]
-            except Exception as e:
-                x = 1
+            value = self.stats.standard[key]
             required = keydict['required']
             vtype = keydict['type']
             default = keydict['default']
@@ -114,6 +134,11 @@ class StationTrace(Trace):
             raise KeyError(error_msg)
 
     def getProvenanceKeys(self):
+        """Get a list of all available provenance keys.
+
+        Returns:
+            list: List of available provenance keys.
+        """
         if not len(self.provenance):
             return []
         pkeys = []
@@ -158,9 +183,25 @@ class StationTrace(Trace):
         self.provenance.append(provdict)
 
     def getAllProvenance(self):
+        """Get internal list of processing history.
+
+        Returns:
+            list:
+                Sequence of dictionaries containing fields:
+                - prov_id Activity prov:id (see URL above).
+                - prov_attributes Activity attributes for the given key.
+        """
         return self.provenance
 
     def hasParameter(self, param_id):
+        """Check to see if Trace contains a given parameter.
+
+        Args:
+            param_id (str): Name of parameter to check.
+
+        Returns:
+            bool: True if parameter is set, False if not.
+        """
         return param_id in self.parameters
 
     def setParameter(self, param_id, param_attributes):
@@ -175,6 +216,11 @@ class StationTrace(Trace):
         self.parameters[param_id] = param_attributes
 
     def getParameterKeys(self):
+        """Get a list of all available parameter keys.
+
+        Returns:
+            list: List of available parameter keys.
+        """
         return list(self.parameters.keys())
 
     def getParameter(self, param_id):
@@ -192,15 +238,6 @@ class StationTrace(Trace):
             raise KeyError(
                 'Parameter %s not found in StationTrace' % param_id)
         return self.parameters[param_id]
-
-    def getParameterKeys(self):
-        """Get list of parameters already set.
-
-        Returns:
-            list: Sequence of keys that can be used with getParameter().
-
-        """
-        return list(self.parameters.keys())
 
 
 def _stats_from_inventory(data, inventory, channelid):

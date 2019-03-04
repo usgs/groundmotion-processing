@@ -6,7 +6,6 @@ import logging
 import numpy as np
 from obspy.core.trace import Stats
 
-
 # local imports
 from gmprocess.exception import GMProcessException
 from gmprocess.io.seedname import get_channel_name

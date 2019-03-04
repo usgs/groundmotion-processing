@@ -7,10 +7,6 @@ import logging
 import pkg_resources
 
 # third party
-# from obspy.core.trace import Trace
-from gmprocess.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
-# from obspy.core.stream import Stream
-from gmprocess.stationstream import StationStream
 from obspy.core.trace import Stats
 import numpy as np
 
@@ -18,6 +14,8 @@ import numpy as np
 from gmprocess.exception import GMProcessException
 from gmprocess.io.usc.core import is_usc
 from gmprocess.io.seedname import get_channel_name
+from gmprocess.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
+from gmprocess.stationstream import StationStream
 
 V1_TEXT_HDR_ROWS = 13
 V1_INT_HDR_ROWS = 7

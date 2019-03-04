@@ -29,7 +29,7 @@ def test_stationsummary():
                                       'HN1', 'HN2', 'HNZ', 'ROTD50.0',
                                       'ROTD100.0']))
     target_imts = np.sort(np.asarray(['SA1.0', 'PGA', 'PGV']))
-    stream = read_geonet(datafile)
+    stream = read_geonet(datafile)[0]
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         stream_summary = StationSummary.from_stream(
@@ -93,7 +93,7 @@ def test_stationsummary():
     }
     datafile = os.path.join(homedir, '..', '..', 'data', 'geonet', 'us1000778i',
                             '20161113_110313_THZ_20.V2A')
-    invalid_stream = read_geonet(datafile)
+    invalid_stream = read_geonet(datafile)[0]
     station_code = 'WTMC'
     pgm_summary = StationSummary.from_pgms(station_code, test_pgms)
     adict = pgm_summary.pgms

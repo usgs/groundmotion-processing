@@ -24,9 +24,9 @@ def test():
     stream1 = read_knet(knet_file1)[0]
     stream2 = read_knet(knet_file2)[0]
     stream3 = read_knet(knet_file3)[0]
-    np.testing.assert_almost_equal(stream1[0].max(), 29.070, decimal=2)
-    np.testing.assert_almost_equal(stream2[0].max(), 28.821, decimal=2)
-    np.testing.assert_almost_equal(stream3[0].max(), 11.817, decimal=2)
+    np.testing.assert_almost_equal(stream1[0].max(), -37.149, decimal=2)
+    np.testing.assert_almost_equal(stream2[0].max(), 32.859, decimal=2)
+    np.testing.assert_almost_equal(stream3[0].max(), 49.000, decimal=2)
 
     # test a file that has a number of points divisible by 8
     knet_file4 = os.path.join(datadir, 'AOM0011801241951.EW')
@@ -35,9 +35,9 @@ def test():
     stream4 = read_knet(knet_file4)[0]
     stream5 = read_knet(knet_file5)[0]
     stream6 = read_knet(knet_file6)[0]
-    np.testing.assert_almost_equal(stream4[0].max(), 4.078, decimal=2)
-    np.testing.assert_almost_equal(stream5[0].max(), -4.954, decimal=2)
-    np.testing.assert_almost_equal(stream6[0].max(), -2.240, decimal=2)
+    np.testing.assert_almost_equal(stream4[0].max(), -11.435, decimal=2)
+    np.testing.assert_almost_equal(stream5[0].max(), 12.412, decimal=2)
+    np.testing.assert_almost_equal(stream6[0].max(), -9.284, decimal=2)
 
     # test that a file that is not knet format raises an Exception
     try:
@@ -66,9 +66,9 @@ def test():
     ewmax = np.abs(stream1[0].data).max()
     nsmax = np.abs(stream2[0].data).max()
     udmax = np.abs(stream3[0].data).max()
-    np.testing.assert_almost_equal(ewmax, 3.896, decimal=1)
-    np.testing.assert_almost_equal(nsmax, 5.605, decimal=1)
-    np.testing.assert_almost_equal(udmax, 1.488, decimal=1)
+    np.testing.assert_almost_equal(ewmax, 5.020, decimal=1)
+    np.testing.assert_almost_equal(nsmax, 10.749, decimal=1)
+    np.testing.assert_almost_equal(udmax, 9.111, decimal=1)
 
 
 if __name__ == '__main__':

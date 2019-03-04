@@ -55,7 +55,7 @@ def test_arias():
     # Test other components
     data_file = os.path.join(homedir, '..', '..', 'data',
                              'cwb', 'us1000chhc', '2-ECU.dat')
-    stream = read_data(data_file)
+    stream = read_data(data_file)[0]
     station = StationSummary.from_stream(stream,
                                          ['channels', 'gmrotd', 'rotd50',
                                              'greater_of_two_horizontals'],
