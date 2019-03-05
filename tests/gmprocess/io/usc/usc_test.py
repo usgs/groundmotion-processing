@@ -42,8 +42,8 @@ def test_usc():
         for trace in stream:
             assert trace.stats.standard.units == 'acc'
         # compare the start/end points
-        np.testing.assert_almost_equal(accvals[0], stream[0].data[0])
-        np.testing.assert_almost_equal(accvals[1], stream[0].data[-1])
+        # np.testing.assert_almost_equal(accvals[0], stream[0].data[0])
+        # np.testing.assert_almost_equal(accvals[1], stream[0].data[-1])
 
         # append to list of streams, so we can make sure these group together
         streams.append(stream)
@@ -64,7 +64,7 @@ def test_usc():
     assert stats['location'] == '--'
     dt = '%Y-%m-%dT%H:%M:%SZ'
     assert stats['starttime'].strftime(dt) == '1994-01-17T12:30:00Z'
-    assert stats['npts'] == 7340
+    # assert stats['npts'] == 7340
     np.testing.assert_almost_equal(stats.coordinates['latitude'], 34.419, 3)
     np.testing.assert_almost_equal(stats.coordinates['longitude'], -118.426, 3)
     assert str(stats.coordinates['elevation']) == 'nan'
@@ -82,6 +82,11 @@ def test_usc():
     assert stats.standard['source_format'] == 'usc'
     assert stats.standard['source'] == 'Los Angeles Basin Seismic Network, University of Southern California'
     assert stats.format_specific['fractional_unit'] == .100
+
+    # Verify that the stream was resampled correctly due to uneven spacing
+    assert meta_stream[0].getProvenance('resample')[0]['method'] == \
+        'Linear interpolation of unevenly spaced samples'
+    assert stats.sampling_rate == 200
 
     filename = os.path.join(datadir, '017m30bt.s0a')
     assert is_usc(filename) == True
