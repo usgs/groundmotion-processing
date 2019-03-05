@@ -5,7 +5,7 @@ import json
 import numpy as np
 from obspy.core.stream import Stream
 from obspy.core.utcdatetime import UTCDateTime
-from obspy.core.inventory import (Inventory, Network, Station, Response,
+from obspy.core.inventory import (Inventory, Network, Station,
                                   Channel, Site, Equipment)
 # local imports
 from .stationtrace import StationTrace
@@ -37,7 +37,8 @@ class StationStream(Stream):
                 if inventory is None:
                     if not isinstance(trace, StationTrace):
                         raise ValueError(
-                            'Input Traces to StationStream must be of subtype StationTrace')
+                            'Input Traces to StationStream must be of subtype '
+                            'StationTrace')
                     else:
                         self.append(trace)
                 else:
@@ -48,7 +49,6 @@ class StationStream(Stream):
                         self.append(statrace)
                     else:
                         self.append(trace)
-        x = 1
 
     def getInventory(self):
         """Extract an ObsPy inventory object from a Stream read in by gmprocess tools.
