@@ -16,6 +16,7 @@ from gmprocess.io.usc.core import is_usc
 from gmprocess.io.seedname import get_channel_name
 from gmprocess.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
 from gmprocess.stationstream import StationStream
+from gmprocess.io.utils import is_evenly_spaced, resample_uneven_trace
 
 V1_TEXT_HDR_ROWS = 13
 V1_INT_HDR_ROWS = 7
@@ -57,6 +58,9 @@ UNITS = [
     'vel',
     'disp'
 ]
+
+# Number of decimals for time deltas to be considered unique
+NUM_DECIMALS = 3
 
 
 def _get_date(line):
@@ -233,14 +237,21 @@ def _read_volume_one(filename, line_offset, location=''):
         max_rows = int(np.ceil(hdr['npts'] / 8))
         data = _read_lines(skip_rows, max_rows, widths, filename)
         acc_data = data[:hdr['npts']]
+        evenly_spaced = True
     else:
         # acceleration data is interleaved between time data
         max_rows = int(np.ceil(hdr['npts'] / 5))
         widths = [7] * 10
         data = _read_lines(skip_rows, max_rows, widths, filename)
         acc_data = data[1::2][:hdr['npts']]
+        times = data[0::2][:hdr['npts']]
+        evenly_spaced = is_evenly_spaced(times, NUM_DECIMALS)
 
     acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()))
+
+    # Check if the times were included in the file but were not evenly spaced
+    if not evenly_spaced:
+        acc_trace = resample_uneven_trace(acc_trace, times, acc_data)
 
     response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
     acc_trace.setProvenance('remove_response', response)

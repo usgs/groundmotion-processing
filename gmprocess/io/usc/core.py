@@ -11,6 +11,7 @@ from gmprocess.exception import GMProcessException
 from gmprocess.io.seedname import get_channel_name
 from gmprocess.stationstream import StationStream
 from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.io.utils import is_evenly_spaced, resample_uneven_trace
 
 VOLUMES = {
     'V1': {
@@ -29,6 +30,9 @@ USC_ORIENTATIONS = {
     700: ('Longitudinal (relative to structure)', 'Long'),
     800: ('', 'Tran')
 }
+
+# Number of decimals for time deltas to be considered unique
+NUM_DECIMALS = 3
 
 
 def is_usc(filename):
@@ -158,10 +162,16 @@ def _read_channel(filename, line_offset, volume, location=''):
     skiprows += volume['FLT_HDR_ROWS']
     # read in the data
     nrows = int(np.floor(hdr['npts'] * 2 / 10))
-    data = np.genfromtxt(filename, skip_header=skiprows,
-                         max_rows=nrows, dtype=np.float64,
-                         delimiter=volume['COL_FMT']).flatten()[1::2]
+    all_data = np.genfromtxt(filename, skip_header=skiprows,
+                             max_rows=nrows, dtype=np.float64,
+                             delimiter=volume['COL_FMT'])
+    data = all_data.flatten()[1::2]
+    times = all_data.flatten()[0::2]
+
     trace = StationTrace(data.copy(), Stats(hdr.copy()))
+
+    if not is_evenly_spaced(times, NUM_DECIMALS):
+        trace = resample_uneven_trace(trace, times, data)
 
     response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
     trace.setProvenance('remove_response', response)
