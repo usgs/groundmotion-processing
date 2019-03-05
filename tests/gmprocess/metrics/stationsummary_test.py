@@ -28,7 +28,7 @@ def test_stationsummary():
     target_imcs = np.sort(np.asarray(['GREATER_OF_TWO_HORIZONTALS',
                                       'HN1', 'HN2', 'HNZ', 'ROTD50.0',
                                       'ROTD100.0']))
-    target_imts = np.sort(np.asarray(['SA1.0', 'PGA', 'PGV']))
+    target_imts = np.sort(np.asarray(['SA(1.0)', 'PGA', 'PGV']))
     stream = read_geonet(datafile)[0]
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
@@ -58,14 +58,15 @@ def test_stationsummary():
         np.testing.assert_almost_equal(stream_summary.get_pgm('PGA', 'HN1'),
                                        99.3173469387755, decimal=1)
         target_available = np.sort(np.asarray([
-            'calculate_greater_of_two_horizontals', 'calculate_channels',
-            'calculate_gmrotd', 'calculate_rotd']))
+            'calculate_greater_of_two_horizontals', 'calculate_geometric_mean',
+            'calculate_channels', 'calculate_gmrotd', 'calculate_rotd']))
         imcs = stream_summary.available_imcs
         np.testing.assert_array_equal(np.sort(imcs), target_available)
         target_available = np.sort(np.asarray(['calculate_pga',
                                                'calculate_pgv',
                                                'calculate_sa',
-                                               'calculate_arias']))
+                                               'calculate_arias',
+                                               'calculate_fas']))
         imts = stream_summary.available_imts
         np.testing.assert_array_equal(np.sort(imts), target_available)
     test_pgms = {
@@ -83,7 +84,7 @@ def test_stationsummary():
             'HN1': 99.24999872535474,
             'HN2': 81.23467239067368,
             'GREATER_OF_TWO_HORIZONTALS': 99.24999872535474},
-        'SA1.0': {
+        'SA(1.0)': {
             'ROTD100.0': 146.9023350124098,
             'ROTD50.0': 106.03202302692158,
             'HNZ': 27.74118995438756,
@@ -107,6 +108,7 @@ def test_stationsummary():
     except Exception:
         success = False
     assert success is False
+
     # Invalid stream inputs should be rejected
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
@@ -116,6 +118,36 @@ def test_stationsummary():
         assert pgm_summary.stream is None
         pgm_summary.stream = stream
         assert pgm_summary.stream == stream
+
+    # Test with fas
+    stream = read_geonet(datafile)[0]
+    stream_summary = StationSummary.from_stream(
+        stream,
+        ['greater_of_two_horizontals',
+         'channels',
+         'geometric_mean'],
+        ['sa1.0', 'PGA', 'pgv', 'fas2.0'])
+    target_imcs = np.sort(np.asarray(['GREATER_OF_TWO_HORIZONTALS',
+                                      'HN1', 'HN2', 'HNZ',
+                                      'GEOMETRIC_MEAN']))
+    target_imts = np.sort(np.asarray(['SA(1.0)',
+            'PGA', 'PGV', 'FAS(2.0)']))
+    np.testing.assert_array_equal(np.sort(stream_summary.components),
+                                  target_imcs)
+    np.testing.assert_array_equal(np.sort(stream_summary.imts),
+                                  target_imts)
+
+    # Test config use
+    stream = read_geonet(datafile)[0]
+    stream_summary = StationSummary.from_stream(stream)
+    target_imcs = np.sort(np.asarray(['GREATER_OF_TWO_HORIZONTALS',
+                                      'HN1', 'HN2', 'HNZ']))
+    target_imts = np.sort(np.asarray(['SA(1.0)', 'SA(2.0)', 'SA(3.0)',
+            'SA(0.3)', 'PGA', 'PGV', 'FAS(1.0)', 'FAS(2.0)',
+            'FAS(3.0)', 'FAS(0.3)']))
+    assert(stream_summary.smoothing == 'konno_ohmachi')
+    assert(stream_summary.bandwidth == 20.0)
+    assert(stream_summary.damping == 0.05)
 
 
 if __name__ == '__main__':

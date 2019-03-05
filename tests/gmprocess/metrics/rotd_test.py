@@ -38,12 +38,12 @@ def test_rotd():
     pgms = station.pgms
     np.testing.assert_allclose(pgms['PGA']['ROTD50.0'], target_pga50, atol=0.1)
     np.testing.assert_allclose(
-        pgms['SA1.0']['ROTD50.0'], target_sa1050, atol=0.1)
+        pgms['SA(1.0)']['ROTD50.0'], target_sa1050, atol=0.1)
     np.testing.assert_allclose(pgms['PGV']['ROTD50.0'], target_pgv50, atol=0.1)
     np.testing.assert_allclose(
-        pgms['SA0.3']['ROTD50.0'], target_sa0350, atol=0.1)
+        pgms['SA(0.3)']['ROTD50.0'], target_sa0350, atol=0.1)
     np.testing.assert_allclose(
-        pgms['SA3.0']['ROTD50.0'], target_sa3050, atol=0.1)
+        pgms['SA(3.0)']['ROTD50.0'], target_sa3050, atol=0.1)
 
 
 def test_exceptions():

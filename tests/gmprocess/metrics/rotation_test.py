@@ -34,9 +34,9 @@ def test_rotation():
     # Get PGA and spectral accelerations
     st_PGA = station.oscillators['PGA']
     pgv = station.oscillators['PGV']
-    st_SA10 = station.oscillators['SA1.0_ROT']
-    st_SA30 = station.oscillators['SA3.0_ROT']
-    st_SA03 = station.oscillators['SA0.3_ROT']
+    st_SA10 = station.oscillators['SA(1.0)_ROT']
+    st_SA30 = station.oscillators['SA(3.0)_ROT']
+    st_SA03 = station.oscillators['SA(0.3)_ROT']
 
     rot_st_PGA = rotate(st_PGA[0], st_PGA[1], combine=True)
     rot_PGV = rotate(pgv[0], pgv[1], combine=True)

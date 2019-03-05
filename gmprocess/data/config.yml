@@ -1,16 +1,4 @@
 # -----------------------------------------------------------------------------
-# Output IMCs
-output_imcs:
-    - greater_of_two_horizontals
-    - channels
-
-# -----------------------------------------------------------------------------
-# Output IMTs
-output_imts:
-    - PGA
-    - SA(1.0)
-
-# -----------------------------------------------------------------------------
 # Options for FDSN requests
 waveform_request:
 
@@ -197,3 +185,59 @@ processing:
         # terms to be zero. The second derivative of the fit polynomial is then
         # removed from the acceleration time series.
         detrending_method: baseline_sixth_order
+
+# -----------------------------------------------------------------------------
+# This section is for calculating metrics
+metrics:
+  # Output IMCs
+  # Valid IMCs: channels, geometric_mean, gmrotd,
+  # greater_of_two_horizontals, rotd
+  output_imcs:
+      - greater_of_two_horizontals
+      - channels
+  # Output IMTs
+  # Valid IMTs: arias, fas, pga, pgv, sa
+  output_imts:
+      - PGA
+      - PGV
+      - SA
+  # Periods defined for the SA and FAS imts
+  sa:
+      # damping used to calculate the spectral response
+      damping: 0.05
+      # periods for which the spectral response is calculated
+      periods:
+        # Parameters defining an array of periods
+        # syntax is the same as that used for numpy linspace and logspace
+        # start (first value), stop (last value), num (number of values)
+        start: 1.0
+        stop: 3.0
+        num: 3
+        # Valid spacing: linspace, logspace
+        spacing: linspace
+        # Defines whether the above array is used. If False, only the
+        # defined_periods are used
+        use_array: True
+        # Defines a list of user defined periods that are not
+        # predefined by the array of periods
+        defined_periods:
+          - 0.3
+  fas:
+      smoothing: konno_ohmachi
+      bandwidth: 20.0
+      periods:
+        # Parameters defining an array of periods
+        # syntax is the same as that used for numpy linspace and logspace
+        # start (first value), stop (last value), num (number of values)
+        start: 1.0
+        stop: 3.0
+        num: 3
+        # Valid spacing: linspace, logspace
+        spacing: linspace
+        # Defines whether the above array is used. If false, only the
+        # defined_periods are used
+        use_array: True
+        # A list of user defined periods that are not
+        # predefined by the array of periods.
+        defined_periods:
+          - 0.3

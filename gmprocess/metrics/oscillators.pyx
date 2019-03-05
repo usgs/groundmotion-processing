@@ -26,7 +26,7 @@ def get_acceleration(stream, units='%%g'):
     Returns a stream of acceleration with specified units.
     Args:
         stream (obspy.core.stream.Stream): Strong motion timeseries
-            for one station. With units of g (cm/s).
+            for one station. With units of g (cm/s/s).
         units (str): Units of accelearation for output. Default is %g
     Returns:
         obpsy.core.stream.Stream: stream of acceleration.
@@ -75,6 +75,14 @@ cpdef list calculate_spectrals(np.ndarray[double, ndim=1, mode='c']times,
                           <double *>spectral_vel.data,
                           <double *>spectral_dis.data)
     return [spectral_acc, spectral_vel, spectral_dis]
+
+
+def get_fourier_amplitude_spectra(stream, smoothing='fft_smooth',
+    bandwidth=20.0):
+    """
+    Returns a stream of smoothed spectral amplitude spectra.
+
+    """
 
 
 def get_spectral(period, stream, damping=0.05, rotation=''):

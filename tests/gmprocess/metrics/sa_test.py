@@ -29,7 +29,7 @@ def test_sa():
                                                      ['greater_of_two_horizontals',
                                                       'gmrotd50', 'channels'],
                                                      ['sa1.0', 'saincorrect'])
-    assert 'SA1.0' in station_summary.pgms
+    assert 'SA(1.0)' in station_summary.pgms
     #station_dict = station_summary.pgms['SA1.0']
     # TODO: test against real values
 
