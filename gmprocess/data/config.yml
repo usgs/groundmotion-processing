@@ -35,6 +35,12 @@ waveform_request:
     format: MSEED
 
 # -----------------------------------------------------------------------------
+# Options for readers
+read:
+    # Resampling rate if times are unevenly spaced
+    resample_rate: 200
+
+# -----------------------------------------------------------------------------
 # Options for separating noise/signal windows
 #
 #    |<---Noise Window--->|<-----Signal Window----->|
