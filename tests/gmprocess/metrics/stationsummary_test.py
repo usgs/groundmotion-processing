@@ -120,7 +120,7 @@ def test_stationsummary():
         assert pgm_summary.stream == stream
 
     # Test with fas
-    stream = read_geonet(datafile)
+    stream = read_geonet(datafile)[0]
     stream_summary = StationSummary.from_stream(
         stream,
         ['greater_of_two_horizontals',
@@ -130,12 +130,25 @@ def test_stationsummary():
     target_imcs = np.sort(np.asarray(['GREATER_OF_TWO_HORIZONTALS',
                                       'HN1', 'HN2', 'HNZ',
                                       'GEOMETRIC_MEAN']))
-    target_imts = np.sort(np.asarray(['SA(1.0)', 'SA(2.0)',
-            'PGA', 'PGV', 'FAS(2.0)', 'FAS(1.0)']))
+    target_imts = np.sort(np.asarray(['SA(1.0)',
+            'PGA', 'PGV', 'FAS(2.0)']))
     np.testing.assert_array_equal(np.sort(stream_summary.components),
                                   target_imcs)
     np.testing.assert_array_equal(np.sort(stream_summary.imts),
                                   target_imts)
+
+    # Test config use
+    stream = read_geonet(datafile)[0]
+    stream_summary = StationSummary.from_stream(stream)
+    target_imcs = np.sort(np.asarray(['GREATER_OF_TWO_HORIZONTALS',
+                                      'HN1', 'HN2', 'HNZ']))
+    target_imts = np.sort(np.asarray(['SA(1.0)', 'SA(2.0)', 'SA(3.0)',
+            'SA(0.3)', 'PGA', 'PGV', 'FAS(1.0)', 'FAS(2.0)',
+            'FAS(3.0)', 'FAS(0.3)']))
+    assert(stream_summary.smoothing == 'konno_ohmachi')
+    assert(stream_summary.bandwidth == 20.0)
+    assert(stream_summary.damping == 0.05)
+
 
 if __name__ == '__main__':
     test_stationsummary()
