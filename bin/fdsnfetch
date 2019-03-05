@@ -18,7 +18,6 @@ TIMEFMT = '%Y-%m-%dT%H:%M:%S'
 
 
 def main(args):
-    conf_org = CONFIG['origin']
     conf_req = CONFIG['waveform_request']
     setup_logger(args)
     save_format = conf_req['format']
@@ -27,9 +26,9 @@ def main(args):
     # Request waveforms using parameters, getting stream and inventory
     st, inv = fdsn.request_raw_waveforms(
         conf_req['client'],
-        conf_org['event_time'].strftime(TIMEFMT),
-        conf_org['event_lat'],
-        conf_org['event_lon'],
+        args.org_time,
+        args.lat,
+        args.lon,
         conf_req['before_time'],
         conf_req['after_time'],
         conf_req['dist_min'],
