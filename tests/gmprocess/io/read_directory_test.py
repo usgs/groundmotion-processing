@@ -19,7 +19,8 @@ def test_directory_to_streams():
     temp_dir = os.path.join(tempfile.mkdtemp(), 'test')
     try:
         shutil.copytree(directory, temp_dir)
-        streams = directory_to_streams(temp_dir)
+        streams, unprocessed_files, unprocessed_file_errors = \
+            directory_to_streams(temp_dir)
         assert len(streams) == 4
     except:
         raise Exception('test_directory_to_streams Failed.')

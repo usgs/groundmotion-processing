@@ -11,24 +11,25 @@ CONFIG = get_config()
 DUPLICATE_MARKER = '1'
 
 
-def is_evenly_spaced(times, decimal_tolerance):
+def is_evenly_spaced(times, rtol=1e-6, atol=1e-8):
     """
     Checks whether times are evenly spaced.
 
     Args:
         times (array):
             Array of floats of times in seconds.
-        decimal_tolerance (int):
-            Decimal tolerance for testing equality of time deltas.
+        rtol (float):
+            The relative tolerance parameter. See numpy.allclose.
+        atol (float):
+            The absolute tolerance parameter. See numpy.allclose.
 
     Returns:
         bool: True if times are evenly spaced. False otherwise.
     """
-    diffs = np.diff(times).round(decimals=decimal_tolerance)
-    if len(np.unique(diffs)) > 1:
-        return False
-    else:
-        return True
+    diff_times = np.diff(times)
+    return np.all(
+        np.isclose(diff_times[0], diff_times, rtol=rtol, atol=atol)
+    )
 
 
 def resample_uneven_trace(trace, times, data, resample_rate=None,
@@ -52,6 +53,7 @@ def resample_uneven_trace(trace, times, data, resample_rate=None,
         trace (gmprocess.stationtrace.StationTrace):
             Resampled trace with updated provenance information.
     """
+    start_time = trace.stats.starttime
     npts = len(times)
     duration = times[-1] - times[0]
     nominal_sps = (npts - 1) / duration

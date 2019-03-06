@@ -31,9 +31,6 @@ USC_ORIENTATIONS = {
     800: ('', 'Tran')
 }
 
-# Number of decimals for time deltas to be considered unique
-NUM_DECIMALS = 3
-
 
 def is_usc(filename):
     """Check to see if file is a USC strong motion file.
@@ -170,7 +167,7 @@ def _read_channel(filename, line_offset, volume, location=''):
 
     trace = StationTrace(data.copy(), Stats(hdr.copy()))
 
-    if not is_evenly_spaced(times, NUM_DECIMALS):
+    if not is_evenly_spaced(times):
         trace = resample_uneven_trace(trace, times, data)
 
     response = {'input_units': 'counts', 'output_units': 'cm/s^2'}

@@ -1,12 +1,9 @@
 # stdlib imports
 import json
-from datetime import datetime
 
 # third party imports
 import numpy as np
 from obspy.core.trace import Trace
-from obspy.core.inventory import (Inventory, Network, Station, Response,
-                                  Channel, Site, Equipment)
 
 UNITS = {'acc': 'cm/s/s',
          'vel': 'cm/s'}
@@ -19,21 +16,78 @@ PROCESS_LEVELS = {'V0': 'raw counts',
                   'V3': 'derived time series'}
 
 
-STANDARD_KEYS = {'source': {'type': str, 'required': True, 'default': ''},
-                 'horizontal_orientation': {'type': float, 'required': False, 'default': np.nan},
-                 'station_name': {'type': str, 'required': False, 'default': ''},
-                 'instrument_period': {'type': float, 'required': False, 'default': np.nan},
-                 'instrument_damping': {'type': float, 'required': False, 'default': np.nan},
-                 'process_time': {'type': str, 'required': False, 'default': ''},
-                 'process_level': {'type': str, 'required': True, 'default': list(PROCESS_LEVELS.values())},
-                 'sensor_serial_number': {'type': str, 'required': False, 'default': ''},
-                 'instrument': {'type': str, 'required': False, 'default': ''},
-                 'structure_type': {'type': str, 'required': False, 'default': ''},
-                 'corner_frequency': {'type': float, 'required': False, 'default': np.nan},
-                 'units': {'type': str, 'required': True, 'default': ''},
-                 'source_format': {'type': str, 'required': True, 'default': ''},
-                 'comments': {'type': str, 'required': False, 'default': ''},
-                 }
+STANDARD_KEYS = {
+    'source': {
+        'type': str,
+        'required': True,
+        'default': ''
+    },
+    'horizontal_orientation': {
+        'type': float,
+        'required': False,
+        'default': np.nan
+    },
+    'station_name': {
+        'type': str,
+        'required': False,
+        'default': ''
+    },
+    'instrument_period': {
+        'type': float,
+        'required': False,
+        'default': np.nan
+    },
+    'instrument_damping': {
+        'type': float,
+        'required': False,
+        'default': np.nan
+    },
+    'process_time': {
+        'type': str,
+        'required': False,
+        'default': ''
+    },
+    'process_level': {
+        'type': str,
+        'required': True,
+        'default': list(PROCESS_LEVELS.values())
+    },
+    'sensor_serial_number': {
+        'type': str,
+        'required': False,
+        'default': ''
+    },
+    'instrument': {
+        'type': str,
+        'required': False,
+        'default': ''
+    },
+    'structure_type': {
+        'type': str,
+        'required': False,
+        'default': ''
+    },
+    'corner_frequency': {
+        'type': float,
+        'required': False,
+        'default': np.nan
+    },
+    'units': {
+        'type': str,
+        'required': True,
+        'default': ''
+    },
+    'source_format': {
+        'type': str,
+        'required': True,
+        'default': ''
+    },
+    'comments': {
+        'type': str,
+        'required': False,
+        'default': ''
+    },
+}
 
 INT_TYPES = [np.dtype('int8'),
              np.dtype('int16'),
@@ -88,7 +142,7 @@ class StationTrace(Trace):
         """Ensure that all required metadata fields have been set.
 
         Raises:
-            KeyError: 
+            KeyError:
                 - When standard dictionary is missing required fields
                 - When standard values are of the wrong type
                 - When required values are set to a default.
@@ -99,7 +153,8 @@ class StationTrace(Trace):
         if not req_keys <= std_keys:
             missing = str(req_keys - std_keys)
             raise KeyError(
-                'Missing standard values in StationTrace header: "%s"' % missing)
+                'Missing standard values in StationTrace header: "%s"'
+                % missing)
         type_errors = []
         required_errors = []
         for key in req_keys:

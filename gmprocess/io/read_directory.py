@@ -26,7 +26,10 @@ def directory_to_streams(directory):
             Directory of ground motion files (streams).
 
     Returns:
-        List of obspy streams.
+        tuple: (List of obspy streams,
+                List of unprocessed files,
+                List of errors associated with trying to read unprocessed
+                files).
     """
 
     flatten_directory(directory)
@@ -46,7 +49,7 @@ def directory_to_streams(directory):
                 unprocessed_files += [file_path]
                 unprocessed_file_errors += [ex]
 
-    return streams
+    return streams, unprocessed_files, unprocessed_file_errors
 
 
 def _split_all_path(path):
