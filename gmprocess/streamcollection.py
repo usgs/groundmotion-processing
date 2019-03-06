@@ -5,9 +5,10 @@ This class functions as a list of StationStream objects, and enforces
 various rules, such as all traces within a stream are from the same station.
 """
 
-import numpy as np
 
 from gmprocess.stationstream import StationStream
+
+INDENT = 4
 
 
 class StreamCollection(object):
@@ -20,9 +21,10 @@ class StreamCollection(object):
         - All traces are from the same network/station.
         - Sample rates must match.
         - Units much match.
-        - All start/end times must match; if they do not match and
-          other checks pass then the traces are resampled to have
-          matching start/end times.
+
+    TODO:
+        - Check for and handle misaligned start times and end times.
+        - Check units
 
     """
 
@@ -48,10 +50,16 @@ class StreamCollection(object):
         for stream in self:
             self.__check_sample_rate(stream)
 
-        # Snap start/end times to match if they do not match. I think this
-        # should only come up for hand digitized records of analog
-        # instruments.
-        self.__snap_start_end_times()
+    def __str__(self):
+        """
+        String summary of the StreamCollection.
+        """
+        summary = ''
+        summary += str(len(self.streams)) + \
+            ' StationStreams(s) in StreamCollection:\n'
+        for stream in self:
+            summary += stream.__str__(indent=INDENT) + '\n'
+        return summary
 
     def __len__(self):
         """
@@ -159,17 +167,6 @@ class StreamCollection(object):
             )
 
         self.streams = grouped_streams
-
-    def __snap_start_end_times(self):
-        # First deal with the start times
-        for stream in self:
-            start_times = []
-            for tr in stream:
-                start_times.append(tr.stats.starttime)
-
-#        if not (start_times[0] == start_times):
-#
-#        print('')
 
     @staticmethod
     def __check_sample_rate(stream):

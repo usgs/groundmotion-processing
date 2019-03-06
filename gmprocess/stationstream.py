@@ -50,6 +50,20 @@ class StationStream(Stream):
                     else:
                         self.append(trace)
 
+    def __str__(self, indent=0):
+        """
+        String summary of the StationStream.
+        """
+        if self.traces:
+            id_length = self and max(len(tr.id) for tr in self) or 0
+        else:
+            id_length = 0
+        ind_str = ' ' * indent
+        out = ind_str + str(len(self.traces)) + \
+            ' StationTrace(s) in StationStream:\n' + ind_str
+        out += ("\n" + ind_str).join([_i.__str__(id_length) for _i in self])
+        return out
+
     def getInventory(self):
         """Extract an ObsPy inventory object from a Stream read in by gmprocess tools.
         """
