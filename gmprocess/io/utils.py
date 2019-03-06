@@ -53,7 +53,6 @@ def resample_uneven_trace(trace, times, data, resample_rate=None,
         trace (gmprocess.stationtrace.StationTrace):
             Resampled trace with updated provenance information.
     """
-    start_time = trace.stats.starttime
     npts = len(times)
     duration = times[-1] - times[0]
     nominal_sps = (npts - 1) / duration
@@ -97,6 +96,13 @@ def flatten_directory(directory):
 
     """
     # -------------------------------------------------------------------------
+    # First walk all the files and unzip until there are no more zip files
+    # -------------------------------------------------------------------------
+    has_zips = True
+    while has_zips:
+        has_zips = _walk_and_unzip(directory)
+
+    # -------------------------------------------------------------------------
     # Flatten directoreis by crawling subdirectories and move files up to base
     # directory, renaming them while taking care to avoid any collisions.
     # -------------------------------------------------------------------------
@@ -120,30 +126,32 @@ def flatten_directory(directory):
         for d in sub_dirs:
             os.rmdir(os.path.join(dirpath, d))
 
-    # -------------------------------------------------------------------------
-    # Take care of any zip files and extract, trying to ensure that no files
-    # get overwritten.
-    # -------------------------------------------------------------------------
-    all_files = [os.path.join(directory, f) for f in os.listdir(directory)]
-    for f in all_files:
-        if zipfile.is_zipfile(f):
-            # Grab base of file name -- to be used later when appended to
-            # the extracted file.
-            base, ext = os.path.splitext(f)
-            logging.debug('Extracting %s...' % f)
-            with zipfile.ZipFile(f, 'r') as zip:
-                for m in zip.namelist():
-                    zip.extract(m, directory)
-                    if base not in m:
-                        src = os.path.join(directory, m)
-                        new_name = '%s_%s' % (base, m)
-                        dst = os.path.join(directory, new_name)
+
+def _walk_and_unzip(directory):
+    has_zips = False
+    for dirpath, sub_dirs, files in os.walk(directory, topdown=False):
+        for f in files:
+            full_file = os.path.join(dirpath, f)
+            if zipfile.is_zipfile(full_file):
+                has_zips = True
+                base, ext = os.path.splitext(f)
+                with zipfile.ZipFile(full_file, 'r') as zip:
+                    for m in zip.namelist():
+                        zip.extract(m, dirpath)
+                        src = os.path.join(dirpath, m)
+                        new_name = '%s_%s' % (
+                            base, m.replace(os.path.sep, '_'))
+                        dst = os.path.join(dirpath, new_name)
                         if not os.path.exists(dst):
                             os.rename(src, dst)
                         else:
+                            # This should never happen
                             logging.warning(
-                                'While extracting %s, file %s already exists.'
+                                'While extracting %s, '
+                                'file %s already exists.'
                                 % (f, dst))
+                os.remove(full_file)
+    return has_zips
 
 
 def _split_all_path(path):
