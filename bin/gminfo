@@ -26,36 +26,38 @@ def main(args):
         stream = read_data(filename)
         stats = stream[0].stats
         fpath, fname = os.path.split(filename)
-        tpl = (stats['coordinates']['latitude'],
-               stats['coordinates']['longitude'],
-               stats['coordinates']['elevation'])
-        locstr = 'Lat: %.4f Lon: %.4f Elev: %.1f' % tpl
-        mydict = OrderedDict(
-            [('Filename', fname),
-             ('Format', fmt),
-             ('Station', stats['station']),
-             ('Network', stats['network']),
-             ('Source', stats['standard']['source']),
-             ('Location', stats['location']),
-             ('Coordinates', locstr),
-             ])
-        print()
-        pd.set_option("display.max_colwidth", 10000)
-        print(pd.Series(mydict).to_string())
-        for trace in stream:
-            channel = OrderedDict()
-            stats = trace.stats
-            channel['Channel'] = stats['channel']
-            channel['Start Time'] = stats['starttime']
-            channel['End Time'] = stats['endtime']
-            channel['Number of Points'] = stats['npts']
-            channel['Units'] = stats['standard']['units']
-            channel['Peak Value'] = trace.max()
+
+        if not args.concise:
+            tpl = (stats['coordinates']['latitude'],
+                   stats['coordinates']['longitude'],
+                   stats['coordinates']['elevation'])
+            locstr = 'Lat: %.4f Lon: %.4f Elev: %.1f' % tpl
+            mydict = OrderedDict(
+                [('Filename', fname),
+                 ('Format', fmt),
+                 ('Station', stats['station']),
+                 ('Network', stats['network']),
+                 ('Source', stats['standard']['source']),
+                 ('Location', stats['location']),
+                 ('Coordinates', locstr),
+                 ])
             print()
-            chstr = pd.Series(channel).to_string()
-            parts = ['\t' + line for line in chstr.split('\n')]
-            chstr = '\n'.join(parts)
-            print(chstr)
+            pd.set_option("display.max_colwidth", 10000)
+            print(pd.Series(mydict).to_string())
+            for trace in stream:
+                channel = OrderedDict()
+                stats = trace.stats
+                channel['Channel'] = stats['channel']
+                channel['Start Time'] = stats['starttime']
+                channel['End Time'] = stats['endtime']
+                channel['Number of Points'] = stats['npts']
+                channel['Units'] = stats['standard']['units']
+                channel['Peak Value'] = trace.max()
+                print()
+                chstr = pd.Series(channel).to_string()
+                parts = ['\t' + line for line in chstr.split('\n')]
+                chstr = '\n'.join(parts)
+                print(chstr)
 
     except GMProcessException as gmpe:
         logging.info('%s is an unknown format.' % filename)
@@ -67,6 +69,23 @@ if __name__ == '__main__':
     parser.add_argument(
         'file',
         help='File to inspect.', type=str)
+    chelp = '''Print out results in concise CSV form. Columns are:
+    Filename
+    Format
+    Process Level
+    Start Time
+    End Time
+    # of Traces
+    Duration
+    Network
+    Station
+    Channels
+    Sampling rate
+    Latitude
+    Longitude
+    '''
+    parser.add_argument('-c', '--concise', action='store_true',
+                        help=chelp)
 
     # Shared arguments
     parser = add_shared_args(parser)
