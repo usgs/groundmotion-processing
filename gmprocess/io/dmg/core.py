@@ -59,9 +59,6 @@ UNITS = [
     'disp'
 ]
 
-# Number of decimals for time deltas to be considered unique
-NUM_DECIMALS = 3
-
 
 def _get_date(line):
     """Parse a datetime object with month/day/year info found from string.
@@ -245,7 +242,7 @@ def _read_volume_one(filename, line_offset, location=''):
         data = _read_lines(skip_rows, max_rows, widths, filename)
         acc_data = data[1::2][:hdr['npts']]
         times = data[0::2][:hdr['npts']]
-        evenly_spaced = is_evenly_spaced(times, NUM_DECIMALS)
+        evenly_spaced = is_evenly_spaced(times)
 
     acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()))
 
