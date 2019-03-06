@@ -1,6 +1,7 @@
 import os
 import shutil
 import tempfile
+import numpy as np
 
 import pkg_resources
 import logging
@@ -31,6 +32,9 @@ def test_StreamCollection():
 
     usc_sc = StreamCollection(usc_streams)
 
+    # Use print method
+    print(usc_sc)
+
     # Use len method
     assert len(usc_sc) == 3
 
@@ -38,8 +42,15 @@ def test_StreamCollection():
     assert bool(usc_sc)
 
     # Slice
-    assert len(usc_sc[0]) == 1
-    assert len(usc_sc[1]) == 3
+    lengths = [
+        len(usc_sc[0]),
+        len(usc_sc[1]),
+        len(usc_sc[2])
+    ]
+    sort_lengths = np.sort(lengths)
+    assert sort_lengths[0] == 1
+    assert sort_lengths[1] == 3
+    assert sort_lengths[2] == 3
 
     # read dmg data
     directory = pkg_resources.resource_filename(
