@@ -4,17 +4,12 @@ from CESMD.
 """
 
 import os
-import logging
-import zipfile
 import glob
 
 from gmprocess.io.read import read_data
+from gmprocess.io.utils import flatten_directory
 
-
-DUPLICATE_MARKER = '1'
 EXT_IGNORE = [".gif", ".csv", ".dis", ".abc", ".zip", ".rs2", ".fs1"]
-# V3 is sometimes response spectra, sometimes time series so don't
-# include it on this list.
 
 
 def directory_to_streams(directory):
@@ -33,57 +28,8 @@ def directory_to_streams(directory):
     Returns:
         List of obspy streams.
     """
-    # logging.warning("This method is not yet functional. Exiting.")
-    # sys.exit(1)
 
-    # -------------------------------------------------------------------------
-    # Flatten directoreis by crawling subdirectories and move files up to base
-    # directory, renaming them while taking care to avoid any collisions.
-    # -------------------------------------------------------------------------
-    for dirpath, sub_dirs, files in os.walk(directory, topdown=False):
-        if dirpath != directory:
-            # Strip out "directory" path from dirpath
-            sub_path = dirpath.replace(directory, '')
-            split_path = _split_all_path(sub_path)
-            split_path = [s for s in split_path if s != os.path.sep]
-            sub_str = '_'.join(split_path)
-            for f in files:
-                # Append subdir to file name:
-                long_name = '%s_%s' % (sub_str, f)
-                src = os.path.join(dirpath, f)
-                # I don't think there should ever be duplicates but I'm
-                # leaving this here just in case.
-                dst = _handle_duplicates(
-                    os.path.join(directory, long_name))
-                os.rename(src, dst)
-
-        for d in sub_dirs:
-            os.rmdir(os.path.join(dirpath, d))
-
-    # -------------------------------------------------------------------------
-    # Take care of any zip files and extract, trying to ensure that no files
-    # get overwritten.
-    # -------------------------------------------------------------------------
-    all_files = [os.path.join(directory, f) for f in os.listdir(directory)]
-    for f in all_files:
-        if zipfile.is_zipfile(f):
-            # Grab base of file name -- to be used later when appended to
-            # the extracted file.
-            base, ext = os.path.splitext(f)
-            logging.debug('Extracting %s...' % f)
-            with zipfile.ZipFile(f, 'r') as zip:
-                for m in zip.namelist():
-                    zip.extract(m, directory)
-                    if base not in m:
-                        src = os.path.join(directory, m)
-                        new_name = '%s_%s' % (base, m)
-                        dst = os.path.join(directory, new_name)
-                        if not os.path.exists(dst):
-                            os.rename(src, dst)
-                        else:
-                            logging.warning(
-                                'While extracting %s, file %s already exists.'
-                                % (f, dst))
+    flatten_directory(directory)
 
     # -------------------------------------------------------------------------
     # Read streams
