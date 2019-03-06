@@ -9,6 +9,7 @@ from gmprocess.exception import GMProcessException
 from gmprocess.io.usc.core import is_usc, read_usc
 from gmprocess.stream import group_channels
 from gmprocess.stationtrace import PROCESS_LEVELS
+from gmprocess.io.test_utils import read_data_dir
 
 
 def test_usc():
@@ -91,14 +92,6 @@ def test_usc():
     filename = os.path.join(datadir, '017m30bt.s0a')
     assert is_usc(filename) == True
 
-    # test that volume 2 is not available yet
-    try:
-        read_usc(filename)[0]
-        success = True
-    except GMProcessException:
-        success = False
-    assert success == False
-
     # test wrong format exception
     try:
         datadir = os.path.join(homedir, '..', '..', '..', 'data', 'smc')
@@ -109,5 +102,14 @@ def test_usc():
     assert success == False
 
 
+def test_v2():
+    datafiles, _ = read_data_dir('usc', 'ci3144585', files='017m30bt.s0a')
+    datafile = datafiles[0]
+    stream = read_usc(datafile)[0]
+    np.testing.assert_almost_equal(stream[0].max(), 242.3950, decimal=2)
+    print(stream)
+
+
 if __name__ == '__main__':
+    test_v2()
     test_usc()
