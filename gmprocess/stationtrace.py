@@ -15,6 +15,11 @@ PROCESS_LEVELS = {'V0': 'raw counts',
                   'V2': 'corrected physical units',
                   'V3': 'derived time series'}
 
+REV_PROCESS_LEVELS = {'raw counts': 'V0',
+                      'uncorrected physical units': 'V1',
+                      'corrected physical units': 'V2',
+                      'derived time series': 'V3'}
+
 
 STANDARD_KEYS = {
     'source': {
