@@ -7,6 +7,7 @@ from collections import OrderedDict
 import sys
 import warnings
 import textwrap
+import logging
 
 # third party imports
 import pandas as pd
@@ -53,7 +54,12 @@ def get_dataframe(filename, stream):
 def render_concise(files, save=False):
     errors = pd.DataFrame(columns=ERROR_COLUMNS)
     df = pd.DataFrame(columns=COLUMNS, index=None)
+    folders = []
     for filename in files:
+        fpath, fname = os.path.split(filename)
+        if fpath not in folders:
+            sys.stderr.write('Parsing files from subfolder %s...\n' % fpath)
+            folders.append(fpath)
         try:
             fmt = _get_format(filename)
             streams = read_data(filename)
@@ -78,7 +84,6 @@ def render_concise(files, save=False):
 def render_dir(rootdir, concise=True, save=False):
     datafiles = []
     for root, dirs, files in os.walk(rootdir):
-        sys.stderr.write('Parsing subfolder %s...\n' % root)
         for tfile in files:
             ffile = os.path.join(root, tfile)
             datafiles.append(ffile)
@@ -139,7 +144,8 @@ def render_verbose(files):
 
 
 def main(args):
-
+    logger = logging.getLogger()
+    logger.setLevel(logging.CRITICAL)
     warnings.filterwarnings("ignore")
     pd.set_option('display.max_columns', 10000)
     pd.set_option("display.max_colwidth", 10000)
