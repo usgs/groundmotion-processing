@@ -3,17 +3,21 @@
 Processing methods.
 """
 
-import sys
 import numpy as np
 import logging
 
 from scipy.optimize import curve_fit
 
+from gmprocess.streamcollection import StreamCollection
 from gmprocess.config import get_config
-from gmprocess.pretesting import check_max_amplitude, check_sta_lta
 from gmprocess.windows import signal_split
 from gmprocess.windows import signal_end
 from gmprocess import corner_frequencies
+# Note: no QA on following import because they need to be in namespace to be
+# discovered. They are not called directly so linters will think this is a
+# mistake.
+from gmprocess.pretesting import check_max_amplitude, check_sta_lta  # NOQA
+
 
 CONFIG = get_config()
 
@@ -42,16 +46,15 @@ TAPER_TYPES = {
 def process_streams(streams, origin, config=None):
     """Run processing steps from the config file.
 
-    This method removes streams based on the 'pretesting' config section, and
-    sets the noise and signal windows based on the 'windows' config section.
-
-    Then it looks in the 'processing' config section and loops  over those
+    This method looks in the 'processing' config section and loops over those
     steps and hands off the config options to the appropriate prcessing method.
+    Streams that fail any of the tests are kepth in the StreamCollection but
+    the parameter 'passed_checks' is set to False and subsequent processing
+    steps are not applied once a check has failed.
 
     Args:
         streams (list):
-            List of obspy streams where each stream is a group of channels from
-            the same station.
+            A StreamCollection object.
         origin (dict):
             Dictionary with the following keys:
               - eventid
@@ -63,40 +66,16 @@ def process_streams(streams, origin, config=None):
         config (dict): Configuration dictionary (or None). See get_config().
 
     Returns:
-        list: List of processed obspy streams.
+        A StreamCollection object.
     """
+
+    if not isinstance(streams, StreamCollection):
+        raise ValueError('streams must be a StreamCollection instance.')
+
     if config is None:
         config = CONFIG
 
     logging.info('Processing streams...')
-
-    # -------------------------------------------------------------------------
-    # Begin pre-testing steps
-    # logging.info('Starting pre-testing...')
-    # stalta_args = config['pretesting']['stalta']
-    # amplitude_args = config['pretesting']['amplitude']
-
-    # streams_passed = []
-
-    # for stream in streams:
-
-    #     # STA/LTA check
-    #     logging.debug('len(stream): %s (before stalta)' % len(stream))
-    #     sta_lta_result = pretesting.check_sta_lta(stream, **stalta_args)
-
-    #     # Aplitude check
-    #     amp_result = pretesting.check_max_amplitude(stream, **amplitude_args)
-
-    #     if sta_lta_result and amp_result:
-    #         streams_passed.append(stream.copy())
-    #     else:
-    #         logging.info(
-    #             "The following stream did not pass pre-testing checks: %s"
-    #             % stream)
-
-    # if len(streams_passed) == 0:
-    #     logging.info('No streams passed pre-testing checks. Exiting.')
-    #     sys.exit(1)
 
     # -------------------------------------------------------------------------
     # Begin noise/signal window steps
@@ -104,16 +83,15 @@ def process_streams(streams, origin, config=None):
     logging.info('Windowing noise and signal...')
     window_conf = config['windows']
 
-    passed_streams = []
-    for tstream in streams:
-        stream = tstream.copy()
+    processed_streams = streams.copy()
+    for tstream in processed_streams:
         # Estimate noise/signal split time
         split_conf = window_conf['split']
         event_time = origin['time']
         event_lon = origin['lon']
         event_lat = origin['lat']
-        stream = signal_split(
-            stream,
+        tstream = signal_split(
+            tstream,
             event_time=event_time,
             event_lon=event_lon,
             event_lat=event_lat,
@@ -122,22 +100,22 @@ def process_streams(streams, origin, config=None):
         # Estimate end of signal
         end_conf = window_conf['signal_end']
         event_mag = origin['magnitude']
-        stream = signal_end(
-            stream,
+        tstream = signal_end(
+            tstream,
             event_time=event_time,
             event_lon=event_lon,
             event_lat=event_lat,
             event_mag=event_mag,
             **end_conf
         )
-        passed_streams.append(stream)
+#        processed_streams.append(stream)
 
     # -------------------------------------------------------------------------
-    # Begin corner frequency stuff
+    # Begin corner frequency steps
     logging.info('Setting corner frequencies...')
     cf_config = config['corner_frequencies']
 
-    for stream in passed_streams:
+    for stream in processed_streams:
         if cf_config['method'] == 'constant':
             stream = corner_frequencies.constant(stream)
         elif cf_config['method'] == 'snr':
@@ -150,35 +128,26 @@ def process_streams(streams, origin, config=None):
     processing_steps = config['processing']
 
     # Loop over streams
-    processed_streams = []
-    for stream in passed_streams:
-        # pre-set passed_checks parameter to true
-        # checkers will unset this if they fail
-        for tr in stream:
-            tr.setParameter('passed_checks', True)
+    for stream in processed_streams:
         for processing_step_dict in processing_steps:
-            key_list = list(processing_step_dict.keys())
-            if len(key_list) != 1:
-                raise ValueError(
-                    'Each processing step must contain exactly one key.')
-            step_name = key_list[0]
-            logging.info('Processing step: %s' % step_name)
-            step_args = processing_step_dict[step_name]
-            # Using globals doesn't seem like a great solution here, but it
-            # works.
-            if step_name not in globals():
-                raise ValueError(
-                    'Processing step %s is not valid.' % step_name)
-            stream = globals()[step_name](
-                stream,
-                **step_args
-            )
-            checks_false = not stream[0].getParameter('passed_checks')
-            if checks_false:
-                break
-        checks_true = stream[0].hasParameter('passed_checks')
-        if checks_true:
-            processed_streams.append(stream)
+            if stream.passed:
+                key_list = list(processing_step_dict.keys())
+                if len(key_list) != 1:
+                    raise ValueError(
+                        'Each processing step must contain exactly one key.')
+                step_name = key_list[0]
+                logging.info('Processing step: %s' % step_name)
+                step_args = processing_step_dict[step_name]
+                # Using globals doesn't seem like a great solution here, but it
+                # works.
+                if step_name not in globals():
+                    raise ValueError(
+                        'Processing step %s is not valid.' % step_name)
+                stream = globals()[step_name](
+                    stream,
+                    **step_args
+                )
+#        processed_streams.append(stream)
 
     logging.info('Finished processing streams.')
     return processed_streams
@@ -233,34 +202,38 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
             tr.remove_response(
                 inventory=inv, output=output, water_level=water_level,
                 pre_filt=(f1, f2, f3, f4))
-            tr.setProvenance('remove_response',
-                             {
-                                 'method': 'remove_sensitivity',
-                                 'inventory': inv,
-                                 'f1': f1,
-                                 'f2': f2,
-                                 'f3': f3,
-                                 'f4': f4,
-                                 'water_level': water_level
-                             }
-                             )
+            tr.setProvenance(
+                'remove_response',
+                {
+                    'method': 'remove_sensitivity',
+                    'inventory': inv,
+                    'f1': f1,
+                    'f2': f2,
+                    'f3': f3,
+                    'f4': f4,
+                    'water_level': water_level
+                }
+            )
         elif tr.stats.channel[1] == 'N':
             if isinstance(tr.data[0], int):
                 tr.remove_sensitivity(inventory=inv)
-                tr.setProvenance('remove_response',
-                                 {
-                                     'method': 'remove_sensitivity',
-                                     'inventory': inv
-                                 }
-                                 )
+                tr.setProvenance(
+                    'remove_response',
+                    {
+                        'method': 'remove_sensitivity',
+                        'inventory': inv
+                    }
+                )
             else:
                 logging.info('Skipping sensitivity removal because units '
                              'are not counts (integers).')
         else:
-            raise ValueError(
-                'This instrument type is not supported. '
-                'The instrument code must be either H '
-                '(high gain seismometer) or N (accelerometer).')
+            tr.setParameter('failure', {
+                'module': __file__,
+                'reason': ('This instrument type is not supported. '
+                           'The instrument code must be either H '
+                           '(high gain seismometer) or N (accelerometer).')
+            })
     return st
 
 
@@ -288,11 +261,12 @@ def detrend(st, detrending_method=None):
         else:
             tr = tr.detrend(detrending_method)
 
-        tr.setProvenance('detrend',
-                         {
-                             'detrending_method': detrending_method
-                         }
-                         )
+        tr.setProvenance(
+            'detrend',
+            {
+                'detrending_method': detrending_method
+            }
+        )
 
     return st
 
@@ -319,11 +293,12 @@ def resample(st, new_sampling_rate=None, method=None, a=None):
 
     for tr in st:
         tr.interpolate(sampling_rate=new_sampling_rate, method=method, a=a)
-        tr.setProvenance('resample',
-                         {
-                             'new_sampling_rate': new_sampling_rate
-                         }
-                         )
+        tr.setProvenance(
+            'resample',
+            {
+                'new_sampling_rate': new_sampling_rate
+            }
+        )
 
     return st
 
@@ -360,12 +335,13 @@ def cut(st, sec_before_split=None):
             logging.debug('Before cut start time: %s ' % tr.stats.starttime)
             tr.trim(starttime=stime)
             logging.debug('After cut start time: %s ' % tr.stats.starttime)
-        tr.setProvenance('cut',
-                         {
-                             'new_start_time': tr.stats.starttime,
-                             'new_end_time': tr.stats.endtime
-                         }
-                         )
+        tr.setProvenance(
+            'cut',
+            {
+                'new_start_time': tr.stats.starttime,
+                'new_end_time': tr.stats.endtime
+            }
+        )
     return st
 
 
@@ -397,14 +373,15 @@ def highpass_filter(st, filter_order=5, number_of_passes=2):
                   freq=freq,
                   corners=filter_order,
                   zerophase=zerophase)
-        tr.setProvenance('highpass_filter',
-                         {
-                             'filter_type': 'Butterworth',
-                             'filter_order': filter_order,
-                             'number_of_passes': number_of_passes,
-                             'corner_frequency': freq
-                         }
-                         )
+        tr.setProvenance(
+            'highpass_filter',
+            {
+                'filter_type': 'Butterworth',
+                'filter_order': filter_order,
+                'number_of_passes': number_of_passes,
+                'corner_frequency': freq
+            }
+        )
     return st
 
 
@@ -436,14 +413,15 @@ def lowpass_filter(st, filter_order=5, number_of_passes=2):
                   freq=freq,
                   corners=filter_order,
                   zerophase=zerophase)
-        tr.setProvenance('lowpass_filter',
-                         {
-                             'filter_type': 'Butterworth',
-                             'filter_order': filter_order,
-                             'number_of_passes': number_of_passes,
-                             'corner_frequency': freq
-                         }
-                         )
+        tr.setProvenance(
+            'lowpass_filter',
+            {
+                'filter_type': 'Butterworth',
+                'filter_order': filter_order,
+                'number_of_passes': number_of_passes,
+                'corner_frequency': freq
+            }
+        )
     return st
 
 
@@ -466,12 +444,13 @@ def taper(st, type="hann", width=0.05, side="both"):
     for tr in st:
         tr.taper(max_percentage=width, type=type, side=side)
         window_type = TAPER_TYPES[type]
-        tr.setProvenance('taper',
-                         {
-                             'window_type': window_type,
-                             'taper_width': width,
-                             'side': side}
-                         )
+        tr.setProvenance(
+            'taper',
+            {
+                'window_type': window_type,
+                'taper_width': width,
+                'side': side}
+        )
     return st
 
 
@@ -511,11 +490,12 @@ def _correct_baseline(trace):
     # acceleration trace
     for i in range(orig_trace.stats.npts):
         orig_trace.data[i] -= polynomial_second_derivative(i)
-    orig_trace.setProvenance('baseline',
-                             {
-                                 'polynomial_coefs': poly_cofs
-                             }
-                             )
+    orig_trace.setProvenance(
+        'baseline',
+        {
+            'polynomial_coefs': poly_cofs
+        }
+    )
 
     return orig_trace
 

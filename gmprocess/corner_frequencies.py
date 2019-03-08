@@ -29,13 +29,14 @@ def constant(st):
     """
     cf_config = CONFIG['corner_frequencies']
     for tr in st:
-        tr.setParameter('corner_frequencies',
-                        {
-                            'type': 'constant',
-                            'highpass': cf_config['constant']['highpass'],
-                            'lowpass': cf_config['constant']['lowpass']
-                        }
-                        )
+        tr.setParameter(
+            'corner_frequencies',
+            {
+                'type': 'constant',
+                'highpass': cf_config['constant']['highpass'],
+                'lowpass': cf_config['constant']['lowpass']
+            }
+        )
     return st
 
 
@@ -115,8 +116,10 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
 
         # If we didn't find any corners
         if not lows:
-            logging.info('Removing trace: %s (failed SNR check)' % tr)
-            st.remove(tr)
+            tr.setParameter('failure', {
+                'module': __file__,
+                'reason': 'Failed SNR check.'
+            })
             continue
 
         # If we find an extra low, add another high for the maximum frequency
@@ -132,16 +135,19 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
                 found_valid = True
 
         if found_valid:
-            tr.setParameter('corner_frequencies',
-                            {
-                                'type': 'snr',
-                                'highpass': low_corner,
-                                'lowpass': high_corner
-                            }
-                            )
+            tr.setParameter(
+                'corner_frequencies',
+                {
+                    'type': 'snr',
+                    'highpass': low_corner,
+                    'lowpass': high_corner
+                }
+            )
         else:
-            logging.info('Removing trace: %s (failed SNR check)' % tr)
-            st.remove(tr)
+            tr.setParameter('failure', {
+                'module': __file__,
+                'reason': 'Failed SNR check.'
+            })
 
     if same_horiz:
 
@@ -155,13 +161,14 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
         # For all traces in the stream, set highpass corner to highest high
         # and set the lowpass corner to the lowest low
         for tr in st_horiz:
-            tr.setParameter('corner_frequencies',
-                            {
-                                'type': 'snr',
-                                'highpass': min(highpass_freqs),
-                                'lowpass': max(lowpass_freqs)
-                            }
-                            )
+            tr.setParameter(
+                'corner_frequencies',
+                {
+                    'type': 'snr',
+                    'highpass': min(highpass_freqs),
+                    'lowpass': max(lowpass_freqs)
+                }
+            )
 
     return st
 
