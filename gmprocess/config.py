@@ -6,6 +6,43 @@ import yaml
 
 from gmprocess.constants import CONFIG_FILE, PICKER_FILE
 
+def update_dict(target, source):
+    """Merge values from source dictionary into target dictionary.
+
+    Args:
+        target (dict):
+            Dictionary to be updated with values from source dictionary.
+
+        source (dict):
+            Dictionary with values to be transferred to target dictionary.
+    """
+    for key, value in source.items():
+        if not isinstance(value, dict) or \
+          not key in target.keys() or \
+          not isinstance(target[key], dict):
+            target[key] = value
+        else:
+            update_dict(target[key], value)
+    return
+
+def merge_dicts(dicts):
+    """Merges a list of dictionaries into a new dictionary.
+
+    The order of the dictionaries in the list provides precedence of the
+    values, with values from subsequent dictionaries overriding earlier ones. 
+
+    Args:
+        dicts (list of dictionaries):
+            List of dictionaries to be merged.
+
+    Returns:
+        dictionary: Merged dictionary.
+    """
+    target = dicts[0].copy()
+    for source in dicts[1:]:
+        update_dict(target, source)
+    return target
+    
 
 def get_config(picker=False):
     """Gets the user defined config and validates it.
