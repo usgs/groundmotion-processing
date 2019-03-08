@@ -299,6 +299,47 @@ class StationTrace(Trace):
                 'Parameter %s not found in StationTrace' % param_id)
         return self.parameters[param_id]
 
+    def __str__(self, id_length=None, indent=0):
+        """
+        Extends Trace __str__.
+        """
+        # set fixed id width
+
+        if id_length:
+            out = "%%-%ds" % (id_length)
+            trace_id = out % self.id
+        else:
+            trace_id = "%s" % self.id
+        out = ''
+        # output depending on delta or sampling rate bigger than one
+        if self.stats.sampling_rate < 0.1:
+            if hasattr(self.stats, 'preview') and self.stats.preview:
+                out = out + ' | '\
+                    "%(starttime)s - %(endtime)s | " + \
+                    "%(delta).1f s, %(npts)d samples [preview]"
+            else:
+                out = out + ' | '\
+                    "%(starttime)s - %(endtime)s | " + \
+                    "%(delta).1f s, %(npts)d samples"
+        else:
+            if hasattr(self.stats, 'preview') and self.stats.preview:
+                out = out + ' | '\
+                    "%(starttime)s - %(endtime)s | " + \
+                    "%(sampling_rate).1f Hz, %(npts)d samples [preview]"
+            else:
+                out = out + ' | '\
+                    "%(starttime)s - %(endtime)s | " + \
+                    "%(sampling_rate).1f Hz, %(npts)d samples"
+        # check for masked array
+        if np.ma.count_masked(self.data):
+            out += ' (masked)'
+        if self.hasParameter('failed'):
+            out += ' (failed)'
+        else:
+            out += ' (passed)'
+        ind_str = ' ' * indent
+        return ind_str + trace_id + out % (self.stats)
+
 
 def _stats_from_inventory(data, inventory, channelid):
     if len(inventory.source):

@@ -10,10 +10,10 @@ from obspy.core.utcdatetime import UTCDateTime
 import numpy as np
 
 # local imports
+from gmprocess.streamcollection import StreamCollection
 from gmprocess.io.read import read_data
 from gmprocess.processing import process_streams
 from gmprocess.logging import setup_logger
-from gmprocess.stream import group_channels
 from gmprocess.io.test_utils import read_data_dir
 
 homedir = os.path.dirname(os.path.abspath(__file__))
@@ -40,8 +40,11 @@ def test_process_streams():
     for f in data_files:
         streams += read_data(f)
 
-    grouped_streams = group_channels(streams)
-    test = process_streams(grouped_streams, origin)
+    sc = StreamCollection(streams)
+
+    sc.describe()
+
+    test = process_streams(sc, origin)
 
     logging.info('Testing trace: %s' % test[0][1])
 

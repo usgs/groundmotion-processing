@@ -49,6 +49,7 @@ class StationStream(Stream):
                         self.append(statrace)
                     else:
                         self.append(trace)
+        self.passed = True
 
     def __str__(self, indent=0):
         """
@@ -58,10 +59,15 @@ class StationStream(Stream):
             id_length = self and max(len(tr.id) for tr in self) or 0
         else:
             id_length = 0
+        if self.passed:
+            pass_str = ' (passed)'
+        else:
+            pass_str = ' (failed)'
         ind_str = ' ' * indent
-        out = ind_str + str(len(self.traces)) + \
-            ' StationTrace(s) in StationStream:\n' + ind_str
-        out += ("\n" + ind_str).join([_i.__str__(id_length) for _i in self])
+        out = ('%s StationTrace(s) in StationStream%s:\n%s'
+               % (ind_str + str(len(self.traces)), pass_str, ind_str))
+        lc = [_i.__str__(id_length, indent) for _i in self]
+        out += ("\n" + ind_str).join(lc)
         return out
 
     def getInventory(self):
@@ -124,6 +130,21 @@ class StationStream(Stream):
         inv.networks.append(net)
 
         return inv
+
+    def check_stream(self):
+        """
+        Processing checks get regorded as a 'failure' parameter in
+        StationTraces. Streams also need to be classified as passed/faild,
+        where if any of the checks have failed for consistent traces then the
+        stream has failed.
+        """
+        stream_checks = []
+        for tr in self:
+            stream_checks.append(tr.hasParameter('failure'))
+        if any(stream_checks):
+            self.passed = False
+        else:
+            self.passed = True
 
 
 def _channel_from_stats(stats):

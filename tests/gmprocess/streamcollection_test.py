@@ -92,6 +92,24 @@ def test_StreamCollection():
     # should have 4
     assert len(test3[0]) == 4
 
+    test_copy = dmg_sc.copy()
+    assert test_copy[0][0].stats['standard']['process_level'] == \
+        'corrected physical units'
+
+    # Appending dmg should not add to length because of the
+    # overwriting of the station/network above
+    stream1 = test_copy[0]
+    test_append = usc_sc.append(stream1)
+    assert len(test_append) == 3
+
+    # Change back to unique values for station/network
+    for tr in dmg_sc[0]:
+        tr.stats['network'] = 'LALALA'
+        tr.stats['station'] = '575757'
+    stream2 = dmg_sc[0]
+    test_append = usc_sc.append(stream2)
+    assert len(test_append) == 4
+
 
 if __name__ == '__main__':
     test_StreamCollection()

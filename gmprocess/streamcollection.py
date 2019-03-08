@@ -5,10 +5,10 @@ This class functions as a list of StationStream objects, and enforces
 various rules, such as all traces within a stream are from the same station.
 """
 
-
+import copy
 from gmprocess.stationstream import StationStream
 
-INDENT = 4
+INDENT = 2
 
 
 class StreamCollection(object):
@@ -50,16 +50,35 @@ class StreamCollection(object):
         for stream in self:
             self.__check_sample_rate(stream)
 
+        # Run check_streams to ensure that the 'passed' attribute is set.
+        self.check_streams()
+
     def __str__(self):
         """
         String summary of the StreamCollection.
         """
         summary = ''
+        n = len(self.streams)
+        summary += '%s StationStreams(s) in StreamCollection:\n' % n
+        n_passed = 0
+        for stream in self:
+            if stream.passed:
+                n_passed += 1
+        summary += '    %s StationStreams(s) passed checks.\n' % n_passed
+        n_failed = n - n_passed
+        summary += '    %s StationStreams(s) failed checks.\n' % n_failed
+        return summary
+
+    def describe(self):
+        """
+        More verbose description of StreamCollection.
+        """
+        summary = ''
         summary += str(len(self.streams)) + \
             ' StationStreams(s) in StreamCollection:\n'
         for stream in self:
-            summary += stream.__str__(indent=INDENT) + '\n'
-        return summary
+            summary += stream.__str__(indent=INDENT)
+        print(summary)
 
     def __len__(self):
         """
@@ -115,12 +134,42 @@ class StreamCollection(object):
         """
         return self.__class__(streams=self.streams[max(0, i):max(0, j):k])
 
+    def append(self, stream):
+        """
+        Append a single StationStream object.
+
+        Args:
+            stream:
+                A StationStream object.
+        """
+        if isinstance(stream, StationStream):
+            streams = self.streams + [stream]
+            return self.__class__(streams)
+        else:
+            raise TypeError(
+                'Append only uspports adding a single StationStream.')
+
     def pop(self, index=(-1)):
         """
         Remove and return the StationStream object specified by index from
         the StreamCollection.
         """
         return self.streams.pop(index)
+
+    def copy(self):
+        """
+        Copy method.
+        """
+        return copy.deepcopy(self)
+
+    def check_streams(self):
+        """
+        Processing checks get regorded as StationTraces parameters. Streams
+        also need to be classified as passed/faild, where if any of the
+        checks have failed for consistent traces then the stream has failed.
+        """
+        for stream in self:
+            stream.check_stream()
 
     def __group_by_net_sta_inst(self):
         trace_list = []
