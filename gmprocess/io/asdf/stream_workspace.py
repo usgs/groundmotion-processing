@@ -367,4 +367,8 @@ def _get_agents(provdoc):
         else:
             pass
 
+    if 'name' not in person:
+        person['name'] = ''
+    if 'email' not in person:
+        person['email'] = ''
     return (person, software)
