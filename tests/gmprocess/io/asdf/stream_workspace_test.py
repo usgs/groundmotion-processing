@@ -11,6 +11,7 @@ from gmprocess.processing import process_streams
 from gmprocess.config import get_config
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.event import get_event_object
+from gmprocess.streamcollection import StreamCollection
 import numpy as np
 import pandas as pd
 
@@ -26,6 +27,7 @@ def test_workspace():
         raw_streams = []
         for dfile in datafiles:
             raw_streams += read_data(dfile)
+
         workspace = StreamWorkspace(tfile)
         t1 = time.time()
         workspace.addStreams(event, raw_streams, label='raw')
@@ -33,15 +35,30 @@ def test_workspace():
         print('Adding %i streams took %.2f seconds' %
               (len(raw_streams), (t2 - t1)))
 
-        # str_repr = workspace.__repr__()
-        # assert str_repr == 'Events: 1 Stations: 3 Streams: 3'
+        str_repr = workspace.__repr__()
+        assert str_repr == 'Events: 1 Stations: 3 Streams: 3'
+
+        eventobj = workspace.getEvent(eventid)
+
+        # test retrieving tags for an event that doesn't exist
+        try:
+            workspace.getStreamTags('foo')
+        except KeyError:
+            assert 1 == 1
+
+        # test retrieving event that doesn't exist
+        try:
+            workspace.getEvent('foo')
+        except KeyError:
+            assert 1 == 1
 
         outstream = workspace.getStreams(eventid, ['hses_raw'])[0]
         label_summary = workspace.summarizeLabels()
         assert label_summary.iloc[0]['Label'] == 'raw'
         assert label_summary.iloc[0]['Software'] == 'gmprocess'
 
-        processed_streams = process_streams(raw_streams, origin, config=config)
+        sc = StreamCollection(raw_streams)
+        processed_streams = process_streams(sc, origin, config=config)
         workspace.addStreams(event, processed_streams)
 
         idlist = workspace.getEventIds()

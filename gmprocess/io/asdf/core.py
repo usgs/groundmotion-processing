@@ -24,7 +24,6 @@ def is_asdf(filename):
             return False
     except OSError:
         return False
-    return True
 
 
 def read_asdf(filename, label=None):
@@ -48,7 +47,7 @@ def read_asdf(filename, label=None):
             tags = workspace.getStreamTags(eventid)
             newtags = []
             for tag in tags:
-                if label in name:
+                if label in tag:
                     newtags.append(tag)
         else:
             newtags = None

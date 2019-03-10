@@ -30,8 +30,15 @@ def test_asdf():
 
         write_asdf(tfile, raw_streams, event)
 
-        out_streams = read_asdf(tfile)
-        x = 1
+        assert is_asdf(tfile)
+        assert not is_asdf(datafiles[0])
+
+        outstreams = read_asdf(tfile)
+        assert len(outstreams) == len(raw_streams)
+
+        write_asdf(tfile, raw_streams, event, label='foo')
+        outstreams2 = read_asdf(tfile, label='foo')
+        assert len(outstreams2) == len(raw_streams)
 
     except Exception:
         assert 1 == 2

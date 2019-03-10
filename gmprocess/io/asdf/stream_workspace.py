@@ -32,15 +32,27 @@ class StreamWorkspace(object):
     @classmethod
     def open(cls, filename):
         """Load from existing ASDF file.
+
+        Args:
+            filename (str): Path to existing ASDF file.
+
+        Returns:
+            StreamWorkspace: Object containing ASDF file.
         """
         return cls(filename, exists=True)
 
     def close(self):
-        # no close or other method for ASDF data sets?
-        # this may force closing of the file...
+        """Close the workspace.
+
+        """
         del self.dataset
 
     def __repr__(self):
+        """Provide summary string representation of the file.
+
+        Returns:
+            str: Summary string representation of the file.
+        """
         fmt = 'Events: %i Stations: %i Streams: %i'
         nevents = len(self.dataset.events)
         stations = []
@@ -55,12 +67,24 @@ class StreamWorkspace(object):
         return fmt % (nevents, nstations, nstreams)
 
     def addEvent(self, event):
+        """Add event object to file.
+
+        Args:
+            event (Event): Obspy event object.
+        """
         self.dataset.add_quakeml(event)
 
     def addStreams(self, event, streams, label=None):
+        """Add a sequence of StationStream objects to an ASDF file.
+
+        Args:
+            event (Event): Obspy event object.
+            streams (list): List of StationStream objects.
+            label (str): Label to attach to stream sequence.
+        """
         # to allow for multiple processed versions of the same Stream
         # let's keep a dictionary of stations and sequence number.
-        eventid = get_id(event)
+        eventid = _get_id(event)
         if not self.hasEvent(eventid):
             self.addEvent(event)
         station_dict = {}
@@ -103,7 +127,7 @@ class StreamWorkspace(object):
                     # Also, this seems like a lot of effort
                     # just to store a string in HDF, but other
                     # approached failed. Suggestions are welcome.
-                    jdict = stringify_dict(jdict)
+                    jdict = _stringify_dict(jdict)
                     jsonbytes = json.dumps(jdict).encode('utf-8')
                     jsonarray = np.frombuffer(jsonbytes, dtype=np.uint8)
                     dtype = 'ProcessingParameters'
@@ -115,6 +139,11 @@ class StreamWorkspace(object):
             self.dataset.add_stationxml(inventory)
 
     def getEventIds(self):
+        """Return list of event IDs for events in ASDF file.
+
+        Returns:
+            list: List of eventid strings.
+        """
         idlist = []
         for event in self.dataset.events:
             eid = event.resource_id.id.replace('smi:local/', '')
@@ -123,6 +152,12 @@ class StreamWorkspace(object):
 
     def getStreamTags(self, eventid):
         """Get list of Stream "tags" which can be used to retrieve individual streams.
+
+        Args:
+            eventid (str): Event ID which should correspond to a sequence of Streams.
+
+        Returns:
+            list: Sequence of strings indicating Stream tags corresponding to eventid.
         """
         if not self.hasEvent(eventid):
             fmt = 'Event with a resource id containing %s could not be found.'
@@ -215,6 +250,19 @@ class StreamWorkspace(object):
         pass
 
     def summarizeLabels(self):
+        """Summarize the processing metadata associated with each label in the file.
+
+        Returns:
+            DataFrame: 
+                Pandas DataFrame with columns:
+                    - Label Processing label.
+                    - UserID user id (i.e., jsmith)
+                    - UserName Full user name (i.e., Jane Smith) (optional)
+                    - UserEmail Email adress (i.e., jsmith@awesome.org) (optional)
+                    - Software Name of processing software (i.e., gmprocess)
+                    - Version Version of software (i.e., 1.4)
+
+        """
         # return a table with columns of:
         # label - see addStreams() method. Labels default to '00001', etc.
         # num_streams - Number of streams with that label
@@ -237,7 +285,7 @@ class StreamWorkspace(object):
             row = pd.Series(index=cols)
             row['Label'] = label
             provdoc = self.dataset.provenance[ptag]
-            user, software = get_agents(provdoc)
+            user, software = _get_agents(provdoc)
             row['UserID'] = user['id']
             row['UserName'] = user['name']
             row['UserEmail'] = user['email']
@@ -259,6 +307,12 @@ class StreamWorkspace(object):
 
     def getEvent(self, eventid):
         """Get an Obspy Event object from the ASDF file.
+
+        Args:
+            eventid (str): ID of event to search for in ASDF file.
+
+        Returns:
+            Event: Obspy event object.
         """
         eventobj = None
         for event in self.dataset.events:
@@ -271,12 +325,12 @@ class StreamWorkspace(object):
         return eventobj
 
 
-def stringify_dict(indict):
+def _stringify_dict(indict):
     for key, value in indict.items():
         if isinstance(value, UTCDateTime):
             indict[key] = value.strftime(TIMEFMT_MS)
         elif isinstance(value, dict):
-            indict[key] = stringify_dict(value)
+            indict[key] = _stringify_dict(value)
     return indict
 
 
@@ -289,12 +343,12 @@ def unstringify_dict(indict):
     return indict
 
 
-def get_id(event):
+def _get_id(event):
     eid = event.resource_id.id.replace('smi:local/', '')
     return eid
 
 
-def get_agents(provdoc):
+def _get_agents(provdoc):
     software = {}
     person = {}
     jdict = json.loads(provdoc.serialize())
