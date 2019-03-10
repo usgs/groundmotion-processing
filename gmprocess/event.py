@@ -18,7 +18,7 @@ def get_event_dict(eventid):
     return event_dict
 
 
-def get_event_info(dict_or_id):
+def get_event_object(dict_or_id):
     if isinstance(dict_or_id, str):
         event_dict = get_event_dict(dict_or_id)
     elif isinstance(dict_or_id, dict):
@@ -34,6 +34,7 @@ def get_event_info(dict_or_id):
 
     magnitude = Magnitude(mag=event_dict['magnitude'])
     event = Event()
+    event.resource_id = event_dict['id']
     event.origins = [origin]
     event.magnitudes = [magnitude]
 
