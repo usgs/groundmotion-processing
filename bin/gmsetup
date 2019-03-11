@@ -1,11 +1,16 @@
 #!/usr/bin/env python
 
+# stdlib imports
 import os
 import shutil
 import argparse
 import pkg_resources
 import logging
 
+# third party imports
+import yaml
+
+# local imports
 from gmprocess.constants import CONFIG_FILE, PICKER_FILE
 from gmprocess.logging import setup_logger
 from gmprocess.args import add_shared_args
@@ -43,6 +48,21 @@ def main(args):
             # Load installed config
             logging.warning('Existing config file found. Nothing to do.')
 
+    # if users specified user name/email at the command line, add that to
+    # newly created file.
+    if args.full_name or args.email:
+        cfgfile = os.path.join(home_path, CONFIG_FILE)
+        with open(cfgfile, 'rt') as f:
+            config = yaml.load(f)
+        userinfo = {}
+        if args.full_name:
+            userinfo['name'] = ' '.join(args.full_name)
+        if args.email:
+            userinfo['email'] = args.email
+        config['user'] = userinfo
+        with open(cfgfile, 'wt') as f:
+            f.write(yaml.dump(config))
+
 
 if __name__ == '__main__':
     description = 'Setup gmprocess config files.'
@@ -50,6 +70,11 @@ if __name__ == '__main__':
 
     # Shared arguments
     parser = add_shared_args(parser)
+
+    parser.add_argument('-f', '--full-name', nargs='+',
+                        help='Supply the config with your name')
+    parser.add_argument('-e', '--email',
+                        help='Supply the config with your email address')
 
     pargs = parser.parse_args()
     main(pargs)

@@ -70,6 +70,13 @@ class StationStream(Stream):
         out += ("\n" + ind_str).join(lc)
         return out
 
+    def getProvenanceDocuments(self):
+        provdocs = []
+        for trace in self.traces:
+            provdoc = trace.getProvenanceDocument()
+            provdocs.append(provdoc)
+        return provdocs
+
     def getInventory(self):
         """Extract an ObsPy inventory object from a Stream read in by gmprocess tools.
         """
