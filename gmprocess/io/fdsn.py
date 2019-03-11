@@ -8,6 +8,7 @@ from obspy.clients.fdsn import Client
 from obspy.core.util.attribdict import AttribDict
 
 from gmprocess.config import get_config
+from gmprocess.stationstream import StationStream
 
 
 CONFIG = get_config()
@@ -25,7 +26,10 @@ def request_raw_waveforms(
         dist_max=None,
         networks=None,
         stations=None,
-        channels=None):
+        channels=None,
+        access_restricted=None,
+        username=None,
+        password=None):
     """
     Requests raw waveform data from an FDSN client.
     The requested data can be constrained by time, distance from event,
@@ -55,13 +59,21 @@ def request_raw_waveforms(
             List of strings for desired networks. Default is ['*'].
         channels (list):
             List of strings for desired channels. Default is ['*'].
+        access_restriced (bool): If True, attempt to access restricted data.
+            Requires username and password to be set.
+        username (str):
+            Client username for potential accesss to restricted data.
+        password (str):
+            Client password for potential access to restricted data.
 
     Returns:
-        stream (obspy.core.trace.Trace): Stream of requested, raw data.
-        inventory (obspy.core.inventory): Inventory object for the event.
+        list:
+            List of gmprocess.stationstream.StationStream objects
+        inventory (obspy.core.inventory):
+            Inventory object for the event.
     """
 
-    # If request options are None, use valeus in config file. This allows
+    # If request options are None, use values in config file. This allows
     # for the method to be used as a library or set through the config.
     if before_time is None:
         before_time = CONFIG['waveform_request']['before_time']
@@ -77,9 +89,19 @@ def request_raw_waveforms(
         stations = CONFIG['waveform_request']['stations']
     if channels is None:
         channels = CONFIG['waveform_request']['channels']
+    if access_restricted is None:
+        access_restricted = CONFIG['waveform_request']['access_restricted']
+    if username is None:
+        username = CONFIG['waveform_request']['username']
+    if password is None:
+        password = CONFIG['waveform_request']['password']
 
     logging.debug('fdsn_client: %s' % fdsn_client)
     client = Client(fdsn_client)
+
+    # Set credentials for the client object
+    if access_restricted:
+        client.set_credentials(username, password)
 
     # Time information
     origin_time = UTCDateTime(org_time)
@@ -108,7 +130,8 @@ def request_raw_waveforms(
         channel=channels,
         station=stations,
         level='response',
-        includerestricted=False)
+        includerestricted=access_restricted,
+        matchtimeseries=True)
 
     # Get the list of channels from the inventory
     channels = inventory.get_contents()['channels']
@@ -124,7 +147,14 @@ def request_raw_waveforms(
     logging.info(
         'Requesting waveforms for {0} channels.'.format(len(channels)))
     st = client.get_waveforms_bulk(bulk, attach_response=True)
-    return st, inventory
+
+    streams = []
+    for tr in st:
+        inv_tr = inventory.select(
+            network=tr.stats.network, station=tr.stats.station,
+            location=tr.stats.location, channel=tr.stats.channel)
+        streams.append(StationStream(traces=[tr], inventory=inv_tr))
+    return streams, inventory
 
 
 def add_channel_metadata(tr, inv, client):

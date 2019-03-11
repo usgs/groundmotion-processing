@@ -23,8 +23,8 @@ def main(args):
     save_format = conf_req['format']
     logging.info("Running fdsnfetch2.")
 
-    # Request waveforms using parameters, getting stream and inventory
-    st, inv = fdsn.request_raw_waveforms(
+    # Request waveforms using parameters, getting streams and inventory
+    streams, inv = fdsn.request_raw_waveforms(
         conf_req['client'],
         args.org_time,
         args.lat,
@@ -42,12 +42,11 @@ def main(args):
         os.mkdir(raw_dir)
 
     # Write the raw files to the raw directory
-    for tr in st:
-        tr = fdsn.add_channel_metadata(
-            tr, inv, conf_req['client'])
-        raw_file = os.path.join(
-            args.out, 'raw', tr.get_id() + '.' + save_format)
-        tr.write(raw_file, format=save_format)
+    for st in streams:
+        for tr in st:
+            raw_file = os.path.join(
+                args.out, 'raw', tr.get_id() + '.' + save_format)
+            tr.write(raw_file, format=save_format)
 
     # Get a list of the stations that we have waveform data for
     stations = []
