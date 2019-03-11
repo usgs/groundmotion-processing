@@ -19,12 +19,12 @@ organization of the code is changing rapidly.
     :target: https://travis-ci.org/usgs/groundmotion-processing
     :alt: Travis Build Status
 
-.. |CodeCov| image:: https://codecov.io/gh/usgs/groundmotion-processing/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/usgs/groundmotion-processing
-    :alt: Code Coverage Status
-
 .. |Codacy| image:: https://api.codacy.com/project/badge/Grade/582cbceabb814eca9f708e37d6af9479
     :target: https://www.codacy.com/app/mhearne-usgs/groundmotion-processing?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=usgs/groundmotion-processing&amp;utm_campaign=Badge_Grade
+
+.. |CodeCov| image:: https://codecov.io/gh/emthompson-usgs/groundmotion-processing/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/emthompson-usgs/groundmotion-processing
+    :alt: Code Coverage Status
 
 .. |Waffle| image:: https://badge.waffle.io/usgs/groundmotion-processing.svg?columns=all
     :target: https://waffle.io/usgs/groundmotion-processing
