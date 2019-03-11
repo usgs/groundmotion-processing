@@ -27,7 +27,7 @@ def get_nga_record_sequence_no(st, eq_name, distance_tolerance=50):
         distance_tolerance (float):
             Distance tolerance (in meters) between StationStream location
             coordinates and the NGA location coordinates.
-            Default is 10 meters.
+            Default is 50 meters.
 
     Returns:
         int: Matching record sequence number from NGA flatfile. Returns
