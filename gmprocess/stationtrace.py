@@ -469,9 +469,12 @@ def _stats_from_inventory(data, inventory, channelid):
     standard['source'] = source
     standard['instrument'] = ''
     standard['sensor_serial_number'] = ''
-    if channel.sensor is not None and channel.sensor.type != 'None':
-        standard['instrument'] = channel.sensor.type
-        if channel.sensor.serial_number != 'None':
+    if channel.sensor is not None:
+        standard['instrument'] = '%s %s %s %s' % (channel.sensor.type,
+                                                  channel.sensor.manufacturer,
+                                                  channel.sensor.model,
+                                                  channel.sensor.description)
+        if channel.sensor.serial_number is not None:
             standard['sensor_serial_number'] = channel.sensor.serial_number
         else:
             standard['sensor_serial_number'] = ''
@@ -490,7 +493,9 @@ def _stats_from_inventory(data, inventory, channelid):
         standard['units'] = 'vel'
 
     if len(channel.comments):
-        standard['comments'] = channel.comments[0]
+        comments = ' '.join(
+            channel.comments[i].value for i in range(len(channel.comments)))
+        standard['comments'] = comments
     else:
         standard['comments'] = ''
     if station.site.name != 'None':
@@ -516,7 +521,7 @@ def _get_software_agent(pr):
     '''Get the seis-prov entity for the gmprocess software.
 
     Args:
-        pr (prov.model.ProvDocument): 
+        pr (prov.model.ProvDocument):
             Existing ProvDocument.
 
     Returns:
@@ -545,7 +550,7 @@ def _get_person_agent(pr):
     '''Get the seis-prov entity for the user software.
 
     Args:
-        pr (prov.model.ProvDocument): 
+        pr (prov.model.ProvDocument):
             Existing ProvDocument.
 
     Returns:
@@ -576,9 +581,9 @@ def _get_waveform_entity(trace, pr):
     '''Get the seis-prov entity for an input Trace.
 
     Args:
-        trace (Trace): 
+        trace (Trace):
             Input Obspy Trace object.
-        pr (Prov): 
+        pr (Prov):
             prov.model.ProvDocument
 
     Returns:
@@ -605,13 +610,13 @@ def _get_activity(pr, activity, attributes, sequence):
 
 
     Args:
-        pr (prov.model.ProvDocument): 
+        pr (prov.model.ProvDocument):
             Existing ProvDocument.
-        activity (str): 
+        activity (str):
             The prov:id for the input activity.
         attributes (dict):
             The attributes associated with the activity.
-        sequence (int): 
+        sequence (int):
             Integer used to identify the order in which the activities were performed.
     Returns:
         prov.model.ProvDocument:

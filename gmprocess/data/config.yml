@@ -6,6 +6,13 @@ waveform_request:
     #     BGR, EMSC, ETH, GEONET, GFZ, ICGC, INGV, IPGP, IRIS, ISC, KOERI, LMU,
     #     NCEDC, NIEP, NOA, ODC, ORFEUS, RESIF, SCEDC, TEXTNET, USGS, USP.
     client: IRIS
+
+    # Set username and password resulting in subsequent web service requests for
+    # waveforms being authenticated for potential access to restricted data.
+    access_restricted: False
+    username: foo
+    password: bar
+
     # Time units are seconds
     before_time: 120.0
     after_time: 120.0
