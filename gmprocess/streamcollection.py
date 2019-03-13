@@ -6,6 +6,7 @@ various rules, such as all traces within a stream are from the same station.
 """
 
 import copy
+from gmprocess.io.read_directory import directory_to_streams
 from gmprocess.stationstream import StationStream
 
 INDENT = 2
@@ -31,7 +32,8 @@ class StreamCollection(object):
     def __init__(self, streams=None):
         """
         Args:
-            streams (list): List of StationStream objects.
+            streams (list):
+                List of StationStream objects.
         """
 
         # Some initial checks of input streams
@@ -52,6 +54,25 @@ class StreamCollection(object):
 
         # Run check_streams to ensure that the 'passed' attribute is set.
         self.check_streams()
+
+    @classmethod
+    def from_directory(cls, directory):
+        """
+        Create a StreamCollection instance from a directory of data.
+
+        Args:
+            directory (str):
+                Directory of ground motion files (streams) to be read.
+
+        Returns:
+            StreamCollection instance.
+        """
+        streams, missed_files, errors = directory_to_streams(directory)
+
+        # Might eventually want to include some of the missed files and
+        # error info but don't have a sensible place to put it currently.
+
+        return cls(streams)
 
     def __str__(self):
         """
