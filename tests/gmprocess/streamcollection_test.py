@@ -2,7 +2,7 @@ import os
 import shutil
 import tempfile
 import numpy as np
-
+import json
 import pkg_resources
 import logging
 
@@ -109,6 +109,20 @@ def test_StreamCollection():
     stream2 = dmg_sc[0]
     test_append = usc_sc.append(stream2)
     assert len(test_append) == 4
+
+    # Check the from_directory method
+    sc_test = StreamCollection.from_directory(directory)
+    assert len(sc_test) == 1
+
+    # Test to_dataframe
+    jsonfile = os.path.join(directory, 'event.json')
+    with open(jsonfile, 'rt') as f:
+        origin = json.load(f)
+    dmg_df = sc_test.to_dataframe(origin)
+    np.testing.assert_allclose(
+        dmg_df['HN1']['PGA'],
+        0.145615,
+        atol=1e5)
 
 
 if __name__ == '__main__':

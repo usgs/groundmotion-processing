@@ -340,7 +340,7 @@ def streams_to_dataframe(streams, imcs=None, imts=None,
             for imt in imts:
                 pgm_data[idx][subindex] = station[imt][imc]
                 subindex += 1
-    pgm_dataframe = pd.DataFrame(pgm_data, columns=pgm_columns)\
+    pgm_dataframe = pd.DataFrame(pgm_data, columns=pgm_columns)
 
     dataframe = pd.concat([meta_dataframe, pgm_dataframe], axis=1)
 

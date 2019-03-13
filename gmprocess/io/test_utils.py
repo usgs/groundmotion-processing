@@ -5,7 +5,7 @@ import pkg_resources
 
 
 def read_data_dir(file_format, eventid, files=None):
-    """Read desired data files and event dictionary from test directory. 
+    """Read desired data files and event dictionary from test directory.
 
     Args:
         file_format (str):
@@ -14,8 +14,10 @@ def read_data_dir(file_format, eventid, files=None):
             ComCat or other event ID (should exist as a folder)
         files (variable):
             This is either:
-                - None This is a flag to retrieve all of the files for an event.
-                - regex A regex string that glob can handle (*.dat, AO*.*, etc.)
+                - None This is a flag to retrieve all of the files for an
+                  event.
+                - regex A regex string that glob can handle (*.dat, AO*.*,
+                  etc.)
                 - list List of specific files that should be returned.
 
     Returns:
