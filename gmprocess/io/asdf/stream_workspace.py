@@ -12,6 +12,7 @@ import pandas as pd
 # local imports
 from gmprocess.stationtrace import StationTrace, TIMEFMT_MS
 from gmprocess.stationstream import StationStream
+from gmprocess.metrics.station_summary import StationSummary
 
 TIMEPAT = '[0-9]{4}-[0-9]{2}-[0-9]{2}T'
 
@@ -150,11 +151,22 @@ class StreamWorkspace(object):
             idlist.append(eid)
         return idlist
 
-    def getStreamTags(self, eventid):
+    def getLabels(self):
+        """Return all of the processing labels.
+
+        Returns:
+            list: List of processing labels.
+        """
+        provtags = self.dataset.provenance.list()
+        labels = list(set([ptag.split('_')[1] for ptag in provtags]))
+        return labels
+
+    def getStreamTags(self, eventid, label=None):
         """Get list of Stream "tags" which can be used to retrieve individual streams.
 
         Args:
-            eventid (str): Event ID which should correspond to a sequence of Streams.
+            eventid (str): Event ID corresponding to a sequence of Streams.
+            label (str): Optional stream label assigned with addStreams(). 
 
         Returns:
             list: Sequence of strings indicating Stream tags corresponding to eventid.
@@ -166,12 +178,16 @@ class StreamWorkspace(object):
         for waveform in self.dataset.waveforms:
             tags = waveform.get_waveform_tags()
             for tag in tags:
-                if eventid in waveform[tag][0].stats.asdf.event_ids:
+                event_match = eventid in waveform[tag][0].stats.asdf.event_ids
+                label_match = True
+                if label is not None and label not in tag:
+                    label_match = False
+                if event_match and label_match:
                     matching_tags.append(tag)
 
         return matching_tags
 
-    def getStreams(self, eventid, tags=None):
+    def getStreams(self, eventid, stations=None, labels=None):
         """Get Stream from ASDF file given event id and input tags.
 
         Args:
@@ -187,12 +203,17 @@ class StreamWorkspace(object):
         if 'ProcessingParameters' in self.dataset.auxiliary_data:
             auxholder = self.dataset.auxiliary_data.ProcessingParameters
         streams = []
+        all_tags = []
+        for station in stations:
+            for label in labels:
+                all_tags.append('%s_%s' % (station.lower(), label))
         for waveform in self.dataset.waveforms:
             ttags = waveform.get_waveform_tags()
-            if tags is None:
+            wtags = []
+            if not len(all_tags):
                 wtags = ttags
             else:
-                wtags = set(tags).intersection(set(ttags))
+                wtags = list(set(all_tags).intersection(set(ttags)))
             for tag in wtags:
                 if eventid in waveform[tag][0].stats.asdf.event_ids:
                     tstream = waveform[tag].copy()
@@ -219,41 +240,91 @@ class StreamWorkspace(object):
                     streams.append(stream)
         return streams
 
-    def getStations(self):
+    def getStations(self, eventid=None):
         """Get list of station codes that can be used to uniquely identify
         a station within the file.
         """
-        pass
+        not_none = eventid is not None
+        stations = []
+        for waveform in self.dataset.waveforms:
+            tags = waveform.get_waveform_tags()
+            for tag in tags:
+                event_match = eventid == waveform[tag][0].stats.asdf.event_ids
+                if not_none and not event_match:
+                    continue
+                station, _ = tag.split('_')
+                if station not in stations:
+                    stations.append(station)
+        return stations
 
-    def addStationMetrics(self, station_code, dict_or_metric_xml):
-        """Add station metrics IMC/IMT information to ASDF file. Input
-        can either be a dict (?) or pre-defined XML file. XML
-        data will be written to ASDF file.
-        """
-        pass
+    def setStreamMetrics(self, eventid, stations=None,
+                         labels=None, imclist=None, imtlist=None):
+        """Create station metrics for specified event/streams.
 
-    def getStationMetrics(self, station_code):
-        """Retrieve station metrics given station code.
+        Args:
+             eventid (str):
+                ID of event to search for in ASDF file.
+            tags (list):
+                List of stream tags to create metrics for.
+            imclist (list):
+                List of valid component names.
+            imtlist (list):
+                List of valid IMT names.
         """
-        pass
+        if not self.hasEvent(eventid):
+            fmt = 'No event matching %s found in workspace.'
+            raise KeyError(fmt % eventid)
 
-    def setStreamMetrics(self, stream_tag, station_summary_or_metric_xml):
-        """Add station metrics IMC / IMT information to ASDF file. Input
-        can either be a dict(?) or pre - defined XML file. XML
-        data will be written to ASDF file.
-        """
-        pass
+        streams = self.getStreams(eventid, stations=stations, labels=labels)
 
-    def getProvenance(self, stream_tag):
-        """Return data structure (?) containing processing history for a stream.
+        for stream in streams:
+
+            summary = StationSummary.from_stream(stream,
+                                                 components=imclist,
+                                                 imts=imtlist)
+            xmlstr = summary.getMetricXML()
+
+            path = '%s_%s_%s' % (eventid, summary.station_code, label)
+
+            # this seems like a lot of effort
+            # just to store a string in HDF, but other
+            # approached failed. Suggestions are welcome.
+            jsonarray = np.frombuffer(xmlstr, dtype=np.uint8)
+            dtype = 'WaveFormMetrics'
+            self.dataset.add_auxiliary_data(jsonarray,
+                                            data_type=dtype,
+                                            path=path,
+                                            parameters={})
+
+    def getStreamMetrics(self, eventid, station, label):
+        """Extract a StationSummary object from the ASDF file for a given input Stream.
+
+        Args:
+            eventid (str):
+                ID of event to search for in ASDF file.
+            tag (str):
+                Tag in ASDF file corresponding to a particular stream.
+
+        Returns:
+            StationSummary: Object containing all stream metrics.
         """
-        pass
+        if 'WaveFormMetrics' not in self.dataset.auxiliary_data:
+            raise KeyError('Waveform metrics not found in workspace.')
+        auxholder = self.dataset.auxiliary_data.WaveFormMetrics
+        stream_path = '%s_%s' % (eventid, tag)
+        if stream_path not in auxholder:
+            fmt = 'Waveform metrics for event %s and stream %s not found in workspace.'
+            raise KeyError(fmt % (eventid, tag))
+        bytelist = auxholder[stream_path].data[:].tolist()
+        xmlstr = ''.join([chr(b) for b in bytelist])
+        summary = StationSummary.fromMetricXML(xmlstr.encode('utf-8'))
+        return summary
 
     def summarizeLabels(self):
         """Summarize the processing metadata associated with each label in the file.
 
         Returns:
-            DataFrame: 
+            DataFrame:
                 Pandas DataFrame with columns:
                     - Label Processing label.
                     - UserID user id (i.e., jsmith)
@@ -323,6 +394,23 @@ class StreamWorkspace(object):
             fmt = 'Event with a resource id containing %s could not be found.'
             raise KeyError(fmt % eventid)
         return eventobj
+
+    def addStationMetrics(self, station_code, dict_or_metric_xml):
+        """Add station metrics IMC/IMT information to ASDF file. Input
+        can either be a dict (?) or pre-defined XML file. XML
+        data will be written to ASDF file.
+        """
+        pass
+
+    def getStationMetrics(self, station_code):
+        """Retrieve station metrics given station code.
+        """
+        pass
+
+    def getProvenance(self, stream_tag):
+        """Return data structure (?) containing processing history for a stream.
+        """
+        pass
 
 
 def _stringify_dict(indict):
