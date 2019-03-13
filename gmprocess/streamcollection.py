@@ -6,10 +6,19 @@ various rules, such as all traces within a stream are from the same station.
 """
 
 import copy
+
+import numpy as np
+from obspy.geodetics import gps2dist_azimuth
+import pandas as pd
+
 from gmprocess.io.read_directory import directory_to_streams
 from gmprocess.stationstream import StationStream
+from gmprocess.metrics.station_summary import StationSummary
 
 INDENT = 2
+
+DEFAULT_IMTS = ['PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
+DEFAULT_IMCS = ['GREATER_OF_TWO_HORIZONTALS', 'CHANNELS']
 
 
 class StreamCollection(object):
@@ -73,6 +82,129 @@ class StreamCollection(object):
         # error info but don't have a sensible place to put it currently.
 
         return cls(streams)
+
+    def to_dataframe(self, origin, imcs=None, imts=None):
+        """Get a summary dataframe of streams.
+
+        Note: The PGM columns underneath each channel will be variable
+        depending on the units of the Stream being passed in (velocity
+        sensors can only generate PGV) and on the imtlist passed in by
+        user. Spectral acceleration columns will be formatted as SA(0.3)
+        for 0.3 second spectral acceleration, for example.
+
+        Args:
+            directory (str):
+                Directory of ground motion files (streams).
+            origin (dict):
+                Dictionary with the following keys:
+                   - eventid
+                   - magnitude
+                   - time (UTCDateTime object)
+                   - lon
+                   - lat
+                   - depth
+            imcs (list):
+                Strings designating desired components to create in table.
+            imts (list):
+                Strings designating desired PGMs to create in table.
+
+        Returns:
+            DataFrame: Pandas dataframe containing columns:
+                - STATION Station code.
+                - NAME Text description of station.
+                - LOCATION Two character location code.
+                - SOURCE Long form string containing source network.
+                - NETWORK Short network code.
+                - LAT Station latitude
+                - LON Station longitude
+                - DISTANCE Epicentral distance (km) (if epicentral
+                  lat/lon provided)
+                - HN1 East-west channel (or H1) (multi-index with pgm columns):
+                    - PGA Peak ground acceleration (%g).
+                    - PGV Peak ground velocity (cm/s).
+                    - SA(0.3) Pseudo-spectral acceleration at 0.3 seconds (%g).
+                    - SA(1.0) Pseudo-spectral acceleration at 1.0 seconds (%g).
+                    - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).
+                - HN2 North-south channel (or H2) (multi-index with pgm
+                  columns):
+                    - PGA Peak ground acceleration (%g).
+                    - PGV Peak ground velocity (cm/s).
+                    - SA(0.3) Pseudo-spectral acceleration at 0.3 seconds (%g).
+                    - SA(1.0) Pseudo-spectral acceleration at 1.0 seconds (%g).
+                    - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).
+                - HNZ Vertical channel (or HZ) (multi-index with pgm columns):
+                    - PGA Peak ground acceleration (%g).
+                    - PGV Peak ground velocity (cm/s).
+                    - SA(0.3) Pseudo-spectral acceleration at 0.3 seconds (%g).
+                    - SA(1.0) Pseudo-spectral acceleration at 1.0 seconds (%g).
+                    - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).
+                - GREATER_OF_TWO_HORIZONTALS (multi-index with pgm columns):
+                    - PGA Peak ground acceleration (%g).
+                    - PGV Peak ground velocity (cm/s).
+                    - SA(0.3) Pseudo-spectral acceleration at 0.3 seconds (%g).
+                    - SA(1.0) Pseudo-spectral acceleration at 1.0 seconds (%g).
+                    - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).
+        """
+        streams = self.streams
+        num_streams = len(streams)
+
+        if imcs is None:
+            station_summary_imcs = DEFAULT_IMCS
+        else:
+            station_summary_imcs = imcs
+        if imts is None:
+            station_summary_imts = DEFAULT_IMTS
+        else:
+            station_summary_imts = imts
+
+        columns = ['STATION', 'NAME', 'SOURCE',
+                   'NETID', 'LAT', 'LON', 'DISTANCE']
+        meta_data = np.empty((num_streams, len(columns)), dtype=list)
+
+        station_pgms = []
+        imcs = []
+        imts = []
+        for idx, stream in enumerate(streams):
+            # set meta_data
+            meta_data[idx][0] = stream[0].stats['station']
+            name_str = stream[0].stats['standard']['station_name']
+            meta_data[idx][1] = name_str
+            source = stream[0].stats.standard['source']
+            meta_data[idx][2] = source
+            meta_data[idx][3] = stream[0].stats['network']
+            latitude = stream[0].stats['coordinates']['latitude']
+            meta_data[idx][4] = latitude
+            longitude = stream[0].stats['coordinates']['longitude']
+            meta_data[idx][5] = longitude
+
+            dist, _, _ = gps2dist_azimuth(
+                origin['lat'], origin['lon'], latitude, longitude)
+            meta_data[idx][6] = dist / 1000
+
+            stream_summary = StationSummary.from_stream(
+                stream, station_summary_imcs, station_summary_imts)
+            pgms = stream_summary.pgms
+            station_pgms += [pgms]
+            imcs += stream_summary.components
+            imts += stream_summary.imts
+
+        meta_columns = pd.MultiIndex.from_product([columns, ['']])
+        meta_dataframe = pd.DataFrame(meta_data, columns=meta_columns)
+        imcs = np.unique(imcs)
+        imts = np.unique(imts)
+        pgm_columns = pd.MultiIndex.from_product([imcs, imts])
+        pgm_data = np.zeros((num_streams, len(imts) * len(imcs)))
+        for idx, station in enumerate(station_pgms):
+            subindex = 0
+            for imc in imcs:
+                for imt in imts:
+                    pgm_data[idx][subindex] = station[imt][imc]
+                    subindex += 1
+        pgm_dataframe = pd.DataFrame(pgm_data, columns=pgm_columns)
+
+        dataframe = pd.concat([meta_dataframe, pgm_dataframe], axis=1)
+
+        return dataframe
 
     def __str__(self):
         """
