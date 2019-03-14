@@ -15,6 +15,7 @@ from gmprocess.streamcollection import StreamCollection
 from gmprocess.metrics.station_summary import StationSummary
 import numpy as np
 import pandas as pd
+from pyasdf.query import QueryObject, keywords
 
 
 def compare_streams(instream, outstream):
@@ -62,12 +63,15 @@ def test_workspace():
         str_repr = workspace.__repr__()
         assert str_repr == 'Events: 1 Stations: 3 Streams: 3'
 
-        stations = workspace.getStations()
-        assert sorted(stations) == ['hses', 'thz', 'wtmc']
-
         eventobj = workspace.getEvent(eventid)
         assert eventobj.origins[0].latitude == event.origins[0].latitude
         assert eventobj.magnitudes[0].mag == event.magnitudes[0].mag
+
+        stations = workspace.getStations()
+        assert sorted(stations) == ['hses', 'thz', 'wtmc']
+
+        stations = workspace.getStations(eventid=eventid)
+        assert sorted(stations) == ['hses', 'thz', 'wtmc']
 
         # test retrieving tags for an event that doesn't exist
         try:
@@ -135,6 +139,8 @@ def test_workspace():
         workspace = StreamWorkspace.open(tfile)
         workspace.addStreams(event, raw_streams, label='foo')
 
+        stations = workspace.getStations(eventid)
+
         eventids = workspace.getEventIds()
         assert eventids == ['us1000778i', 'nz2018p115908']
         instation = raw_streams[0][0].stats.station
@@ -151,10 +157,31 @@ def test_workspace():
         imtlist = ['sa1.0', 'PGA', 'pgv', 'fas2.0', 'arias']
         usid = 'us1000778i'
         tags = workspace.getStreamTags(usid)
-        workspace.setStreamMetrics(eventid, labels=['processed'],
+        workspace.setStreamMetrics(eventid, labels=['foo'],
                                    imclist=imclist, imtlist=imtlist)
-        stream2 = workspace.getStreamMetrics(usid, tags[0])
-        pass
+        summary = workspace.getStreamMetrics(eventid, instation, 'foo')
+        summary_series = summary.toSeries()['ARIAS']
+        cmpseries = pd.Series({'GEOMETRIC_MEAN': np.NaN,
+                               'GREATER_OF_TWO_HORIZONTALS': 0.0005,
+                               'HN1': 0.0001,
+                               'HN2': 0.0005,
+                               'HNZ': 0.0000,
+                               'ROTD100.0': 0.0005,
+                               'ROTD50.0': 0.0003})
+        assert cmpseries.equals(summary_series)
+
+        workspace.setStreamMetrics(usid, labels=['processed'])
+        df = workspace.getMetricsTable(usid, labels=['processed'])
+        cmpdict = {'GREATER_OF_TWO_HORIZONTALS': [26.8906, 4.9814, 94.6646],
+                   'HN1': [24.5105, 4.9814, 94.6646],
+                   'HN2': [26.8906, 4.0292, 86.7877],
+                   'HNZ': [16.0941, 2.5057, 136.7054]}
+        cmpframe = pd.DataFrame(cmpdict)
+        assert df['PGA'].equals(cmpframe)
+
+        inventory = workspace.getInventory(usid)
+        codes = [station.code for station in inventory.networks[0].stations]
+        assert sorted(codes) == ['HSES', 'THZ', 'WPWS', 'WTMC']
 
     except Exception as e:
         raise(e)

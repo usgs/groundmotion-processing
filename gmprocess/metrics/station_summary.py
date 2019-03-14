@@ -7,6 +7,7 @@ import re
 import numpy as np
 from obspy.core.stream import Stream
 from lxml import etree
+import pandas as pd
 
 # local imports
 from gmprocess.config import get_config
@@ -595,3 +596,25 @@ class StationSummary(object):
         xmlstr = etree.tostring(root, pretty_print=True,
                                 encoding='utf-8', xml_declaration=True)
         return xmlstr
+
+    def toSeries(self):
+        """Render StationSummary as a Pandas Series object.
+
+        Returns:
+            Series: 
+                Multi-Indexed Pandas Series where IMTs are top-level indices and
+                components are sub-indices.
+        """
+        imts = self.imts
+        imcs = self.components
+        index = pd.MultiIndex.from_product([imts, imcs])
+        data = []
+        for imt in imts:
+            imt_dict = self.pgms[imt]
+            for imc in imcs:
+                if imc not in imt_dict:
+                    data.append(np.nan)
+                else:
+                    data.append(imt_dict[imc])
+        series = pd.Series(data, index)
+        return series

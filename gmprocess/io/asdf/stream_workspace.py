@@ -1,6 +1,7 @@
 # stdlib imports
 import json
 import re
+import copy
 
 # third party imports
 import pyasdf
@@ -166,7 +167,7 @@ class StreamWorkspace(object):
 
         Args:
             eventid (str): Event ID corresponding to a sequence of Streams.
-            label (str): Optional stream label assigned with addStreams(). 
+            label (str): Optional stream label assigned with addStreams().
 
         Returns:
             list: Sequence of strings indicating Stream tags corresponding to eventid.
@@ -193,8 +194,10 @@ class StreamWorkspace(object):
         Args:
             eventid (str):
                 Event ID corresponding to an Event in the workspace.
-            tags (list or None):
-                List of stream tags to retrieve, or all if None.
+            stations (list):
+                List of stations to search for.
+            labels (list):
+                List of processing labels to search for.
 
         Returns:
             list: List of StationStream objects.
@@ -204,6 +207,10 @@ class StreamWorkspace(object):
             auxholder = self.dataset.auxiliary_data.ProcessingParameters
         streams = []
         all_tags = []
+        if stations is None:
+            stations = self.getStations(eventid)
+        if labels is None:
+            labels = self.getLabels()
         for station in stations:
             for label in labels:
                 all_tags.append('%s_%s' % (station.lower(), label))
@@ -237,20 +244,29 @@ class StreamWorkspace(object):
 
                         traces.append(trace)
                     stream = StationStream(traces=traces)
+                    stream.tag = tag  # testing this out
                     streams.append(stream)
         return streams
 
     def getStations(self, eventid=None):
-        """Get list of station codes that can be used to uniquely identify
-        a station within the file.
+        """Get list of station codes within the file.
+
+        Args:
+            eventid (str):
+                Event ID corresponding to an Event in the workspace.
+
+        Returns:
+            list: List of station codes contained in workspace.
         """
-        not_none = eventid is not None
         stations = []
         for waveform in self.dataset.waveforms:
             tags = waveform.get_waveform_tags()
             for tag in tags:
-                event_match = eventid == waveform[tag][0].stats.asdf.event_ids
-                if not_none and not event_match:
+                if eventid is None:
+                    event_match = True
+                else:
+                    event_match = eventid in waveform[tag][0].stats.asdf.event_ids
+                if not event_match:
                     continue
                 station, _ = tag.split('_')
                 if station not in stations:
@@ -262,10 +278,12 @@ class StreamWorkspace(object):
         """Create station metrics for specified event/streams.
 
         Args:
-             eventid (str):
+            eventid (str):
                 ID of event to search for in ASDF file.
-            tags (list):
-                List of stream tags to create metrics for.
+            stations (list):
+                List of stations to create metrics for.
+            labels (list):
+                List of processing labels to create metrics for.
             imclist (list):
                 List of valid component names.
             imtlist (list):
@@ -278,13 +296,14 @@ class StreamWorkspace(object):
         streams = self.getStreams(eventid, stations=stations, labels=labels)
 
         for stream in streams:
-
+            tag = stream.tag
+            station, label = tag.split('_')
             summary = StationSummary.from_stream(stream,
                                                  components=imclist,
                                                  imts=imtlist)
             xmlstr = summary.getMetricXML()
 
-            path = '%s_%s_%s' % (eventid, summary.station_code, label)
+            path = '%s_%s_%s' % (eventid, summary.station_code.lower(), label)
 
             # this seems like a lot of effort
             # just to store a string in HDF, but other
@@ -296,14 +315,66 @@ class StreamWorkspace(object):
                                             path=path,
                                             parameters={})
 
+    def getMetricsTable(self, eventid, stations=None, labels=None):
+        """Return a pandas DataFrame summarizing the metrics for given Streams.
+
+        Args:
+            eventid (str):
+                ID of event to search for in ASDF file.
+            stations (list):
+                List of stations to return metrics from.
+            labels (list):
+                List of processing labels to return metrics from.
+
+        Returns:
+            DataFrame:
+                Pandas DataFrame containing IMTs and components defined
+                in setStreamMetrics, plus:
+                    - STATION Station code
+                    - NAME Station name, if available
+                    - SOURCE Data source, if available
+                    - NETID Network source
+                    - LAT Station latitude
+                    - LON Station longitude
+        """
+        if stations is None:
+            stations = self.getStations(eventid)
+        if labels is None:
+            labels = self.getLabels()
+
+        df = None
+        for station in stations:
+            for label in labels:
+                summary = self.getStreamMetrics(eventid, station, label)
+                stream = self.getStreams(eventid,
+                                         stations=[station],
+                                         labels=[label])[0]
+                row = summary.toSeries()
+                row['STATION'] = stream[0].stats.station
+                row['NAME'] = stream[0].stats.standard['station_name']
+                row['SOURCE'] = stream[0].stats.standard['source']
+                row['NETID'] = stream[0].stats.network
+                row['LAT'] = stream[0].stats.coordinates['latitude']
+                row['LON'] = stream[0].stats.coordinates['longitude']
+
+                if df is None:
+                    df = pd.DataFrame(columns=row.index)
+                df = df.append(row, ignore_index=True)
+
+        # TODO - reorder df columns. This is complicated with multi-index.
+
+        return df
+
     def getStreamMetrics(self, eventid, station, label):
         """Extract a StationSummary object from the ASDF file for a given input Stream.
 
         Args:
             eventid (str):
                 ID of event to search for in ASDF file.
-            tag (str):
-                Tag in ASDF file corresponding to a particular stream.
+            station (str):
+                Station to return metrics from.
+            label (str):
+                Processing label to return metrics from.
 
         Returns:
             StationSummary: Object containing all stream metrics.
@@ -311,6 +382,7 @@ class StreamWorkspace(object):
         if 'WaveFormMetrics' not in self.dataset.auxiliary_data:
             raise KeyError('Waveform metrics not found in workspace.')
         auxholder = self.dataset.auxiliary_data.WaveFormMetrics
+        tag = '%s_%s' % (station.lower(), label)
         stream_path = '%s_%s' % (eventid, tag)
         if stream_path not in auxholder:
             fmt = 'Waveform metrics for event %s and stream %s not found in workspace.'
@@ -334,14 +406,6 @@ class StreamWorkspace(object):
                     - Version Version of software (i.e., 1.4)
 
         """
-        # return a table with columns of:
-        # label - see addStreams() method. Labels default to '00001', etc.
-        # num_streams - Number of streams with that label
-        # user id - System user name (jsmith, etc.)
-        # user name - Full name of user (Jane Smith) - optional
-        # user email - Email address of user
-        # software - Name of software used to process data
-        # version - Version of software used to process data
         provtags = self.dataset.provenance.list()
         cols = ['Label', 'UserID', 'UserName',
                 'UserEmail', 'Software', 'Version']
@@ -368,9 +432,38 @@ class StreamWorkspace(object):
 
     def getInventory(self, eventid):
         """Get an Obspy Inventory object from the ASDF file.
+
+        Args:
+            eventid (str): ID of event to search for in ASDF file.
+
+        Returns:
+            Inventory: Obspy inventory object capturing all of the 
+                       networks, stations, and channels contained in file.
         """
+        inventory = None
+        for waveform in self.dataset.waveforms:
+            tinv = waveform.StationXML
+            if inventory is None:
+                inventory = tinv
+            else:
+                net1 = inventory.networks[0]
+                net2 = tinv.networks[0]
+                if net1.code == net2.code:
+                    net1.stations.append(copy.deepcopy(net2.stations[0]))
+                else:
+                    inventory.networks.append(copy.deepcopy(net2))
+
+        return inventory
 
     def hasEvent(self, eventid):
+        """Verify that the workspace file contains an event matching eventid.
+
+        Args:
+            eventid (str): ID of event to search for in ASDF file.
+
+        Returns:
+            bool: True if event matching ID is found, False if not.
+        """
         for event in self.dataset.events:
             if event.resource_id.id.find(eventid) > -1:
                 return True

@@ -26,7 +26,7 @@ def is_asdf(filename):
         return False
 
 
-def read_asdf(filename, label=None):
+def read_asdf(filename, eventid=None, stations=None, label=None):
     """Read Streams of data (complete with processing metadata) from an ASDF file.
 
     Args:
@@ -43,15 +43,12 @@ def read_asdf(filename, label=None):
     eventids = workspace.getEventIds()
     allstreams = []
     for eventid in eventids:
-        if label is not None:
-            tags = workspace.getStreamTags(eventid)
-            newtags = []
-            for tag in tags:
-                if label in tag:
-                    newtags.append(tag)
+        if label is None:
+            labels = workspace.getLabels()
         else:
-            newtags = None
-        streams = workspace.getStreams(eventid, tags=newtags)
+            labels = [label]
+        streams = workspace.getStreams(eventid, stations=stations,
+                                       labels=labels)
         allstreams += streams
 
     workspace.close()
