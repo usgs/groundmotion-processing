@@ -230,7 +230,7 @@ class StreamCollection(object):
         summary += str(len(self.streams)) + \
             ' StationStreams(s) in StreamCollection:\n'
         for stream in self:
-            summary += stream.__str__(indent=INDENT)
+            summary += stream.__str__(indent=INDENT) + '\n'
         print(summary)
 
     def __len__(self):
