@@ -1,7 +1,5 @@
 
 import os
-import shutil
-import tempfile
 
 import pkg_resources
 import logging
@@ -16,16 +14,9 @@ def test_directory_to_streams():
     directory = pkg_resources.resource_filename(
         'gmprocess', os.path.join(
             '..', 'tests', 'data', 'read_directory', 'whittier87'))
-    temp_dir = os.path.join(tempfile.mkdtemp(), 'test')
-    try:
-        shutil.copytree(directory, temp_dir)
-        streams, unprocessed_files, unprocessed_file_errors = \
-            directory_to_streams(temp_dir)
-        assert len(streams) == 4
-    except:
-        raise Exception('test_directory_to_streams Failed.')
-    finally:
-        shutil.rmtree(temp_dir)
+    streams, unprocessed_files, unprocessed_file_errors = \
+        directory_to_streams(directory)
+    assert len(streams) == 4
 
 
 if __name__ == '__main__':

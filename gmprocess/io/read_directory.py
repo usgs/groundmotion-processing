@@ -5,6 +5,8 @@ from CESMD.
 
 import os
 import glob
+import tempfile
+import shutil
 
 from gmprocess.io.read import read_data
 from gmprocess.io.utils import flatten_directory
@@ -32,22 +34,30 @@ def directory_to_streams(directory):
                 files).
     """
 
-    flatten_directory(directory)
-
-    # -------------------------------------------------------------------------
-    # Read streams
-    # -------------------------------------------------------------------------
-    streams = []
-    unprocessed_files = []
-    unprocessed_file_errors = []
-    for file_path in glob.glob(os.path.join(directory, "*")):
-        file_ext = os.path.splitext(file_path)[1].lower()
-        if file_ext not in EXT_IGNORE:
-            try:
-                streams += read_data(file_path)
-            except Exception as ex:
-                unprocessed_files += [file_path]
-                unprocessed_file_errors += [ex]
+    # Use a temp dir so that we don't modify data on disk since that may not be
+    # expected or desired in all cases.
+    temp_dir = os.path.join(tempfile.mkdtemp(), 'directory_to_streams')
+    try:
+        shutil.copytree(directory, temp_dir)
+        flatten_directory(temp_dir)
+        # -------------------------------------------------------------------------
+        # Read streams
+        # -------------------------------------------------------------------------
+        streams = []
+        unprocessed_files = []
+        unprocessed_file_errors = []
+        for file_path in glob.glob(os.path.join(temp_dir, "*")):
+            file_ext = os.path.splitext(file_path)[1].lower()
+            if file_ext not in EXT_IGNORE:
+                try:
+                    streams += read_data(file_path)
+                except Exception as ex:
+                    unprocessed_files += [file_path]
+                    unprocessed_file_errors += [ex]
+    except Exception as e:
+        raise e
+    finally:
+        shutil.rmtree(temp_dir)
 
     return streams, unprocessed_files, unprocessed_file_errors
 
