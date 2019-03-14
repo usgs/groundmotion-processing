@@ -1,6 +1,4 @@
 import os
-import shutil
-import tempfile
 import numpy as np
 import json
 import pkg_resources
@@ -19,16 +17,9 @@ def test_StreamCollection():
     directory = pkg_resources.resource_filename(
         'gmprocess', os.path.join(
             '..', 'tests', 'data', 'usc', 'ci3144585'))
-    temp_dir = os.path.join(tempfile.mkdtemp(), 'test')
-    try:
-        shutil.copytree(directory, temp_dir)
-        usc_streams, unprocessed_files, unprocessed_file_errors = \
-            directory_to_streams(temp_dir)
-        assert len(usc_streams) == 7
-    except:
-        raise Exception('test_directory_to_streams Failed.')
-    finally:
-        shutil.rmtree(temp_dir)
+    usc_streams, unprocessed_files, unprocessed_file_errors = \
+        directory_to_streams(directory)
+    assert len(usc_streams) == 7
 
     usc_sc = StreamCollection(usc_streams)
 
@@ -56,16 +47,9 @@ def test_StreamCollection():
     directory = pkg_resources.resource_filename(
         'gmprocess', os.path.join(
             '..', 'tests', 'data', 'dmg', 'ci3144585'))
-    temp_dir = os.path.join(tempfile.mkdtemp(), 'test')
-    try:
-        shutil.copytree(directory, temp_dir)
-        dmg_streams, unprocessed_files, unprocessed_file_errors = \
-            directory_to_streams(temp_dir)
-        assert len(dmg_streams) == 1
-    except:
-        raise Exception('test_directory_to_streams Failed.')
-    finally:
-        shutil.rmtree(temp_dir)
+    dmg_streams, unprocessed_files, unprocessed_file_errors = \
+        directory_to_streams(directory)
+    assert len(dmg_streams) == 1
 
     dmg_sc = StreamCollection(dmg_streams)
 
