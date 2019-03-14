@@ -12,8 +12,33 @@ from gmprocess.config import get_config
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.event import get_event_object
 from gmprocess.streamcollection import StreamCollection
+from gmprocess.metrics.station_summary import StationSummary
 import numpy as np
 import pandas as pd
+from pyasdf.query import QueryObject, keywords
+
+
+def compare_streams(instream, outstream):
+    pkeys = instream[0].getParameterKeys()
+    for key in pkeys:
+        if not outstream[0].hasParameter(key):
+            assert 1 == 2
+        invalue = instream[0].getParameter(key)
+        outvalue = outstream[0].getParameter(key)
+        assert invalue == outvalue
+
+    # compare the provenance from the input processed stream
+    # to it's output equivalent
+    pkeys = instream[0].getProvenanceKeys()
+    for key in pkeys:
+        inprov = instream[0].getProvenance(key)[0]
+        outprov = outstream[0].getProvenance(key)[0]
+        for key, invalue in inprov.items():
+            outvalue = outprov[key]
+            if isinstance(invalue, (int, float, str)):
+                assert invalue == outvalue
+            else:
+                assert np.abs(invalue - outvalue) < 1
 
 
 def test_workspace():
@@ -39,6 +64,14 @@ def test_workspace():
         assert str_repr == 'Events: 1 Stations: 3 Streams: 3'
 
         eventobj = workspace.getEvent(eventid)
+        assert eventobj.origins[0].latitude == event.origins[0].latitude
+        assert eventobj.magnitudes[0].mag == event.magnitudes[0].mag
+
+        stations = workspace.getStations()
+        assert sorted(stations) == ['hses', 'thz', 'wtmc']
+
+        stations = workspace.getStations(eventid=eventid)
+        assert sorted(stations) == ['hses', 'thz', 'wtmc']
 
         # test retrieving tags for an event that doesn't exist
         try:
@@ -52,22 +85,36 @@ def test_workspace():
         except KeyError:
             assert 1 == 1
 
-        outstream = workspace.getStreams(eventid, ['hses_raw'])[0]
+        instream = None
+        for stream in raw_streams:
+            if stream[0].stats.station.lower() == 'hses':
+                instream = stream
+                break
+        if instream is None:
+            assert 1 == 2
+        outstream = workspace.getStreams(eventid,
+                                         stations=['hses'],
+                                         labels=['raw'])[0]
+        compare_streams(instream, outstream)
+
         label_summary = workspace.summarizeLabels()
         assert label_summary.iloc[0]['Label'] == 'raw'
         assert label_summary.iloc[0]['Software'] == 'gmprocess'
 
         sc = StreamCollection(raw_streams)
         processed_streams = process_streams(sc, origin, config=config)
-        workspace.addStreams(event, processed_streams)
+        workspace.addStreams(event, processed_streams, 'processed')
 
         idlist = workspace.getEventIds()
         assert idlist[0] == eventid
 
         event_tags = workspace.getStreamTags(eventid)
-        assert event_tags == ['hses_00001', 'hses_raw',
-                              'thz_00001', 'thz_raw', 'wtmc_00001', 'wtmc_raw']
-        outstream = workspace.getStreams(eventid, ['hses_00001'])[0]
+        assert event_tags == ['hses_processed', 'hses_raw',
+                              'thz_processed', 'thz_raw',
+                              'wtmc_processed', 'wtmc_raw']
+        outstream = workspace.getStreams(eventid,
+                                         stations=['hses'],
+                                         labels=['processed'])[0]
 
         # compare the parameters from the input processed stream
         # to it's output equivalent
@@ -78,27 +125,7 @@ def test_workspace():
                 break
         if instream is None:
             assert 1 == 2
-        pkeys = instream[0].getParameterKeys()
-        for key in pkeys:
-            if not outstream[0].hasParameter(key):
-                assert 1 == 2
-            invalue = instream[0].getParameter(key)
-            outvalue = outstream[0].getParameter(key)
-            assert invalue == outvalue
-
-        # compare the provenance from the input processed stream
-        # to it's output equivalent
-        pkeys = instream[0].getProvenanceKeys()
-        for key in pkeys:
-            inprov = instream[0].getProvenance(key)[0]
-            outprov = outstream[0].getProvenance(key)[0]
-            for key, invalue in inprov.items():
-                outvalue = outprov[key]
-                if isinstance(invalue, (int, float, str)):
-                    assert invalue == outvalue
-                else:
-                    assert np.abs(invalue - outvalue) < 1
-
+        compare_streams(instream, outstream)
         workspace.close()
 
         # read in data from a second event and stash it in the workspace
@@ -112,9 +139,49 @@ def test_workspace():
         workspace = StreamWorkspace.open(tfile)
         workspace.addStreams(event, raw_streams, label='foo')
 
+        stations = workspace.getStations(eventid)
+
         eventids = workspace.getEventIds()
-        these_streams = workspace.getStreams(eventid)
-        assert raw_streams[0][0].stats.station == these_streams[0][0].stats.station
+        assert eventids == ['us1000778i', 'nz2018p115908']
+        instation = raw_streams[0][0].stats.station
+        this_stream = workspace.getStreams(eventid,
+                                           stations=[instation],
+                                           labels=['foo'])[0]
+        assert instation == this_stream[0].stats.station
+
+        # set and retrieve waveform metrics in the file
+        imclist = ['greater_of_two_horizontals',
+                   'channels',
+                   'rotd50',
+                   'rotd100']
+        imtlist = ['sa1.0', 'PGA', 'pgv', 'fas2.0', 'arias']
+        usid = 'us1000778i'
+        tags = workspace.getStreamTags(usid)
+        workspace.setStreamMetrics(eventid, labels=['foo'],
+                                   imclist=imclist, imtlist=imtlist)
+        summary = workspace.getStreamMetrics(eventid, instation, 'foo')
+        summary_series = summary.toSeries()['ARIAS']
+        cmpseries = pd.Series({'GEOMETRIC_MEAN': np.NaN,
+                               'GREATER_OF_TWO_HORIZONTALS': 0.0005,
+                               'HN1': 0.0001,
+                               'HN2': 0.0005,
+                               'HNZ': 0.0000,
+                               'ROTD100.0': 0.0005,
+                               'ROTD50.0': 0.0003})
+        assert cmpseries.equals(summary_series)
+
+        workspace.setStreamMetrics(usid, labels=['processed'])
+        df = workspace.getMetricsTable(usid, labels=['processed'])
+        cmpdict = {'GREATER_OF_TWO_HORIZONTALS': [26.8906, 4.9814, 94.6646],
+                   'HN1': [24.5105, 4.9814, 94.6646],
+                   'HN2': [26.8906, 4.0292, 86.7877],
+                   'HNZ': [16.0941, 2.5057, 136.7054]}
+        cmpframe = pd.DataFrame(cmpdict)
+        assert df['PGA'].equals(cmpframe)
+
+        inventory = workspace.getInventory(usid)
+        codes = [station.code for station in inventory.networks[0].stations]
+        assert sorted(codes) == ['HSES', 'THZ', 'WPWS', 'WTMC']
 
     except Exception as e:
         raise(e)

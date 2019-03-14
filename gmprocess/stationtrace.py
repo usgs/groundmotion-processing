@@ -197,7 +197,13 @@ class StationTrace(Trace):
                 - When standard dictionary is missing required fields
                 - When standard values are of the wrong type
                 - When required values are set to a default.
+            AssertionError:
+                - When number of points in header does not match data length.
         """
+        # here's something we thought obspy would do...
+        # verify that npts matches length of data
+        # assert self.stats.npts == len(self.data)
+
         # are all of the defined standard keys in the standard dictionary?
         req_keys = set(STANDARD_KEYS.keys())
         std_keys = set(list(self.stats.standard.keys()))

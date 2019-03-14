@@ -6,6 +6,8 @@ import re
 # third party imports
 import numpy as np
 from obspy.core.stream import Stream
+from lxml import etree
+import pandas as pd
 
 # local imports
 from gmprocess.config import get_config
@@ -20,6 +22,12 @@ from gmprocess.metrics.oscillators import (
 
 
 CONFIG = get_config()
+
+XML_UNITS = {'pga': '%g',
+             'pgv': 'cm/s',
+             'sa': '%g',
+             'arias': 'cm/s',
+             'fas': 'cm/s'}
 
 
 class StationSummary(object):
@@ -128,7 +136,7 @@ class StationSummary(object):
         components = []
         for imt in pgms:
             components += [imc for imc in pgms[imt]]
-        station.components = np.sort(components)
+        station.components = np.sort(np.unique(components))
         station.imts = np.sort(imts)
         # stream should be set later with corrected a corrected stream
         # this stream (in units of gal or 1 cm/s^2) can be used to
@@ -137,7 +145,7 @@ class StationSummary(object):
 
     @classmethod
     def from_stream(cls, stream, components=None, imts=None, damping=None,
-            smoothing=None, bandwidth=None):
+                    smoothing=None, bandwidth=None):
         """
         Args:
             stream (obspy.core.stream.Stream): Strong motion timeseries
@@ -165,10 +173,12 @@ class StationSummary(object):
                         periods = np.logspace(start, stop, num)
                     else:
                         periods = np.linspace(start, stop, num)
-                    additional_periods = [p for p in period_params['defined_periods']]
+                    additional_periods = [
+                        p for p in period_params['defined_periods']]
                     periods = set(np.append(periods, additional_periods))
                 else:
-                    periods = set([p for p in period_params['defined_periods']])
+                    periods = set(
+                        [p for p in period_params['defined_periods']])
                 period_sets += [periods]
             sa_periods, fas_periods = period_sets[0], period_sets[1]
         else:
@@ -237,7 +247,7 @@ class StationSummary(object):
                     pgm_dict[oscillator] = sa
                 elif oscillator.startswith('FAS'):
                     fas = calculate_fas(stream, components, periods,
-                            self.smoothing, self.bandwidth)
+                                        self.smoothing, self.bandwidth)
                     for period in fas:
                         tag = 'FAS(' + str(period) + ')'
                         pgm_dict[tag] = {}
@@ -409,7 +419,7 @@ class StationSummary(object):
             else:
                 stripped_imts += [imt.upper()]
         period_dict = {'imts': stripped_imts, 'sa_periods': sa_periods,
-                'fas_periods': fas_periods}
+                       'fas_periods': fas_periods}
         return period_dict
 
     @property
@@ -500,3 +510,111 @@ class StationSummary(object):
                     'StationSummary.station_code.')
             else:
                 self._stream = stream
+
+    @classmethod
+    def fromMetricXML(cls, xmlstr):
+        imtlist = ['pga', 'pgv', 'sa', 'fas', 'arias']
+        root = etree.fromstring(xmlstr)
+        pgms = {}
+        station_code = None
+        damping = None
+        for element in root.iter():
+            etag = element.tag
+            if etag == 'waveform_metrics':
+                station_code = element.attrib['station_code']
+                continue
+            elif etag in imtlist:
+                tdict = {}
+                if etag in ['sa', 'fas']:
+                    period = element.attrib['period']
+                    if 'damping' in element.attrib:
+                        damping = float(element.attrib['damping'])
+                    imt = '%s(%s)' % (etag.upper(), period)
+                else:
+                    imt = etag.upper()
+                for imc_element in element.getchildren():
+                    imc = imc_element.tag.upper()
+                    value = float(imc_element.text)
+                    tdict[imc] = value
+
+                pgms[imt] = tdict
+
+        station = cls.from_pgms(station_code, pgms)
+        station._damping = damping
+        return station
+
+    def getMetricXML(self):
+        """Return XML for waveform metrics as defined for our ASDF implementation.
+
+        Returns:
+            str: XML in the form:
+                <waveform_metrics>
+                    <rot_d50>
+                        <pga units="m/s**2">0.45</pga>
+                        <sa percent_damping="5.0" units="g">
+                        <value period="2.0">0.2</value>
+                    </rot_d50>
+                    <maximum_component>
+                    </maximum_component>
+                </waveform_metrics>
+
+        """
+        FLOAT_MATCH = r'[0-9]*\.[0-9]*'
+        root = etree.Element('waveform_metrics',
+                             station_code=self.station_code)
+        for imt, imcdict in self.pgms.items():
+            imtstr = imt.lower()
+            units = None
+            if imtstr in XML_UNITS:
+                units = XML_UNITS[imtstr]
+            else:
+                for key in XML_UNITS.keys():
+                    if imtstr.startswith(key):
+                        units = XML_UNITS[key]
+                        break
+            if units is None:
+                raise KeyError('Could not find units for IMT %s' % imtstr)
+
+            period = None
+            if imtstr.startswith('sa') or imtstr.startswith('fas'):
+                period = float(re.search(FLOAT_MATCH, imtstr).group())
+                attdict = {'period': '%.1f' % period,
+                           'units': units}
+                if imtstr.startswith('sa'):
+                    imtstr = 'sa'
+                    attdict['damping'] = '%.2f' % self._damping
+                else:
+                    imtstr = 'fas'
+                imt_tag = etree.SubElement(root, imtstr, attrib=attdict)
+            else:
+                imt_tag = etree.SubElement(root, imtstr, units=units)
+
+            for imc, value in imcdict.items():
+                imcstr = imc.lower()
+                imc_tag = etree.SubElement(imt_tag, imcstr)
+                imc_tag.text = '%.4f' % value
+        xmlstr = etree.tostring(root, pretty_print=True,
+                                encoding='utf-8', xml_declaration=True)
+        return xmlstr
+
+    def toSeries(self):
+        """Render StationSummary as a Pandas Series object.
+
+        Returns:
+            Series: 
+                Multi-Indexed Pandas Series where IMTs are top-level indices and
+                components are sub-indices.
+        """
+        imts = self.imts
+        imcs = self.components
+        index = pd.MultiIndex.from_product([imts, imcs])
+        data = []
+        for imt in imts:
+            imt_dict = self.pgms[imt]
+            for imc in imcs:
+                if imc not in imt_dict:
+                    data.append(np.nan)
+                else:
+                    data.append(imt_dict[imc])
+        series = pd.Series(data, index)
+        return series
