@@ -164,7 +164,7 @@ def read_smc(filename, **kwargs):
                                 skip_header=skip + nrows,
                                 delimiter=FLOAT_DATA_WIDTHS)
         data = np.append(data, lastrow)
-
+    data = data[0:stats['npts']]
     trace = StationTrace(data, header=stats)
 
     response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
