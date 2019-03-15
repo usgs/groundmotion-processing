@@ -38,6 +38,8 @@ setup(
     packages=[
         'gmprocess',
         'gmprocess.io',
+        'gmprocess.io.asdf',
+        'gmprocess.io.bhrc',
         'gmprocess.io.cwb',
         'gmprocess.io.dmg',
         'gmprocess.io.geonet',
