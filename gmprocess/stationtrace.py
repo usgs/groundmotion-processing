@@ -202,7 +202,7 @@ class StationTrace(Trace):
         """
         # here's something we thought obspy would do...
         # verify that npts matches length of data
-        # assert self.stats.npts == len(self.data)
+        assert self.stats.npts == len(self.data)
 
         # are all of the defined standard keys in the standard dictionary?
         req_keys = set(STANDARD_KEYS.keys())
