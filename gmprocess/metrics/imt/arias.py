@@ -13,7 +13,7 @@ from gmprocess.metrics.gather import get_pgm_classes, group_imcs
 from gmprocess.metrics.rotation import rotate
 
 
-def calculate_arias(stream, imcs, return_streams=False):
+def calculate_arias(stream, imcs, return_streams=False, origin=None):
     """
     Calculate the peak ground acceleration.
     Args:
@@ -23,6 +23,8 @@ def calculate_arias(stream, imcs, return_streams=False):
         osccillators (dictionary): Dictionary of oscillators. Used when
                 rotation imcs are requested. Default is None.
         return_streams (bool): Whether to return streams.
+        origin (obspy.core.event.origin.Origin):
+            Obspy event origin object.
     Returns:
         dictionary: Dictionary of arias for different components.
     """
@@ -47,23 +49,23 @@ def calculate_arias(stream, imcs, return_streams=False):
             if imc.find('gmrot') >= 0:
                 Ia, NIa = _calculate_rotated_arias(stream, 'gm')
                 arias = arias_func(Ia, percentiles=grouped_imcs[imc],
-                                   rotated=True)
+                                   rotated=True, origin=origin)
                 for percentile in arias:
                     arias_dict[imc.upper() + str(percentile)
                                ] = arias[percentile]
             elif imc.find('rot') >= 0:
                 Ia, NIa = _calculate_rotated_arias(stream, 'nongm')
                 arias = arias_func(Ia, percentiles=grouped_imcs[imc],
-                                   rotated=True)
+                                   rotated=True, origin=origin)
                 for percentile in arias:
                     arias_dict[imc.upper() + str(percentile)
                                ] = arias[percentile]
             elif imc.find('channels') >= 0:
-                arias = arias_func(arias_stream)
+                arias = arias_func(arias_stream, origin=origin)
                 for channel in arias:
                     arias_dict[channel] = arias[channel]
             else:
-                arias = arias_func(arias_stream)
+                arias = arias_func(arias_stream, origin=origin)
                 arias_dict[imc.upper()] = arias
         else:
             logging.warning('Not a valid IMC: %r. Skipping...' % imc)

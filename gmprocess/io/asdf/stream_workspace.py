@@ -274,7 +274,7 @@ class StreamWorkspace(object):
         return stations
 
     def setStreamMetrics(self, eventid, stations=None,
-                         labels=None, imclist=None, imtlist=None):
+                         labels=None, imclist=None, imtlist=None, origin=None):
         """Create station metrics for specified event/streams.
 
         Args:
@@ -288,6 +288,8 @@ class StreamWorkspace(object):
                 List of valid component names.
             imtlist (list):
                 List of valid IMT names.
+            origin (obspy event origin object):
+                Origin object for the event.
         """
         if not self.hasEvent(eventid):
             fmt = 'No event matching %s found in workspace.'
@@ -300,7 +302,8 @@ class StreamWorkspace(object):
             station, label = tag.split('_')
             summary = StationSummary.from_stream(stream,
                                                  components=imclist,
-                                                 imts=imtlist)
+                                                 imts=imtlist,
+                                                 origin=origin)
             xmlstr = summary.getMetricXML()
 
             path = '%s_%s_%s' % (eventid, summary.station_code.lower(), label)
@@ -437,7 +440,7 @@ class StreamWorkspace(object):
             eventid (str): ID of event to search for in ASDF file.
 
         Returns:
-            Inventory: Obspy inventory object capturing all of the 
+            Inventory: Obspy inventory object capturing all of the
                        networks, stations, and channels contained in file.
         """
         inventory = None

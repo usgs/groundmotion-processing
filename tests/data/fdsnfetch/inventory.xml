@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<FDSNStationXML xmlns="http://www.fdsn.org/xml/station/1" schemaVersion="1.0">
+  <Source>IRIS-DMC</Source>
+  <Sender>IRIS-DMC</Sender>
+  <Module>IRIS WEB SERVICE: fdsnws-station | version: 1.1.36</Module>
+  <ModuleURI>http://service.iris.edu/fdsnws/station/1/query?starttime=2001-02-28T18%3A52%3A32.830000&amp;endtime=2001-02-28T18%3A56%3A32.830000&amp;network=UW&amp;station=ALCT&amp;location=%2A&amp;channel=%2A&amp;level=channel</ModuleURI>
+  <Created>2019-03-15T20:49:17</Created>
+  <Network code="UW" endDate="2500-12-31T23:59:59" restrictedStatus="open" startDate="1963-01-01T00:00:00">
+    <Description>Pacific Northwest Seismic Network</Description>
+    <TotalNumberStations>618</TotalNumberStations>
+    <SelectedNumberStations>1</SelectedNumberStations>
+    <Station code="ALCT" endDate="2599-12-31T23:59:59" restrictedStatus="open" startDate="2000-07-06T00:00:00">
+      <Latitude unit="DEGREES">47.6469</Latitude>
+      <Longitude unit="DEGREES">-122.0377</Longitude>
+      <Elevation>55.0</Elevation>
+      <Site>
+        <Name>Alcott School, Redmond, WA, USA</Name>
+      </Site>
+      <CreationDate>2000-07-06T00:00:00</CreationDate>
+      <TotalNumberChannels>15</TotalNumberChannels>
+      <SelectedNumberChannels>3</SelectedNumberChannels>
+      <Channel code="ENE" endDate="2001-10-18T00:00:00" locationCode="" restrictedStatus="open" startDate="2000-07-06T00:00:00">
+        <Latitude unit="DEGREES">47.6469</Latitude>
+        <Longitude unit="DEGREES">-122.037697</Longitude>
+        <Elevation>55.0</Elevation>
+        <Depth>0.0</Depth>
+        <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <Type>TRIGGERED</Type>
+        <SampleRate unit="SAMPLES/S">100.0</SampleRate>
+        <ClockDrift unit="SECONDS/SAMPLE">0.0001</ClockDrift>
+        <CalibrationUnits>
+          <Name>A</Name>
+          <Description>Amperes</Description>
+        </CalibrationUnits>
+        <Sensor>
+          <Description>ES-T-0000=K2-1470</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>428155.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S**2</Name>
+              <Description>Meters/sec**2 Acceleration</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+              <Description>Digital Counts</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+        </Response>
+      </Channel>
+      <Channel code="ENN" endDate="2001-10-18T00:00:00" locationCode="" restrictedStatus="open" startDate="2000-07-06T00:00:00">
+        <Latitude unit="DEGREES">47.6469</Latitude>
+        <Longitude unit="DEGREES">-122.037697</Longitude>
+        <Elevation>55.0</Elevation>
+        <Depth>0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <Type>TRIGGERED</Type>
+        <SampleRate unit="SAMPLES/S">100.0</SampleRate>
+        <ClockDrift unit="SECONDS/SAMPLE">0.0001</ClockDrift>
+        <CalibrationUnits>
+          <Name>A</Name>
+          <Description>Amperes</Description>
+        </CalibrationUnits>
+        <Sensor>
+          <Description>ES-T-0000=K2-1470</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>428155.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S**2</Name>
+              <Description>Meters/sec**2 Acceleration</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+              <Description>Digital Counts</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+        </Response>
+      </Channel>
+      <Channel code="ENZ" endDate="2001-10-18T00:00:00" locationCode="" restrictedStatus="open" startDate="2000-07-06T00:00:00">
+        <Latitude unit="DEGREES">47.6469</Latitude>
+        <Longitude unit="DEGREES">-122.037697</Longitude>
+        <Elevation>55.0</Elevation>
+        <Depth>0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
+        <Type>TRIGGERED</Type>
+        <SampleRate unit="SAMPLES/S">100.0</SampleRate>
+        <ClockDrift unit="SECONDS/SAMPLE">0.0001</ClockDrift>
+        <CalibrationUnits>
+          <Name>A</Name>
+          <Description>Amperes</Description>
+        </CalibrationUnits>
+        <Sensor>
+          <Description>ES-T-0000=K2-1470</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>428155.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S**2</Name>
+              <Description>Meters/sec**2 Acceleration</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+              <Description>Digital Counts</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+        </Response>
+      </Channel>
+    </Station>
+  </Network>
+</FDSNStationXML>
