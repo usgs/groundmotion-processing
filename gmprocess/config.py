@@ -6,6 +6,7 @@ import yaml
 
 from gmprocess.constants import CONFIG_FILE, PICKER_FILE
 
+
 def update_dict(target, source):
     """Merge values from source dictionary into target dictionary.
 
@@ -18,18 +19,20 @@ def update_dict(target, source):
     """
     for key, value in source.items():
         if not isinstance(value, dict) or \
-          not key in target.keys() or \
-          not isinstance(target[key], dict):
+                not key in target.keys() or \
+                not isinstance(target[key], dict):
             target[key] = value
         else:
             update_dict(target[key], value)
     return
 
+
 def merge_dicts(dicts):
     """Merges a list of dictionaries into a new dictionary.
 
     The order of the dictionaries in the list provides precedence of the
-    values, with values from subsequent dictionaries overriding earlier ones. 
+    values, with values from subsequent dictionaries overriding earlier
+    ones.
 
     Args:
         dicts (list of dictionaries):
@@ -42,7 +45,7 @@ def merge_dicts(dicts):
     for source in dicts[1:]:
         update_dict(target, source)
     return target
-    
+
 
 def get_config(picker=False):
     """Gets the user defined config and validates it.
@@ -71,6 +74,6 @@ def get_config(picker=False):
         config = None
     else:
         with open(config_file, 'r') as f:
-            config = yaml.load(f)
+            config = yaml.load(f, Loader=yaml.FullLoader)
 
     return config

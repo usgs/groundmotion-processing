@@ -51,7 +51,7 @@ setup(
         'gmprocess.smoothing'],
     package_data={
         'gmprocess':
-            glob.glob('gmprocess/data/*')
+            glob.glob('gmprocess/data/**', recursive=True)
     },
     scripts=glob.glob('bin/*'),
     cmdclass={
