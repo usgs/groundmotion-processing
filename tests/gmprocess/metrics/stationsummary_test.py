@@ -59,7 +59,8 @@ def test_stationsummary():
                                        99.3173469387755, decimal=1)
         target_available = np.sort(np.asarray([
             'calculate_greater_of_two_horizontals', 'calculate_geometric_mean',
-            'calculate_channels', 'calculate_gmrotd', 'calculate_rotd']))
+            'calculate_channels', 'calculate_gmrotd', 'calculate_rotd',
+            'calculate_radial_transverse']))
         imcs = stream_summary.available_imcs
         np.testing.assert_array_equal(np.sort(imcs), target_available)
         target_available = np.sort(np.asarray(['calculate_pga',

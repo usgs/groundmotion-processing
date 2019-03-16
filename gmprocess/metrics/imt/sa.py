@@ -6,7 +6,7 @@ from gmprocess.metrics.exception import PGMException
 from gmprocess.metrics.gather import get_pgm_classes, group_imcs
 
 
-def calculate_sa(stream, imcs, rotation_matrix=None):
+def calculate_sa(stream, imcs, rotation_matrix=None, origin=None):
     """
     Calculate the peak ground acceleration.
 
@@ -16,6 +16,8 @@ def calculate_sa(stream, imcs, rotation_matrix=None):
         imcs (list): list of imcs.
         rotation_matrix (ndarray): A rotation matrix for the rotd component.
             This is required when the rotd component is requested.
+        origin (obspy.core.event.origin.Origin):
+            Obspy event origin object.
 
     Returns:
         dictionary: Dictionary of sa for different components.
@@ -33,14 +35,14 @@ def calculate_sa(stream, imcs, rotation_matrix=None):
     for imc in grouped_imcs:
         if 'calculate_' + imc in pgm_classes:
             sa_func = pgm_classes['calculate_' + imc]
-            sa = sa_func(stream, percentiles=grouped_imcs[imc])
+            sa = sa_func(stream, origin=origin, percentiles=grouped_imcs[imc])
             if imc == 'rotd':
                 if rotation_matrix is None:
                     raise PGMException(
                         'The rotation matrix must be included '
                         'in order to calculate the rotd component.')
-                sa = sa_func(rotation_matrix, percentiles=grouped_imcs[imc],
-                             rotated=True)
+                sa = sa_func(rotation_matrix, origin=origin,
+                             percentiles=grouped_imcs[imc], rotated=True)
                 for percentile in sa:
                     sa_dict[imc.upper() + str(percentile)] = sa[percentile]
             elif imc.find('rot') >= 0:

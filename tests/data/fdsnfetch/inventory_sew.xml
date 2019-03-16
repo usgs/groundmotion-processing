@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<FDSNStationXML xmlns="http://www.fdsn.org/xml/station/1" schemaVersion="1.0">
+  <Source>IRIS-DMC</Source>
+  <Sender>IRIS-DMC</Sender>
+  <Module>IRIS WEB SERVICE: fdsnws-station | version: 1.1.36</Module>
+  <ModuleURI>http://service.iris.edu/fdsnws/station/1/query?starttime=2001-02-28T18%3A52%3A32.830000&amp;endtime=2001-02-28T18%3A56%3A32.830000&amp;network=GS&amp;station=SEW&amp;location=%2A&amp;channel=HN%2A&amp;level=channel</ModuleURI>
+  <Created>2019-03-15T21:43:11</Created>
+  <Network code="GS" endDate="2500-12-31T23:59:59" restrictedStatus="open" startDate="1980-01-01T00:00:00">
+    <Description>US Geological Survey Networks</Description>
+    <TotalNumberStations>510</TotalNumberStations>
+    <SelectedNumberStations>1</SelectedNumberStations>
+    <Station code="SEW" endDate="2599-12-31T23:59:59" restrictedStatus="open" startDate="2000-09-22T00:00:00">
+      <Latitude unit="DEGREES">47.5497</Latitude>
+      <Longitude unit="DEGREES">-122.2504</Longitude>
+      <Elevation>11.0</Elevation>
+      <Site>
+        <Name>Seward Park, Seattle, WA</Name>
+      </Site>
+      <CreationDate>2000-09-22T00:00:00</CreationDate>
+      <TotalNumberChannels>19</TotalNumberChannels>
+      <SelectedNumberChannels>3</SelectedNumberChannels>
+      <Channel code="HN1" endDate="2003-07-25T00:00:00" locationCode="" restrictedStatus="open" startDate="2000-09-22T00:00:00">
+        <Comment>
+          <Value>K2EPISENSOR-2G=*=Gen=K2DAS=ZJN</Value>
+        </Comment>
+        <Latitude unit="DEGREES">47.549702</Latitude>
+        <Longitude unit="DEGREES">-122.250397</Longitude>
+        <Elevation>11.0</Elevation>
+        <Depth>0.0</Depth>
+        <Azimuth unit="DEGREES">33.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <Type>TRIGGERED</Type>
+        <Type>GEOPHYSICAL</Type>
+        <SampleRate unit="SAMPLES/S">100.0</SampleRate>
+        <ClockDrift unit="SECONDS/SAMPLE">0.0</ClockDrift>
+        <CalibrationUnits>
+          <Name>V</Name>
+          <Description>Volts</Description>
+        </CalibrationUnits>
+        <Sensor>
+          <Description>K2EPISENSOR-2G=*=Gen=K2DAS=ZJNK1</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>427987.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S**2</Name>
+              <Description>Acceleration in Meters Per Second Per Second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+              <Description>Digital Counts</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+        </Response>
+      </Channel>
+      <Channel code="HN2" endDate="2003-07-25T00:00:00" locationCode="" restrictedStatus="open" startDate="2000-09-22T00:00:00">
+        <Comment>
+          <Value>K2EPISENSOR-2G=*=Gen=K2DAS=ZJN</Value>
+        </Comment>
+        <Latitude unit="DEGREES">47.549702</Latitude>
+        <Longitude unit="DEGREES">-122.250397</Longitude>
+        <Elevation>11.0</Elevation>
+        <Depth>0.0</Depth>
+        <Azimuth unit="DEGREES">123.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <Type>TRIGGERED</Type>
+        <Type>GEOPHYSICAL</Type>
+        <SampleRate unit="SAMPLES/S">100.0</SampleRate>
+        <ClockDrift unit="SECONDS/SAMPLE">0.0</ClockDrift>
+        <CalibrationUnits>
+          <Name>V</Name>
+          <Description>Volts</Description>
+        </CalibrationUnits>
+        <Sensor>
+          <Description>K2EPISENSOR-2G=*=Gen=K2DAS=ZJNK1</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>427987.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S**2</Name>
+              <Description>Acceleration in Meters Per Second Per Second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+              <Description>Digital Counts</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+        </Response>
+      </Channel>
+      <Channel code="HNZ" endDate="2003-07-25T00:00:00" locationCode="" restrictedStatus="open" startDate="2000-09-22T00:00:00">
+        <Comment>
+          <Value>K2EPISENSOR-2G=*=Gen=K2DAS=ZJN</Value>
+        </Comment>
+        <Latitude unit="DEGREES">47.549702</Latitude>
+        <Longitude unit="DEGREES">-122.250397</Longitude>
+        <Elevation>11.0</Elevation>
+        <Depth>0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
+        <Type>TRIGGERED</Type>
+        <Type>GEOPHYSICAL</Type>
+        <SampleRate unit="SAMPLES/S">100.0</SampleRate>
+        <ClockDrift unit="SECONDS/SAMPLE">0.0</ClockDrift>
+        <CalibrationUnits>
+          <Name>V</Name>
+          <Description>Volts</Description>
+        </CalibrationUnits>
+        <Sensor>
+          <Description>K2EPISENSOR-2G=*=Gen=K2DAS=ZJNK1</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>427987.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S**2</Name>
+              <Description>Acceleration in Meters Per Second Per Second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+              <Description>Digital Counts</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+        </Response>
+      </Channel>
+    </Station>
+  </Network>
+</FDSNStationXML>

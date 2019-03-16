@@ -45,6 +45,7 @@ class StationSummary(object):
         self._stream = None
         self._oscillators = None
         self._pgms = None
+        self._origin = None
 
     @property
     def available_imcs(self):
@@ -144,8 +145,8 @@ class StationSummary(object):
         return station
 
     @classmethod
-    def from_stream(cls, stream, components=None, imts=None, damping=None,
-                    smoothing=None, bandwidth=None):
+    def from_stream(cls, stream, components=None, imts=None, origin=None,
+                    damping=None, smoothing=None, bandwidth=None):
         """
         Args:
             stream (obspy.core.stream.Stream): Strong motion timeseries
@@ -153,6 +154,8 @@ class StationSummary(object):
             components (list): List of requested components (str).
             imts (list): List of requested imts (str).
             damping (float): Damping of oscillator. Default is 5% (0.05)
+            origin (obspy.core.event.origin.Origin):
+                Origin for the event containing latitude and longitude.
 
         Note:
             Assumes a processed stream with units of gal (1 cm/s^2).
@@ -203,6 +206,8 @@ class StationSummary(object):
         station._bandwidth = bandwidth
         station.station_code = stream[0].stats['station']
         station.stream = stream
+        station.origin = origin
+
         # Get oscillators
         rot = False
         for component in components:
@@ -233,17 +238,18 @@ class StationSummary(object):
             if oscillator.find('ROT') < 0:
                 stream = self.oscillators[oscillator]
                 if oscillator == 'PGA':
-                    pga = calculate_pga(stream, components)
+                    pga = calculate_pga(stream, components, self.origin)
                     pgm_dict[oscillator] = pga
                 elif oscillator == 'PGV':
-                    pgv = calculate_pgv(stream, components)
+                    pgv = calculate_pgv(stream, components, self.origin)
                     pgm_dict[oscillator] = pgv
                 elif oscillator.startswith('SA'):
                     if oscillator + '_ROT' in self.oscillators:
                         rotation_matrix = self.oscillators[oscillator + '_ROT']
-                        sa = calculate_sa(stream, components, rotation_matrix)
+                        sa = calculate_sa(stream, components, rotation_matrix,
+                                          self.origin)
                     else:
-                        sa = calculate_sa(stream, components)
+                        sa = calculate_sa(stream, components, self.origin)
                     pgm_dict[oscillator] = sa
                 elif oscillator.startswith('FAS'):
                     fas = calculate_fas(stream, components, periods,
@@ -253,7 +259,7 @@ class StationSummary(object):
                         pgm_dict[tag] = {}
                         pgm_dict[tag]['GEOMETRIC_MEAN'] = fas[period]
                 elif oscillator.startswith('ARIAS'):
-                    arias = calculate_arias(stream, components)
+                    arias = calculate_arias(stream, components, self.origin)
                     pgm_dict[oscillator] = arias
         components = []
         for imt in pgm_dict:
@@ -601,7 +607,7 @@ class StationSummary(object):
         """Render StationSummary as a Pandas Series object.
 
         Returns:
-            Series: 
+            Series:
                 Multi-Indexed Pandas Series where IMTs are top-level indices and
                 components are sub-indices.
         """

@@ -6,7 +6,7 @@ from gmprocess.metrics.exception import PGMException
 from gmprocess.metrics.gather import get_pgm_classes, group_imcs
 
 
-def calculate_pga(stream, imcs):
+def calculate_pga(stream, imcs, origin=None):
     """
     Calculate the peak ground acceleration.
 
@@ -14,6 +14,8 @@ def calculate_pga(stream, imcs):
         stream (obspy.core.stream.Stream): streams of strong ground motion.
             Traces in stream must be in units of %%g.
         imcs (list): list of imcs.
+        origin (obspy.core.event.origin.Origin):
+            Obspy event origin object.
 
     Returns:
         dictionary: Dictionary of pga for different components.
@@ -32,7 +34,8 @@ def calculate_pga(stream, imcs):
     for imc in grouped_imcs:
         if 'calculate_' + imc in pgm_classes:
             pga_func = pgm_classes['calculate_' + imc]
-            pga = pga_func(stream, percentiles=grouped_imcs[imc])
+            pga = pga_func(stream, origin=origin,
+                           percentiles=grouped_imcs[imc])
             if imc.find('rot') >= 0:
                 for percentile in pga:
                     pga_dict[imc.upper() + str(percentile)] = pga[percentile]

@@ -7,6 +7,7 @@ import logging
 import numpy as np
 from obspy.core.stream import Stream
 from obspy.geodetics import gps2dist_azimuth
+from obspy.core.event import Origin
 import pandas as pd
 
 # local imports
@@ -321,8 +322,9 @@ def streams_to_dataframe(streams, imcs=None, imts=None,
         if process:
             stream = process_config(stream, event_time=event_time,
                                     epi_dist=epi_dist)
+        origin = Origin(latitude=lat, longitude=lon)
         stream_summary = StationSummary.from_stream(
-            stream, station_summary_imcs, station_summary_imts)
+            stream, station_summary_imcs, station_summary_imts, origin)
         pgms = stream_summary.pgms
         station_pgms += [pgms]
         imcs += stream_summary.components

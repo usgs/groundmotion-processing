@@ -9,6 +9,7 @@ import copy
 
 import numpy as np
 from obspy.geodetics import gps2dist_azimuth
+from obspy.core.event import Origin
 import pandas as pd
 
 from gmprocess.io.read_directory import directory_to_streams
@@ -181,8 +182,11 @@ class StreamCollection(object):
                 origin['lat'], origin['lon'], latitude, longitude)
             meta_data[idx][6] = dist / 1000
 
+            origin = Origin(latitude=origin['lat'],
+                            longitude=origin['lon'])
+
             stream_summary = StationSummary.from_stream(
-                stream, station_summary_imcs, station_summary_imts)
+                stream, station_summary_imcs, station_summary_imts, origin)
             pgms = stream_summary.pgms
             station_pgms += [pgms]
             imcs += stream_summary.components
