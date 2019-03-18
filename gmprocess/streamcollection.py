@@ -84,7 +84,7 @@ class StreamCollection(object):
 
         return cls(streams)
 
-    def to_dataframe(self, origin, imcs=None, imts=None):
+    def to_dataframe(self, origin_dict, imcs=None, imts=None):
         """Get a summary dataframe of streams.
 
         Note: The PGM columns underneath each channel will be variable
@@ -96,7 +96,7 @@ class StreamCollection(object):
         Args:
             directory (str):
                 Directory of ground motion files (streams).
-            origin (dict):
+            origin_dict (dict):
                 Dictionary with the following keys:
                    - eventid
                    - magnitude
@@ -179,14 +179,14 @@ class StreamCollection(object):
             meta_data[idx][5] = longitude
 
             dist, _, _ = gps2dist_azimuth(
-                origin['lat'], origin['lon'], latitude, longitude)
+                origin_dict['lat'], origin_dict['lon'], latitude, longitude)
             meta_data[idx][6] = dist / 1000
 
-            origin = Origin(latitude=origin['lat'],
-                            longitude=origin['lon'])
+            origin_obj = Origin(latitude=origin_dict['lat'],
+                                longitude=origin_dict['lon'])
 
             stream_summary = StationSummary.from_stream(
-                stream, station_summary_imcs, station_summary_imts, origin)
+                stream, station_summary_imcs, station_summary_imts, origin_obj)
             pgms = stream_summary.pgms
             station_pgms += [pgms]
             imcs += stream_summary.components
