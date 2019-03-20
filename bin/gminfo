@@ -170,7 +170,7 @@ def main(args):
                 else:
                     df.to_csv(args.save, index=False)
                     errors.to_csv(errfile, index=False)
-            if not args.save and args.print_errors:
+            if not args.save and not args.quiet_errors:
                 print(errors.to_string(index=False))
             sys.exit(0)
     if args.concise:
@@ -184,7 +184,7 @@ def main(args):
 
     else:
         errors = render_verbose(files)
-    if args.print_errors and not args.save:
+    if not args.quiet_errors and not args.save and len(errors):
         print(errors.to_string(index=False))
 
 
@@ -222,7 +222,7 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--save', metavar='OUTFILE',
                         help=shelp)
     phelp = 'Print error log containing files that could not be parsed.'
-    parser.add_argument('-p', '--print-errors', action='store_true',
+    parser.add_argument('--quiet-errors', action='store_true',
                         help=phelp)
     # Shared arguments
     parser = add_shared_args(parser)
