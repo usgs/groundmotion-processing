@@ -66,7 +66,9 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
     for tr in st:
 
         # Split the noise and signal into two separate traces
-        split_prov = tr.getParameter('signal_split')[0]
+        split_prov = tr.getParameter('signal_split')
+        if isinstance(split_prov, list):
+            split_prov = split_prov[0]
         split_time = split_prov['split_time']
         noise = tr.copy().trim(endtime=split_time)
         signal = tr.copy().trim(starttime=split_time)
@@ -154,21 +156,28 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
         st_horiz = st.select(channel='??[12EN]')
         # Make sure that horiztontal traces in the stream have the same corner
         # frequencies, if desired.
-        corner_prov = tr.getProvenance('corner_frequencies')[0]
-        highpass_freqs = [corner_prov['highpass'] for tr in st_horiz]
-        lowpass_freqs = [corner_prov['lowpass'] for tr in st_horiz]
+        highpass_freqs = []
+        lowpass_freqs = []
+        for tr in st_horiz:
+            corners_prov = tr.getProvenance('corner_frequencies')
+            if corners_prov:
+                if isinstance(corners_prov, list):
+                    corners_prov = corners_prov[0]
+                highpass_freqs.append(corners_prov['highpass'])
+                lowpass_freqs.append(corners_prov['lowpass'])
 
         # For all traces in the stream, set highpass corner to highest high
         # and set the lowpass corner to the lowest low
-        for tr in st_horiz:
-            tr.setParameter(
-                'corner_frequencies',
-                {
-                    'type': 'snr',
-                    'highpass': min(highpass_freqs),
-                    'lowpass': max(lowpass_freqs)
-                }
-            )
+        if highpass_freqs:
+            for tr in st_horiz:
+                tr.setParameter(
+                    'corner_frequencies',
+                    {
+                        'type': 'snr',
+                        'highpass': min(highpass_freqs),
+                        'lowpass': max(lowpass_freqs)
+                    }
+                )
 
     return st
 

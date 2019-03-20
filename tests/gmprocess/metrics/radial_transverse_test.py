@@ -50,10 +50,10 @@ def test_radial_transverse():
         st2, ['radial_transverse'], ['pga'], origin)
 
     np.testing.assert_almost_equal(
-        pgms[0], sp.g * summary.pgms['PGA']['RADIAL_TRANSVERSE']['R'])
+        pgms[0], sp.g * summary.pgms['PGA']['R'])
 
     np.testing.assert_almost_equal(
-        pgms[1], sp.g * summary.pgms['PGA']['RADIAL_TRANSVERSE']['T'])
+        pgms[1], sp.g * summary.pgms['PGA']['T'])
 
     # Test with a station whose channels are not aligned to E-N
     SEW_st = read(os.path.join(datadir, 'resp_cor', 'GS.SEW.*.mseed'))
@@ -79,10 +79,10 @@ def test_radial_transverse():
         SEW_st, ['radial_transverse'], ['pga'], origin)
 
     np.testing.assert_almost_equal(
-        pgms[1], sp.g * summary.pgms['PGA']['RADIAL_TRANSVERSE']['R'])
+        pgms[1], sp.g * summary.pgms['PGA']['R'])
 
     np.testing.assert_almost_equal(
-        pgms[2], sp.g * summary.pgms['PGA']['RADIAL_TRANSVERSE']['T'])
+        pgms[2], sp.g * summary.pgms['PGA']['T'])
 
     # Test failure case without two horizontal channels
     copy1 = st.copy()

@@ -56,7 +56,7 @@ def calculate_fas(stream, imcs, periods, smoothing, bandwidth):
     gm_trace = calculate_geometric_mean(spec_stream, return_combined=True)
     freqs = np.fft.rfftfreq(nfft, 1 / trace.stats.sampling_rate)
 
-    fas_frequencies = 1 / np.asarray(periods)
+    fas_frequencies = 1 / np.asarray(list(periods))
     smoothed_values = np.empty_like(fas_frequencies)
 
     if smoothing.lower() == 'konno_ohmachi':

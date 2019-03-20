@@ -51,6 +51,9 @@ def calculate_sa(stream, imcs, rotation_matrix=None, origin=None):
             elif imc.find('channels') >= 0:
                 for channel in sa:
                     sa_dict[channel] = sa[channel]
+            elif imc.find('radial_transverse') >= 0:
+                for channel in sa:
+                    sa_dict[channel] = sa[channel]
             else:
                 sa_dict[imc.upper()] = sa
         else:
