@@ -18,6 +18,7 @@ from gmprocess import corner_frequencies
 # mistake.
 from gmprocess.pretesting import check_max_amplitude, check_sta_lta  # NOQA
 
+M_TO_CM = 100
 
 CONFIG = get_config()
 
@@ -203,7 +204,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
             tr.remove_response(
                 inventory=inv, output=output, water_level=water_level,
                 pre_filt=(f1, f2, f3, f4))
-            tr.data *= 100  # Convert from m/s/s to cm/s/s
+            tr.data *= M_TO_CM  # Convert from m/s/s to cm/s/s
             tr.setProvenance(
                 'remove_response',
                 {
@@ -219,7 +220,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
         elif tr.stats.channel[1] == 'N':
             if isinstance(tr.data[0], int):
                 tr.remove_sensitivity(inventory=inv)
-                tr.data *= 100  # Convert from m/s/s to cm/s/s
+                tr.data *= M_TO_CM  # Convert from m/s/s to cm/s/s
                 tr.setProvenance(
                     'remove_response',
                     {
