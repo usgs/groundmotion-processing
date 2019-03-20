@@ -23,6 +23,11 @@ MMPS_TO_CMPS = 1 / 10.0
 
 COLS_PER_ROW = 10
 
+ANGLES = {'N': 0,
+          'E': 90,
+          'S': 180,
+          'W': 270}
+
 # These formats are described in this document:
 # ftp://ftp.geonet.org.nz/strong/processed/Docs/GNS%20ACCELEROGRAM%20DATA%20FILE%20FORMAT%202012-03-15.docx
 
@@ -148,25 +153,14 @@ def _read_channel(filename, line_offset):
     # including GeoNet here, don't provide this.  We'll flag it as "--".
     hdr['location'] = '--'
 
-    # read in the data, handling cases where last row has less than 10 columns
-    if hdr['npts'] % COLS_PER_ROW != 0:
-        nrows = int(np.floor(hdr['npts'] / COLS_PER_ROW))
-        nrows2 = 1
-    else:
-        nrows = int(np.ceil(hdr['npts'] / COLS_PER_ROW))
-        nrows2 = 0
     skip_header2 = line_offset + TEXT_HDR_ROWS + FP_HDR_ROWS
     widths = [8] * COLS_PER_ROW
+    nrows = int(np.ceil(hdr['npts'] / COLS_PER_ROW))
     data = np.genfromtxt(filename, skip_header=skip_header2,
                          max_rows=nrows, filling_values=np.nan,
                          delimiter=widths)
     data = data.flatten()
-    if nrows2:
-        skip_header3 = skip_header2 + nrows
-        data2 = np.genfromtxt(filename, skip_header=skip_header3,
-                              max_rows=nrows2, filling_values=np.nan)
-        data = np.hstack((data, data2))
-        nrows += nrows2
+    data = data[0:hdr['npts']]
 
     # for debugging, read in the velocity data
     nvel = hdr_data[3, 4]
@@ -282,7 +276,7 @@ def _read_header(hdr_data, station, name, component, data_format,
     standard['source'] = ('New Zealand Institute of Geological and '
                           'Nuclear Science')
     logging.debug('component: %s' % component)
-    if component == 'Up':
+    if component.lower() in ['up', 'down']:
         standard['horizontal_orientation'] = np.nan
         hdr['channel'] = get_channel_name(
             sampling_rate,
@@ -290,7 +284,7 @@ def _read_header(hdr_data, station, name, component, data_format,
             is_vertical=True,
             is_north=False)
     else:
-        _, angle = _get_channel(component)
+        angle = _get_channel(component)
         logging.debug('angle: %s' % angle)
         standard['horizontal_orientation'] = float(angle)
         if (angle > 315 or angle < 45) or (angle > 135 and angle < 225):
@@ -362,22 +356,19 @@ def _get_channel(component):
     """
     start_direction = component[0]
     end_direction = component[-1]
-    angle = int(re.search("\\d+", component).group())
-    if start_direction == 'N':
-        if end_direction == 'E':
-            comp_angle = angle
-        else:
-            comp_angle = 360 - angle
+    if len(component) == 1:
+        comp_angle = ANGLES[component]
     else:
-        if end_direction == 'E':
-            comp_angle = 180 - angle
+        angle = int(re.search("\\d+", component).group())
+        if start_direction == 'N':
+            if end_direction == 'E':
+                comp_angle = angle
+            else:
+                comp_angle = 360 - angle
         else:
-            comp_angle = 180 + angle
-    c1 = comp_angle > 315 or comp_angle < 45
-    c2 = comp_angle > 135 and comp_angle < 225
-    if c1 or c2:
-        channel = 'H1'
-    else:
-        channel = 'H2'
+            if end_direction == 'E':
+                comp_angle = 180 - angle
+            else:
+                comp_angle = 180 + angle
 
-    return (channel, comp_angle)
+    return comp_angle
