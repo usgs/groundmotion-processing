@@ -94,19 +94,19 @@ def read_knet(filename):
     dir_string = lines[12].split()[1].strip()
     # knet files have directions listed as N-S, E-W, or U-D,
     # whereas in kiknet those directions are '4', '5', or '6'.
-    if dir_string in ['N-S', '4']:
+    if dir_string in ['N-S', '1', '4']:
         hdr['channel'] = get_channel_name(
             hdr['sampling_rate'],
             is_acceleration=True,
             is_vertical=False,
             is_north=True)
-    elif dir_string in ['E-W', '5']:
+    elif dir_string in ['E-W', '2', '5']:
         hdr['channel'] = get_channel_name(
             hdr['sampling_rate'],
             is_acceleration=True,
             is_vertical=False,
             is_north=False)
-    elif dir_string in ['U-D', '6']:
+    elif dir_string in ['U-D', '3', '6']:
         hdr['channel'] = get_channel_name(
             hdr['sampling_rate'],
             is_acceleration=True,
@@ -167,6 +167,8 @@ def read_knet(filename):
     standard['sensor_serial_number'] = ''
     standard['instrument'] = ''
     standard['comments'] = ''
+    if dir_string in ['1', '2', '3']:
+        standard['structure_type'] = 'borehole'
     standard['structure_type'] = ''
     standard['corner_frequency'] = np.nan
     standard['units'] = 'acc'
