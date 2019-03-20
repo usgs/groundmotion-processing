@@ -49,4 +49,4 @@ def _test_fetch():
 
 
 if __name__ == '__main__':
-    test_fetch()
+    _test_fetch()
