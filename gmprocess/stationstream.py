@@ -6,7 +6,7 @@ import numpy as np
 from obspy.core.stream import Stream
 from obspy.core.utcdatetime import UTCDateTime
 from obspy.core.inventory import (Inventory, Network, Station,
-                                  Channel, Site, Equipment)
+                                  Channel, Site, Equipment, Comment)
 # local imports
 from .stationtrace import StationTrace
 
@@ -178,6 +178,7 @@ def _channel_from_stats(stats):
     response = None
     if 'response' in stats:
         response = stats['response']
+    comments = Comment(stats.standard.comments)
     channel = Channel(stats.channel,
                       stats.location,
                       stats.coordinates['latitude'],
@@ -188,7 +189,7 @@ def _channel_from_stats(stats):
                       sample_rate=stats.sampling_rate,
                       storage_format=stats.standard.source_format,
                       calibration_units=units,
-                      comments=stats.standard.comments,
+                      comments=[comments],
                       response=response,
                       sensor=equipment)
     return channel

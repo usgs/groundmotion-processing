@@ -21,6 +21,10 @@ def test_nsmn():
              '4304': (1.218825, 1.207812, 0.645862),
              '5405': (1.023915, 1.107856, 0.385138)}
 
+    coords = {'0921': (37.87470, 27.59223),
+              '4304': (38.99478, 29.40040),
+              '5405': (40.79609, 30.73520)}
+
     for stream in raw_streams:
         cmp_value = peaks[stream[0].stats.station]
         pga1 = np.abs(stream[0].max())
@@ -28,6 +32,10 @@ def test_nsmn():
         pga3 = np.abs(stream[2].max())
         tpl = (pga1, pga2, pga3)
         np.testing.assert_almost_equal(cmp_value, tpl)
+        cmp_coords = coords[stream[0].stats.station]
+        tpl = (stream[0].stats['coordinates']['latitude'],
+               stream[0].stats['coordinates']['longitude'])
+        np.testing.assert_almost_equal(cmp_coords, tpl)
 
 
 if __name__ == '__main__':

@@ -132,7 +132,7 @@ def _read_header(filename):
         header['location'] = '--'
         header['network'] = NETWORK
 
-        coordstr = lines[3].split(':')[1]
+        coordstr = lines[7].split(':')[1].replace('-', '')
         lat_str, lon_str = re.findall(FLOATRE, coordstr)
         altitude = float(lines[8].split(':')[1].strip())
         coords = {'latitude': float(lat_str),

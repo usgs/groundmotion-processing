@@ -12,10 +12,11 @@ from gmprocess.config import get_config
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.event import get_event_object
 from gmprocess.streamcollection import StreamCollection
-from gmprocess.metrics.station_summary import StationSummary
+from gmprocess.io.fdsn import request_raw_waveforms
+from gmprocess.event import get_event_dict
+
 import numpy as np
 import pandas as pd
-from pyasdf.query import QueryObject, keywords
 
 
 def compare_streams(instream, outstream):
@@ -189,5 +190,39 @@ def test_workspace():
         shutil.rmtree(tdir)
 
 
+def test_raw():
+    raw_streams, inv = request_raw_waveforms(
+        fdsn_client='IRIS',
+        org_time='2018-11-30T17-29-29.330Z',
+        lat=61.3464,
+        lon=-149.9552,
+        before_time=120,
+        after_time=120,
+        dist_min=0,
+        dist_max=0.135,
+        networks='*',
+        stations='*',
+        channels=['?N?'],
+        access_restricted=False)
+    tdir = tempfile.mkdtemp()
+    try:
+        edict = get_event_dict('ak20419010')
+        origin = get_event_object('ak20419010')
+        tfile = os.path.join(tdir, 'test.hdf')
+        workspace = StreamWorkspace(tfile)
+        workspace.addStreams(origin, raw_streams, label='raw')
+
+        sc = StreamCollection(raw_streams)
+        processed_streams = process_streams(sc, edict)
+        workspace.addStreams(origin, processed_streams, 'processed')
+        labels = workspace.getLabels()
+
+    except Exception as e:
+        assert 1 == 2
+    finally:
+        shutil.rmtree(tdir)
+
+
 if __name__ == '__main__':
+    test_raw()
     test_workspace()
