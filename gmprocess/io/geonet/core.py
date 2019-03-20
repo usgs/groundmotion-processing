@@ -177,11 +177,6 @@ def _read_channel(filename, line_offset):
                                  max_rows=nvel_rows, filling_values=np.nan,
                                  delimiter=widths)
         velocity = velocity.flatten()
-        if nrows2:
-            skip_header_vel = skip_header_vel + nvel_rows
-            vel2 = np.genfromtxt(filename, skip_header=skip_header_vel,
-                                 max_rows=nvel_rows2, filling_values=np.nan)
-            velocity = np.hstack((velocity, vel2))
         velocity *= MMPS_TO_CMPS
     else:
         velocity = np.array([])
