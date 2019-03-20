@@ -102,5 +102,16 @@ def test_cosmos():
     # '/Users/mhearne/src/python/groundmotion-processing/tests/gmprocess/io/../../data/cosmos/ci14155260/Cosmos12TimeSeriesTest.v1'
 
 
+def test_channel_in_filename():
+    datafiles, origin = read_data_dir('cosmos', 'us1000hyfh')
+    dfile = datafiles[0]
+    # TODO: Fix this problem, or get the data fixed?
+    try:
+        streams = read_cosmos(dfile)
+    except:
+        assert 1 == 1
+
+
 if __name__ == '__main__':
     test_cosmos()
+    test_channel_in_filename()

@@ -393,9 +393,9 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
                     is_north=False)
         elif horizontal_angle >= 0 and horizontal_angle <= 360:
             if (
-                horizontal_angle > 315 or
-                horizontal_angle < 45 or
-                (horizontal_angle > 135 and horizontal_angle < 225)
+                horizontal_angle > 315
+                or horizontal_angle < 45
+                or (horizontal_angle > 135 and horizontal_angle < 225)
             ):
                 channel = get_channel_name(
                     hdr['sampling_rate'],
@@ -449,9 +449,10 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     duration = flt_data[34]
     if duration != unknown:
         hdr['duration'] = duration
-    # if duration != unknown and delta != unknown:
-    #     hdr['npts'] = int(hdr['sampling_rate'] * duration)
     hdr['npts'] = int_data[69]
+    if hdr['npts'] == unknown:
+        if duration != unknown and delta != unknown:
+            hdr['npts'] = (duration / delta) + 1
 
     # coordinate information
     coordinates['latitude'] = flt_data[0]
