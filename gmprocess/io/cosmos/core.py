@@ -17,6 +17,8 @@ from gmprocess.stationstream import StationStream
 from gmprocess.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
 from gmprocess.io.seedname import get_channel_name
 
+
+MSEC_TO_SEC = 1/1000.0
 TEXT_HDR_ROWS = 14
 VALID_MARKERS = [
     'CORRECTED ACCELERATION',
@@ -374,7 +376,12 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     logging.debug('horizontal_angle: %s' % horizontal_angle)
 
     # Store delta and duration. Use them to calculate npts and sampling_rate
-    delta = flt_data[33]
+
+    # NOTE: flt_data[33] is the delta of the V0 format, and if we are reading
+    # a V1 or V2 format then it may have been resampled. We should consider
+    # adding flt_data[33] delta to the provenance record at some point.
+
+    delta = flt_data[61] * MSEC_TO_SEC
     if delta != unknown:
         hdr['delta'] = delta
         hdr['sampling_rate'] = 1 / delta
@@ -446,13 +453,15 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
         except Exception:
             raise GMProcessException('Inadequate start time information.')
 
-    duration = flt_data[34]
-    if duration != unknown:
-        hdr['duration'] = duration
-    hdr['npts'] = int_data[69]
-    if hdr['npts'] == unknown:
-        if duration != unknown and delta != unknown:
-            hdr['npts'] = (duration / delta) + 1
+    if flt_data[62] != unknown:
+        # COSMOS **defines** "length" as npts*dt (note this is a bit unusual)
+        cosmos_length = flt_data[62]
+        npts = int(cosmos_length / delta)
+        hdr['duration'] = (npts - 1) * delta
+        hdr['npts'] = npts
+    else:
+        raise ValueError('COSMOS file does not specify length.')
+
 
     # coordinate information
     coordinates['latitude'] = flt_data[0]
