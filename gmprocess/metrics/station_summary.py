@@ -259,7 +259,8 @@ class StationSummary(object):
                         pgm_dict[tag] = {}
                         pgm_dict[tag]['GEOMETRIC_MEAN'] = fas[period]
                 elif oscillator.startswith('ARIAS'):
-                    arias = calculate_arias(stream, components, self.origin)
+                    arias = calculate_arias(stream, components,
+                                            origin=self.origin)
                     pgm_dict[oscillator] = arias
         components = []
         for imt in pgm_dict:

@@ -64,6 +64,10 @@ def calculate_arias(stream, imcs, return_streams=False, origin=None):
                 arias = arias_func(arias_stream, origin=origin)
                 for channel in arias:
                     arias_dict[channel] = arias[channel]
+            elif imc.find('radial_transverse') >= 0:
+                arias = arias_func(arias_stream, origin=origin)
+                for channel in arias:
+                    arias_dict[channel] = arias[channel]
             else:
                 arias = arias_func(arias_stream, origin=origin)
                 arias_dict[imc.upper()] = arias

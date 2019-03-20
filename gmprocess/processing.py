@@ -130,6 +130,7 @@ def process_streams(streams, origin, config=None):
     # Loop over streams
     for stream in processed_streams:
         for processing_step_dict in processing_steps:
+            stream.check_stream()
             if stream.passed:
                 key_list = list(processing_step_dict.keys())
                 if len(key_list) != 1:
@@ -202,6 +203,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
             tr.remove_response(
                 inventory=inv, output=output, water_level=water_level,
                 pre_filt=(f1, f2, f3, f4))
+            tr.data *= 100  # Convert from m/s/s to cm/s/s
             tr.setProvenance(
                 'remove_response',
                 {
@@ -217,6 +219,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
         elif tr.stats.channel[1] == 'N':
             if isinstance(tr.data[0], int):
                 tr.remove_sensitivity(inventory=inv)
+                tr.data *= 100  # Convert from m/s/s to cm/s/s
                 tr.setProvenance(
                     'remove_response',
                     {
@@ -409,6 +412,12 @@ def lowpass_filter(st, filter_order=5, number_of_passes=2):
     for tr in st:
         freq_prov = tr.getParameter('corner_frequencies')
         freq = freq_prov['lowpass']
+
+        # Only perform low pass filter if corner is less than Nyquist frequency
+        # (half of the sampling rate)
+        if freq >= (0.5 * tr.stats.sampling_rate):
+            continue
+
         tr.filter(type="lowpass",
                   freq=freq,
                   corners=filter_order,

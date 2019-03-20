@@ -41,6 +41,9 @@ def calculate_pgv(stream, imcs, origin=None):
             elif imc.find('channels') >= 0:
                 for channel in pgv:
                     pgv_dict[channel] = pgv[channel]
+            elif imc.find('radial_transverse') >= 0:
+                for channel in pgv:
+                    pgv_dict[channel] = pgv[channel]
             else:
                 pgv_dict[imc.upper()] = pgv
         else:

@@ -42,6 +42,9 @@ def calculate_pga(stream, imcs, origin=None):
             elif imc.find('channels') >= 0:
                 for channel in pga:
                     pga_dict[channel] = pga[channel]
+            elif imc.find('radial_transverse') >= 0:
+                for channel in pga:
+                    pga_dict[channel] = pga[channel]
             else:
                 pga_dict[imc.upper()] = pga
         else:
