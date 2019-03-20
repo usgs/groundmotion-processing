@@ -26,7 +26,7 @@ def test_cosmos():
 
     stats = stream1[0].stats
     assert stats['station'] == 'J2236'
-    assert stats['delta'] == .005000
+    assert stats['delta'] == 0.01 # was .005
     assert stats['location'] == '02'
     assert stats['network'] == 'CE'
     dt = '%Y-%m-%dT%H:%M:%SZ'
