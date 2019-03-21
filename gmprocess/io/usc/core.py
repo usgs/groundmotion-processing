@@ -16,7 +16,7 @@ from gmprocess.io.utils import is_evenly_spaced, resample_uneven_trace
 VOLUMES = {
     'V1': {
         'TEXT_HDR_ROWS': 13,
-        'INT_HDR_ROWS': 6,
+        'INT_HDR_ROWS': 7,
         'INT_FMT': 16 * [5],
         'FLT_HDR_ROWS': 7,
         'FLT_FMT': 8 * [10],
@@ -32,7 +32,7 @@ USC_ORIENTATIONS = {
 }
 
 
-def is_usc(filename):
+def is_usc(filename, **kwargs):
     """Check to see if file is a USC strong motion file.
 
     Args:
@@ -44,32 +44,57 @@ def is_usc(filename):
     # USC requires unique integer values
     # in column 73-74 on all text header lines
     # excluding the first file line
+    return_alternate = kwargs.get('return_alternate', False)
 
     try:
         f = open(filename, 'rt')
         first_line = f.readline()
-
         if first_line.find('OF UNCORRECTED ACCELEROGRAM DATA OF') >= 0:
-            start = 0
-            stop = 12
-        elif first_line.find('CORRECTED ACCELEROGRAM') >= 0:
+            volume = 'V1'
             start = 1
-            stop = 13
-            line = f.readline()
+            stop = 12
+            alternate_start = start + 2
+            alternate_stop = stop - 2
+        elif first_line.find('CORRECTED ACCELEROGRAM') >= 0:
+            volume = 'V2'
+            start = 2
+            stop = 12
+            alternate_start = start + 2
+            alternate_stop = stop - 2
+        elif first_line.find('RESPONSE') >= 0:
+            raise GMProcessException('Derived response spectra and fourier '
+                'amplitude spectra not accepted.')
         else:
+            f.close()
             return False
+        f.close()
+    except UnicodeDecodeError:
+        f.close()
+        return False
+    valid = _check_header(start, stop, filename)
+    alternate = False
+    if not valid:
+        valid = _check_header(alternate_start, alternate_stop, filename)
+        if valid:
+            alternate = True
+    if return_alternate:
+        return valid, alternate
+    else:
+        return valid
+
+def _check_header(start, stop, filename):
+    passing = True
+    with open(filename, 'r') as f:
         counter = stop
-        while counter > start:
+        for i in range(start):
+            f.readline()
+        for i in range(stop):
             line = f.readline()
             try:
                 int(line[72:74])
-            except ValueError:
-                return False
-            counter -= 1
-        return True
-    except UnicodeDecodeError:
-        return False
-
+            except:
+                passing = False
+    return passing
 
 def read_usc(filename, **kwargs):
     """Read USC V1 strong motion file.
@@ -82,9 +107,9 @@ def read_usc(filename, **kwargs):
         (cm/s**2).
     """
     logging.debug("Starting read_usc.")
-    if not is_usc(filename):
+    valid, alternate = is_usc(filename, return_alternate=True)
+    if not valid:
         raise Exception('%s is not a valid USC file' % filename)
-
     # Check for Location
     location = kwargs.get('location', '')
 
@@ -93,13 +118,13 @@ def read_usc(filename, **kwargs):
     f.close()
 
     if first_line.find('OF UNCORRECTED ACCELEROGRAM DATA OF') >= 0:
-        stream = read_volume_one(filename, location=location)
+        stream = read_volume_one(filename, location=location, alternate=alternate)
     else:
         raise GMProcessException('Not a supported volume.')
     return stream
 
 
-def read_volume_one(filename, location=''):
+def read_volume_one(filename, location='', alternate=False):
     """Read channel data from USC volume 1 text file.
 
     Args:
@@ -116,7 +141,7 @@ def read_volume_one(filename, location=''):
     stream = StationStream([])
     while line_offset < line_count:
         trace, line_offset = _read_channel(
-            filename, line_offset, volume, location=location)
+            filename, line_offset, volume, location=location, alternate=alternate)
         # store the trace if the station type is in the valid_station_types
         # list or store the trace if there is no valid_station_types list
         if trace is not None:
@@ -125,7 +150,7 @@ def read_volume_one(filename, location=''):
     return [stream]
 
 
-def _read_channel(filename, line_offset, volume, location=''):
+def _read_channel(filename, line_offset, volume, location='', alternate=False):
     """Read channel data from USC V1 text file.
 
     Args:
@@ -135,6 +160,14 @@ def _read_channel(filename, line_offset, volume, location=''):
     Returns:
         tuple: (obspy Trace, int line offset)
     """
+    if alternate:
+        int_rows = 5
+        int_fmt = 20 * [4]
+        data_cols = 8
+    else:
+        int_rows = volume['INT_HDR_ROWS']
+        int_fmt = volume['INT_FMT']
+        data_cols = 10
     # Parse the header portion of the file
     try:
         with open(filename, 'rt') as f:
@@ -147,26 +180,46 @@ def _read_channel(filename, line_offset, volume, location=''):
     # read in lines of integer data
     skiprows = line_offset + volume['TEXT_HDR_ROWS']
     int_data = np.genfromtxt(filename, skip_header=skiprows,
-                             max_rows=volume['INT_HDR_ROWS'], dtype=np.int32,
-                             delimiter=volume['INT_FMT']).flatten()
+                             max_rows=int_rows, dtype=np.int32,
+                             delimiter=int_fmt).flatten()
 
     # read in lines of float data
-    skiprows += volume['INT_HDR_ROWS'] + 1
+    skiprows += int_rows
     flt_data = np.genfromtxt(filename, skip_header=skiprows,
                              max_rows=volume['FLT_HDR_ROWS'], dtype=np.float64,
                              delimiter=volume['FLT_FMT']).flatten()
     hdr = _get_header_info(int_data, flt_data, lines, 'V1', location=location)
     skiprows += volume['FLT_HDR_ROWS']
     # read in the data
-    nrows = int(np.floor(hdr['npts'] * 2 / 10))
+    nrows = int(np.floor(hdr['npts'] * 2 / data_cols))
     all_data = np.genfromtxt(filename, skip_header=skiprows,
                              max_rows=nrows, dtype=np.float64,
                              delimiter=volume['COL_FMT'])
     data = all_data.flatten()[1::2]
     times = all_data.flatten()[0::2]
 
-    trace = StationTrace(data.copy(), Stats(hdr.copy()))
+    frac = hdr['format_specific']['fractional_unit']
+    if frac > 0:
+        data *= 980.665 * frac
+        logging.debug('Data converted from g * %s to cm/s/s' % (frac))
+    else:
+        unit = _get_units(lines[11])
+        if unit == 'in/s/s':
+            acc_data *= 2.54
+            logging.debug('Data converted from %s to cm/s/s' % (unit))
+        elif unit == 'g':
+            acc_data *= 980.665
+            logging.debug('Data converted from %s to cm/s/s' % (unit))
+        elif unit == 'g/10':
+            acc_data *= 980.665 * 10
+            logging.debug('Data converted from %s to cm/s/s' % (unit))
+        elif unit == 'g*10':
+            acc_data *= 980.665 * .1
+            logging.debug('Data converted from %s to cm/s/s' % (unit))
+        elif unit != 'cm/s/s' and unit != 'gal':
+            raise GMProcessException('%s is not an accepted unit.' % unit)
 
+    trace = StationTrace(data.copy(), Stats(hdr.copy()))
     if not is_evenly_spaced(times):
         trace = resample_uneven_trace(trace, times, data)
 
@@ -335,6 +388,7 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
         standard['source_format'] = 'usc'
         # Get format specific
         format_specific['fractional_unit'] = flt_data[4]
+
     # Set dictionary
     hdr['standard'] = standard
     hdr['coordinates'] = coordinates
@@ -354,3 +408,46 @@ def _dms2dd(degrees, minutes, seconds):
     """
     decimal = degrees + float(minutes) / 60.0 + float(seconds) / 3600.0
     return decimal
+
+def _get_units(line):
+    """
+    Parse units from a text line.
+
+    Args:
+        line (str): text line which should contain units.
+    """
+    line = line.lower()
+    if line.find('in units of') >= 0:
+        units_start = line.find('in units of')
+    elif line.find('units of') >= 0:
+        units_start = line.find('units of')
+    elif line.find('in') >= 0:
+        units_start = line.find('in')
+
+    units_section = line[units_start:].replace('.', ' ')
+    if 'g/10' in units_section:
+        physical_units = 'g/10'
+    elif ('10g' in units_section or '10*g' in units_section or
+            'g10' in units_section or 'g*10' in units_section):
+        physical_units = 'g*10'
+    elif 'gal' in units_section:
+        physical_units = 'cm/s/s'
+    elif 'g' in units_section and 'g/' not in units_section:
+        physical_units = 'g'
+    elif ('cm/s/s' in units_section or 'cm/sec/sec' in units_section or
+            'cm/s^2' in units_section or 'cm/s2' in units_section or
+            'cm/sec^2' in units_section or 'cm/sec2' in units_section):
+        physical_units = 'cm/s/s'
+    elif 'cm/s' in units_section or 'cm/sec' in units_section:
+        physical_units = 'cm/s'
+    elif 'cm' in units_section:
+        physical_units = 'cm'
+    elif 'in/s/s' in units_section or 'in/sec/sec' in units_section:
+        physical_units = 'in/s/s'
+    elif 'in/s' in units_section or 'in/sec' in units_section:
+        physical_units = 'in/s'
+    elif 'in' in units_section:
+        physical_units = 'in'
+    else:
+        physical_units = units_section
+    return physical_units

@@ -40,8 +40,9 @@ def test_dmg_non_spec():
     assert is_dmg(file1)
     stream = read_dmg(file1)[0]
     trace1 = stream[0]
-    np.testing.assert_almost_equal(trace1.data[0], -0.000116)
-    np.testing.assert_almost_equal(trace1.data[-8], -0.003018)
+    # Data is in g not gal so it must be scaled by 980.665
+    np.testing.assert_almost_equal(trace1.data[0], -0.000116 * 980.665)
+    np.testing.assert_almost_equal(trace1.data[-8], -0.003018 * 980.665)
 
 
 def test_dmg_v1():
@@ -105,7 +106,6 @@ def test_dmg():
 
     for filename in [file1, file2]:
         assert is_dmg(file1)
-
         # test acceleration from the file
         stream1 = read_dmg(filename)[0]
 

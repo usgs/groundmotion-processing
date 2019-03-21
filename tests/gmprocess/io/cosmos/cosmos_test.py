@@ -49,7 +49,7 @@ def test_cosmos():
     assert stats.standard['source'] == 'California Geological Survey'
     assert stats.format_specific['scaling_factor'] == 1
     assert stats.format_specific['v30'] == 120
-    assert stats.format_specific['physical_units'] == 'cm/sec/sec'
+    assert stats.format_specific['physical_units'] == 'cm/s/s'
     assert stats.format_specific['least_significant_bit'] == 123.45
     assert stats.format_specific['low_filter_type'] == 'Butterworth single direction'
     assert stats.format_specific['low_filter_corner'] == 4
@@ -72,22 +72,23 @@ def test_cosmos():
     file_max = file_line[file_line.find('max=') + 4: file_line.find('cm')]
     assert np.round(stream1[0].max(), 3) == float(file_max)
 
-    # test a two channel cosmos file
-    stream2 = read_cosmos(two_channels)[0]
-
+    # test a two channel cosmos file should fail because deg is not a converted unit
+    failed = False
+    try:
+        stream2 = read_cosmos(two_channels)[0]
+    except:
+        failed = True
+    assert failed == True
     # test that reading a file that is a valid station type returns a
     # stream with traces
     building_code = 10
-    stream3 = read_cosmos(two_channels, valid_station_types=[building_code])[0]
+    stream3 = read_cosmos(one_channel, valid_station_types=[building_code])[0]
     assert stream3.count() == 1
 
     # test that reading a file that is not a valid station type returns an
     # empty stream
-    stream4 = read_cosmos(two_channels, valid_station_types=[1, 2, 3, 4])[0]
+    stream4 = read_cosmos(one_channel, valid_station_types=[1, 2, 3, 4])[0]
     assert stream4.count() == 0
-
-    # test that two channels are created
-    assert len(stream2) == 2
 
     # test that reading a file that is a valid station type returns a
     # stream with traces

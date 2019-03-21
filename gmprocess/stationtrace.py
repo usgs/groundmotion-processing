@@ -237,7 +237,7 @@ class StationTrace(Trace):
 
         required_error_msg = ''
         if len(required_errors):
-            fmt = 'The following standard keys have the wrong type: "%s"'
+            fmt = 'The following standard keys are required: "%s"'
             tpl = ','.join(required_errors)
             required_error_msg = fmt % tpl
 

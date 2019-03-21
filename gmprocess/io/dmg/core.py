@@ -172,12 +172,14 @@ def read_dmg(filename, **kwargs):
     while line_offset < line_count:
         if reader == 'V2':
             traces, line_offset = _read_volume_two(
-                filename, line_offset, location=location)
-            trace_list += traces
+                filename, line_offset, location=location, units=units)
+            if traces is not None:
+                trace_list += traces
         elif reader == 'V1':
             traces, line_offset = _read_volume_one(
-                filename, line_offset, location=location)
-            trace_list += traces
+                filename, line_offset, location=location, units=units)
+            if traces is not None:
+                trace_list += traces
         else:
             raise GMProcessException('Not a supported volume.')
 
@@ -188,21 +190,27 @@ def read_dmg(filename, **kwargs):
     return [stream]
 
 
-def _read_volume_one(filename, line_offset, location=''):
+def _read_volume_one(filename, line_offset, location='', units='acc'):
     """Read channel data from DMG Volume 1 text file.
 
     Args:
         filename (str): Input DMG V1 filename.
         line_offset (int): Line offset to beginning of channel text block.
+        units (str): units to get
     Returns:
         tuple: (list of obspy Trace, int line offset)
     """
-    # read station, location, and process level from text header
-    with open(filename, 'rt') as f:
-        for _ in range(line_offset):
-            next(f)
-        lines = [next(f) for x in range(V1_TEXT_HDR_ROWS)]
+    # Parse the header portion of the file
+    try:
+        with open(filename, 'rt') as f:
+            for _ in range(line_offset):
+                next(f)
+            lines = [next(f) for x in range(V1_TEXT_HDR_ROWS)]
+    # Accounts for blank lines at end of files
+    except StopIteration:
+        return (None, 1 + line_offset)
 
+    unit = _get_units(lines[11])
     # read in lines of integer data
     skip_rows = V1_TEXT_HDR_ROWS + line_offset
     int_data = _read_lines(skip_rows, V1_INT_HDR_ROWS, V2_INT_FMT, filename)
@@ -217,6 +225,7 @@ def _read_volume_one(filename, line_offset, location=''):
     # "standard", Location is a two character field.  Most data providers,
     # including csmip/dmg here, don't always provide this.  We'll flag it as
     # "--".
+
     hdr = _get_header_info_v1(
         int_data, flt_data, lines, 'V2', location=location)
 
@@ -244,6 +253,22 @@ def _read_volume_one(filename, line_offset, location=''):
         times = data[0::2][:hdr['npts']]
         evenly_spaced = is_evenly_spaced(times)
 
+    if unit == 'in/s/s':
+        acc_data *= 2.54
+        logging.debug('Data converted from %s to cm/s/s' % (unit))
+    elif unit == 'g':
+        acc_data *= 980.665
+        logging.debug('Data converted from %s to cm/s/s' % (unit))
+    elif unit == 'g/10':
+        acc_data *= 980.665 * 10
+        logging.debug('Data converted from %s to cm/s/s' % (unit))
+    elif unit == 'g*10':
+        acc_data *= 980.665 * .1
+        logging.debug('Data converted from %s to cm/s/s' % (unit))
+    elif unit != 'cm/s/s' and unit != 'gal':
+        raise GMProcessException('%s is not an accepted unit.' % unit)
+
+
     acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()))
 
     # Check if the times were included in the file but were not evenly spaced
@@ -258,20 +283,24 @@ def _read_volume_one(filename, line_offset, location=''):
     return (traces, new_offset)
 
 
-def _read_volume_two(filename, line_offset, location=''):
+def _read_volume_two(filename, line_offset, location='', units='acc'):
     """Read channel data from DMG text file.
 
     Args:
         filename (str): Input DMG V2 filename.
         line_offset (int): Line offset to beginning of channel text block.
+        units (str): units to get
     Returns:
         tuple: (list of obspy Trace, int line offset)
     """
-    # read station, location, and process level from text header
-    with open(filename, 'rt') as f:
-        for _ in range(line_offset):
-            next(f)
-        lines = [next(f) for x in range(V2_TEXT_HDR_ROWS)]
+    try:
+        with open(filename, 'rt') as f:
+            for _ in range(line_offset):
+                next(f)
+            lines = [next(f) for x in range(V2_TEXT_HDR_ROWS)]
+    # Accounts for blank lines at end of files
+    except StopIteration:
+        return (None, 1 + line_offset)
 
     # read in lines of integer data
     skip_rows = V2_TEXT_HDR_ROWS + line_offset
@@ -293,24 +322,45 @@ def _read_volume_two(filename, line_offset, location=''):
     traces = []
     # read acceleration data
     if hdr['npts'] > 0:
-        acc_rows, acc_fmt = _get_data_format(filename, skip_rows, hdr['npts'])
+        acc_rows, acc_fmt, unit = _get_data_format(filename, skip_rows, hdr['npts'])
         acc_data = _read_lines(skip_rows + 1, acc_rows, acc_fmt, filename)
         acc_data = acc_data[:hdr['npts']]
+        if unit == 'in/s/s':
+            acc_data *= 2.54
+            logging.debug('Data converted from %s to cm/s/s' % (unit))
+        elif unit == 'g':
+            acc_data *= 980.665
+            logging.debug('Data converted from %s to cm/s/s' % (unit))
+        elif unit == 'g/10':
+            acc_data *= 980.665 * 10
+            logging.debug('Data converted from %s to cm/s/s' % (unit))
+        elif unit == 'g*10':
+            acc_data *= 980.665 * .1
+            logging.debug('Data converted from %s to cm/s/s' % (unit))
+        elif unit != 'cm/s/s' and unit != 'gal':
+            raise GMProcessException('%s is not an accepted unit.' % unit)
         acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()))
-        traces += [acc_trace]
+        if units == 'acc':
+            traces += [acc_trace]
         skip_rows += int(acc_rows) + 1
 
-    # read acceleration data
+    # read velocity data
     vel_hdr = hdr.copy()
     vel_hdr['standard']['units'] = 'vel'
     vel_hdr['npts'] = int_data[63]
     if vel_hdr['npts'] > 0:
-        vel_rows, vel_fmt = _get_data_format(
+        vel_rows, vel_fmt, unit = _get_data_format(
             filename, skip_rows, vel_hdr['npts'])
         vel_data = _read_lines(skip_rows + 1, vel_rows, vel_fmt, filename)
         vel_data = vel_data[:vel_hdr['npts']]
+        if unit == 'in/s':
+            vel_data *= 2.54
+            logging.debug('Data converted from %s to cm/s' % (unit))
+        elif unit != 'cm/s':
+            raise GMProcessException('%s is not an accepted unit.' % unit)
         vel_trace = StationTrace(vel_data.copy(), Stats(vel_hdr.copy()))
-        traces += [vel_trace]
+        if units == 'vel':
+            traces += [vel_trace]
         skip_rows += int(vel_rows) + 1
 
     # read displacement data
@@ -318,12 +368,18 @@ def _read_volume_two(filename, line_offset, location=''):
     disp_hdr['standard']['units'] = 'disp'
     disp_hdr['npts'] = int_data[65]
     if disp_hdr['npts'] > 0:
-        disp_rows, disp_fmt = _get_data_format(
+        disp_rows, disp_fmt, unit = _get_data_format(
             filename, skip_rows, disp_hdr['npts'])
         disp_data = _read_lines(skip_rows + 1, disp_rows, disp_fmt, filename)
         disp_data = disp_data[:disp_hdr['npts']]
+        if unit == 'in':
+            disp_data *= 2.54
+            logging.debug('Data converted from %s to cm' % (unit))
+        elif unit != 'cm':
+            raise GMProcessException('%s is not an accepted unit.' % unit)
         disp_trace = StationTrace(disp_data.copy(), Stats(disp_hdr.copy()))
-        traces += [disp_trace]
+        if units == 'disp':
+            traces += [disp_trace]
         skip_rows += int(disp_rows) + 1
     new_offset = skip_rows + 1  # there is an 'end of record' line after the data]
     return (traces, new_offset)
@@ -446,7 +502,10 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
     standard['instrument_damping'] = flt_data[1]
 
     process_time = _get_date(lines[0])
-    standard['process_time'] = process_time.strftime(TIMEFMT)
+    if process_time is not None:
+        standard['process_time'] = process_time.strftime(TIMEFMT)
+    else:
+        standard['process_time'] = ''
 
     standard['process_level'] = PROCESS_LEVELS[level]
     logging.debug("process_level: %s" % standard['process_level'])
@@ -682,9 +741,9 @@ def _get_data_format(filename, skip_rows, npts):
     Returns:
         tuple: (int number of rows, list list of widths).
     """
-    fmt = np.genfromtxt(filename, skip_header=skip_rows,
-                        max_rows=1, dtype=str)[-1]
-
+    fmt_line = np.genfromtxt(filename, skip_header=skip_rows,
+                        max_rows=1, dtype=str)
+    fmt = fmt_line[-1]
     # Check for a format in header or use default
     if fmt.find('f') >= 0 and fmt.find('(') >= 0 and fmt.find(')') >= 0:
         fmt = fmt.replace('(', '').replace(')', '')
@@ -693,6 +752,54 @@ def _get_data_format(filename, skip_rows, npts):
     else:
         cols = 8
         widths = 10
+
+    # Check for units
+    line_string = ' '.join(fmt_line).lower()
+    physical_units = _get_units(line_string)
+
     fmt = [widths] * cols
     rows = np.ceil(npts / cols)
-    return (rows, fmt)
+    return (rows, fmt, physical_units)
+
+def _get_units(line):
+    """
+    Parse units from a text line.
+
+    Args:
+        line (str): text line which should contain units.
+    """
+    line = line.lower()
+    if line.find('in units of') >= 0:
+        units_start = line.find('in units of')
+    elif line.find('units of') >= 0:
+        units_start = line.find('units of')
+    elif line.find('in') >= 0:
+        units_start = line.find('in')
+
+    units_section = line[units_start:].replace('.', ' ')
+    if 'g/10' in units_section:
+        physical_units = 'g/10'
+    elif ('10g' in units_section or '10*g' in units_section or
+            'g10' in units_section or 'g*10' in units_section):
+        physical_units = 'g*10'
+    elif 'gal' in units_section:
+        physical_units = 'cm/s/s'
+    elif 'g' in units_section and 'g/' not in units_section:
+        physical_units = 'g'
+    elif ('cm/s/s' in units_section or 'cm/sec/sec' in units_section or
+            'cm/s^2' in units_section or 'cm/s2' in units_section or
+            'cm/sec^2' in units_section or 'cm/sec2' in units_section):
+        physical_units = 'cm/s/s'
+    elif 'cm/s' in units_section or 'cm/sec' in units_section:
+        physical_units = 'cm/s'
+    elif 'cm' in units_section:
+        physical_units = 'cm'
+    elif 'in/s/s' in units_section or 'in/sec/sec' in units_section:
+        physical_units = 'in/s/s'
+    elif 'in/s' in units_section or 'in/sec' in units_section:
+        physical_units = 'in/s'
+    elif 'in' in units_section:
+        physical_units = 'in'
+    else:
+        physical_units = units_section
+    return physical_units

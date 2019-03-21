@@ -83,20 +83,20 @@ FILTERS = {
 }
 
 PHYSICAL_UNITS = {
-    1: ('sec', np.nan, ),
+    1: ('s', np.nan, ),
     2: ('g', 980.665),
-    3: ('secs & g', np.nan),
-    4: ('cm/sec/sec', 1.0),
-    5: ('cm/sec', 1.0),
+    3: ('ss & g', np.nan),
+    4: ('cm/s/s', 1.0),
+    5: ('cm/s', 1.0),
     6: ('cm', 1.0),
-    7: ('in/sec/sec', 2.54),
-    8: ('in/sec', 2.54),
+    7: ('in/s/s', 2.54),
+    8: ('in/s', 2.54),
     9: ('in', 2.54),
     10: ('gal', 1.0),
     11: ('mg', 0.980665),
     12: ('micro g', np.nan),
-    23: ('deg/sec/sec', np.nan),
-    24: ('deg/sec', np.nan),
+    23: ('deg/s/s', np.nan),
+    24: ('deg/s', np.nan),
     25: ('deg', np.nan),
     50: ('counts', np.nan),
     51: ('volts', np.nan),
@@ -260,11 +260,41 @@ def _read_channel(filename, line_offset, location=''):
 
     # read in the data
     nrows, data = _read_lines(skiprows, filename)
+    # check units
+    unit = hdr['format_specific']['physical_units']
+    if unit == 'in/s/s':
+        data *= 2.54
+        hdr['format_specific']['physical_units'] = 'cm/s/s'
+        logging.debug('Data converted from %s to cm/s/s' % (unit))
+    elif unit == 'in/s':
+        data *= 2.54
+        logging.debug('Data converted from %s to cm/s' % (unit))
+        hdr['format_specific']['physical_units'] = 'cm/s'
+    elif unit == 'in':
+        data *= 2.54
+        logging.debug('Data converted from %s to cm' % (unit))
+        hdr['format_specific']['physical_units'] = 'cm'
+    elif unit == 'gal':
+        hdr['format_specific']['physical_units'] = 'cm/s/s'
+    elif unit == 'g':
+        data *= 980.665
+        hdr['format_specific']['physical_units'] = 'cm/s/s'
+        logging.debug('Data converted from %s to cm/s/s' % (unit))
+    elif unit == 'mg':
+        data *= 0.980665
+        hdr['format_specific']['physical_units'] = 'cm/s/s'
+        logging.debug('Data converted from %s to cm/s/s' % (unit))
+    elif unit != 'cm/s/s':
+        raise GMProcessException('%s is not an accepted unit.' % unit)
+
+    if hdr['standard']['units'] != 'acc':
+        raise GMProcessException('Only acceleration data accepted.')
+
     trace = StationTrace(data.copy(), Stats(hdr.copy()))
 
-    # record that this data has been converted to gals, if it has
+    # record that this data has been converted to g, if it has
     if hdr['standard']['process_level'] != PROCESS_LEVELS['V0']:
-        response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
+        response = {'input_units': 'counts', 'output_units': 'g'}
         trace.setProvenance('remove_response', response)
 
     # set new offset
@@ -329,7 +359,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
       - record_flag (str): Either 'No problem', 'Fixed', 'Unfixed problem'.
             Should be described in more depth in comments.
       - scaling_factor (float): Scaling used for converting acceleration
-            from g/10 to cm/sec/sec
+            from g/10 to cm/s/s
       - sensor_sensitivity (float): Sensitvity in volts/g
 
     Args:
@@ -374,7 +404,6 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     logging.debug('station: %s' % hdr['station'])
     horizontal_angle = float(int_data[53])
     logging.debug('horizontal_angle: %s' % horizontal_angle)
-
     # Store delta and duration. Use them to calculate npts and sampling_rate
 
     # NOTE: flt_data[33] is the delta of the V0 format, and if we are reading
