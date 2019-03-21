@@ -16,7 +16,7 @@ def test_directory_to_streams():
             '..', 'tests', 'data', 'read_directory', 'whittier87'))
     streams, unprocessed_files, unprocessed_file_errors = \
         directory_to_streams(directory)
-    assert len(streams) == 4
+    assert len(streams) == 7
 
 
 if __name__ == '__main__':
