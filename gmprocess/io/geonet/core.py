@@ -69,6 +69,8 @@ def read_geonet(filename, **kwargs):
         (cm/s**2).
     """
     logging.debug("Starting read_geonet.")
+    if not is_geonet(filename):
+        raise Exception('%s is not a valid GEONET strong motion data file.' % filename)
     trace1, offset1, _ = _read_channel(filename, 0)
     trace2, offset2, _ = _read_channel(filename, offset1)
     trace3, _, _ = _read_channel(filename, offset2)
@@ -86,7 +88,7 @@ def read_geonet(filename, **kwargs):
             trace2.stats['channel'] = trace2.stats['channel'][0:2] + '1'
         else:
             raise Exception(
-                'Could not resolve duplicate channels in %s'
+                'GEONET: Could not resolve duplicate channels in %s'
                 % trace1.stats['station'])
     if channel2 == channel3:
         if channel2.endswith('2'):
@@ -95,7 +97,7 @@ def read_geonet(filename, **kwargs):
             trace3.stats['channel'] = trace2.stats['channel'][0:2] + '2'
         else:
             raise Exception(
-                'Could not resolve duplicate channels in %s'
+                'GEONET: Could not resolve duplicate channels in %s'
                 % trace1.stats['station'])
 
     traces = [trace1, trace2, trace3]

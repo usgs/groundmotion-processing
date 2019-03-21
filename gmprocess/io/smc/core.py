@@ -122,10 +122,10 @@ def is_smc(filename):
                 return True
             if 'DISPLACEMENT' in firstline:
                 return True
-                raise GMProcessException('SMC diplacement records are not accepted.')
+                raise GMProcessException('SMC: Diplacement records are not supported.')
             elif 'VELOCITY' in firstline:
                 return True
-                raise GMProcessException('SMC velocity records are not accepted.')
+                raise GMProcessException('SMC: Velocity records are not supported.')
             elif '*' in firstline:
                 end_ascii = lines[10]
                 if '*' in end_ascii:
@@ -164,18 +164,18 @@ def read_smc(filename, **kwargs):
     location = kwargs.get('location', '')
 
     if not is_smc(filename):
-        raise Exception('Not an SMC file.')
+        raise Exception('%s is not a valid SMC file' % filename)
 
     with open (filename, 'rt') as f:
         line = f.readline().strip()
         if 'DISPLACEMENT' in line:
-            raise GMProcessException('SMC diplacement records are not accepted: '
+            raise GMProcessException('SMC: Diplacement records are not supported: '
                     '%s.' % filename)
         elif 'VELOCITY' in line:
-            raise GMProcessException('SMC velocity records are not accepted: '
+            raise GMProcessException('SMC: Velocity records are not supported: '
                     '%s.' % filename)
         elif line == "*":
-            raise GMProcessException('No record volume specified in SMC file: '
+            raise GMProcessException('SMC: No record volume specified in file: '
                     '%s.' % filename)
 
     stats, num_comments = _get_header_info(
@@ -370,11 +370,11 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     problem_flag = intheader[2, 1]
     if problem_flag == 1:
         if not accept_flagged:
-            fmt = 'Record found in file %s has a problem flag!'
+            fmt = 'SMC: Record found in file %s has a problem flag!'
             raise Exception(fmt % filename)
         else:
             logging.warning(
-                'Data contains a problem flag for network/station: '
+                'SMC: Data contains a problem flag for network/station: '
                 '%s/%s. See comments.' % (stats['network'], stats['station']))
     stype = intheader[2, 2]
     if stype == missing_data:
@@ -382,7 +382,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     elif stype not in STRUCTURES:
         # structure type is not defined and should will be considered 'other'
         stype = 4
-    fmt = 'Record found in file %s is not a free-field sensor!'
+    fmt = 'SMC: Record found in file %s is not a free-field sensor!'
     standard['structure_type'] = STRUCTURES[stype]
     if standard['structure_type'] == 'building' and not any_structure:
         raise Exception(fmt % filename)

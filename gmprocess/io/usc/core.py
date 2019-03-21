@@ -7,6 +7,7 @@ import numpy as np
 from obspy.core.trace import Stats
 
 # local imports
+from gmprocess.constants import UNIT_CONVERSIONS
 from gmprocess.exception import GMProcessException
 from gmprocess.io.seedname import get_channel_name
 from gmprocess.stationstream import StationStream
@@ -62,8 +63,8 @@ def is_usc(filename, **kwargs):
             alternate_start = start + 2
             alternate_stop = stop - 2
         elif first_line.find('RESPONSE') >= 0:
-            raise GMProcessException('Derived response spectra and fourier '
-                'amplitude spectra not accepted.')
+            raise GMProcessException('USC: Derived response spectra and fourier '
+                'amplitude spectra not supported: %s' % filename)
         else:
             f.close()
             return False
@@ -120,7 +121,7 @@ def read_usc(filename, **kwargs):
     if first_line.find('OF UNCORRECTED ACCELEROGRAM DATA OF') >= 0:
         stream = read_volume_one(filename, location=location, alternate=alternate)
     else:
-        raise GMProcessException('Not a supported volume.')
+        raise GMProcessException('USC: Not a supported volume.')
     return stream
 
 
@@ -200,24 +201,15 @@ def _read_channel(filename, line_offset, volume, location='', alternate=False):
 
     frac = hdr['format_specific']['fractional_unit']
     if frac > 0:
-        data *= 980.665 * frac
+        data *= UNIT_CONVERSIONS['g'] * frac
         logging.debug('Data converted from g * %s to cm/s/s' % (frac))
     else:
         unit = _get_units(lines[11])
-        if unit == 'in/s/s':
-            acc_data *= 2.54
+        if unit in UNIT_CONVERSIONS:
+            data *= UNIT_CONVERSIONS[unit]
             logging.debug('Data converted from %s to cm/s/s' % (unit))
-        elif unit == 'g':
-            acc_data *= 980.665
-            logging.debug('Data converted from %s to cm/s/s' % (unit))
-        elif unit == 'g/10':
-            acc_data *= 980.665 * 10
-            logging.debug('Data converted from %s to cm/s/s' % (unit))
-        elif unit == 'g*10':
-            acc_data *= 980.665 * .1
-            logging.debug('Data converted from %s to cm/s/s' % (unit))
-        elif unit != 'cm/s/s' and unit != 'gal':
-            raise GMProcessException('%s is not an accepted unit.' % unit)
+        else:
+            raise GMProcessException('USC: %s is not a supported unit.' % unit)
 
     trace = StationTrace(data.copy(), Stats(hdr.copy()))
     if not is_evenly_spaced(times):
@@ -321,7 +313,7 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
             hdr['channel'] = channel
             logging.debug('channel: %s' % hdr['channel'])
         else:
-            errstr = ('Not enough information to distinguish horizontal from '
+            errstr = ('USC: Not enough information to distinguish horizontal from '
                       'vertical channels.')
             raise GMProcessException(errstr)
 

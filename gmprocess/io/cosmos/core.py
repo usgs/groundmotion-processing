@@ -12,6 +12,7 @@ import numpy as np
 from obspy.core.trace import Stats
 
 # local imports
+from gmprocess.constants import UNIT_CONVERSIONS
 from gmprocess.exception import GMProcessException
 from gmprocess.stationstream import StationStream
 from gmprocess.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
@@ -196,6 +197,8 @@ def read_cosmos(filename, **kwargs):
         (cm/s**2).
     """
     logging.debug("Starting read_cosmos.")
+    if not is_cosmos(filename):
+        raise Exception('%s is not a valid COSMOS strong motion data file.' % filename)
     # get list of valid stations
     valid_station_types = kwargs.get('valid_station_types', None)
     # get list of valid stations
@@ -262,39 +265,20 @@ def _read_channel(filename, line_offset, location=''):
     nrows, data = _read_lines(skiprows, filename)
     # check units
     unit = hdr['format_specific']['physical_units']
-    if unit == 'in/s/s':
-        data *= 2.54
-        hdr['format_specific']['physical_units'] = 'cm/s/s'
+    if unit in UNIT_CONVERSIONS:
+        data *= UNIT_CONVERSIONS[unit]
         logging.debug('Data converted from %s to cm/s/s' % (unit))
-    elif unit == 'in/s':
-        data *= 2.54
-        logging.debug('Data converted from %s to cm/s' % (unit))
-        hdr['format_specific']['physical_units'] = 'cm/s'
-    elif unit == 'in':
-        data *= 2.54
-        logging.debug('Data converted from %s to cm' % (unit))
-        hdr['format_specific']['physical_units'] = 'cm'
-    elif unit == 'gal':
-        hdr['format_specific']['physical_units'] = 'cm/s/s'
-    elif unit == 'g':
-        data *= 980.665
-        hdr['format_specific']['physical_units'] = 'cm/s/s'
-        logging.debug('Data converted from %s to cm/s/s' % (unit))
-    elif unit == 'mg':
-        data *= 0.980665
-        hdr['format_specific']['physical_units'] = 'cm/s/s'
-        logging.debug('Data converted from %s to cm/s/s' % (unit))
-    elif unit != 'cm/s/s':
-        raise GMProcessException('%s is not an accepted unit.' % unit)
+    else:
+        raise GMProcessException('COSMOS: %s is not a supported unit.' % unit)
 
     if hdr['standard']['units'] != 'acc':
-        raise GMProcessException('Only acceleration data accepted.')
+        raise GMProcessException('COSMOS: Only acceleration data accepted.')
 
     trace = StationTrace(data.copy(), Stats(hdr.copy()))
 
     # record that this data has been converted to g, if it has
     if hdr['standard']['process_level'] != PROCESS_LEVELS['V0']:
-        response = {'input_units': 'counts', 'output_units': 'g'}
+        response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
         trace.setProvenance('remove_response', response)
 
     # set new offset
@@ -448,7 +432,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     else:
         errstr = ('Not enough information to distinguish horizontal from '
                   'vertical channels.')
-        raise GMProcessException(errstr)
+        raise GMProcessException('COSMOS: ' + errstr)
     hdr['channel'] = channel
     logging.debug('channel: %s' % hdr['channel'])
     if location == '':
@@ -472,7 +456,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
             hdr['starttime'] = datetime(
                 year, month, day, hour, minute)
         except Exception:
-            raise GMProcessException('Inadequate start time information.')
+            raise GMProcessException('COSMOS: Inadequate start time information.')
     else:
         second = second
         microsecond = int((second - int(second)) * 1e6)
@@ -480,7 +464,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
             hdr['starttime'] = datetime(
                 year, month, day, hour, minute, int(second), microsecond)
         except Exception:
-            raise GMProcessException('Inadequate start time information.')
+            raise GMProcessException('COSMOS: Inadequate start time information.')
 
     if flt_data[62] != unknown:
         # COSMOS **defines** "length" as npts*dt (note this is a bit unusual)

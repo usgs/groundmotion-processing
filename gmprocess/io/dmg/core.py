@@ -11,6 +11,7 @@ from obspy.core.trace import Stats
 import numpy as np
 
 # local imports
+from gmprocess.constants import UNIT_CONVERSIONS
 from gmprocess.exception import GMProcessException
 from gmprocess.io.usc.core import is_usc
 from gmprocess.io.seedname import get_channel_name
@@ -143,14 +144,14 @@ def read_dmg(filename, **kwargs):
     """
     logging.debug("Starting read_dmg.")
     if not is_dmg(filename):
-        raise Exception('Not a DMG file format.')
+        raise Exception('%s is not a valid DMG strong motion data file.' % filename)
 
     # Check for units and location
     units = kwargs.get('units', 'acc')
     location = kwargs.get('location', '')
 
     if units not in UNITS:
-        raise Exception('Not a valid choice of units.')
+        raise Exception('DMG: Not a valid choice of units.')
 
     # Check for DMG format and determine volume type
     line = open(filename, 'rt').readline()
@@ -181,7 +182,7 @@ def read_dmg(filename, **kwargs):
             if traces is not None:
                 trace_list += traces
         else:
-            raise GMProcessException('Not a supported volume.')
+            raise GMProcessException('DMG: Not a supported volume.')
 
     stream = StationStream([])
     for trace in trace_list:
@@ -253,20 +254,11 @@ def _read_volume_one(filename, line_offset, location='', units='acc'):
         times = data[0::2][:hdr['npts']]
         evenly_spaced = is_evenly_spaced(times)
 
-    if unit == 'in/s/s':
-        acc_data *= 2.54
+    if unit in UNIT_CONVERSIONS:
+        acc_data *= UNIT_CONVERSIONS[unit]
         logging.debug('Data converted from %s to cm/s/s' % (unit))
-    elif unit == 'g':
-        acc_data *= 980.665
-        logging.debug('Data converted from %s to cm/s/s' % (unit))
-    elif unit == 'g/10':
-        acc_data *= 980.665 * 10
-        logging.debug('Data converted from %s to cm/s/s' % (unit))
-    elif unit == 'g*10':
-        acc_data *= 980.665 * .1
-        logging.debug('Data converted from %s to cm/s/s' % (unit))
-    elif unit != 'cm/s/s' and unit != 'gal':
-        raise GMProcessException('%s is not an accepted unit.' % unit)
+    else:
+        raise GMProcessException('DMG: %s is not a supported unit.' % unit)
 
 
     acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()))
@@ -325,20 +317,11 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
         acc_rows, acc_fmt, unit = _get_data_format(filename, skip_rows, hdr['npts'])
         acc_data = _read_lines(skip_rows + 1, acc_rows, acc_fmt, filename)
         acc_data = acc_data[:hdr['npts']]
-        if unit == 'in/s/s':
-            acc_data *= 2.54
+        if unit in UNIT_CONVERSIONS:
+            acc_data *= UNIT_CONVERSIONS[unit]
             logging.debug('Data converted from %s to cm/s/s' % (unit))
-        elif unit == 'g':
-            acc_data *= 980.665
-            logging.debug('Data converted from %s to cm/s/s' % (unit))
-        elif unit == 'g/10':
-            acc_data *= 980.665 * 10
-            logging.debug('Data converted from %s to cm/s/s' % (unit))
-        elif unit == 'g*10':
-            acc_data *= 980.665 * .1
-            logging.debug('Data converted from %s to cm/s/s' % (unit))
-        elif unit != 'cm/s/s' and unit != 'gal':
-            raise GMProcessException('%s is not an accepted unit.' % unit)
+        else:
+            raise GMProcessException('DMG: %s is not a supported unit.' % unit)
         acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()))
         if units == 'acc':
             traces += [acc_trace]
@@ -353,11 +336,11 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
             filename, skip_rows, vel_hdr['npts'])
         vel_data = _read_lines(skip_rows + 1, vel_rows, vel_fmt, filename)
         vel_data = vel_data[:vel_hdr['npts']]
-        if unit == 'in/s':
-            vel_data *= 2.54
-            logging.debug('Data converted from %s to cm/s' % (unit))
-        elif unit != 'cm/s':
-            raise GMProcessException('%s is not an accepted unit.' % unit)
+        if unit in UNIT_CONVERSIONS:
+            vel_data *= UNIT_CONVERSIONS[unit]
+            logging.debug('Data converted from %s to cm/s/s' % (unit))
+        else:
+            raise GMProcessException('DMG: %s is not a supported unit.' % unit)
         vel_trace = StationTrace(vel_data.copy(), Stats(vel_hdr.copy()))
         if units == 'vel':
             traces += [vel_trace]
@@ -372,11 +355,11 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
             filename, skip_rows, disp_hdr['npts'])
         disp_data = _read_lines(skip_rows + 1, disp_rows, disp_fmt, filename)
         disp_data = disp_data[:disp_hdr['npts']]
-        if unit == 'in':
-            disp_data *= 2.54
-            logging.debug('Data converted from %s to cm' % (unit))
-        elif unit != 'cm':
-            raise GMProcessException('%s is not an accepted unit.' % unit)
+        if unit in UNIT_CONVERSIONS:
+            disp_data *= UNIT_CONVERSIONS[unit]
+            logging.debug('Data converted from %s to cm/s/s' % (unit))
+        else:
+            raise GMProcessException('DMG: %s is not a supported unit.' % unit)
         disp_trace = StationTrace(disp_data.copy(), Stats(disp_hdr.copy()))
         if units == 'disp':
             traces += [disp_trace]
@@ -712,7 +695,7 @@ def _get_channel(angle, sampling_rate):
     else:
         errstr = ('Not enough information to distinguish horizontal from '
                   'vertical channels.')
-        raise GMProcessException(errstr)
+        raise GMProcessException('DMG: ' + errstr)
     return channel
 
 

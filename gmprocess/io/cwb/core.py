@@ -54,7 +54,7 @@ def read_cwb(filename, **kwargs):
     """
     logging.debug("Starting read_cwb.")
     if not is_cwb(filename):
-        raise ValueError('%s is not a valid CWB strong motion data file.')
+        raise Exception('%s is not a valid CWB strong motion data file.' % filename)
     f = open(filename, 'rt')
     # according to the powers that defined the Network.Station.Channel.Location
     # "standard", Location is a two character field.  Most data providers,

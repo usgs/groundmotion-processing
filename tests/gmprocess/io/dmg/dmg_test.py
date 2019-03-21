@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 import numpy as np
 
 # local imports
+from gmprocess.constants import UNIT_CONVERSIONS
 from gmprocess.exception import GMProcessException
 from gmprocess.io.dmg.core import is_dmg, read_dmg, _get_date, _get_time
 from gmprocess.io.test_utils import read_data_dir
@@ -41,8 +42,8 @@ def test_dmg_non_spec():
     stream = read_dmg(file1)[0]
     trace1 = stream[0]
     # Data is in g not gal so it must be scaled by 980.665
-    np.testing.assert_almost_equal(trace1.data[0], -0.000116 * 980.665)
-    np.testing.assert_almost_equal(trace1.data[-8], -0.003018 * 980.665)
+    np.testing.assert_almost_equal(trace1.data[0], -0.000116 * UNIT_CONVERSIONS['g'])
+    np.testing.assert_almost_equal(trace1.data[-8], -0.003018 * UNIT_CONVERSIONS['g'])
 
 
 def test_dmg_v1():
