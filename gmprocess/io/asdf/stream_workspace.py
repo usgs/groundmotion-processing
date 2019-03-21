@@ -178,6 +178,7 @@ class StreamWorkspace(object):
         matching_tags = []
         for waveform in self.dataset.waveforms:
             tags = waveform.get_waveform_tags()
+            tags
             for tag in tags:
                 event_match = eventid in waveform[tag][0].stats.asdf.event_ids
                 label_match = True
@@ -186,9 +187,10 @@ class StreamWorkspace(object):
                 if event_match and label_match:
                     matching_tags.append(tag)
 
+        matching_tags = list(set(matching_tags))
         return matching_tags
 
-    def getStreams(self, eventid, stations=None, labels=None):
+    def getStreams(self, eventid, stations=None, labels=None, get_raw=False):
         """Get Stream from ASDF file given event id and input tags.
 
         Args:
@@ -207,15 +209,20 @@ class StreamWorkspace(object):
             auxholder = self.dataset.auxiliary_data.ProcessingParameters
         streams = []
         all_tags = []
-        if stations is None:
-            stations = self.getStations(eventid)
-        if labels is None:
-            labels = self.getLabels()
-        for station in stations:
-            for label in labels:
-                all_tags.append('%s_%s' % (station.lower(), label))
+        if not get_raw:
+            if stations is None:
+                stations = self.getStations(eventid)
+            if labels is None:
+                labels = self.getLabels()
+            for station in stations:
+                for label in labels:
+                    all_tags.append('%s_%s' % (station.lower(), label))
+        else:
+            all_tags = ['raw_recording']
         for waveform in self.dataset.waveforms:
             ttags = waveform.get_waveform_tags()
+            if not get_raw and 'raw_recording' in ttags:
+                ttags.remove('raw_recording')
             wtags = []
             if not len(all_tags):
                 wtags = ttags
