@@ -8,6 +8,7 @@ import logging
 import numpy as np
 
 # local imports
+from gmprocess.exception import GMProcessException
 from gmprocess.io.seedname import get_channel_name
 from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.stationstream import StationStream
@@ -15,10 +16,10 @@ from gmprocess.stationstream import StationStream
 ASCII_HEADER_LINES = 11
 INTEGER_HEADER_LINES = 6
 FLOAT_HEADER_LINES = 10
-INT_HEADER_WIDTHS = 10
-FLOAT_HEADER_WIDTHS = 15
+INT_HEADER_WIDTHS = 8 * [10]
+FLOAT_HEADER_WIDTHS = 5 * [15]
 DATA_COLUMNS = 8
-FLOAT_DATA_WIDTHS = 10
+FLOAT_DATA_WIDTHS = 8 * [10]
 
 VALID_HEADERS = {
     '1 UNCORRECTED ACCELEROGRAM': 'V1',
@@ -114,9 +115,29 @@ def is_smc(filename):
     """
     logging.debug("Checking if format is smc.")
     try:
-        line = open(filename, 'rt').readline().strip()
-        if line in VALID_HEADERS:
-            return True
+        with open (filename, 'rt') as f:
+            lines = f.readlines()
+            firstline = lines[0].strip()
+            if firstline in VALID_HEADERS:
+                return True
+            if 'DISPLACEMENT' in firstline:
+                return True
+                raise GMProcessException('SMC: Diplacement records are not supported.')
+            elif 'VELOCITY' in firstline:
+                return True
+                raise GMProcessException('SMC: Velocity records are not supported.')
+            elif '*' in firstline:
+                end_ascii = lines[10]
+                if '*' in end_ascii:
+                    comment_row = int(lines[12].strip().split()[-1])
+                    for r in range(27, 27 + comment_row):
+                        row = lines[r]
+                        if not row.startswith('|'):
+                            return False
+                    return True
+                else:
+                    return False
+
         return False
     except UnicodeDecodeError:
         return False
@@ -143,7 +164,19 @@ def read_smc(filename, **kwargs):
     location = kwargs.get('location', '')
 
     if not is_smc(filename):
-        raise Exception('Not an SMC file.')
+        raise Exception('%s is not a valid SMC file' % filename)
+
+    with open (filename, 'rt') as f:
+        line = f.readline().strip()
+        if 'DISPLACEMENT' in line:
+            raise GMProcessException('SMC: Diplacement records are not supported: '
+                    '%s.' % filename)
+        elif 'VELOCITY' in line:
+            raise GMProcessException('SMC: Velocity records are not supported: '
+                    '%s.' % filename)
+        elif line == "*":
+            raise GMProcessException('SMC: No record volume specified in file: '
+                    '%s.' % filename)
 
     stats, num_comments = _get_header_info(
         filename, any_structure=any_structure,
@@ -254,10 +287,16 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     if ascheader[7].find('USGS') > -1:
         stats['network'] = 'US'
 
-    standard['source'] = ascheader[7].split('=')[2].strip()
+    try:
+        standard['source'] = ascheader[7].split('=')[2].strip()
+    except IndexError:
+        standard['source'] = 'USGS'
+    if standard['source'] == '':
+        standard['source'] = 'USGS'
     standard['source_format'] = 'smc'
 
     # read integer header data
+
     intheader = np.genfromtxt(filename, dtype=np.int32,
                               max_rows=INTEGER_HEADER_LINES,
                               skip_header=ASCII_HEADER_LINES,
@@ -269,24 +308,32 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     jday = intheader[0, 2]
     hour = intheader[0, 3]
     minute = intheader[0, 4]
+    if (year != missing_data and
+            jday != missing_data and hour != missing_data and
+            minute != missing_data):
 
-    # Handle second if missing
-    second = 0
-    if not intheader[0, 5] == missing_data:
-        second = intheader[0, 5]
+        # Handle second if missing
+        second = 0
+        if not intheader[0, 5] == missing_data:
+            second = intheader[0, 5]
 
-    # Handle microsecond if missing and convert milliseconds to microseconds
-    microsecond = 0
-    if not intheader[0, 6] == missing_data:
-        microsecond = intheader[0, 6] / 1e3
-    datestr = '%i %00i %i %i %i %i' % (
-        year, jday, hour, minute, second, microsecond)
+        # Handle microsecond if missing and convert milliseconds to microseconds
+        microsecond = 0
+        if not intheader[0, 6] == missing_data:
+            microsecond = intheader[0, 6] / 1e3
+        datestr = '%i %00i %i %i %i %i' % (
+            year, jday, hour, minute, second, microsecond)
 
-    stats['starttime'] = datetime.strptime(datestr, '%Y %j %H %M %S %f')
+        stats['starttime'] = datetime.strptime(datestr, '%Y %j %H %M %S %f')
+    else:
+        logging.warning('No start time provided. '
+                        'This must be set manually for network/station: '
+                        '%s/%s.' % (stats['network'], stats['station']))
+        standard['comments'] = 'Missing start time.'
 
     standard['sensor_serial_number'] = ''
     if intheader[1, 3] != missing_data:
-        standard['sensor_serial_number'] = intheader[1, 3]
+        standard['sensor_serial_number'] = str(intheader[1, 3])
 
     # we never get a two character location code so floor location is used
     if location == '':
@@ -311,7 +358,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     if intheader[1, 5] != missing_data:
         standard['horizontal_orientation'] = float(intheader[1, 5])
 
-    if intheader[1, 6] == missing_data:
+    if intheader[1, 6] == missing_data or intheader[1, 6] not in INSTRUMENTS:
         standard['instrument'] = ''
     else:
         standard['instrument'] = INSTRUMENTS[intheader[1, 6]]
@@ -323,16 +370,19 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     problem_flag = intheader[2, 1]
     if problem_flag == 1:
         if not accept_flagged:
-            fmt = 'Record found in file %s has a problem flag!'
+            fmt = 'SMC: Record found in file %s has a problem flag!'
             raise Exception(fmt % filename)
         else:
             logging.warning(
-                'Data contains a problem flag for network/station: '
+                'SMC: Data contains a problem flag for network/station: '
                 '%s/%s. See comments.' % (stats['network'], stats['station']))
     stype = intheader[2, 2]
     if stype == missing_data:
         stype = np.nan
-    fmt = 'Record found in file %s is not a free-field sensor!'
+    elif stype not in STRUCTURES:
+        # structure type is not defined and should will be considered 'other'
+        stype = 4
+    fmt = 'SMC: Record found in file %s is not a free-field sensor!'
     standard['structure_type'] = STRUCTURES[stype]
     if standard['structure_type'] == 'building' and not any_structure:
         raise Exception(fmt % filename)

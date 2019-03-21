@@ -113,7 +113,7 @@ def read_knet(filename):
             is_vertical=True,
             is_north=False)
     else:
-        raise Exception('Could not parse direction %s' %
+        raise Exception('KNET: Could not parse direction %s' %
                         lines[12].split()[1])
 
     logging.debug('channel: %s' % hdr['channel'])

@@ -41,9 +41,12 @@ def test_usc():
         # test that the traces are acceleration
         for trace in stream:
             assert trace.stats.standard.units == 'acc'
-        # compare the start/end points
-        # np.testing.assert_almost_equal(accvals[0], stream[0].data[0])
-        # np.testing.assert_almost_equal(accvals[1], stream[0].data[-1])
+        frac = trace.stats.format_specific.fractional_unit
+        # compare the start/end points when converted to gals
+        ## can't be tested for all due to inconsistent sampling rate
+        if tfilename == '017m30cc.y0a':
+            np.testing.assert_almost_equal(accvals[0]*frac*980.665, stream[0].data[0])
+            np.testing.assert_almost_equal(accvals[1]*frac*980.665, stream[0].data[-1])
 
         # append to list of streams, so we can make sure these group together
         streams.append(stream)

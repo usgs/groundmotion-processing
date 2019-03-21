@@ -12,6 +12,7 @@ import numpy as np
 from obspy.core.trace import Stats
 
 # local imports
+from gmprocess.constants import UNIT_CONVERSIONS
 from gmprocess.exception import GMProcessException
 from gmprocess.stationstream import StationStream
 from gmprocess.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
@@ -83,20 +84,20 @@ FILTERS = {
 }
 
 PHYSICAL_UNITS = {
-    1: ('sec', np.nan, ),
+    1: ('s', np.nan, ),
     2: ('g', 980.665),
-    3: ('secs & g', np.nan),
-    4: ('cm/sec/sec', 1.0),
-    5: ('cm/sec', 1.0),
+    3: ('ss & g', np.nan),
+    4: ('cm/s/s', 1.0),
+    5: ('cm/s', 1.0),
     6: ('cm', 1.0),
-    7: ('in/sec/sec', 2.54),
-    8: ('in/sec', 2.54),
+    7: ('in/s/s', 2.54),
+    8: ('in/s', 2.54),
     9: ('in', 2.54),
     10: ('gal', 1.0),
     11: ('mg', 0.980665),
     12: ('micro g', np.nan),
-    23: ('deg/sec/sec', np.nan),
-    24: ('deg/sec', np.nan),
+    23: ('deg/s/s', np.nan),
+    24: ('deg/s', np.nan),
     25: ('deg', np.nan),
     50: ('counts', np.nan),
     51: ('volts', np.nan),
@@ -196,6 +197,8 @@ def read_cosmos(filename, **kwargs):
         (cm/s**2).
     """
     logging.debug("Starting read_cosmos.")
+    if not is_cosmos(filename):
+        raise Exception('%s is not a valid COSMOS strong motion data file.' % filename)
     # get list of valid stations
     valid_station_types = kwargs.get('valid_station_types', None)
     # get list of valid stations
@@ -260,9 +263,20 @@ def _read_channel(filename, line_offset, location=''):
 
     # read in the data
     nrows, data = _read_lines(skiprows, filename)
+    # check units
+    unit = hdr['format_specific']['physical_units']
+    if unit in UNIT_CONVERSIONS:
+        data *= UNIT_CONVERSIONS[unit]
+        logging.debug('Data converted from %s to cm/s/s' % (unit))
+    else:
+        raise GMProcessException('COSMOS: %s is not a supported unit.' % unit)
+
+    if hdr['standard']['units'] != 'acc':
+        raise GMProcessException('COSMOS: Only acceleration data accepted.')
+
     trace = StationTrace(data.copy(), Stats(hdr.copy()))
 
-    # record that this data has been converted to gals, if it has
+    # record that this data has been converted to g, if it has
     if hdr['standard']['process_level'] != PROCESS_LEVELS['V0']:
         response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
         trace.setProvenance('remove_response', response)
@@ -329,7 +343,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
       - record_flag (str): Either 'No problem', 'Fixed', 'Unfixed problem'.
             Should be described in more depth in comments.
       - scaling_factor (float): Scaling used for converting acceleration
-            from g/10 to cm/sec/sec
+            from g/10 to cm/s/s
       - sensor_sensitivity (float): Sensitvity in volts/g
 
     Args:
@@ -374,7 +388,6 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     logging.debug('station: %s' % hdr['station'])
     horizontal_angle = float(int_data[53])
     logging.debug('horizontal_angle: %s' % horizontal_angle)
-
     # Store delta and duration. Use them to calculate npts and sampling_rate
 
     # NOTE: flt_data[33] is the delta of the V0 format, and if we are reading
@@ -419,7 +432,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     else:
         errstr = ('Not enough information to distinguish horizontal from '
                   'vertical channels.')
-        raise GMProcessException(errstr)
+        raise GMProcessException('COSMOS: ' + errstr)
     hdr['channel'] = channel
     logging.debug('channel: %s' % hdr['channel'])
     if location == '':
@@ -443,7 +456,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
             hdr['starttime'] = datetime(
                 year, month, day, hour, minute)
         except Exception:
-            raise GMProcessException('Inadequate start time information.')
+            raise GMProcessException('COSMOS: Inadequate start time information.')
     else:
         second = second
         microsecond = int((second - int(second)) * 1e6)
@@ -451,7 +464,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
             hdr['starttime'] = datetime(
                 year, month, day, hour, minute, int(second), microsecond)
         except Exception:
-            raise GMProcessException('Inadequate start time information.')
+            raise GMProcessException('COSMOS: Inadequate start time information.')
 
     if flt_data[62] != unknown:
         # COSMOS **defines** "length" as npts*dt (note this is a bit unusual)
