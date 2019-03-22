@@ -6,7 +6,7 @@ import re
 
 # third party imports
 import numpy as np
-from scipy import constants
+from gmprocess.constants import UNIT_CONVERSIONS
 from obspy.core.utcdatetime import UTCDateTime
 
 # local
@@ -30,8 +30,6 @@ SOURCE_FORMAT = 'BHRC'
 NETWORK = 'I1'
 
 LEVELS = {'VOL1DS': 'V1'}
-
-DECIG_TO_GALS = (constants.g * 100) / 10
 
 
 def is_bhrc(filename):
@@ -198,7 +196,7 @@ def _read_data(filename, offset, header):
     data = data[0:header['npts']]
 
     # convert data to cm/s^2
-    data *= DECIG_TO_GALS
+    data *= UNIT_CONVERSIONS['g/10']
 
     offset += nrows + 1  # there is an end of record marker line
     return (data, offset)

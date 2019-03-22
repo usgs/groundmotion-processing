@@ -10,13 +10,13 @@ GAL_TO_PCTG = 1 / sp.g
 UNIT_CONVERSIONS = {
     'gal': 1,
     'cm/s/s': 1,
-    'in/s/s': 2.54,
+    'in/s/s': sp.inch*100,
     'cm/s': 1,
-    'in/s': 2.54,
+    'in/s': sp.inch*100,
     'cm': 1,
-    'in': 2.54,
+    'in': sp.inch*100,
     'g': sp.g * 100,
-    'g/10': sp.g * 100,
-    'g*10': sp.g * 10,
+    'g/10': sp.g * 10,
+    'g*10': sp.g * 100,
     'mg': sp.g / 1000
 }

@@ -63,6 +63,9 @@ def resample_uneven_trace(trace, times, data, resample_rate=None,
 
     new_times = np.arange(times[0], times[-1], 1 / resample_rate)
 
+    # Save max value of original data as a trace parameter
+    raw_max = np.max(np.abs(data))
+
     if method == 'linear':
         trace.data = np.interp(new_times, times, data, np.nan, np.nan)
         trace.stats.sampling_rate = resample_rate
@@ -70,11 +73,14 @@ def resample_uneven_trace(trace, times, data, resample_rate=None,
     else:
         raise ValueError('Unsupported method value.')
 
-    trace.setProvenance('resample', {'record_length': duration,
-                                     'total_no_samples': npts,
-                                     'nominal_sps': nominal_sps,
-                                     'method': method_str})
+    trace.setProvenance('resample', {
+        'record_length': duration,
+        'total_no_samples': npts,
+        'nominal_sps': nominal_sps,
+        'method': method_str
+    })
 
+    trace.setParameter('raw_max', raw_max)
     return trace
 
 

@@ -51,9 +51,13 @@ class StationStream(Stream):
                         self.append(trace)
         self.passed = True
 
-    def __str__(self, indent=0):
+    def __str__(self, extended=False, indent=0):
         """
         String summary of the StationStream.
+
+        Args:
+            extended (bool): Unused; kept for compatibility with ObsPy parent class.
+            indent (int): Number of characters to indent.
         """
         if self.traces:
             id_length = self and max(len(tr.id) for tr in self) or 0
