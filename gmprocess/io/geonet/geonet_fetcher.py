@@ -102,7 +102,7 @@ class GeoNetFetcher(DataFetcher):
         df = df.rename(columns=newcols)
         lats = df['latitude'].values
         lons = df['longitude'].values
-        etime = pd.Timestamp(self.time).tz_convert('UTC')
+        etime = pd.Timestamp(self.time)
         dtimes = np.abs(df['origintime'] - etime)
         distances = geodetic_distance(self.lon, self.lat, lons, lats)
         didx = distances <= self.radius
