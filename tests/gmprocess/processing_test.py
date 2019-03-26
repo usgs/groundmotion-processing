@@ -77,16 +77,22 @@ def test_free_field():
     sc = StreamCollection(raw_streams)
 
     processed_streams = process_streams(sc, origin)
+
+    # since the grouping isn't the same on different platforms, we're
+    # sorting the processed streams here
+    newstreams = sorted(processed_streams,
+                        key=lambda stream: stream[0].stats.station)
+
     # all of these streams should have failed for different reasons
     cmp_reasons = ['Failed sta/lta check.',
-                   'Failed sta/lta check.',
                    'Failed free field sensor check.',
+                   'Failed sta/lta check.',
                    'Failed free field sensor check.']
     reasons = []
-    reasons.append(processed_streams[0][0].getParameter('failure')['reason'])
-    reasons.append(processed_streams[1][2].getParameter('failure')['reason'])
-    reasons.append(processed_streams[2][0].getParameter('failure')['reason'])
-    reasons.append(processed_streams[3][0].getParameter('failure')['reason'])
+    reasons.append(newstreams[0][2].getParameter('failure')['reason'])
+    reasons.append(newstreams[1][0].getParameter('failure')['reason'])
+    reasons.append(newstreams[2][0].getParameter('failure')['reason'])
+    reasons.append(newstreams[3][0].getParameter('failure')['reason'])
     for cmpreason, reason in zip(cmp_reasons, reasons):
         assert cmpreason == reason
 
