@@ -98,8 +98,8 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
         have_low = False
         for idx, freq in enumerate(freqs_signal):
             if have_low is False:
-                if ((sig_spec_smooth[idx] / noise_spec_smooth[idx])
-                        >= threshold):
+                if ((sig_spec_smooth[idx] / noise_spec_smooth[idx]) >=
+                        threshold):
                     lows.append(freq)
                     have_low = True
                 else:
@@ -118,10 +118,7 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
 
         # If we didn't find any corners
         if not lows:
-            tr.setParameter('failure', {
-                'module': __file__,
-                'reason': 'Failed SNR check.'
-            })
+            tr.fail('Failed SNR check.')
             continue
 
         # If we find an extra low, add another high for the maximum frequency
@@ -146,10 +143,7 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
                 }
             )
         else:
-            tr.setParameter('failure', {
-                'module': __file__,
-                'reason': 'Failed SNR check.'
-            })
+            tr.fail('Failed SNR check.')
 
     if same_horiz:
 

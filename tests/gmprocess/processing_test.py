@@ -15,6 +15,7 @@ from gmprocess.io.read import read_data
 from gmprocess.processing import process_streams
 from gmprocess.logging import setup_logger
 from gmprocess.io.test_utils import read_data_dir
+from gmprocess.config import get_config
 
 homedir = os.path.dirname(os.path.abspath(__file__))
 datadir = os.path.join(homedir, '..', 'data')
@@ -64,5 +65,32 @@ def test_process_streams():
     )
 
 
+def test_free_field():
+    data_files, origin = read_data_dir('kiknet', 'usp000hzq8')
+
+    config = get_config()
+
+    raw_streams = []
+    for dfile in data_files:
+        raw_streams += read_data(dfile)
+
+    sc = StreamCollection(raw_streams)
+
+    processed_streams = process_streams(sc, origin)
+    # all of these streams should have failed for different reasons
+    cmp_reasons = ['Failed sta/lta check.',
+                   'Failed sta/lta check.',
+                   'Failed free field sensor check.',
+                   'Failed free field sensor check.']
+    reasons = []
+    reasons.append(processed_streams[0][0].getParameter('failure')['reason'])
+    reasons.append(processed_streams[1][2].getParameter('failure')['reason'])
+    reasons.append(processed_streams[2][0].getParameter('failure')['reason'])
+    reasons.append(processed_streams[3][0].getParameter('failure')['reason'])
+    for cmpreason, reason in zip(cmp_reasons, reasons):
+        assert cmpreason == reason
+
+
 if __name__ == '__main__':
+    test_free_field()
     test_process_streams()

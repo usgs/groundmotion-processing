@@ -49,7 +49,16 @@ class StationStream(Stream):
                         self.append(statrace)
                     else:
                         self.append(trace)
-        self.passed = True
+
+    @property
+    def passed(self):
+        """Check the traces to see if any have failed any processing steps.
+
+        Returns:
+            bool: True if no failures in Traces, False if there are.
+
+        """
+        return self.check_stream()
 
     def __str__(self, extended=False, indent=0):
         """
@@ -153,9 +162,9 @@ class StationStream(Stream):
         for tr in self:
             stream_checks.append(tr.hasParameter('failure'))
         if any(stream_checks):
-            self.passed = False
+            return False
         else:
-            self.passed = True
+            return True
 
 
 def _channel_from_stats(stats):

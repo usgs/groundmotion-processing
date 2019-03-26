@@ -130,7 +130,7 @@ def main(pparser, args):
     else:
         dataframe.to_excel(framename)
 
-    print('Data from %i channels saved to %s' % (len(processed), args.outdir))
+    print('Data from %i stations saved to %s' % (len(processed), args.outdir))
     print('Metrics: %s' % framename)
     print('Waveforms: %s' % workname)
     if args.plot:

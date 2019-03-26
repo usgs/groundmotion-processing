@@ -12,8 +12,6 @@ from gmprocess.config import get_config
 
 def fetch_data(time, lat, lon,
                depth, magnitude,
-               radius=100, dt=16, ddepth=30,
-               dmag=0.3,
                rawdir=None):
     """Retrieve data using any DataFetcher subclass.
 
@@ -42,17 +40,10 @@ def fetch_data(time, lat, lon,
     fetchers = find_fetchers(lat, lon)
     instances = []
     for fetchname, fetcher in fetchers.items():
-        user = None
-        password = None
-        if fetchname in fetchconf:
-            user = fetchconf[fetchname]['user']
-            password = fetchconf[fetchname]['password']
         try:
             fetchinst = fetcher(time, lat, lon,
                                 depth, magnitude,
-                                user=user, password=password,
-                                radius=radius, dt=dt, ddepth=ddepth,
-                                dmag=dmag, rawdir=rawdir)
+                                rawdir=rawdir)
         except Exception as e:
             msg = 'Could not instantiate Fetcher %s, due to error "%s"'
             tpl = (fetchname, str(e))

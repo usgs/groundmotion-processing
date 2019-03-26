@@ -18,9 +18,10 @@ from openquake.hazardlib.geo.geodetic import geodetic_distance
 from obspy.core.utcdatetime import UTCDateTime
 
 # local imports
-from gmprocess.io.fetcher import DataFetcher
+from gmprocess.io.fetcher import DataFetcher, _get_first_value
 from gmprocess.io.knet.core import read_knet
 from gmprocess.streamcollection import StreamCollection
+from gmprocess.config import get_config
 
 
 JST_OFFSET = 9 * 3600  # Japan standard time is UTC + 9
@@ -49,13 +50,21 @@ DEPPAT = '[0-9]{3}km'
 MAGPAT = 'M[0-9]{1}\.[0-9]{1}'
 TIMEFMT = '%Y/%m/%d-%H:%M:%S.%f'
 
+# default values for this fetcher
+# if None specified in constructor, AND no parameters specified in
+# config, then use these.
+RADIUS = 100  # kilometers
+DT = 60  # seconds
+DDEPTH = 30  # km
+DMAG = 0.3
+
 
 class KNETFetcher(DataFetcher):
     def __init__(self, time, lat, lon,
                  depth, magnitude,
                  user=None, password=None,
-                 radius=100, dt=16, ddepth=30,
-                 dmag=0.3,
+                 radius=None, dt=None, ddepth=None,
+                 dmag=None,
                  rawdir=None, ):
         """Create a KNETFetcher instance.
 
@@ -77,10 +86,49 @@ class KNETFetcher(DataFetcher):
             rawdir (str): Path to location where raw data will be stored.
                           If not specified, raw data will be deleted.
         """
+        # what values do we use for search thresholds?
+        # In order of priority:
+        # 1) Not-None values passed in constructor
+        # 2) Configured values
+        # 3) DEFAULT values at top of the module
+        config = get_config()
+        cfg_radius = None
+        cfg_dt = None
+        cfg_ddepth = None
+        cfg_dmag = None
+        cfg_user = None
+        cfg_password = None
+        if 'fetchers' in config:
+            if 'KNETFetcher' in config['fetchers']:
+                fetch_cfg = config['fetchers']['KNETFetcher']
+                if 'radius' in fetch_cfg:
+                    cfg_radius = float(fetch_cfg['radius'])
+                if 'dt' in fetch_cfg:
+                    cfg_dt = float(fetch_cfg['dt'])
+                if 'ddepth' in fetch_cfg:
+                    cfg_ddepth = float(fetch_cfg['ddepth'])
+                if 'dmag' in fetch_cfg:
+                    cfg_dmag = float(fetch_cfg['dmag'])
+                if 'user' in fetch_cfg:
+                    cfg_user = fetch_cfg['user']
+                if 'password' in fetch_cfg:
+                    cfg_password = fetch_cfg['password']
+
+        radius = _get_first_value(radius, cfg_radius, RADIUS)
+        dt = _get_first_value(dt, cfg_dt, DT)
+        ddepth = _get_first_value(ddepth, cfg_ddepth, DDEPTH)
+        dmag = _get_first_value(dmag, cfg_dmag, DMAG)
+
         # for knet/kiknet, username/password is required
         if user is None or password is None:
-            raise Exception(
-                'Username/password are required to retrieve KNET/KikNET data.')
+            # check to see if those values are configured
+            if cfg_user and cfg_password:
+                user = cfg_user
+                password = cfg_password
+            else:
+                fmt = 'Username/password are required to retrieve KNET/KikNET data.'
+                raise Exception(fmt)
+
         self.user = user
         self.password = password
         tz = pytz.UTC
@@ -106,8 +154,8 @@ class KNETFetcher(DataFetcher):
         """Return a list of dictionaries matching input parameters.
 
         Args:
-            solve (bool): 
-                If set to True, then this method 
+            solve (bool):
+                If set to True, then this method
                 should return a list with a maximum of one event.
 
         Returns:

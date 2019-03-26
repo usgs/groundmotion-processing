@@ -103,3 +103,12 @@ class DataFetcher(object):
                 minevent = event
 
         return minevent
+
+
+def _get_first_value(val1, val2, val3):
+    # return first not-None value from this list
+    if val1 is not None:
+        return val1
+    if val2 is not None:
+        return val2
+    return val3

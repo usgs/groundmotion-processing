@@ -16,7 +16,9 @@ from gmprocess import corner_frequencies
 # Note: no QA on following import because they need to be in namespace to be
 # discovered. They are not called directly so linters will think this is a
 # mistake.
-from gmprocess.pretesting import check_max_amplitude, check_sta_lta  # NOQA
+from gmprocess.pretesting import (check_max_amplitude,
+                                  check_sta_lta,
+                                  check_free_field)  # NOQA
 
 M_TO_CM = 100
 
@@ -131,7 +133,6 @@ def process_streams(streams, origin, config=None):
     # Loop over streams
     for stream in processed_streams:
         for processing_step_dict in processing_steps:
-            stream.check_stream()
             if stream.passed:
                 key_list = list(processing_step_dict.keys())
                 if len(key_list) != 1:
@@ -232,12 +233,11 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                 logging.info('Skipping sensitivity removal because units '
                              'are not counts (integers).')
         else:
-            tr.setParameter('failure', {
-                'module': __file__,
-                'reason': ('This instrument type is not supported. '
-                           'The instrument code must be either H '
-                           '(high gain seismometer) or N (accelerometer).')
-            })
+            reason = ('This instrument type is not supported. '
+                      'The instrument code must be either H '
+                      '(high gain seismometer) or N (accelerometer).')
+            tr.fail(reason)
+
     return st
 
 

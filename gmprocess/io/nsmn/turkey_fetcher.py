@@ -16,9 +16,10 @@ from obspy.core.utcdatetime import UTCDateTime
 import pandas as pd
 
 # local imports
-from gmprocess.io.fetcher import DataFetcher
+from gmprocess.io.fetcher import DataFetcher, _get_first_value
 from gmprocess.io.nsmn.core import read_nsmn
 from gmprocess.streamcollection import StreamCollection
+from gmprocess.config import get_config
 
 
 SEARCH_URL = 'http://kyhdata.deprem.gov.tr/2K/kyhdata_v4.php?dst=TU9EVUxFX05BTUU9ZWFydGhxdWFrZSZNT0RVTEVfVEFTSz1zZWFyY2g%3D'
@@ -49,6 +50,14 @@ EQ_FORM_DATA = {'from_day': '',
 # 2019/03/13-13:48:00.00
 TIMEFMT = '%Y-%m-%dT%H:%M:%S'
 
+# default values for this fetcher
+# if None specified in constructor, AND no parameters specified in
+# config, then use these.
+RADIUS = 100  # kilometers
+DT = 16  # seconds
+DDEPTH = 30  # km
+DMAG = 0.3
+
 
 class TurkeyFetcher(DataFetcher):
     def __init__(self, time, lat, lon,
@@ -75,6 +84,34 @@ class TurkeyFetcher(DataFetcher):
             rawdir (str): Path to location where raw data will be stored.
                           If not specified, raw data will be deleted.
         """
+        # what values do we use for search thresholds?
+        # In order of priority:
+        # 1) Not-None values passed in constructor
+        # 2) Configured values
+        # 3) DEFAULT values at top of the module
+        config = get_config()
+        cfg_radius = None
+        cfg_dt = None
+        cfg_ddepth = None
+        cfg_dmag = None
+
+        if 'fetchers' in config:
+            if 'TurkeyFetcher' in config['fetchers']:
+                fetch_cfg = config['fetchers']['KNETFetcher']
+                if 'radius' in fetch_cfg:
+                    cfg_radius = float(fetch_cfg['radius'])
+                if 'dt' in fetch_cfg:
+                    cfg_dt = float(fetch_cfg['dt'])
+                if 'ddepth' in fetch_cfg:
+                    cfg_ddepth = float(fetch_cfg['ddepth'])
+                if 'dmag' in fetch_cfg:
+                    cfg_dmag = float(fetch_cfg['dmag'])
+
+        radius = _get_first_value(radius, cfg_radius, RADIUS)
+        dt = _get_first_value(dt, cfg_dt, DT)
+        ddepth = _get_first_value(ddepth, cfg_ddepth, DDEPTH)
+        dmag = _get_first_value(dmag, cfg_dmag, DMAG)
+
         tz = pytz.UTC
         self.time = tz.localize(time)
         self.lat = lat

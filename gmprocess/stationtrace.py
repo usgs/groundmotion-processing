@@ -4,6 +4,7 @@ import logging
 from datetime import datetime
 import getpass
 import re
+import inspect
 
 # third party imports
 import numpy as np
@@ -209,6 +210,24 @@ class StationTrace(Trace):
                 return False
 
         return True
+
+    def fail(self, reason):
+        """Note that a check on this StationTrace failed for a given reason.
+
+        This method will set the parameter "failure", and store the reason
+        provided, plus the name of the calling function.
+
+        Args:
+            reason (str):
+                Reason given for failure.
+
+        """
+        istack = inspect.stack()
+        calling_module = istack[1][3]
+        self.setParameter('failure', {
+            'module': calling_module,
+            'reason': reason
+        })
 
     def validate(self):
         """Ensure that all required metadata fields have been set.
