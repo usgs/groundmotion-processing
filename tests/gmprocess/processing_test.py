@@ -78,23 +78,30 @@ def test_free_field():
 
     processed_streams = process_streams(sc, origin)
 
-    # since the grouping isn't the same on different platforms, we're
-    # sorting the processed streams here
-    newstreams = sorted(processed_streams,
-                        key=lambda stream: stream[0].stats.station)
-
     # all of these streams should have failed for different reasons
     cmp_reasons = ['Failed sta/lta check.',
-                   'Failed free field sensor check.',
                    'Failed sta/lta check.',
+                   'Failed free field sensor check.',
                    'Failed free field sensor check.']
+    stream1 = find_stream(processed_streams, 'NGNH35', True)
+    stream2 = find_stream(processed_streams, 'NGNH31', True)
+    stream3 = find_stream(processed_streams, 'NGNH31', False)
+    stream4 = find_stream(processed_streams, 'NGNH35', False)
     reasons = []
-    reasons.append(newstreams[0][2].getParameter('failure')['reason'])
-    reasons.append(newstreams[1][0].getParameter('failure')['reason'])
-    reasons.append(newstreams[2][0].getParameter('failure')['reason'])
-    reasons.append(newstreams[3][0].getParameter('failure')['reason'])
+    reasons.append(stream1[0].getParameter('failure')['reason'])
+    reasons.append(stream2[2].getParameter('failure')['reason'])
+    reasons.append(stream3[0].getParameter('failure')['reason'])
+    reasons.append(stream4[0].getParameter('failure')['reason'])
     for cmpreason, reason in zip(cmp_reasons, reasons):
         assert cmpreason == reason
+
+
+def find_stream(streams, station, is_free):
+    for stream in streams:
+        c1 = stream[0].stats.station == station
+        c2 = stream[0].free_field == is_free
+        if c1 and c2:
+            return stream
 
 
 if __name__ == '__main__':
