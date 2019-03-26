@@ -1,5 +1,5 @@
 # stdlib imports
-from datetime import timedelta
+from datetime import timedelta, datetime
 import tempfile
 import os.path
 import io
@@ -66,6 +66,12 @@ class GeoNetFetcher(DataFetcher):
         self.magnitude = magnitude
         self.ddepth = ddepth
         self.dmag = dmag
+        xmin = 158.555
+        xmax = 192.656
+        ymin = -51.553
+        ymax = -26.809
+        # this announces to the world the valid bounds for this fetcher.
+        self.BOUNDS = [xmin, xmax, ymin, ymax]
 
     def getMatchingEvents(self, solve=True):
         """Return a list of dictionaries matching input parameters.
@@ -121,7 +127,7 @@ class GeoNetFetcher(DataFetcher):
             event = self.solveEvents(events)
             events = [event]
 
-        return [events]
+        return events
 
     def retrieveData(self, event_dict):
         """Retrieve data from GeoNet FTP, turn into StreamCollection.
@@ -137,6 +143,9 @@ class GeoNetFetcher(DataFetcher):
         rawdir = self.rawdir
         if self.rawdir is None:
             rawdir = tempfile.mkdtemp()
+        else:
+            if not os.path.isdir(rawdir):
+                os.makedirs(rawdir)
         etime = event_dict['time']
         neturl = GEOBASE.replace('[YEAR]', str(etime.year))
         monthstr = etime.strftime('%m_%b')
@@ -155,8 +164,13 @@ class GeoNetFetcher(DataFetcher):
         os.chdir(rawdir)
         datafiles = []
 
+        # we cannot depend on the time given to us by the GeoNet catalog to match
+        # the directory name on the FTP site, so we must do a secondary matching.
+        dirlist = ftp.nlst()
+        fname = _match_closest_time(etime, dirlist)
+
         # create the event folder name from the time we got above
-        fname = etime.strftime('%Y-%m-%d_%H%M%S')
+        # fname = etime.strftime('%Y-%m-%d_%H%M%S')
 
         try:
             ftp.cwd(fname)
@@ -193,11 +207,30 @@ class GeoNetFetcher(DataFetcher):
         ftp.quit()
         streams = []
         for dfile in datafiles:
-            print(dfile)
-            streams += read_geonet(dfile)
+            logging.info('Reading GeoNet file %s...' % dfile)
+            try:
+                tstreams = read_geonet(dfile)
+                streams += tstreams
+            except Exception as e:
+                fmt = 'Failed to read GeoNet file "%s" due to error "%s". Continuing.'
+                tpl = (dfile, str(e))
+                logging.warn(fmt % tpl)
 
         if self.rawdir is None:
             shutil.rmtree(rawdir)
 
         stream_collection = StreamCollection(streams=streams)
         return stream_collection
+
+
+def _match_closest_time(etime, dirlist):
+    timefmt = '%Y-%m-%d_%H%M%S'
+    etimes = [np.datetime64(datetime.strptime(dirname, timefmt))
+              for dirname in dirlist]
+    etime = np.datetime64(etime)
+    dtimes = np.abs(etimes - etime)
+
+    new_etime = etimes[dtimes.argmin()]
+    newtime = datetime.strptime(str(new_etime)[0:19], TIMEFMT)
+    fname = newtime.strftime('%Y-%m-%d_%H%M%S')
+    return fname

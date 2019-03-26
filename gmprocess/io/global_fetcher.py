@@ -1,0 +1,118 @@
+# stdlib imports
+import importlib
+import pkg_resources
+import inspect
+import os.path
+import logging
+
+# local imports
+from .fetcher import DataFetcher
+from gmprocess.config import get_config
+
+
+def fetch_data(time, lat, lon,
+               depth, magnitude,
+               radius=100, dt=16, ddepth=30,
+               dmag=0.3,
+               rawdir=None):
+    """Retrieve data using any DataFetcher subclass.
+
+    Args:
+        time (datetime): Origin time.
+        lat (float): Origin latitude.
+        lon (float): Origin longitude.
+        depth (float): Origin depth.
+        magnitude (float): Origin magnitude.
+        radius (float): Search radius (km).
+        dt (float): Search time window (sec).
+        ddepth (float): Search depth window (km).
+        dmag (float): Search magnitude window (magnitude units).
+        rawdir (str): Path to location where raw data will be stored.
+                        If not specified, raw data will be deleted.
+
+     Returns:
+        StreamCollection: StreamCollection object.
+    """
+
+    config = get_config()
+    fetchconf = {}
+    if 'fetchers' in config:
+        fetchconf = config['fetchers']
+
+    fetchers = find_fetchers(lat, lon)
+    instances = []
+    for fetchname, fetcher in fetchers.items():
+        user = None
+        password = None
+        if fetchname in fetchconf:
+            user = fetchconf[fetchname]['user']
+            password = fetchconf[fetchname]['password']
+        try:
+            fetchinst = fetcher(time, lat, lon,
+                                depth, magnitude,
+                                user=user, password=password,
+                                radius=radius, dt=dt, ddepth=ddepth,
+                                dmag=dmag, rawdir=rawdir)
+        except Exception as e:
+            msg = 'Could not instantiate Fetcher %s, due to error "%s"'
+            tpl = (fetchname, str(e))
+            logging.warn(msg % tpl)
+            continue
+        xmin, xmax, ymin, ymax = fetchinst.BOUNDS
+        if (xmin < lon < xmax) and (ymin < lat < ymax):
+            instances.append(fetchinst)
+
+    efmt = '%s M%.1f (%.4f,%.4f)'
+    etpl = (time, magnitude, lat, lon)
+    esummary = efmt % etpl
+    streams = None
+    for fetcher in instances:
+        if 'FDSN' in str(fetcher):
+            streams = fetcher.retrieveData()
+        else:
+            events = fetcher.getMatchingEvents(solve=True)
+            if not len(events):
+                msg = 'No event matching %s found by class %s'
+                logging.warn(msg % (esummary, str(fetcher)))
+                continue
+            if streams is None:
+                streams = fetcher.retrieveData(events[0])
+            else:
+                streams = fetcher.retrieveData(events[0])
+    if streams is None:
+        streams = []
+    return streams
+
+
+def find_fetchers(lat, lon):
+    """Create a dictionary of classname:class to be used in main().
+
+    Args:
+        lat (float): Origin latitude.
+        lon (float): Origin longitude.
+
+    Returns:
+        dict: Dictionary of classname:class where each class
+            is a subclass of shakemap.coremods.base.CoreModule.
+    """
+
+    fetchers = {}
+    root = os.path.abspath(
+        pkg_resources.resource_filename('gmprocess', 'io'))
+    for (rootdir, dirs, files) in os.walk(root):
+        if rootdir == root:
+            continue
+        for tfile in files:
+            modfile = os.path.join(rootdir, tfile)
+            modname = modfile[modfile.rfind(
+                'gmprocess'):].replace('.py', '')
+            modname = modname.replace(os.path.sep, '.')
+            if modname.find('__') >= 0:
+                continue
+            mod = importlib.import_module(modname)
+            for name, obj in inspect.getmembers(mod):
+                if name == 'DataFetcher':
+                    continue
+                if inspect.isclass(obj) and issubclass(obj, DataFetcher):
+                    fetchers[name] = obj
+    return fetchers

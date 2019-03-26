@@ -86,6 +86,12 @@ class TurkeyFetcher(DataFetcher):
         self.magnitude = magnitude
         self.ddepth = ddepth
         self.dmag = dmag
+        xmin = 25.664
+        xmax = 46.67
+        ymin = 34.132
+        ymax = 43.555
+        # this announces to the world the valid bounds for this fetcher.
+        self.BOUNDS = [xmin, xmax, ymin, ymax]
 
     def getMatchingEvents(self, solve=True):
         """Return a list of dictionaries matching input parameters.
@@ -142,6 +148,10 @@ class TurkeyFetcher(DataFetcher):
         rawdir = self.rawdir
         if self.rawdir is None:
             rawdir = tempfile.mkdtemp()
+        else:
+            if not os.path.isdir(rawdir):
+                os.makedirs(rawdir)
+
         urlparts = urlparse(SEARCH_URL)
         req = requests.get(event_dict['url'])
         data = req.text
@@ -172,6 +182,7 @@ class TurkeyFetcher(DataFetcher):
 
         streams = []
         for dfile in datafiles:
+            logging.info('Reading datafile %s...' % dfile)
             streams += read_nsmn(dfile)
 
         if self.rawdir is None:
@@ -226,6 +237,7 @@ def get_turkey_dataframe(time, dt):
         eid = cols[0].contents[0].contents[0]
         datestr = str(cols[1].contents[0])
         timestr = str(cols[2].contents[0])
+        timestr = timestr[0:8]
         lat = float(str(cols[3].contents[0]))
         lon = float(str(cols[4].contents[0]))
         depth = float(str(cols[5].contents[0]))

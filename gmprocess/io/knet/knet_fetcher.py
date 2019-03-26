@@ -7,6 +7,7 @@ import os.path
 import tarfile
 import glob
 import shutil
+import logging
 
 # third party imports
 import pytz
@@ -94,6 +95,12 @@ class KNETFetcher(DataFetcher):
         self.ddepth = ddepth
         self.dmag = dmag
         self.jptime = self.time + timedelta(seconds=JST_OFFSET)
+        xmin = 127.705
+        xmax = 147.393
+        ymin = 29.428
+        ymax = 46.109
+        # this announces to the world the valid bounds for this fetcher.
+        self.BOUNDS = [xmin, xmax, ymin, ymax]
 
     def getMatchingEvents(self, solve=True):
         """Return a list of dictionaries matching input parameters.
@@ -195,24 +202,31 @@ class KNETFetcher(DataFetcher):
         rawdir = self.rawdir
         if self.rawdir is None:
             rawdir = tempfile.mkdtemp()
+        else:
+            if not os.path.isdir(rawdir):
+                os.makedirs(rawdir)
 
         cgi_value = event_dict['cgi_value']
         firstid = cgi_value.split(',')[0]
+        dtime = event_dict['time']
+        fname = dtime.strftime('%Y%m%d%H%M%S') + '.tar'
+
+        localfile = os.path.join(rawdir, fname)
 
         url = RETRIEVE_URL
         payload = {'formattype': ['A'],
                    'eqidlist': cgi_value,
                    'datanames': '%s;alldata' % firstid,
                    'datakind': ['all']}
+        logging.info('Downloading Japanese data into %s...' % localfile)
         req = requests.get(url, params=payload,
                            auth=(self.user, self.password))
-        dtime = event_dict['time']
-        fname = dtime.strftime('%Y%m%d%H%M%S') + '.tar'
-        localfile = os.path.join(rawdir, fname)
+
         if req.status_code == 200:
             with open(localfile, 'wb') as f:
                 for chunk in req:
                     f.write(chunk)
+        logging.info('Finished downloading into %s...' % localfile)
 
         # open the tarball, extract the kiknet/knet gzipped tarballs
         tar = tarfile.open(localfile)
@@ -248,7 +262,7 @@ class KNETFetcher(DataFetcher):
                 os.remove(gzfile)
             datafiles = glob.glob(os.path.join(subdir, '*.*'))
             for dfile in datafiles:
-                print(dfile)
+                logging.info('Reading KNET/KikNet file %s...' % dfile)
                 streams += read_knet(dfile)
 
         if self.rawdir is None:

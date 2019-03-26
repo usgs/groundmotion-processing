@@ -134,7 +134,10 @@ def _read_header(filename):
 
         coordstr = lines[7].split(':')[1].replace('-', '')
         lat_str, lon_str = re.findall(FLOATRE, coordstr)
-        altitude = float(lines[8].split(':')[1].strip())
+        altparts = lines[8].split(':')
+        altitude = 0.0
+        if len(altparts) > 1 and len(altparts[1].strip()):
+            altitude = float(altparts[1].strip())
         coords = {'latitude': float(lat_str),
                   'longitude': float(lon_str),
                   'elevation': altitude}

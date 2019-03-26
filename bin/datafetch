@@ -1,0 +1,178 @@
+#!/usr/bin/env python
+
+import argparse
+import os
+import sys
+from datetime import datetime
+import logging
+import warnings
+
+# third party imports
+from h5py.h5py_warnings import H5pyDeprecationWarning
+
+from gmprocess.io.global_fetcher import fetch_data
+from gmprocess.logging import setup_logger
+from gmprocess.args import add_shared_args
+from gmprocess.config import get_config
+from gmprocess.event import get_event_dict, get_event_object
+from gmprocess.io.read_directory import directory_to_streams
+from gmprocess.streamcollection import StreamCollection
+from gmprocess.stream import streams_to_dataframe
+from gmprocess.processing import process_streams
+from gmprocess.io.asdf.stream_workspace import StreamWorkspace
+from gmprocess.stationstream import StationStream
+
+
+CONFIG = get_config()
+TIMEFMT = '%Y-%m-%dT%H:%M:%S'
+
+
+def parse_eventinfo(arginfo):
+    timestr, latstr, lonstr, depstr, magstr = arginfo
+    etime = datetime.strptime(timestr, TIMEFMT)
+    elat = float(latstr)
+    elon = float(lonstr)
+    edepth = float(depstr)
+    emag = float(magstr)
+    idstr = etime.strftime('%Y%m%d%H%M%S')
+
+    edict = {'id': idstr,
+             'time': etime,
+             'lat': elat,
+             'lon': elon,
+             'depth': edepth,
+             'magnitude': emag}
+    return edict
+
+
+def main(pparser, args):
+    if not args.eventid and not args.eventinfo:
+        print('Must specify either ComCat ID or event information')
+        pparser.print_help()
+        sys.exit(1)
+
+    setup_logger(args)
+    logging.info("Running datafetch.")
+
+    if args.eventid:
+        edict = get_event_dict(args.eventid)
+        etime = edict['time'].datetime
+    else:
+        edict = parse_eventinfo(args.eventinfo)
+        etime = edict['time']
+
+    if args.directory:
+        streams, bad, errors = directory_to_streams(args.directory)
+        collection = StreamCollection(streams)
+    else:
+        collection = fetch_data(etime,
+                                edict['lat'],
+                                edict['lon'],
+                                edict['depth'],
+                                edict['magnitude'],
+                                rawdir=args.rawdir)
+    if not len(collection):
+        print('No data files found.')
+        sys.exit(0)
+
+    # temporary hack to drop traces that are non-free field
+    # TODO: Implement this in processing
+    new_streams = []  # list of 1 channel station streams
+    for stream in collection:
+        for trace in stream:
+            if trace.free_field:
+                newstream = StationStream(traces=[trace])
+                new_streams.append(newstream)
+            else:
+                continue
+    new_collection = StreamCollection(new_streams)
+
+    if not os.path.isdir(args.outdir):
+        os.makedirs(args.outdir)
+
+    processed = process_streams(new_collection, edict)
+    dataframe = streams_to_dataframe(processed, process=False)
+
+    if args.plot:
+        plotdir = os.path.join(args.outdir, 'plots')
+        if not os.path.isdir(plotdir):
+            os.makedirs(plotdir)
+        for stream in processed:
+            network = stream[0].stats.network
+            station = stream[0].stats.station
+            fname = '%s.%s.png' % (network, station)
+            filename = os.path.join(plotdir, fname)
+            stream.plot(outfile=filename)
+
+    basename = edict['time'].strftime('%Y%m%d%H%M%S')
+    if args.eventid:
+        basename = args.eventid
+
+    framename = os.path.join(args.outdir, basename + '_metrics.csv')
+    workname = os.path.join(args.outdir, basename + '_workspace.hdf')
+    if args.format == 'excel':
+        framename = os.path.join(args.outdir, basename + '_metrics.xlsx')
+
+    # save the waveform data to an ASDF file.
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=H5pyDeprecationWarning)
+        event = get_event_object(edict)
+        if os.path.isfile(workname):
+            os.remove(workname)
+        workspace = StreamWorkspace(workname)
+        workspace.addStreams(event, new_collection)
+        workspace.addStreams(event, processed, label='processed')
+        workspace.close()
+
+    # save dataframe to desired format
+    if args.format == 'csv':
+        dataframe.to_csv(framename, index=False)
+    else:
+        dataframe.to_excel(framename)
+
+    print('Data from %i channels saved to %s' % (len(processed), args.outdir))
+    print('Metrics: %s' % framename)
+    print('Waveforms: %s' % workname)
+    if args.plot:
+        logging.info('%i plots saved to %s.' % (len(new_collection), plotdir))
+    sys.exit(0)
+
+
+if __name__ == '__main__':
+    desc = """Fetch data from any available online data source.
+
+    Creates in outdir:
+        - ASDF file containing original (possibly raw) and processed waveforms.
+        - CSV/Excel file containing configured stream metrics.
+
+    These files will be named with ComCat ID if specified, otherwise by
+    event time.
+
+    If rawdir is specified, then original waveform files will be saved there,
+    otherwise these will be deleted after processing.
+    """
+    parser = argparse.ArgumentParser(description=desc)
+
+    # Required arguments
+    parser.add_argument('outdir', help='Output file directory', type=str)
+
+    # non-positional arguments
+    parser.add_argument('-i', '--eventid', help='ComCat Event ID')
+    parser.add_argument('-e', '--eventinfo', type=str, nargs=5,
+                        metavar=('TIME', 'LAT', 'LON', 'DEPTH', 'MAG'),
+                        help='Event information as TIME(YYYY-MM-DDTHH:MM:SS) LAT LON DEP MAG')
+    parser.add_argument('-f', '--format',
+                        help='Output format for metrics information',
+                        choices=['excel', 'csv'], default='csv')
+    parser.add_argument('-p', '--plot', action='store_true',
+                        help='Make plots of processed waveforms')
+    parser.add_argument('-r', '--rawdir',
+                        help='Directory to store raw data files')
+    hstr = 'Sidestep online data retrieval, read from local directory.'
+    parser.add_argument('--directory',
+                        help=hstr)
+    # Shared arguments
+    parser = add_shared_args(parser)
+
+    pargs = parser.parse_args()
+    main(parser, pargs)
