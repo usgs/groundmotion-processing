@@ -167,9 +167,10 @@ def read_knet(filename):
     standard['sensor_serial_number'] = ''
     standard['instrument'] = ''
     standard['comments'] = ''
+    standard['structure_type'] = ''
     if dir_string in ['1', '2', '3']:
         standard['structure_type'] = 'borehole'
-    standard['structure_type'] = ''
+
     standard['corner_frequency'] = np.nan
     standard['units'] = 'acc'
     standard['source'] = SRC

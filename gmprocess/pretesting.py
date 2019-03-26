@@ -26,8 +26,15 @@ def check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0):
     '''
     for tr in st:
         sr = tr.stats.sampling_rate
-        sta_lta = classic_sta_lta(tr, sta_length * sr + 1, lta_length * sr + 1)
-        if max(sta_lta) < threshold:
+        nlta = lta_length * sr + 1
+        failed = False
+        if len(tr) >= nlta:
+            sta_lta = classic_sta_lta(tr, sta_length * sr + 1, nlta)
+            if max(sta_lta) < threshold:
+                failed = True
+        else:
+            failed = True
+        if failed:
             tr.setParameter('failed', {
                 'module': __file__,
                 'reason': 'Failed sta/lta check.'
@@ -53,8 +60,8 @@ def check_max_amplitude(st, min=5, max=2e6):
     """
     for tr in st:
         if isinstance(tr.data[0], int):
-            if (abs(tr.max()) < float(min) or
-                    abs(tr.max()) > float(max)):
+            if (abs(tr.max()) < float(min)
+                    or abs(tr.max()) > float(max)):
                 tr.setParameter('failed', {
                     'module': __file__,
                     'reason': 'Failed max amplitude check.'

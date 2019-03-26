@@ -3,6 +3,7 @@ import json
 import logging
 from datetime import datetime
 import getpass
+import re
 
 # third party imports
 import numpy as np
@@ -188,6 +189,26 @@ class StationTrace(Trace):
         self.provenance = []
         self.parameters = {}
         self.validate()
+
+    @property
+    def free_field(self):
+        """Is this station a free-field station?
+
+        Returns:
+            bool: True if a free-field sensor, False if not.
+        """
+        stype = self.stats.standard['structure_type']
+        non_free = ['building',
+                    'bridge',
+                    'dam',
+                    'borehole',
+                    'roof',
+                    'floor']
+        for ftype in non_free:
+            if re.search(ftype, stype.lower()) is not None:
+                return False
+
+        return True
 
     def validate(self):
         """Ensure that all required metadata fields have been set.
