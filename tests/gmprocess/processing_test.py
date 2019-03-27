@@ -79,29 +79,19 @@ def test_free_field():
     processed_streams = process_streams(sc, origin)
 
     # all of these streams should have failed for different reasons
-    cmp_reasons = ['Failed sta/lta check.',
-                   'Failed sta/lta check.',
-                   'Failed free field sensor check.',
-                   'Failed free field sensor check.']
-    stream1 = find_stream(processed_streams, 'NGNH35', True)
-    stream2 = find_stream(processed_streams, 'NGNH31', True)
-    stream3 = find_stream(processed_streams, 'NGNH31', False)
-    stream4 = find_stream(processed_streams, 'NGNH35', False)
-    reasons = []
-    reasons.append(stream1[0].getParameter('failure')['reason'])
-    reasons.append(stream2[2].getParameter('failure')['reason'])
-    reasons.append(stream3[0].getParameter('failure')['reason'])
-    reasons.append(stream4[0].getParameter('failure')['reason'])
-    for cmpreason, reason in zip(cmp_reasons, reasons):
-        assert cmpreason == reason
-
-
-def find_stream(streams, station, is_free):
-    for stream in streams:
-        c1 = stream[0].stats.station == station
-        c2 = stream[0].free_field == is_free
-        if c1 and c2:
-            return stream
+    npassed = np.sum([pstream.passed for pstream in processed_streams])
+    assert npassed == 0
+    for pstream in processed_streams:
+        is_free = pstream[0].free_field
+        reason = ''
+        for trace in pstream:
+            if trace.hasParameter('failure'):
+                reason = trace.getParameter('failure')['reason']
+                break
+        if is_free:
+            assert reason == 'Failed sta/lta check.'
+        else:
+            assert reason == 'Failed free field sensor check.'
 
 
 if __name__ == '__main__':
