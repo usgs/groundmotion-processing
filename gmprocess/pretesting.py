@@ -6,6 +6,14 @@ Pretesting methods.
 from obspy.signal.trigger import classic_sta_lta
 
 
+def check_free_field(stream, reject_non_free_field=False):
+    for trace in stream:
+        if not trace.free_field and reject_non_free_field:
+            trace.fail('Failed free field sensor check.')
+
+    return stream
+
+
 def check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0):
     '''
     Checks that the maximum STA/LTA ratio for AT LEAST ONE of the stream's
@@ -35,10 +43,8 @@ def check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0):
         else:
             failed = True
         if failed:
-            tr.setParameter('failed', {
-                'module': __file__,
-                'reason': 'Failed sta/lta check.'
-            })
+            tr.fail('Failed sta/lta check.')
+
     return st
 
 
@@ -60,10 +66,8 @@ def check_max_amplitude(st, min=5, max=2e6):
     """
     for tr in st:
         if isinstance(tr.data[0], int):
-            if (abs(tr.max()) < float(min)
-                    or abs(tr.max()) > float(max)):
-                tr.setParameter('failed', {
-                    'module': __file__,
-                    'reason': 'Failed max amplitude check.'
-                })
+            if (abs(tr.max()) < float(min) or
+                    abs(tr.max()) > float(max)):
+                tr.fail('Failed max amplitude check.')
+
     return st

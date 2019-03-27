@@ -62,9 +62,6 @@ class StreamCollection(object):
         for stream in self:
             self.__check_sample_rate(stream)
 
-        # Run check_streams to ensure that the 'passed' attribute is set.
-        self.check_streams()
-
     @classmethod
     def from_directory(cls, directory):
         """
@@ -319,15 +316,6 @@ class StreamCollection(object):
         """
         return copy.deepcopy(self)
 
-    def check_streams(self):
-        """
-        Processing checks get regorded as StationTraces parameters. Streams
-        also need to be classified as passed/faild, where if any of the
-        checks have failed for consistent traces then the stream has failed.
-        """
-        for stream in self:
-            stream.check_stream()
-
     def __group_by_net_sta_inst(self):
         trace_list = []
         for stream in self:
@@ -343,6 +331,7 @@ class StreamCollection(object):
             matches = [idx1]
             network = trace1.stats['network']
             station = trace1.stats['station']
+            free_field = trace1.free_field
             # For instrument, use first two characters of the channel
             inst = trace1.stats['channel'][0:2]
             for idx2, trace2 in enumerate(trace_list):
@@ -350,7 +339,8 @@ class StreamCollection(object):
                     if (
                         network == trace2.stats['network'] and
                         station == trace2.stats['station'] and
-                        inst == trace2.stats['channel'][0:2]
+                        inst == trace2.stats['channel'][0:2] and
+                        free_field == trace2.free_field
                     ):
                         matches.append(idx2)
             if len(matches) > 1:

@@ -121,8 +121,9 @@ def get_ingv_shakemap(eventid, catalog='INGV', output_format='event_dat',
     arg_dict = locals()
     del arg_dict['output_format']
     arg_dict['format'] = output_format
-    r = requests.get('http://webservices.ingv.it/ingvws/strongmotion/1/query',
-                     params=arg_dict)
+
+    url = 'http://webservices.ingv.it/ingvws/shakedata/1/query'
+    r = requests.get(url, params=arg_dict)
 
     if r.status_code != 200:
         raise Exception(r.json()['error']['message'])
