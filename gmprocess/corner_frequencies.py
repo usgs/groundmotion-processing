@@ -2,11 +2,11 @@
 """
 Methods for handling/picking corner frequencies.
 """
-import logging
 import numpy as np
 
 from obspy.signal.util import next_pow_2
 
+from gmprocess.plot import plot_SNR
 from gmprocess.config import get_config
 from gmprocess.smoothing.konno_ohmachi import konno_ohmachi_smooth
 
@@ -41,7 +41,7 @@ def constant(st):
 
 
 def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
-        bandwidth=20.0, same_horiz=True):
+        bandwidth=20.0, same_horiz=True, make_plots=False, plot_dir=None):
     """Use constant corner frequencies across all records.
 
     Args:
@@ -58,6 +58,11 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
         same_horiz (bool):
             If True, horizontal traces in the stream must have the same
             corner frequencies.
+        make_plots (bool):
+            If True, will save plots indicating signal and noise spectra, SNR,
+            and the chosen corner frequencies. Saved to plot_dir.
+        plot_dir (str):
+            Directory for saving SNR plots.
 
     Returns:
         stream: stream with selected corner frequencies appended to records.
@@ -82,10 +87,19 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
                      side=TAPER_SIDE)
 
         # Find the number of points for the Fourier transform
+        if signal.stats.npts <= 0 or noise.stats.npts <= 0:
+            tr.fail('Invalid noise window or signal window')
+            continue
+
         nfft = max(next_pow_2(signal.stats.npts), next_pow_2(noise.stats.npts))
 
         # Transform to frequency domain and smooth spectra using
         # konno-ohmachi smoothing
+        sig_spec = abs(np.fft.rfft(signal.data, n=nfft)) / nfft
+        sig_spec_freqs = np.fft.rfftfreq(nfft, signal.stats.delta)
+        noise_spec = abs(np.fft.rfft(noise.data, n=nfft)) / nfft
+        sig_spec -= noise_spec
+
         sig_spec_smooth, freqs_signal = fft_smooth(signal, nfft)
         noise_spec_smooth, freqs_noise = fft_smooth(noise, nfft)
 
@@ -98,8 +112,8 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
         have_low = False
         for idx, freq in enumerate(freqs_signal):
             if have_low is False:
-                if ((sig_spec_smooth[idx] / noise_spec_smooth[idx]) >=
-                        threshold):
+                if ((sig_spec_smooth[idx] / noise_spec_smooth[idx])
+                        >= threshold):
                     lows.append(freq)
                     have_low = True
                 else:
@@ -111,14 +125,12 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
                 else:
                     continue
 
-        # Swap the highs and lows if our SNR at the first frequency was
-        # above the threshold
-        if sig_spec_smooth[0] / noise_spec_smooth[0] >= threshold:
-            lows, highs = highs, lows
-
         # If we didn't find any corners
         if not lows:
-            tr.fail('Failed SNR check.')
+            tr.fail('SNR not greater than required threshold.')
+            plot_SNR(tr, sig_spec, sig_spec_smooth, noise_spec,
+                     noise_spec_smooth, sig_spec_freqs, freqs_signal,
+                     threshold, plot_dir)
             continue
 
         # If we find an extra low, add another high for the maximum frequency
@@ -143,7 +155,12 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
                 }
             )
         else:
-            tr.fail('Failed SNR check.')
+            tr.fail('SNR not met within the required bandwidth.')
+
+        if make_plots:
+            plot_SNR(tr, sig_spec, sig_spec_smooth, noise_spec,
+                     noise_spec_smooth, sig_spec_freqs, freqs_signal,
+                     threshold, plot_dir)
 
     if same_horiz:
 
