@@ -99,6 +99,8 @@ corner_frequencies:
         min_high_freq: 5.0
         bandwidth: 20.0
         same_horiz: True
+        make_plots: False
+        plot_dir: directory
 
 # -----------------------------------------------------------------------------
 # This section is for processing steps that will affect the waveform and get
@@ -107,7 +109,7 @@ processing:
 
     # Check to keep or ignore non-free-field sensors. Typically, these include sensors
     # attached to a large structure (buildings, dams, bridges, etc.)
-    - check_free_field: 
+    - check_free_field:
         reject_non_free_field: True
 
     # Amplitude check to avoid clipping. Units are usually counts (e.g., with
@@ -262,28 +264,28 @@ fetchers:
         user: [USERNAME]
         password: [PASSWORD]
         # define the distance search radius (km)
-        radius : 100  
+        radius : 100
         # define the time search threshokd (sec)
         dt : 60
         # define the depth search threshokd (km)
-        ddepth : 30  
-        # define the magnitude search threshokd (km)    
-        dmag : 0.3 
+        ddepth : 30
+        # define the magnitude search threshokd (km)
+        dmag : 0.3
     GeoNetFetcher:
         # define the distance search radius (km)
-        radius : 100  
+        radius : 100
         # define the time search threshokd (sec)
         dt : 16
         # define the depth search threshokd (km)
-        ddepth : 30  
-        # define the magnitude search threshokd (km)    
-        dmag : 0.3 
+        ddepth : 30
+        # define the magnitude search threshokd (km)
+        dmag : 0.3
     TurkeyFetcher:
         # define the distance search radius (km)
-        radius : 100  
+        radius : 100
         # define the time search threshokd (sec)
         dt : 16
         # define the depth search threshokd (km)
-        ddepth : 30  
-        # define the magnitude search threshokd (km)    
-        dmag : 0.3 
+        ddepth : 30
+        # define the magnitude search threshokd (km)
+        dmag : 0.3

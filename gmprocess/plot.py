@@ -1,4 +1,5 @@
 # stdlib imports
+import os
 import datetime
 import warnings
 
@@ -319,3 +320,107 @@ def plot_moveout(streams, epilat, epilon, channel, cmap='viridis',
         fig.savefig(file, format='png')
     plt.show()
     return (fig, ax)
+
+
+def plot_SNR(tr, sig_spec, sig_spec_smooth, noise_spec, noise_spec_smooth,
+             freqs, freqs_smooth, threshold, save_dir):
+    """
+    Create a plot showing signal-to-noise ratio information, the
+    trace itself, and tables showing provenance and parameter information.
+
+    Args:
+        tr (gmprocess.stationtrace.StationTrace):
+            Trace of data.
+        sig_spec (array-like):
+            Fourier spectrum for the signal window.
+        sig_spec_smooth (array-like):
+            Smoothed Fourier spectrum for the signal window.
+        noise_spec (array-like):
+            Fourier spectrum for the signal.
+        noise_spec_smooth (array-like):
+            Smoothed Fourier spectrum for the noise window.
+        freqs (array-like):
+            Frequencies associated with sig_spec and noise_spec.
+        smooth_freqs (array-like):
+            Frequencies associated with sig_spec_smooth and noise_spec_smooth.
+        threshold (float):
+            Threshold value for SNR.
+        save_dir (str):
+            Directory for saving images.
+    """
+
+    fig = plt.figure(figsize=(10, 10))
+    gs = fig.add_gridspec(3, 3)
+    ax1 = fig.add_subplot(gs[0, :])
+    ax2 = fig.add_subplot(gs[1, 0:2])
+    ax3 = fig.add_subplot(gs[2, 0:2])
+    ax4 = fig.add_subplot(gs[1:3, 2])
+
+    ax1.plot(tr.times('matplotlib'), tr.data, 'k')
+    ax1.xaxis_date()
+    ax1.set_xlabel('Time')
+    ax1.axvline(tr.getParameter('signal_split')['split_time'].datetime,
+                color='red', linestyle='dashed')
+
+    ax2.loglog(freqs, sig_spec, color='lightblue')
+    ax2.loglog(freqs_smooth, sig_spec_smooth, color='blue', label='Signal')
+    ax2.loglog(freqs, noise_spec, color='salmon')
+    ax2.loglog(freqs_smooth, noise_spec_smooth, color='red', label='Noise')
+    ax2.set_xlabel('Frequency (Hz)')
+    ax2.set_ylabel('Amplitude')
+
+    ax3.loglog(freqs_smooth, sig_spec_smooth / noise_spec_smooth, label='SNR')
+    ax3.axhline(threshold, color='green', linestyle='--', label='Threshold')
+    ax3.set_ylabel('SNR')
+
+    if 'corner_frequencies' in tr.getParameterKeys():
+        hp = tr.getParameter('corner_frequencies')['highpass']
+        lp = tr.getParameter('corner_frequencies')['lowpass']
+        ax3.axvline(hp, color='orange', label='SNR Highpass')
+        ax3.axvline(lp, color='purple', label='SNR Highpass')
+
+    provinfo = []
+    labels = []
+    prov = tr.getAllProvenance()
+    print(prov)
+    for provdict in prov:
+        provid = provdict['prov_id']
+        attr_str = ''
+        for item in provdict['prov_attributes'].items():
+            attr_str += str(item[0]) + ': ' + str(item[1]) + '\n'
+        labels.append(provid)
+        provinfo.append([attr_str])
+
+    ax4.axis('off')
+    ax4.table(cellText=provinfo, rowLabels=labels, bbox=(0.3, 0.5, 0.7, 0.34))
+    ax4.annotate('Provenance', xy=(0.68, 0.85))
+
+    paraminfo = []
+    labels = []
+    for param in tr.getParameterKeys():
+
+        if isinstance(tr.getParameter(param), dict):
+            paramdict = tr.getParameter(param)
+            attr_str = ''
+            for item in paramdict.items():
+                attr_str += str(item[0]) + ': ' + str(item[1]) + '\n'
+            paraminfo.append([attr_str])
+        else:
+            paraminfo.append([tr.getParameter(param)])
+        labels.append(param)
+
+    ax4.table(cellText=paraminfo, rowLabels=labels, bbox=(0.3, 0.0, 0.7, 0.4))
+    ax4.annotate('Parameters', xy=(0.68, 0.41))
+
+    handles, labels = [], []
+    for ax in [ax1, ax2, ax3]:
+        handles += ax.get_legend_handles_labels()[0]
+        labels += ax.get_legend_handles_labels()[1]
+
+    ax4.legend(handles, labels, loc='upper right', ncol=2, borderaxespad=0)
+    fig.suptitle(tr.get_id(), fontsize=18)
+    plt.tight_layout()
+    plt.subplots_adjust(top=0.95)
+    plt.savefig(fname=os.path.join(save_dir, tr.get_id() + '.png'),
+                bbox_inches='tight')
+    plt.show()
