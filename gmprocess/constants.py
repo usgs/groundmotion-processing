@@ -1,7 +1,7 @@
 import scipy.constants as sp
 
-CONFIG_FILE = '.gmprocess/config.yml'
-PICKER_FILE = '.gmprocess/picker.yml'
+CONFIG_FILE = 'config.yml'
+PICKER_FILE = 'picker.yml'
 GAL_TO_PCTG = 1 / sp.g
 
 # Converts acceleration units to cm/s/s

@@ -23,4 +23,5 @@ def test_get_nga_record_sequence_no():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_get_nga_record_sequence_no()

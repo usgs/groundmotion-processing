@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import numpy as np
 from gmprocess import spectrum
 
@@ -21,5 +22,6 @@ def test_fff():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_spectrum()
     test_fff()

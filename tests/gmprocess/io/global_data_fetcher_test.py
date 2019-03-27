@@ -2,7 +2,7 @@
 
 from gmprocess.io.global_fetcher import fetch_data
 from datetime import datetime
-import os.path
+import os
 
 
 def fetcher_test():
@@ -44,4 +44,5 @@ def fetcher_test():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     fetcher_test()

@@ -22,9 +22,6 @@ from obspy.signal.trigger import ar_pick, pk_baer
 from gmprocess.phase import PowerPicker
 from gmprocess.config import get_config
 
-CONFIG = get_config()
-PICKER_CONFIG = get_config(picker=True)
-
 
 def signal_split(
         st, event_time=None, event_lon=None, event_lat=None,
@@ -63,7 +60,7 @@ def signal_split(
         stats['processing_parameters']['signal_split'] dictionary.
     """
     if picker_config is None:
-        picker_config = PICKER_CONFIG
+        picker_config = get_config(picker=True)
 
     if method == 'p_arrival':
         preferred_picker = picker_config['order_of_preference'][0]

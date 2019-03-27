@@ -3,7 +3,7 @@
 import sys
 from gmprocess.io.geonet.geonet_fetcher import GeoNetFetcher
 from datetime import datetime, timedelta
-import os.path
+import os
 
 import numpy as np
 
@@ -52,4 +52,5 @@ def fetcher_test():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     fetcher_test()

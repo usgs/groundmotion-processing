@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import numpy as np
 
 from gmprocess.io.nsmn.core import is_nsmn, read_nsmn
@@ -39,4 +40,5 @@ def test_nsmn():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_nsmn()

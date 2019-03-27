@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os.path
+import os
 import shutil
 import time
 import tempfile
@@ -258,5 +258,6 @@ def test_raw():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_raw()
     test_workspace()

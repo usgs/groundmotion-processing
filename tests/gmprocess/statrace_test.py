@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import numpy as np
 from obspy.core.utcdatetime import UTCDateTime
 
@@ -34,4 +35,5 @@ def test_trace():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_trace()

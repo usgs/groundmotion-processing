@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # stdlib imports
-import os.path
+import os
 import tempfile
 from datetime import datetime, timedelta
 
@@ -42,8 +42,10 @@ def test_dmg_non_spec():
     stream = read_dmg(file1)[0]
     trace1 = stream[0]
     # Data is in g not gal so it must be scaled by 980.665
-    np.testing.assert_almost_equal(trace1.data[0], -0.000116 * UNIT_CONVERSIONS['g'])
-    np.testing.assert_almost_equal(trace1.data[-8], -0.003018 * UNIT_CONVERSIONS['g'])
+    np.testing.assert_almost_equal(
+        trace1.data[0], -0.000116 * UNIT_CONVERSIONS['g'])
+    np.testing.assert_almost_equal(
+        trace1.data[-8], -0.003018 * UNIT_CONVERSIONS['g'])
 
 
 def test_dmg_v1():
@@ -237,6 +239,7 @@ def test_dmg():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_dmg_non_spec()
     test_time()
     test_dmg_v1()

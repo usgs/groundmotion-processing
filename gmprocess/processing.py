@@ -22,7 +22,6 @@ from gmprocess.pretesting import (check_max_amplitude,
 
 M_TO_CM = 100
 
-CONFIG = get_config()
 
 TAPER_TYPES = {
     'cosine': 'Cosine',
@@ -76,7 +75,7 @@ def process_streams(streams, origin, config=None):
         raise ValueError('streams must be a StreamCollection instance.')
 
     if config is None:
-        config = CONFIG
+        config = get_config()
 
     logging.info('Processing streams...')
 

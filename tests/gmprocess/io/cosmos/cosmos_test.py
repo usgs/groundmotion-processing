@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os.path
+import os
 import numpy as np
 from gmprocess.io.cosmos.core import is_cosmos, read_cosmos
 from gmprocess.io.test_utils import read_data_dir
@@ -26,7 +26,7 @@ def test_cosmos():
 
     stats = stream1[0].stats
     assert stats['station'] == 'J2236'
-    assert stats['delta'] == 0.01 # was .005
+    assert stats['delta'] == 0.01  # was .005
     assert stats['location'] == '02'
     assert stats['network'] == 'CE'
     dt = '%Y-%m-%dT%H:%M:%SZ'
@@ -114,5 +114,6 @@ def test_channel_in_filename():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_cosmos()
     test_channel_in_filename()
