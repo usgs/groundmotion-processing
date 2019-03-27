@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import numpy as np
 
 from gmprocess.io.bhrc.core import is_bhrc, read_bhrc
@@ -38,4 +39,5 @@ def test_bhrc():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_bhrc()

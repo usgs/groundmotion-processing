@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os.path
+import os
 import numpy as np
 from gmprocess.io.knet.core import is_knet, read_knet
 
@@ -72,4 +72,5 @@ def test():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test()

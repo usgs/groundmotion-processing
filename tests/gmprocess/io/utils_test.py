@@ -1,4 +1,6 @@
+#!/usr/bin/env python
 
+import os
 import numpy as np
 
 from gmprocess.io.test_utils import read_data_dir
@@ -18,4 +20,5 @@ def test_uneven_samples():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_uneven_samples()

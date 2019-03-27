@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os.path
+import os
 import numpy as np
 from gmprocess.io.geonet.core import is_geonet, read_geonet
 
@@ -86,4 +86,5 @@ def test():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test()

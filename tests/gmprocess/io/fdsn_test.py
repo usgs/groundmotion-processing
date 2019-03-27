@@ -49,4 +49,5 @@ def _test_fetch():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     _test_fetch()

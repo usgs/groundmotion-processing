@@ -28,8 +28,8 @@ def main(args):
     install_data_path_dict = {}
 
     for config in CONFIG_FILES:
-        install_conf_path = os.path.join(home_path, config)
-        data_conf_path = os.path.join(data_path, config.split('/')[1])
+        install_conf_path = os.path.join(home_path, '.gmprocess', config)
+        data_conf_path = os.path.join(data_path, config)
         install_data_path_dict[install_conf_path] = data_conf_path
 
     install_dir = os.path.join(home_path, ".gmprocess")

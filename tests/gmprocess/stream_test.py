@@ -2,7 +2,7 @@
 
 # stdlib imports
 import glob
-import os.path
+import os
 
 # third party imports
 import numpy as np
@@ -284,6 +284,7 @@ def _test_to_dataframe():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_grouping()
     test()
     # test_to_dataframe()

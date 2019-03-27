@@ -2,7 +2,7 @@
 
 from gmprocess.io.nsmn.turkey_fetcher import TurkeyFetcher
 from datetime import datetime
-import os.path
+import os
 import logging
 
 
@@ -26,4 +26,5 @@ def fetcher_test():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     fetcher_test()

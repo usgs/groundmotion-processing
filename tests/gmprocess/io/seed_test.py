@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-
+import os
 from gmprocess.io.seedname import get_channel_name
 
 
@@ -37,4 +37,5 @@ def test_channel():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_channel()

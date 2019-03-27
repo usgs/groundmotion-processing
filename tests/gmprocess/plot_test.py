@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 # stdlib imports
-import glob
 import os.path
 import matplotlib
 
@@ -26,8 +25,9 @@ def test_plot():
     axs = axs.flatten()
     idx = 0
     for stream in streams:
-        axs = plot_arias(stream, axes=axs, axis_index=idx, minfontsize=15,
-                         show_maximum=False, title="18km NNE of Hualian, Taiwan")
+        axs = plot_arias(
+            stream, axes=axs, axis_index=idx, minfontsize=15,
+            show_maximum=False, title="18km NNE of Hualian, Taiwan")
         idx += 3
 
     # One plot durations
@@ -42,8 +42,9 @@ def test_plot():
     axs = axs.flatten()
     idx = 0
     for stream in streams:
-        axs = plot_durations(stream, durations, axes=axs, axis_index=idx,
-                             minfontsize=15, title="18km NNE of Hualian, Taiwan")
+        axs = plot_durations(
+            stream, durations, axes=axs, axis_index=idx,
+            minfontsize=15, title="18km NNE of Hualian, Taiwan")
         idx += 3
 
     # Moveout plots
@@ -55,4 +56,5 @@ def test_plot():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_plot()

@@ -10,7 +10,6 @@ from gmprocess.plot import plot_SNR
 from gmprocess.config import get_config
 from gmprocess.smoothing.konno_ohmachi import konno_ohmachi_smooth
 
-CONFIG = get_config()
 # Options for tapering noise/signal windows
 TAPER_WIDTH = 0.05
 TAPER_TYPE = 'hann'
@@ -27,7 +26,8 @@ def constant(st):
     Returns:
         stream: stream with selected corner frequencies appended to records.
     """
-    cf_config = CONFIG['corner_frequencies']
+    config = get_config()
+    cf_config = config['corner_frequencies']
     for tr in st:
         tr.setParameter(
             'corner_frequencies',

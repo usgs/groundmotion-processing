@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os.path
+import os
 from gmprocess.event import get_event_dict, get_event_object
 from obspy.core.utcdatetime import UTCDateTime
 import vcr
@@ -27,4 +27,5 @@ def test_event():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_event()

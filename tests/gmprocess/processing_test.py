@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # stdlib imports
-import os.path
+import os
 import glob
 import logging
 
@@ -95,5 +95,6 @@ def test_free_field():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_free_field()
     test_process_streams()

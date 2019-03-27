@@ -20,4 +20,5 @@ def test_directory_to_streams():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_directory_to_streams()

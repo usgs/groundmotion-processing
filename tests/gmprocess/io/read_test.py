@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # stdlib imports
-import os.path
+import os
 
 from gmprocess.io.read import read_data, _get_format, _validate_format
 from gmprocess.exception import GMProcessException
@@ -55,4 +55,5 @@ def test_read():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_read()

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os.path
+import os
 import shutil
 import logging
 import time
@@ -47,4 +47,5 @@ def test_asdf():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_asdf()

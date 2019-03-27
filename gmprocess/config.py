@@ -3,6 +3,7 @@
 import os.path
 import logging
 import yaml
+import pkg_resources
 
 from gmprocess.constants import CONFIG_FILE, PICKER_FILE
 
@@ -65,7 +66,14 @@ def get_config(picker=False):
         file_to_use = PICKER_FILE
     else:
         file_to_use = CONFIG_FILE
-    config_file = os.path.join(os.path.expanduser('~'), file_to_use)
+
+    if 'CALLED_FROM_PYTEST' in os.environ:
+        data_dir = os.path.abspath(
+            pkg_resources.resource_filename('gmprocess', 'data'))
+        config_file = os.path.join(data_dir, file_to_use)
+    else:
+        config_file = os.path.join(
+            os.path.expanduser('~'), '.gmprocess', file_to_use)
 
     if not os.path.isfile(config_file):
         fmt = ('Missing config file %s, please run gmsetup to install '
