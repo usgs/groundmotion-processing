@@ -9,6 +9,7 @@ import numpy as np
 from obspy.core.utcdatetime import UTCDateTime
 import prov
 import pandas as pd
+import openpyxl
 
 # local imports
 from gmprocess.stationtrace import StationTrace, TIMEFMT_MS
@@ -113,8 +114,14 @@ class StreamWorkspace(object):
             # add processing provenance info from streams
             if level == 'processed':
                 provdocs = stream.getProvenanceDocuments()
-                for provdoc in provdocs:
-                    self.dataset.add_provenance_document(provdoc, name=tag)
+                for provdoc, trace in zip(provdocs, stream):
+                    tpl = (trace.stats.network.lower(),
+                           trace.stats.station.lower(),
+                           trace.stats.channel.lower())
+                    channel = '%s_%s_%s' % tpl
+                    channel_tag = '%s_%s' % (tag, channel)
+                    self.dataset.add_provenance_document(provdoc,
+                                                         name=channel_tag)
 
             for trace in stream:
                 path = '%s_%s' % (tag, trace.stats.channel)
@@ -237,8 +244,13 @@ class StreamWorkspace(object):
                         trace = StationTrace(data=ttrace.data,
                                              header=ttrace.stats,
                                              inventory=inventory)
-                        if tag in self.dataset.provenance.list():
-                            provdoc = self.dataset.provenance[tag]
+                        tpl = (trace.stats.network.lower(),
+                               trace.stats.station.lower(),
+                               trace.stats.channel.lower())
+                        channel = '%s_%s_%s' % tpl
+                        channel_tag = '%s_%s' % (tag, channel)
+                        if channel_tag in self.dataset.provenance.list():
+                            provdoc = self.dataset.provenance[channel_tag]
                             trace.setProvenanceDocument(provdoc)
                         trace_path = '%s_%s' % (tag, trace.stats.channel)
                         if trace_path in auxholder:
@@ -510,10 +522,81 @@ class StreamWorkspace(object):
         """
         pass
 
-    def getProvenance(self, stream_tag):
-        """Return data structure (?) containing processing history for a stream.
+    def getProvenance(self, eventid, stations=None, labels=None):
+        """Return DataFrame with processing history for streams matching input criteria.
+
+        Output will look like this:
+          Record  Processing Step     Step Attribute              Attribute Value
+0    NZ.HSES.HN1  Remove Response        input_units                       counts
+1    NZ.HSES.HN1  Remove Response       output_units                       cm/s^2
+2    NZ.HSES.HN1          Detrend  detrending_method                       linear
+3    NZ.HSES.HN1          Detrend  detrending_method                       demean
+4    NZ.HSES.HN1              Cut       new_end_time  2016-11-13T11:05:44.000000Z
+5    NZ.HSES.HN1              Cut     new_start_time  2016-11-13T11:02:58.000000Z
+6    NZ.HSES.HN1            Taper               side                         both
+7    NZ.HSES.HN1            Taper        taper_width                         0.05
+8    NZ.HSES.HN1            Taper        window_type                         Hann
+...
+
+        Args:
+            eventid (str):
+                Event ID corresponding to an Event in the workspace.
+            stations (list):
+                List of stations to search for.
+            labels (list):
+                List of processing labels to search for.
+
+        Returns:
+            DataFrame:
+                Table of processing steps/parameters (see above).
+
         """
-        pass
+        all_tags = []
+        if stations is None:
+            stations = self.getStations(eventid)
+        if labels is None:
+            labels = self.getLabels()
+        for station in stations:
+            for label in labels:
+                all_tags.append('%s_%s' % (station.lower(), label))
+        cols = ['Record', 'Processing Step',
+                'Step Attribute', 'Attribute Value']
+        df = pd.DataFrame(columns=cols)
+        for tag in all_tags:
+            tlist = self.dataset.provenance.list()
+            reg = re.compile(tag)
+            taglist = list(filter(reg.match, tlist))
+            for trace_tag in taglist:
+                parts = trace_tag.split('_')
+                recstr = '.'.join(parts[2:]).upper()
+                provdoc = self.dataset.provenance[trace_tag]
+                serial = json.loads(provdoc.serialize())
+                for activity, attrs in serial['activity'].items():
+                    pstep = None
+                    for key, value in attrs.items():
+                        if key == 'prov:label':
+                            pstep = value
+                            continue
+                        if key == 'prov:type':
+                            continue
+                        if not isinstance(value, str):
+                            if value['type'] == 'xsd:dateTime':
+                                value = UTCDateTime(value['$'])
+                            elif value['type'] == 'xsd:double':
+                                value = float(value['$'])
+                            elif value['type'] == 'xsd:int':
+                                value = int(value['$'])
+                            else:
+                                pass
+                        attrkey = key.replace('seis_prov:', '')
+                        row = pd.Series(index=cols)
+                        row['Record'] = recstr
+                        row['Processing Step'] = pstep
+                        row['Step Attribute'] = attrkey
+                        row['Attribute Value'] = value
+                        df = df.append(row, ignore_index=True)
+
+        return df
 
 
 def _stringify_dict(indict):

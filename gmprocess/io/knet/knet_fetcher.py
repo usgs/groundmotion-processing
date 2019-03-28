@@ -65,7 +65,7 @@ class KNETFetcher(DataFetcher):
                  user=None, password=None,
                  radius=None, dt=None, ddepth=None,
                  dmag=None,
-                 rawdir=None, ):
+                 rawdir=None, drop_non_free=True):
         """Create a KNETFetcher instance.
 
         Download KNET/KikNet data from the Japanese NIED site:
@@ -85,6 +85,8 @@ class KNETFetcher(DataFetcher):
             dmag (float): Search magnitude window (magnitude units).
             rawdir (str): Path to location where raw data will be stored.
                           If not specified, raw data will be deleted.
+            drop_non_free (bool):
+                Option to ignore non-free-field (borehole, sensors on structures, etc.)
         """
         # what values do we use for search thresholds?
         # In order of priority:
@@ -149,6 +151,7 @@ class KNETFetcher(DataFetcher):
         ymax = 46.109
         # this announces to the world the valid bounds for this fetcher.
         self.BOUNDS = [xmin, xmax, ymin, ymax]
+        self.drop_non_free = drop_non_free
 
     def getMatchingEvents(self, solve=True):
         """Return a list of dictionaries matching input parameters.
@@ -316,5 +319,6 @@ class KNETFetcher(DataFetcher):
         if self.rawdir is None:
             shutil.rmtree(rawdir)
 
-        stream_collection = StreamCollection(streams=streams)
+        stream_collection = StreamCollection(streams=streams,
+                                             drop_non_free=self.drop_non_free)
         return stream_collection
