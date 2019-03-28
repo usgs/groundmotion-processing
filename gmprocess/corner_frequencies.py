@@ -6,7 +6,7 @@ import numpy as np
 
 from obspy.signal.util import next_pow_2
 
-from gmprocess.plot import plot_SNR
+from gmprocess.plot import summary_plot
 from gmprocess.config import get_config
 from gmprocess.smoothing.konno_ohmachi import konno_ohmachi_smooth
 
@@ -86,12 +86,10 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
                      type=TAPER_TYPE,
                      side=TAPER_SIDE)
 
-        # Find the number of points for the Fourier transform
-        if signal.stats.npts <= 0 or noise.stats.npts <= 0:
-            tr.fail('Invalid noise window or signal window')
-            continue
-
-        nfft = max(next_pow_2(signal.stats.npts), next_pow_2(noise.stats.npts))
+        # the np.max is there to avoid getting an error when
+        # next_pow_2 is handed zeros.
+        nfft = max(next_pow_2(np.max(signal.stats.npts), 2),
+                   next_pow_2(np.max(noise.stats.npts), 2))
 
         # Transform to frequency domain and smooth spectra using
         # konno-ohmachi smoothing
@@ -128,9 +126,9 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
         # If we didn't find any corners
         if not lows:
             tr.fail('SNR not greater than required threshold.')
-            plot_SNR(tr, sig_spec, sig_spec_smooth, noise_spec,
-                     noise_spec_smooth, sig_spec_freqs, freqs_signal,
-                     threshold, plot_dir)
+            summary_plot(tr, sig_spec, sig_spec_smooth, noise_spec,
+                         noise_spec_smooth, sig_spec_freqs, freqs_signal,
+                         threshold, plot_dir)
             continue
 
         # If we find an extra low, add another high for the maximum frequency
@@ -158,9 +156,9 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
             tr.fail('SNR not met within the required bandwidth.')
 
         if make_plots:
-            plot_SNR(tr, sig_spec, sig_spec_smooth, noise_spec,
-                     noise_spec_smooth, sig_spec_freqs, freqs_signal,
-                     threshold, plot_dir)
+            summary_plot(tr, sig_spec, sig_spec_smooth, noise_spec,
+                         noise_spec_smooth, sig_spec_freqs, freqs_signal,
+                         threshold, plot_dir)
 
     if same_horiz:
 

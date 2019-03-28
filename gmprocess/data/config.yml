@@ -46,6 +46,7 @@ read:
 #    |                    |          \/             |
 #
 #    record_start       split              signal_end
+
 windows:
 
     split:
@@ -57,7 +58,6 @@ windows:
         # Valid options for "method" are "p_arrival" and "velocity"
         method: p_arrival
         vsplit: 7.0
-        # min_noise_duration: 5.0  # todo
 
     signal_end:
         # The end of the signal can be set using a phase velocity.
@@ -75,6 +75,14 @@ windows:
         # Number of standard deviations; if epsilon is 1.0, then the signal
         # window duration is the mean Ds + 1 standard deviation.
         epsilon: 2.0
+
+    window_checks:
+        # Minimum noise duration; can be zero but this will allow for errors
+        # to occur if requesting signal-to-noise ratios.
+        min_noise_duration: 0.0
+
+        min_signal_duration: 5.0
+
 
 # -----------------------------------------------------------------------------
 # Corner frequency options

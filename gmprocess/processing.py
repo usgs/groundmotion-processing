@@ -12,6 +12,7 @@ from gmprocess.streamcollection import StreamCollection
 from gmprocess.config import get_config
 from gmprocess.windows import signal_split
 from gmprocess.windows import signal_end
+from gmprocess.windows import window_checks
 from gmprocess import corner_frequencies
 # Note: no QA on following import because they need to be in namespace to be
 # discovered. They are not called directly so linters will think this is a
@@ -86,31 +87,37 @@ def process_streams(streams, origin, config=None):
     window_conf = config['windows']
 
     processed_streams = streams.copy()
-    for tstream in processed_streams:
-        # Estimate noise/signal split time
-        split_conf = window_conf['split']
-        event_time = origin['time']
-        event_lon = origin['lon']
-        event_lat = origin['lat']
-        tstream = signal_split(
-            tstream,
-            event_time=event_time,
-            event_lon=event_lon,
-            event_lat=event_lat,
-            **split_conf)
+    for st in processed_streams:
+        if st.passed:
+            # Estimate noise/signal split time
+            split_conf = window_conf['split']
+            event_time = origin['time']
+            event_lon = origin['lon']
+            event_lat = origin['lat']
+            st = signal_split(
+                st,
+                event_time=event_time,
+                event_lon=event_lon,
+                event_lat=event_lat,
+                **split_conf)
 
-        # Estimate end of signal
-        end_conf = window_conf['signal_end']
-        event_mag = origin['magnitude']
-        tstream = signal_end(
-            tstream,
-            event_time=event_time,
-            event_lon=event_lon,
-            event_lat=event_lat,
-            event_mag=event_mag,
-            **end_conf
-        )
-#        processed_streams.append(stream)
+            # Estimate end of signal
+            end_conf = window_conf['signal_end']
+            event_mag = origin['magnitude']
+            st = signal_end(
+                st,
+                event_time=event_time,
+                event_lon=event_lon,
+                event_lat=event_lat,
+                event_mag=event_mag,
+                **end_conf
+            )
+            wcheck_conf = window_conf['window_checks']
+            st = window_checks(
+                st,
+                min_noise_duration=wcheck_conf['min_noise_duration'],
+                min_signal_duration=wcheck_conf['min_signal_duration']
+            )
 
     # -------------------------------------------------------------------------
     # Begin corner frequency steps

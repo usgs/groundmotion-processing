@@ -322,8 +322,8 @@ def plot_moveout(streams, epilat, epilon, channel, cmap='viridis',
     return (fig, ax)
 
 
-def plot_SNR(tr, sig_spec, sig_spec_smooth, noise_spec, noise_spec_smooth,
-             freqs, freqs_smooth, threshold, save_dir):
+def summary_plot(tr, sig_spec, sig_spec_smooth, noise_spec, noise_spec_smooth,
+                 freqs, freqs_smooth, threshold, save_dir):
     """
     Create a plot showing signal-to-noise ratio information, the
     trace itself, and tables showing provenance and parameter information.
