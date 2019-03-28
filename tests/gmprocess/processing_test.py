@@ -56,19 +56,17 @@ def test_process_streams():
     # container than on my local mac. So testing individual traces need to
     # not care about trace order.
 
-    trace_maxes = np.sort([np.max(t.data) for t in test[0]])
+    trace_maxes = np.sort([np.max(np.abs(t.data)) for t in test[0]])
 
     np.testing.assert_allclose(
         trace_maxes,
-        np.array([1.30994939, 3.36651873, 4.87532321]),
+        np.array([5.02085686,  9.11140442, 10.74934006]),
         rtol=1e-5
     )
 
 
 def test_free_field():
     data_files, origin = read_data_dir('kiknet', 'usp000hzq8')
-
-    config = get_config()
 
     raw_streams = []
     for dfile in data_files:

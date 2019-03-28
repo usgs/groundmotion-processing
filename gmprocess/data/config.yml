@@ -127,6 +127,16 @@ processing:
         min: 5
         max: 2e6
 
+
+    # STA/LTA is computed for record and the max value must exceed the threshold
+    # below. Units are sec for window lenghts.
+    - check_sta_lta:
+        sta_length: 1.0
+        lta_length: 20.0
+        threshold: 4.0
+
+
+
     - remove_response:
         # Outuput units. Must be 'ACC', 'VEL', or 'DISP'.
         output: 'ACC'
@@ -165,13 +175,6 @@ processing:
     #       # linearly increases run time, but also increases interpolation.
     #       # quality.
     #       a: 50
-
-    # STA/LTA is computed for record and the max value must exceed the threshold
-    # below. Units are sec for window lenghts.
-    - check_sta_lta:
-        sta_length: 1.0
-        lta_length: 20.0
-        threshold: 4.0
 
     - cut:
         # No required options; the presence of this key just indicates when to

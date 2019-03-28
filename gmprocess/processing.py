@@ -17,9 +17,10 @@ from gmprocess import corner_frequencies
 # Note: no QA on following import because they need to be in namespace to be
 # discovered. They are not called directly so linters will think this is a
 # mistake.
-from gmprocess.pretesting import (check_max_amplitude,
-                                  check_sta_lta,
-                                  check_free_field)  # NOQA
+from gmprocess.pretesting import (  # NOQA
+    check_max_amplitude,
+    check_sta_lta,
+    check_free_field)
 
 M_TO_CM = 100
 
