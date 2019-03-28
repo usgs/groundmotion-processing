@@ -23,6 +23,38 @@ from gmprocess.phase import PowerPicker
 from gmprocess.config import get_config
 
 
+def window_checks(st, min_noise_duration=0.5, min_signal_duration=5.0):
+    """
+    Check if the split/end windowing have long enough durations.
+
+    Args:
+        st (StationStream):
+            Stream of data.
+        min_noise_duration (float):
+            Minimum duration of noise window (sec).
+        min_signal_duration (float):
+            Minimum duration of signal window (sec).
+
+
+    """
+    for tr in st:
+        # Split the noise and signal into two separate traces
+        split_prov = tr.getParameter('signal_split')
+        if isinstance(split_prov, list):
+            split_prov = split_prov[0]
+        split_time = split_prov['split_time']
+        noise = tr.copy().trim(endtime=split_time)
+        signal = tr.copy().trim(starttime=split_time)
+        noise_duration = noise.stats.endtime - noise.stats.starttime
+        signal_duration = signal.stats.endtime - signal.stats.starttime
+        if noise_duration < min_noise_duration:
+            tr.fail('Failed noise window duraiton check.')
+        if signal_duration < min_signal_duration:
+            tr.fail('Failed signal window duraiton check.')
+
+    return st
+
+
 def signal_split(
         st, event_time=None, event_lon=None, event_lat=None,
         method='velocity', vsplit=7.0, picker_config=None):
@@ -41,7 +73,7 @@ def signal_split(
     '~/.gmprocess/picker.yml
 
     Args:
-        st (obspy.core.stream.Stream):
+        st (StationStream):
             Stream of data.
         event_time (UTCDateTime):
             Event origin time.
@@ -134,7 +166,7 @@ def signal_end(st, event_time, event_lon, event_lat, event_mag,
     signal actually starts.
 
     Args:
-        st (obspy.core.stream.Stream):
+        st (StationStream):
             Stream of data.
         event_time (UTCDateTime):
             Event origin time.
