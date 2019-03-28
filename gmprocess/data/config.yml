@@ -135,8 +135,6 @@ processing:
         lta_length: 20.0
         threshold: 4.0
 
-
-
     - remove_response:
         # Outuput units. Must be 'ACC', 'VEL', or 'DISP'.
         output: 'ACC'
@@ -162,6 +160,15 @@ processing:
         #     constant, demean, linear, polynomial, simple, spline
         detrending_method: demean
 
+    - snr_check:
+        # Presense of this check says to do the signa-to-noise ratio check. Requires
+        # minimum SNR of `threshold` between `min_freq` and `max_freq` using
+        # Konno-Omachi smoothed spectra with `bandwidth` parameter.
+        threshold: 3.0
+        min_freq: 0.2
+        max_freq: 5.0
+        bandwidth: 20.0
+
     # - resample:
     #
     #       # The new sampling rate, in Hz.
@@ -181,7 +188,7 @@ processing:
         # cut the time series using the record start and signal end that were
         # configured in the windows section.
 
-        # Optionally, can specify how many sections to include prior to the
+        # Optionally, can specify how many seconds to include prior to the
         # split between the noise and signal windows. If set to "Null" then
         # the beginning of the record will be unchanged.
         sec_before_split: 2.0

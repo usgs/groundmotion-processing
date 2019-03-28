@@ -14,6 +14,8 @@ from gmprocess.windows import signal_split
 from gmprocess.windows import signal_end
 from gmprocess.windows import window_checks
 from gmprocess import corner_frequencies
+from gmprocess.snr import compute_snr
+
 # Note: no QA on following import because they need to be in namespace to be
 # discovered. They are not called directly so linters will think this is a
 # mistake.
@@ -21,6 +23,7 @@ from gmprocess.pretesting import (  # NOQA
     check_max_amplitude,
     check_sta_lta,
     check_free_field)
+
 
 M_TO_CM = 100
 
@@ -157,7 +160,6 @@ def process_streams(streams, origin, config=None):
                     stream,
                     **step_args
                 )
-#        processed_streams.append(stream)
 
     logging.info('Finished processing streams.')
     return processed_streams
@@ -468,6 +470,39 @@ def taper(st, type="hann", width=0.05, side="both"):
                 'taper_width': width,
                 'side': side}
         )
+    return st
+
+
+def snr_check(st, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
+    """Check signal-to-noise ratio.
+
+    Args:
+        st (obspy.core.stream.Stream):
+            Stream of data.
+        threshold (float):
+            Threshold SNR value.
+        min_freq (float):
+            Minimum frequency for threshold to be exeeded.
+        max_freq (float):
+            Maximum frequency for threshold to be exeeded.
+        bandwidth (float):
+            Konno-Omachi smoothing bandwidth parameter.
+
+    Returns:
+        stream: Streams with SNR calculations and checked that they pass the
+        configured criteria.
+    """
+    for tr in st:
+        tr = compute_snr(tr)
+
+        if st.passed:
+            snr_dict = tr.getParameter('snr')
+            snr = np.array(snr_dict['snr'])
+            freq = np.array(snr_dict['freq'])
+            # Check if signal criteria is met
+            min_snr = np.min(snr[(freq >= min_freq) & (freq <= max_freq)])
+            if min_snr < threshold:
+                tr.fail('Failed SNR check; SNR less than threshold.')
     return st
 
 
