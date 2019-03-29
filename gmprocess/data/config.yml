@@ -85,32 +85,6 @@ windows:
 
 
 # -----------------------------------------------------------------------------
-# Corner frequency options
-corner_frequencies:
-
-    # Corner frequency selection can use constant values, or selected
-    # dynamically from the signal-to-noise-ratio.
-
-    # Valid options for "method" are "constant" and "snr".
-    method: constant
-
-    constant:
-        highpass: 0.08
-        lowpass: 20.0
-
-    snr:
-        # For dynamic filtering, we require a minimum SNR threshold between
-        # max_low_freq and min_high_freq after the spectra is smoothed with the
-        # Konno-Omachi method (with bandwidth parameter "b")
-        threshold: 3.0
-        max_low_freq: 0.2
-        min_high_freq: 5.0
-        bandwidth: 20.0
-        same_horiz: True
-        make_plots: False
-        plot_dir: directory
-
-# -----------------------------------------------------------------------------
 # This section is for processing steps that will affect the waveform and get
 # recorded as seismological provenance data.
 processing:
@@ -133,7 +107,7 @@ processing:
     - check_sta_lta:
         sta_length: 1.0
         lta_length: 20.0
-        threshold: 4.0
+        threshold: 3.0
 
     - remove_response:
         # Outuput units. Must be 'ACC', 'VEL', or 'DISP'.
@@ -168,6 +142,23 @@ processing:
         min_freq: 0.2
         max_freq: 5.0
         bandwidth: 20.0
+
+    - get_corner_frequencies:
+        # Corner frequency selection can use constant values, or selected
+        # dynamically from the signal-to-noise-ratio.
+        
+        # Valid options for "method" are "constant" and "snr".
+        method: constant
+
+        constant:
+            highpass: 0.08
+            lowpass: 20.0
+
+        snr:
+            # For dynamic filtering, we require a minimum SNR threshold between
+            # as configured in the snr_check step.
+            same_horiz: True
+
 
     # - resample:
     #

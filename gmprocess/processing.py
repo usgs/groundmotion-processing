@@ -124,18 +124,6 @@ def process_streams(streams, origin, config=None):
             )
 
     # -------------------------------------------------------------------------
-    # Begin corner frequency steps
-    logging.info('Setting corner frequencies...')
-    cf_config = config['corner_frequencies']
-
-    for stream in processed_streams:
-        if cf_config['method'] == 'constant':
-            stream = corner_frequencies.constant(stream)
-        elif cf_config['method'] == 'snr':
-            snr_config = cf_config['snr']
-            stream = corner_frequencies.snr(stream, **snr_config)
-
-    # -------------------------------------------------------------------------
     # Begin processing steps
     logging.info('Starting processing...')
     processing_steps = config['processing']
@@ -143,6 +131,7 @@ def process_streams(streams, origin, config=None):
     # Loop over streams
     for stream in processed_streams:
         for processing_step_dict in processing_steps:
+            # Only continue if prior checks have passed
             if stream.passed:
                 key_list = list(processing_step_dict.keys())
                 if len(key_list) != 1:
@@ -177,7 +166,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
     If f3 is Null it will be set to 0.9*fn, if f4 is Null it will be set to fn.
 
     Args:
-        st (obspy.core.stream.Stream):
+        st (StationStream):
             Stream of data.
         f1 (float):
             Frequency 1 for pre-filter.
@@ -195,7 +184,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
             Obspy inventory object containing response information.
 
     Returns:
-        obspy.core.stream.Stream: Instrument-response-corrected stream.
+        StationStream: Instrument-response-corrected stream.
     """
 
     if output not in ['ACC', 'VEL', 'DISP']:
@@ -254,7 +243,7 @@ def detrend(st, detrending_method=None):
     """Detrend stream.
 
     Args:
-        st (obspy.core.stream.Stream):
+        st (StationStream):
             Stream of data.
         method (str): Method to detrend; valid options include the 'type'
             options supported by obspy.core.trace.Trace.detrend as well as
@@ -265,7 +254,7 @@ def detrend(st, detrending_method=None):
             acceleration time series.
 
     Returns:
-        obspy.core.stream.Stream: Detrended stream.
+        StationStream: Detrended stream.
     """
 
     for tr in st:
@@ -288,7 +277,7 @@ def resample(st, new_sampling_rate=None, method=None, a=None):
     """Resample stream.
 
     Args:
-        st (obspy.core.stream.Stream):
+        st (StationStream):
             Stream of data.
         sampling_rate (float):
             New sampling rate, in Hz.
@@ -298,7 +287,7 @@ def resample(st, new_sampling_rate=None, method=None, a=None):
             Width of the Lanczos window, in number of samples.
 
     Returns:
-        obspy.core.stream.Stream: Resampled stream.
+        StationStream: Resampled stream.
     """
 
     if method != 'lanczos':
@@ -328,7 +317,7 @@ def cut(st, sec_before_split=None):
     windows.signal_split mehtod.
 
     Args:
-        st (obspy.core.stream.Stream):
+        st (StationStream):
             Stream of data.
         sec_before_split (float):
             Seconds to trim before split. If None, then the beginning of the
@@ -358,11 +347,40 @@ def cut(st, sec_before_split=None):
     return st
 
 
+def get_corner_frequencies(st, method='constant', constant=None, snr=None):
+    """Select corner frequencies.
+
+    Args:
+        st (StationStream):
+            Stream of data.
+        method (str):
+            Which method to use; currently allowed "snr" or "constant".
+        constant(dict):
+            Dictionary of `constant` method config options.
+        snr (dict):
+            Dictionary of `snr` method config options.
+
+
+    Returns:
+        strea: Stream with selected corner frequencies added.
+    """
+    logging.info('Setting corner frequencies...')
+    for tr in st:
+        if method == 'constant':
+            tr = corner_frequencies.constant(tr, **constant)
+        elif method == 'snr':
+            tr = corner_frequencies.snr(tr, **snr)
+        else:
+            raise ValueError("Corner frequency 'methd' must be either "
+                             "'constant' or 'snr'.")
+    return st
+
+
 def highpass_filter(st, filter_order=5, number_of_passes=2):
     """Highpass filter.
 
     Args:
-        st (obspy.core.stream.Stream):
+        st (StationStream):
             Stream of data.
         filter_order (int):
             Filter order.
@@ -402,7 +420,7 @@ def lowpass_filter(st, filter_order=5, number_of_passes=2):
     """Lowpass filter.
 
     Args:
-        st (obspy.core.stream.Stream):
+        st (StationStream):
             Stream of data.
         filter_order (int):
             Filter order.
@@ -448,7 +466,7 @@ def taper(st, type="hann", width=0.05, side="both"):
     """Taper streams.
 
     Args:
-        st (obspy.core.stream.Stream):
+        st (StationStream):
             Stream of data.
         type (str):
             Taper type.
@@ -477,7 +495,7 @@ def snr_check(st, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
     """Check signal-to-noise ratio.
 
     Args:
-        st (obspy.core.stream.Stream):
+        st (StationStream):
             Stream of data.
         threshold (float):
             Threshold SNR value.
@@ -503,6 +521,13 @@ def snr_check(st, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
             min_snr = np.min(snr[(freq >= min_freq) & (freq <= max_freq)])
             if min_snr < threshold:
                 tr.fail('Failed SNR check; SNR less than threshold.')
+            snr_dict = {
+                'threshold': threshold,
+                'min_freq': min_freq,
+                'max_freq': max_freq,
+                'bandwidth': bandwidth
+            }
+            tr.setParameter('snr_conf', snr_dict)
     return st
 
 

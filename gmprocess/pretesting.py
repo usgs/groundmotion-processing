@@ -35,15 +35,14 @@ def check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0):
     for tr in st:
         sr = tr.stats.sampling_rate
         nlta = lta_length * sr + 1
-        failed = False
         if len(tr) >= nlta:
             sta_lta = classic_sta_lta(tr, sta_length * sr + 1, nlta)
             if max(sta_lta) < threshold:
-                failed = True
+                tr.fail('Failed sta/lta check because threshold sta/lta '
+                        'is not exceeded.')
         else:
-            failed = True
-        if failed:
-            tr.fail('Failed sta/lta check.')
+            tr.fail('Failed sta/lta check because record length is shorter '
+                    'than lta length.')
 
     return st
 

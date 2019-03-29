@@ -13,62 +13,56 @@ TAPER_TYPE = 'hann'
 TAPER_SIDE = 'both'
 
 
-def constant(st):
+def constant(tr, highpass=0.08, lowpass=20.0):
     """Use constant corner frequencies across all records.
 
     Args:
-        st (obspy.core.stream.Stream):
-            Stream of data.
+        tr (StationTrace):
+            Trace of data.
+        highpass (float):
+            Highpass corner frequency (Hz).
+        lowpass (float):
+            Lowpass corner frequency (Hz).
 
     Returns:
         stream: stream with selected corner frequencies appended to records.
     """
-    config = get_config()
-    cf_config = config['corner_frequencies']
-    for tr in st:
-        tr.setParameter(
-            'corner_frequencies',
-            {
-                'type': 'constant',
-                'highpass': cf_config['constant']['highpass'],
-                'lowpass': cf_config['constant']['lowpass']
-            }
-        )
-    return st
+    tr.setParameter(
+        'corner_frequencies',
+        {
+            'type': 'constant',
+            'highpass': highpass,
+            'lowpass': lowpass
+        }
+    )
+    return tr
 
 
-def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
-        bandwidth=20.0, same_horiz=True, make_plots=False, plot_dir=None):
+def snr(tr, same_horiz=True):
     """Use constant corner frequencies across all records.
 
     Args:
-        st (obspy.core.stream.Stream):
-            Stream of data.
-        threshold (float):
-            Minimum required SNR threshold for usable frequency bandwidth.
-        max_low_freq (float):
-            Maximum low frequency for SNR to exceed threshold.
-        min_high_freq (float):
-            Minimum high frequency for SNR to exceed threshold.
-        bandwidth (float):
-            Konno-Omachi  bandwidth parameter "b".
+        tr (StationTrace):
+            Trace of data.
         same_horiz (bool):
             If True, horizontal traces in the stream must have the same
             corner frequencies.
-        make_plots (bool):
-            If True, will save plots indicating signal and noise spectra, SNR,
-            and the chosen corner frequencies. Saved to plot_dir.
-        plot_dir (str):
-            Directory for saving SNR plots.
 
     Returns:
         stream: stream with selected corner frequencies appended to records.
     """
-    for tr in st:
 
-        # Check for prior calculation of 'snr'
-        if not tr.hasParameter('snr'):
-            tr = compute_snr(tr)
+    # Check for prior calculation of 'snr'
+    if not tr.hasParameter('snr'):
+        tr = compute_snr(tr)
+
+    # If it doesn't exist then it must have failed because it didn't have
+    # enough points in the noise or singal windows
+    if not tr.hasParameter('failure'):
+        snr_conf = tr.getParameter('snr_conf')
+        threshold = snr_conf['threshold']
+        min_freq = snr_conf['min_freq']
+        max_freq = snr_conf['max_freq']
 
         snr_dict = tr.getParameter('snr')
         snr = snr_dict['snr']
@@ -78,16 +72,16 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
         lows = []
         highs = []
         have_low = False
-        for idx, freq in enumerate(freq):
+        for idx, f in enumerate(freq):
             if have_low is False:
-                if ([idx] >= threshold):
-                    lows.append(freq)
+                if (snr[idx] >= threshold):
+                    lows.append(f)
                     have_low = True
                 else:
                     continue
             else:
                 if snr[idx] < threshold:
-                    highs.append(freq)
+                    highs.append(f)
                     have_low = False
                 else:
                     continue
@@ -98,16 +92,17 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
 #            summary_plot(tr, sig_spec, sig_spec_smooth, noise_spec,
 #                         noise_spec_smooth, sig_spec_freqs, freqs_signal,
 #                         threshold, plot_dir)
-            continue
+            return tr
 
-        # If we find an extra low, add another high for the maximum frequency
+        # If we find an extra low, add another high for the maximum
+        # frequency
         if len(lows) > len(highs):
             highs.append(max(freq))
 
         # Check if any of the low/high pairs are valid
         found_valid = False
         for idx, val in enumerate(lows):
-            if (val <= max_low_freq and highs[idx] > min_high_freq):
+            if (val <= min_freq and highs[idx] > max_freq):
                 low_corner = val
                 high_corner = highs[idx]
                 found_valid = True
@@ -123,3 +118,4 @@ def snr(st, threshold=3.0, max_low_freq=0.1, min_high_freq=5.0,
             )
         else:
             tr.fail('SNR not met within the required bandwidth.')
+    return tr
