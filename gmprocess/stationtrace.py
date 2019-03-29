@@ -12,6 +12,7 @@ from obspy.core.trace import Trace
 import prov
 import prov.model
 from obspy.core.utcdatetime import UTCDateTime
+import pandas as pd
 
 # local imports
 from gmprocess._version import get_versions
@@ -368,7 +369,11 @@ class StationTrace(Trace):
         person = {}
         for record in provdoc.get_records():
             ident = record.identifier.localpart
-            sp, sptype, hashid = ident.split('_')
+            parts = ident.split('_')
+            sp = parts[0]
+            sptype = parts[1]
+            # hashid = '_'.join(parts[2:])
+            # sp, sptype, hashid = ident.split('_')
             if sptype == 'sa':
                 for attr_key, attr_val in record.attributes:
                     key = attr_key.localpart
@@ -398,6 +403,7 @@ class StationTrace(Trace):
                     params[key] = attr_val
                 self.setProvenance(sptype, params)
             self.setParameter('software', software)
+            self.setParameter('user', person)
 
     def hasParameter(self, param_id):
         """Check to see if Trace contains a given parameter.
@@ -444,6 +450,38 @@ class StationTrace(Trace):
             raise KeyError(
                 'Parameter %s not found in StationTrace' % param_id)
         return self.parameters[param_id]
+
+    def getProvSeries(self):
+        """Return a pandas Series containing the processing history for the trace.
+
+        BO.NGNH31.HN2  Remove Response  input_units     counts
+                                        output_units    cm/s^2
+                       Taper            side            both
+                                        window_type     Hann
+                                        taper_width     0.05
+
+        Returns:
+            Series:
+                Pandas Series (see above).
+
+        """
+        tpl = (self.stats.network, self.stats.station, self.stats.channel)
+        recstr = '%s.%s.%s' % tpl
+        values = []
+        attributes = []
+        steps = []
+        for activity in self.getAllProvenance():
+            provid = activity['prov_id']
+            provstep = ACTIVITIES[provid]['label']
+            prov_attrs = activity['prov_attributes']
+            steps += [provstep] * len(prov_attrs)
+            for key, value in prov_attrs.items():
+                attributes.append(key)
+                values.append(str(value))
+        records = [recstr] * len(attributes)
+        index = [records, steps, attributes]
+        row = pd.Series(values, index=index)
+        return row
 
     def __str__(self, id_length=None, indent=0):
         """
@@ -636,7 +674,10 @@ def _get_waveform_entity(trace, pr):
         prov.model.ProvDocument:
             Provenance document updated with waveform entity information.
     '''
-    waveform_hash = '%07i' % 1
+    tpl = (trace.stats.network.lower(),
+           trace.stats.station.lower(),
+           trace.stats.channel.lower())
+    waveform_hash = '%s_%s_%s' % tpl
     waveform_id = "seis_prov:sp001_wf_%s" % waveform_hash
     pr.entity(waveform_id, other_attributes=((
         ("prov:label", "Waveform Trace"),

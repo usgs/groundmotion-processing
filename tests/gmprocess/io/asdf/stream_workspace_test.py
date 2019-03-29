@@ -125,6 +125,18 @@ def test_workspace():
                                              stations=['hses'],
                                              labels=['processed'])[0]
 
+            provenance = workspace.getProvenance(eventid, labels=['processed'])
+            first_row = pd.Series({'Record': 'NZ.HSES.HN1',
+                                   'Processing Step': 'Remove Response',
+                                   'Step Attribute': 'input_units',
+                                   'Attribute Value': 'counts'})
+            last_row = pd.Series({'Record': 'NZ.WTMC.HNZ',
+                                  'Processing Step': 'Lowpass Filter',
+                                  'Step Attribute': 'number_of_passes',
+                                  'Attribute Value': 2})
+            assert provenance.iloc[0].equals(first_row)
+            assert provenance.iloc[-1].equals(last_row)
+
             # compare the parameters from the input processed stream
             # to it's output equivalent
             instream = None

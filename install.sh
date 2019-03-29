@@ -175,6 +175,12 @@ if [ $? -ne 0 ];then
     exit 1
 fi
 
+# The presence of a __pycache__ folder in bin/ can cause the pip
+# install to fail... just to be safe, we'll delete it here.
+if [ -d bin/__pycache__ ]; then
+    rm -rf bin/__pycache__
+fi
+
 # This package
 echo "Installing ${VENV}..."
 pip install -e .

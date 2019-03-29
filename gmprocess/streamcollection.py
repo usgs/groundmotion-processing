@@ -39,23 +39,31 @@ class StreamCollection(object):
 
     """
 
-    def __init__(self, streams=None):
+    def __init__(self, streams=None, drop_non_free=True):
         """
         Args:
             streams (list):
                 List of StationStream objects.
+            drop_non_free (bool): 
+                If True, drop non-free-field Streams from the collection.
         """
 
         # Some initial checks of input streams
         if not isinstance(streams, list):
             raise TypeError(
                 'streams must be a list of StationStream objects.')
+        newstreams = []
         for s in streams:
             if not isinstance(s, StationStream):
                 raise TypeError(
                     'streams must be a list of StationStream objects.')
+            if drop_non_free:
+                if s[0].free_field:
+                    newstreams.append(s)
+            else:
+                newstreams.append(s)
 
-        self.streams = streams
+        self.streams = newstreams
         self.__group_by_net_sta_inst()
 
         # Check that sample rate is consistent within each StationStream

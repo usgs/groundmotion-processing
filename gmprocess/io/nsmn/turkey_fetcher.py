@@ -65,7 +65,7 @@ class TurkeyFetcher(DataFetcher):
                  user=None, password=None,
                  radius=100, dt=16, ddepth=30,
                  dmag=0.3,
-                 rawdir=None, ):
+                 rawdir=None, drop_non_free=True):
         """Create a TurkeyFetcher instance.
 
         Download Turkish strong motion data from the Turkish NSMN site:
@@ -83,6 +83,8 @@ class TurkeyFetcher(DataFetcher):
             dmag (float): Search magnitude window (magnitude units).
             rawdir (str): Path to location where raw data will be stored.
                           If not specified, raw data will be deleted.
+            drop_non_free (bool):
+                Option to ignore non-free-field (borehole, sensors on structures, etc.)
         """
         # what values do we use for search thresholds?
         # In order of priority:
@@ -129,6 +131,7 @@ class TurkeyFetcher(DataFetcher):
         ymax = 43.555
         # this announces to the world the valid bounds for this fetcher.
         self.BOUNDS = [xmin, xmax, ymin, ymax]
+        self.drop_non_free = drop_non_free
 
     def getMatchingEvents(self, solve=True):
         """Return a list of dictionaries matching input parameters.
@@ -225,7 +228,8 @@ class TurkeyFetcher(DataFetcher):
         if self.rawdir is None:
             shutil.rmtree(rawdir)
 
-        stream_collection = StreamCollection(streams=streams)
+        stream_collection = StreamCollection(streams=streams,
+                                             drop_non_free=self.drop_non_free)
         return stream_collection
 
 

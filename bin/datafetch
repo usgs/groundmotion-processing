@@ -54,6 +54,10 @@ def main(pparser, args):
     setup_logger(args)
     logging.info("Running datafetch.")
 
+    rawdir = None
+    if args.save_raw:
+        rawdir = os.path.join(args.outdir, 'raw')
+
     if args.eventid:
         edict = get_event_dict(args.eventid)
         etime = edict['time'].datetime
@@ -63,34 +67,22 @@ def main(pparser, args):
 
     if args.directory:
         streams, bad, errors = directory_to_streams(args.directory)
-        collection = StreamCollection(streams)
+        collection = StreamCollection(streams, drop_non_free=True)
     else:
         collection = fetch_data(etime,
                                 edict['lat'],
                                 edict['lon'],
                                 edict['depth'],
                                 edict['magnitude'],
-                                rawdir=args.rawdir)
+                                rawdir=rawdir)
     if not len(collection):
         print('No data files found.')
         sys.exit(0)
 
-    # temporary hack to drop traces that are non-free field
-    # TODO: Implement this in processing
-    new_streams = []  # list of 1 channel station streams
-    for stream in collection:
-        for trace in stream:
-            if trace.free_field:
-                newstream = StationStream(traces=[trace])
-                new_streams.append(newstream)
-            else:
-                continue
-    new_collection = StreamCollection(new_streams)
-
     if not os.path.isdir(args.outdir):
         os.makedirs(args.outdir)
 
-    processed = process_streams(new_collection, edict)
+    processed = process_streams(collection, edict)
     dataframe = streams_to_dataframe(processed, process=False)
 
     if args.plot:
@@ -120,7 +112,7 @@ def main(pparser, args):
         if os.path.isfile(workname):
             os.remove(workname)
         workspace = StreamWorkspace(workname)
-        workspace.addStreams(event, new_collection)
+        workspace.addStreams(event, collection, label='raw')
         workspace.addStreams(event, processed, label='processed')
         workspace.close()
 
@@ -134,7 +126,7 @@ def main(pparser, args):
     print('Metrics: %s' % framename)
     print('Waveforms: %s' % workname)
     if args.plot:
-        logging.info('%i plots saved to %s.' % (len(new_collection), plotdir))
+        logging.info('%i plots saved to %s.' % (len(collection), plotdir))
     sys.exit(0)
 
 
@@ -144,11 +136,13 @@ if __name__ == '__main__':
     Creates in outdir:
         - ASDF file containing original (possibly raw) and processed waveforms.
         - CSV/Excel file containing configured stream metrics.
+        - (if --plot selected) plots directory with processed plots.
+        - (if --save-raw selected) raw directory with raw data files.
 
-    These files will be named with ComCat ID if specified, otherwise by
-    event time.
+    The ASDF file and CSV/Excel file will be named with ComCat ID if 
+    specified, otherwise by event time.
 
-    If rawdir is specified, then original waveform files will be saved there,
+    If --save-raw is specified, then original waveform files will be saved,
     otherwise these will be deleted after processing.
     """
     parser = argparse.ArgumentParser(description=desc)
@@ -166,8 +160,8 @@ if __name__ == '__main__':
                         choices=['excel', 'csv'], default='csv')
     parser.add_argument('-p', '--plot', action='store_true',
                         help='Make plots of processed waveforms')
-    parser.add_argument('-r', '--rawdir',
-                        help='Directory to store raw data files')
+    parser.add_argument('-r', '--save-raw', action='store_true',
+                        help='Save raw data files in output directory')
     hstr = 'Sidestep online data retrieval, read from local directory.'
     parser.add_argument('--directory',
                         help=hstr)

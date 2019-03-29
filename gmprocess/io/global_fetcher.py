@@ -12,21 +12,33 @@ from gmprocess.config import get_config
 
 def fetch_data(time, lat, lon,
                depth, magnitude,
-               rawdir=None):
+               rawdir=None, drop_non_free=True):
     """Retrieve data using any DataFetcher subclass.
 
     Args:
-        time (datetime): Origin time.
-        lat (float): Origin latitude.
-        lon (float): Origin longitude.
-        depth (float): Origin depth.
-        magnitude (float): Origin magnitude.
-        radius (float): Search radius (km).
-        dt (float): Search time window (sec).
-        ddepth (float): Search depth window (km).
-        dmag (float): Search magnitude window (magnitude units).
-        rawdir (str): Path to location where raw data will be stored.
-                        If not specified, raw data will be deleted.
+        time (datetime): 
+            Origin time.
+        lat (float): 
+            Origin latitude.
+        lon (float): 
+            Origin longitude.
+        depth (float): 
+            Origin depth.
+        magnitude (float): 
+            Origin magnitude.
+        radius (float): 
+            Search radius (km).
+        dt (float): 
+            Search time window (sec).
+        ddepth (float): 
+            Search depth window (km).
+        dmag (float): 
+            Search magnitude window (magnitude units).
+        rawdir (str): 
+            Path to location where raw data will be stored. If not specified, 
+            raw data will be deleted.
+        drop_non_free (bool):
+            Option to ignore non-free-field (borehole, sensors on structures, etc.)
 
      Returns:
         StreamCollection: StreamCollection object.
@@ -43,7 +55,7 @@ def fetch_data(time, lat, lon,
         try:
             fetchinst = fetcher(time, lat, lon,
                                 depth, magnitude,
-                                rawdir=rawdir)
+                                rawdir=rawdir, drop_non_free=drop_non_free)
         except Exception as e:
             msg = 'Could not instantiate Fetcher %s, due to error "%s"'
             tpl = (fetchname, str(e))
