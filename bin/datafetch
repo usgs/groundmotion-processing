@@ -9,6 +9,7 @@ import warnings
 
 # third party imports
 from h5py.h5py_warnings import H5pyDeprecationWarning
+import openpyxl
 
 from gmprocess.io.global_fetcher import fetch_data
 from gmprocess.logging import setup_logger
@@ -20,7 +21,6 @@ from gmprocess.streamcollection import StreamCollection
 from gmprocess.stream import streams_to_dataframe
 from gmprocess.processing import process_streams
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
-from gmprocess.stationstream import StationStream
 
 
 CONFIG = get_config()
@@ -102,7 +102,7 @@ def main(pparser, args):
 
     framename = os.path.join(args.outdir, basename + '_metrics.csv')
     workname = os.path.join(args.outdir, basename + '_workspace.hdf')
-    if args.format == 'excel':
+    if args.format == 'excel' or args.amptools_format:
         framename = os.path.join(args.outdir, basename + '_metrics.xlsx')
 
     # save the waveform data to an ASDF file.
@@ -114,17 +114,35 @@ def main(pparser, args):
         workspace = StreamWorkspace(workname)
         workspace.addStreams(event, collection, label='raw')
         workspace.addStreams(event, processed, label='processed')
+        provdata = workspace.getProvenance(edict['id'], labels=['processed'])
+        provname = os.path.join(args.outdir, basename + '_provenance.csv')
+        if args.format == 'excel':
+            provname = os.path.join(args.outdir, basename + '_provenance.xlsx')
+
         workspace.close()
 
     # save dataframe to desired format
     if args.format == 'csv':
-        dataframe.to_csv(framename, index=False)
+        if not args.amptools_format:
+            dataframe.to_csv(framename, index=False)
+        provdata.to_csv(provname, index=False)
     else:
         dataframe.to_excel(framename)
+        if args.amptools_format:
+            # we don't need the index column, so we'll delete it here
+            wb = openpyxl.load_workbook(framename)
+            ws = wb.active
+            ws.delete_cols(1)
+            ws.insert_rows(1)
+            ws['A1'] = 'REFERENCE'
+            ws['B1'] = dataframe['SOURCE'].iloc[0]
+            wb.save(framename)
+        provdata.to_excel(provname, index=False)
 
     print('Data from %i stations saved to %s' % (len(processed), args.outdir))
     print('Metrics: %s' % framename)
     print('Waveforms: %s' % workname)
+    print('Provenance (processing history): %s' % provname)
     if args.plot:
         logging.info('%i plots saved to %s.' % (len(collection), plotdir))
     sys.exit(0)
@@ -136,6 +154,7 @@ if __name__ == '__main__':
     Creates in outdir:
         - ASDF file containing original (possibly raw) and processed waveforms.
         - CSV/Excel file containing configured stream metrics.
+        - Provenance CSV/Excel file with processing history for each Trace.
         - (if --plot selected) plots directory with processed plots.
         - (if --save-raw selected) raw directory with raw data files.
 
@@ -144,6 +163,11 @@ if __name__ == '__main__':
 
     If --save-raw is specified, then original waveform files will be saved,
     otherwise these will be deleted after processing.
+
+    If --amptools-format is specified, then the metrics file will be saved 
+    to Excel format with an extra row at the top containing reference 
+    information. If you are not a ShakeMap user, then you should probably 
+    ignore this option.
     """
     parser = argparse.ArgumentParser(description=desc)
 
@@ -162,6 +186,9 @@ if __name__ == '__main__':
                         help='Make plots of processed waveforms')
     parser.add_argument('-r', '--save-raw', action='store_true',
                         help='Save raw data files in output directory')
+    hstr = 'Save metrics spreadsheet in ShakeMap Amptools friendly format'
+    parser.add_argument('-a', '--amptools-format', action='store_true',
+                        help=hstr)
     hstr = 'Sidestep online data retrieval, read from local directory.'
     parser.add_argument('--directory',
                         help=hstr)
