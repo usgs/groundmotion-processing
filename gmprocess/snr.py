@@ -13,12 +13,14 @@ TAPER_SIDE = 'both'
 MIN_POINTS_IN_WINDOW = 10
 
 
-def compute_snr(tr):
+def compute_snr(tr, bandwidth):
     """Compute SNR dictionaries for a trace.
 
     Args:
-        tr:
-           StationTrace.
+        tr (StationTrace):
+           Trace of data.
+        bandwidth (float):
+           Konno-Omachi smoothing bandwidth parameter.
 
     Returns:
         StationTrace with SNR dictionaries added as trace parameters.
@@ -52,9 +54,11 @@ def compute_snr(tr):
 
     # Transform to frequency domain and smooth spectra using
     # konno-ohmachi smoothing
-    sig_spec = abs(np.fft.rfft(signal.data, n=nfft)) / nfft
-    sig_spec_freqs = np.fft.rfftfreq(nfft, signal.stats.delta)
-    noise_spec = abs(np.fft.rfft(noise.data, n=nfft)) / nfft
+    dt = signal.stats.delta
+    sig_spec = abs(np.fft.rfft(signal.data, n=nfft)) * dt
+    sig_spec_freqs = np.fft.rfftfreq(nfft, dt)
+    dt = noise.stats.delta
+    noise_spec = abs(np.fft.rfft(noise.data, n=nfft)) * dt
     sig_spec -= noise_spec
 
     sig_dict = {
@@ -69,7 +73,8 @@ def compute_snr(tr):
     }
     tr.setParameter('noise_spectrum', noise_dict)
 
-    sig_spec_smooth, freqs_signal = fft_smooth(signal, nfft)
+    sig_spec_smooth, freqs_signal = fft_smooth(
+        signal, nfft, bandwidth)
     smooth_dict = {
         'spec': sig_spec_smooth.tolist(),
         'freq': freqs_signal.tolist()

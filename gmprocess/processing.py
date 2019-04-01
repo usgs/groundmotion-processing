@@ -16,16 +16,17 @@ from gmprocess.windows import window_checks
 from gmprocess import corner_frequencies
 from gmprocess.snr import compute_snr
 
-# Note: no QA on following import because they need to be in namespace to be
+# Note: no QA on following imports because they need to be in namespace to be
 # discovered. They are not called directly so linters will think this is a
 # mistake.
 from gmprocess.pretesting import (  # NOQA
     check_max_amplitude,
     check_sta_lta,
     check_free_field)
+from gmprocess.spectrum import fit_spectra  # NOQA
+from gmprocess.plot import summary_plots  # NOQA
 
-
-M_TO_CM = 100
+M_TO_CM = 100.0
 
 
 TAPER_TYPES = {
@@ -131,13 +132,15 @@ def process_streams(streams, origin, config=None):
     # Loop over streams
     for stream in processed_streams:
         for processing_step_dict in processing_steps:
+
+            key_list = list(processing_step_dict.keys())
+            if len(key_list) != 1:
+                raise ValueError(
+                    'Each processing step must contain exactly one key.')
+            step_name = key_list[0]
+
             # Only continue if prior checks have passed
             if stream.passed:
-                key_list = list(processing_step_dict.keys())
-                if len(key_list) != 1:
-                    raise ValueError(
-                        'Each processing step must contain exactly one key.')
-                step_name = key_list[0]
                 logging.info('Processing step: %s' % step_name)
                 step_args = processing_step_dict[step_name]
                 # Using globals doesn't seem like a great solution here, but it
@@ -145,10 +148,13 @@ def process_streams(streams, origin, config=None):
                 if step_name not in globals():
                     raise ValueError(
                         'Processing step %s is not valid.' % step_name)
-                stream = globals()[step_name](
-                    stream,
-                    **step_args
-                )
+
+                if step_name == 'fit_spectra':
+                    stream = globals()[step_name](stream, origin)
+                elif step_args is None:
+                    stream = globals()[step_name](stream)
+                else:
+                    stream = globals()[step_name](stream, **step_args)
 
     logging.info('Finished processing streams.')
     return processed_streams
@@ -511,7 +517,7 @@ def snr_check(st, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
         configured criteria.
     """
     for tr in st:
-        tr = compute_snr(tr)
+        tr = compute_snr(tr, bandwidth)
 
         if st.passed:
             snr_dict = tr.getParameter('snr')

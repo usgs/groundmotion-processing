@@ -165,8 +165,9 @@ processing:
     #       # The new sampling rate, in Hz.
     #       new_sampling_rate: 200
     #
-    #       # Currently only supporting Lanczos interpolation, which is generally
-    #       # the preferred method and offers the highest quality interpolation.
+    #       # Currently only supporting Lanczos interpolation, which is
+    #       # generall the preferred method and offers the highest quality
+    #       # interpolation.
     #       method: lanczos
     #
     #       # Width of the Lanczos window, in number of samples. Increasing "a"
@@ -208,6 +209,16 @@ processing:
         # terms to be zero. The second derivative of the fit polynomial is then
         # removed from the acceleration time series.
         detrending_method: baseline_sixth_order
+
+    - fit_spectra:
+        # Fit a Brune spectra to the data by adjusting stress drop with an
+        # assumed kappa.
+        kappa: 0.035
+
+    - summary_plots:
+        # Make summary plots and put them in this directory:
+        directory: 'plotdir'
+
 
 # -----------------------------------------------------------------------------
 # This section is for calculating metrics

@@ -50,9 +50,26 @@ class StationStream(Stream):
                     else:
                         self.append(trace)
 
+    def get_id(self):
+        """
+        Get the StationStream ID.
+        """
+        stats = self.traces[0].stats
+        id_str = "%(network)s.%(station)s.%(location)s" % stats
+
+        # Check that the id would be the same for all traces
+        for tr in self:
+            stats = tr.stats
+            test_str = "%(network)s.%(station)s.%(location)s" % stats
+            if id_str != test_str:
+                raise ValueError(
+                    'Inconsistent stream ID for different traces.')
+        return id_str
+
     @property
     def passed(self):
-        """Check the traces to see if any have failed any processing steps.
+        """
+        Check the traces to see if any have failed any processing steps.
 
         Returns:
             bool: True if no failures in Traces, False if there are.
@@ -91,7 +108,8 @@ class StationStream(Stream):
         return provdocs
 
     def getInventory(self):
-        """Extract an ObsPy inventory object from a Stream read in by gmprocess tools.
+        """
+        Extract an ObsPy inventory object from a Stream read in by gmprocess tools.
         """
         networks = [trace.stats.network for trace in self]
         if len(set(networks)) > 1:

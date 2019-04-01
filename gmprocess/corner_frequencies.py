@@ -3,8 +3,6 @@
 Methods for handling/picking corner frequencies.
 """
 
-from gmprocess.plot import summary_plot
-from gmprocess.config import get_config
 from gmprocess.snr import compute_snr
 
 # Options for tapering noise/signal windows
@@ -38,7 +36,7 @@ def constant(tr, highpass=0.08, lowpass=20.0):
     return tr
 
 
-def snr(tr, same_horiz=True):
+def snr(tr, same_horiz=True, bandwidth=20):
     """Use constant corner frequencies across all records.
 
     Args:
@@ -47,6 +45,8 @@ def snr(tr, same_horiz=True):
         same_horiz (bool):
             If True, horizontal traces in the stream must have the same
             corner frequencies.
+        bandwidth (float):
+            Konno-Omachi smoothing bandwidth parameter.
 
     Returns:
         stream: stream with selected corner frequencies appended to records.
@@ -54,7 +54,7 @@ def snr(tr, same_horiz=True):
 
     # Check for prior calculation of 'snr'
     if not tr.hasParameter('snr'):
-        tr = compute_snr(tr)
+        tr = compute_snr(tr, bandwidth)
 
     # If it doesn't exist then it must have failed because it didn't have
     # enough points in the noise or singal windows
@@ -89,9 +89,6 @@ def snr(tr, same_horiz=True):
         # If we didn't find any corners
         if not lows:
             tr.fail('SNR not greater than required threshold.')
-#            summary_plot(tr, sig_spec, sig_spec_smooth, noise_spec,
-#                         noise_spec_smooth, sig_spec_freqs, freqs_signal,
-#                         threshold, plot_dir)
             return tr
 
         # If we find an extra low, add another high for the maximum

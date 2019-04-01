@@ -22,6 +22,8 @@ from obspy.signal.trigger import ar_pick, pk_baer
 from gmprocess.phase import PowerPicker
 from gmprocess.config import get_config
 
+M_TO_KM = 1.0/1000
+
 
 def window_checks(st, min_noise_duration=0.5, min_signal_duration=5.0):
     """
@@ -136,7 +138,7 @@ def signal_split(
             lat1=event_lat,
             lon1=event_lon,
             lat2=st[0].stats['coordinates']['latitude'],
-            lon2=st[0].stats['coordinates']['longitude'])[0] / 1000.0
+            lon2=st[0].stats['coordinates']['longitude'])[0] * M_TO_KM
         tsplit = event_time + epi_dist / vsplit
         preferred_picker = None
     else:
