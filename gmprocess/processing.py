@@ -52,7 +52,8 @@ TAPER_TYPES = {
 
 
 def process_streams(streams, origin, config=None):
-    """Run processing steps from the config file.
+    """
+    Run processing steps from the config file.
 
     This method looks in the 'processing' config section and loops over those
     steps and hands off the config options to the appropriate prcessing method.
@@ -131,6 +132,7 @@ def process_streams(streams, origin, config=None):
 
     # Loop over streams
     for stream in processed_streams:
+        logging.info('Stream: %s' % stream.get_id())
         for processing_step_dict in processing_steps:
 
             key_list = list(processing_step_dict.keys())
@@ -139,16 +141,16 @@ def process_streams(streams, origin, config=None):
                     'Each processing step must contain exactly one key.')
             step_name = key_list[0]
 
-            # Only continue if prior checks have passed
-            if stream.passed:
-                logging.info('Processing step: %s' % step_name)
-                step_args = processing_step_dict[step_name]
-                # Using globals doesn't seem like a great solution here, but it
-                # works.
-                if step_name not in globals():
-                    raise ValueError(
-                        'Processing step %s is not valid.' % step_name)
+            logging.info('Processing step: %s' % step_name)
+            step_args = processing_step_dict[step_name]
+            # Using globals doesn't seem like a great solution here, but it
+            # works.
+            if step_name not in globals():
+                raise ValueError(
+                    'Processing step %s is not valid.' % step_name)
 
+            # Only continue if prior checks have passed
+            if stream.passed | (step_name == "summary_plots"):
                 if step_name == 'fit_spectra':
                     stream = globals()[step_name](stream, origin)
                 elif step_args is None:
@@ -246,7 +248,8 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
 
 
 def detrend(st, detrending_method=None):
-    """Detrend stream.
+    """
+    Detrend stream.
 
     Args:
         st (StationStream):
@@ -280,7 +283,8 @@ def detrend(st, detrending_method=None):
 
 
 def resample(st, new_sampling_rate=None, method=None, a=None):
-    """Resample stream.
+    """
+    Resample stream.
 
     Args:
         st (StationStream):
@@ -312,7 +316,8 @@ def resample(st, new_sampling_rate=None, method=None, a=None):
 
 
 def cut(st, sec_before_split=None):
-    """ Cut/trim the record.
+    """
+    Cut/trim the record.
 
     This method minimally requires that the windows.signal_end method has been
     run, in which case the record is trimmed to the end of the signal that
@@ -354,7 +359,8 @@ def cut(st, sec_before_split=None):
 
 
 def get_corner_frequencies(st, method='constant', constant=None, snr=None):
-    """Select corner frequencies.
+    """
+    Select corner frequencies.
 
     Args:
         st (StationStream):
@@ -383,7 +389,8 @@ def get_corner_frequencies(st, method='constant', constant=None, snr=None):
 
 
 def highpass_filter(st, filter_order=5, number_of_passes=2):
-    """Highpass filter.
+    """
+    Highpass filter.
 
     Args:
         st (StationStream):
@@ -423,7 +430,8 @@ def highpass_filter(st, filter_order=5, number_of_passes=2):
 
 
 def lowpass_filter(st, filter_order=5, number_of_passes=2):
-    """Lowpass filter.
+    """
+    Lowpass filter.
 
     Args:
         st (StationStream):
@@ -469,7 +477,8 @@ def lowpass_filter(st, filter_order=5, number_of_passes=2):
 
 
 def taper(st, type="hann", width=0.05, side="both"):
-    """Taper streams.
+    """
+    Taper streams.
 
     Args:
         st (StationStream):
@@ -498,7 +507,8 @@ def taper(st, type="hann", width=0.05, side="both"):
 
 
 def snr_check(st, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
-    """Check signal-to-noise ratio.
+    """
+    Check signal-to-noise ratio.
 
     Args:
         st (StationStream):
@@ -534,6 +544,31 @@ def snr_check(st, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
                 'bandwidth': bandwidth
             }
             tr.setParameter('snr_conf', snr_dict)
+    return st
+
+
+def max_traces(st, n_max=3):
+    """
+    Reject a stream if it has more than n_max traces.
+
+    The purpose of this is to skip over stations with muliple strong motion
+    instruments, which can occur with downhole or structural arrays since our
+    code currently is not able to reliably group by location within an array.
+
+    Args:
+        st (StationStream):
+            Stream of data.
+        n_max (int):
+            Maximum allowed number of streams; default to 3.
+
+    Returns:
+        Stream with adjusted failed fields.
+    """
+    logging.debug('Starting max_traces')
+    logging.debug('len(st) = %s' % len(st))
+    if len(st) > n_max:
+        for tr in st:
+            tr.fail('More than %s traces in stream.' % n_max)
     return st
 
 
