@@ -9,8 +9,8 @@ def test_spectrum():
     freq = np.logspace(-2, 2, 101)
     mod = spectrum.model(freq, 10, kappa=0.035, magnitude=6.7)
     np.testing.assert_allclose(mod[0], 0.21764373, atol=1e-5)
-    np.testing.assert_allclose(mod[50], 113.234943, atol=1e-5)
-    np.testing.assert_allclose(mod[-1], 0.00322216, atol=1e-5)
+    np.testing.assert_allclose(mod[50], 113.5025146, atol=1e-5)
+    np.testing.assert_allclose(mod[-1], 0.0032295, atol=1e-5)
 
 
 def test_fff():

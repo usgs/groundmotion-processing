@@ -85,32 +85,6 @@ windows:
 
 
 # -----------------------------------------------------------------------------
-# Corner frequency options
-corner_frequencies:
-
-    # Corner frequency selection can use constant values, or selected
-    # dynamically from the signal-to-noise-ratio.
-
-    # Valid options for "method" are "constant" and "snr".
-    method: constant
-
-    constant:
-        highpass: 0.08
-        lowpass: 20.0
-
-    snr:
-        # For dynamic filtering, we require a minimum SNR threshold between
-        # max_low_freq and min_high_freq after the spectra is smoothed with the
-        # Konno-Omachi method (with bandwidth parameter "b")
-        threshold: 3.0
-        max_low_freq: 0.2
-        min_high_freq: 5.0
-        bandwidth: 20.0
-        same_horiz: True
-        make_plots: False
-        plot_dir: directory
-
-# -----------------------------------------------------------------------------
 # This section is for processing steps that will affect the waveform and get
 # recorded as seismological provenance data.
 processing:
@@ -126,6 +100,14 @@ processing:
     - check_max_amplitude:
         min: 5
         max: 2e6
+
+
+    # STA/LTA is computed for record and the max value must exceed the threshold
+    # below. Units are sec for window lenghts.
+    - check_sta_lta:
+        sta_length: 1.0
+        lta_length: 20.0
+        threshold: 3.0
 
     - remove_response:
         # Outuput units. Must be 'ACC', 'VEL', or 'DISP'.
@@ -152,13 +134,40 @@ processing:
         #     constant, demean, linear, polynomial, simple, spline
         detrending_method: demean
 
+    - snr_check:
+        # Presense of this check says to do the signa-to-noise ratio check. Requires
+        # minimum SNR of `threshold` between `min_freq` and `max_freq` using
+        # Konno-Omachi smoothed spectra with `bandwidth` parameter.
+        threshold: 3.0
+        min_freq: 0.2
+        max_freq: 5.0
+        bandwidth: 20.0
+
+    - get_corner_frequencies:
+        # Corner frequency selection can use constant values, or selected
+        # dynamically from the signal-to-noise-ratio.
+        
+        # Valid options for "method" are "constant" and "snr".
+        method: constant
+
+        constant:
+            highpass: 0.08
+            lowpass: 20.0
+
+        snr:
+            # For dynamic filtering, we require a minimum SNR threshold between
+            # as configured in the snr_check step.
+            same_horiz: True
+
+
     # - resample:
     #
     #       # The new sampling rate, in Hz.
     #       new_sampling_rate: 200
     #
-    #       # Currently only supporting Lanczos interpolation, which is generally
-    #       # the preferred method and offers the highest quality interpolation.
+    #       # Currently only supporting Lanczos interpolation, which is
+    #       # generall the preferred method and offers the highest quality
+    #       # interpolation.
     #       method: lanczos
     #
     #       # Width of the Lanczos window, in number of samples. Increasing "a"
@@ -166,19 +175,12 @@ processing:
     #       # quality.
     #       a: 50
 
-    # STA/LTA is computed for record and the max value must exceed the threshold
-    # below. Units are sec for window lenghts.
-    - check_sta_lta:
-        sta_length: 1.0
-        lta_length: 20.0
-        threshold: 4.0
-
     - cut:
         # No required options; the presence of this key just indicates when to
         # cut the time series using the record start and signal end that were
         # configured in the windows section.
 
-        # Optionally, can specify how many sections to include prior to the
+        # Optionally, can specify how many seconds to include prior to the
         # split between the noise and signal windows. If set to "Null" then
         # the beginning of the record will be unchanged.
         sec_before_split: 2.0
@@ -207,6 +209,16 @@ processing:
         # terms to be zero. The second derivative of the fit polynomial is then
         # removed from the acceleration time series.
         detrending_method: baseline_sixth_order
+
+    - fit_spectra:
+        # Fit a Brune spectra to the data by adjusting stress drop with an
+        # assumed kappa.
+        kappa: 0.035
+
+    - summary_plots:
+        # Make summary plots and put them in this directory:
+        directory: 'plotdir'
+
 
 # -----------------------------------------------------------------------------
 # This section is for calculating metrics

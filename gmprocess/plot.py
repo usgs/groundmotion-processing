@@ -12,6 +12,7 @@ from obspy.geodetics.base import gps2dist_azimuth
 # Local imports
 from gmprocess.metrics.imt.arias import calculate_arias
 from gmprocess.metrics.oscillators import get_acceleration
+from gmprocess import spectrum
 
 
 def get_time_from_percent(NIa, p, dt):
@@ -322,105 +323,156 @@ def plot_moveout(streams, epilat, epilon, channel, cmap='viridis',
     return (fig, ax)
 
 
-def summary_plot(tr, sig_spec, sig_spec_smooth, noise_spec, noise_spec_smooth,
-                 freqs, freqs_smooth, threshold, save_dir):
-    """
-    Create a plot showing signal-to-noise ratio information, the
-    trace itself, and tables showing provenance and parameter information.
+def summary_plots(st, directory):
+    """Stream summary plot.
 
     Args:
-        tr (gmprocess.stationtrace.StationTrace):
-            Trace of data.
-        sig_spec (array-like):
-            Fourier spectrum for the signal window.
-        sig_spec_smooth (array-like):
-            Smoothed Fourier spectrum for the signal window.
-        noise_spec (array-like):
-            Fourier spectrum for the signal.
-        noise_spec_smooth (array-like):
-            Smoothed Fourier spectrum for the noise window.
-        freqs (array-like):
-            Frequencies associated with sig_spec and noise_spec.
-        smooth_freqs (array-like):
-            Frequencies associated with sig_spec_smooth and noise_spec_smooth.
-        threshold (float):
-            Threshold value for SNR.
-        save_dir (str):
-            Directory for saving images.
+        st (gmprocess.stationtrace.StationStream):
+            Stream of data.
+        directory (str):
+            Directory for saving plots.
     """
 
-    fig = plt.figure(figsize=(10, 10))
-    gs = fig.add_gridspec(3, 3)
-    ax1 = fig.add_subplot(gs[0, :])
-    ax2 = fig.add_subplot(gs[1, 0:2])
-    ax3 = fig.add_subplot(gs[2, 0:2])
-    ax4 = fig.add_subplot(gs[1:3, 2])
+    # Check if directory exists, and if not, create it.
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
-    ax1.plot(tr.times('matplotlib'), tr.data, 'k')
-    ax1.xaxis_date()
-    ax1.set_xlabel('Time')
-    ax1.axvline(tr.getParameter('signal_split')['split_time'].datetime,
-                color='red', linestyle='dashed')
+    # Setup figure for stream
+    ntrace = len(st)
+    fig = plt.figure(figsize=(3*ntrace, 8), constrained_layout=True)
+    gs = fig.add_gridspec(3, ntrace, height_ratios=[1, 2, 2])
+    ax = [plt.subplot(g) for g in gs]
 
-    ax2.loglog(freqs, sig_spec, color='lightblue')
-    ax2.loglog(freqs_smooth, sig_spec_smooth, color='blue', label='Signal')
-    ax2.loglog(freqs, noise_spec, color='salmon')
-    ax2.loglog(freqs_smooth, noise_spec_smooth, color='red', label='Noise')
-    ax2.set_xlabel('Frequency (Hz)')
-    ax2.set_ylabel('Amplitude')
+    for j, tr in enumerate(st):
 
-    ax3.loglog(freqs_smooth, sig_spec_smooth / noise_spec_smooth, label='SNR')
-    ax3.axhline(threshold, color='green', linestyle='--', label='Threshold')
-    ax3.set_ylabel('SNR')
-
-    if 'corner_frequencies' in tr.getParameterKeys():
-        hp = tr.getParameter('corner_frequencies')['highpass']
-        lp = tr.getParameter('corner_frequencies')['lowpass']
-        ax3.axvline(hp, color='orange', label='SNR Highpass')
-        ax3.axvline(lp, color='purple', label='SNR Highpass')
-
-    provinfo = []
-    labels = []
-    prov = tr.getAllProvenance()
-    print(prov)
-    for provdict in prov:
-        provid = provdict['prov_id']
-        attr_str = ''
-        for item in provdict['prov_attributes'].items():
-            attr_str += str(item[0]) + ': ' + str(item[1]) + '\n'
-        labels.append(provid)
-        provinfo.append([attr_str])
-
-    ax4.axis('off')
-    ax4.table(cellText=provinfo, rowLabels=labels, bbox=(0.3, 0.5, 0.7, 0.34))
-    ax4.annotate('Provenance', xy=(0.68, 0.85))
-
-    paraminfo = []
-    labels = []
-    for param in tr.getParameterKeys():
-
-        if isinstance(tr.getParameter(param), dict):
-            paramdict = tr.getParameter(param)
-            attr_str = ''
-            for item in paramdict.items():
-                attr_str += str(item[0]) + ': ' + str(item[1]) + '\n'
-            paraminfo.append([attr_str])
+        # ---------------------------------------------------------------------
+        # Get trace info
+        if tr.hasParameter('snr'):
+            snr_dict = tr.getParameter('snr')
         else:
-            paraminfo.append([tr.getParameter(param)])
-        labels.append(param)
+            snr_dict = None
+        if tr.hasParameter('signal_spectrum'):
+            signal_dict = tr.getParameter('signal_spectrum')
+        else:
+            signal_dict = None
+        if tr.hasParameter('noise_spectrum'):
+            noise_dict = tr.getParameter('noise_spectrum')
+        else:
+            noise_dict = None
+        if tr.hasParameter('smooth_signal_spectrum'):
+            smooth_signal_dict = tr.getParameter('smooth_signal_spectrum')
+        else:
+            smooth_signal_dict = None
+        if tr.hasParameter('smooth_noise_spectrum'):
+            smooth_noise_dict = tr.getParameter('smooth_noise_spectrum')
+        else:
+            smooth_noise_dict = None
+        if tr.hasParameter('snr_conf'):
+            snr_conf = tr.getParameter('snr_conf')
+        else:
+            snr_conf = None
 
-    ax4.table(cellText=paraminfo, rowLabels=labels, bbox=(0.3, 0.0, 0.7, 0.4))
-    ax4.annotate('Parameters', xy=(0.68, 0.41))
+        # Note that the theoretical spectra will only be available for
+        # horizontal channels
+        if tr.hasParameter('fit_spectra'):
+            fit_spectra_dict = tr.getParameter('fit_spectra')
+        else:
+            fit_spectra_dict = None
 
-    handles, labels = [], []
-    for ax in [ax1, ax2, ax3]:
-        handles += ax.get_legend_handles_labels()[0]
-        labels += ax.get_legend_handles_labels()[1]
+        # ---------------------------------------------------------------------
+        # Compute model spectra
+        if fit_spectra_dict is not None:
+            model_spec = spectrum.model(
+                freq=np.array(smooth_signal_dict['freq']),
+                dist=fit_spectra_dict['epi_dist'],
+                kappa=fit_spectra_dict['kappa'],
+                magnitude=fit_spectra_dict['magnitude'],
+                stress_drop=fit_spectra_dict['stress_drop']
+            )
 
-    ax4.legend(handles, labels, loc='upper right', ncol=2, borderaxespad=0)
-    fig.suptitle(tr.get_id(), fontsize=18)
-    plt.tight_layout()
-    plt.subplots_adjust(top=0.95)
-    plt.savefig(fname=os.path.join(save_dir, tr.get_id() + '.png'),
-                bbox_inches='tight')
-    plt.show()
+        # ---------------------------------------------------------------------
+        # Time series plot
+        ax[j].set_title(tr.get_id())
+        ax[j].plot(tr.times('matplotlib'), tr.data, 'k')
+
+        # Show signal split as vertical dashed line
+        if tr.hasParameter('signal_split'):
+            split_dict = tr.getParameter('signal_split')
+            ax[j].axvline(split_dict['split_time'].datetime,
+                          color='red', linestyle='dashed')
+        ax[j].xaxis_date()
+        ax[j].set_xlabel('Time')
+
+        # ---------------------------------------------------------------------
+        # Spectral plot
+
+        # Raw signal spec
+        if signal_dict is not None:
+            ax[j+3].loglog(signal_dict['freq'],
+                           signal_dict['spec'],
+                           color='lightblue')
+
+        # Smoothed signal spec
+        if smooth_signal_dict is not None:
+            ax[j+3].loglog(smooth_signal_dict['freq'],
+                           smooth_signal_dict['spec'],
+                           color='blue',
+                           label='Signal')
+
+        # Raw noise spec
+        if noise_dict is not None:
+            ax[j+3].loglog(noise_dict['freq'],
+                           noise_dict['spec'],
+                           color='salmon')
+
+        # Smoothed noise spec
+        if smooth_noise_dict is not None:
+            ax[j+3].loglog(smooth_noise_dict['freq'],
+                           smooth_noise_dict['spec'],
+                           color='red',
+                           label='Noise')
+
+        if fit_spectra_dict is not None:
+            # Model spec
+            ax[j+3].loglog(smooth_signal_dict['freq'],
+                           model_spec,
+                           color='black',
+                           linestyle='dashed')
+
+            # Corner frequency
+            ax[j+3].axvline(fit_spectra_dict['f0'],
+                            color='black',
+                            linestyle='dashed')
+
+        ax[j+3].set_xlabel('Frequency (Hz)')
+        ax[j+3].set_ylabel('Amplitude (cm/s)')
+
+        # ---------------------------------------------------------------------
+        # Signal-to-noise ratio plot
+
+        ax[j+6].loglog(snr_dict['freq'],
+                       snr_dict['snr'],
+                       label='SNR')
+        ax[j+6].axhline(snr_conf['threshold'],
+                        color='black',
+                        linestyle='--',
+                        label='Threshold')
+        ax[j+6].set_ylabel('SNR')
+        ax[j+6].set_xlabel('Frequency (Hz)')
+
+        if 'corner_frequencies' in tr.getParameterKeys():
+            hp = tr.getParameter('corner_frequencies')['highpass']
+            lp = tr.getParameter('corner_frequencies')['lowpass']
+            ax[j+6].axvline(hp,
+                            color='black',
+                            linestyle='--',
+                            label='Highpass')
+            ax[j+6].axvline(lp,
+                            color='black',
+                            linestyle='--',
+                            label='Lowpass')
+
+    if 'CALLED_FROM_PYTEST' not in os.environ:
+        plt.tight_layout()
+        plt.savefig(fname=os.path.join(directory, st.get_id() + '.png'),
+                    bbox_inches='tight')

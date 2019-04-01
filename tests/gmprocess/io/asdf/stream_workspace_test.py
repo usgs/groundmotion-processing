@@ -30,7 +30,17 @@ def compare_streams(instream, outstream):
             assert 1 == 2
         invalue = instream[0].getParameter(key)
         outvalue = outstream[0].getParameter(key)
-        assert invalue == outvalue
+        if isinstance(invalue, (int, float, str)):
+            assert invalue == outvalue
+        if isinstance(invalue, dict):
+            # Currenlty, we also have dictionaries with list of floats
+            # as entries. This could get more complicated if we start
+            # storing a wider variety of data structures...
+            for k, v in invalue.items():
+                if isinstance(v, list):
+                    inarray = np.array(v)
+                    outarray = np.array(outvalue[k])
+                    np.testing.assert_allclose(inarray, outarray)
 
     # compare the provenance from the input processed stream
     # to it's output equivalent
@@ -193,10 +203,12 @@ def test_workspace():
 
             workspace.setStreamMetrics(usid, labels=['processed'])
             df = workspace.getMetricsTable(usid, labels=['processed'])
-            cmpdict = {'GREATER_OF_TWO_HORIZONTALS': [26.8906, 4.9814, 94.6646],
-                       'HN1': [24.5105, 4.9814, 94.6646],
-                       'HN2': [26.8906, 4.0292, 86.7877],
-                       'HNZ': [16.0941, 2.5057, 136.7054]}
+            cmpdict = {
+                'GREATER_OF_TWO_HORIZONTALS': [26.8906, 4.9415, 94.6646],
+                'HN1': [24.5105, 4.9415, 94.6646],
+                'HN2': [26.8906, 4.0761, 86.7877],
+                'HNZ': [16.0941, 2.5401, 136.7054]
+            }
             cmpframe = pd.DataFrame(cmpdict)
             assert df['PGA'].equals(cmpframe)
 
@@ -271,5 +283,5 @@ def test_raw():
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
-    test_raw()
     test_workspace()
+    test_raw()

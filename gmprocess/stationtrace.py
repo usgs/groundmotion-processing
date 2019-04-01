@@ -229,6 +229,8 @@ class StationTrace(Trace):
             'module': calling_module,
             'reason': reason
         })
+        logging.info(calling_module)
+        logging.info(reason)
 
     def validate(self):
         """Ensure that all required metadata fields have been set.
@@ -517,7 +519,7 @@ class StationTrace(Trace):
         # check for masked array
         if np.ma.count_masked(self.data):
             out += ' (masked)'
-        if self.hasParameter('failed'):
+        if self.hasParameter('failure'):
             out += ' (failed)'
         else:
             out += ' (passed)'

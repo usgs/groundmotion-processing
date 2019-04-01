@@ -33,10 +33,7 @@ def test_process_streams():
         'lon': 133.345
     }
 
-    data_files = glob.glob(os.path.join(
-        datadir, 'kiknet', 'usp000a1b0', 'AICH04*'))
     data_files, origin = read_data_dir('geonet', 'us1000778i', '*.V1A')
-    data_files, origin = read_data_dir('kiknet', 'usp000a1b0', 'AICH04*')
     streams = []
     for f in data_files:
         streams += read_data(f)
@@ -49,26 +46,26 @@ def test_process_streams():
 
     logging.info('Testing trace: %s' % test[0][1])
 
-    assert len(test) == 1
+    assert len(test) == 3
     assert len(test[0]) == 3
+    assert len(test[1]) == 3
+    assert len(test[2]) == 3
 
     # Apparently the traces end up in a different order on the Travis linux
     # container than on my local mac. So testing individual traces need to
     # not care about trace order.
 
-    trace_maxes = np.sort([np.max(t.data) for t in test[0]])
+    trace_maxes = np.sort([np.max(np.abs(t.data)) for t in test[0]])
 
     np.testing.assert_allclose(
         trace_maxes,
-        np.array([1.30994939, 3.36651873, 4.87532321]),
+        np.array([157.82909426, 240.36582093, 263.7063879]),
         rtol=1e-5
     )
 
 
 def test_free_field():
     data_files, origin = read_data_dir('kiknet', 'usp000hzq8')
-
-    config = get_config()
 
     raw_streams = []
     for dfile in data_files:
@@ -89,12 +86,12 @@ def test_free_field():
                 reason = trace.getParameter('failure')['reason']
                 break
         if is_free:
-            assert reason == 'Failed sta/lta check.'
+            assert reason.startswith('Failed sta/lta check')
         else:
             assert reason == 'Failed free field sensor check.'
 
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
-    test_free_field()
     test_process_streams()
+    test_free_field()
