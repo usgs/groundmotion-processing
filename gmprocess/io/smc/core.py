@@ -115,17 +115,19 @@ def is_smc(filename):
     """
     logging.debug("Checking if format is smc.")
     try:
-        with open (filename, 'rt') as f:
+        with open(filename, 'rt') as f:
             lines = f.readlines()
             firstline = lines[0].strip()
             if firstline in VALID_HEADERS:
                 return True
             if 'DISPLACEMENT' in firstline:
                 return True
-                raise GMProcessException('SMC: Diplacement records are not supported.')
+                raise GMProcessException(
+                    'SMC: Diplacement records are not supported.')
             elif 'VELOCITY' in firstline:
                 return True
-                raise GMProcessException('SMC: Velocity records are not supported.')
+                raise GMProcessException(
+                    'SMC: Velocity records are not supported.')
             elif '*' in firstline:
                 end_ascii = lines[10]
                 if '*' in end_ascii:
@@ -166,17 +168,17 @@ def read_smc(filename, **kwargs):
     if not is_smc(filename):
         raise Exception('%s is not a valid SMC file' % filename)
 
-    with open (filename, 'rt') as f:
+    with open(filename, 'rt') as f:
         line = f.readline().strip()
         if 'DISPLACEMENT' in line:
             raise GMProcessException('SMC: Diplacement records are not supported: '
-                    '%s.' % filename)
+                                     '%s.' % filename)
         elif 'VELOCITY' in line:
             raise GMProcessException('SMC: Velocity records are not supported: '
-                    '%s.' % filename)
+                                     '%s.' % filename)
         elif line == "*":
             raise GMProcessException('SMC: No record volume specified in file: '
-                    '%s.' % filename)
+                                     '%s.' % filename)
 
     stats, num_comments = _get_header_info(
         filename, any_structure=any_structure,
@@ -274,7 +276,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     # station code is in the third line
     stats['station'] = ''
     if len(ascheader[2]) >= 4:
-        stats['station'] = ascheader[2][0:4]
+        stats['station'] = ascheader[2][0:4].strip()
     logging.debug('station: %s' % stats['station'])
 
     standard['process_time'] = ''
@@ -308,9 +310,9 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     jday = intheader[0, 2]
     hour = intheader[0, 3]
     minute = intheader[0, 4]
-    if (year != missing_data and
-            jday != missing_data and hour != missing_data and
-            minute != missing_data):
+    if (year != missing_data
+            and jday != missing_data and hour != missing_data
+            and minute != missing_data):
 
         # Handle second if missing
         second = 0
