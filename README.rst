@@ -12,8 +12,6 @@ organization of the code is changing rapidly.
 +---------------+----------------------+ 
 | Code coverage | |CodeCov|            | 
 +---------------+----------------------+ 
-| Manage issues | |Waffle|             | 
-+---------------+----------------------+ 
 
 .. |Travis| image:: https://travis-ci.com/usgs/groundmotion-processing.svg?branch=master
     :target: https://travis-ci.org/usgs/groundmotion-processing
@@ -25,11 +23,6 @@ organization of the code is changing rapidly.
 .. |CodeCov| image:: https://codecov.io/gh/usgs/groundmotion-processing/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/usgs/groundmotion-processing
     :alt: Code Coverage Status
-
-.. |Waffle| image:: https://badge.waffle.io/usgs/groundmotion-processing.svg?columns=all
-    :target: https://waffle.io/usgs/groundmotion-processing
-    :alt: 'Waffle.io - Columns and their card count'
-
 
 
 groundmotion-processing
