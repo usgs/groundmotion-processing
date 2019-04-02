@@ -8,6 +8,7 @@ import tarfile
 import glob
 import shutil
 import logging
+import urllib
 
 # third party imports
 import pytz
@@ -57,6 +58,8 @@ RADIUS = 100  # kilometers
 DT = 60  # seconds
 DDEPTH = 30  # km
 DMAG = 0.3
+
+URL_ERROR_CODE = 200  # if we get this from a request, we're good
 
 
 class KNETFetcher(DataFetcher):
@@ -273,7 +276,9 @@ class KNETFetcher(DataFetcher):
         req = requests.get(url, params=payload,
                            auth=(self.user, self.password))
 
-        if req.status_code == 200:
+        if req.status_code != URL_ERROR_CODE:
+            raise urllib.error.HTTPError(req.text)
+        else:
             with open(localfile, 'wb') as f:
                 for chunk in req:
                     f.write(chunk)

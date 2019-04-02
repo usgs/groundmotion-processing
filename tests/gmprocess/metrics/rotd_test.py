@@ -7,16 +7,18 @@ import os.path
 import numpy as np
 from obspy.core.stream import Stream
 from obspy.core.trace import Trace
+import pkg_resources
 
 # local imports
 from gmprocess.io.geonet.core import read_geonet
 from gmprocess.metrics.exception import PGMException
 from gmprocess.metrics.station_summary import StationSummary
+from gmprocess.io.test_utils import read_data_dir
 
 
 def test_rotd():
-    homedir = os.path.dirname(os.path.abspath(__file__))
-    datadir = os.path.join(homedir, '..', '..', 'data', 'process')
+    ddir = os.path.join('data', 'testdata', 'process')
+    datadir = pkg_resources.resource_filename('gmprocess', ddir)
     # Create a stream and station summary, convert from m/s^2 to cm/s^2 (GAL)
     osc1_data = np.genfromtxt(datadir + '/ALCTENE.UW..sac.acc.final.txt')
     osc2_data = np.genfromtxt(datadir + '/ALCTENN.UW..sac.acc.final.txt')
@@ -47,10 +49,9 @@ def test_rotd():
 
 
 def test_exceptions():
-    homedir = os.path.dirname(os.path.abspath(
-        __file__))  # where is this script?
-    datafile_v2 = os.path.join(homedir, '..', '..', 'data', 'geonet', 'us1000778i',
-                               '20161113_110259_WTMC_20.V2A')
+    datafiles, _ = read_data_dir(
+        'geonet', 'us1000778i', '20161113_110259_WTMC_20.V2A')
+    datafile_v2 = datafiles[0]
     stream_v2 = read_geonet(datafile_v2)[0]
     stream1 = stream_v2.select(channel="HN1")
     try:

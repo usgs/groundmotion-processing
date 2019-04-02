@@ -5,6 +5,8 @@ import os
 
 # third party imports
 import numpy as np
+import pkg_resources
+
 from gmprocess.exception import GMProcessException
 from gmprocess.io.usc.core import is_usc, read_usc
 from gmprocess.stream import group_channels
@@ -12,11 +14,8 @@ from gmprocess.stationtrace import PROCESS_LEVELS
 
 
 def test_usc():
-    homedir = os.path.dirname(os.path.abspath(
-        __file__))  # where is this script?
-    datadir = os.path.join(homedir, '..', '..', '..',
-                           'data', 'usc', 'ci3144585')
-
+    dpath = os.path.join('data', 'testdata', 'usc', 'ci3144585')
+    datadir = pkg_resources.resource_filename('gmprocess', dpath)
     files = {
         '017m30cc.y0a': (-.049, .086),
         '017m30lw.e0a': (.046, .004),
@@ -46,9 +45,9 @@ def test_usc():
         # can't be tested for all due to inconsistent sampling rate
         if tfilename == '017m30cc.y0a':
             np.testing.assert_almost_equal(
-                accvals[0]*frac*980.665, stream[0].data[0])
+                accvals[0] * frac * 980.665, stream[0].data[0])
             np.testing.assert_almost_equal(
-                accvals[1]*frac*980.665, stream[0].data[-1])
+                accvals[1] * frac * 980.665, stream[0].data[-1])
 
         # append to list of streams, so we can make sure these group together
         streams.append(stream)

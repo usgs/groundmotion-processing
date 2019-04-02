@@ -13,6 +13,7 @@ from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.process import process_config
 from gmprocess.stream import directory_to_dataframe, group_channels
 from gmprocess.io.test_utils import read_data_dir
+import pkg_resources
 
 
 def test():
@@ -21,30 +22,20 @@ def test():
 
     # Test for channel grouping with three unique channels
     streams = []
-    datadir = os.path.join(homedir, '..', 'data', 'knet', 'us2000cnnl')
-    for ext in ['.EW', '.NS', '.UD']:
-        filename = 'AOM0031801241951' + ext
-        datafile = os.path.join(homedir, '..', 'data',
-                                'knet', 'us2000cnnl', filename)
-        streams += read_knet(datafile)
-    grouped_streams = group_channels(streams)
-    assert len(grouped_streams) == 1
-    assert grouped_streams[0].count() == 3
-
-    # Test for channel grouping with three more duplicate channels
-    for ext in ['.EW', '.NS', '.UD']:
-        filename = 'AOM0031801241951' + ext
-        datafile = os.path.join(homedir, '..', 'data',
-                                'knet', 'us2000cnnl', filename)
+    # datadir = os.path.join(homedir, '..', 'data', 'knet', 'us2000cnnl')
+    datafiles, origin = read_data_dir('knet', 'us2000cnnl',
+                                      'AOM0031801241951*')
+    for datafile in datafiles:
         streams += read_knet(datafile)
     grouped_streams = group_channels(streams)
     assert len(grouped_streams) == 1
     assert grouped_streams[0].count() == 3
 
     # Test for channel grouping with more file types
-    filename = '20161113_110313_THZ_20.V2A'
-    datafile = os.path.join(homedir, '..', 'data',
-                            'geonet', 'us1000778i', filename)
+    datafiles, origin = read_data_dir('geonet',
+                                      'us1000778i',
+                                      '20161113_110313_THZ_20.V2A')
+    datafile = datafiles[0]
     streams += read_geonet(datafile)
     grouped_streams = group_channels(streams)
     assert len(grouped_streams) == 2
@@ -52,22 +43,11 @@ def test():
     assert grouped_streams[1].count() == 3
 
     # Test for warning for one channel streams
-    filename = 'AOM0071801241951.UD'
-    datafile = os.path.join(homedir, '..', 'data',
-                            'knet', 'us2000cnnl', filename)
+    datafiles, origin = read_data_dir(
+        'knet', 'us2000cnnl', 'AOM0071801241951.UD')
+    datafile = datafiles[0]
     streams += read_knet(datafile)
 
-    # * This is my attempt to do this after changing from
-    #   warnings.warn to logging.warning but it doesn't seem
-    #   to work.
-#    logstream = StringIO()
-#    handler = logging.StreamHandler(logstream)
-#    log = logging.getLogger()
-#    log.setLevel(logging.INFO)
-#    for handler in log.handlers:
-#        log.removeHandler(handler)
-#    log.addHandler(handler)
-#    handler.flush()
     grouped_streams = group_channels(streams)
 #    assert "One channel stream:" in logstream.getvalue()
 
@@ -78,7 +58,6 @@ def test():
 
 
 def test_grouping():
-    homedir = os.path.dirname(os.path.abspath(__file__))
     cwb_files, _ = read_data_dir('cwb', 'us1000chhc')
     cwb_streams = []
     for filename in cwb_files:
@@ -89,7 +68,8 @@ def test_grouping():
         assert len(stream) == 3
 
     # dmg
-    dmg_path = os.path.join(homedir, '..', 'data', 'dmg')
+    dpath = os.path.join('data', 'testdata', 'dmg')
+    dmg_path = pkg_resources.resource_filename('gmprocess', dpath)
     dmg_files = []
     for (path, dirs, files) in os.walk(dmg_path):
         for file in files:
@@ -99,8 +79,8 @@ def test_grouping():
 
     dmg_streams = []
     for filename in dmg_files:
-        if (not os.path.basename(filename).startswith('Bad')
-                and not os.path.basename(filename).startswith('CE58667')):
+        if (not os.path.basename(filename).startswith('Bad') and
+                not os.path.basename(filename).startswith('CE58667')):
             dmg_streams += read_data(filename)
     dmg_streams = group_channels(dmg_streams)
     assert len(dmg_streams) == 2
@@ -184,7 +164,8 @@ def _test_to_dataframe():
     imcs = ['GREATER_OF_TWO_HORIZONTALS', 'CHANNELS']
     homedir = os.path.dirname(os.path.abspath(__file__))
 
-    knet_dir = os.path.join(homedir, '..', 'data', 'knet')
+    datapath = os.path.join('data', 'testdata', 'knet')
+    knet_dir = pkg_resources.resource_filename('gmprocess', datapath)
     # make dataframe
     knet_dataframe = directory_to_dataframe(knet_dir)
 
@@ -233,7 +214,8 @@ def _test_to_dataframe():
                 streamsummary_value = pgms[imt][imc]
                 assert dataframe_value == streamsummary_value
 
-    cwb_dir = os.path.join(homedir, '..', 'data', 'cwb')
+    datapath = os.path.join('data', 'testdata', 'cwb')
+    cwb_dir = pkg_resources.resource_filename('gmprocess', datapath)
     # make dataframe
     cwb_dataframe = directory_to_dataframe(cwb_dir, lat=24.14, lon=121)
 

@@ -6,6 +6,7 @@ import os
 # third party imports
 from lxml import etree
 import vcr
+import pkg_resources
 
 # local imports
 from gmprocess.io.catalog import convert_ids, get_ingv_shakemap
@@ -26,9 +27,8 @@ def test_id_conversions():
         'UNID': '20160824_0000006',
         'INGV': target_ingv
     }
-    homedir = os.path.dirname(os.path.abspath(__file__))
-    datadir = os.path.join(homedir, '..', '..', 'data')
-    tape_file = os.path.join(datadir, 'vcr_catalog_test.yaml')
+    datafile = os.path.join('data', 'testdata', 'vcr_catalog_test.yaml')
+    tape_file = pkg_resources.resource_filename('gmprocess', datafile)
     with vcr.use_cassette(tape_file):
 
         ids_dict = convert_ids(eventid, 'USGS', ['INGV', 'EMSC', 'UNID'])

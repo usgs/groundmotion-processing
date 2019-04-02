@@ -3,13 +3,12 @@ from gmprocess.phase import PowerPicker
 from gmprocess.io.read import read_data
 from obspy import read, UTCDateTime
 import os
-
-homedir = os.path.dirname(os.path.abspath(__file__))
-datadir = os.path.join(homedir, '..', 'data', 'process')
+import pkg_resources
 
 
 def test_p_pick():
-
+    datapath = os.path.join('data', 'testdata', 'process')
+    datadir = pkg_resources.resource_filename('gmprocess', datapath)
     # Testing a strong motion channel
     tr = read(datadir + '/ALCTENE.UW..sac')[0]
     chosen_ppick = UTCDateTime('2001-02-28T18:54:47')

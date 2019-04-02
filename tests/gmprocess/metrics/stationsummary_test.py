@@ -10,6 +10,7 @@ import numpy as np
 # local imports
 from gmprocess.io.geonet.core import read_geonet
 from gmprocess.metrics.station_summary import StationSummary
+from gmprocess.io.test_utils import read_data_dir
 
 
 def cmp_dicts(adict, bdict):
@@ -21,10 +22,10 @@ def cmp_dicts(adict, bdict):
 
 
 def test_stationsummary():
-    homedir = os.path.dirname(os.path.abspath(
-        __file__))  # where is this script?
-    datafile = os.path.join(homedir, '..', '..', 'data', 'geonet', 'us1000778i',
-                            '20161113_110259_WTMC_20.V2A')
+    datafiles, _ = read_data_dir(
+        'geonet', 'us1000778i', '20161113_110259_WTMC_20.V2A')
+    datafile = datafiles[0]
+
     target_imcs = np.sort(np.asarray(['GREATER_OF_TWO_HORIZONTALS',
                                       'HN1', 'HN2', 'HNZ', 'ROTD50.0',
                                       'ROTD100.0']))
@@ -93,8 +94,9 @@ def test_stationsummary():
             'HN2': 84.69296738413021,
             'GREATER_OF_TWO_HORIZONTALS': 136.25041187387063}
     }
-    datafile = os.path.join(homedir, '..', '..', 'data', 'geonet', 'us1000778i',
-                            '20161113_110313_THZ_20.V2A')
+    datafiles, _ = read_data_dir(
+        'geonet', 'us1000778i', '20161113_110313_THZ_20.V2A')
+    datafile = datafiles[0]
     invalid_stream = read_geonet(datafile)[0]
     station_code = 'WTMC'
     pgm_summary = StationSummary.from_pgms(station_code, test_pgms)

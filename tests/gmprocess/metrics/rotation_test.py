@@ -3,6 +3,7 @@
 # stdlib imports
 import os
 import numpy as np
+import pkg_resources
 
 # local imports
 from obspy.core.stream import Stream
@@ -10,8 +11,8 @@ from obspy.core.trace import Trace
 from gmprocess.metrics.rotation import get_max, rotate
 from gmprocess.metrics.station_summary import StationSummary
 
-homedir = os.path.dirname(os.path.abspath(__file__))
-datadir = os.path.join(homedir, '..', '..', 'data', 'process')
+ddir = os.path.join('data', 'testdata', 'process')
+datadir = pkg_resources.resource_filename('gmprocess', ddir)
 
 
 def test_rotation():
@@ -19,8 +20,8 @@ def test_rotation():
     # Create a stream and station summary, convert from m/s^2 to cm/s^2 (GAL)
     osc1_data = np.genfromtxt(datadir + '/ALCTENE.UW..sac.acc.final.txt')
     osc2_data = np.genfromtxt(datadir + '/ALCTENN.UW..sac.acc.final.txt')
-    osc1_data = osc1_data.T[1]*100
-    osc2_data = osc2_data.T[1]*100
+    osc1_data = osc1_data.T[1] * 100
+    osc2_data = osc2_data.T[1] * 100
 
     tr1 = Trace(data=osc1_data, header={'channel': 'H1', 'delta': 0.01,
                                         'npts': 10400})

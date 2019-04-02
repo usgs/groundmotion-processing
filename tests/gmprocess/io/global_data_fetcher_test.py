@@ -5,8 +5,8 @@ from datetime import datetime
 import os
 
 
-def fetcher_test():
-    # GeoNet
+def geonet_test():
+        # GeoNet
     # 2019-02-28 19:55:34 (UTC)37.512°S 179.185°E10.0 km depth
     utime = datetime(2019, 2, 28, 19, 55, 34)
     eqlat = -37.512
@@ -18,6 +18,8 @@ def fetcher_test():
                          rawdir=rawdir)
     assert len(streams) == 6
 
+
+def knet_test():
     # M 5.8 - 134km E of Iwaki, Japan
     # 2019-03-10 17:10:52 (UTC)36.852°N 142.368°E14.7 km depth
     utime = datetime(2019, 3, 10, 17, 10, 52)
@@ -28,8 +30,10 @@ def fetcher_test():
     rawdir = os.path.join(os.path.expanduser('~'), 'tmp', 'knet')
     streams = fetch_data(utime, eqlat, eqlon, eqdepth, eqmag,
                          rawdir=rawdir)
-    assert len(streams) == 109
+    assert len(streams) == 139
 
+
+def turkey_test():
     # Turkey
     # 2019-03-21 05:51:10
     utime = datetime(2019, 3, 21, 5, 51, 10)
@@ -44,5 +48,7 @@ def fetcher_test():
 
 
 if __name__ == '__main__':
-    os.environ['CALLED_FROM_PYTEST'] = 'True'
-    fetcher_test()
+    # os.environ['CALLED_FROM_PYTEST'] = 'True'
+    knet_test()
+    turkey_test()
+    geonet_test()

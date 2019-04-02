@@ -1,20 +1,20 @@
 #!/usr/bin/env python
 
-import os
+import os.path
 import numpy as np
 from gmprocess.io.geonet.core import is_geonet, read_geonet
+import pkg_resources
 
 FILTER_FREQ = 0.02
 CORNERS = 4
 
 
 def test():
-    homedir = os.path.dirname(os.path.abspath(
-        __file__))  # where is this script?
-    datadir_2016 = os.path.join(homedir, '..', '..', '..',
-                                'data', 'geonet', 'us1000778i')
-    datadir_2018 = os.path.join(homedir, '..', '..', '..',
-                                'data', 'geonet', 'nz2018p115908')
+    dpath_2016 = os.path.join('data', 'testdata', 'geonet', 'us1000778i')
+    datadir_2016 = pkg_resources.resource_filename('gmprocess', dpath_2016)
+
+    dpath_2018 = os.path.join('data', 'testdata', 'geonet', 'nz2018p115908')
+    datadir_2018 = pkg_resources.resource_filename('gmprocess', dpath_2018)
 
     # first test a non-geonet file
     try:
