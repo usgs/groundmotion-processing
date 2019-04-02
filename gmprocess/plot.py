@@ -1,15 +1,13 @@
-# stdlib imports
 import os
 import datetime
 import warnings
+import logging
 
-# third party imports
 from matplotlib.pyplot import cm
 import matplotlib.pyplot as plt
 import numpy as np
 from obspy.geodetics.base import gps2dist_azimuth
 
-# Local imports
 from gmprocess.metrics.imt.arias import calculate_arias
 from gmprocess.metrics.oscillators import get_acceleration
 from gmprocess import spectrum
@@ -338,12 +336,28 @@ def summary_plots(st, directory):
         os.makedirs(directory)
 
     # Setup figure for stream
-    ntrace = len(st)
+    nrows = 3
+    ntrace = min(len(st), 3)
     fig = plt.figure(figsize=(3*ntrace, 8), constrained_layout=True)
-    gs = fig.add_gridspec(3, ntrace, height_ratios=[1, 2, 2])
+    gs = fig.add_gridspec(nrows, ntrace, height_ratios=[1, 2, 2])
     ax = [plt.subplot(g) for g in gs]
 
+    stream_id = st.get_id()
+    logging.debug('stream_id: %s' % stream_id)
+    logging.debug('passed: %s' % st.passed)
+    if st.passed:
+        plt.suptitle("%s (passed)" % stream_id,
+                     x=0.5, y=1.02)
+    else:
+        plt.suptitle("%s (failed)" % stream_id,
+                     color='red', x=0.5, y=1.02)
+
     for j, tr in enumerate(st):
+
+        # Break if j>3 becasue we can't on a page.
+        if j > 2:
+            logging.warning('Only plotting first 3 traces in stream.')
+            break
 
         # ---------------------------------------------------------------------
         # Get trace info
@@ -372,6 +386,12 @@ def summary_plots(st, directory):
         else:
             snr_conf = None
 
+        trace_failed = tr.hasParameter('failure')
+        if trace_failed:
+            failure_reason = tr.getParameter('failure')['reason']
+        else:
+            failure_reason = ''
+
         # Note that the theoretical spectra will only be available for
         # horizontal channels
         if tr.hasParameter('fit_spectra'):
@@ -392,7 +412,12 @@ def summary_plots(st, directory):
 
         # ---------------------------------------------------------------------
         # Time series plot
-        ax[j].set_title(tr.get_id())
+        if trace_failed:
+            trace_status = " (failed)"
+        else:
+            trace_status = " (passed)"
+        trace_title = tr.get_id() + trace_status
+        ax[j].set_title(trace_title)
         ax[j].plot(tr.times('matplotlib'), tr.data, 'k')
 
         # Show signal split as vertical dashed line
@@ -449,14 +474,14 @@ def summary_plots(st, directory):
 
         # ---------------------------------------------------------------------
         # Signal-to-noise ratio plot
-
-        ax[j+6].loglog(snr_dict['freq'],
-                       snr_dict['snr'],
-                       label='SNR')
-        ax[j+6].axhline(snr_conf['threshold'],
-                        color='black',
-                        linestyle='--',
-                        label='Threshold')
+        if snr_dict is not None:
+            ax[j+6].loglog(snr_dict['freq'],
+                           snr_dict['snr'],
+                           label='SNR')
+            ax[j+6].axhline(snr_conf['threshold'],
+                            color='black',
+                            linestyle='--',
+                            label='Threshold')
         ax[j+6].set_ylabel('SNR')
         ax[j+6].set_xlabel('Frequency (Hz)')
 
@@ -472,7 +497,8 @@ def summary_plots(st, directory):
                             linestyle='--',
                             label='Lowpass')
 
+    stream_id = st.get_id()
     if 'CALLED_FROM_PYTEST' not in os.environ:
         plt.tight_layout()
-        plt.savefig(fname=os.path.join(directory, st.get_id() + '.png'),
+        plt.savefig(fname=os.path.join(directory, stream_id + '.png'),
                     bbox_inches='tight')

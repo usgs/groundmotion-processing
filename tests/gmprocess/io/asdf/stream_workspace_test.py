@@ -276,7 +276,7 @@ def test_raw():
             x = 1
 
         except Exception as e:
-            assert 1 == 2
+            raise e
         finally:
             shutil.rmtree(tdir)
 

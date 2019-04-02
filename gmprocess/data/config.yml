@@ -89,8 +89,8 @@ windows:
 # recorded as seismological provenance data.
 processing:
 
-    # Check to keep or ignore non-free-field sensors. Typically, these include sensors
-    # attached to a large structure (buildings, dams, bridges, etc.)
+    # Check to keep or ignore non-free-field sensors. Typically, these include
+    # sensors attached to a large structure (buildings, dams, bridges, etc.)
     - check_free_field:
         reject_non_free_field: True
 
@@ -100,6 +100,12 @@ processing:
     - check_max_amplitude:
         min: 5
         max: 2e6
+
+    # Apply a maximum number of traces per stream. This can occur with downhole
+    # or structural arrays since our code currently is not able to reliably
+    # group by location within an array.
+    - max_traces:
+        n_max: 3
 
 
     # STA/LTA is computed for record and the max value must exceed the threshold

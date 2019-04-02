@@ -53,14 +53,22 @@ class StationStream(Stream):
     def get_id(self):
         """
         Get the StationStream ID.
+
+        This consists of the network, station, and first two characters of the
+        channel (to indicate instrument type). This is currently consistent
+        with how the channels are grouped by StationStrea and ignores the
+        location code because it doesn't seem like it is defined in a
+        consistent fashion.
         """
         stats = self.traces[0].stats
-        id_str = "%(network)s.%(station)s.%(location)s" % stats
+        id_str = ("%s.%s.%s" %
+                  (stats.network, stats.station, stats.channel[0:2]))
 
         # Check that the id would be the same for all traces
         for tr in self:
             stats = tr.stats
-            test_str = "%(network)s.%(station)s.%(location)s" % stats
+            test_str = ("%s.%s.%s" %
+                        (stats.network, stats.station, stats.channel[0:2]))
             if id_str != test_str:
                 raise ValueError(
                     'Inconsistent stream ID for different traces.')
