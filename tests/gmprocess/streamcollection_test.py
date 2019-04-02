@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os
 import numpy as np
 import json
@@ -14,9 +16,8 @@ setup_logger()
 def test_StreamCollection():
 
     # read usc data
-    directory = pkg_resources.resource_filename(
-        'gmprocess', os.path.join(
-            '..', 'tests', 'data', 'usc', 'ci3144585'))
+    dpath = os.path.join('data', 'testdata', 'usc', 'ci3144585')
+    directory = pkg_resources.resource_filename('gmprocess', dpath)
     usc_streams, unprocessed_files, unprocessed_file_errors = \
         directory_to_streams(directory)
     assert len(usc_streams) == 7
@@ -44,9 +45,8 @@ def test_StreamCollection():
     assert sort_lengths[2] == 3
 
     # read dmg data
-    directory = pkg_resources.resource_filename(
-        'gmprocess', os.path.join(
-            '..', 'tests', 'data', 'dmg', 'ci3144585'))
+    dpath = os.path.join('data', 'testdata', 'dmg', 'ci3144585')
+    directory = pkg_resources.resource_filename('gmprocess', dpath)
     dmg_streams, unprocessed_files, unprocessed_file_errors = \
         directory_to_streams(directory)
     assert len(dmg_streams) == 1

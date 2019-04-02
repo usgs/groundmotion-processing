@@ -25,8 +25,8 @@ def read_data_dir(file_format, eventid, files=None):
             - List of data files.
             - Event dictionary.
     """
-    root = os.path.abspath(pkg_resources.resource_filename('gmprocess', '..'))
-    testroot = os.path.join(root, 'tests', 'data')
+    datapath = os.path.join('data', 'testdata')
+    testroot = pkg_resources.resource_filename('gmprocess', datapath)
     eventdir = os.path.join(testroot, file_format, eventid)
     if not os.path.isdir(eventdir):
         return (None, None)

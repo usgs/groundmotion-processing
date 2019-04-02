@@ -8,6 +8,7 @@ import logging
 # third party imports
 from obspy.core.utcdatetime import UTCDateTime
 import numpy as np
+import pkg_resources
 
 # local imports
 from gmprocess.streamcollection import StreamCollection
@@ -17,8 +18,11 @@ from gmprocess.logging import setup_logger
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.config import get_config
 
-homedir = os.path.dirname(os.path.abspath(__file__))
-datadir = os.path.join(homedir, '..', 'data')
+# homedir = os.path.dirname(os.path.abspath(__file__))
+# datadir = os.path.join(homedir, '..', 'data', 'testdata')
+
+datapath = os.path.join('data', 'testdata')
+datadir = pkg_resources.resource_filename('gmprocess', datapath)
 
 setup_logger()
 

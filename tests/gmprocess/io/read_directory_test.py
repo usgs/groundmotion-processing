@@ -1,5 +1,5 @@
 
-import os
+import os.path
 
 import pkg_resources
 import logging
@@ -11,11 +11,11 @@ setup_logger()
 
 
 def test_directory_to_streams():
-    directory = pkg_resources.resource_filename(
-        'gmprocess', os.path.join(
-            '..', 'tests', 'data', 'read_directory', 'whittier87'))
-    streams, unprocessed_files, unprocessed_file_errors = \
-        directory_to_streams(directory)
+    dpath = os.path.join('data', 'testdata', 'read_directory', 'whittier87')
+    directory = pkg_resources.resource_filename('gmprocess', dpath)
+
+    streams, unprocessed_files, unprocessed_file_errors = directory_to_streams(
+        directory)
     assert len(streams) == 7
 
 

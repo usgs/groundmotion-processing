@@ -4,12 +4,12 @@ import os
 from gmprocess.event import get_event_dict, get_event_object
 from obspy.core.utcdatetime import UTCDateTime
 import vcr
+import pkg_resources
 
 
 def test_event():
-    homedir = os.path.dirname(os.path.abspath(__file__))
-    datadir = os.path.join(homedir, '..', 'data')
-    tape_file = os.path.join(datadir, 'vcr_event_test.yaml')
+    subdir = os.path.join('data', 'testdata', 'vcr_event_test.yaml')
+    tape_file = pkg_resources.resource_filename('gmprocess', subdir)
     with vcr.use_cassette(tape_file):
         eid = 'us1000j96d'  # M7.0 Peru Mar 1 2019
         edict = get_event_dict(eid)

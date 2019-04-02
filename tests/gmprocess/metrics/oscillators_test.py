@@ -9,13 +9,13 @@ import numpy as np
 from gmprocess.constants import GAL_TO_PCTG
 from gmprocess.io.read import read_data
 from gmprocess.metrics.oscillators import get_acceleration, get_spectral, get_velocity
+from gmprocess.io.test_utils import read_data_dir
 
 
 def test_acceleration():
-    homedir = os.path.dirname(os.path.abspath(
-        __file__))  # where is this script?
-    acc_file = os.path.join(homedir, '..', '..', 'data', 'geonet', 'us1000778i',
-                            '20161113_110259_WTMC_20.V2A')
+    datafiles, _ = read_data_dir(
+        'geonet', 'us1000778i', '20161113_110259_WTMC_20.V2A')
+    acc_file = datafiles[0]
     acc = read_data(acc_file)[0]
     target_g = acc[0].data * GAL_TO_PCTG
     target_m = acc[0].data / 100
@@ -35,19 +35,17 @@ def test_acceleration():
 
 
 def test_spectral():
-    homedir = os.path.dirname(os.path.abspath(
-        __file__))  # where is this script?
-    acc_file = os.path.join(homedir, '..', '..', 'data', 'geonet', 'us1000778i',
-                            '20161113_110259_WTMC_20.V2A')
+    datafiles, _ = read_data_dir(
+        'geonet', 'us1000778i', '20161113_110259_WTMC_20.V2A')
+    acc_file = datafiles[0]
     acc = read_data(acc_file)[0]
     get_spectral(1.0, acc, 0.05, rotation='gm')
 
 
 def test_velocity():
-    homedir = os.path.dirname(os.path.abspath(
-        __file__))  # where is this script?
-    acc_file = os.path.join(homedir, '..', '..', 'data', 'geonet', 'us1000778i',
-                            '20161113_110259_WTMC_20.V2A')
+    datafiles, _ = read_data_dir(
+        'geonet', 'us1000778i', '20161113_110259_WTMC_20.V2A')
+    acc_file = datafiles[0]
     acc = read_data(acc_file)[0]
     target_v = acc.copy().integrate()[0]
     v = get_velocity(acc)

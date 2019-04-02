@@ -2,11 +2,12 @@
 
 import os
 import numpy as np
+import pkg_resources
 from gmprocess.io.fdsn import request_raw_waveforms
 from gmprocess import process
 
-homedir = os.path.dirname(os.path.abspath(__file__))
-datadir = os.path.join(homedir, '..', '..', 'data', 'process')
+pdir = os.path.join('data', 'testdata', 'process')
+datadir = pkg_resources.resource_filename('gmprocess', pdir)
 
 
 def _test_fetch():

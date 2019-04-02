@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 
-import os
+import os.path
 import numpy as np
 from gmprocess.io.knet.core import is_knet, read_knet
+import pkg_resources
+from gmprocess.io.test_utils import read_data_dir
 
 
 def test():
-    # where is this script?
-    homedir = os.path.dirname(os.path.abspath(__file__))
+    dpath = os.path.join('data', 'testdata', 'knet', 'us2000cnnl')
+    datadir = pkg_resources.resource_filename('gmprocess', dpath)
 
-    datadir = os.path.join(homedir, '..', '..', '..',
-                           'data', 'knet', 'us2000cnnl')
     knet_file1 = os.path.join(datadir, 'AOM0051801241951.EW')
     knet_file2 = os.path.join(datadir, 'AOM0051801241951.NS')
     knet_file3 = os.path.join(datadir, 'AOM0051801241951.UD')
@@ -41,9 +41,11 @@ def test():
 
     # test that a file that is not knet format raises an Exception
     try:
-        datadir = os.path.join(homedir, '..', '..', '..',
-                               'data', 'geonet', 'nz2018p115908')
-        knet_file = os.path.join(datadir, '20161113_110256_WTMC_20.V1A')
+        knet_files, _ = read_data_dir('geonet',
+                                      'nz2018p115908',
+                                      '20161113_110256_WTMC_20.V1A')
+
+        knet_file = knet_files[0]
         read_knet(knet_file)[0]
         success = True
     except Exception:
@@ -51,8 +53,8 @@ def test():
     assert not success
 
     # test some kiknet files
-    datadir = os.path.join(homedir, '..', '..', '..',
-                           'data', 'kiknet', 'usp000a1b0')
+    dpath = os.path.join('data', 'testdata', 'kiknet', 'usp000a1b0')
+    datadir = pkg_resources.resource_filename('gmprocess', dpath)
     kiknet_file1 = os.path.join(datadir, 'AICH040010061330.EW2')
     kiknet_file2 = os.path.join(datadir, 'AICH040010061330.NS2')
     kiknet_file3 = os.path.join(datadir, 'AICH040010061330.UD2')

@@ -5,27 +5,36 @@ import os
 
 from gmprocess.io.read import read_data, _get_format, _validate_format
 from gmprocess.exception import GMProcessException
+from gmprocess.io.test_utils import read_data_dir
 
 
 def test_read():
-    homedir = os.path.dirname(os.path.abspath(
-        __file__))  # where is this script?
-    cosmos_dir = os.path.join(
-        homedir, '..', '..', 'data', 'cosmos', 'ci14155260')
-    cwb_dir = os.path.join(homedir, '..', '..', 'data', 'cwb', 'us1000chhc')
-    dmg_dir = os.path.join(homedir, '..', '..', 'data', 'dmg', 'nc71734741')
-    geonet_dir = os.path.join(
-        homedir, '..', '..', 'data', 'geonet', 'us1000778i')
-    knet_dir = os.path.join(homedir, '..', '..', 'data', 'knet', 'us2000cnnl')
-    smc_dir = os.path.join(homedir, '..', '..', 'data', 'smc', 'nc216859')
+    cosmos_files, _ = read_data_dir('cosmos',
+                                    'ci14155260',
+                                    'Cosmos12TimeSeriesTest.v1')
+    cwb_files, _ = read_data_dir('cwb',
+                                 'us1000chhc',
+                                 '1-EAS.dat')
+    dmg_files, _ = read_data_dir('dmg',
+                                 'nc71734741',
+                                 'CE89146.V2')
+    geonet_files, _ = read_data_dir('geonet',
+                                    'us1000778i',
+                                    '20161113_110259_WTMC_20.V1A')
+    knet_files, _ = read_data_dir('knet',
+                                  'us2000cnnl',
+                                  'AOM0011801241951.EW')
+    smc_files, _ = read_data_dir('smc',
+                                 'nc216859',
+                                 '0111a.smc')
+
     file_dict = {}
-    file_dict['cosmos'] = os.path.join(cosmos_dir, 'Cosmos12TimeSeriesTest.v1')
-    file_dict['cwb'] = os.path.join(cwb_dir, '1-EAS.dat')
-    file_dict['dmg'] = os.path.join(dmg_dir, 'CE89146.V2')
-    file_dict['geonet'] = os.path.join(
-        geonet_dir, '20161113_110259_WTMC_20.V1A')
-    file_dict['knet'] = os.path.join(knet_dir, 'AOM0011801241951.EW')
-    file_dict['smc'] = os.path.join(smc_dir, '0111a.smc')
+    file_dict['cosmos'] = cosmos_files[0]
+    file_dict['cwb'] = cwb_files[0]
+    file_dict['dmg'] = dmg_files[0]
+    file_dict['geonet'] = geonet_files[0]
+    file_dict['knet'] = knet_files[0]
+    file_dict['smc'] = smc_files[0]
 
     for file_format in file_dict:
         file_path = file_dict[file_format]
@@ -46,7 +55,7 @@ def test_read():
         assert stream[0].stats.standard['source_format'] == file_format
     # test exception
     try:
-        file_path = os.path.join(smc_dir, 'not_a_file.smc')
+        file_path = smc_files[0].replace('0111a.smc', 'not_a_file.smc')
         read_data(file_path)[0]
         success = True
     except GMProcessException:

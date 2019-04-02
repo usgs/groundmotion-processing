@@ -8,6 +8,7 @@ import numpy as np
 from obspy.core.stream import read
 from obspy.core.utcdatetime import UTCDateTime
 from obspy import Trace
+import pkg_resources
 
 # local imports
 from gmprocess import process
@@ -15,8 +16,8 @@ from gmprocess import process
 
 from gmprocess.config import get_config
 
-homedir = os.path.dirname(os.path.abspath(__file__))
-datadir = os.path.join(homedir, '..', 'data', 'process')
+datapath = os.path.join('data', 'testdata', 'process')
+datadir = pkg_resources.resource_filename('gmprocess', datapath)
 
 
 def test_amp_check_trim():
@@ -25,7 +26,7 @@ def test_amp_check_trim():
     # one is unedited with a standard maximum amplitude
     # the second has been multiplied so that it fails the amplitude check
     NOWS_tr = read(os.path.join(datadir, 'NOWSENR.sac'))[0]
-    NOWS_tr_mul = Trace(data=NOWS_tr.data*10e9, header=NOWS_tr.stats)
+    NOWS_tr_mul = Trace(data=NOWS_tr.data * 10e9, header=NOWS_tr.stats)
 
     assert process.check_max_amplitude(NOWS_tr) is True
     assert process.check_max_amplitude(NOWS_tr_mul) is False

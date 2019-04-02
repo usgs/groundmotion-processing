@@ -9,13 +9,14 @@ import scipy.constants as sp
 from obspy import read, read_inventory
 from obspy.geodetics import gps2dist_azimuth
 from obspy.core.event import Origin
+import pkg_resources
 
 # local imports
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.metrics.exception import PGMException
 
-homedir = os.path.dirname(os.path.abspath(__file__))
-datadir = os.path.join(homedir, '..', '..', 'data', 'fdsnfetch')
+ddir = os.path.join('data', 'testdata', 'fdsnfetch')
+datadir = pkg_resources.resource_filename('gmprocess', ddir)
 
 
 def test_radial_transverse():

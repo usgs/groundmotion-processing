@@ -44,11 +44,6 @@ def fetch_data(time, lat, lon,
         StreamCollection: StreamCollection object.
     """
 
-    config = get_config()
-    fetchconf = {}
-    if 'fetchers' in config:
-        fetchconf = config['fetchers']
-
     fetchers = find_fetchers(lat, lon)
     instances = []
     for fetchname, fetcher in fetchers.items():

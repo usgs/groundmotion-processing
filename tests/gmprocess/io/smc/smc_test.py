@@ -6,16 +6,15 @@ from collections import OrderedDict
 
 # third party imports
 import numpy as np
+import pkg_resources
 
 from gmprocess.io.smc.core import is_smc, read_smc
 from gmprocess.stream import group_channels
 
 
 def test_smc():
-    homedir = os.path.dirname(os.path.abspath(
-        __file__))  # where is this script?
-    datadir = os.path.join(homedir, '..', '..', '..',
-                           'data', 'smc', 'nc216859')
+    dpath = os.path.join('data', 'testdata', 'smc', 'nc216859')
+    datadir = pkg_resources.resource_filename('gmprocess', dpath)
 
     files = OrderedDict([('0111a.smc', (1.5057E+0, -2.8745E-1)),
                          ('0111b.smc', (-1.2518E+1, -1.6806E+0)),
