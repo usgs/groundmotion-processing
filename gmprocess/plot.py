@@ -478,6 +478,8 @@ def summary_plots(st, directory):
             ax[j+6].loglog(snr_dict['freq'],
                            snr_dict['snr'],
                            label='SNR')
+
+        if snr_conf is not None:
             ax[j+6].axhline(snr_conf['threshold'],
                             color='black',
                             linestyle='--',
@@ -498,7 +500,11 @@ def summary_plots(st, directory):
                             label='Lowpass')
 
     stream_id = st.get_id()
+
+    # Do not save files if running tests
     if 'CALLED_FROM_PYTEST' not in os.environ:
         plt.tight_layout()
         plt.savefig(fname=os.path.join(directory, stream_id + '.png'),
                     bbox_inches='tight')
+
+    return st

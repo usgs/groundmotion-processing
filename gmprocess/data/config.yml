@@ -222,9 +222,17 @@ processing:
         kappa: 0.035
 
     - summary_plots:
-        # Make summary plots and put them in this directory:
+        # Make summary plots.
         directory: 'plotdir'
 
+# -----------------------------------------------------------------------------
+# This is for building a report, with a one-page summary of the data in each
+# StationStream per page. It will write out the latex file, and then look for
+# the `pdflatex` command and attempt to build the pdf. This requires
+# `summary_plots` to have been run.
+build_report:
+    run: True
+    directory: 'reportdir'
 
 # -----------------------------------------------------------------------------
 # This section is for calculating metrics
