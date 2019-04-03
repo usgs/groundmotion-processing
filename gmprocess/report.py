@@ -43,12 +43,12 @@ POSTAMBLE = """
 """
 
 STREAMBLOCK = """
-\\includegraphics[height=15cm]
+\\includegraphics[height=7in]
     {[PLOTPATH]}
 
 """
 
-BEGIN_COL = """\\begin{minipage}[t]{0.3\\textwidth} \\tiny \\centering"""
+BEGIN_COL = """\\begin{minipage}[t]{%s\\textwidth} \\scriptsize \\centering"""
 
 END_COL = """\\end{minipage}"""
 
@@ -90,14 +90,18 @@ def build_report(sc, directory, origin):
             # Disallow more than three columns
             if i > 2:
                 break
-            prov_latex = get_prov_latex(tr)
-            report += BEGIN_COL
+            if i == 0:
+                prov_latex = get_prov_latex(tr)
+                report += BEGIN_COL % "0.4"
+            else:
+                prov_latex = get_prov_latex(tr, include_prov_id=False)
+                report += BEGIN_COL % "0.27"
             report += prov_latex
             if tr.hasParameter('failure'):
                 report += '\n' + tr.getParameter('failure')['reason']
             report += END_COL
             if i < len(st):
-                report += '\\hspace{1em}'
+                report += '\\hspace{2em}'
 
         report += '\n\\newpage\n\n'
 
@@ -118,30 +122,42 @@ def build_report(sc, directory, origin):
     return st
 
 
-def get_prov_latex(tr):
+def get_prov_latex(tr, include_prov_id=True):
     """
     Construct a latex representation of a trace's provenance.
 
     Args:
         prov (StationTrace):
             StationTrace of data.
+        include_prov_id (bool):
+            Include prov_id column?
 
     Returns:
         str: Latex tabular representation of provenance.
     """
+
     # Table will have 3 columns: prov_id, prov_attribute, prov_attribute value
-    TAB_TOP = """
-    %s
-    \\begin{tabular}{lll}
-    \\toprule
-    """ % tr.get_id()
-    ONE_ROW = """
-    %s & %s & %s \\\\
-    """
+    # unless include_prov_id is false, then two columns.
+
+    if include_prov_id:
+        TAB_TOP = """
+        \\begin{tabular}{lll}
+        \\multicolumn{3}{l}{%s} \\\\
+        \\toprule""" % tr.get_id()
+
+        ONE_ROW = """\n%s & %s & %s \\\\"""
+    else:
+        TAB_TOP = """
+        \\begin{tabular}{ll}
+        \\multicolumn{2}{l}{%s} \\\\
+        \\toprule""" % tr.get_id()
+
+        ONE_ROW = """\n%s & %s \\\\"""
+
     TAB_BOT = """
-    \\bottomrule
-    \\end{tabular}
-    """
+        \\bottomrule
+        \\end{tabular}\n"""
+
     all_prov = tr.getAllProvenance()
     prov_string = TAB_TOP
     for prov in all_prov:
@@ -162,9 +178,15 @@ def get_prov_latex(tr):
                 vl = v
 
             if i == 0:
-                vals = (prov_id, kl, vl)
+                if include_prov_id:
+                    vals = (prov_id, kl, vl)
+                else:
+                    vals = (kl, vl)
             else:
-                vals = ('', kl, vl)
+                if include_prov_id:
+                    vals = ('', kl, vl)
+                else:
+                    vals = (kl, vl)
             prov_string += ONE_ROW % vals
 
     prov_string += TAB_BOT
