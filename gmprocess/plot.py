@@ -4,6 +4,7 @@ import warnings
 import logging
 
 from matplotlib.pyplot import cm
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 from obspy.geodetics.base import gps2dist_azimuth
@@ -11,6 +12,7 @@ from obspy.geodetics.base import gps2dist_azimuth
 from gmprocess.metrics.imt.arias import calculate_arias
 from gmprocess.metrics.oscillators import get_acceleration
 from gmprocess import spectrum
+from gmprocess.metrics.oscillators import get_velocity
 
 
 def get_time_from_percent(NIa, p, dt):
@@ -330,16 +332,17 @@ def summary_plots(st, directory):
         directory (str):
             Directory for saving plots.
     """
+    mpl.rcParams['font.size'] = 8
 
     # Check if directory exists, and if not, create it.
     if not os.path.exists(directory):
         os.makedirs(directory)
 
     # Setup figure for stream
-    nrows = 3
+    nrows = 4
     ntrace = min(len(st), 3)
-    fig = plt.figure(figsize=(3*ntrace, 8), constrained_layout=True)
-    gs = fig.add_gridspec(nrows, ntrace, height_ratios=[1, 2, 2])
+    fig = plt.figure(figsize=(3.6*ntrace, 10), constrained_layout=True)
+    gs = fig.add_gridspec(nrows, ntrace, height_ratios=[1, 1, 2, 2])
     ax = [plt.subplot(g) for g in gs]
 
     stream_id = st.get_id()
@@ -351,6 +354,9 @@ def summary_plots(st, directory):
     else:
         plt.suptitle("%s (failed)" % stream_id,
                      color='red', x=0.5, y=1.02)
+
+    # Compute velocity
+    st_vel = get_velocity(st)
 
     for j, tr in enumerate(st):
 
@@ -416,14 +422,18 @@ def summary_plots(st, directory):
             )
 
         # ---------------------------------------------------------------------
-        # Time series plot
+        # Acceleration time series plot
         if trace_failed:
             trace_status = " (failed)"
+            trace_title = tr.get_id() + trace_status
+            ax[j].set_title(trace_title, color="red")
         else:
             trace_status = " (passed)"
-        trace_title = tr.get_id() + trace_status
-        ax[j].set_title(trace_title)
-        ax[j].plot(tr.times('matplotlib'), tr.data, 'k')
+            trace_title = tr.get_id() + trace_status
+            ax[j].set_title(trace_title)
+
+        ax[j].plot(tr.times('matplotlib'), tr.data, 'k',
+                   linewidth=0.5)
 
         # Show signal split as vertical dashed line
         if tr.hasParameter('signal_split'):
@@ -432,50 +442,66 @@ def summary_plots(st, directory):
                           color='red', linestyle='dashed')
         ax[j].xaxis_date()
         ax[j].set_xlabel('Time')
+        ax[j].set_ylabel('Acceleration (cm/s/s)')
+
+        # ---------------------------------------------------------------------
+        # Velocity time series plot
+        tr_vel = st_vel[j]
+        ax[j+3].plot(tr_vel.times('matplotlib'), tr_vel.data, 'k',
+                     linewidth=0.5)
+
+        # Show signal split as vertical dashed line
+        if tr.hasParameter('signal_split'):
+            split_dict = tr.getParameter('signal_split')
+            ax[j].axvline(split_dict['split_time'].datetime,
+                          color='red', linestyle='dashed')
+        ax[j+3].xaxis_date()
+        ax[j+3].set_xlabel('Time')
+        ax[j+3].set_ylabel('Velocity (cm/s)')
 
         # ---------------------------------------------------------------------
         # Spectral plot
 
         # Raw signal spec
         if signal_dict is not None:
-            ax[j+3].loglog(signal_dict['freq'],
+            ax[j+6].loglog(signal_dict['freq'],
                            signal_dict['spec'],
                            color='lightblue')
 
         # Smoothed signal spec
         if smooth_signal_dict is not None:
-            ax[j+3].loglog(smooth_signal_dict['freq'],
+            ax[j+6].loglog(smooth_signal_dict['freq'],
                            smooth_signal_dict['spec'],
                            color='blue',
                            label='Signal')
 
         # Raw noise spec
         if noise_dict is not None:
-            ax[j+3].loglog(noise_dict['freq'],
+            ax[j+6].loglog(noise_dict['freq'],
                            noise_dict['spec'],
                            color='salmon')
 
         # Smoothed noise spec
         if smooth_noise_dict is not None:
-            ax[j+3].loglog(smooth_noise_dict['freq'],
+            ax[j+6].loglog(smooth_noise_dict['freq'],
                            smooth_noise_dict['spec'],
                            color='red',
                            label='Noise')
 
         if fit_spectra_dict is not None:
             # Model spec
-            ax[j+3].loglog(smooth_signal_dict['freq'],
+            ax[j+6].loglog(smooth_signal_dict['freq'],
                            model_spec,
                            color='black',
                            linestyle='dashed')
 
             # Corner frequency
-            ax[j+3].axvline(fit_spectra_dict['f0'],
+            ax[j+6].axvline(fit_spectra_dict['f0'],
                             color='black',
                             linestyle='dashed')
 
-        ax[j+3].set_xlabel('Frequency (Hz)')
-        ax[j+3].set_ylabel('Amplitude (cm/s)')
+        ax[j+6].set_xlabel('Frequency (Hz)')
+        ax[j+6].set_ylabel('Amplitude (cm/s)')
 
         # ---------------------------------------------------------------------
         # Signal-to-noise ratio plot
@@ -483,36 +509,36 @@ def summary_plots(st, directory):
         if 'corner_frequencies' in tr.getParameterKeys():
             hp = tr.getParameter('corner_frequencies')['highpass']
             lp = tr.getParameter('corner_frequencies')['lowpass']
-            ax[j+6].axvline(hp,
+            ax[j+9].axvline(hp,
                             color='black',
                             linestyle='--',
                             label='Highpass')
-            ax[j+6].axvline(lp,
+            ax[j+9].axvline(lp,
                             color='black',
                             linestyle='--',
                             label='Lowpass')
 
         if snr_conf is not None:
-            ax[j+6].axhline(snr_conf['threshold'],
+            ax[j+9].axhline(snr_conf['threshold'],
                             color='0.75',
                             linestyle='-',
                             linewidth=2)
-            ax[j+6].axvline(snr_conf['max_freq'],
+            ax[j+9].axvline(snr_conf['max_freq'],
                             color='0.75',
                             linewidth=2,
                             linestyle='-')
-            ax[j+6].axvline(snr_conf['min_freq'],
+            ax[j+9].axvline(snr_conf['min_freq'],
                             color='0.75',
                             linewidth=2,
                             linestyle='-')
 
         if snr_dict is not None:
-            ax[j+6].loglog(snr_dict['freq'],
+            ax[j+9].loglog(snr_dict['freq'],
                            snr_dict['snr'],
                            label='SNR')
 
-        ax[j+6].set_ylabel('SNR')
-        ax[j+6].set_xlabel('Frequency (Hz)')
+        ax[j+9].set_ylabel('SNR')
+        ax[j+9].set_xlabel('Frequency (Hz)')
 
     stream_id = st.get_id()
 
