@@ -66,8 +66,10 @@ def fit_spectra(st, origin, kappa=0.035):
         StationStream with fitted spectra parameters.
     """
     for tr in st:
-        # Only do this for horizontal channels
-        if 'Z' not in tr.stats['channel'].upper():
+        # Only do this for horizontal channels for which the smoothed spectra
+        # has been computed.
+        if ('Z' not in tr.stats['channel'].upper()) & \
+                tr.hasParameter('smooth_signal_spectrum'):
             event_mag = origin['magnitude']
             event_lon = origin['lon']
             event_lat = origin['lat']

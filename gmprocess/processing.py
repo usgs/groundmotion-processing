@@ -151,22 +151,19 @@ def process_streams(streams, origin, config=None):
                 raise ValueError(
                     'Processing step %s is not valid.' % step_name)
 
-            # Only continue if prior checks have passed; also summary_plots
-            # should always run regardless of stream status.
-            if (stream.passed | (step_name == "summary_plots")):
-                # If origin is required by the step then it has to be handled
-                # specially. There's probably a better solution for this...
-                if step_name == 'fit_spectra':
-                    step_args = {
-                        'origin': origin
-                    }
-                elif step_name == 'build_report':
-                    step_args['origin'] = origin
+            # Origin is required by some steps and has to be handled specially.
+            # There must be a better solution for this...
+            if step_name == 'fit_spectra':
+                step_args = {
+                    'origin': origin
+                }
+            elif step_name == 'build_report':
+                step_args['origin'] = origin
 
-                if step_args is None:
-                    stream = globals()[step_name](stream)
-                else:
-                    stream = globals()[step_name](stream, **step_args)
+            if step_args is None:
+                stream = globals()[step_name](stream)
+            else:
+                stream = globals()[step_name](stream, **step_args)
 
     # Build the summary report?
     build_conf = config['build_report']
@@ -209,6 +206,8 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
     Returns:
         StationStream: Instrument-response-corrected stream.
     """
+    if not st.passed:
+        return st
 
     if output not in ['ACC', 'VEL', 'DISP']:
         raise ValueError('Output value of %s is invalid. Must be ACC, VEL, '
@@ -280,6 +279,8 @@ def detrend(st, detrending_method=None):
     Returns:
         StationStream: Detrended stream.
     """
+    if not st.passed:
+        return st
 
     for tr in st:
         if detrending_method == 'baseline_sixth_order':
@@ -314,6 +315,8 @@ def resample(st, new_sampling_rate=None, method=None, a=None):
     Returns:
         StationStream: Resampled stream.
     """
+    if not st.passed:
+        return st
 
     if method != 'lanczos':
         raise ValueError('Only lanczos interpolation method is supported.')
@@ -352,6 +355,9 @@ def cut(st, sec_before_split=None):
     Returns:
         stream: cut streams.
     """
+    if not st.passed:
+        return st
+
     for tr in st:
         logging.debug('Before cut end time: %s ' % tr.stats.endtime)
         etime = tr.getParameter('signal_end')['end_time']
@@ -387,10 +393,10 @@ def get_corner_frequencies(st, method='constant', constant=None, snr=None):
         snr (dict):
             Dictionary of `snr` method config options.
 
-
     Returns:
         strea: Stream with selected corner frequencies added.
     """
+
     logging.info('Setting corner frequencies...')
     for tr in st:
         if method == 'constant':
@@ -398,7 +404,7 @@ def get_corner_frequencies(st, method='constant', constant=None, snr=None):
         elif method == 'snr':
             tr = corner_frequencies.snr(tr, **snr)
         else:
-            raise ValueError("Corner frequency 'methd' must be either "
+            raise ValueError("Corner frequency 'method' must be either "
                              "'constant' or 'snr'.")
     return st
 
@@ -418,6 +424,9 @@ def highpass_filter(st, filter_order=5, number_of_passes=2):
     Returns:
         stream: Filtered streams.
     """
+    if not st.passed:
+        return st
+
     if number_of_passes == 1:
         zerophase = False
     elif number_of_passes == 2:
@@ -459,6 +468,9 @@ def lowpass_filter(st, filter_order=5, number_of_passes=2):
     Returns:
         stream: Filtered streams.
     """
+    if not st.passed:
+        return st
+
     if number_of_passes == 1:
         zerophase = False
     elif number_of_passes == 2:
@@ -508,6 +520,9 @@ def taper(st, type="hann", width=0.05, side="both"):
     Returns:
         stream: tapered streams.
     """
+    if not st.passed:
+        return st
+
     for tr in st:
         tr.taper(max_percentage=width, type=type, side=side)
         window_type = TAPER_TYPES[type]
@@ -525,6 +540,8 @@ def snr_check(st, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
     """
     Check signal-to-noise ratio.
 
+    Requires noise/singal windowing to have succeeded.
+
     Args:
         st (StationStream):
             Stream of data.
@@ -541,7 +558,9 @@ def snr_check(st, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
         stream: Streams with SNR calculations and checked that they pass the
         configured criteria.
     """
+
     for tr in st:
+        # Comput SNR
         tr = compute_snr(tr, bandwidth)
 
         if st.passed:
@@ -579,6 +598,9 @@ def max_traces(st, n_max=3):
     Returns:
         Stream with adjusted failed fields.
     """
+    if not st.passed:
+        return st
+
     logging.debug('Starting max_traces')
     logging.debug('len(st) = %s' % len(st))
     if len(st) > n_max:
