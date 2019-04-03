@@ -16,6 +16,7 @@ from gmprocess.windows import window_checks
 from gmprocess import corner_frequencies
 from gmprocess.snr import compute_snr
 
+# -----------------------------------------------------------------------------
 # Note: no QA on following imports because they need to be in namespace to be
 # discovered. They are not called directly so linters will think this is a
 # mistake.
@@ -25,6 +26,8 @@ from gmprocess.pretesting import (  # NOQA
     check_free_field)
 from gmprocess.spectrum import fit_spectra  # NOQA
 from gmprocess.plot import summary_plots  # NOQA
+from gmprocess.report import build_report  # NOQA
+# -----------------------------------------------------------------------------
 
 M_TO_CM = 100.0
 
@@ -94,36 +97,35 @@ def process_streams(streams, origin, config=None):
 
     processed_streams = streams.copy()
     for st in processed_streams:
-        if st.passed:
-            # Estimate noise/signal split time
-            split_conf = window_conf['split']
-            event_time = origin['time']
-            event_lon = origin['lon']
-            event_lat = origin['lat']
-            st = signal_split(
-                st,
-                event_time=event_time,
-                event_lon=event_lon,
-                event_lat=event_lat,
-                **split_conf)
+        # Estimate noise/signal split time
+        split_conf = window_conf['split']
+        event_time = origin['time']
+        event_lon = origin['lon']
+        event_lat = origin['lat']
+        st = signal_split(
+            st,
+            event_time=event_time,
+            event_lon=event_lon,
+            event_lat=event_lat,
+            **split_conf)
 
-            # Estimate end of signal
-            end_conf = window_conf['signal_end']
-            event_mag = origin['magnitude']
-            st = signal_end(
-                st,
-                event_time=event_time,
-                event_lon=event_lon,
-                event_lat=event_lat,
-                event_mag=event_mag,
-                **end_conf
-            )
-            wcheck_conf = window_conf['window_checks']
-            st = window_checks(
-                st,
-                min_noise_duration=wcheck_conf['min_noise_duration'],
-                min_signal_duration=wcheck_conf['min_signal_duration']
-            )
+        # Estimate end of signal
+        end_conf = window_conf['signal_end']
+        event_mag = origin['magnitude']
+        st = signal_end(
+            st,
+            event_time=event_time,
+            event_lon=event_lon,
+            event_lat=event_lat,
+            event_mag=event_mag,
+            **end_conf
+        )
+        wcheck_conf = window_conf['window_checks']
+        st = window_checks(
+            st,
+            min_noise_duration=wcheck_conf['min_noise_duration'],
+            min_signal_duration=wcheck_conf['min_signal_duration']
+        )
 
     # -------------------------------------------------------------------------
     # Begin processing steps
@@ -149,14 +151,27 @@ def process_streams(streams, origin, config=None):
                 raise ValueError(
                     'Processing step %s is not valid.' % step_name)
 
-            # Only continue if prior checks have passed
-            if stream.passed | (step_name == "summary_plots"):
+            # Only continue if prior checks have passed; also summary_plots
+            # should always run regardless of stream status.
+            if (stream.passed | (step_name == "summary_plots")):
+                # If origin is required by the step then it has to be handled
+                # specially. There's probably a better solution for this...
                 if step_name == 'fit_spectra':
-                    stream = globals()[step_name](stream, origin)
-                elif step_args is None:
+                    step_args = {
+                        'origin': origin
+                    }
+                elif step_name == 'build_report':
+                    step_args['origin'] = origin
+
+                if step_args is None:
                     stream = globals()[step_name](stream)
                 else:
                     stream = globals()[step_name](stream, **step_args)
+
+    # Build the summary report?
+    build_conf = config['build_report']
+    if build_conf['run']:
+        build_report(processed_streams, build_conf['directory'], origin)
 
     logging.info('Finished processing streams.')
     return processed_streams

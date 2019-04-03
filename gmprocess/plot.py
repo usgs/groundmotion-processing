@@ -365,22 +365,27 @@ def summary_plots(st, directory):
             snr_dict = tr.getParameter('snr')
         else:
             snr_dict = None
+
         if tr.hasParameter('signal_spectrum'):
             signal_dict = tr.getParameter('signal_spectrum')
         else:
             signal_dict = None
+
         if tr.hasParameter('noise_spectrum'):
             noise_dict = tr.getParameter('noise_spectrum')
         else:
             noise_dict = None
+
         if tr.hasParameter('smooth_signal_spectrum'):
             smooth_signal_dict = tr.getParameter('smooth_signal_spectrum')
         else:
             smooth_signal_dict = None
+
         if tr.hasParameter('smooth_noise_spectrum'):
             smooth_noise_dict = tr.getParameter('smooth_noise_spectrum')
         else:
             smooth_noise_dict = None
+
         if tr.hasParameter('snr_conf'):
             snr_conf = tr.getParameter('snr_conf')
         else:
@@ -474,16 +479,6 @@ def summary_plots(st, directory):
 
         # ---------------------------------------------------------------------
         # Signal-to-noise ratio plot
-        if snr_dict is not None:
-            ax[j+6].loglog(snr_dict['freq'],
-                           snr_dict['snr'],
-                           label='SNR')
-            ax[j+6].axhline(snr_conf['threshold'],
-                            color='black',
-                            linestyle='--',
-                            label='Threshold')
-        ax[j+6].set_ylabel('SNR')
-        ax[j+6].set_xlabel('Frequency (Hz)')
 
         if 'corner_frequencies' in tr.getParameterKeys():
             hp = tr.getParameter('corner_frequencies')['highpass']
@@ -497,8 +492,34 @@ def summary_plots(st, directory):
                             linestyle='--',
                             label='Lowpass')
 
+        if snr_conf is not None:
+            ax[j+6].axhline(snr_conf['threshold'],
+                            color='0.75',
+                            linestyle='-',
+                            linewidth=2)
+            ax[j+6].axvline(snr_conf['max_freq'],
+                            color='0.75',
+                            linewidth=2,
+                            linestyle='-')
+            ax[j+6].axvline(snr_conf['min_freq'],
+                            color='0.75',
+                            linewidth=2,
+                            linestyle='-')
+
+        if snr_dict is not None:
+            ax[j+6].loglog(snr_dict['freq'],
+                           snr_dict['snr'],
+                           label='SNR')
+
+        ax[j+6].set_ylabel('SNR')
+        ax[j+6].set_xlabel('Frequency (Hz)')
+
     stream_id = st.get_id()
+
+    # Do not save files if running tests
     if 'CALLED_FROM_PYTEST' not in os.environ:
         plt.tight_layout()
         plt.savefig(fname=os.path.join(directory, stream_id + '.png'),
                     bbox_inches='tight')
+
+    return st
