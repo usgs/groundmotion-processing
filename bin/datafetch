@@ -21,6 +21,7 @@ from gmprocess.streamcollection import StreamCollection
 from gmprocess.stream import streams_to_dataframe
 from gmprocess.processing import process_streams
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
+from gmprocess.config import get_config
 
 
 CONFIG = get_config()
@@ -82,19 +83,29 @@ def main(pparser, args):
     if not os.path.isdir(args.outdir):
         os.makedirs(args.outdir)
 
-    processed = process_streams(collection, edict)
-    dataframe = streams_to_dataframe(processed, process=False)
-
     if args.plot:
         plotdir = os.path.join(args.outdir, 'plots')
-        if not os.path.isdir(plotdir):
-            os.makedirs(plotdir)
-        for stream in processed:
-            network = stream[0].stats.network
-            station = stream[0].stats.station
-            fname = '%s.%s.png' % (network, station)
-            filename = os.path.join(plotdir, fname)
-            stream.plot(outfile=filename)
+        config = get_config()
+        idx = None
+        for i, pstep in enumerate(config['processing']):
+            if 'summary_plots' in pstep:
+                idx = i
+                break
+        if idx is None:
+            pstep = {'summary_plots': {'directory': plotdir}}
+            config['processing'].append(pstep)
+        else:
+            pstep = config['processing'][idx]
+            pstep['summary_plots']['directory'] = plotdir
+
+        if 'build_report' in config:
+            config['build_report']['run'] = True
+            config['build_report']['directory'] = args.outdir
+        else:
+            config['build_report'] = {'run': True, 'directory': args.outdir}
+
+    processed = process_streams(collection, edict, config=config)
+    dataframe = streams_to_dataframe(processed, process=False)
 
     basename = edict['time'].strftime('%Y%m%d%H%M%S')
     if args.eventid:

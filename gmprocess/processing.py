@@ -168,7 +168,9 @@ def process_streams(streams, origin, config=None):
     # Build the summary report?
     build_conf = config['build_report']
     if build_conf['run']:
-        build_report(processed_streams, build_conf['directory'], origin)
+        build_report(processed_streams,
+                     build_conf['directory'],
+                     origin, config=config)
 
     logging.info('Finished processing streams.')
     return processed_streams

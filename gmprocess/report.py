@@ -53,7 +53,7 @@ BEGIN_COL = """\\begin{minipage}[t]{%s\\textwidth} \\scriptsize \\centering"""
 END_COL = """\\end{minipage}"""
 
 
-def build_report(sc, directory, origin):
+def build_report(sc, directory, origin, config=None):
     """
     Build latex summary report.
 
@@ -65,7 +65,8 @@ def build_report(sc, directory, origin):
 
     """
     # Need to get config to know where the plots are located
-    config = get_config()
+    if config is None:
+        config = get_config()
     processing_steps = config['processing']
     # World's ugliest list comprehension:
     spd = [psd for psd in processing_steps
