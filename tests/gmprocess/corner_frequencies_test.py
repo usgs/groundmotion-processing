@@ -48,6 +48,7 @@ def test_corner_frequencies():
             # Estimate end of signal
             end_conf = window_conf['signal_end']
             event_mag = origin['magnitude']
+            print(st)
             st = signal_end(
                 st,
                 event_time=event_time,

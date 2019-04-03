@@ -1,5 +1,6 @@
 # stdlib imports
 import json
+import logging
 
 # third party imports
 import numpy as np
@@ -145,6 +146,7 @@ class StationStream(Stream):
         )
         channels = []
         for trace in self:
+            logging.debug('trace: %s' % trace)
             channel = _channel_from_stats(trace.stats)
             channels.append(channel)
 
@@ -218,6 +220,7 @@ def _channel_from_stats(stats):
     if 'response' in stats:
         response = stats['response']
     comments = Comment(stats.standard.comments)
+    logging.debug('channel: %s' % stats.channel)
     channel = Channel(stats.channel,
                       stats.location,
                       stats.coordinates['latitude'],
