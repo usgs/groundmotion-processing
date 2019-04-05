@@ -161,7 +161,10 @@ class StationStream(Stream):
 
         big_dict = {'standard': subdict,
                     'format_specific': format_specific}
-        jsonstr = json.dumps(big_dict)
+        try:
+            jsonstr = json.dumps(big_dict)
+        except:
+            x = 1
         sta = Station(
             # This is the station code according to the SEED standard.
             code=self[0].stats.station,

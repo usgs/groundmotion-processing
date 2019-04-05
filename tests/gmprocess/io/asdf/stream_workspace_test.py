@@ -140,10 +140,11 @@ def test_workspace():
                                    'Processing Step': 'Remove Response',
                                    'Step Attribute': 'input_units',
                                    'Attribute Value': 'counts'})
+
             last_row = pd.Series({'Record': 'NZ.WTMC.HNZ',
-                                  'Processing Step': 'Lowpass Filter',
-                                  'Step Attribute': 'number_of_passes',
-                                  'Attribute Value': 2})
+                                  'Processing Step': 'Detrend',
+                                  'Step Attribute': 'detrending_method',
+                                  'Attribute Value': 'baseline_sixth_order'})
             assert provenance.iloc[0].equals(first_row)
             assert provenance.iloc[-1].equals(last_row)
 
@@ -206,7 +207,7 @@ def test_workspace():
             cmpdict = {
                 'GREATER_OF_TWO_HORIZONTALS': [26.8906, 4.9415, 94.6646],
                 'HN1': [24.5105, 4.9415, 94.6646],
-                'HN2': [26.8906, 4.0761, 86.7877],
+                'HN2': [26.8906, 4.0758, 86.7877],
                 'HNZ': [16.0941, 2.5401, 136.7054]
             }
             cmpframe = pd.DataFrame(cmpdict)

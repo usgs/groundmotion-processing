@@ -626,7 +626,6 @@ def _correct_baseline(trace):
     """
 
     # Make copies of the trace for our accleration data
-    orig_trace = trace.copy()
     acc_trace = trace.copy()
 
     # Integrate twice to get the displacement time series
@@ -645,16 +644,11 @@ def _correct_baseline(trace):
 
     # Subtract the second derivative of the polynomial from the
     # acceleration trace
-    for i in range(orig_trace.stats.npts):
-        orig_trace.data[i] -= polynomial_second_derivative(i)
-    orig_trace.setProvenance(
-        'baseline',
-        {
-            'polynomial_coefs': poly_cofs
-        }
-    )
+    for i in range(trace.stats.npts):
+        trace.data[i] -= polynomial_second_derivative(i)
+    trace.setParameter('baseline', {'polynomial_coefs': poly_cofs})
 
-    return orig_trace
+    return trace
 
 
 def _poly_func(x, a, b, c, d, e):

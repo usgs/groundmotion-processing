@@ -87,7 +87,7 @@ def test_dmg_v1():
             assert stats.standard['instrument_damping'] == 0.592
             assert stats.format_specific['time_sd'] == 0.12
         if stats['channel'] == 'HNZ':
-            assert stats.standard['horizontal_orientation'] == 500
+            assert stats.standard['horizontal_orientation'] == 0.0
             assert stats.standard['instrument_period'] == 0.039
             assert stats.standard['instrument_damping'] == 0.556
             assert stats.format_specific['time_sd'] == 0.114

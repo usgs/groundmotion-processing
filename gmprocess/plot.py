@@ -341,7 +341,7 @@ def summary_plots(st, directory):
     # Setup figure for stream
     nrows = 4
     ntrace = min(len(st), 3)
-    fig = plt.figure(figsize=(3.6 * ntrace, 10), constrained_layout=True)
+    fig = plt.figure(figsize=(3.8 * ntrace, 10), constrained_layout=True)
     gs = fig.add_gridspec(nrows, ntrace, height_ratios=[1, 1, 2, 2])
     ax = [plt.subplot(g) for g in gs]
 
@@ -358,7 +358,12 @@ def summary_plots(st, directory):
     # Compute velocity
     st_vel = get_velocity(st)
 
-    for j, tr in enumerate(st):
+    # process channels in preferred sort order (i.e., HN1, HN2, HNZ)
+    channels = [tr.stats.channel for tr in st]
+    channelidx = np.argsort(channels).tolist()
+
+    for j in channelidx:
+        tr = st[channelidx.index(j)]
 
         # Break if j>3 becasue we can't on a page.
         if j > 2:
@@ -431,8 +436,8 @@ def summary_plots(st, directory):
             trace_status = " (passed)"
         trace_title = tr.get_id() + trace_status
         ax[j].set_title(trace_title)
-        dtimes = tr.times('matplotlib') - tr.times('matplotlib')[0]
-        ax[j].plot(dtimes, tr.data, 'k')
+        dtimes = tr.times('utcdatetime') - tr.times('utcdatetime')[0]
+        ax[j].plot(dtimes, tr.data, 'k', linewidth=0.5)
 
         # Show signal split as vertical dashed line
         if tr.hasParameter('signal_split'):
@@ -440,23 +445,25 @@ def summary_plots(st, directory):
             dsec = split_dict['split_time'] - tr.times('utcdatetime')[0]
             ax[j].axvline(dsec,
                           color='red', linestyle='dashed')
-        ax[j].xaxis_date()
-        ax[j].set_xlabel('Time')
+
+        ax[j].set_xlabel('Time (s)')
         ax[j].set_ylabel('Acceleration (cm/s/s)')
 
         # ---------------------------------------------------------------------
         # Velocity time series plot
         tr_vel = st_vel[j]
-        ax[j + 3].plot(tr_vel.times('matplotlib'), tr_vel.data, 'k',
+        dtimes = tr_vel.times('utcdatetime') - tr_vel.times('utcdatetime')[0]
+        ax[j + 3].plot(dtimes, tr_vel.data, 'k',
                        linewidth=0.5)
 
         # Show signal split as vertical dashed line
         if tr.hasParameter('signal_split'):
             split_dict = tr.getParameter('signal_split')
-            ax[j].axvline(split_dict['split_time'].datetime,
-                          color='red', linestyle='dashed')
-        ax[j + 3].xaxis_date()
-        ax[j + 3].set_xlabel('Time')
+            dsec = split_dict['split_time'] - tr.times('utcdatetime')[0]
+            ax[j + 3].axvline(dsec,
+                              color='red', linestyle='dashed')
+
+        ax[j + 3].set_xlabel('Time (s)')
         ax[j + 3].set_ylabel('Velocity (cm/s)')
 
         # ---------------------------------------------------------------------

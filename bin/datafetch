@@ -5,17 +5,21 @@ import os
 import sys
 from datetime import datetime
 import logging
+import shutil
+import glob
 import warnings
 
 # third party imports
-from h5py.h5py_warnings import H5pyDeprecationWarning
 import openpyxl
+import numpy as np
+from impactutils.io.cmd import get_command_output
+from h5py.h5py_warnings import H5pyDeprecationWarning
 
+from gmprocess.event import get_event_dict, get_event_object
 from gmprocess.io.global_fetcher import fetch_data
 from gmprocess.logging import setup_logger
 from gmprocess.args import add_shared_args
 from gmprocess.config import get_config
-from gmprocess.event import get_event_dict, get_event_object
 from gmprocess.io.read_directory import directory_to_streams
 from gmprocess.streamcollection import StreamCollection
 from gmprocess.stream import streams_to_dataframe
@@ -104,6 +108,12 @@ def main(pparser, args):
         else:
             config['build_report'] = {'run': True, 'directory': args.outdir}
 
+    # total hack
+    for stream in collection:
+        for trace in stream:
+            if np.isnan(trace.stats.coordinates['elevation']):
+                trace.stats.coordinates['elevation'] = 0.0
+
     processed = process_streams(collection, edict, config=config)
     dataframe = streams_to_dataframe(processed, process=False)
 
@@ -149,6 +159,36 @@ def main(pparser, args):
             ws['B1'] = dataframe['SOURCE'].iloc[0]
             wb.save(framename)
         provdata.to_excel(provname, index=False)
+
+    # there should be a .tex file in the output directory.
+    latexfiles = glob.glob(os.path.join(args.outdir, '*.tex'))
+    # get the most recent one
+    latest_tex = None
+    if len(latexfiles):
+        latest_tex = max(latexfiles, key=os.path.getctime)
+    if latest_tex is not None:
+        # Let's check the user's system
+        # to see if they have Latex installed.
+        latexpdf = shutil.which('pdflatex')
+        if latexpdf is None:
+            fmt = 'No LateX to PDF converter found on your system for report file "%s"'
+            print(fmt % latest_tex)
+        else:
+            fmt = '%s -halt-on-error -output-directory=%s %s'
+            tpl = (latexpdf, args.outdir, latest_tex)
+            cmd = fmt % tpl
+            res, stdout, stderr = get_command_output(cmd)
+            if not res:
+                fmt = 'LateX to PDF conversion failed with errors: "%s" "%s"'
+                print(fmt % (stdout, stderr))
+            else:
+                latexbase, ext = os.path.splitext(latest_tex)
+                pdf_file = latexbase + '.pdf'
+                nukefiles = glob.glob(latexbase + '*')
+                nukefiles.remove(pdf_file)
+                # nukefiles.remove(latest_tex)
+                for nfile in nukefiles:
+                    os.remove(nfile)
 
     print('Data from %i stations saved to %s' % (len(processed), args.outdir))
     print('Metrics: %s' % framename)

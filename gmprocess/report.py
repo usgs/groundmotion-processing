@@ -1,11 +1,13 @@
-
+# stdlib imports
 import os
 import time
 from shutil import which
 
-from obspy.core.utcdatetime import UTCDateTime
+# third party imports
+import numpy as np
+import pandas as pd
 
-from impactutils.io.cmd import get_command_output
+# local imports
 from gmprocess.config import get_config
 
 PREAMBLE = """
@@ -43,7 +45,7 @@ POSTAMBLE = """
 """
 
 STREAMBLOCK = """
-\\includegraphics[height=7in]
+\\includegraphics[height=6.5in]
     {[PLOTPATH]}
 
 """
@@ -87,23 +89,30 @@ def build_report(sc, directory, origin, config=None):
         SB = STREAMBLOCK.replace('[PLOTPATH]', plot_path)
         report += SB
 
-        for i, tr in enumerate(st):
-            # Disallow more than three columns
-            if i > 2:
-                break
-            if i == 0:
-                prov_latex = get_prov_latex(tr)
-                report += BEGIN_COL % "0.4"
-            else:
-                prov_latex = get_prov_latex(tr, include_prov_id=False)
-                report += BEGIN_COL % "0.27"
-            report += prov_latex
-            if tr.hasParameter('failure'):
-                report += '\n' + tr.getParameter('failure')['reason']
-            report += END_COL
-            if i < len(st):
-                report += '\\hspace{2em}'
+        prov_latex = get_prov_latex(st)
 
+        # for i, tr in enumerate(st):
+        #     # Disallow more than three columns
+        #     if i > 2:
+        #         break
+        #     if i == 0:
+        #         prov_latex = get_prov_latex(tr)
+        #         report += BEGIN_COL % "0.4"
+        #     else:
+        #         prov_latex = get_prov_latex(tr, include_prov_id=False)
+        #         report += BEGIN_COL % "0.27"
+        #     report += prov_latex
+        #     if tr.hasParameter('failure'):
+        #         report += '\n' + tr.getParameter('failure')['reason']
+        #     report += END_COL
+        #     if i < len(st):
+        #         report += '\\hspace{2em}'
+        report += prov_latex
+        if not st.passed:
+            for tr in st:
+                if tr.hasParameter('failure'):
+                    report += '\n' + tr.getParameter('failure')['reason']
+                    break
         report += '\n\\newpage\n\n'
 
     # Finish the latex file
@@ -123,75 +132,48 @@ def build_report(sc, directory, origin, config=None):
     return st
 
 
-def get_prov_latex(tr, include_prov_id=True):
+def get_prov_latex(st):
     """
     Construct a latex representation of a trace's provenance.
 
     Args:
-        prov (StationTrace):
-            StationTrace of data.
-        include_prov_id (bool):
-            Include prov_id column?
+        st (StationStream):
+            StationStream of data.
 
     Returns:
         str: Latex tabular representation of provenance.
     """
+    # start by sorting the channel names
+    channels = [tr.stats.channel for tr in st]
+    channelidx = np.argsort(channels).tolist()
+    columns = ['Process Step',
+               'Process Attribute']
 
-    # Table will have 3 columns: prov_id, prov_attribute, prov_attribute value
-    # unless include_prov_id is false, then two columns.
+    trace1 = st[channelidx.index(0)]
+    df = pd.DataFrame(columns=columns)
+    df = trace1.getProvDataFrame()
+    mapper = {'Process Value': '%s Value' % trace1.stats.channel}
+    df = df.rename(mapper=mapper, axis='columns')
+    for i in channelidx[1:]:
+        trace2 = st[i]
+        trace2_frame = trace2.getProvDataFrame()
+        df['%s Value' % trace2.stats.channel] = trace2_frame['Process Value']
 
-    if include_prov_id:
-        TAB_TOP = """
-        \\begin{tabular}{lll}
-        \\multicolumn{3}{l}{%s} \\\\
-        \\toprule""" % tr.get_id()
+    lastrow = None
+    newdf = pd.DataFrame(columns=df.columns)
+    for idx, row in df.iterrows():
+        if lastrow is None:
+            lastrow = row
+            newdf = newdf.append(row, ignore_index=True)
+            continue
+        if row['Index'] == lastrow['Index']:
+            row['Process Step'] = ''
+        newdf = newdf.append(row, ignore_index=True)
+        lastrow = row
 
-        ONE_ROW = """\n%s & %s & %s \\\\"""
-    else:
-        TAB_TOP = """
-        \\begin{tabular}{ll}
-        \\multicolumn{2}{l}{%s} \\\\
-        \\toprule""" % tr.get_id()
-
-        ONE_ROW = """\n%s & %s \\\\"""
-
-    TAB_BOT = """
-        \\bottomrule
-        \\end{tabular}\n"""
-
-    all_prov = tr.getAllProvenance()
-    prov_string = TAB_TOP
-    for prov in all_prov:
-        prov_id = str_for_latex(prov['prov_id'])
-        for i, (k, v) in enumerate(prov['prov_attributes'].items()):
-            if isinstance(k, str):
-                kl = str_for_latex(k)
-            elif isinstance(k, UTCDateTime):
-                kl = k.timestamp
-            else:
-                kl = k
-
-            if isinstance(v, str):
-                vl = str_for_latex(v)
-            elif isinstance(v, UTCDateTime):
-                vl = v.timestamp
-            else:
-                vl = v
-
-            if i == 0:
-                if include_prov_id:
-                    vals = (prov_id, kl, vl)
-                else:
-                    vals = (kl, vl)
-            else:
-                if include_prov_id:
-                    vals = ('', kl, vl)
-                else:
-                    vals = (kl, vl)
-            prov_string += ONE_ROW % vals
-
-    prov_string += TAB_BOT
-
+    newdf = newdf.drop(labels='Index', axis='columns')
+    prov_string = newdf.to_latex(index=False)
+    prov_string = '\\scriptsize\n\\centering\n' + prov_string
     return prov_string
 
 
