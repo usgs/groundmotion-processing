@@ -211,6 +211,7 @@ class KNETFetcher(DataFetcher):
         lons = np.array(lons)
         depths = np.array(depths)
         mags = np.array(mags)
+        values = np.array(values)
         distances = geodetic_distance(self.lon, self.lat, lons, lats)
         didx = distances <= self.radius
         jptime = np.datetime64(self.jptime)
@@ -222,10 +223,11 @@ class KNETFetcher(DataFetcher):
         elons = lons[didx & tidx]
         edepths = depths[didx & tidx]
         emags = mags[didx & tidx]
+        evalues = values[didx & tidx]
         events = []
         for etime, elat, elon, edep, emag, evalue in zip(etimes, elats,
                                                          elons, edepths,
-                                                         emags, values):
+                                                         emags, evalues):
             jtime = UTCDateTime(str(etime))
             utime = jtime - JST_OFFSET
             edict = {'time': utime,

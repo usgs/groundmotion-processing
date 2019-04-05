@@ -453,6 +453,35 @@ class StationTrace(Trace):
                 'Parameter %s not found in StationTrace' % param_id)
         return self.parameters[param_id]
 
+    def getProvDataFrame(self):
+        columns = ['Process Step', 'Process Attribute', 'Process Value']
+        df = pd.DataFrame(columns=columns)
+        values = []
+        attributes = []
+        steps = []
+        indices = []
+        index = 0
+        for activity in self.getAllProvenance():
+            provid = activity['prov_id']
+            provstep = ACTIVITIES[provid]['label']
+            prov_attrs = activity['prov_attributes']
+            steps += [provstep] * len(prov_attrs)
+            indices += [index] * len(prov_attrs)
+            for key, value in prov_attrs.items():
+                attributes.append(key)
+                if isinstance(value, UTCDateTime):
+                    value = value.datetime.strftime('%Y-%m-%d %H:%M:%S')
+                values.append(str(value))
+            index += 1
+
+        levels = [indices, steps, attributes]
+        mdict = {'Index': indices,
+                 'Process Step': steps,
+                 'Process Attribute': attributes,
+                 'Process Value': values}
+        df = pd.DataFrame(mdict)
+        return df
+
     def getProvSeries(self):
         """Return a pandas Series containing the processing history for the trace.
 
@@ -584,6 +613,7 @@ def _stats_from_inventory(data, inventory, channelid):
         standard['comments'] = comments
     else:
         standard['comments'] = ''
+    standard['station_name'] = ''
     if station.site.name != 'None':
         standard['station_name'] = station.site.name
     # extract the remaining standard info and format_specific info

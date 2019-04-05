@@ -22,7 +22,7 @@ from obspy.signal.trigger import ar_pick, pk_baer
 from gmprocess.phase import PowerPicker
 from gmprocess.config import get_config
 
-M_TO_KM = 1.0/1000
+M_TO_KM = 1.0 / 1000
 
 
 def window_checks(st, min_noise_duration=0.5, min_signal_duration=5.0):
@@ -40,6 +40,10 @@ def window_checks(st, min_noise_duration=0.5, min_signal_duration=5.0):
 
     """
     for tr in st:
+        if not tr.hasParameter('signal_split'):
+            if st.passed:
+                tr.fail('Cannot check window because no split time available.')
+            continue
         # Split the noise and signal into two separate traces
         split_prov = tr.getParameter('signal_split')
         if isinstance(split_prov, list):
@@ -144,15 +148,16 @@ def signal_split(
     else:
         raise ValueError('Split method must be "p_arrival" or "velocity"')
 
-    # Update trace params
-    split_params = {
-        'split_time': tsplit,
-        'method': method,
-        'vsplit': vsplit,
-        'picker_type': preferred_picker
-    }
-    for tr in st:
-        tr.setParameter('signal_split', split_params)
+    if tsplit >= st[0].times('utcdatetime')[0]:
+        # Update trace params
+        split_params = {
+            'split_time': tsplit,
+            'method': method,
+            'vsplit': vsplit,
+            'picker_type': preferred_picker
+        }
+        for tr in st:
+            tr.setParameter('signal_split', split_params)
 
     return st
 
@@ -222,6 +227,8 @@ def signal_end(st, event_time, event_lon, event_lat, event_mag,
         stddev_types = [const.StdDev.INTRA_EVENT]
 
     for tr in st:
+        if not tr.hasParameter('signal_split'):
+            continue
         if method == "velocity":
             if vmin is None:
                 raise ValueError('Must specify vmin if method is "velocity".')

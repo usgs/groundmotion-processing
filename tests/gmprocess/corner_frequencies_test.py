@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python
 import os
 
 import numpy as np
@@ -87,6 +87,8 @@ def test_corner_frequencies():
     lp = []
     hp = []
     for stream in processed_streams:
+        if not stream.passed:
+            continue
         stream = get_corner_frequencies(
             stream,
             method="snr",
