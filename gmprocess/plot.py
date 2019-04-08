@@ -360,8 +360,11 @@ def summary_plots(st, directory):
 
     # process channels in preferred sort order (i.e., HN1, HN2, HNZ)
     channels = [tr.stats.channel for tr in st]
-    channelidx = np.argsort(channels).tolist()
-
+    if len(channels) < 3:
+        channelidx = np.argsort(channels).tolist()
+    else:
+        channelidx = range(3)
+    
     for j in channelidx:
         tr = st[channelidx.index(j)]
 
