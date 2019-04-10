@@ -464,62 +464,60 @@ def summary_plots(st, directory, origin):
         # Velocity time series plot
         tr_vel = st_vel[j]
         dtimes = tr_vel.times('utcdatetime') - tr_vel.times('utcdatetime')[0]
-        ax[j + 3].plot(dtimes, tr_vel.data, 'k',
-                       linewidth=0.5)
+        ax[j + ntrace].plot(dtimes, tr_vel.data, 'k', linewidth=0.5)
 
         # Show signal split as vertical dashed line
         if tr.hasParameter('signal_split'):
             split_dict = tr.getParameter('signal_split')
             dsec = split_dict['split_time'] - tr.times('utcdatetime')[0]
-            ax[j + 3].axvline(dsec,
-                              color='red', linestyle='dashed')
+            ax[j + ntrace].axvline(dsec, color='red', linestyle='dashed')
 
-        ax[j + 3].set_xlabel('Time (s)')
-        ax[j + 3].set_ylabel('Velocity (cm/s)')
+        ax[j + ntrace].set_xlabel('Time (s)')
+        ax[j + ntrace].set_ylabel('Velocity (cm/s)')
 
         # ---------------------------------------------------------------------
         # Spectral plot
 
         # Raw signal spec
         if signal_dict is not None:
-            ax[j + 6].loglog(signal_dict['freq'],
-                             signal_dict['spec'],
-                             color='lightblue')
+            ax[j + 2 * ntrace].loglog(signal_dict['freq'],
+                                      signal_dict['spec'],
+                                      color='lightblue')
 
         # Smoothed signal spec
         if smooth_signal_dict is not None:
-            ax[j + 6].loglog(smooth_signal_dict['freq'],
-                             smooth_signal_dict['spec'],
-                             color='blue',
-                             label='Signal')
+            ax[j + 2 * ntrace].loglog(smooth_signal_dict['freq'],
+                                      smooth_signal_dict['spec'],
+                                      color='blue',
+                                      label='Signal')
 
         # Raw noise spec
         if noise_dict is not None:
-            ax[j + 6].loglog(noise_dict['freq'],
-                             noise_dict['spec'],
-                             color='salmon')
+            ax[j + 2 * ntrace].loglog(noise_dict['freq'],
+                                      noise_dict['spec'],
+                                      color='salmon')
 
         # Smoothed noise spec
         if smooth_noise_dict is not None:
-            ax[j + 6].loglog(smooth_noise_dict['freq'],
-                             smooth_noise_dict['spec'],
-                             color='red',
-                             label='Noise')
+            ax[j + 2 * ntrace].loglog(smooth_noise_dict['freq'],
+                                      smooth_noise_dict['spec'],
+                                      color='red',
+                                      label='Noise')
 
         if fit_spectra_dict is not None:
             # Model spec
-            ax[j + 6].loglog(smooth_signal_dict['freq'],
-                             model_spec,
-                             color='black',
-                             linestyle='dashed')
+            ax[j + 2 * ntrace].loglog(smooth_signal_dict['freq'],
+                                      model_spec,
+                                      color='black',
+                                      linestyle='dashed')
 
             # Corner frequency
-            ax[j + 6].axvline(fit_spectra_dict['f0'],
-                              color='black',
-                              linestyle='dashed')
+            ax[j + 2 * ntrace].axvline(fit_spectra_dict['f0'],
+                                       color='black',
+                                       linestyle='dashed')
 
-        ax[j + 6].set_xlabel('Frequency (Hz)')
-        ax[j + 6].set_ylabel('Amplitude (cm/s)')
+        ax[j + 2 * ntrace].set_xlabel('Frequency (Hz)')
+        ax[j + 2 * ntrace].set_ylabel('Amplitude (cm/s)')
 
         # ---------------------------------------------------------------------
         # Signal-to-noise ratio plot
@@ -527,36 +525,36 @@ def summary_plots(st, directory, origin):
         if 'corner_frequencies' in tr.getParameterKeys():
             hp = tr.getParameter('corner_frequencies')['highpass']
             lp = tr.getParameter('corner_frequencies')['lowpass']
-            ax[j + 9].axvline(hp,
-                              color='black',
-                              linestyle='--',
-                              label='Highpass')
-            ax[j + 9].axvline(lp,
-                              color='black',
-                              linestyle='--',
-                              label='Lowpass')
+            ax[j + 3 * ntrace].axvline(hp,
+                                       color='black',
+                                       linestyle='--',
+                                       label='Highpass')
+            ax[j + 3 * ntrace].axvline(lp,
+                                       color='black',
+                                       linestyle='--',
+                                       label='Lowpass')
 
         if snr_conf is not None:
-            ax[j + 9].axhline(snr_conf['threshold'],
-                              color='0.75',
-                              linestyle='-',
-                              linewidth=2)
-            ax[j + 9].axvline(snr_conf['max_freq'],
-                              color='0.75',
-                              linewidth=2,
-                              linestyle='-')
-            ax[j + 9].axvline(snr_conf['min_freq'],
-                              color='0.75',
-                              linewidth=2,
-                              linestyle='-')
+            ax[j + 3 * ntrace].axhline(snr_conf['threshold'],
+                                       color='0.75',
+                                       linestyle='-',
+                                       linewidth=2)
+            ax[j + 3 * ntrace].axvline(snr_conf['max_freq'],
+                                       color='0.75',
+                                       linewidth=2,
+                                       linestyle='-')
+            ax[j + 3 * ntrace].axvline(snr_conf['min_freq'],
+                                       color='0.75',
+                                       linewidth=2,
+                                       linestyle='-')
 
         if snr_dict is not None:
-            ax[j + 9].loglog(snr_dict['freq'],
-                             snr_dict['snr'],
-                             label='SNR')
+            ax[j + 3 * ntrace].loglog(snr_dict['freq'],
+                                      snr_dict['snr'],
+                                      label='SNR')
 
-        ax[j + 9].set_ylabel('SNR')
-        ax[j + 9].set_xlabel('Frequency (Hz)')
+        ax[j + 3 * ntrace].set_ylabel('SNR')
+        ax[j + 3 * ntrace].set_xlabel('Frequency (Hz)')
 
     stream_id = st.get_id()
 
