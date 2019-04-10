@@ -108,6 +108,9 @@ def build_report(sc, directory, origin, config=None):
         #     if i < len(st):
         #         report += '\\hspace{2em}'
         report += prov_latex
+        if st[0].hasParameter('signal_split'):
+            pick_method = st[0].getParameter('signal_split')['picker_type']
+            report += '\n' + 'Pick Method: %s\n' % pick_method
         if not st.passed:
             for tr in st:
                 if tr.hasParameter('failure'):

@@ -7,6 +7,8 @@ import os
 from obspy import UTCDateTime
 
 from gmprocess.config import get_config
+from gmprocess.io.test_utils import read_data_dir
+from gmprocess.streamcollection import StreamCollection
 
 PICKER_CONFIG = get_config(picker=True)
 
@@ -92,7 +94,40 @@ def test_signal_end():
     pass
 
 
+def test_signal_split2():
+    datafiles, origin = read_data_dir(
+        'knet', 'us2000cnnl', 'AOM0011801241951*')
+    streams = []
+    for datafile in datafiles:
+        streams += read_data(datafile)
+
+    streams = StreamCollection(streams)
+    stream = streams[0]
+    signal_split(stream, method='p_arrival', vsplit=7.0)
+
+    cmpdict = {'split_time': UTCDateTime(2018, 1, 24, 10, 51, 41, 240000),
+               'method': 'p_arrival',
+               'vsplit': 7.0,
+               'picker_type': 'baer'}
+
+    assert cmpdict == stream[0].getParameter('signal_split')
+
+    # Test velocity split
+    # reset the processing parameters...
+    for trace in stream:
+        trace.stats.parameters = []
+    etime = UTCDateTime(origin['time'])
+    elat = origin['lat']
+    elon = origin['lon']
+    signal_split(stream, event_time=etime,
+                 event_lon=elon, event_lat=elat, method='velocity')
+    for tr in stream:
+        signal_split_info = tr.getParameter('signal_split')
+        assert signal_split_info['method'] == 'velocity'
+        assert signal_split_info['picker_type'] is None
+
+
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
-    test_signal_split()
+    test_signal_split2()
     test_signal_end()
