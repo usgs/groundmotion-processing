@@ -9,7 +9,7 @@ import pkg_resources
 
 from gmprocess.exception import GMProcessException
 from gmprocess.io.usc.core import is_usc, read_usc
-from gmprocess.stream import group_channels
+from gmprocess.streamcollection import StreamCollection
 from gmprocess.stationtrace import PROCESS_LEVELS
 
 
@@ -57,7 +57,7 @@ def test_usc():
     for trace in stream:
         assert trace.stats.location == 'test'
 
-    newstreams = group_channels(streams)
+    newstreams = StreamCollection(streams)
     assert len(newstreams) == 3
 
     meta_stream = read_usc(os.path.join(datadir, '017m30cc.y0a'))[0]

@@ -9,7 +9,7 @@ import numpy as np
 import pkg_resources
 
 from gmprocess.io.smc.core import is_smc, read_smc
-from gmprocess.stream import group_channels
+from gmprocess.streamcollection import StreamCollection
 
 
 def test_smc():
@@ -47,7 +47,7 @@ def test_smc():
     for trace in stream:
         assert trace.stats.location == 'test'
 
-    newstreams = group_channels(streams)
+    newstreams = StreamCollection(streams)
     assert len(newstreams) == 1
 
     filename = os.path.join(datadir, '891018_1.sma-1.0444a.smc')

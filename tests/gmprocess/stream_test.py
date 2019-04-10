@@ -10,8 +10,9 @@ from gmprocess.io.geonet.core import read_geonet
 from gmprocess.io.knet.core import read_knet
 from gmprocess.io.read import read_data
 from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.process import process_config
-from gmprocess.stream import directory_to_dataframe, group_channels
+from gmprocess.processing import process_streams
+from gmprocess.stream import directory_to_dataframe
+from gmprocess.streamcollection import StreamCollection
 from gmprocess.io.test_utils import read_data_dir
 import pkg_resources
 
@@ -27,7 +28,7 @@ def test():
                                       'AOM0031801241951*')
     for datafile in datafiles:
         streams += read_knet(datafile)
-    grouped_streams = group_channels(streams)
+    grouped_streams = StreamCollection(streams)
     assert len(grouped_streams) == 1
     assert grouped_streams[0].count() == 3
 
@@ -37,7 +38,7 @@ def test():
                                       '20161113_110313_THZ_20.V2A')
     datafile = datafiles[0]
     streams += read_geonet(datafile)
-    grouped_streams = group_channels(streams)
+    grouped_streams = StreamCollection(streams)
     assert len(grouped_streams) == 2
     assert grouped_streams[0].count() == 3
     assert grouped_streams[1].count() == 3
@@ -48,7 +49,7 @@ def test():
     datafile = datafiles[0]
     streams += read_knet(datafile)
 
-    grouped_streams = group_channels(streams)
+    grouped_streams = StreamCollection(streams)
 #    assert "One channel stream:" in logstream.getvalue()
 
     assert len(grouped_streams) == 3
@@ -62,7 +63,7 @@ def test_grouping():
     cwb_streams = []
     for filename in cwb_files:
         cwb_streams += read_data(filename)
-    cwb_streams = group_channels(cwb_streams)
+    cwb_streams = StreamCollection(cwb_streams)
     assert len(cwb_streams) == 5
     for stream in cwb_streams:
         assert len(stream) == 3
@@ -79,21 +80,21 @@ def test_grouping():
 
     dmg_streams = []
     for filename in dmg_files:
-        if (not os.path.basename(filename).startswith('Bad') and
-                not os.path.basename(filename).startswith('CE58667')):
+        if (not os.path.basename(filename).startswith('Bad')
+                and not os.path.basename(filename).startswith('CE58667')):
             dmg_streams += read_data(filename)
-    dmg_streams = group_channels(dmg_streams)
+    dmg_streams = StreamCollection(dmg_streams)
     assert len(dmg_streams) == 2
     for stream in dmg_streams:
         assert len(stream) == 3
 
     # geonet
-    geonet_files, _ = read_data_dir('geonet', 'us1000778i')
+    geonet_files, _ = read_data_dir('geonet', 'us1000778i', '*.V1A')
     geonet_streams = []
     for filename in geonet_files:
         geonet_streams += read_data(filename)
-    geonet_streams = group_channels(geonet_streams)
-    assert len(geonet_streams) == 6
+    geonet_streams = StreamCollection(geonet_streams)
+    assert len(geonet_streams) == 3
     for stream in geonet_streams:
         assert len(stream) == 3
         assert len(stream.select(station=stream[0].stats.station)) == 3
@@ -106,7 +107,7 @@ def test_grouping():
     kiknet_streams = []
     for filename in kiknet_files:
         kiknet_streams += read_data(filename)
-    kiknet_streams = group_channels(kiknet_streams)
+    kiknet_streams = StreamCollection(kiknet_streams)
     assert len(kiknet_streams) == 1
     for stream in kiknet_streams:
         assert len(stream) == 3
@@ -117,7 +118,7 @@ def test_grouping():
     knet_streams = []
     for filename in knet_files:
         knet_streams += read_data(filename)
-    knet_streams = group_channels(knet_streams)
+    knet_streams = StreamCollection(knet_streams)
     assert len(knet_streams) == 9
     for stream in knet_streams:
         assert len(stream) == 3
@@ -127,12 +128,12 @@ def test_grouping():
             assert trace.stats.standard.process_level == pl
 
     # smc
-    smc_files, _ = read_data_dir('smc', 'nc216859')
+    smc_files, _ = read_data_dir('smc', 'nc216859', '0111*')
     smc_streams = []
     for filename in smc_files:
         smc_streams += read_data(filename, any_structure=True)
-    smc_streams = group_channels(smc_streams)
-    assert len(smc_streams) == 6
+    smc_streams = StreamCollection(smc_streams)
+    assert len(smc_streams) == 1
     for stream in smc_streams:
         if stream[0].stats.station == 'DVD0':
             assert len(stream) == 1
@@ -150,7 +151,7 @@ def test_grouping():
     for filename in usc_files:
         if os.path.basename(filename) != '017m30bt.s0a':
             usc_streams += read_data(filename)
-    usc_streams = group_channels(usc_streams)
+    usc_streams = StreamCollection(usc_streams)
     assert len(usc_streams) == 3
     for stream in usc_streams:
         if stream[0].stats.station == '57':
@@ -173,9 +174,9 @@ def _test_to_dataframe():
     streams = []
     for filepath in glob.glob(os.path.join(knet_dir, "*")):
         streams += read_data(filepath)
-    grouped_streams = group_channels(streams)
+    grouped_streams = StreamCollection(streams)
     for idx, stream in enumerate(grouped_streams):
-        stream = process_config(stream)
+        stream = process_streams(stream)
         # set meta_data
         station = stream[0].stats['station']
         name_str = stream[0].stats['standard']['station_name']
@@ -223,9 +224,9 @@ def _test_to_dataframe():
     streams = []
     for filepath in glob.glob(os.path.join(cwb_dir, "*")):
         streams += read_data(filepath)
-    grouped_streams = group_channels(streams)
+    grouped_streams = StreamCollection(streams)
     for idx, stream in enumerate(grouped_streams):
-        stream = process_config(stream)
+        stream = process_streams(stream)
         # set meta_data
         station = stream[0].stats['station']
         name_str = stream[0].stats['standard']['station_name']

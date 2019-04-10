@@ -4,7 +4,7 @@ import os
 import numpy as np
 import pkg_resources
 from gmprocess.io.fdsn import request_raw_waveforms
-from gmprocess import process
+# from gmprocess import process
 
 pdir = os.path.join('data', 'testdata', 'process')
 datadir = pkg_resources.resource_filename('gmprocess', pdir)

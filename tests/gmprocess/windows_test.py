@@ -16,7 +16,7 @@ knet_data = os.path.join('data', 'testdata', 'process')
 data_path = pkg_resources.resource_filename('gmprocess', knet_data)
 
 
-def test_signal_split():
+def _test_signal_split():
 
     st1 = read_data(os.path.join(data_path, 'AOM0170806140843.EW'))[0]
     st2 = read_data(os.path.join(data_path, 'AOM0170806140843.NS'))[0]
