@@ -217,6 +217,13 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
 
     # Check if the response information is already attached in the trace stats
     for tr in st:
+
+        # Check if this trace has already been converted to physical units
+        if 'remove_response' in tr.getProvenanceKeys():
+            logging.info('Trace has already had instrument response removed. '
+                         'Nothing to be done.')
+            continue
+
         f_n = 0.5 / tr.stats.delta
         if f3 is None:
             f3 = 0.9 * f_n
@@ -241,19 +248,15 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                 }
             )
         elif tr.stats.channel[1] == 'N':
-            if isinstance(tr.data[0], int):
-                tr.remove_sensitivity(inventory=inv)
-                tr.data *= M_TO_CM  # Convert from m/s/s to cm/s/s
-                tr.setProvenance(
-                    'remove_response',
-                    {
-                        'method': 'remove_sensitivity',
-                        'inventory': inv
-                    }
-                )
-            else:
-                logging.info('Skipping sensitivity removal because units '
-                             'are not counts (integers).')
+            tr.remove_sensitivity(inventory=inv)
+            tr.data *= M_TO_CM  # Convert from m/s/s to cm/s/s
+            tr.setProvenance(
+                'remove_response',
+                {
+                    'method': 'remove_sensitivity',
+                    'inventory': inv
+                }
+            )
         else:
             reason = ('This instrument type is not supported. '
                       'The instrument code must be either H '
