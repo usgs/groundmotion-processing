@@ -29,13 +29,6 @@ setup_logger()
 
 def test_process_streams():
     # Loma Prieta test station (nc216859)
-    origin = {
-        'eventid': 'test',
-        'time': UTCDateTime('2000-10-16T13:30:00'),
-        'magnitude': 7.3,
-        'lat': 35.278,
-        'lon': 133.345
-    }
 
     data_files, origin = read_data_dir('geonet', 'us1000778i', '*.V1A')
     streams = []

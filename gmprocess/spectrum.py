@@ -51,7 +51,7 @@ def fit_spectra(st, origin, kappa=0.035):
             Stream of data.
         origin (dict):
              Dictionary with the following keys:
-              - eventid
+              - id
               - magnitude
               - time (UTCDateTime object)
               - lon

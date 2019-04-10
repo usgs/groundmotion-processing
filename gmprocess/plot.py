@@ -323,7 +323,7 @@ def plot_moveout(streams, epilat, epilon, channel, cmap='viridis',
     return (fig, ax)
 
 
-def summary_plots(st, directory):
+def summary_plots(st, directory, origin):
     """Stream summary plot.
 
     Args:
@@ -331,6 +331,14 @@ def summary_plots(st, directory):
             Stream of data.
         directory (str):
             Directory for saving plots.
+        origin (dict):
+            Dictionary with the following keys:
+              - id
+              - magnitude
+              - time (UTCDateTime object)
+              - lon
+              - lat
+              - depth
     """
     mpl.rcParams['font.size'] = 8
 
@@ -349,10 +357,10 @@ def summary_plots(st, directory):
     logging.debug('stream_id: %s' % stream_id)
     logging.debug('passed: %s' % st.passed)
     if st.passed:
-        plt.suptitle("%s (passed)" % stream_id,
+        plt.suptitle("%s - %s (passed)" % (origin['id'], stream_id),
                      x=0.5, y=1.02)
     else:
-        plt.suptitle("%s (failed)" % stream_id,
+        plt.suptitle("%s - %s (failed)" % (origin['id'], stream_id),
                      color='red', x=0.5, y=1.02)
 
     # Compute velocity
@@ -555,7 +563,9 @@ def summary_plots(st, directory):
     # Do not save files if running tests
     if 'CALLED_FROM_PYTEST' not in os.environ:
         plt.tight_layout()
-        plt.savefig(fname=os.path.join(directory, stream_id + '.png'),
-                    bbox_inches='tight')
+        file_name = os.path.join(
+            directory,
+            origin['id'] + '_' + stream_id + '.png')
+        plt.savefig(fname=file_name, bbox_inches='tight')
 
     return st

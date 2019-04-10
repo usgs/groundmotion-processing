@@ -103,7 +103,7 @@ class StreamCollection(object):
                 Directory of ground motion files (streams).
             origin_dict (dict):
                 Dictionary with the following keys:
-                   - eventid
+                   - id
                    - magnitude
                    - time (UTCDateTime object)
                    - lon

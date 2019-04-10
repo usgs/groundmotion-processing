@@ -85,7 +85,9 @@ def build_report(sc, directory, origin, config=None):
     # Loop over each StationStream and append it's page to the report
     # do not include more than three.
     for st in sc:
-        plot_path = os.path.join('..', plot_dir, st.get_id() + '.png')
+        plot_path = os.path.join(
+            '..', plot_dir,
+            origin['id'] + '_' + st.get_id() + '.png')
         SB = STREAMBLOCK.replace('[PLOTPATH]', plot_path)
         report += SB
 
