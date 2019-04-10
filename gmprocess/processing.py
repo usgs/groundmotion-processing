@@ -565,7 +565,7 @@ def snr_check(st, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
         # Comput SNR
         tr = compute_snr(tr, bandwidth)
 
-        if st.passed:
+        if st.passed and tr.hasParameter('snr'):
             snr_dict = tr.getParameter('snr')
             snr = np.array(snr_dict['snr'])
             freq = np.array(snr_dict['freq'])
@@ -573,13 +573,13 @@ def snr_check(st, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
             min_snr = np.min(snr[(freq >= min_freq) & (freq <= max_freq)])
             if min_snr < threshold:
                 tr.fail('Failed SNR check; SNR less than threshold.')
-            snr_dict = {
-                'threshold': threshold,
-                'min_freq': min_freq,
-                'max_freq': max_freq,
-                'bandwidth': bandwidth
-            }
-            tr.setParameter('snr_conf', snr_dict)
+        snr_conf = {
+            'threshold': threshold,
+            'min_freq': min_freq,
+            'max_freq': max_freq,
+            'bandwidth': bandwidth
+        }
+        tr.setParameter('snr_conf', snr_conf)
     return st
 
 
