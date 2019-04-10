@@ -114,15 +114,16 @@ def fit_spectra(st, origin, kappa=0.035):
                 rms_stress.append(TRIAL_STRESS_DROPS[i])
 
             # Find the kappa-stress pair with best fit
-            idx = np.where(rms == np.nanmin(rms))[0][0]
-            fit_spectra_dict = {
-                'stress_drop': rms_stress[idx],
-                'epi_dist': dist,
-                'kappa': kappa,
-                'magnitude': event_mag,
-                'f0': rms_f0[idx]
-            }
-            tr.setParameter('fit_spectra', fit_spectra_dict)
+            if not np.all(np.isnan(rms)):
+                idx = np.where(rms == np.nanmin(rms))[0][0]
+                fit_spectra_dict = {
+                    'stress_drop': rms_stress[idx],
+                    'epi_dist': dist,
+                    'kappa': kappa,
+                    'magnitude': event_mag,
+                    'f0': rms_f0[idx]
+                }
+                tr.setParameter('fit_spectra', fit_spectra_dict)
 
     return st
 
