@@ -357,10 +357,12 @@ def summary_plots(st, directory, origin):
     logging.debug('stream_id: %s' % stream_id)
     logging.debug('passed: %s' % st.passed)
     if st.passed:
-        plt.suptitle("%s - %s (passed)" % (origin['id'], stream_id),
+        plt.suptitle("M%s %s | %s (passed)" %
+                     (origin['magnitude'], origin['id'], stream_id),
                      x=0.5, y=1.02)
     else:
-        plt.suptitle("%s - %s (failed)" % (origin['id'], stream_id),
+        plt.suptitle("M%s %s | %s (failed)"
+                     % (origin['magnitude'], origin['id'], stream_id),
                      color='red', x=0.5, y=1.02)
 
     # Compute velocity
