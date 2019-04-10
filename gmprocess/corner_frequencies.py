@@ -64,7 +64,13 @@ def snr(tr, same_horiz=True, bandwidth=20):
         min_freq = snr_conf['min_freq']
         max_freq = snr_conf['max_freq']
 
-        snr_dict = tr.getParameter('snr')
+        if tr.hasParameter('snr'):
+            snr_dict = tr.getParameter('snr')
+        else:
+            tr.fail('Cannot use SNR to pick corners because SNR could not '
+                    'be calculated.')
+            return tr
+
         snr = snr_dict['snr']
         freq = snr_dict['freq']
 
