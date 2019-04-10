@@ -341,7 +341,7 @@ def summary_plots(st, directory):
     # Setup figure for stream
     nrows = 4
     ntrace = min(len(st), 3)
-    fig = plt.figure(figsize=(3.8 * ntrace, 10), constrained_layout=True)
+    fig = plt.figure(figsize=(3.8 * ntrace, 10))
     gs = fig.add_gridspec(nrows, ntrace, height_ratios=[1, 1, 2, 2])
     ax = [plt.subplot(g) for g in gs]
 
@@ -364,7 +364,7 @@ def summary_plots(st, directory):
         channelidx = np.argsort(channels).tolist()
     else:
         channelidx = range(3)
-    
+
     for j in channelidx:
         tr = st[channelidx.index(j)]
 
