@@ -327,8 +327,14 @@ class StreamCollection(object):
     def __group_by_net_sta_inst(self):
         trace_list = []
         for stream in self:
+            if hasattr(stream, 'tag'):
+                tag = stream.tag
+            else:
+                tag = ""
             for trace in stream:
-                trace_list += [trace]
+                tr = trace
+                tr.stats.tag = tag
+                trace_list += [tr]
 
         # Create a list of traces with matching net, sta.
         all_matches = []
@@ -366,9 +372,10 @@ class StreamCollection(object):
                 grouped_trace_list.append(
                     trace_list[i]
                 )
-            grouped_streams.append(
-                StationStream(grouped_trace_list)
-            )
+            st = StationStream(grouped_trace_list)
+            if st[0].stats.tag:
+                st.tag = st[0].stats.tag
+            grouped_streams.append(st)
 
         self.streams = grouped_streams
 

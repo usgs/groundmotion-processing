@@ -14,6 +14,7 @@ import openpyxl
 # local imports
 from gmprocess.stationtrace import StationTrace, TIMEFMT_MS
 from gmprocess.stationstream import StationStream
+from gmprocess.streamcollection import StreamCollection
 from gmprocess.metrics.station_summary import StationSummary
 
 TIMEPAT = '[0-9]{4}-[0-9]{2}-[0-9]{2}T'
@@ -265,7 +266,7 @@ class StreamWorkspace(object):
                     stream = StationStream(traces=traces)
                     stream.tag = tag  # testing this out
                     streams.append(stream)
-        return streams
+        return StreamCollection(streams)
 
     def getStations(self, eventid=None):
         """Get list of station codes within the file.
