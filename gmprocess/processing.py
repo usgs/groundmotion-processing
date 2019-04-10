@@ -31,6 +31,13 @@ from gmprocess.report import build_report  # NOQA
 
 M_TO_CM = 100.0
 
+# List of processing steps that require an origin
+# besides the arguments in the conf file.
+REQ_ORIGIN = [
+    'build_report',
+    'summary_plots'
+]
+
 
 TAPER_TYPES = {
     'cosine': 'Cosine',
@@ -69,7 +76,7 @@ def process_streams(streams, origin, config=None):
             A StreamCollection object.
         origin (dict):
             Dictionary with the following keys:
-              - eventid
+              - id
               - magnitude
               - time (UTCDateTime object)
               - lon
@@ -157,7 +164,7 @@ def process_streams(streams, origin, config=None):
                 step_args = {
                     'origin': origin
                 }
-            elif step_name == 'build_report':
+            elif step_name in REQ_ORIGIN:
                 step_args['origin'] = origin
 
             if step_args is None:
