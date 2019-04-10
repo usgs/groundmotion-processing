@@ -205,10 +205,10 @@ def test_workspace():
             workspace.setStreamMetrics(usid, labels=['processed'])
             df = workspace.getMetricsTable(usid, labels=['processed'])
             cmpdict = {
-                'GREATER_OF_TWO_HORIZONTALS': [26.8906, 4.9415, 94.6646],
-                'HN1': [24.5105, 4.9415, 94.6646],
-                'HN2': [26.8906, 4.0758, 86.7877],
-                'HNZ': [16.0941, 2.5401, 136.7054]
+                'GREATER_OF_TWO_HORIZONTALS': [26.904, 4.9814, 99.5713],
+                'HN1': [24.5162, 4.9814, 99.5713],
+                'HN2': [26.904, 4.0292, 86.7985],
+                'HNZ': [16.0978, 2.5057, 156.0942]
             }
             cmpframe = pd.DataFrame(cmpdict)
             assert df['PGA'].equals(cmpframe)
