@@ -1,12 +1,5 @@
 # Options for phase pickers
 
-# Order of preference for the phase pickers. If the first choice picker fails,
-# then the following picker will be used, and so on.
-order_of_preference:
-    - ar
-    - baer
-    - cwb
-
 # Options for obspy.signal.trigger.ar_pick()
 ar:
     # Frequency of the lower bandpass window (Hz)
@@ -62,3 +55,37 @@ baer:
 
     # Time interval for which the maximum amplitude is evaluated
     p_dur: 100
+
+kalkan:
+    # undamped natural period in second (default is 0.01 for
+    # records sampled with 100 samples-per-second or larger; for
+    # records with lower than 100 samples-per-second default
+    # is 0.1 s)
+    period: None
+
+    # damping ratio
+    damping: 0.6
+
+    # histogram bin size (default is 2/dt for
+    # strong-motion acceleration and broadband velocity
+    # waveforms; regional or teleseismic records may need
+    # different values of bin size for better picking results)
+    nbins: None
+
+    # Take segment of waveform from beginning to
+    # absolute peak value (recommended for fast processing)
+    # False to take full waveform.
+    peak_selection: False
+
+# TODO: Document these options
+power:
+    highpass: 1.4
+    lowpass: 6
+    order: 3
+    sta: 3.0
+    sta2: 3.0
+    lta: 20.0
+    hanningWindow: 3.0
+    threshDetect: 2.5
+    threshDetect2: 2.5
+    threshRestart: 1.5

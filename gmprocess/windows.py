@@ -9,6 +9,7 @@ import yaml
 import logging
 
 import numpy as np
+import pandas as pd
 
 from openquake.hazardlib.gsim.base import SitesContext
 from openquake.hazardlib.gsim.base import RuptureContext
@@ -17,10 +18,10 @@ from openquake.hazardlib import const
 from openquake.hazardlib import imt
 
 from obspy.geodetics.base import gps2dist_azimuth
-from obspy.signal.trigger import ar_pick, pk_baer
 
-from gmprocess.phase import PowerPicker
+from gmprocess.phase import (pick_power, pick_ar, pick_baer, pick_kalkan)
 from gmprocess.config import get_config
+from gmprocess.exception import GMProcessException
 
 M_TO_KM = 1.0 / 1000
 
@@ -63,7 +64,8 @@ def window_checks(st, min_noise_duration=0.5, min_signal_duration=5.0):
 
 def signal_split(
         st, event_time=None, event_lon=None, event_lat=None,
-        method='velocity', vsplit=7.0, picker_config=None):
+        method='velocity', vsplit=7.0, picker_config=None,
+        config=None):
     """
     This method tries to identifies the boundary between the noise and signal
     for the waveform. The split time is placed inside the
@@ -99,43 +101,45 @@ def signal_split(
     """
     if picker_config is None:
         picker_config = get_config(picker=True)
-
+    if config is None:
+        config = get_config()
     if method == 'p_arrival':
-        preferred_picker = picker_config['order_of_preference'][0]
+        pick_methods = ['ar', 'baer', 'power', 'kalkan']
+        columns = ['Stream', 'Method', 'Pick_Time', 'Mean_SNR']
+        df = pd.DataFrame(columns=columns)
+        for pick_method in pick_methods:
+            try:
+                if pick_method == 'ar':
+                    loc, mean_snr = pick_ar(
+                        st, picker_config=picker_config, config=config)
+                elif pick_method == 'baer':
+                    loc, mean_snr = pick_baer(
+                        st, picker_config=picker_config, config=config)
+                elif pick_method == 'power':
+                    loc, mean_snr = pick_power(
+                        st, picker_config=picker_config, config=config)
+                elif pick_method == 'kalkan':
+                    loc, mean_snr = pick_kalkan(st,
+                                                picker_config=picker_config,
+                                                config=config)
+                elif pick_method == 'yeck':
+                    loc, mean_snr = pick_kalkan(st)
+            except GMProcessException:
+                loc = -1
+                mean_snr = np.nan
+            row = {'Stream': st.get_id(),
+                   'Method': pick_method,
+                   'Pick_Time': loc,
+                   'Mean_SNR': mean_snr}
+            df = df.append(row, ignore_index=True)
 
-        if preferred_picker == 'ar':
-            # Get the east, north, and vertical components from the stream
-            st_e = st.select(channel='??[E1]')
-            st_n = st.select(channel='??[N2]')
-            st_z = st.select(channel='??[Z3]')
-
-            # Check if we found one of each component
-            # If not, use the next picker in the order of preference
-            if len(st_e) != 1 or len(st_n) != 1 or len(st_z) != 1:
-                logging.warning('Unable to perform AR picker.')
-                logging.warning('Using next available phase picker.')
-                preferred_picker = picker_config['order_of_preference'][1]
-            else:
-                tdiff = ar_pick(st_z[0].data, st_n[0].data, st_e[0].data,
-                                st_z[0].stats.sampling_rate,
-                                **picker_config['ar'])[0]
-                tsplit = st[0].stats.starttime + tdiff
-
-        if preferred_picker in ['baer', 'cwb']:
-            tdiffs = []
-            for tr in st:
-                if preferred_picker == 'baer':
-                    pick_sample = pk_baer(tr.data, tr.stats.sampling_rate,
-                                          **picker_config['baer'])[0]
-                    tr_tdiff = pick_sample * tr.stats.delta
-                else:
-                    tr_tdiff = PowerPicker(tr)[0] - tr.stats.starttime
-                tdiffs.append(tr_tdiff)
-            tdiff = min(tdiffs)
-            tsplit = st[0].stats.starttime + tdiff
-
-        if preferred_picker not in ['ar', 'baer', 'cwb']:
-            raise ValueError('Not a valid picker.')
+        max_snr = df['Mean_SNR'].max()
+        if not np.isnan(max_snr):
+            maxrow = df[df['Mean_SNR'] == max_snr].iloc[0]
+            tsplit = st[0].times('utcdatetime')[0] + maxrow['Pick_Time']
+            preferred_picker = maxrow['Method']
+        else:
+            tsplit = -1
 
     elif method == 'velocity':
         epi_dist = gps2dist_azimuth(

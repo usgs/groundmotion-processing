@@ -1,20 +1,17 @@
 # stdlib imports
 import glob
 import os
-import logging
 
 # third party imports
 import numpy as np
-from obspy.core.stream import Stream
 from obspy.geodetics import gps2dist_azimuth
 from obspy.core.event import Origin
 import pandas as pd
 
 # local imports
-from gmprocess.exception import GMProcessException
 from gmprocess.io.read import read_data
-from gmprocess.process import process_config
 from gmprocess.metrics.station_summary import StationSummary
+from gmprocess.streamcollection import StreamCollection
 
 
 DEFAULT_IMTS = ['PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
@@ -79,139 +76,12 @@ def directory_to_dataframe(directory, imcs=None, imts=None, epi_dist=None,
     streams = []
     for filepath in glob.glob(os.path.join(directory, "*")):
         streams += read_data(filepath)
-    grouped_streams = group_channels(streams)
+    grouped_streams = StreamCollection(streams)
 
     dataframe = streams_to_dataframe(
         grouped_streams, imcs=imcs, imts=imts, epi_dist=epi_dist,
         event_time=event_time, lat=lat, lon=lon, process=process)
     return dataframe
-
-
-def group_channels(streams):
-    """Consolidate streams for the same event.
-
-    Checks to see if there are channels for one station in different
-    streams, and groups them into one stream. Then streams are checked for
-    duplicate channels (traces).
-
-    Args:
-        streams (list): List of Stream objects.
-
-    Returns:
-        list: List of Stream objects.
-    """
-    # Return the original stream if there is only one
-    if len(streams) <= 1:
-        return streams
-
-    # Get the all traces
-    trace_list = []
-    for stream in streams:
-        for trace in stream:
-            if trace.stats.network == '' or str(trace.stats.network) == 'nan':
-                trace.stats.network = 'ZZ'
-            if str(trace.stats.location) == 'nan':
-                trace.stats.location = ''
-            if trace.stats.location == '' or str(trace.stats.location) == 'nan':
-                trace.stats.location = '--'
-            trace_list += [trace]
-
-    # Create a list of duplicate traces and event matches
-    duplicate_list = []
-    match_list = []
-    for idx1, trace1 in enumerate(trace_list):
-        matches = []
-        network = trace1.stats['network']
-        station = trace1.stats['station']
-        starttime = trace1.stats['starttime']
-        endtime = trace1.stats['endtime']
-        channel = trace1.stats['channel']
-        location = trace1.stats['location']
-        if 'units' in trace1.stats.standard:
-            units = trace1.stats.standard['units']
-        else:
-            units = ''
-        if 'process_level' in trace1.stats.standard:
-            process_level = trace1.stats.standard['process_level']
-        else:
-            process_level = ''
-        data = np.asarray(trace1.data)
-        for idx2, trace2 in enumerate(trace_list):
-            if idx1 != idx2 and idx1 not in duplicate_list:
-                event_match = False
-                duplicate = False
-                if data.shape == trace2.data.shape:
-                    try:
-                        same_data = ((data == np.asarray(trace2.data)).all())
-                    except AttributeError:
-                        same_data = (data == np.asarray(trace2.data))
-                else:
-                    same_data = False
-                if 'units' in trace2.stats.standard:
-                    units2 = trace2.stats.standard['units']
-                else:
-                    units2 = ''
-                if 'process_level' in trace2.stats.standard:
-                    process_level2 = trace2.stats.standard['process_level']
-                else:
-                    process_level2 = ''
-                if (
-                    network == trace2.stats['network'] and
-                    station == trace2.stats['station'] and
-                    starttime == trace2.stats['starttime'] and
-                    endtime == trace2.stats['endtime'] and
-                    channel == trace2.stats['channel'] and
-                    location == trace2.stats['location'] and
-                    units == units2 and
-                    process_level == process_level2 and
-                    same_data
-                ):
-                    duplicate = True
-                elif (
-                    network == trace2.stats['network'] and
-                    station == trace2.stats['station'] and
-                    starttime == trace2.stats['starttime'] and
-                    location == trace2.stats['location'] and
-                    units == units2 and
-                    process_level == process_level2
-                ):
-                    event_match = True
-                if duplicate:
-                    duplicate_list += [idx2]
-                if event_match:
-                    matches += [idx2]
-        match_list += [matches]
-
-    # Create an updated list of streams
-    streams = []
-    for idx, matches in enumerate(match_list):
-        stream = Stream()
-        grouped = False
-        for match_idx in matches:
-            if match_idx not in duplicate_list:
-                if idx not in duplicate_list:
-                    stream.append(trace_list[match_idx])
-                    duplicate_list += [match_idx]
-                    grouped = True
-        if grouped:
-            stream.append(trace_list[idx])
-            duplicate_list += [idx]
-            streams += [stream]
-
-    # Check for ungrouped traces
-    for idx, trace in enumerate(trace_list):
-        if idx not in duplicate_list:
-            stream = Stream()
-            streams += [stream.append(trace)]
-            logging.warning('One channel stream:\n%s' % (stream))
-
-    # Check for streams with more than three channels
-    for stream in streams:
-        if len(stream) > 3:
-            raise GMProcessException(
-                'Stream with more than 3 channels:\n%s.' % (stream))
-
-    return streams
 
 
 def streams_to_dataframe(streams, imcs=None, imts=None,
@@ -362,8 +232,8 @@ def _match_traces(trace_list):
         for idx2, trace2 in enumerate(trace_list):
             if idx1 != idx2 and idx1 not in all_matches:
                 if (
-                    network == trace2.stats['network'] and
-                    station == trace2.stats['station']
+                    network == trace2.stats['network']
+                    and station == trace2.stats['station']
                 ):
                     matches.append(idx2)
         if len(matches) > 1:

@@ -79,7 +79,7 @@ windows:
     window_checks:
         # Minimum noise duration; can be zero but this will allow for errors
         # to occur if requesting signal-to-noise ratios.
-        min_noise_duration: 0.0
+        min_noise_duration: 1.0
 
         min_signal_duration: 5.0
 

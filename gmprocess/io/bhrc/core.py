@@ -33,13 +33,16 @@ LEVELS = {'VOL1DS': 'V1'}
 
 
 def is_bhrc(filename):
-    with open(filename, 'rt') as f:
-        lines = [next(f) for x in range(TEXT_HDR_ROWS)]
+    try:
+        with open(filename, 'rt') as f:
+            lines = [next(f) for x in range(TEXT_HDR_ROWS)]
 
-    has_line1 = lines[0].startswith('* VOL')
-    has_line7 = lines[6].startswith('COMP')
-    if has_line1 and has_line7:
-        return True
+        has_line1 = lines[0].startswith('* VOL')
+        has_line7 = lines[6].startswith('COMP')
+        if has_line1 and has_line7:
+            return True
+    except UnicodeDecodeError:
+        return False
     return False
 
 
