@@ -215,8 +215,6 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
     Returns:
         StationStream: Instrument-response-corrected stream.
     """
-    if not st.passed:
-        return st
 
     if output not in ['ACC', 'VEL', 'DISP']:
         raise ValueError('Output value of %s is invalid. Must be ACC, VEL, '
@@ -291,8 +289,6 @@ def detrend(st, detrending_method=None):
     Returns:
         StationStream: Detrended stream.
     """
-    if not st.passed:
-        return st
 
     for tr in st:
         if detrending_method == 'baseline_sixth_order':

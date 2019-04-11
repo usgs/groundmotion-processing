@@ -21,7 +21,6 @@ from obspy.geodetics.base import gps2dist_azimuth
 
 from gmprocess.phase import (pick_power, pick_ar, pick_baer, pick_kalkan)
 from gmprocess.config import get_config
-from gmprocess.exception import GMProcessException
 
 M_TO_KM = 1.0 / 1000
 
@@ -124,7 +123,7 @@ def signal_split(
                                                 config=config)
                 elif pick_method == 'yeck':
                     loc, mean_snr = pick_kalkan(st)
-            except GMProcessException:
+            except Exception:
                 loc = -1
                 mean_snr = np.nan
             row = {'Stream': st.get_id(),
