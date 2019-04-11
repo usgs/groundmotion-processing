@@ -47,8 +47,23 @@ def turkey_test():
     assert len(streams) == 27
 
 
+def fdsn_test():
+    # 2014-08-24 10:20:44
+    eid = 'nc72282711'
+    utime = datetime(2014, 8, 24, 10, 20, 44)
+    eqlat = 38.215
+    eqlon = -122.312
+    eqdepth = 11.1
+    eqmag = 6.0
+    rawdir = os.path.join(os.path.expanduser('~'), 'tmp', eid, 'raw')
+    stream_collection = fetch_data(utime, eqlat, eqlon, eqdepth, eqmag,
+                                   rawdir=rawdir)
+    assert len(stream_collection) == 15
+
+
 if __name__ == '__main__':
     # os.environ['CALLED_FROM_PYTEST'] = 'True'
+    fdsn_test()
     knet_test()
     turkey_test()
     geonet_test()

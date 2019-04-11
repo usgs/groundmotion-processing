@@ -14,6 +14,7 @@ import openpyxl
 import numpy as np
 from impactutils.io.cmd import get_command_output
 from h5py.h5py_warnings import H5pyDeprecationWarning
+import matplotlib.pyplot as plt
 
 from gmprocess.event import get_event_dict, get_event_object
 from gmprocess.io.global_fetcher import fetch_data
@@ -113,6 +114,12 @@ def main(pparser, args):
         for trace in stream:
             if np.isnan(trace.stats.coordinates['elevation']):
                 trace.stats.coordinates['elevation'] = 0.0
+
+    if args.plot_raw and args.save_raw:
+        for stream in collection:
+            outfile = os.path.join(rawdir, '%s.png' % stream.get_id())
+            stream.plot(outfile=outfile)
+            plt.close()
 
     processed = process_streams(collection, edict, config=config)
     dataframe = streams_to_dataframe(processed, process=False)
@@ -237,6 +244,8 @@ if __name__ == '__main__':
                         help='Make plots of processed waveforms')
     parser.add_argument('-r', '--save-raw', action='store_true',
                         help='Save raw data files in output directory')
+    parser.add_argument('--plot-raw', action='store_true',
+                        help='Plot raw streams in raw directory')
     hstr = 'Save metrics spreadsheet in ShakeMap Amptools friendly format'
     parser.add_argument('-a', '--amptools-format', action='store_true',
                         help=hstr)

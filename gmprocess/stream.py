@@ -172,6 +172,8 @@ def streams_to_dataframe(streams, imcs=None, imts=None,
     imcs = []
     imts = []
     for idx, stream in enumerate(streams):
+        if not stream.passed:
+            continue
         # set meta_data
         meta_data[idx][0] = stream[0].stats['station']
         name_str = stream[0].stats['standard']['station_name']
