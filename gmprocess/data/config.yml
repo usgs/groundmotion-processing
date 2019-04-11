@@ -107,6 +107,11 @@ processing:
     - max_traces:
         n_max: 3
 
+    - detrend:
+        # Supported obspy methods (besides the baseline described below):
+        #     constant, demean, linear, polynomial, simple, spline
+        detrending_method: demean
+
 
     # STA/LTA is computed for record and the max value must exceed the threshold
     # below. Units are sec for window lenghts.

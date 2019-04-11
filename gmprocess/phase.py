@@ -187,7 +187,7 @@ def pick_kalkan(stream, picker_config=None, config=None):
                     window_checks:
                         min_noise_duration
     Returns:
-        tuple: 
+        tuple:
             - Best estimate for p-wave arrival time (s since start of trace).
             - Mean signal to noise ratio based on the pick.
     """
@@ -230,7 +230,7 @@ def pick_ar(stream, picker_config=None, config=None):
                     window_checks:
                         min_noise_duration
     Returns:
-        tuple: 
+        tuple:
             - Best estimate for p-wave arrival time (s since start of trace).
             - Mean signal to noise ratio based on the pick.
     """
@@ -276,7 +276,7 @@ def pick_baer(stream, picker_config=None, config=None):
                     window_checks:
                         min_noise_duration
     Returns:
-        tuple: 
+        tuple:
             - Best estimate for p-wave arrival time (s since start of trace).
             - Mean signal to noise ratio based on the pick.
     """
@@ -314,7 +314,7 @@ def pick_yeck(stream):
         stream (StationStream):
             Stream containing waveforms that need to be picked.
     Returns:
-        tuple: 
+        tuple:
             - Best estimate for p-wave arrival time (s since start of trace).
             - Mean signal to noise ratio based on the pick.
     """
@@ -363,7 +363,7 @@ def pick_power(stream, picker_config=None, config=None):
                     window_checks:
                         min_noise_duration
     Returns:
-        tuple: 
+        tuple:
             - Best estimate for p-wave arrival time (s since start of trace).
             - Mean signal to noise ratio based on the pick.
     """
@@ -435,15 +435,15 @@ def calc_snr(stream, minloc):
 
     Returns:
         float:
-            Ratio of signal window (minloc->end of trace) over 
+            Ratio of signal window (minloc->end of trace) over
             noise window (start of trace->minloc)
 
     """
     snr_values = []
     for trace in stream:
         dt = trace.stats.delta
-        signal = trace.data
-        noise = trace.data[0:int(minloc / dt)]
+        signal = np.array(trace.data, dtype=float)
+        noise = np.array(trace.data, dtype=float)[0:int(minloc / dt)]
         aps = np.mean(np.power(signal, 2))  # average power of signal
         apn = np.mean(np.power(noise, 2))   # average power of noise
         if apn == 0:

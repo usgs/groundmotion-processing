@@ -31,8 +31,9 @@ PREAMBLE = """
 \\usepackage[letterpaper, portrait]{geometry}
 
 \\geometry{
-   left=0.5in,
+   left=0.75in,
    top=0.5in,
+   total={7in,10in}
 }
 
 \setlength\parindent{0pt}
@@ -49,10 +50,6 @@ STREAMBLOCK = """
     {[PLOTPATH]}
 
 """
-
-BEGIN_COL = """\\begin{minipage}[t]{%s\\textwidth} \\scriptsize \\centering"""
-
-END_COL = """\\end{minipage}"""
 
 
 def build_report(sc, directory, origin, config=None):
@@ -93,32 +90,17 @@ def build_report(sc, directory, origin, config=None):
 
         prov_latex = get_prov_latex(st)
 
-        # for i, tr in enumerate(st):
-        #     # Disallow more than three columns
-        #     if i > 2:
-        #         break
-        #     if i == 0:
-        #         prov_latex = get_prov_latex(tr)
-        #         report += BEGIN_COL % "0.4"
-        #     else:
-        #         prov_latex = get_prov_latex(tr, include_prov_id=False)
-        #         report += BEGIN_COL % "0.27"
-        #     report += prov_latex
-        #     if tr.hasParameter('failure'):
-        #         report += '\n' + tr.getParameter('failure')['reason']
-        #     report += END_COL
-        #     if i < len(st):
-        #         report += '\\hspace{2em}'
         report += prov_latex
         if st[0].hasParameter('signal_split'):
             pick_method = st[0].getParameter('signal_split')['picker_type']
-            report += '\n' + 'Pick Method: %s\n' % pick_method
+            report += '\n' + 'Pick Method: %s\n\n' % pick_method
         if not st.passed:
             for tr in st:
                 if tr.hasParameter('failure'):
-                    report += '\n' + tr.getParameter('failure')['reason']
+                    report += ('Failure reason: %s\n\n'
+                               % tr.getParameter('failure')['reason'])
                     break
-        report += '\n\\newpage\n\n'
+        report += '\\newpage\n\n'
 
     # Finish the latex file
     report += POSTAMBLE
@@ -178,7 +160,7 @@ def get_prov_latex(st):
 
     newdf = newdf.drop(labels='Index', axis='columns')
     prov_string = newdf.to_latex(index=False)
-    prov_string = '\\scriptsize\n\\centering\n' + prov_string
+    prov_string = '\\scriptsize\n' + prov_string
     return prov_string
 
 

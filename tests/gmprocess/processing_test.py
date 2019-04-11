@@ -83,7 +83,7 @@ def test_free_field():
                 reason = trace.getParameter('failure')['reason']
                 break
         if is_free:
-            assert reason.startswith('Failed sta/lta check')
+            assert reason.startswith('Failed')
         else:
             assert reason == 'Failed free field sensor check.'
 
