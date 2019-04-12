@@ -567,5 +567,6 @@ def summary_plots(st, directory, origin):
             directory,
             origin['id'] + '_' + stream_id + '.png')
         plt.savefig(fname=file_name, bbox_inches='tight')
+        plt.close('all')
 
     return st
