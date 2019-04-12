@@ -13,7 +13,7 @@ from gmprocess.config import get_config
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.event import get_event_object
 from gmprocess.streamcollection import StreamCollection
-from gmprocess.io.fdsn import request_raw_waveforms
+from gmprocess.io.fdsn.fdsn_fetcher import FDSNFetcher
 from gmprocess.event import get_event_dict
 
 from h5py.h5py_warnings import H5pyDeprecationWarning
@@ -224,65 +224,89 @@ def test_workspace():
 
 
 def test_raw():
-    msg = "dataset.value has been deprecated. Use dataset[()] instead."
-    with warnings.catch_warnings():
-        warnings.filterwarnings("ignore", category=H5pyDeprecationWarning)
-        warnings.filterwarnings("ignore", category=YAMLLoadWarning)
-        warnings.filterwarnings("ignore", category=FutureWarning)
-        raw_streams, inv = request_raw_waveforms(
-            fdsn_client='IRIS',
-            org_time='2018-11-30T17-29-29.330Z',
-            lat=61.3464,
-            lon=-149.9552,
-            before_time=120,
-            after_time=120,
-            dist_min=0,
-            dist_max=0.135,
-            networks='*',
-            stations='*',
-            channels=['?N?'],
-            access_restricted=False)
-        tdir = tempfile.mkdtemp()
-        try:
-            edict = get_event_dict('ak20419010')
-            origin = get_event_object('ak20419010')
-            tfile = os.path.join(tdir, 'test.hdf')
-            sc1 = StreamCollection(raw_streams)
-            workspace = StreamWorkspace(tfile)
-            workspace.addStreams(origin, sc1, label='raw')
-            tstreams = workspace.getStreams(edict['id'])
-            assert len(tstreams) == 0
+    tdir = tempfile.mkdtemp()
+    try:
+        datafiles, origin = read_data_dir('fdsn', 'nc72282711', '*.mseed')
+        streams = []
+        for datafile in datafiles:
+            streams += read_data(datafile)
 
-            imclist = ['greater_of_two_horizontals',
-                       'channels',
-                       'rotd50',
-                       'rotd100']
-            imtlist = ['sa1.0', 'PGA', 'pgv', 'fas2.0', 'arias']
-            # this shouldn't do anything
-            workspace.setStreamMetrics(edict['id'],
-                                       imclist=imclist, imtlist=imtlist)
+        streams = StreamCollection(streams)
+        eventobj = get_event_object(origin)
 
-            processed_streams = process_streams(sc1, edict)
-            workspace.addStreams(origin, processed_streams, 'processed')
-            labels = workspace.getLabels()
-            tags = workspace.getStreamTags(edict['id'])
-            out_raw_streams = workspace.getStreams(edict['id'], get_raw=True)
-            assert len(out_raw_streams) == len(sc1)
+        tfile = os.path.join(tdir, 'test.hdf')
+        workspace = StreamWorkspace(tfile)
+        workspace.addStreams(eventobj, streams, label='raw')
 
-            # this should only work on processed data
-            workspace.setStreamMetrics(edict['id'],
-                                       imclist=imclist, imtlist=imtlist)
+        tstreams = workspace.getStreams(origin['id'])
+        assert len(tstreams) == 0
 
-            df = workspace.summarizeLabels()
-            x = 1
+        raw_streams = workspace.getStreams(origin['id'], get_raw=True)
+        assert len(raw_streams) == len(streams)
+    except Exception as e:
+        raise e
+    finally:
+        shutil.rmtree(tdir)
 
-        except Exception as e:
-            raise e
-        finally:
-            shutil.rmtree(tdir)
+    # msg = "dataset.value has been deprecated. Use dataset[()] instead."
+    # with warnings.catch_warnings():
+    #     warnings.filterwarnings("ignore", category=H5pyDeprecationWarning)
+    #     warnings.filterwarnings("ignore", category=YAMLLoadWarning)
+    #     warnings.filterwarnings("ignore", category=FutureWarning)
+    #     raw_streams, inv = request_raw_waveforms(
+    #         fdsn_client='IRIS',
+    #         org_time='2018-11-30T17-29-29.330Z',
+    #         lat=61.3464,
+    #         lon=-149.9552,
+    #         before_time=120,
+    #         after_time=120,
+    #         dist_min=0,
+    #         dist_max=0.135,
+    #         networks='*',
+    #         stations='*',
+    #         channels=['?N?'],
+    #         access_restricted=False)
+    #     tdir = tempfile.mkdtemp()
+    #     try:
+    #         edict = get_event_dict('ak20419010')
+    #         origin = get_event_object('ak20419010')
+    #         tfile = os.path.join(tdir, 'test.hdf')
+    #         sc1 = StreamCollection(raw_streams)
+    #         workspace = StreamWorkspace(tfile)
+    #         workspace.addStreams(origin, sc1, label='raw')
+    #         tstreams = workspace.getStreams(edict['id'])
+    #         assert len(tstreams) == 0
+
+    #         imclist = ['greater_of_two_horizontals',
+    #                    'channels',
+    #                    'rotd50',
+    #                    'rotd100']
+    #         imtlist = ['sa1.0', 'PGA', 'pgv', 'fas2.0', 'arias']
+    #         # this shouldn't do anything
+    #         workspace.setStreamMetrics(edict['id'],
+    #                                    imclist=imclist, imtlist=imtlist)
+
+    #         processed_streams = process_streams(sc1, edict)
+    #         workspace.addStreams(origin, processed_streams, 'processed')
+    #         labels = workspace.getLabels()
+    #         tags = workspace.getStreamTags(edict['id'])
+    #         out_raw_streams = workspace.getStreams(edict['id'], get_raw=True)
+    #         assert len(out_raw_streams) == len(sc1)
+
+    #         # this should only work on processed data
+    #         workspace.setStreamMetrics(edict['id'],
+    #                                    imclist=imclist, imtlist=imtlist)
+
+    #         df = workspace.summarizeLabels()
+    #         x = 1
+
+    #     except Exception as e:
+    #         raise e
+    #     finally:
+    #         shutil.rmtree(tdir)
 
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
-    test_workspace()
     test_raw()
+    test_workspace()

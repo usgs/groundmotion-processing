@@ -26,11 +26,14 @@ from gmprocess.streamcollection import StreamCollection
 from gmprocess.stream import streams_to_dataframe
 from gmprocess.processing import process_streams
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
-from gmprocess.config import get_config
 
 
 CONFIG = get_config()
 TIMEFMT = '%Y-%m-%dT%H:%M:%S'
+
+
+class MyFormatter(argparse.RawTextHelpFormatter, argparse.ArgumentDefaultsHelpFormatter):
+    pass
 
 
 def parse_eventinfo(arginfo):
@@ -61,7 +64,7 @@ def main(pparser, args):
     logging.info("Running datafetch.")
 
     rawdir = None
-    if args.save_raw:
+    if not args.no_raw:
         rawdir = os.path.join(args.outdir, 'raw')
 
     if args.eventid:
@@ -88,7 +91,7 @@ def main(pparser, args):
     if not os.path.isdir(args.outdir):
         os.makedirs(args.outdir)
 
-    if args.plot:
+    if not args.no_plot:
         plotdir = os.path.join(args.outdir, 'plots')
         config = get_config()
         idx = None
@@ -115,14 +118,14 @@ def main(pparser, args):
             if np.isnan(trace.stats.coordinates['elevation']):
                 trace.stats.coordinates['elevation'] = 0.0
 
-    if args.plot_raw and args.save_raw:
+    if not args.no_raw:
         for stream in collection:
             outfile = os.path.join(rawdir, '%s.png' % stream.get_id())
             stream.plot(outfile=outfile)
             plt.close()
 
     processed = process_streams(collection, edict, config=config)
-    dataframe = streams_to_dataframe(processed, process=False)
+    dataframe = streams_to_dataframe(processed)
 
     basename = edict['time'].strftime('%Y%m%d%H%M%S')
     if args.eventid:
@@ -167,42 +170,60 @@ def main(pparser, args):
             wb.save(framename)
         provdata.to_excel(provname, index=False)
 
-    # there should be a .tex file in the output directory.
-    latexfiles = glob.glob(os.path.join(args.outdir, '*.tex'))
-    # get the most recent one
+    # remove old pdf reports
+    pdf_files = glob.glob(os.path.join(args.outdir, 'gmprocess*.pdf'))
+    for pdf_file in pdf_files:
+        os.remove(pdf_file)
+
     latest_tex = None
-    if len(latexfiles):
-        latest_tex = max(latexfiles, key=os.path.getctime)
-    if latest_tex is not None:
-        # Let's check the user's system
-        # to see if they have Latex installed.
-        latexpdf = shutil.which('pdflatex')
-        if latexpdf is None:
-            fmt = 'No LateX to PDF converter found on your system for report file "%s"'
-            print(fmt % latest_tex)
-        else:
-            fmt = '%s -halt-on-error -output-directory=%s %s'
-            tpl = (latexpdf, args.outdir, latest_tex)
-            cmd = fmt % tpl
-            res, stdout, stderr = get_command_output(cmd)
-            if not res:
-                fmt = 'LateX to PDF conversion failed with errors: "%s" "%s"'
-                print(fmt % (stdout, stderr))
+    pdf_file = None
+    if not args.no_plot:
+        # there should be a .tex file in the output directory.
+        latexfiles = glob.glob(os.path.join(args.outdir, '*.tex'))
+        # get the most recent one
+
+        if len(latexfiles):
+            latest_tex = max(latexfiles, key=os.path.getctime)
+        if latest_tex is not None:
+            # Let's check the user's system
+            # to see if they have Latex installed.
+            latexpdf = shutil.which('pdflatex')
+            if latexpdf is None:
+                fmt = 'No LateX to PDF converter found on your system for report file "%s"'
+                print(fmt % latest_tex)
             else:
-                latexbase, ext = os.path.splitext(latest_tex)
-                pdf_file = latexbase + '.pdf'
-                nukefiles = glob.glob(latexbase + '*')
-                nukefiles.remove(pdf_file)
-                # nukefiles.remove(latest_tex)
-                for nfile in nukefiles:
-                    os.remove(nfile)
+                fmt = '%s -halt-on-error -output-directory=%s %s'
+                tpl = (latexpdf, args.outdir, latest_tex)
+                cmd = fmt % tpl
+                res, stdout, stderr = get_command_output(cmd)
+                if not res:
+                    fmt = 'LateX to PDF conversion failed with errors: "%s" "%s"'
+                    print(fmt % (stdout, stderr))
+                else:
+                    latexbase, ext = os.path.splitext(latest_tex)
+                    pdf_file = latexbase + '.pdf'
+
+                    # rename report file
+                    newfile = os.path.join(args.outdir, 'gmprocess_report.pdf')
+                    os.rename(pdf_file, newfile)
+
+                    nukefiles = glob.glob(latexbase + '*')
+
+                    # nukefiles.remove(latest_tex)
+                    for nfile in nukefiles:
+                        os.remove(nfile)
 
     print('Data from %i stations saved to %s' % (len(processed), args.outdir))
     print('Metrics: %s' % framename)
     print('Waveforms: %s' % workname)
     print('Provenance (processing history): %s' % provname)
-    if args.plot:
-        logging.info('%i plots saved to %s.' % (len(collection), plotdir))
+    if not args.no_plot:
+        print('%i plots saved to %s.' % (len(collection), plotdir))
+        if pdf_file is not None:
+            print('Processing Report (PDF): %s' % pdf_file)
+        else:
+            print('Processing Report (LateX): %s' % latest_tex)
+
     sys.exit(0)
 
 
@@ -213,21 +234,39 @@ if __name__ == '__main__':
         - ASDF file containing original (possibly raw) and processed waveforms.
         - CSV/Excel file containing configured stream metrics.
         - Provenance CSV/Excel file with processing history for each Trace.
-        - (if --plot selected) plots directory with processed plots.
-        - (if --save-raw selected) raw directory with raw data files.
+        - LateX or PDF summary report of all processed files.
+        - (unless --no-plot selected) plots directory with processed plots.
+        - (unless --no-raw selected) raw directory with raw data files.
+
+    The summary report will be generated in LateX, and if you have 
+    the "pdflatex" tool installed, that will be used to generate a PDF
+    version of the report.
 
     The ASDF file and CSV/Excel file will be named with ComCat ID if 
     specified, otherwise by event time.
 
-    If --save-raw is specified, then original waveform files will be saved,
-    otherwise these will be deleted after processing.
+    By default original waveform files will be saved and plotted in a 'raw'
+    directory under outdir. To turn this off, use the "no-raw" option.
+
+    By default processed waveform files will be plotted and saved to a 'plots'
+    directory under outdir, and a LateX/PDF report will be generated in
+    outdir that uses the plot images. To turn this functionality off, use 
+    the "no-plot" option.
 
     If --amptools-format is specified, then the metrics file will be saved 
     to Excel format with an extra row at the top containing reference 
     information. If you are not a ShakeMap user, then you should probably 
     ignore this option.
+
+    Specific network information:
+    This tool can download data from the Japanese NIED website. However, 
+    for this to work you will first need to obtain a username and password 
+    from this website:
+
+    https://hinetwww11.bosai.go.jp/nied/registration/?LANG=en
     """
-    parser = argparse.ArgumentParser(description=desc)
+    parser = argparse.ArgumentParser(
+        description=desc, formatter_class=MyFormatter)
 
     # Required arguments
     parser.add_argument('outdir', help='Output file directory', type=str)
@@ -240,12 +279,10 @@ if __name__ == '__main__':
     parser.add_argument('-f', '--format',
                         help='Output format for metrics information',
                         choices=['excel', 'csv'], default='csv')
-    parser.add_argument('-p', '--plot', action='store_true',
-                        help='Make plots of processed waveforms')
-    parser.add_argument('-r', '--save-raw', action='store_true',
-                        help='Save raw data files in output directory')
-    parser.add_argument('--plot-raw', action='store_true',
-                        help='Plot raw streams in raw directory')
+    parser.add_argument('--no-plot', action='store_true',
+                        help='Do not make plots/report for processed waveforms')
+    parser.add_argument('--no-raw', action='store_true',
+                        help='Do not save raw streams')
     hstr = 'Save metrics spreadsheet in ShakeMap Amptools friendly format'
     parser.add_argument('-a', '--amptools-format', action='store_true',
                         help=hstr)

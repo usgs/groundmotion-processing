@@ -62,29 +62,13 @@ def test_StreamCollection():
     test1 = dmg_sc + usc_sc
     assert len(test1) == 4
 
-    # Overwrite the dmg station and network to force it to be
-    # a duplicate of one of the stations in usc_sc to check if
-    # validation works with these addition methods
-    for tr in dmg_sc[0]:
-        tr.stats['network'] = 'LA'
-        tr.stats['station'] = '57'
-
-    test3 = dmg_sc + usc_sc
-    assert len(test3) == 3
-    # usc_sc has 1 channel for station 57 and the modified
-    # dmg_sc has 3 channels so the combined StreamCollection
-    # should have 4
-    assert len(test3[0]) == 4
-
     test_copy = dmg_sc.copy()
     assert test_copy[0][0].stats['standard']['process_level'] == \
         'corrected physical units'
 
-    # Appending dmg should not add to length because of the
-    # overwriting of the station/network above
     stream1 = test_copy[0]
     test_append = usc_sc.append(stream1)
-    assert len(test_append) == 3
+    assert len(test_append) == 4
 
     # Change back to unique values for station/network
     for tr in dmg_sc[0]:

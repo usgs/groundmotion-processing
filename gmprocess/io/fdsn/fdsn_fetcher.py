@@ -164,8 +164,16 @@ class FDSNFetcher(DataFetcher):
             channel_priorities=self.channels)
 
         # No specified providers will result in all known ones being queried.
-        mdl = MassDownloader(providers=["IRIS"])
+        mdl = MassDownloader()
 
+        # we can have a problem of file overlap, so let's remove existing
+        # mseed files from the raw directory.
+        logging.info('Deleting old MiniSEED files...')
+        seedfiles = glob.glob(os.path.join(rawdir, '*.mseed'))
+        for seedfile in seedfiles:
+            os.remove(seedfile)
+
+        logging.info('Downloading new MiniSEED files...')
         # The data will be downloaded to the ``./waveforms/`` and ``./stations/``
         # folders with automatically chosen file names.
         mdl.download(domain, restrictions, mseed_storage=rawdir,
