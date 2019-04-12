@@ -86,8 +86,8 @@ def directory_to_dataframe(directory, imcs=None, imts=None, epi_dist=None,
 
 def streams_to_dataframe(streams, imcs=None, imts=None,
                          epi_dist=None, event_time=None,
-                         lat=None, lon=None, process=True):
-    """Extract peak ground motions from list of Stream objects.
+                         lat=None, lon=None):
+    """Extract peak ground motions from list of processed StationStream objects.
 
     Note: The PGM columns underneath each channel will be variable
     depending on the units of the Stream being passed in (velocity
@@ -111,8 +111,6 @@ def streams_to_dataframe(streams, imcs=None, imts=None,
             Epicentral latitude. Epicentral distance calculation.
         lon (float):
             Epicentral longitude. Epicentral distance calculation.
-        process (bool):
-            Process the stream using the config file.
 
     Returns:
         DataFrame: Pandas dataframe containing columns:
@@ -150,7 +148,6 @@ def streams_to_dataframe(streams, imcs=None, imts=None,
                 - SA(1.0) Pseudo-spectral acceleration at 1.0 seconds (%g).
                 - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).
     """
-    num_streams = len(streams)
 
     if imcs is None:
         station_summary_imcs = DEFAULT_IMCS
@@ -164,34 +161,37 @@ def streams_to_dataframe(streams, imcs=None, imts=None,
     if lat is not None:
         columns = ['STATION', 'NAME', 'SOURCE',
                    'NETID', 'LAT', 'LON', 'DISTANCE']
-        meta_data = np.empty((num_streams, len(columns)), dtype=list)
     else:
         columns = ['STATION', 'NAME', 'SOURCE', 'NETID', 'LAT', 'LON']
-        meta_data = np.empty((num_streams, len(columns)), dtype=list)
     station_pgms = []
     imcs = []
     imts = []
-    for idx, stream in enumerate(streams):
+    idx = 0
+    meta_data = []
+    for stream in streams:
+        if not stream.passed:
+            continue
+        if len(stream) < 3:
+            continue
         # set meta_data
-        meta_data[idx][0] = stream[0].stats['station']
+        row = np.zeros(len(columns), dtype=list)
+        row[0] = stream[0].stats['station']
         name_str = stream[0].stats['standard']['station_name']
-        meta_data[idx][1] = name_str
+        row[1] = name_str
         source = stream[0].stats.standard['source']
-        meta_data[idx][2] = source
-        meta_data[idx][3] = stream[0].stats['network']
+        row[2] = source
+        row[3] = stream[0].stats['network']
         latitude = stream[0].stats['coordinates']['latitude']
-        meta_data[idx][4] = latitude
+        row[4] = latitude
         longitude = stream[0].stats['coordinates']['longitude']
-        meta_data[idx][5] = longitude
+        row[5] = longitude
         if lat is not None:
             dist, _, _ = gps2dist_azimuth(
                 lat, lon, latitude, longitude)
-            meta_data[idx][6] = dist / 1000
+            row[6] = dist / 1000
             if epi_dist is None:
                 epi_dist = dist / 1000
-        if process:
-            stream = process_config(stream, event_time=event_time,
-                                    epi_dist=epi_dist)
+        meta_data.append(row)
         origin = Origin(latitude=lat, longitude=lon)
         stream_summary = StationSummary.from_stream(
             stream, station_summary_imcs, station_summary_imts, origin)
@@ -200,6 +200,8 @@ def streams_to_dataframe(streams, imcs=None, imts=None,
         imcs += stream_summary.components
         imts += stream_summary.imts
 
+    meta_data = np.array(meta_data)
+    num_streams, _ = meta_data.shape
     meta_columns = pd.MultiIndex.from_product([columns, ['']])
     meta_dataframe = pd.DataFrame(meta_data, columns=meta_columns)
     imcs = np.unique(imcs)
@@ -232,8 +234,8 @@ def _match_traces(trace_list):
         for idx2, trace2 in enumerate(trace_list):
             if idx1 != idx2 and idx1 not in all_matches:
                 if (
-                    network == trace2.stats['network']
-                    and station == trace2.stats['station']
+                    network == trace2.stats['network'] and
+                    station == trace2.stats['station']
                 ):
                     matches.append(idx2)
         if len(matches) > 1:

@@ -54,9 +54,9 @@ def window_checks(st, min_noise_duration=0.5, min_signal_duration=5.0):
         noise_duration = noise.stats.endtime - noise.stats.starttime
         signal_duration = signal.stats.endtime - signal.stats.starttime
         if noise_duration < min_noise_duration:
-            tr.fail('Failed noise window duraiton check.')
+            tr.fail('Failed noise window duration check.')
         if signal_duration < min_signal_duration:
-            tr.fail('Failed signal window duraiton check.')
+            tr.fail('Failed signal window duration check.')
 
     return st
 

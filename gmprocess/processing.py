@@ -104,6 +104,7 @@ def process_streams(streams, origin, config=None):
 
     processed_streams = streams.copy()
     for st in processed_streams:
+        logging.info('Checking stream %s...' % st.get_id())
         # Estimate noise/signal split time
         split_conf = window_conf['split']
         event_time = origin['time']

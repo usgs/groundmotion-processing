@@ -10,6 +10,7 @@ from obspy.core.inventory import (Inventory, Network, Station,
                                   Channel, Site, Equipment, Comment)
 # local imports
 from .stationtrace import StationTrace
+from gmprocess.exception import GMProcessException
 
 UNITS = {'acc': 'cm/s/s',
          'vel': 'cm/s'}
@@ -34,7 +35,16 @@ class StationStream(Stream):
         super(StationStream, self).__init__()
 
         if len(traces):
+            # sometimes traces have different start/end times
+            # let's get the minimum bounding times here
+            # and trim the trace before we add it to the stream.
+            starts = [trace.stats.starttime for trace in traces]
+            ends = [trace.stats.endtime for trace in traces]
+            newstart = max(starts)
+            newend = min(ends)
             for trace in traces:
+                trace = trace.slice(starttime=newstart,
+                                    endtime=newend)
                 if inventory is None:
                     if not isinstance(trace, StationTrace):
                         raise ValueError(
@@ -47,9 +57,23 @@ class StationStream(Stream):
                         statrace = StationTrace(data=trace.data,
                                                 header=trace.stats,
                                                 inventory=inventory)
+
                         self.append(statrace)
                     else:
                         self.append(trace)
+        self.validate()
+
+    def validate(self):
+        """Ensure that each Trace has the same number of points.
+
+        Raises:
+            GMProcessException:
+                If the traces have different numbers of data points.
+
+        """
+        npoints = [len(trace) for trace in self]
+        if np.any(np.diff(npoints)):
+            raise GMProcessException('Uneven number of samples in Traces.')
 
     def get_id(self):
         """

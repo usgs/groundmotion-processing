@@ -328,3 +328,13 @@ fetchers:
         ddepth : 30
         # define the magnitude search threshokd (km)
         dmag : 0.3
+    FDSNFetcher:
+        # search radius in dd
+        radius : 4 
+        # seconds before arrival time
+        time_before : 30 
+        # seconds after arrival time
+        time_after : 420 
+        channels : ["HN[ZNE]"] # only get strong motion stations
+        
+
