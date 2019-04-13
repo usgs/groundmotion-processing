@@ -12,6 +12,7 @@ from gmprocess.config import get_config
 
 def fetch_data(time, lat, lon,
                depth, magnitude,
+               config=None,
                rawdir=None, drop_non_free=True):
     """Retrieve data using any DataFetcher subclass.
 
@@ -43,13 +44,15 @@ def fetch_data(time, lat, lon,
      Returns:
         StreamCollection: StreamCollection object.
     """
-
+    if config is None:
+        config = get_config()
     fetchers = find_fetchers(lat, lon)
     instances = []
     for fetchname, fetcher in fetchers.items():
         try:
             fetchinst = fetcher(time, lat, lon,
                                 depth, magnitude,
+                                config=config,
                                 rawdir=rawdir, drop_non_free=drop_non_free)
         except Exception as e:
             msg = 'Could not instantiate Fetcher %s, due to error "%s"'

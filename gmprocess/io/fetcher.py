@@ -11,6 +11,7 @@ class DataFetcher(object):
                  radius=100, dt=16, ddepth=30,
                  dmag=0.3,
                  rawdir=None,
+                 config=None,
                  drop_non_free=True):
         """Create a DataFetcher instance.
 
@@ -40,6 +41,9 @@ class DataFetcher(object):
             rawdir (str): 
                 Path to location where raw data will be stored.
                 If not specified, raw data will be deleted.
+            config (dict):
+                Dictionary containing configuration. 
+                If None, retrieve global config.
             drop_non_free (bool):
                 Option to ignore non-free-field (borehole, sensors on structures, etc.)
         """

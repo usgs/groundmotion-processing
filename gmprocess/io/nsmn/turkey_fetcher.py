@@ -65,7 +65,7 @@ class TurkeyFetcher(DataFetcher):
                  user=None, password=None,
                  radius=100, dt=16, ddepth=30,
                  dmag=0.3,
-                 rawdir=None, drop_non_free=True):
+                 rawdir=None, config=None, drop_non_free=True):
         """Create a TurkeyFetcher instance.
 
         Download Turkish strong motion data from the Turkish NSMN site:
@@ -83,6 +83,9 @@ class TurkeyFetcher(DataFetcher):
             dmag (float): Search magnitude window (magnitude units).
             rawdir (str): Path to location where raw data will be stored.
                           If not specified, raw data will be deleted.
+            config (dict):
+                Dictionary containing configuration. 
+                If None, retrieve global config.
             drop_non_free (bool):
                 Option to ignore non-free-field (borehole, sensors on structures, etc.)
         """
@@ -91,7 +94,8 @@ class TurkeyFetcher(DataFetcher):
         # 1) Not-None values passed in constructor
         # 2) Configured values
         # 3) DEFAULT values at top of the module
-        config = get_config()
+        if config is None:
+            config = get_config()
         cfg_radius = None
         cfg_dt = None
         cfg_ddepth = None
