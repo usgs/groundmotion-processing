@@ -68,7 +68,7 @@ class KNETFetcher(DataFetcher):
                  user=None, password=None,
                  radius=None, dt=None, ddepth=None,
                  dmag=None,
-                 rawdir=None, drop_non_free=True):
+                 rawdir=None, config=None, drop_non_free=True):
         """Create a KNETFetcher instance.
 
         Download KNET/KikNet data from the Japanese NIED site:
@@ -88,6 +88,9 @@ class KNETFetcher(DataFetcher):
             dmag (float): Search magnitude window (magnitude units).
             rawdir (str): Path to location where raw data will be stored.
                           If not specified, raw data will be deleted.
+            config (dict):
+                Dictionary containing configuration. 
+                If None, retrieve global config.
             drop_non_free (bool):
                 Option to ignore non-free-field (borehole, sensors on structures, etc.)
         """
@@ -96,7 +99,8 @@ class KNETFetcher(DataFetcher):
         # 1) Not-None values passed in constructor
         # 2) Configured values
         # 3) DEFAULT values at top of the module
-        config = get_config()
+        if config is None:
+            config = get_config()
         cfg_radius = None
         cfg_dt = None
         cfg_ddepth = None

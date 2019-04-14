@@ -38,7 +38,7 @@ class FDSNFetcher(DataFetcher):
                  depth, magnitude,
                  radius=None, time_before=None,
                  time_after=None, channels=None,
-                 rawdir=None, drop_non_free=True):
+                 rawdir=None, config=None, drop_non_free=True):
         """Create an FDSNFetcher instance.
 
         Download waveform data from the all available FDSN sites
@@ -55,6 +55,9 @@ class FDSNFetcher(DataFetcher):
             time_after (float): Seconds after arrival time (sec).
             rawdir (str): Path to location where raw data will be stored.
                           If not specified, raw data will be deleted.
+            config (dict):
+                Dictionary containing configuration. 
+                If None, retrieve global config.
             drop_non_free (bool):
                 Option to ignore non-free-field (borehole, sensors on structures, etc.)
         """
@@ -63,7 +66,8 @@ class FDSNFetcher(DataFetcher):
         # 1) Not-None values passed in constructor
         # 2) Configured values
         # 3) DEFAULT values at top of the module
-        config = get_config()
+        if config is None:
+            config = get_config()
         cfg_radius = None
         cfg_time_before = None
         cfg_time_after = None
@@ -169,9 +173,15 @@ class FDSNFetcher(DataFetcher):
         # we can have a problem of file overlap, so let's remove existing
         # mseed files from the raw directory.
         logging.info('Deleting old MiniSEED files...')
-        seedfiles = glob.glob(os.path.join(rawdir, '*.mseed'))
-        for seedfile in seedfiles:
-            os.remove(seedfile)
+        delete_old_files(rawdir, '*.mseed')
+
+        # remove existing png files as well
+        logging.info('Deleting old PNG files...')
+        delete_old_files(rawdir, '*.png')
+
+        # remove existing xml files as well
+        logging.info('Deleting old XML files...')
+        delete_old_files(rawdir, '*.xml')
 
         logging.info('Downloading new MiniSEED files...')
         # The data will be downloaded to the ``./waveforms/`` and ``./stations/``
@@ -188,3 +198,9 @@ class FDSNFetcher(DataFetcher):
         stream_collection = StreamCollection(streams=streams,
                                              drop_non_free=self.drop_non_free)
         return stream_collection
+
+
+def delete_old_files(rawdir, pattern):
+    pfiles = glob.glob(os.path.join(rawdir, pattern))
+    for pfile in pfiles:
+        os.remove(pfile)

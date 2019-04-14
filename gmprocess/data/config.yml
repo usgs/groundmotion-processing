@@ -1,35 +1,4 @@
 # -----------------------------------------------------------------------------
-# Options for FDSN requests
-waveform_request:
-
-    # Valid clients:
-    #     BGR, EMSC, ETH, GEONET, GFZ, ICGC, INGV, IPGP, IRIS, ISC, KOERI, LMU,
-    #     NCEDC, NIEP, NOA, ODC, ORFEUS, RESIF, SCEDC, TEXTNET, USGS, USP.
-    client: IRIS
-
-    # Set username and password resulting in subsequent web service requests for
-    # waveforms being authenticated for potential access to restricted data.
-    access_restricted: False
-    username: foo
-    password: bar
-
-    # Time units are seconds
-    before_time: 120.0
-    after_time: 120.0
-    # Distance units are decimal degrees
-    dist_min: 0.0
-    dist_max: 0.2
-    # The following can be a comma separated list of strings
-    networks:
-        - NP
-    stations:
-        # (NOTE: If value starts with * then it needs to be in quotes)
-        - '*'
-    channels:
-        - '*'
-    format: MSEED
-
-# -----------------------------------------------------------------------------
 # Options for readers
 read:
     # Resampling rate if times are unevenly spaced

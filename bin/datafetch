@@ -15,12 +15,13 @@ import numpy as np
 from impactutils.io.cmd import get_command_output
 from h5py.h5py_warnings import H5pyDeprecationWarning
 import matplotlib.pyplot as plt
+import yaml
 
 from gmprocess.event import get_event_dict, get_event_object
 from gmprocess.io.global_fetcher import fetch_data
 from gmprocess.logging import setup_logger
 from gmprocess.args import add_shared_args
-from gmprocess.config import get_config
+from gmprocess.config import get_config, update_dict
 from gmprocess.io.read_directory import directory_to_streams
 from gmprocess.streamcollection import StreamCollection
 from gmprocess.stream import streams_to_dataframe
@@ -32,7 +33,8 @@ CONFIG = get_config()
 TIMEFMT = '%Y-%m-%dT%H:%M:%S'
 
 
-class MyFormatter(argparse.RawTextHelpFormatter, argparse.ArgumentDefaultsHelpFormatter):
+class MyFormatter(argparse.RawTextHelpFormatter,
+                  argparse.ArgumentDefaultsHelpFormatter):
     pass
 
 
@@ -60,8 +62,33 @@ def main(pparser, args):
         pparser.print_help()
         sys.exit(1)
 
+    if args.no_raw and args.download_only:
+        print('Specify one of --no-raw OR --download-only, not both.')
+        sys.exit(1)
+
     setup_logger(args)
+    if args.log_file:
+        logger = logging.getLogger()
+        stream_handler = logger.handlers[0]
+        fhandler = logging.FileHandler(args.log_file)
+        logger.removeHandler(stream_handler)
+        logger.addHandler(fhandler)
+
     logging.info("Running datafetch.")
+
+    config = get_config()
+
+    if args.config:
+        if not os.path.isfile(args.config):
+            print('Config file %s does not exist.' % args.config)
+            sys.exit(-1)
+        try:
+            with open(args.config, 'rt') as f:
+                custom_cfg = yaml.load(f, Loader=yaml.FullLoader)
+                update_dict(config, custom_cfg)
+        except yaml.ParserError:
+            print('Config file %s does not seem to be valid YAML.' % args.config)
+            sys.exit(1)
 
     rawdir = None
     if not args.no_raw:
@@ -83,6 +110,7 @@ def main(pparser, args):
                                 edict['lon'],
                                 edict['depth'],
                                 edict['magnitude'],
+                                config=config,
                                 rawdir=rawdir)
     if not len(collection):
         print('No data files found.')
@@ -93,7 +121,7 @@ def main(pparser, args):
 
     if not args.no_plot:
         plotdir = os.path.join(args.outdir, 'plots')
-        config = get_config()
+
         idx = None
         for i, pstep in enumerate(config['processing']):
             if 'summary_plots' in pstep:
@@ -123,6 +151,12 @@ def main(pparser, args):
             outfile = os.path.join(rawdir, '%s.png' % stream.get_id())
             stream.plot(outfile=outfile)
             plt.close()
+
+    if args.download_only:
+        fmt = '%i raw files with plots saved to %s.'
+        tpl = (len(collection), rawdir)
+        print(fmt % tpl)
+        sys.exit(0)
 
     processed = process_streams(collection, edict, config=config)
     dataframe = streams_to_dataframe(processed)
@@ -220,7 +254,7 @@ def main(pparser, args):
     if not args.no_plot:
         print('%i plots saved to %s.' % (len(collection), plotdir))
         if pdf_file is not None:
-            print('Processing Report (PDF): %s' % pdf_file)
+            print('Processing Report (PDF): %s' % newfile)
         else:
             print('Processing Report (LateX): %s' % latest_tex)
 
@@ -279,10 +313,16 @@ if __name__ == '__main__':
     parser.add_argument('-f', '--format',
                         help='Output format for metrics information',
                         choices=['excel', 'csv'], default='csv')
+    parser.add_argument('-c', '--config',
+                        help='Supply custom configuration file')
+    parser.add_argument('-o', '--download-only', action='store_true',
+                        help='Download/plot raw only, no processing.')
     parser.add_argument('--no-plot', action='store_true',
                         help='Do not make plots/report for processed waveforms')
     parser.add_argument('--no-raw', action='store_true',
                         help='Do not save raw streams')
+    parser.add_argument('-l', '--log-file',
+                        help='Supply file name to store processing log info.')
     hstr = 'Save metrics spreadsheet in ShakeMap Amptools friendly format'
     parser.add_argument('-a', '--amptools-format', action='store_true',
                         help=hstr)
