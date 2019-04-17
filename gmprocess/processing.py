@@ -237,9 +237,26 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
             f4 = f_n
         # Check if we have an instrument measuring velocity or accleration
         if tr.stats.channel[1] == 'H':
-            tr.remove_response(
-                inventory=inv, output=output, water_level=water_level,
-                pre_filt=(f1, f2, f3, f4))
+            # Attempting to remove instrument response can cause a variety
+            # errors due to bad response metadata
+            try:
+                tr.remove_response(
+                    inventory=inv, output=output, water_level=water_level,
+                    pre_filt=(f1, f2, f3, f4))
+            except Exception as e:
+                reason = ('Encountered an error when attempting to remove '
+                          'instrument response: ' + e)
+                tr.fail(reason)
+                continue
+
+            # Response removal can also result in NaN values due to bad
+            # metadata, so check that data contains no NaN or inf values
+            if not np.isfinite(tr.data).all():
+                reason = ('Non-finite values encountered after removing '
+                          'instrument response.')
+                tr.fail(reason)
+                continue
+
             tr.data *= M_TO_CM  # Convert from m/s/s to cm/s/s
             tr.setProvenance(
                 'remove_response',
