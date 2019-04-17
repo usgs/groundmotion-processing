@@ -252,7 +252,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
             # Response removal can also result in NaN values due to bad
             # metadata, so check that data contains no NaN or inf values
             if not np.isfinite(tr.data).all():
-                reason = ('Non-fine values encountered after removing '
+                reason = ('Non-finite values encountered after removing '
                           'instrument response.')
                 tr.fail(reason)
                 continue
