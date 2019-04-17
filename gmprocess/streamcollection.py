@@ -44,7 +44,7 @@ class StreamCollection(object):
         Args:
             streams (list):
                 List of StationStream objects.
-            drop_non_free (bool): 
+            drop_non_free (bool):
                 If True, drop non-free-field Streams from the collection.
         """
 
@@ -381,7 +381,7 @@ class StreamCollection(object):
 
     @staticmethod
     def __check_sample_rate(stream):
-        first_sample_rate = stream[0].stats['sampling_rate']
-        for tr in stream:
-            if first_sample_rate != tr.stats['sampling_rate']:
-                raise ValueError('All stream sample rates much be the same.')
+        unique_sampling_rates = set([tr.stats.sampling_rate for tr in stream])
+        if len(unique_sampling_rates) > 1:
+            for tr in stream:
+                tr.fail('StationStream traces have different sampling rates')
