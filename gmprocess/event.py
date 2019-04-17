@@ -53,6 +53,7 @@ def get_event_object(dict_or_id):
     origin.latitude = event_dict['lat']
     origin.longitude = event_dict['lon']
     origin.depth = event_dict['depth']
+    origin.time = event_dict['time']
 
     magnitude = Magnitude(mag=event_dict['magnitude'])
     event = Event()

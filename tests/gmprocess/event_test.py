@@ -18,12 +18,16 @@ def test_event():
                  'lat': -14.7132,
                  'lon': -70.1375,
                  'depth': 267,
-                 'magnitude': 7}
+                 'magnitude': 7.0}
         assert edict == tdict
 
         event = get_event_object(eid)
-        assert event.resource_id.id == 'us1000j96d'
+        assert event.resource_id.id == eid
         assert event.magnitudes[0].mag == 7.0
+        assert event.origins[0].time == UTCDateTime(2019, 3, 1, 8, 50, 42, 570000)
+        assert event.origins[0].latitude == -14.7132
+        assert event.origins[0].longitude == -70.1375
+        assert event.origins[0].depth == 267
 
 
 if __name__ == '__main__':
