@@ -11,6 +11,8 @@ import warnings
 
 # third party imports
 import openpyxl
+from openpyxl.workbook.workbook import Workbook
+from openpyxl.utils.dataframe import dataframe_to_rows
 import numpy as np
 from impactutils.io.cmd import get_command_output
 from h5py.h5py_warnings import H5pyDeprecationWarning
@@ -166,9 +168,9 @@ def main(pparser, args):
         basename = args.eventid
 
     framename = os.path.join(args.outdir, basename + '_metrics.csv')
-    workname = os.path.join(args.outdir, basename + '_workspace.hdf')
-    if args.format == 'excel' or args.amptools_format:
+    if args.format == 'excel':
         framename = os.path.join(args.outdir, basename + '_metrics.xlsx')
+    workname = os.path.join(args.outdir, basename + '_workspace.hdf')
 
     # save the waveform data to an ASDF file.
     with warnings.catch_warnings():
@@ -188,21 +190,27 @@ def main(pparser, args):
 
     # save dataframe to desired format
     if args.format == 'csv':
-        if not args.amptools_format:
-            dataframe.to_csv(framename, index=False)
+        dataframe.to_csv(framename, index=False)
         provdata.to_csv(provname, index=False)
     else:
         dataframe.to_excel(framename)
-        if args.amptools_format:
-            # we don't need the index column, so we'll delete it here
-            wb = openpyxl.load_workbook(framename)
-            ws = wb.active
-            ws.delete_cols(1)
-            ws.insert_rows(1)
-            ws['A1'] = 'REFERENCE'
-            ws['B1'] = dataframe['SOURCE'].iloc[0]
-            wb.save(framename)
         provdata.to_excel(provname, index=False)
+
+    if args.amptools_format:
+        ampfile_name = os.path.join(
+            args.outdir, basename + '_amptools_metrics.xlsx')
+
+        wb = Workbook()
+        ws = wb.active
+        for r in dataframe_to_rows(dataframe, index=True, header=True):
+            ws.append(r)
+
+        # we don't need the index column, so we'll delete it here
+        ws.delete_cols(1)
+        ws.insert_rows(1)
+        ws['A1'] = 'REFERENCE'
+        ws['B1'] = dataframe['SOURCE'].iloc[0]
+        wb.save(ampfile_name)
 
     # remove old pdf reports
     pdf_files = glob.glob(os.path.join(args.outdir, 'gmprocess*.pdf'))
@@ -250,6 +258,8 @@ def main(pparser, args):
     print('Data from %i stations saved to %s' % (len(processed), args.outdir))
     print('Metrics: %s' % framename)
     print('Waveforms: %s' % workname)
+    if args.amptools_format:
+        print('Amptools file: %s' % ampfile_name)
     print('Provenance (processing history): %s' % provname)
     if not args.no_plot:
         print('%i plots saved to %s.' % (len(collection), plotdir))
