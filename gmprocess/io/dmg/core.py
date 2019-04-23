@@ -116,8 +116,8 @@ def is_dmg(filename):
             if second_line.find(V1_MARKER) >= 0:
                 return True
         elif first_line.find(V3_MARKER) >= 0 and not is_usc(filename):
-            if (second_line.find(V2_MARKER) >= 0
-                    and third_line.find(V1_MARKER) >= 0):
+            if (second_line.find(V2_MARKER) >= 0 and
+                    third_line.find(V1_MARKER) >= 0):
                 return True
         else:
             return False
@@ -324,6 +324,10 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
         else:
             raise GMProcessException('DMG: %s is not a supported unit.' % unit)
         acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()))
+
+        response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
+        acc_trace.setProvenance('remove_response', response)
+
         if units == 'acc':
             traces += [acc_trace]
         skip_rows += int(acc_rows) + 1
@@ -601,6 +605,12 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
     hdr['sampling_rate'] = 1 / hdr['delta']
     hdr['channel'] = _get_channel(angle, hdr['sampling_rate'])
 
+    # this format uses codes of 500/600 in this angle to indicate a vertical channel
+    # Obspy freaks out with azimuth values > 360, so let's just say horizontal angle
+    # is zero in these cases
+    if hdr['channel'].endswith('Z'):
+        angle = '0.0'
+
     if location == '':
         hdr['location'] = '--'
     else:
@@ -688,7 +698,7 @@ def _get_channel(angle, sampling_rate):
                                        is_acceleration=True,
                                        is_vertical=True,
                                        is_north=False)
-        elif angle > 315 or angle < 45 or (angle > 135 and angle < 225):
+        elif angle >= 315 or angle < 45 or (angle >= 135 and angle < 225):
             channel = get_channel_name(sampling_rate,
                                        is_acceleration=True,
                                        is_vertical=False,
@@ -769,16 +779,16 @@ def _get_units(line):
     units_section = line[units_start:].replace('.', ' ')
     if 'g/10' in units_section:
         physical_units = 'g/10'
-    elif ('10g' in units_section or '10*g' in units_section
-            or 'g10' in units_section or 'g*10' in units_section):
+    elif ('10g' in units_section or '10*g' in units_section or
+            'g10' in units_section or 'g*10' in units_section):
         physical_units = 'g*10'
     elif 'gal' in units_section:
         physical_units = 'cm/s/s'
     elif 'g' in units_section and 'g/' not in units_section:
         physical_units = 'g'
-    elif ('cm/s/s' in units_section or 'cm/sec/sec' in units_section
-            or 'cm/s^2' in units_section or 'cm/s2' in units_section
-            or 'cm/sec^2' in units_section or 'cm/sec2' in units_section):
+    elif ('cm/s/s' in units_section or 'cm/sec/sec' in units_section or
+            'cm/s^2' in units_section or 'cm/s2' in units_section or
+            'cm/sec^2' in units_section or 'cm/sec2' in units_section):
         physical_units = 'cm/s/s'
     elif 'cm/s' in units_section or 'cm/sec' in units_section:
         physical_units = 'cm/s'

@@ -138,6 +138,17 @@ class KNETFetcher(DataFetcher):
                 fmt = 'Username/password are required to retrieve KNET/KikNET data.'
                 raise Exception(fmt)
 
+        if user == 'USERNAME' or password == 'PASSWORD':
+            fmt = ('Username/password are required to retrieve KNET/KikNET\n'
+                   'data. This tool can download data from the Japanese NIED\n'
+                   'website. However, for this to work you will first need \n'
+                   'to obtain a username and password from this website:\n'
+                   'https://hinetwww11.bosai.go.jp/nied/registration/?LANG=en\n'
+                   'Then create a custom config file by running the gmsetup\n'
+                   'program, and edit the fetchers:KNETFetcher section\n'
+                   'to use your username and password.')
+            raise Exception(fmt)
+
         self.user = user
         self.password = password
         tz = pytz.UTC

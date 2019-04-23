@@ -48,6 +48,7 @@ def fetch_data(time, lat, lon,
         config = get_config()
     fetchers = find_fetchers(lat, lon)
     instances = []
+    errors = []
     for fetchname, fetcher in fetchers.items():
         try:
             fetchinst = fetcher(time, lat, lon,
@@ -55,9 +56,11 @@ def fetch_data(time, lat, lon,
                                 config=config,
                                 rawdir=rawdir, drop_non_free=drop_non_free)
         except Exception as e:
-            msg = 'Could not instantiate Fetcher %s, due to error "%s"'
+            fmt = 'Could not instantiate Fetcher %s, due to error\n "%s"'
             tpl = (fetchname, str(e))
-            logging.warn(msg % tpl)
+            msg = fmt % tpl
+            logging.warn(msg)
+            errors.append(msg)
             continue
         xmin, xmax, ymin, ymax = fetchinst.BOUNDS
         if (xmin < lon < xmax) and (ymin < lat < ymax):
@@ -82,7 +85,7 @@ def fetch_data(time, lat, lon,
                 streams = fetcher.retrieveData(events[0])
     if streams is None:
         streams = []
-    return streams
+    return (streams, errors)
 
 
 def find_fetchers(lat, lon):

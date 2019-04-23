@@ -2,66 +2,64 @@
 
 # stdlib imports
 import os
-import shutil
 import argparse
-import pkg_resources
-import logging
+import sys
 
 # third party imports
 import yaml
+import pkg_resources
 
 # local imports
-from gmprocess.constants import CONFIG_FILE, PICKER_FILE
-from gmprocess.logging import setup_logger
+from gmprocess.constants import CONFIG_FILE
 from gmprocess.args import add_shared_args
-
-CONFIG_FILES = [CONFIG_FILE, PICKER_FILE]
 
 
 def main(args):
-    setup_logger(args)
-    logging.info("Running gmsetup.")
+    if os.path.exists(args.config_file) and not args.overwrite:
+        print('Existing config file found. Run with -o option to overwrite.')
+        sys.exit(1)
 
-    home_path = os.path.expanduser("~")
     data_path = pkg_resources.resource_filename('gmprocess', 'data')
+    config_file = os.path.join(data_path, CONFIG_FILE)
 
-    install_data_path_dict = {}
+    if args.list_sections:
+        with open(config_file, 'rt') as f:
+            config = yaml.load(f, Loader=yaml.SafeLoader)
+            sections = list(config.keys())
+            print('Supported sections:')
+            for section in sections:
+                print('\t%s' % section)
+        sys.exit(0)
 
-    for config in CONFIG_FILES:
-        install_conf_path = os.path.join(home_path, '.gmprocess', config)
-        data_conf_path = os.path.join(data_path, config)
-        install_data_path_dict[install_conf_path] = data_conf_path
-
-    install_dir = os.path.join(home_path, ".gmprocess")
-    if not os.path.exists(install_dir):
+    # what directory does the user want to write the config file to?
+    install_dir, cfg_file = os.path.split(args.config_file)
+    if not os.path.isdir(install_dir):
         os.makedirs(install_dir)
 
-    # Do conf files already exist?
-    for install_conf_path, data_conf_path in install_data_path_dict.items():
-        if not os.path.exists(install_conf_path):
-            # Copy from data dir
-            logging.info("No existing config found, installing config file...")
-            print('data_conf_path: %s' % data_conf_path)
-            print('install_conf_path: %s' % install_conf_path)
-            shutil.copy2(data_conf_path, install_conf_path)
-        else:
-            # Load installed config
-            logging.warning('Existing config file found. Nothing to do.')
+    with open(config_file, 'rt') as f:
+        config = yaml.load(f, Loader=yaml.SafeLoader)
+        kill_sections = []
+        if args.sections is not None:
+            for section in config:
+                if section not in args.sections:
+                    kill_sections.append(section)
 
-    # if users specified user name/email at the command line, add that to
-    # newly created file.
-    if args.full_name or args.email:
-        cfgfile = os.path.join(home_path, CONFIG_FILE)
-        with open(cfgfile, 'rt') as f:
-            config = yaml.load(f)
-        userinfo = {}
-        if args.full_name:
-            userinfo['name'] = ' '.join(args.full_name)
-        if args.email:
-            userinfo['email'] = args.email
-        config['user'] = userinfo
-        with open(cfgfile, 'wt') as f:
-            f.write(yaml.dump(config))
+        for section in kill_sections:
+            del config[section]
+
+        # if users specified user name/email at the command line, add that to
+        # newly created file.
+        if args.full_name or args.email:
+            userinfo = {}
+            if args.full_name:
+                userinfo['name'] = ' '.join(args.full_name)
+            if args.email:
+                userinfo['email'] = args.email
+            config['user'] = userinfo
+
+        fout = open(args.config_file, 'wt')
+        yaml.dump(config, stream=fout, Dumper=yaml.SafeDumper)
+        fout.close()
 
 
 if __name__ == '__main__':
@@ -70,11 +68,17 @@ if __name__ == '__main__':
 
     # Shared arguments
     parser = add_shared_args(parser)
-
+    parser.add_argument('config_file',
+                        help='Path to desired output config file.')
     parser.add_argument('-f', '--full-name', nargs='+',
                         help='Supply the config with your name')
     parser.add_argument('-e', '--email',
                         help='Supply the config with your email address')
-
+    parser.add_argument('-l', '--list-sections', action='store_true',
+                        help='List the sections in the config and exit.')
+    parser.add_argument('-s', '--sections', nargs='+',
+                        help='Supply list of section names to include in output file.')
+    parser.add_argument('-o', '--overwrite', action='store_true',
+                        help='Overwrite existing config file at the same location.')
     pargs = parser.parse_args()
     main(pargs)

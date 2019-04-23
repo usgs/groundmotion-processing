@@ -67,15 +67,16 @@ def test_corner_frequencies():
     pconfig = config['processing']
 
     # Run SNR check
-    test = [
-        d for d in pconfig if list(d.keys())[0] == 'snr_check'
-    ]
-    snr_config = test[0]['snr_check']
-    for stream in processed_streams:
-        stream = snr_check(
-            stream,
-            **snr_config
-        )
+    # I think we don't do this anymore.
+    # test = [
+    #     d for d in pconfig if list(d.keys())[0] == 'compute_snr'
+    # ]
+    # snr_config = test[0]['compute_snr']['check']
+    # for stream in processed_streams:
+    #     stream = snr_check(
+    #         stream,
+    #         **snr_config
+    #     )
 
     # Run get_corner_frequencies
     test = [

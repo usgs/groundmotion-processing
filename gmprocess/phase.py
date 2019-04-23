@@ -192,7 +192,7 @@ def pick_kalkan(stream, picker_config=None, config=None):
             - Mean signal to noise ratio based on the pick.
     """
     if picker_config is None:
-        picker_config = get_config(picker=True)
+        picker_config = get_config(section='pickers')
     if config is None:
         config = get_config()
     min_noise_dur = config['windows']['window_checks']['min_noise_duration']
@@ -235,7 +235,7 @@ def pick_ar(stream, picker_config=None, config=None):
             - Mean signal to noise ratio based on the pick.
     """
     if picker_config is None:
-        picker_config = get_config(picker=True)
+        picker_config = get_config(section='pickers')
     if config is None:
         config = get_config()
     min_noise_dur = config['windows']['window_checks']['min_noise_duration']
@@ -281,7 +281,7 @@ def pick_baer(stream, picker_config=None, config=None):
             - Mean signal to noise ratio based on the pick.
     """
     if picker_config is None:
-        picker_config = get_config(picker=True)
+        picker_config = get_config(section='pickers')
     if config is None:
         config = get_config()
     min_noise_dur = config['windows']['window_checks']['min_noise_duration']
@@ -368,7 +368,7 @@ def pick_power(stream, picker_config=None, config=None):
             - Mean signal to noise ratio based on the pick.
     """
     if picker_config is None:
-        picker_config = get_config(picker=True)
+        picker_config = get_config(section='pickers')
     if config is None:
         config = get_config()
     min_noise_dur = config['windows']['window_checks']['min_noise_duration']

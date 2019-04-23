@@ -1,4 +1,47 @@
 # -----------------------------------------------------------------------------
+# This section is for configuring data fetching routines.
+fetchers:
+    KNETFetcher:
+        # NIED requires a username and a password, obtain these by
+        # visiting this page:
+        # https://hinetwww11.bosai.go.jp/nied/registration/
+        user: USERNAME
+        password: PASSWORD
+        # define the distance search radius (km)
+        radius : 100
+        # define the time search threshokd (sec)
+        dt : 60
+        # define the depth search threshokd (km)
+        ddepth : 30
+        # define the magnitude search threshokd (km)
+        dmag : 0.3
+    GeoNetFetcher:
+        # define the distance search radius (km)
+        radius : 100
+        # define the time search threshokd (sec)
+        dt : 16
+        # define the depth search threshokd (km)
+        ddepth : 30
+        # define the magnitude search threshokd (km)
+        dmag : 0.3
+    TurkeyFetcher:
+        # define the distance search radius (km)
+        radius : 100
+        # define the time search threshokd (sec)
+        dt : 16
+        # define the depth search threshokd (km)
+        ddepth : 30
+        # define the magnitude search threshokd (km)
+        dmag : 0.3
+    FDSNFetcher:
+        # search radius in dd
+        radius : 4 
+        # seconds before arrival time
+        time_before : 30 
+        # seconds after arrival time
+        time_after : 420 
+        channels : ["HN[ZNE]"] # only get strong motion stations
+# -----------------------------------------------------------------------------
 # Options for readers
 read:
     # Resampling rate if times are unevenly spaced
@@ -122,6 +165,7 @@ processing:
         min_freq: 0.2
         max_freq: 5.0
         bandwidth: 20.0
+
 
     - get_corner_frequencies:
         # Corner frequency selection can use constant values, or selected
@@ -264,46 +308,99 @@ metrics:
         defined_periods:
           - 0.3
 
-fetchers:
-    KNETFetcher:
-        # NIED requires a username and a password, obtain these by
-        # visiting this page:
-        # https://hinetwww11.bosai.go.jp/nied/registration/
-        user: [USERNAME]
-        password: [PASSWORD]
-        # define the distance search radius (km)
-        radius : 100
-        # define the time search threshokd (sec)
-        dt : 60
-        # define the depth search threshokd (km)
-        ddepth : 30
-        # define the magnitude search threshokd (km)
-        dmag : 0.3
-    GeoNetFetcher:
-        # define the distance search radius (km)
-        radius : 100
-        # define the time search threshokd (sec)
-        dt : 16
-        # define the depth search threshokd (km)
-        ddepth : 30
-        # define the magnitude search threshokd (km)
-        dmag : 0.3
-    TurkeyFetcher:
-        # define the distance search radius (km)
-        radius : 100
-        # define the time search threshokd (sec)
-        dt : 16
-        # define the depth search threshokd (km)
-        ddepth : 30
-        # define the magnitude search threshokd (km)
-        dmag : 0.3
-    FDSNFetcher:
-        # search radius in dd
-        radius : 4 
-        # seconds before arrival time
-        time_before : 30 
-        # seconds after arrival time
-        time_after : 420 
-        channels : ["HN[ZNE]"] # only get strong motion stations
+# -----------------------------------------------------------------------------
+# This section is for options for phase pickers
+pickers:
+    # Options for obspy.signal.trigger.ar_pick()
+    ar:
+        # Frequency of the lower bandpass window (Hz)
+        f1: 1.0
+
+        # Frequency of the upper bandpass window (Hz)
+        f2: 20.0
+
+        # Length of LTA for the P arrival (seconds)
+        lta_p: 1.0
+
+        # Length of STA for the P arrival (seconds)
+        sta_p: 0.1
+
+        # Length of LTA for the S arrival (seconds)
+        lta_s: 4.0
+
+        # Length of STA for the S arrival (seconds)
+        sta_s: 1.0
+
+        # Number of AR coefficients for the P arrival
+        m_p: 2
+
+        # Number of AR coefficients for the S arrival
+        m_s: 8
+
+        # Length of variance window for the P arrival (seconds)
+        l_p: 0.1
+
+        # Length of variance window for the S arrival (seconds)
+        l_s: 0.2
+
+        # If True, also pick the S phase. Otherwise only the P phase.
+        s_pick: False
+
+
+    # Options for obspy.signal.trigger.pk_baer()
+    baer:
+        # If dtime exceeds tdownmax, the trigger is examined for validity
+        tdownmax: 20
+
+        # Minimum number of samples for itrm to be accepted as a pick
+        tupevent: 60
+
+        # Threshold to trigger for pick (c.f. paper)
+        thr1: 7.0
+
+        # Threshold for updating sigma
+        thr2: 12.0
+
+        # Number of points taken for the estimation of variance of SF(t) on preset()
+        preset_len: 100
+
+        # Time interval for which the maximum amplitude is evaluated
+        p_dur: 100
+
+    kalkan:
+        # undamped natural period in second (default is 0.01 for
+        # records sampled with 100 samples-per-second or larger; for
+        # records with lower than 100 samples-per-second default
+        # is 0.1 s)
+        period: None
+
+        # damping ratio
+        damping: 0.6
+
+        # histogram bin size (default is 2/dt for
+        # strong-motion acceleration and broadband velocity
+        # waveforms; regional or teleseismic records may need
+        # different values of bin size for better picking results)
+        nbins: None
+
+        # Take segment of waveform from beginning to
+        # absolute peak value (recommended for fast processing)
+        # False to take full waveform.
+        peak_selection: False
+
+    # TODO: Document these options
+    power:
+        highpass: 1.4
+        lowpass: 6
+        order: 3
+        sta: 3.0
+        sta2: 3.0
+        lta: 20.0
+        hanningWindow: 3.0
+        threshDetect: 2.5
+        threshDetect2: 2.5
+        threshRestart: 1.5
+
+
         
 

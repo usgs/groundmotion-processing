@@ -5,7 +5,7 @@ import logging
 import yaml
 import pkg_resources
 
-from gmprocess.constants import CONFIG_FILE, PICKER_FILE
+from gmprocess.constants import CONFIG_FILE
 
 
 def update_dict(target, source):
@@ -48,32 +48,29 @@ def merge_dicts(dicts):
     return target
 
 
-def get_config(picker=False):
+def get_config(section=None):
     """Gets the user defined config and validates it.
 
     Notes:
         If no config file is present, default parameters are used.
 
     Args:
-        picker (bool):
-            If True, returns the config dictionary defined in PICKER_FILE.
-            Otherwise, returns the config dictionary defined in CONFIG_FILE.
+        section (str):
+            Name of section in the config to extract (i.e., 'fetchers', 
+            'processing', 'pickers', etc.) If None, whole config is returned.
 
     Returns:
-        dictionary: Configuration parameters.
+        dictionary: 
+            Configuration parameters.
+    Raises:
+        IndexError: 
+            If input section name is not found.
     """
-    if picker:
-        file_to_use = PICKER_FILE
-    else:
-        file_to_use = CONFIG_FILE
+    file_to_use = CONFIG_FILE
 
-    if 'CALLED_FROM_PYTEST' in os.environ:
-        data_dir = os.path.abspath(
-            pkg_resources.resource_filename('gmprocess', 'data'))
-        config_file = os.path.join(data_dir, file_to_use)
-    else:
-        config_file = os.path.join(
-            os.path.expanduser('~'), '.gmprocess', file_to_use)
+    data_dir = os.path.abspath(
+        pkg_resources.resource_filename('gmprocess', 'data'))
+    config_file = os.path.join(data_dir, file_to_use)
 
     if not os.path.isfile(config_file):
         fmt = ('Missing config file %s, please run gmsetup to install '
@@ -83,5 +80,11 @@ def get_config(picker=False):
     else:
         with open(config_file, 'r') as f:
             config = yaml.load(f, Loader=yaml.FullLoader)
+
+    if section is not None:
+        if section not in config:
+            raise IndexError('Section %s not found in config file.' % section)
+        else:
+            config = config[section]
 
     return config
