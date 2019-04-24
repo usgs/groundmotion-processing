@@ -17,26 +17,26 @@ def fetch_data(time, lat, lon,
     """Retrieve data using any DataFetcher subclass.
 
     Args:
-        time (datetime): 
+        time (datetime):
             Origin time.
-        lat (float): 
+        lat (float):
             Origin latitude.
-        lon (float): 
+        lon (float):
             Origin longitude.
-        depth (float): 
+        depth (float):
             Origin depth.
-        magnitude (float): 
+        magnitude (float):
             Origin magnitude.
-        radius (float): 
+        radius (float):
             Search radius (km).
-        dt (float): 
+        dt (float):
             Search time window (sec).
-        ddepth (float): 
+        ddepth (float):
             Search depth window (km).
-        dmag (float): 
+        dmag (float):
             Search magnitude window (magnitude units).
-        rawdir (str): 
-            Path to location where raw data will be stored. If not specified, 
+        rawdir (str):
+            Path to location where raw data will be stored. If not specified,
             raw data will be deleted.
         drop_non_free (bool):
             Option to ignore non-free-field (borehole, sensors on structures, etc.)
@@ -48,6 +48,7 @@ def fetch_data(time, lat, lon,
         config = get_config()
     fetchers = find_fetchers(lat, lon)
     instances = []
+    errors = []
     for fetchname, fetcher in fetchers.items():
         try:
             fetchinst = fetcher(time, lat, lon,
@@ -55,9 +56,11 @@ def fetch_data(time, lat, lon,
                                 config=config,
                                 rawdir=rawdir, drop_non_free=drop_non_free)
         except Exception as e:
-            msg = 'Could not instantiate Fetcher %s, due to error "%s"'
+            fmt = 'Could not instantiate Fetcher %s, due to error\n "%s"'
             tpl = (fetchname, str(e))
-            logging.warn(msg % tpl)
+            msg = fmt % tpl
+            logging.warn(msg)
+            errors.append(msg)
             continue
         xmin, xmax, ymin, ymax = fetchinst.BOUNDS
         if (xmin < lon < xmax) and (ymin < lat < ymax):
@@ -66,23 +69,30 @@ def fetch_data(time, lat, lon,
     efmt = '%s M%.1f (%.4f,%.4f)'
     etpl = (time, magnitude, lat, lon)
     esummary = efmt % etpl
-    streams = None
+    streams = []
     for fetcher in instances:
         if 'FDSN' in str(fetcher):
-            streams = fetcher.retrieveData()
+            tstreams = fetcher.retrieveData()
+            if len(streams):
+                streams = streams + tstreams
+            else:
+                streams = tstreams
+
         else:
             events = fetcher.getMatchingEvents(solve=True)
             if not len(events):
                 msg = 'No event matching %s found by class %s'
                 logging.warn(msg % (esummary, str(fetcher)))
                 continue
-            if streams is None:
-                streams = fetcher.retrieveData(events[0])
+            tstreams = fetcher.retrieveData(events[0])
+            if len(streams):
+                streams = streams + tstreams
             else:
-                streams = fetcher.retrieveData(events[0])
+                streams = tstreams
+
     if streams is None:
         streams = []
-    return streams
+    return (streams, errors)
 
 
 def find_fetchers(lat, lon):

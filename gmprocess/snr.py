@@ -13,19 +13,7 @@ TAPER_SIDE = 'both'
 MIN_POINTS_IN_WINDOW = 10
 
 
-def compute_snr(tr, bandwidth):
-    """Compute SNR dictionaries for a trace.
-
-    Args:
-        tr (StationTrace):
-           Trace of data.
-        bandwidth (float):
-           Konno-Omachi smoothing bandwidth parameter.
-
-    Returns:
-        StationTrace with SNR dictionaries added as trace parameters.
-    """
-    # Do we have estimates of the signal split time?
+def compute_snr_trace(tr, bandwidth, check=None):
     if tr.hasParameter('signal_split'):
         # Split the noise and signal into two separate traces
         split_prov = tr.getParameter('signal_split')
@@ -105,7 +93,7 @@ def compute_snr(tr, bandwidth):
         # remove the noise level from the spectrum of the signal window
         sig_spec_smooth -= noise_spec_smooth
 
-        snr = sig_spec_smooth/noise_spec_smooth
+        snr = sig_spec_smooth / noise_spec_smooth
         snr_dict = {
             'snr': snr.tolist(),
             'freq': freqs_signal.tolist()
@@ -114,6 +102,68 @@ def compute_snr(tr, bandwidth):
     else:
         # We do not have an estimate of the signal split time for this trace
         tr = compute_signal_spectrum(tr, bandwidth)
+    if check is not None:
+        tr = snr_check(tr, **check)
+
+    return tr
+
+
+def compute_snr(st, bandwidth, check=None):
+    """Compute SNR dictionaries for a trace.
+
+    Args:
+        st (StationStream):
+           Trace of data.
+        bandwidth (float):
+           Konno-Omachi smoothing bandwidth parameter.
+        check (dict):
+            If None, no checks performed.
+
+    Returns:
+        StationTrace with SNR dictionaries added as trace parameters.
+    """
+    for tr in st:
+        # Do we have estimates of the signal split time?
+        compute_snr_trace(tr, bandwidth, check=check)
+    return st
+
+
+def snr_check(tr, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
+    """
+    Check signal-to-noise ratio.
+
+    Requires noise/singal windowing to have succeeded.
+
+    Args:
+        tr (StationTrace):
+            Trace of data.
+        threshold (float):
+            Threshold SNR value.
+        min_freq (float):
+            Minimum frequency for threshold to be exeeded.
+        max_freq (float):
+            Maximum frequency for threshold to be exeeded.
+        bandwidth (float):
+            Konno-Omachi smoothing bandwidth parameter.
+
+    Returns:
+        trace: Trace with SNR check.
+    """
+    if tr.hasParameter('snr'):
+        snr_dict = tr.getParameter('snr')
+        snr = np.array(snr_dict['snr'])
+        freq = np.array(snr_dict['freq'])
+        # Check if signal criteria is met
+        min_snr = np.min(snr[(freq >= min_freq) & (freq <= max_freq)])
+        if min_snr < threshold:
+            tr.fail('Failed SNR check; SNR less than threshold.')
+    snr_conf = {
+        'threshold': threshold,
+        'min_freq': min_freq,
+        'max_freq': max_freq,
+        'bandwidth': bandwidth
+    }
+    tr.setParameter('snr_conf', snr_conf)
     return tr
 
 
@@ -145,4 +195,12 @@ def compute_signal_spectrum(tr, bandwidth):
         'freq': sig_spec_freqs.tolist()
     }
     tr.setParameter('signal_spectrum', sig_dict)
+
+    sig_spec_smooth, freqs_signal = fft_smooth(
+        tr, nfft, bandwidth)
+    smooth_dict = {
+        'spec': sig_spec_smooth.tolist(),
+        'freq': freqs_signal.tolist()
+    }
+    tr.setParameter('smooth_signal_spectrum', smooth_dict)
     return tr

@@ -99,7 +99,7 @@ def signal_split(
         stats['processing_parameters']['signal_split'] dictionary.
     """
     if picker_config is None:
-        picker_config = get_config(picker=True)
+        picker_config = get_config(section='pickers')
     if config is None:
         config = get_config()
     if method == 'p_arrival':

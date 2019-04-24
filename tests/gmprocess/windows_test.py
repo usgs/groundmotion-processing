@@ -10,7 +10,7 @@ from gmprocess.config import get_config
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.streamcollection import StreamCollection
 
-PICKER_CONFIG = get_config(picker=True)
+PICKER_CONFIG = get_config(section='pickers')
 
 knet_data = os.path.join('data', 'testdata', 'process')
 data_path = pkg_resources.resource_filename('gmprocess', knet_data)

@@ -96,6 +96,10 @@ def process_streams(streams, origin, config=None):
 
     logging.info('Processing streams...')
 
+    event_time = origin['time']
+    event_lon = origin['lon']
+    event_lat = origin['lat']
+
     # -------------------------------------------------------------------------
     # Begin noise/signal window steps
 
@@ -107,9 +111,6 @@ def process_streams(streams, origin, config=None):
         logging.info('Checking stream %s...' % st.get_id())
         # Estimate noise/signal split time
         split_conf = window_conf['split']
-        event_time = origin['time']
-        event_lon = origin['lon']
-        event_lat = origin['lat']
         st = signal_split(
             st,
             event_time=event_time,
@@ -129,11 +130,12 @@ def process_streams(streams, origin, config=None):
             **end_conf
         )
         wcheck_conf = window_conf['window_checks']
-        st = window_checks(
-            st,
-            min_noise_duration=wcheck_conf['min_noise_duration'],
-            min_signal_duration=wcheck_conf['min_signal_duration']
-        )
+        if wcheck_conf['do_check']:
+            st = window_checks(
+                st,
+                min_noise_duration=wcheck_conf['min_noise_duration'],
+                min_signal_duration=wcheck_conf['min_signal_duration']
+            )
 
     # -------------------------------------------------------------------------
     # Begin processing steps
@@ -424,14 +426,13 @@ def get_corner_frequencies(st, method='constant', constant=None, snr=None):
     """
 
     logging.info('Setting corner frequencies...')
-    for tr in st:
-        if method == 'constant':
-            tr = corner_frequencies.constant(tr, **constant)
-        elif method == 'snr':
-            tr = corner_frequencies.snr(tr, **snr)
-        else:
-            raise ValueError("Corner frequency 'method' must be either "
-                             "'constant' or 'snr'.")
+    if method == 'constant':
+        st = corner_frequencies.constant(st, **constant)
+    elif method == 'snr':
+        st = corner_frequencies.snr(st, **snr)
+    else:
+        raise ValueError("Corner frequency 'method' must be either "
+                         "'constant' or 'snr'.")
     return st
 
 

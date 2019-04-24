@@ -58,6 +58,30 @@ def parse_eventinfo(arginfo):
     return edict
 
 
+def get_periods(imt, period_params):
+    if period_params['use_array']:
+        start = period_params['start']
+        stop = period_params['stop']
+        num = period_params['num']
+        if period_params['spacing'] == 'logspace':
+            periods = np.logspace(start, stop, num)
+        else:
+            periods = np.linspace(start, stop, num)
+        additional_periods = [
+            p for p in period_params['defined_periods']]
+        periods = set(np.append(periods, additional_periods))
+    else:
+        periods = set(
+            [p for p in period_params['defined_periods']])
+
+    periods = sorted(list(periods))
+    period_strings = []
+    for period in periods:
+        period_strings.append('%s(%.4f)' % (imt, period))
+
+    return period_strings
+
+
 def main(pparser, args):
     if not args.eventid and not args.eventinfo:
         print('Must specify either ComCat ID or event information')
@@ -107,15 +131,17 @@ def main(pparser, args):
         streams, bad, errors = directory_to_streams(args.directory)
         collection = StreamCollection(streams, drop_non_free=True)
     else:
-        collection = fetch_data(etime,
-                                edict['lat'],
-                                edict['lon'],
-                                edict['depth'],
-                                edict['magnitude'],
-                                config=config,
-                                rawdir=rawdir)
+        collection, errors = fetch_data(etime,
+                                        edict['lat'],
+                                        edict['lon'],
+                                        edict['depth'],
+                                        edict['magnitude'],
+                                        config=config,
+                                        rawdir=rawdir)
     if not len(collection):
-        print('No data files found.')
+        print('No data files found. Here are any errors that may have come up:')
+        for error in errors:
+            print(error)
         sys.exit(0)
 
     if not os.path.isdir(args.outdir):
@@ -161,7 +187,26 @@ def main(pparser, args):
         sys.exit(0)
 
     processed = process_streams(collection, edict, config=config)
-    dataframe = streams_to_dataframe(processed)
+    imts = config['metrics']['output_imts']
+    imcs = config['metrics']['output_imcs']
+    if 'SA' in imts:
+        if 'sa' in config['metrics']:
+            pparams = config['metrics']['sa']['periods']
+            sa_imts = get_periods('SA', pparams)
+            imts += sa_imts
+        imts.remove('SA')
+    if 'FAS' in imts:
+        if 'fas' in config['metrics']:
+            pparams = config['metrics']['fas']['periods']
+            fas_imts = get_periods('FAS', pparams)
+            imts += fas_imts
+        imts.remove('FAS')
+
+    dataframe = streams_to_dataframe(processed,
+                                     imcs=imcs, imts=imts,
+                                     event_time=edict['time'],
+                                     lat=edict['lat'],
+                                     lon=edict['lon'])
 
     basename = edict['time'].strftime('%Y%m%d%H%M%S')
     if args.eventid:
@@ -282,29 +327,31 @@ if __name__ == '__main__':
         - (unless --no-plot selected) plots directory with processed plots.
         - (unless --no-raw selected) raw directory with raw data files.
 
-    The summary report will be generated in LateX, and if you have 
+    The summary report will be generated in LateX, and if you have
     the "pdflatex" tool installed, that will be used to generate a PDF
     version of the report.
 
-    The ASDF file and CSV/Excel file will be named with ComCat ID if 
+    The ASDF file and CSV/Excel file will be named with ComCat ID if
     specified, otherwise by event time.
 
     By default original waveform files will be saved and plotted in a 'raw'
     directory under outdir. To turn this off, use the "no-raw" option.
 
+    To download data without processing, use the -d or --download-only option.
+
     By default processed waveform files will be plotted and saved to a 'plots'
     directory under outdir, and a LateX/PDF report will be generated in
-    outdir that uses the plot images. To turn this functionality off, use 
+    outdir that uses the plot images. To turn this functionality off, use
     the "no-plot" option.
 
-    If --amptools-format is specified, then the metrics file will be saved 
-    to Excel format with an extra row at the top containing reference 
-    information. If you are not a ShakeMap user, then you should probably 
+    If --amptools-format is specified, then the metrics file will be saved
+    to Excel format with an extra row at the top containing reference
+    information. If you are not a ShakeMap user, then you should probably
     ignore this option.
 
     Specific network information:
-    This tool can download data from the Japanese NIED website. However, 
-    for this to work you will first need to obtain a username and password 
+    This tool can download data from the Japanese NIED website. However,
+    for this to work you will first need to obtain a username and password
     from this website:
 
     https://hinetwww11.bosai.go.jp/nied/registration/?LANG=en
