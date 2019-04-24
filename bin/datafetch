@@ -10,13 +10,15 @@ import glob
 import warnings
 
 # third party imports
-import openpyxl
 from openpyxl.workbook.workbook import Workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
 import numpy as np
 from impactutils.io.cmd import get_command_output
 from h5py.h5py_warnings import H5pyDeprecationWarning
 import matplotlib.pyplot as plt
+import cartopy.crs as ccrs
+import cartopy.feature as cfeature
+import cartopy
 import yaml
 
 from gmprocess.event import get_event_dict, get_event_object
@@ -149,6 +151,56 @@ def main(pparser, args):
 
     if not args.no_plot:
         plotdir = os.path.join(args.outdir, 'plots')
+
+        # make a map of all of the station locations
+        lats = np.array(
+            [stream[0].stats.coordinates.latitude for stream in collection])
+        lons = np.array(
+            [stream[0].stats.coordinates.longitude for stream in collection])
+        plt.figure(figsize=(12, 6))
+        ax = plt.axes(projection=ccrs.Mercator())
+
+        res = '10m'
+        land = cfeature.NaturalEarthFeature('physical', 'land', res,
+                                            edgecolor='face',
+                                            facecolor=cfeature.COLORS['land'])
+        ocean = cfeature.NaturalEarthFeature('physical', 'ocean', res,
+                                             edgecolor='face',
+                                             facecolor=cfeature.COLORS['water'])
+        borders = cfeature.NaturalEarthFeature('cultural',
+                                               'admin_0_boundary_lines_land',
+                                               res,
+                                               color='k')
+
+        ax.add_feature(land, zorder=1)
+        ax.add_feature(ocean, zorder=1)
+        ax.add_feature(borders, zorder=2)
+        ax.coastlines(resolution=res, zorder=2)
+        xmin = lons.min()
+        xmax = lons.max()
+        ymin = lats.min()
+        ymax = lats.max()
+        # bump out the range of the data
+        newxmin = min(xmin, edict['lon'] - (xmax - xmin))
+        newxmax = max(xmax, edict['lon'] + (xmax - xmin))
+        newymin = min(ymin, edict['lat'] - (ymax - ymin))
+        newymax = max(ymax, edict['lat'] + (ymax - ymin))
+        ax.set_extent([newxmin, newxmax, newymin, newymax],
+                      crs=ccrs.PlateCarree())
+        ax.plot([edict['lon']], [edict['lat']],
+                'r*', transform=ccrs.PlateCarree())
+        ax.scatter(lons, lats, c='b', marker='.',
+                   transform=ccrs.PlateCarree(), zorder=100)
+        dstr = edict['time'].strftime('%b %d, %Y')
+        tfmt = 'Stations (N=%i) for event M%.1f %s (%s)'
+        ttpl = (len(collection),
+                edict['magnitude'],
+                dstr,
+                edict['id'])
+        plt.title(tfmt % ttpl)
+
+        mapname = os.path.join(args.outdir, 'station_map.png')
+        plt.savefig(mapname)
 
         idx = None
         for i, pstep in enumerate(config['processing']):
