@@ -426,14 +426,13 @@ def get_corner_frequencies(st, method='constant', constant=None, snr=None):
     """
 
     logging.info('Setting corner frequencies...')
-    for tr in st:
-        if method == 'constant':
-            tr = corner_frequencies.constant(tr, **constant)
-        elif method == 'snr':
-            tr = corner_frequencies.snr(tr, **snr)
-        else:
-            raise ValueError("Corner frequency 'method' must be either "
-                             "'constant' or 'snr'.")
+    if method == 'constant':
+        st = corner_frequencies.constant(st, **constant)
+    elif method == 'snr':
+        st = corner_frequencies.snr(st, **snr)
+    else:
+        raise ValueError("Corner frequency 'method' must be either "
+                         "'constant' or 'snr'.")
     return st
 
 

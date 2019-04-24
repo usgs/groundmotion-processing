@@ -13,11 +13,11 @@ from gmprocess.windows import signal_end
 from gmprocess.windows import window_checks
 
 from gmprocess.processing import get_corner_frequencies
-from gmprocess.processing import snr_check
+from gmprocess.snr import compute_snr
 
 
 def test_corner_frequencies():
-    # Default config has 'constant' corner freuqnecy method, so the need
+    # Default config has 'constant' corner frequency method, so the need
     # here is to force the 'snr' method.
     data_files, origin = read_data_dir('geonet', 'us1000778i', '*.V1A')
     streams = []
@@ -68,15 +68,15 @@ def test_corner_frequencies():
 
     # Run SNR check
     # I think we don't do this anymore.
-    # test = [
-    #     d for d in pconfig if list(d.keys())[0] == 'compute_snr'
-    # ]
-    # snr_config = test[0]['compute_snr']['check']
-    # for stream in processed_streams:
-    #     stream = snr_check(
-    #         stream,
-    #         **snr_config
-    #     )
+    test = [
+        d for d in pconfig if list(d.keys())[0] == 'compute_snr'
+    ]
+    snr_config = test[0]['compute_snr']
+    for stream in processed_streams:
+        stream = compute_snr(
+            stream,
+            **snr_config
+        )
 
     # Run get_corner_frequencies
     test = [

@@ -89,8 +89,12 @@ def read_nsmn(filename):
     data2 = data[:, 1]
     data3 = data[:, 2]
     trace1 = StationTrace(data=data1, header=header1)
+    response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
+    trace1.setProvenance('remove_response', response)
     trace2 = StationTrace(data=data2, header=header2)
+    trace2.setProvenance('remove_response', response)
     trace3 = StationTrace(data=data3, header=header3)
+    trace3.setProvenance('remove_response', response)
     stream = StationStream(traces=[trace1, trace2, trace3])
     return [stream]
 

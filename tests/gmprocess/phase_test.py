@@ -67,7 +67,7 @@ def test_pphase_picker():
 
 def test_all_pickers():
     streams = get_streams()
-    picker_config = get_config(picker=True)
+    picker_config = get_config(section='pickers')
     methods = ['ar', 'baer', 'power', 'kalkan']
     columns = ['Stream', 'Method', 'Pick_Time', 'Mean_SNR']
     df = pd.DataFrame(columns=columns)

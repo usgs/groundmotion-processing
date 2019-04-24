@@ -91,6 +91,7 @@ windows:
     window_checks:
         # Minimum noise duration; can be zero but this will allow for errors
         # to occur if requesting signal-to-noise ratios.
+        do_check: True
         min_noise_duration: 1.0
 
         min_signal_duration: 5.0
@@ -157,14 +158,16 @@ processing:
         #     constant, demean, linear, polynomial, simple, spline
         detrending_method: demean
 
-    - snr_check:
+    - compute_snr:
         # Presense of this check says to do the signa-to-noise ratio check. Requires
         # minimum SNR of `threshold` between `min_freq` and `max_freq` using
         # Konno-Omachi smoothed spectra with `bandwidth` parameter.
-        threshold: 3.0
-        min_freq: 0.2
-        max_freq: 5.0
         bandwidth: 20.0
+        check:
+            threshold: 3.0
+            min_freq: 0.2
+            max_freq: 5.0
+        
 
 
     - get_corner_frequencies:

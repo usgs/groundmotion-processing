@@ -201,22 +201,25 @@ def streams_to_dataframe(streams, imcs=None, imts=None,
         imts += stream_summary.imts
 
     meta_data = np.array(meta_data)
-    num_streams, _ = meta_data.shape
-    meta_columns = pd.MultiIndex.from_product([columns, ['']])
-    meta_dataframe = pd.DataFrame(meta_data, columns=meta_columns)
-    imcs = np.unique(imcs)
-    imts = np.unique(imts)
-    pgm_columns = pd.MultiIndex.from_product([imcs, imts])
-    pgm_data = np.zeros((num_streams, len(imts) * len(imcs)))
-    for idx, station in enumerate(station_pgms):
-        subindex = 0
-        for imc in imcs:
-            for imt in imts:
-                pgm_data[idx][subindex] = station[imt][imc]
-                subindex += 1
-    pgm_dataframe = pd.DataFrame(pgm_data, columns=pgm_columns)
+    if not len(meta_data):
+        dataframe = pd.DataFrame()
+    else:
+        num_streams, _ = meta_data.shape
+        meta_columns = pd.MultiIndex.from_product([columns, ['']])
+        meta_dataframe = pd.DataFrame(meta_data, columns=meta_columns)
+        imcs = np.unique(imcs)
+        imts = np.unique(imts)
+        pgm_columns = pd.MultiIndex.from_product([imcs, imts])
+        pgm_data = np.zeros((num_streams, len(imts) * len(imcs)))
+        for idx, station in enumerate(station_pgms):
+            subindex = 0
+            for imc in imcs:
+                for imt in imts:
+                    pgm_data[idx][subindex] = station[imt][imc]
+                    subindex += 1
+        pgm_dataframe = pd.DataFrame(pgm_data, columns=pgm_columns)
 
-    dataframe = pd.concat([meta_dataframe, pgm_dataframe], axis=1)
+        dataframe = pd.concat([meta_dataframe, pgm_dataframe], axis=1)
 
     return dataframe
 
