@@ -18,8 +18,8 @@ from h5py.h5py_warnings import H5pyDeprecationWarning
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
-import cartopy
 import yaml
+from impactutils.colors.cpalette import ColorPalette
 
 from gmprocess.event import get_event_dict, get_event_object
 from gmprocess.io.global_fetcher import fetch_data
@@ -35,6 +35,7 @@ from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 
 CONFIG = get_config()
 TIMEFMT = '%Y-%m-%dT%H:%M:%S'
+DEG2KM = 111.0
 
 
 class MyFormatter(argparse.RawTextHelpFormatter,
@@ -58,6 +59,96 @@ def parse_eventinfo(arginfo):
              'depth': edepth,
              'magnitude': emag}
     return edict
+
+
+def plot_stations(collection, edict, outdir):
+    # make a map of all of the station locations
+    lats = [stream[0].stats.coordinates.latitude for stream in collection]
+    lats = np.array(lats)
+    lons = [stream[0].stats.coordinates.longitude for stream in collection]
+    lons = np.array(lons)
+
+    # # let's capture a crude peak acceleration
+    # pgas = []
+    # for stream in collection:
+    #     pga = -999999999
+    #     for trace in stream:
+    #         if trace.stats.channel.endswith('Z'):
+    #             continue
+    #         if trace.max() > pga:
+    #             pga = np.abs(trace.max())
+    #     pgas.append(pga)
+    # pgas = np.array(pgas)
+
+    # # construct an array of colors from the PGA values
+    # cmap = plt.get_cmap('jet')
+    # levels = np.log(np.linspace(pgas.min(), pgas.max(), 100))
+    # nsteps = 256
+    # z0 = np.linspace(levels[0], levels[-2], nsteps)
+    # z1 = np.linspace(levels[1], levels[-1], nsteps)
+    # palette = ColorPalette.fromColorMap('pga', z0, z1, cmap)
+    # colors = []
+    # for pga in pgas:
+    #     colors.append(palette.getDataColor(np.log(pga)))
+
+    plt.figure(figsize=(8, 8))
+    ax = plt.axes(projection=ccrs.Mercator())
+
+    res = '50m'
+    land = cfeature.NaturalEarthFeature('physical', 'land', res)
+    ocean = cfeature.NaturalEarthFeature('physical', 'ocean', res)
+    borders = cfeature.NaturalEarthFeature('cultural',
+                                           'admin_0_boundary_lines_land',
+                                           res)
+    states = cfeature.NaturalEarthFeature('cultural',
+                                          'admin_1_states_provinces_lines',
+                                          res)
+
+    ax.add_feature(land, zorder=1, edgecolor='face',
+                   facecolor=cfeature.COLORS['land'])
+    ax.add_feature(ocean, zorder=1, edgecolor='face',
+                   facecolor=cfeature.COLORS['water'])
+    # ax.add_feature(borders, zorder=2, edgecolor='k')
+    # ax.add_feature(states, zorder=2, edgecolor='k')
+    ax.coastlines(resolution=res, zorder=2)
+
+    # determine the map aspect ratio and extent
+    xmin = lons.min()
+    xmax = lons.max()
+    ymin = lats.min()
+    ymax = lats.max()
+    xrange = xmax - xmin
+    if xmin > xmax:
+        xrange = xmax + 360 - xmin
+    yrange = ymax - ymin
+    # square up the aspect ratio
+    ymean = np.mean([ymin, ymax])
+    latconv = np.cos(np.radians(ymean))
+    xrange_km = xrange * latconv * DEG2KM
+    yrange_km = yrange * DEG2KM
+    side_len = max(xrange_km, yrange_km)
+    newxmin = edict['lon'] - (side_len / latconv / DEG2KM)
+    newxmax = edict['lon'] + (side_len / latconv / DEG2KM)
+    newymin = edict['lat'] - (side_len / DEG2KM)
+    newymax = edict['lat'] + (side_len / DEG2KM)
+
+    ax.set_extent([newxmin, newxmax, newymin, newymax],
+                  crs=ccrs.PlateCarree())
+    ax.plot([edict['lon']], [edict['lat']],
+            'r*', transform=ccrs.PlateCarree(), zorder=101)
+    ax.scatter(lons, lats, c='b', marker='.',
+               transform=ccrs.PlateCarree(), zorder=100)
+    dstr = edict['time'].strftime('%b %d, %Y')
+    tfmt = 'Stations (N=%i) for event M%.1f %s (%s)'
+    ttpl = (len(collection),
+            edict['magnitude'],
+            dstr,
+            edict['id'])
+    plt.title(tfmt % ttpl)
+
+    mapname = os.path.join(outdir, 'station_map.png')
+    plt.savefig(mapname)
+    return mapname
 
 
 def get_periods(imt, period_params):
@@ -152,55 +243,7 @@ def main(pparser, args):
     if not args.no_plot:
         plotdir = os.path.join(args.outdir, 'plots')
 
-        # make a map of all of the station locations
-        lats = np.array(
-            [stream[0].stats.coordinates.latitude for stream in collection])
-        lons = np.array(
-            [stream[0].stats.coordinates.longitude for stream in collection])
-        plt.figure(figsize=(12, 6))
-        ax = plt.axes(projection=ccrs.Mercator())
-
-        res = '10m'
-        land = cfeature.NaturalEarthFeature('physical', 'land', res,
-                                            edgecolor='face',
-                                            facecolor=cfeature.COLORS['land'])
-        ocean = cfeature.NaturalEarthFeature('physical', 'ocean', res,
-                                             edgecolor='face',
-                                             facecolor=cfeature.COLORS['water'])
-        borders = cfeature.NaturalEarthFeature('cultural',
-                                               'admin_0_boundary_lines_land',
-                                               res,
-                                               color='k')
-
-        ax.add_feature(land, zorder=1)
-        ax.add_feature(ocean, zorder=1)
-        ax.add_feature(borders, zorder=2)
-        ax.coastlines(resolution=res, zorder=2)
-        xmin = lons.min()
-        xmax = lons.max()
-        ymin = lats.min()
-        ymax = lats.max()
-        # bump out the range of the data
-        newxmin = min(xmin, edict['lon'] - (xmax - xmin))
-        newxmax = max(xmax, edict['lon'] + (xmax - xmin))
-        newymin = min(ymin, edict['lat'] - (ymax - ymin))
-        newymax = max(ymax, edict['lat'] + (ymax - ymin))
-        ax.set_extent([newxmin, newxmax, newymin, newymax],
-                      crs=ccrs.PlateCarree())
-        ax.plot([edict['lon']], [edict['lat']],
-                'r*', transform=ccrs.PlateCarree())
-        ax.scatter(lons, lats, c='b', marker='.',
-                   transform=ccrs.PlateCarree(), zorder=100)
-        dstr = edict['time'].strftime('%b %d, %Y')
-        tfmt = 'Stations (N=%i) for event M%.1f %s (%s)'
-        ttpl = (len(collection),
-                edict['magnitude'],
-                dstr,
-                edict['id'])
-        plt.title(tfmt % ttpl)
-
-        mapname = os.path.join(args.outdir, 'station_map.png')
-        plt.savefig(mapname)
+        mapname = plot_stations(collection, edict, args.outdir)
 
         idx = None
         for i, pstep in enumerate(config['processing']):
@@ -359,6 +402,7 @@ def main(pparser, args):
         print('Amptools file: %s' % ampfile_name)
     print('Provenance (processing history): %s' % provname)
     if not args.no_plot:
+        print('A station map has been saved to %s' % mapname)
         print('%i plots saved to %s.' % (len(collection), plotdir))
         if pdf_file is not None:
             print('Processing Report (PDF): %s' % newfile)

@@ -434,7 +434,14 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     missing_data = floatheader[0, 0]
     stats['sampling_rate'] = floatheader[0, 1]
     coordinates['latitude'] = floatheader[2, 0]
-    coordinates['longitude'] = floatheader[2, 1]
+    # the documentation for SMC says that sometimes longitudes are
+    # positive in the western hemisphere. Since it is very unlikely
+    # any of these files exist for the eastern hemisphere, check for
+    # positive longitudes and fix them.
+    lon = floatheader[2, 1]
+    if lon > 0:
+        lon = -1 * lon
+    coordinates['longitude'] = lon
     coordinates['elevation'] = 0
     if floatheader[2, 2] != missing_data:
         coordinates['elevation'] = floatheader[2, 2]

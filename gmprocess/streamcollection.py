@@ -374,7 +374,7 @@ class StreamCollection(object):
                 )
             try:
                 st = StationStream(grouped_trace_list)
-            except ValueError ve:
+            except ValueError as ve:
                 if drop_error_streams:
                     continue
                 raise(ve)
