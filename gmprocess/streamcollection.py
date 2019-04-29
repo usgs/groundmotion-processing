@@ -39,7 +39,7 @@ class StreamCollection(object):
 
     """
 
-    def __init__(self, streams=None, drop_non_free=True):
+    def __init__(self, streams=None, drop_non_free=True, drop_error_streams=True):
         """
         Args:
             streams (list):
@@ -324,7 +324,7 @@ class StreamCollection(object):
         """
         return copy.deepcopy(self)
 
-    def __group_by_net_sta_inst(self):
+    def __group_by_net_sta_inst(self, drop_error_streams=True):
         trace_list = []
         for stream in self:
             if hasattr(stream, 'tag'):
@@ -351,10 +351,10 @@ class StreamCollection(object):
             for idx2, trace2 in enumerate(trace_list):
                 if idx1 != idx2 and idx1 not in all_matches:
                     if (
-                        network == trace2.stats['network'] and
-                        station == trace2.stats['station'] and
-                        inst == trace2.stats['channel'][0:2] and
-                        free_field == trace2.free_field
+                        network == trace2.stats['network']
+                        and station == trace2.stats['station']
+                        and inst == trace2.stats['channel'][0:2]
+                        and free_field == trace2.free_field
                     ):
                         matches.append(idx2)
             if len(matches) > 1:
@@ -372,7 +372,12 @@ class StreamCollection(object):
                 grouped_trace_list.append(
                     trace_list[i]
                 )
-            st = StationStream(grouped_trace_list)
+            try:
+                st = StationStream(grouped_trace_list)
+            except ValueError as ve:
+                if drop_error_streams:
+                    continue
+                raise(ve)
             if st[0].stats.tag:
                 st.tag = st[0].stats.tag
             grouped_streams.append(st)

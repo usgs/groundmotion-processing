@@ -32,6 +32,8 @@ CHANNELS = ["HN[ZNE]"]  # default to only get strong motion stations
 
 URL_ERROR_CODE = 200  # if we get this from a request, we're good
 
+OBSPY_LOGGER = "obspy.clients.fdsn.mass_downloader"
+
 
 class FDSNFetcher(DataFetcher):
     def __init__(self, time, lat, lon,
@@ -147,6 +149,17 @@ class FDSNFetcher(DataFetcher):
         # use the mass downloader to retrieve data of interest from any FSDN
         # service.
         origin_time = UTCDateTime(self.time)
+
+        # The Obspy mass downloader has it's own logger - grab that stream
+        # and write it to our own log file
+        ldict = logging.Logger.manager.loggerDict
+        if OBSPY_LOGGER in ldict:
+            root = logging.getLogger()
+            fhandler = root.handlers[0]
+            obspy_logger = logging.getLogger(OBSPY_LOGGER)
+            obspy_stream_handler = obspy_logger.handlers[0]
+            obspy_logger.removeHandler(obspy_stream_handler)
+            obspy_logger.addHandler(fhandler)
 
         # Circular domain around the epicenter.
         domain = CircularDomain(latitude=self.lat, longitude=self.lon,
