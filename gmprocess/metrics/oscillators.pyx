@@ -8,6 +8,8 @@ cimport numpy as np
 cimport cython
 from obspy.core.stream import Stream
 from obspy.core.trace import Trace
+from gmprocess.stationstream import StationStream
+from gmprocess.stationtrace import StationTrace
 from obspy.signal.invsim import corn_freq_2_paz, simulate_seismometer
 from obspy import read
 
@@ -77,12 +79,47 @@ cpdef list calculate_spectrals(np.ndarray[double, ndim=1, mode='c']times,
     return [spectral_acc, spectral_vel, spectral_dis]
 
 
-def get_fourier_amplitude_spectra(stream, smoothing='fft_smooth',
-    bandwidth=20.0):
+def get_metrics_controller_spectral(period, stream, damping=0.05, times=None):
     """
-    Returns a stream of smoothed spectral amplitude spectra.
+    Returns a stream of spectral response with units of %%g.
+    Args:
+        period (float): Period for spectral response.
+        stream (obspy.core.stream.Stream): Strong motion timeseries
+            for one station.
+        damping (float): Damping of oscillator.
+        times (np.ndarray): Array of times for the horizontal channels.
+            Default is None.
+    Returns:
+        obpsy.core.stream.Stream or numpy.ndarray: stream of spectral response.
+    """
+    traces = []
+    num_trace_range = range(len(stream))
+    cdef int len_data = stream[0].data.shape[0]
 
-    """
+    if isinstance(stream, (StationStream, Stream)):
+        for idx in num_trace_range:
+            trace = stream[idx]
+            acc_sa = calculate_spectrals(trace.times(), trace.data,
+                    period, damping)[0]
+            stats = trace.stats.copy()
+            stats['units'] = '%%g'
+            acc_sa = np.array(acc_sa) * GAL_TO_PCTG
+            spect_trace = StationTrace(data=acc_sa, header=stats)
+            traces += [spect_trace]
+        spect_stream = StationStream(traces)
+        return spect_stream
+    else:
+        rotated = []
+        for idx in range(0, len(stream)):
+            rot_matrix = stream[idx]
+            rotated_spectrals = np.zeros(rot_matrix.shape)
+            for idy in range(0, len(rot_matrix)):
+                acc_sa = np.asarray(calculate_spectrals(times, rot_matrix[idy],
+                        period, damping)[0])
+                acc_sa = acc_sa * GAL_TO_PCTG
+                rotated_spectrals[idy] = acc_sa
+            rotated += [rotated_spectrals]
+        return rotated
 
 
 def get_spectral(period, stream, damping=0.05, rotation=''):
@@ -93,7 +130,7 @@ def get_spectral(period, stream, damping=0.05, rotation=''):
         stream (obspy.core.stream.Stream): Strong motion timeseries
             for one station.
         damping (float): Damping of oscillator.
-        rotation (str): Wheter a rotation matrix should be return and the
+        rotation (str): Whether a rotation matrix should be return and the
             specific type or rotation. Default is None.
     Returns:
         obpsy.core.stream.Stream: stream of spectral response.

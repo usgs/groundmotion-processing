@@ -4,7 +4,25 @@ import os
 import logging
 
 
-EXCLUDED_MODULES = ['__init__.py']
+EXCLUDED_MODULES = ['__init__.py', 'imt.py', 'imc.py']
+BASE = os.path.dirname(os.path.abspath(__file__))
+
+
+def gather_pgms():
+    imt_directory = os.path.join(BASE, 'metrics_controller_imt')
+    imc_directory = imt_directory.replace('metrics_controller_imt', 'metrics_controller_imc')
+    # Create list
+    imt_classes = []
+    imc_classes = []
+    for imt_file in os.listdir(imt_directory):
+        if imt_file.endswith(".py") and imt_file not in EXCLUDED_MODULES:
+            imt_file = imt_file[0:-3]
+            imt_classes += [imt_file]
+    for imc_file in os.listdir(imc_directory):
+        if imc_file.endswith(".py") and imc_file not in EXCLUDED_MODULES:
+            imc_file = imc_file[0:-3]
+            imc_classes += [imc_file]
+    return imt_classes, imc_classes
 
 
 def get_pgm_classes(im_type):
