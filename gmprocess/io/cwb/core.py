@@ -1,4 +1,5 @@
 # stdlib imports
+import os
 from collections import OrderedDict
 from datetime import datetime, timedelta
 import logging
@@ -54,7 +55,8 @@ def read_cwb(filename, **kwargs):
     """
     logging.debug("Starting read_cwb.")
     if not is_cwb(filename):
-        raise Exception('%s is not a valid CWB strong motion data file.' % filename)
+        raise Exception('%s is not a valid CWB strong motion data file.'
+                        % filename)
     f = open(filename, 'rt')
     # according to the powers that defined the Network.Station.Channel.Location
     # "standard", Location is a two character field.  Most data providers,
@@ -64,6 +66,9 @@ def read_cwb(filename, **kwargs):
 
     hdr = _get_header_info(f, data)
     f.close()
+
+    head, tail = os.path.split(filename)
+    hdr['standard']['source_file'] = tail or os.path.basename(head)
 
     hdr_z = hdr.copy()
     hdr_z['channel'] = get_channel_name(
@@ -218,6 +223,7 @@ def _get_header_info(file, data):
     standard['source'] = 'Taiwan Strong Motion Instrumentation Program ' + \
         'via Central Weather Bureau'
     standard['source_format'] = 'cwb'
+
     if 'station_name' not in standard:
         standard['station_name'] = ''
     if 'instrument' not in standard:

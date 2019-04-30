@@ -7,6 +7,7 @@ import os
 import glob
 import tempfile
 import shutil
+import logging
 
 from gmprocess.io.read import read_data
 from gmprocess.io.utils import flatten_directory
@@ -50,6 +51,7 @@ def directory_to_streams(directory):
             file_ext = os.path.splitext(file_path)[1].lower()
             if file_ext not in EXT_IGNORE:
                 try:
+                    logging.debug('Attempting to read: %s' % file_path)
                     streams += read_data(file_path)
                 except Exception as ex:
                     unprocessed_files += [file_path]

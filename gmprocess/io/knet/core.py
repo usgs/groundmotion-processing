@@ -3,7 +3,7 @@
 # stdlib imports
 from datetime import datetime, timedelta
 import re
-import os.path
+import os
 import logging
 
 # third party
@@ -175,6 +175,8 @@ def read_knet(filename):
     standard['units'] = 'acc'
     standard['source'] = SRC
     standard['source_format'] = 'knet'
+    head, tail = os.path.split(filename)
+    standard['source_file'] = tail or os.path.basename(head)
 
     hdr['coordinates'] = coordinates
     hdr['standard'] = standard

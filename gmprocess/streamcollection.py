@@ -6,6 +6,7 @@ various rules, such as all traces within a stream are from the same station.
 """
 
 import copy
+import logging
 
 import numpy as np
 from obspy.geodetics import gps2dist_azimuth
@@ -58,6 +59,9 @@ class StreamCollection(object):
             if not isinstance(s, StationStream):
                 raise TypeError(
                     'streams must be a list of StationStream objects.')
+
+            logging.debug(s.get_id())
+
             if drop_non_free:
                 if s[0].free_field:
                     newstreams.append(s)

@@ -206,12 +206,15 @@ def main(pparser, args):
                 custom_cfg = yaml.load(f, Loader=yaml.FullLoader)
                 update_dict(config, custom_cfg)
         except yaml.ParserError:
-            print('Config file %s does not seem to be valid YAML.' % args.config)
+            print('Config file %s does not seem to be valid YAML.'
+                  % args.config)
             sys.exit(1)
 
     rawdir = None
     if not args.no_raw:
         rawdir = os.path.join(args.outdir, 'raw')
+        if not os.path.exists(rawdir):
+            os.makedirs(rawdir)
 
     if args.eventid:
         edict = get_event_dict(args.eventid)
@@ -224,23 +227,30 @@ def main(pparser, args):
         streams, bad, errors = directory_to_streams(args.directory)
         collection = StreamCollection(streams, drop_non_free=True)
     else:
-        collection, errors = fetch_data(etime,
-                                        edict['lat'],
-                                        edict['lon'],
-                                        edict['depth'],
-                                        edict['magnitude'],
-                                        config=config,
-                                        rawdir=rawdir)
+        collection, errors = fetch_data(
+            etime,
+            edict['lat'],
+            edict['lon'],
+            edict['depth'],
+            edict['magnitude'],
+            config=config,
+            rawdir=rawdir
+        )
     if not len(collection):
-        print('No data files found. Here are any errors that may have come up:')
+        print('No data files found. Here are any errors that '
+              'may have come up:')
         for error in errors:
             print(error)
         sys.exit(0)
+
+    print('Completed data fetching stage;')
+    print(collection)
 
     if not os.path.isdir(args.outdir):
         os.makedirs(args.outdir)
 
     if not args.no_plot:
+        print('Making plots...')
         plotdir = os.path.join(args.outdir, 'plots')
 
         mapname = plot_stations(collection, edict, args.outdir)
@@ -263,13 +273,18 @@ def main(pparser, args):
         else:
             config['build_report'] = {'run': True, 'directory': args.outdir}
 
-    # total hack
+    # This is a hack to get the program to complete for problematic data that
+    # does not have elevation data. This needs to be updated/fixed soon!
+
     for stream in collection:
         for trace in stream:
             if np.isnan(trace.stats.coordinates['elevation']):
+                logging.warning('Elevation is nan for %s!' % trace)
+                logging.warning('Setting elevation to 0.0 for %s.' % trace)
                 trace.stats.coordinates['elevation'] = 0.0
 
     if not args.no_raw:
+        print('Plotting raw data...')
         for stream in collection:
             outfile = os.path.join(rawdir, '%s.png' % stream.get_id())
             stream.plot(outfile=outfile)
@@ -371,7 +386,8 @@ def main(pparser, args):
             # to see if they have Latex installed.
             latexpdf = shutil.which('pdflatex')
             if latexpdf is None:
-                fmt = 'No LateX to PDF converter found on your system for report file "%s"'
+                fmt = ('No LateX to PDF converter found on your '
+                       'system for report file "%s"')
                 print(fmt % latest_tex)
             else:
                 fmt = '%s -halt-on-error -output-directory=%s %s'
@@ -379,7 +395,8 @@ def main(pparser, args):
                 cmd = fmt % tpl
                 res, stdout, stderr = get_command_output(cmd)
                 if not res:
-                    fmt = 'LateX to PDF conversion failed with errors: "%s" "%s"'
+                    fmt = ('LateX to PDF conversion failed with '
+                           'errors: "%s" "%s"')
                     print(fmt % (stdout, stderr))
                 else:
                     latexbase, ext = os.path.splitext(latest_tex)
@@ -459,29 +476,35 @@ if __name__ == '__main__':
     parser.add_argument('outdir', help='Output file directory', type=str)
 
     # non-positional arguments
-    parser.add_argument('-i', '--eventid', help='ComCat Event ID')
-    parser.add_argument('-e', '--eventinfo', type=str, nargs=5,
-                        metavar=('TIME', 'LAT', 'LON', 'DEPTH', 'MAG'),
-                        help='Event information as TIME(YYYY-MM-DDTHH:MM:SS) LAT LON DEP MAG')
-    parser.add_argument('-f', '--format',
-                        help='Output format for metrics information',
-                        choices=['excel', 'csv'], default='csv')
-    parser.add_argument('-c', '--config',
-                        help='Supply custom configuration file')
-    parser.add_argument('-o', '--download-only', action='store_true',
-                        help='Download/plot raw only, no processing.')
-    parser.add_argument('--no-plot', action='store_true',
-                        help='Do not make plots/report for processed waveforms')
-    parser.add_argument('--no-raw', action='store_true',
-                        help='Do not save raw streams')
-    parser.add_argument('-l', '--log-file',
-                        help='Supply file name to store processing log info.')
+    parser.add_argument(
+        '-i', '--eventid', help='ComCat Event ID')
+    parser.add_argument(
+        '-e', '--eventinfo', type=str, nargs=5,
+        metavar=('TIME', 'LAT', 'LON', 'DEPTH', 'MAG'),
+        help='Event information as TIME(YYYY-MM-DDTHH:MM:SS) LAT LON DEP MAG')
+    parser.add_argument(
+        '-f', '--format',
+        help='Output format for metrics information',
+        choices=['excel', 'csv'], default='csv')
+    parser.add_argument(
+        '-c', '--config', help='Supply custom configuration file')
+    parser.add_argument(
+        '-o', '--download-only', action='store_true',
+        help='Download/plot raw only, no processing.')
+    parser.add_argument(
+        '--no-plot', action='store_true',
+        help='Do not make plots/report for processed waveforms')
+    parser.add_argument(
+        '--no-raw', action='store_true', help='Do not save raw streams')
+    parser.add_argument(
+        '-l', '--log-file',
+        help='Supply file name to store processing log info.')
     hstr = 'Save metrics spreadsheet in ShakeMap Amptools friendly format'
-    parser.add_argument('-a', '--amptools-format', action='store_true',
-                        help=hstr)
+    parser.add_argument(
+        '-a', '--amptools-format', action='store_true', help=hstr)
     hstr = 'Sidestep online data retrieval, read from local directory.'
-    parser.add_argument('--directory',
-                        help=hstr)
+    parser.add_argument(
+        '--directory', help=hstr)
     # Shared arguments
     parser = add_shared_args(parser)
 

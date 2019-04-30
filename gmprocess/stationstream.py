@@ -10,6 +10,7 @@ from obspy.core.inventory import (Inventory, Network, Station,
                                   Channel, Site, Equipment, Comment)
 # local imports
 from .stationtrace import StationTrace
+from gmprocess.exception import GMProcessException
 
 UNITS = {
     'acc': 'cm/s/s',
@@ -31,7 +32,8 @@ UNUSED_STANDARD_PARAMS = [
     'process_time',
     'process_level',
     'structure_type',
-    'corner_frequency'
+    'corner_frequency',
+    'source_file'
 ]
 
 
@@ -226,8 +228,8 @@ class StationStream(Stream):
                     'format_specific': format_specific}
         try:
             jsonstr = json.dumps(big_dict)
-        except:
-            x = 1
+        except Exception as e:
+            raise GMProcessException('Exception in json.dumps: %s' % e)
         sta = Station(
             # This is the station code according to the SEED standard.
             code=self[0].stats.station,

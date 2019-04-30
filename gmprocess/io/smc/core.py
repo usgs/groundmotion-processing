@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 # stdlib imports
+import os
 from datetime import datetime
 import logging
 
@@ -491,5 +492,8 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     stats['coordinates'] = coordinates
     stats['standard'] = standard
     stats['format_specific'] = format_specific
+
+    head, tail = os.path.split(filename)
+    stats['standard']['source_file'] = tail or os.path.basename(head)
 
     return (stats, num_comments)

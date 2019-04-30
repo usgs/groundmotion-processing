@@ -2,6 +2,7 @@
 
 # stdlib imports
 from datetime import datetime
+import os
 import re
 import warnings
 import pkg_resources
@@ -193,12 +194,13 @@ def read_cosmos(filename, **kwargs):
                 station type codes.
             Other arguments will be ignored.
     Returns:
-        list: List of StationStreams containing three channels of acceleration data
-        (cm/s**2).
+        list: List of StationStreams containing three channels of acceleration
+        data (cm/s**2).
     """
     logging.debug("Starting read_cosmos.")
     if not is_cosmos(filename):
-        raise Exception('%s is not a valid COSMOS strong motion data file.' % filename)
+        raise Exception(
+            '%s is not a valid COSMOS strong motion data file.' % filename)
     # get list of valid stations
     valid_station_types = kwargs.get('valid_station_types', None)
     # get list of valid stations
@@ -260,6 +262,8 @@ def _read_channel(filename, line_offset, location=''):
     # including cosmos here, don't provide this.  We'll flag it as "--".
     hdr = _get_header_info(int_data, flt_data, lines,
                            cmt_data, location=location)
+    head, tail = os.path.split(filename)
+    hdr['standard']['source_file'] = tail or os.path.basename(head)
 
     # read in the data
     nrows, data = _read_lines(skiprows, filename)
@@ -456,7 +460,8 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
             hdr['starttime'] = datetime(
                 year, month, day, hour, minute)
         except Exception:
-            raise GMProcessException('COSMOS: Inadequate start time information.')
+            raise GMProcessException(
+                'COSMOS: Inadequate start time information.')
     else:
         second = second
         microsecond = int((second - int(second)) * 1e6)
@@ -464,7 +469,8 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
             hdr['starttime'] = datetime(
                 year, month, day, hour, minute, int(second), microsecond)
         except Exception:
-            raise GMProcessException('COSMOS: Inadequate start time information.')
+            raise GMProcessException(
+                'COSMOS: Inadequate start time information.')
 
     if flt_data[62] != unknown:
         # COSMOS **defines** "length" as npts*dt (note this is a bit unusual)
@@ -474,7 +480,6 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
         hdr['npts'] = npts
     else:
         raise ValueError('COSMOS file does not specify length.')
-
 
     # coordinate information
     coordinates['latitude'] = flt_data[0]

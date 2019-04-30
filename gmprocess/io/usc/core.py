@@ -1,4 +1,5 @@
 # stdlib imports
+import os
 from datetime import datetime
 import logging
 
@@ -63,7 +64,8 @@ def is_usc(filename, **kwargs):
             alternate_start = start + 2
             alternate_stop = stop - 2
         elif first_line.find('RESPONSE') >= 0:
-            raise GMProcessException('USC: Derived response spectra and fourier '
+            raise GMProcessException(
+                'USC: Derived response spectra and fourier '
                 'amplitude spectra not supported: %s' % filename)
         else:
             f.close()
@@ -83,6 +85,7 @@ def is_usc(filename, **kwargs):
     else:
         return valid
 
+
 def _check_header(start, stop, filename):
     passing = True
     with open(filename, 'r') as f:
@@ -96,6 +99,7 @@ def _check_header(start, stop, filename):
             except:
                 passing = False
     return passing
+
 
 def read_usc(filename, **kwargs):
     """Read USC V1 strong motion file.
@@ -119,9 +123,11 @@ def read_usc(filename, **kwargs):
     f.close()
 
     if first_line.find('OF UNCORRECTED ACCELEROGRAM DATA OF') >= 0:
-        stream = read_volume_one(filename, location=location, alternate=alternate)
+        stream = read_volume_one(
+            filename, location=location, alternate=alternate)
     else:
         raise GMProcessException('USC: Not a supported volume.')
+
     return stream
 
 
@@ -210,6 +216,10 @@ def _read_channel(filename, line_offset, volume, location='', alternate=False):
             logging.debug('Data converted from %s to cm/s/s' % (unit))
         else:
             raise GMProcessException('USC: %s is not a supported unit.' % unit)
+
+    # Put file name into dictionary
+    head, tail = os.path.split(filename)
+    hdr['standard']['source_file'] = tail or os.path.basename(head)
 
     trace = StationTrace(data.copy(), Stats(hdr.copy()))
     if not is_evenly_spaced(times):
@@ -356,6 +366,11 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
             lon_sign = -1
         latitude = lat_sign * _dms2dd(lat_deg, lat_min, lat_sec)
         longitude = lon_sign * _dms2dd(lon_deg, lon_min, lon_sec)
+        # Since sometimes longitudes are positive in this format for data in
+        # the western hemisphere, we "fix" it here. Hopefully no one in the
+        # eastern hemisphere uses this format!
+        if longitude > 0:
+            longitude = -longitude
         coordinates['latitude'] = latitude
         coordinates['longitude'] = longitude
         coordinates['elevation'] = np.nan
@@ -400,6 +415,7 @@ def _dms2dd(degrees, minutes, seconds):
     """
     decimal = degrees + float(minutes) / 60.0 + float(seconds) / 3600.0
     return decimal
+
 
 def _get_units(line):
     """

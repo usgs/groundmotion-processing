@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 # stdlib imports
+import os
 from datetime import datetime, timedelta
 import re
 import logging
@@ -230,6 +231,8 @@ def _read_volume_one(filename, line_offset, location='', units='acc'):
 
     hdr = _get_header_info_v1(
         int_data, flt_data, lines, 'V2', location=location)
+    head, tail = os.path.split(filename)
+    hdr['standard']['source_file'] = tail or os.path.basename(head)
 
     # sometimes (??) a line of text is inserted in between the float header and
     # the beginning of the data. Let's check for this...
@@ -310,6 +313,8 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
     # including csmip/dmg here, don't always provide this.  We'll flag it as
     # "--".
     hdr = _get_header_info(int_data, flt_data, lines, 'V2', location=location)
+    head, tail = os.path.split(filename)
+    hdr['standard']['source_file'] = tail or os.path.basename(head)
 
     traces = []
     # read acceleration data
