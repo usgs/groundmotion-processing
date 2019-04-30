@@ -14,7 +14,7 @@ from gmprocess.stationtrace import StationTrace, TIMEFMT_MS
 from gmprocess.stationstream import StationStream
 from gmprocess.streamcollection import StreamCollection
 from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.streamcollection import StreamCollection
+from gmprocess.exception import GMProcessException
 
 TIMEPAT = '[0-9]{4}-[0-9]{2}-[0-9]{2}T'
 
@@ -24,7 +24,8 @@ class StreamWorkspace(object):
         """Create an ASDF file given an Event and list of StationStreams.
 
         Args:
-            filename (str): Path to ASDF file to create.
+            filename (str):
+                Path to ASDF file to create.
         """
         if not exists:
             compression = "gzip-3"
@@ -81,11 +82,20 @@ class StreamWorkspace(object):
         """Add a sequence of StationStream objects to an ASDF file.
 
         Args:
-            event (Event): Obspy event object.
-            streams (list): List of StationStream objects.
-            label (str): Label to attach to stream sequence.
+            event (Event):
+                Obspy event object.
+            streams (list):
+                List of StationStream objects.
+            label (str):
+                Label to attach to stream sequence. Cannot contain an
+                underscore.
         """
-        # to allow for multiple processed versions of the same Stream
+        if label is not None:
+            if '_' in label:
+                raise GMProcessException(
+                    'Stream label cannot contain an underscore.')
+
+        # To allow for multiple processed versions of the same Stream
         # let's keep a dictionary of stations and sequence number.
         eventid = _get_id(event)
         if not self.hasEvent(eventid):
@@ -170,14 +180,19 @@ class StreamWorkspace(object):
         return labels
 
     def getStreamTags(self, eventid, label=None):
-        """Get list of Stream "tags" which can be used to retrieve individual streams.
+        """
+        Get list of Stream "tags" which can be used to retrieve individual
+        streams.
 
         Args:
-            eventid (str): Event ID corresponding to a sequence of Streams.
-            label (str): Optional stream label assigned with addStreams().
+            eventid (str):
+                Event ID corresponding to a sequence of Streams.
+            label (str):
+                Optional stream label assigned with addStreams().
 
         Returns:
-            list: Sequence of strings indicating Stream tags corresponding to eventid.
+            list: Sequence of strings indicating Stream tags corresponding to
+            eventid.
         """
         if not self.hasEvent(eventid):
             fmt = 'Event with a resource id containing %s could not be found.'
@@ -209,7 +224,8 @@ class StreamWorkspace(object):
                 List of processing labels to search for.
 
         Returns:
-            StreamCollection: Object containing list of organized StationStreams.
+            StreamCollection: Object containing list of organized
+            StationStreams.
         """
         auxholder = []
         if 'ProcessingParameters' in self.dataset.auxiliary_data:
@@ -416,7 +432,9 @@ class StreamWorkspace(object):
         return summary
 
     def summarizeLabels(self):
-        """Summarize the processing metadata associated with each label in the file.
+        """
+        Summarize the processing metadata associated with each label in the
+        file.
 
         Returns:
             DataFrame:
@@ -424,7 +442,8 @@ class StreamWorkspace(object):
                     - Label Processing label.
                     - UserID user id (i.e., jsmith)
                     - UserName Full user name (i.e., Jane Smith) (optional)
-                    - UserEmail Email adress (i.e., jsmith@awesome.org) (optional)
+                    - UserEmail Email adress (i.e., jsmith@awesome.org)
+                      (optional)
                     - Software Name of processing software (i.e., gmprocess)
                     - Version Version of software (i.e., 1.4)
 

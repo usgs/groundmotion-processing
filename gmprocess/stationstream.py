@@ -10,24 +10,29 @@ from obspy.core.inventory import (Inventory, Network, Station,
                                   Channel, Site, Equipment, Comment)
 # local imports
 from .stationtrace import StationTrace
-from gmprocess.exception import GMProcessException
 
-UNITS = {'acc': 'cm/s/s',
-         'vel': 'cm/s'}
-REVERSE_UNITS = {'cm/s/s': 'acc',
-                 'cm/s': 'vel'}
+UNITS = {
+    'acc': 'cm/s/s',
+    'vel': 'cm/s'
+}
+REVERSE_UNITS = {
+    'cm/s/s': 'acc',
+    'cm/s': 'vel'
+}
 
 # if we find places for these in the standard metadata,
 # remove them from this list. Anything here will
 # be extracted from the stats standard dictionary,
 # combined with the format_specific dictionary,
 # serialized to json and stored in the station description.
-UNUSED_STANDARD_PARAMS = ['instrument_period',
-                          'instrument_damping',
-                          'process_time',
-                          'process_level',
-                          'structure_type',
-                          'corner_frequency']
+UNUSED_STANDARD_PARAMS = [
+    'instrument_period',
+    'instrument_damping',
+    'process_time',
+    'process_level',
+    'structure_type',
+    'corner_frequency'
+]
 
 
 class StationStream(Stream):
@@ -42,38 +47,72 @@ class StationStream(Stream):
             ends = [trace.stats.endtime for trace in traces]
             newstart = max(starts)
             newend = min(ends)
-            for trace in traces:
-                trace = trace.slice(starttime=newstart,
-                                    endtime=newend)
-                if inventory is None:
-                    if not isinstance(trace, StationTrace):
-                        raise ValueError(
-                            'Input Traces to StationStream must be of subtype '
-                            'StationTrace')
+            if newstart >= newend:
+                for trace in traces:
+                    trace.fail(
+                        'Trimming start/end times across traces for '
+                        'this stream resulting in a start time after '
+                        'the end time.'
+                    )
+                    self.append(trace)
+            else:
+                for trace in traces:
+                    if inventory is None:
+                        if not isinstance(trace, StationTrace):
+                            raise ValueError(
+                                'Input Traces to StationStream must be of '
+                                'subtype StationTrace unless an invenotry '
+                                'is also provided.')
                     else:
-                        self.append(trace)
-                else:
-                    if not isinstance(trace, StationTrace):
-                        statrace = StationTrace(data=trace.data,
-                                                header=trace.stats,
-                                                inventory=inventory)
+                        if not isinstance(trace, StationTrace):
+                            trace = StationTrace(
+                                data=trace.data,
+                                header=trace.stats,
+                                inventory=inventory
+                            )
 
-                        self.append(statrace)
-                    else:
-                        self.append(trace)
+                    # Apply the new start/end times
+                    trace = trace.slice(starttime=newstart,
+                                        endtime=newend)
+                    trace.setProvenance(
+                        'cut',
+                        {
+                            'new_start_time': newstart,
+                            'new_end_time': newend
+                        }
+                    )
+
+                    self.append(trace)
+
         self.validate()
 
     def validate(self):
-        """Ensure that each Trace has the same number of points.
-
-        Raises:
-            GMProcessException:
-                If the traces have different numbers of data points.
+        """Some validation checks for Traces within the StationStream.
 
         """
-        npoints = [len(trace) for trace in self]
-        if np.any(np.diff(npoints)):
-            raise GMProcessException('Uneven number of samples in Traces.')
+        self.__check_sample_rate()
+        self.__check_npts()
+        self.__check_starts()
+
+    def __check_sample_rate(self):
+        unique_sampling_rates = set([tr.stats.sampling_rate for tr in self])
+        if len(unique_sampling_rates) > 1:
+            for tr in self:
+                tr.fail('StationStream traces have different sampling rates.')
+
+    def __check_npts(self):
+        unique_npts = set([len(tr) for tr in self])
+        if len(unique_npts) > 1:
+            for tr in self:
+                tr.fail('StationStream traces have a different number '
+                        'of points.')
+
+    def __check_starts(self):
+        unique_starts = set([tr.stats.starttime.timestamp for tr in self])
+        if len(unique_starts) > 1:
+            for tr in self:
+                tr.fail('StationStream traces have different start '
+                        'times.')
 
     def get_id(self):
         """

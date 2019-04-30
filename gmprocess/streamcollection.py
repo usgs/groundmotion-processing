@@ -15,6 +15,7 @@ import pandas as pd
 from gmprocess.io.read_directory import directory_to_streams
 from gmprocess.stationstream import StationStream
 from gmprocess.metrics.station_summary import StationSummary
+from gmprocess.exception import GMProcessException
 
 INDENT = 2
 
@@ -39,7 +40,7 @@ class StreamCollection(object):
 
     """
 
-    def __init__(self, streams=None, drop_non_free=True, drop_error_streams=True):
+    def __init__(self, streams=None, drop_non_free=True):
         """
         Args:
             streams (list):
@@ -66,9 +67,23 @@ class StreamCollection(object):
         self.streams = newstreams
         self.__group_by_net_sta_inst()
 
-        # Check that sample rate is consistent within each StationStream
+        self.validate()
+
+    def validate(self):
+        """Some validation checks across streams.
+
+        """
+        # If tag exists, it should be consistent across StationStreams
+        all_labels = []
         for stream in self:
-            self.__check_sample_rate(stream)
+            if hasattr(stream, 'tag'):
+                station, label = stream.tag.split('_')
+                all_labels.append(label)
+            else:
+                all_labels.append("")
+        if len(set(all_labels)) > 1:
+            raise GMProcessException(
+                'Only one label allowed within a StreamCollection.')
 
     @classmethod
     def from_directory(cls, directory):
@@ -326,11 +341,19 @@ class StreamCollection(object):
 
     def __group_by_net_sta_inst(self, drop_error_streams=True):
         trace_list = []
+
+        # Need to make sure that tag will be preserved; tag only really should
+        # be created once a StreamCollection has been written to an ASDF file
+        # and then read back in.
         for stream in self:
+            # Tag is a StationStream attribute; If it does not exist, make it
+            # an empty string
             if hasattr(stream, 'tag'):
                 tag = stream.tag
             else:
                 tag = ""
+            # Since we have to deconstruct the stream groupings each time, we
+            # need to stick the tag into the trace stats dictionary temporarily
             for trace in stream:
                 tr = trace
                 tr.stats.tag = tag
@@ -372,21 +395,12 @@ class StreamCollection(object):
                 grouped_trace_list.append(
                     trace_list[i]
                 )
-            try:
-                st = StationStream(grouped_trace_list)
-            except ValueError as ve:
-                if drop_error_streams:
-                    continue
-                raise(ve)
-            if st[0].stats.tag:
-                st.tag = st[0].stats.tag
-            grouped_streams.append(st)
+            st = StationStream(grouped_trace_list)
+            if len(st):
+                # Put tag back as a stream attribute, assuming that the
+                # tag has stayed the same through the grouping process
+                if st[0].stats.tag:
+                    st.tag = st[0].stats.tag
+                grouped_streams.append(st)
 
         self.streams = grouped_streams
-
-    @staticmethod
-    def __check_sample_rate(stream):
-        unique_sampling_rates = set([tr.stats.sampling_rate for tr in stream])
-        if len(unique_sampling_rates) > 1:
-            for tr in stream:
-                tr.fail('StationStream traces have different sampling rates')
