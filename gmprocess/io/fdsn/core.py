@@ -1,17 +1,15 @@
 #!/usr/bin/env python
 
 # stdlib imports
-import os.path
+import os
 import logging
 
 # third party
-from obspy.core.trace import Stats
 from obspy.core.stream import read
 from obspy import read_inventory
 
 # local imports
-from gmprocess.io.seedname import get_channel_name
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.stationtrace import StationTrace
 from gmprocess.stationstream import StationStream
 
 IGNORE_FORMATS = ['KNET']
@@ -55,8 +53,10 @@ def read_fdsn(filename):
     """Read Obspy data file (SAC, MiniSEED, etc).
 
     Args:
-        filename (str): Path to possible KNET data file.
-        kwargs (ref): Other arguments will be ignored.
+        filename (str):
+            Path to data file.
+        kwargs (ref):
+            Other arguments will be ignored.
     Returns:
         Stream: StationStream object.
     """
@@ -73,6 +73,8 @@ def read_fdsn(filename):
         trace = StationTrace(data=ttrace.data,
                              header=ttrace.stats,
                              inventory=inventory)
+        head, tail = os.path.split(filename)
+        trace.stats['standard']['source_file'] = tail or os.path.basename(head)
         traces.append(trace)
     stream = StationStream(traces=traces)
     streams.append(stream)

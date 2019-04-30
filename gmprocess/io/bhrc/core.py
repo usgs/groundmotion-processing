@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # stdlib imports
-import sys
+import os
 import re
 
 # third party imports
@@ -53,7 +53,8 @@ def read_bhrc(filename):
         filename (str): path to BHRC data file.
 
     Returns:
-        list: Sequence of one StationStream object containing 3 StationTrace objects.
+        list: Sequence of one StationStream object containing 3
+        StationTrace objects.
     """
     header1, offset = _read_header_lines(filename, 0)
     data1, offset = _read_data(filename, offset, header1)
@@ -72,14 +73,14 @@ def _read_header_lines(filename, offset):
     """Read the header lines for each channel.
 
     Args:
-        filename (str): 
+        filename (str):
             Input BHRC file name.
-        offset (int): 
+        offset (int):
             Number of lines to skip from the beginning of the file.
 
     Returns:
-        tuple: (header dictionary containing Stats dictionary with extra sub-dicts, 
-                updated offset rows)
+        tuple: (header dictionary containing Stats dictionary with
+        extra sub-dicts, updated offset rows)
     """
     with open(filename, 'rt') as f:
         for _ in range(offset):
@@ -131,6 +132,8 @@ def _read_header_lines(filename, offset):
     standard['instrument_damping'] = float(damping_str)
     standard['horizontal_orientation'] = angle
     standard['comments'] = ''
+    head, tail = os.path.split(filename)
+    standard['source_file'] = tail or os.path.basename(head)
 
     # fill out the stats stuff
     # we don't know the start of the trace
@@ -179,7 +182,7 @@ def _read_data(filename, offset, header):
     """Read acceleration data from BHRC file.
 
     Args:
-        filename (str): 
+        filename (str):
             BHRC strong motion filename.
         offset (int):
             Number of rows from the beginning of the file to skip.

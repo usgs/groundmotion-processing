@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 # stdlib imports
+import os
 from datetime import datetime
 import re
 import logging
@@ -70,7 +71,8 @@ def read_geonet(filename, **kwargs):
     """
     logging.debug("Starting read_geonet.")
     if not is_geonet(filename):
-        raise Exception('%s is not a valid GEONET strong motion data file.' % filename)
+        raise Exception('%s is not a valid GEONET strong motion data file.'
+                        % filename)
     trace1, offset1, _ = _read_channel(filename, 0)
     trace2, offset2, _ = _read_channel(filename, offset1)
     trace3, _, _ = _read_channel(filename, offset2)
@@ -149,6 +151,8 @@ def _read_channel(filename, line_offset):
     hdr = _read_header(hdr_data, station, name,
                        component, data_format,
                        instrument, resolution)
+    head, tail = os.path.split(filename)
+    hdr['standard']['source_file'] = tail or os.path.basename(head)
 
     # according to the powers that defined the Network.Station.Channel.Location
     # "standard", Location is a two character field.  Most data providers,

@@ -34,7 +34,14 @@ REV_PROCESS_LEVELS = {'raw counts': 'V0',
                       'derived time series': 'V3'}
 
 
+# NOTE: if requird is True then this means that the value must be
+# filled in with a value that does NOT match the default.
 STANDARD_KEYS = {
+    'source_file': {
+        'type': str,
+        'required': False,
+        'default': ''
+    },
     'source': {
         'type': str,
         'required': True,
@@ -582,13 +589,15 @@ def _stats_from_inventory(data, inventory, channelid):
         standard['process_level'] = 'uncorrected physical units'
 
     standard['source'] = source
+    standard['source_file'] = ''
     standard['instrument'] = ''
     standard['sensor_serial_number'] = ''
     if channel.sensor is not None:
-        standard['instrument'] = '%s %s %s %s' % (channel.sensor.type,
-                                                  channel.sensor.manufacturer,
-                                                  channel.sensor.model,
-                                                  channel.sensor.description)
+        standard['instrument'] = ('%s %s %s %s'
+                                  % (channel.sensor.type,
+                                     channel.sensor.manufacturer,
+                                     channel.sensor.model,
+                                     channel.sensor.description))
         if channel.sensor.serial_number is not None:
             standard['sensor_serial_number'] = channel.sensor.serial_number
         else:
