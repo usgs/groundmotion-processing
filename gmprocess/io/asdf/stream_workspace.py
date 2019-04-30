@@ -105,19 +105,19 @@ class StreamWorkspace(object):
             station = stream[0].stats['station']
             # is this a raw file? Check the trace for provenance info.
             is_raw = not len(stream[0].getProvenanceKeys())
+
+            if label is not None:
+                tag = '%s_%s' % (station.lower(), label)
+            else:
+                if station.lower() in station_dict:
+                    station_sequence = station_dict[station.lower()] + 1
+                else:
+                    station_sequence = 1
+                station_dict[station.lower()] = station_sequence
+                tag = '%s_%05i' % (station.lower(), station_sequence)
             if is_raw:
-                tag = 'raw_recording'
                 level = 'raw'
             else:
-                if label is not None:
-                    tag = '%s_%s' % (station.lower(), label)
-                else:
-                    if station.lower() in station_dict:
-                        station_sequence = station_dict[station.lower()] + 1
-                    else:
-                        station_sequence = 1
-                    station_dict[station.lower()] = station_sequence
-                    tag = '%s_%05i' % (station.lower(), station_sequence)
                 level = 'processed'
             self.dataset.add_waveforms(stream, tag=tag, event_id=event)
 
@@ -212,7 +212,7 @@ class StreamWorkspace(object):
         matching_tags = list(set(matching_tags))
         return matching_tags
 
-    def getStreams(self, eventid, stations=None, labels=None, get_raw=False):
+    def getStreams(self, eventid, stations=None, labels=None):
         """Get Stream from ASDF file given event id and input tags.
 
         Args:
@@ -232,20 +232,17 @@ class StreamWorkspace(object):
             auxholder = self.dataset.auxiliary_data.ProcessingParameters
         streams = []
         all_tags = []
-        if not get_raw:
-            if stations is None:
-                stations = self.getStations(eventid)
-            if labels is None:
-                labels = self.getLabels()
-            for station in stations:
-                for label in labels:
-                    all_tags.append('%s_%s' % (station.lower(), label))
-        else:
-            all_tags = ['raw_recording']
+
+        if stations is None:
+            stations = self.getStations(eventid)
+        if labels is None:
+            labels = self.getLabels()
+        for station in stations:
+            for label in labels:
+                all_tags.append('%s_%s' % (station.lower(), label))
+
         for waveform in self.dataset.waveforms:
             ttags = waveform.get_waveform_tags()
-            if not get_raw and 'raw_recording' in ttags:
-                ttags.remove('raw_recording')
             wtags = []
             if not len(all_tags):
                 wtags = ttags
