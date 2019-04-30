@@ -52,6 +52,12 @@ setup(
         'gmprocess.metrics',
         'gmprocess.metrics.imt',
         'gmprocess.metrics.imc',
+        'gmprocess.metrics.metrics_controller_imt',
+        'gmprocess.metrics.metrics_controller_imc',
+        'gmprocess.metrics.rotations',
+        'gmprocess.metrics.combination',
+        'gmprocess.metrics.transform',
+        'gmprocess.metrics.reduction',
         'gmprocess.smoothing'],
     package_data={
         'gmprocess':
