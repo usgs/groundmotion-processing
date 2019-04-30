@@ -395,7 +395,11 @@ def cut(st, sec_before_split=None):
             split_time = tr.getParameter('signal_split')['split_time']
             stime = split_time - sec_before_split
             logging.debug('Before cut start time: %s ' % tr.stats.starttime)
-            tr.trim(starttime=stime)
+            if stime < etime:
+                tr.trim(starttime=stime)
+            else:
+                tr.fail('The \'cut\' processing step resulting in '
+                        'incompatible start and end times.')
             logging.debug('After cut start time: %s ' % tr.stats.starttime)
         tr.setProvenance(
             'cut',
