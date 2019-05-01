@@ -230,12 +230,12 @@ processing:
         filter_order: 5
         number_of_passes: 2
 
-    - detrend:
-        # The current baseline correction method fits a sixth-order polynomial
-        # to the displacement time series, and sets the zeroth- and first-order
-        # terms to be zero. The second derivative of the fit polynomial is then
-        # removed from the acceleration time series.
-        detrending_method: baseline_sixth_order
+#    - detrend:
+#        # The current baseline correction method fits a sixth-order polynomial
+#        # to the displacement time series, and sets the zeroth- and first-order
+#        # terms to be zero. The second derivative of the fit polynomial is then
+#        # removed from the acceleration time series.
+#        detrending_method: baseline_sixth_order
 
     - fit_spectra:
         # Fit a Brune spectra to the data by adjusting stress drop with an

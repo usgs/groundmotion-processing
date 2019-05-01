@@ -303,6 +303,7 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
                         is_acceleration=True,
                         is_vertical=True,
                         is_north=False)
+                horizontal_angle = 0.0
             elif (
                 horizontal_angle > 315 or
                 horizontal_angle < 45 or

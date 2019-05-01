@@ -249,6 +249,12 @@ def _read_volume_one(filename, line_offset, location='', units='acc'):
         data = _read_lines(skip_rows, max_rows, widths, filename)
         acc_data = data[:hdr['npts']]
         evenly_spaced = True
+        # Sometimes, npts is incrrectly specified, leading to nans
+        # in the resulting data. Fix that here
+        if np.any(np.isnan(acc_data)):
+            while np.isnan(acc_data[-1]):
+                acc_data = acc_data[:-1]
+            hdr['npts'] = len(acc_data)
     else:
         # acceleration data is interleaved between time data
         max_rows = int(np.ceil(hdr['npts'] / 5))
