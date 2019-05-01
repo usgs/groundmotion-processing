@@ -188,6 +188,9 @@ def read_dmg(filename, **kwargs):
 
     stream = StationStream([])
     for trace in trace_list:
+        # For our purposes, we only want acceleration, so lets only return
+        # that; we may need to change this later if others start using this
+        # code and want to read in the other data.
         if trace.stats['standard']['units'] == units:
             stream.append(trace)
     return [stream]
@@ -343,6 +346,12 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
             traces += [acc_trace]
         skip_rows += int(acc_rows) + 1
 
+    # -------------------------------------------------------------------------
+    # NOTE: The way we were initially reading velocity and displacement data was
+    # not correct. I'm deleting it for now since we don't need it. If/when we
+    # revisit this we need to be more careful about how this is handled.
+    # -------------------------------------------------------------------------
+
     # read velocity data
     vel_hdr = hdr.copy()
     vel_hdr['standard']['units'] = 'vel'
@@ -352,14 +361,6 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
             filename, skip_rows, vel_hdr['npts'])
         vel_data = _read_lines(skip_rows + 1, vel_rows, vel_fmt, filename)
         vel_data = vel_data[:vel_hdr['npts']]
-        if unit in UNIT_CONVERSIONS:
-            vel_data *= UNIT_CONVERSIONS[unit]
-            logging.debug('Data converted from %s to cm/s/s' % (unit))
-        else:
-            raise GMProcessException('DMG: %s is not a supported unit.' % unit)
-        vel_trace = StationTrace(vel_data.copy(), Stats(vel_hdr.copy()))
-        if units == 'vel':
-            traces += [vel_trace]
         skip_rows += int(vel_rows) + 1
 
     # read displacement data
@@ -371,15 +372,8 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
             filename, skip_rows, disp_hdr['npts'])
         disp_data = _read_lines(skip_rows + 1, disp_rows, disp_fmt, filename)
         disp_data = disp_data[:disp_hdr['npts']]
-        if unit in UNIT_CONVERSIONS:
-            disp_data *= UNIT_CONVERSIONS[unit]
-            logging.debug('Data converted from %s to cm/s/s' % (unit))
-        else:
-            raise GMProcessException('DMG: %s is not a supported unit.' % unit)
-        disp_trace = StationTrace(disp_data.copy(), Stats(disp_hdr.copy()))
-        if units == 'disp':
-            traces += [disp_trace]
         skip_rows += int(disp_rows) + 1
+
     new_offset = skip_rows + 1  # there is an 'end of record' line after the data]
     return (traces, new_offset)
 
