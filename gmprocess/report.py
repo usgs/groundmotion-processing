@@ -20,7 +20,7 @@ PREAMBLE = """
 % grffile allows for multiple dots in image file name
 \\usepackage{grffile}
 
-% Turn off page numbers
+% Turn off default page numbers
 \\usepackage{nopageno}
 
 % Needed for table rules
@@ -33,10 +33,20 @@ PREAMBLE = """
 \\geometry{
    left=0.75in,
    top=0.5in,
-   total={7in,10in}
+   total={7in,10in},
+   includeheadfoot
 }
 
 \setlength\parindent{0pt}
+
+% Use custom headers
+\\usepackage{fancyhdr}
+\\pagestyle{fancy}
+\\fancyhf{}
+\\renewcommand{\headrulewidth}{0pt}
+\\chead{[RHEAD]}
+\\rfoot{\\thepage}
+\\lfoot{\\today}
 
 \\begin{document}
 """
@@ -78,6 +88,15 @@ def build_report(sc, directory, origin, config=None):
 
     # Initialize report string with PREAMBLE
     report = PREAMBLE
+    try:
+        timestr = origin['time'].strftime('%m/%d/%Y, %H:%M:%S')
+    except:
+        timestr = origin['time']
+    finally:
+        timestr = ""
+    report = report.replace(
+        '[RHEAD]', 'M%s %s, %s' % (origin['magnitude'], origin['id'], timestr)
+    )
 
     # Loop over each StationStream and append it's page to the report
     # do not include more than three.

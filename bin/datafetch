@@ -393,10 +393,13 @@ def main(pparser, args):
                        'system for report file "%s"')
                 print(fmt % latest_tex)
             else:
-                fmt = '%s -halt-on-error -output-directory=%s %s'
-                tpl = (latexpdf, args.outdir, latest_tex)
+                fmt = '%s -halt-on-error %s'
+                tpl = (latexpdf, os.path.split(latest_tex)[-1])
                 cmd = fmt % tpl
+                odir = os.getcwd()
+                os.chdir(args.outdir)
                 res, stdout, stderr = get_command_output(cmd)
+                os.chdir(odir)
                 if not res:
                     fmt = ('LateX to PDF conversion failed with '
                            'errors: "%s" "%s"')

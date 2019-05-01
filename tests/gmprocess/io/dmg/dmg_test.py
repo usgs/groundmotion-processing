@@ -119,25 +119,6 @@ def test_dmg():
         for trace in stream1:
             assert trace.stats['standard']['units'] == 'acc'
 
-        # test velocity from the file
-        stream2 = read_dmg(filename, units='vel')[0]
-
-        # test for three traces
-        assert stream2.count() == 3
-
-        # test that the traces are velocity
-        for trace in stream2:
-            assert trace.stats['standard']['units'] == 'vel'
-
-        # test displacement from the file
-        stream3 = read_dmg(filename, units='disp')[0]
-
-        # test for three traces
-        assert stream3.count() == 3
-
-        # test that the traces are displacement
-        for trace in stream3:
-            assert trace.stats['standard']['units'] == 'disp'
 
     # Test metadata
     stream = read_dmg(file1)[0]
