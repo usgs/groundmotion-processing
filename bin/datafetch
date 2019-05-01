@@ -287,8 +287,11 @@ def main(pparser, args):
         print('Plotting raw data...')
         for stream in collection:
             outfile = os.path.join(rawdir, '%s.png' % stream.get_id())
-            stream.plot(outfile=outfile)
-            plt.close()
+            try:
+                stream.plot(outfile=outfile)
+                plt.close()
+            except Exception as e:
+                logging.info('Error in plotting raw data: %s' % e)
 
     if args.download_only:
         fmt = '%i raw files with plots saved to %s.'

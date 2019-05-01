@@ -91,9 +91,10 @@ def build_report(sc, directory, origin, config=None):
         prov_latex = get_prov_latex(st)
 
         report += prov_latex
+        report += '\n'
         if st[0].hasParameter('signal_split'):
             pick_method = st[0].getParameter('signal_split')['picker_type']
-            report += '\n' + 'Pick Method: %s\n\n' % pick_method
+            report += 'Pick Method: %s\n\n' % pick_method
         if not st.passed:
             for tr in st:
                 if tr.hasParameter('failure'):

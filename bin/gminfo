@@ -14,8 +14,6 @@ import pandas as pd
 
 # local imports
 from gmprocess.io.read import _get_format, read_data
-from gmprocess.exception import GMProcessException
-from gmprocess.logging import setup_logger
 from gmprocess.args import add_shared_args
 from gmprocess.stationtrace import REV_PROCESS_LEVELS
 

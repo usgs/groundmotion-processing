@@ -140,9 +140,9 @@ def test_workspace():
                                    'Attribute Value': 'counts'})
 
             last_row = pd.Series({'Record': 'NZ.WTMC.HNZ',
-                                  'Processing Step': 'Detrend',
-                                  'Step Attribute': 'detrending_method',
-                                  'Attribute Value': 'baseline_sixth_order'})
+                                  'Processing Step': 'Lowpass Filter',
+                                  'Step Attribute': 'number_of_passes',
+                                  'Attribute Value': 2})
             assert provenance.iloc[0].equals(first_row)
             assert provenance.iloc[-1].equals(last_row)
 
