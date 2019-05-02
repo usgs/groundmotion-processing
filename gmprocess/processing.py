@@ -110,13 +110,12 @@ def process_streams(streams, origin, config=None):
     for st in processed_streams:
         logging.info('Checking stream %s...' % st.get_id())
         # Estimate noise/signal split time
-        split_conf = window_conf['split']
         st = signal_split(
             st,
+            origin,
             event_time=event_time,
             event_lon=event_lon,
-            event_lat=event_lat,
-            **split_conf)
+            event_lat=event_lat)
 
         # Estimate end of signal
         end_conf = window_conf['signal_end']

@@ -3,6 +3,7 @@ import tempfile
 import os.path
 import logging
 import glob
+import pprint
 
 # third party imports
 import pytz
@@ -29,6 +30,13 @@ RADIUS = 4  # dd
 TIME_BEFORE = 10  # seconds
 TIME_AFTER = 420  # seconds
 CHANNELS = ["HN[ZNE]"]  # default to only get strong motion stations
+EXCLUDE_NETWORKS = ['SY']
+EXCLUDE_STATIONS = []
+REJECT_CHANNELS_WITH_GAPS = True
+MINIMUM_LENGTH = 0.1
+SANITIZE = True
+MINIMUM_INTERSTATION_DISTANCE_IN_M = 0.0
+NETWORK = '*'
 
 URL_ERROR_CODE = 200  # if we get this from a request, we're good
 
@@ -74,6 +82,13 @@ class FDSNFetcher(DataFetcher):
         cfg_time_before = None
         cfg_time_after = None
         cfg_channels = None
+        exclude_networks = EXCLUDE_NETWORKS
+        exclude_stations = EXCLUDE_STATIONS
+        reject_channels_with_gaps = REJECT_CHANNELS_WITH_GAPS
+        minimum_length = MINIMUM_LENGTH
+        sanitize = SANITIZE
+        minimum_interstation_distance_in_m = MINIMUM_INTERSTATION_DISTANCE_IN_M
+        network = NETWORK
         if 'fetchers' in config:
             if 'FDSNFetcher' in config['fetchers']:
                 fetch_cfg = config['fetchers']['FDSNFetcher']
@@ -85,7 +100,20 @@ class FDSNFetcher(DataFetcher):
                     cfg_time_after = float(fetch_cfg['time_after'])
                 if 'channels' in fetch_cfg:
                     cfg_channels = fetch_cfg['channels']
-
+                if 'exclude_networks' in fetch_cfg:
+                    exclude_networks = fetch_cfg['exclude_networks']
+                if 'exclude_stations' in fetch_cfg:
+                    exclude_stations = fetch_cfg['exclude_stations']
+                if 'reject_channels_with_gaps' in fetch_cfg:
+                    reject_channels_with_gaps = fetch_cfg['reject_channels_with_gaps']
+                if 'minimum_length' in fetch_cfg:
+                    minimum_length = fetch_cfg['minimum_length']
+                if 'sanitize' in fetch_cfg:
+                    sanitize = fetch_cfg['sanitize']
+                if 'minimum_interstation_distance_in_m' in fetch_cfg:
+                    minimum_interstation_distance_in_m = fetch_cfg['minimum_interstation_distance_in_m']
+                if 'network' in fetch_cfg:
+                    network = fetch_cfg['network']
         radius = _get_first_value(radius, cfg_radius, RADIUS)
         time_before = _get_first_value(time_before,
                                        cfg_time_before,
@@ -106,6 +134,14 @@ class FDSNFetcher(DataFetcher):
         self.depth = depth
         self.magnitude = magnitude
         self.channels = channels
+        self.network = network
+
+        self.exclude_networks = exclude_networks
+        self.exclude_stations = exclude_stations
+        self.reject_channels_with_gaps = reject_channels_with_gaps
+        self.minimum_length = minimum_length
+        self.sanitize = sanitize
+        self.minimum_interstation_distance_in_m = minimum_interstation_distance_in_m
 
         self.drop_non_free = drop_non_free
         self.BOUNDS = [-180, 180, -90, 90]
@@ -169,16 +205,26 @@ class FDSNFetcher(DataFetcher):
             # Define the temporal bounds of the waveform data.
             starttime=origin_time - self.time_before,
             endtime=origin_time + self.time_after,
-
-            reject_channels_with_gaps=True,
+            network=self.network, station='*',
+            location='*',
+            location_priorities=['*'],
+            reject_channels_with_gaps=self.reject_channels_with_gaps,
             # Any trace that is shorter than 95 % of the
             # desired total duration will be discarded.
-            minimum_length=0.95,
-
-            # No two stations should be closer than 10 km to each other.
-            minimum_interstation_distance_in_m=10E3,
+            minimum_length=self.minimum_length,
+            sanitize=self.sanitize,
+            minimum_interstation_distance_in_m=self.minimum_interstation_distance_in_m,
+            exclude_networks=self.exclude_networks,
+            exclude_stations=self.exclude_stations,
 
             channel_priorities=self.channels)
+
+        # DEBUGGING
+        pp = pprint.PrettyPrinter()
+        pp.pprint(domain.__dict__)
+        print('***************************')
+        pp.pprint(restrictions.__dict__)
+        # DEBUGGING
 
         # No specified providers will result in all known ones being queried.
         mdl = MassDownloader()

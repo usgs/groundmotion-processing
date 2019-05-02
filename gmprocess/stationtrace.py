@@ -211,6 +211,11 @@ class StationTrace(Trace):
                     'bridge',
                     'dam',
                     'borehole',
+                    'hole',
+                    'crest',
+                    'toe',
+                    'foundation',
+                    'body',
                     'roof',
                     'floor']
         for ftype in non_free:

@@ -19,7 +19,8 @@ from openquake.hazardlib import imt
 
 from obspy.geodetics.base import gps2dist_azimuth
 
-from gmprocess.phase import (pick_power, pick_ar, pick_baer, pick_kalkan)
+from gmprocess.phase import (
+    pick_power, pick_ar, pick_baer, pick_kalkan, pick_travel)
 from gmprocess.config import get_config
 
 M_TO_KM = 1.0 / 1000
@@ -32,6 +33,7 @@ def window_checks(st, min_noise_duration=0.5, min_signal_duration=5.0):
     Args:
         st (StationStream):
             Stream of data.
+
         min_noise_duration (float):
             Minimum duration of noise window (sec).
         min_signal_duration (float):
@@ -62,37 +64,36 @@ def window_checks(st, min_noise_duration=0.5, min_signal_duration=5.0):
 
 
 def signal_split(
-        st, event_time=None, event_lon=None, event_lat=None,
-        method='velocity', vsplit=7.0, picker_config=None,
+        st, origin, event_time=None, event_lon=None, event_lat=None,
+        picker_config=None,
         config=None):
     """
     This method tries to identifies the boundary between the noise and signal
     for the waveform. The split time is placed inside the
     'processing_parameters' key of the trace stats.
 
-    If split_method is 'velocity', then the split between the noise and signal
-    window is approximated as the arrival time of a phase with velocity equal
-    to vsplit.
-
-    If split_method is equal to 'p_arrival', then the P-wave arrival is
-    used as the split between the noise and signal windows. Multiple picker
-    methods are suppored and can be configured in the config file
+    The P-wave arrival is used as the split between the noise and signal
+    windows. Multiple picker methods are suppored and can be configured in the
+    config file
     '~/.gmprocess/picker.yml
 
     Args:
         st (StationStream):
             Stream of data.
+        origin (dict):
+            Dictionary with the following keys:
+              - id
+              - magnitude
+              - time (UTCDateTime object)
+              - lon
+              - lat
+              - depth
         event_time (UTCDateTime):
             Event origin time.
         event_lon (float):
             Event longitude.
         event_lat (float):
             Event latitude.
-        method (str):
-            Method for splitting noise and signal windows. Either 'p_arrival'
-            or 'velocity'.
-        vsplit (float):
-            Velocity (km/s) for splitting noise and signal.
 
     Returns:
         trace with stats dict updated to include a
@@ -102,61 +103,53 @@ def signal_split(
         picker_config = get_config(section='pickers')
     if config is None:
         config = get_config()
-    if method == 'p_arrival':
-        pick_methods = ['ar', 'baer', 'power', 'kalkan']
-        columns = ['Stream', 'Method', 'Pick_Time', 'Mean_SNR']
-        df = pd.DataFrame(columns=columns)
-        for pick_method in pick_methods:
-            try:
-                if pick_method == 'ar':
-                    loc, mean_snr = pick_ar(
-                        st, picker_config=picker_config, config=config)
-                elif pick_method == 'baer':
-                    loc, mean_snr = pick_baer(
-                        st, picker_config=picker_config, config=config)
-                elif pick_method == 'power':
-                    loc, mean_snr = pick_power(
-                        st, picker_config=picker_config, config=config)
-                elif pick_method == 'kalkan':
-                    loc, mean_snr = pick_kalkan(st,
-                                                picker_config=picker_config,
-                                                config=config)
-                elif pick_method == 'yeck':
-                    loc, mean_snr = pick_kalkan(st)
-            except Exception:
-                loc = -1
-                mean_snr = np.nan
-            row = {'Stream': st.get_id(),
-                   'Method': pick_method,
-                   'Pick_Time': loc,
-                   'Mean_SNR': mean_snr}
-            df = df.append(row, ignore_index=True)
 
-        max_snr = df['Mean_SNR'].max()
-        if not np.isnan(max_snr):
-            maxrow = df[df['Mean_SNR'] == max_snr].iloc[0]
-            tsplit = st[0].times('utcdatetime')[0] + maxrow['Pick_Time']
-            preferred_picker = maxrow['Method']
-        else:
-            tsplit = -1
+    pick_methods = ['ar', 'baer', 'power', 'kalkan', 'travel_time']
+    columns = ['Stream', 'Method', 'Pick_Time', 'Mean_SNR']
+    df = pd.DataFrame(columns=columns)
+    for pick_method in pick_methods:
+        try:
+            if pick_method == 'ar':
+                loc, mean_snr = pick_ar(
+                    st, picker_config=picker_config, config=config)
+            elif pick_method == 'baer':
+                loc, mean_snr = pick_baer(
+                    st, picker_config=picker_config, config=config)
+            elif pick_method == 'power':
+                loc, mean_snr = pick_power(
+                    st, picker_config=picker_config, config=config)
+            elif pick_method == 'kalkan':
+                loc, mean_snr = pick_kalkan(st,
+                                            picker_config=picker_config,
+                                            config=config)
+            elif pick_method == 'travel_time':
+                loc, mean_snr = pick_travel(st, origin,
+                                            picker_config=picker_config,
+                                            config=config)
+            elif pick_method == 'yeck':
+                loc, mean_snr = pick_kalkan(st)
+        except Exception:
+            loc = -1
+            mean_snr = np.nan
+        row = {'Stream': st.get_id(),
+               'Method': pick_method,
+               'Pick_Time': loc,
+               'Mean_SNR': mean_snr}
+        df = df.append(row, ignore_index=True)
 
-    elif method == 'velocity':
-        epi_dist = gps2dist_azimuth(
-            lat1=event_lat,
-            lon1=event_lon,
-            lat2=st[0].stats['coordinates']['latitude'],
-            lon2=st[0].stats['coordinates']['longitude'])[0] * M_TO_KM
-        tsplit = event_time + epi_dist / vsplit
-        preferred_picker = None
+    max_snr = df['Mean_SNR'].max()
+    if not np.isnan(max_snr):
+        maxrow = df[df['Mean_SNR'] == max_snr].iloc[0]
+        tsplit = st[0].times('utcdatetime')[0] + maxrow['Pick_Time']
+        preferred_picker = maxrow['Method']
     else:
-        raise ValueError('Split method must be "p_arrival" or "velocity"')
+        tsplit = -1
 
     if tsplit >= st[0].times('utcdatetime')[0]:
         # Update trace params
         split_params = {
             'split_time': tsplit,
-            'method': method,
-            'vsplit': vsplit,
+            'method': 'p_arrival',
             'picker_type': preferred_picker
         }
         for tr in st:

@@ -7,10 +7,15 @@ import numpy as np
 from scipy.signal import butter, lfilter, hilbert
 import scipy.linalg as alg
 from obspy.signal.trigger import ar_pick, pk_baer
+from obspy.core.utcdatetime import UTCDateTime
+from obspy.geodetics.base import locations2degrees
+from obspy.taup import TauPyModel
 
 # local imports
 from gmprocess.exception import GMProcessException
 from gmprocess.config import get_config
+
+NAN_TIME = UTCDateTime('1970-01-01T00:00:00')
 
 
 def butter_bandpass(lowcut, highcut, fs, order=5):
@@ -304,6 +309,28 @@ def pick_baer(stream, picker_config=None, config=None):
         raise GMProcessException(fmt % tpl)
     mean_snr = calc_snr(stream, minloc)
 
+    return (minloc, mean_snr)
+
+
+def pick_travel(stream, origin, picker_config=None, config=None):
+    model = TauPyModel(model="iasp91")
+    if stream[0].stats.starttime == NAN_TIME:
+        return (-1, 0)
+    lat = origin['lat']
+    lon = origin['lon']
+    depth = origin['depth']
+    slat = stream[0].stats.coordinates.latitude
+    slon = stream[0].stats.coordinates.longitude
+
+    dist_deg = locations2degrees(lat, lon, slat, slon)
+    arrivals = model.get_travel_times(source_depth_in_km=int(depth),
+                                      distance_in_degree=dist_deg,
+                                      phase_list=['P', 'p', 'Pn'])
+    if not len(arrivals):
+        return (-1, 0)
+    arrival = arrivals[0]
+    minloc = arrival.time
+    mean_snr = calc_snr(stream, minloc)
     return (minloc, mean_snr)
 
 

@@ -23,6 +23,8 @@ INDENT = 2
 DEFAULT_IMTS = ['PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
 DEFAULT_IMCS = ['GREATER_OF_TWO_HORIZONTALS', 'CHANNELS']
 
+NETWORKS_USING_LOCATION = ['RE']
+
 
 class StreamCollection(object):
     """
@@ -378,10 +380,10 @@ class StreamCollection(object):
             for idx2, trace2 in enumerate(trace_list):
                 if idx1 != idx2 and idx1 not in all_matches:
                     if (
-                        network == trace2.stats['network']
-                        and station == trace2.stats['station']
-                        and inst == trace2.stats['channel'][0:2]
-                        and free_field == trace2.free_field
+                        network == trace2.stats['network'] and
+                        station == trace2.stats['station'] and
+                        inst == trace2.stats['channel'][0:2] and
+                        free_field == trace2.free_field
                     ):
                         matches.append(idx2)
             if len(matches) > 1:
@@ -399,12 +401,34 @@ class StreamCollection(object):
                 grouped_trace_list.append(
                     trace_list[i]
                 )
-            st = StationStream(grouped_trace_list)
-            if len(st):
-                # Put tag back as a stream attribute, assuming that the
-                # tag has stayed the same through the grouping process
-                if st[0].stats.tag:
-                    st.tag = st[0].stats.tag
+            # some networks (Bureau of Reclamation, at the time of this writing)
+            # use the location field to indicate different sensors at (roughly)
+            # the same location.
+            # if we know this (as in the case of BOR), we can use this to trim
+            # the stations into 3-channel streams.
+            streams = split_station(grouped_trace_list)
+
+            for st in streams:
+                if len(st):
+                    # Put tag back as a stream attribute, assuming that the
+                    # tag has stayed the same through the grouping process
+                    if st[0].stats.tag:
+                        st.tag = st[0].stats.tag
                 grouped_streams.append(st)
 
         self.streams = grouped_streams
+
+
+def split_station(grouped_trace_list):
+    if grouped_trace_list[0].stats.network in NETWORKS_USING_LOCATION:
+        streams_dict = {}
+        for trace in grouped_trace_list:
+            if trace.stats.location in streams_dict:
+                streams_dict[trace.stats.location] += trace
+            else:
+                streams_dict[trace.stats.location] = StationStream(traces=[
+                                                                   trace])
+        streams = list(streams_dict.values())
+    else:
+        streams = [StationStream(traces=grouped_trace_list)]
+    return streams
