@@ -104,46 +104,49 @@ def signal_split(
     if config is None:
         config = get_config()
 
-    pick_methods = ['ar', 'baer', 'power', 'kalkan', 'travel_time']
-    columns = ['Stream', 'Method', 'Pick_Time', 'Mean_SNR']
-    df = pd.DataFrame(columns=columns)
-    for pick_method in pick_methods:
-        try:
-            if pick_method == 'ar':
-                loc, mean_snr = pick_ar(
-                    st, picker_config=picker_config, config=config)
-            elif pick_method == 'baer':
-                loc, mean_snr = pick_baer(
-                    st, picker_config=picker_config, config=config)
-            elif pick_method == 'power':
-                loc, mean_snr = pick_power(
-                    st, picker_config=picker_config, config=config)
-            elif pick_method == 'kalkan':
-                loc, mean_snr = pick_kalkan(st,
-                                            picker_config=picker_config,
-                                            config=config)
-            elif pick_method == 'travel_time':
-                loc, mean_snr = pick_travel(st, origin,
-                                            picker_config=picker_config,
-                                            config=config)
-            elif pick_method == 'yeck':
-                loc, mean_snr = pick_kalkan(st)
-        except Exception:
-            loc = -1
-            mean_snr = np.nan
-        row = {'Stream': st.get_id(),
-               'Method': pick_method,
-               'Pick_Time': loc,
-               'Mean_SNR': mean_snr}
-        df = df.append(row, ignore_index=True)
-
-    max_snr = df['Mean_SNR'].max()
-    if not np.isnan(max_snr):
-        maxrow = df[df['Mean_SNR'] == max_snr].iloc[0]
-        tsplit = st[0].times('utcdatetime')[0] + maxrow['Pick_Time']
-        preferred_picker = maxrow['Method']
+    loc, mean_snr = pick_travel(st, origin,
+                                picker_config=picker_config,
+                                config=config)
+    if loc > 0:
+        tsplit = st[0].times('utcdatetime')[0] + loc
+        preferred_picker = 'travel_time'
     else:
-        tsplit = -1
+        pick_methods = ['ar', 'baer', 'power', 'kalkan']
+        columns = ['Stream', 'Method', 'Pick_Time', 'Mean_SNR']
+        df = pd.DataFrame(columns=columns)
+        for pick_method in pick_methods:
+            try:
+                if pick_method == 'ar':
+                    loc, mean_snr = pick_ar(
+                        st, picker_config=picker_config, config=config)
+                elif pick_method == 'baer':
+                    loc, mean_snr = pick_baer(
+                        st, picker_config=picker_config, config=config)
+                elif pick_method == 'power':
+                    loc, mean_snr = pick_power(
+                        st, picker_config=picker_config, config=config)
+                elif pick_method == 'kalkan':
+                    loc, mean_snr = pick_kalkan(st,
+                                                picker_config=picker_config,
+                                                config=config)
+                elif pick_method == 'yeck':
+                    loc, mean_snr = pick_kalkan(st)
+            except Exception:
+                loc = -1
+                mean_snr = np.nan
+            row = {'Stream': st.get_id(),
+                   'Method': pick_method,
+                   'Pick_Time': loc,
+                   'Mean_SNR': mean_snr}
+            df = df.append(row, ignore_index=True)
+
+        max_snr = df['Mean_SNR'].max()
+        if not np.isnan(max_snr):
+            maxrow = df[df['Mean_SNR'] == max_snr].iloc[0]
+            tsplit = st[0].times('utcdatetime')[0] + maxrow['Pick_Time']
+            preferred_picker = maxrow['Method']
+        else:
+            tsplit = -1
 
     if tsplit >= st[0].times('utcdatetime')[0]:
         # Update trace params

@@ -91,11 +91,11 @@ def STALTA_Earle(data, datao, sps, STAW, STAW2, LTAW, hanning, threshold,
 
     for i in range(np.size(envelope) - lta_samples - 1):
         lta[i + lta_samples + 1] = np.sum(envelope[i:i + lta_samples])
-        sta[i + lta_samples + 1] = np.sum(envelope[i + lta_samples + 1:i
-                                                   + lta_samples + sta_samples + 1])
-        sta2[i + lta_samples + 1] = np.sum(envelope[i + lta_samples + 1:i
-                                                    + lta_samples + 1
-                                                    + sta_samples2])
+        sta[i + lta_samples + 1] = np.sum(envelope[i + lta_samples + 1:i +
+                                                   lta_samples + sta_samples + 1])
+        sta2[i + lta_samples + 1] = np.sum(envelope[i + lta_samples + 1:i +
+                                                    lta_samples + 1 +
+                                                    sta_samples2])
 
     lta = lta / float(lta_samples)
     sta = sta / float(sta_samples)
@@ -111,8 +111,8 @@ def STALTA_Earle(data, datao, sps, STAW, STAW2, LTAW, hanning, threshold,
     triggers_off = []
 
     for i in range(np.size(ratio) - 1):
-        if(trigger is False and ratio[i] >= threshold
-           and ratio2[i] >= threshold2 and ratio[i] > ratio[i + 1]):
+        if(trigger is False and ratio[i] >= threshold and
+           ratio2[i] >= threshold2 and ratio[i] > ratio[i + 1]):
             triggers_on.append(i)
             trigger = True
         elif(trigger is True and ratio[i] <= threshdrop):
@@ -319,6 +319,7 @@ def pick_travel(stream, origin, picker_config=None, config=None):
     lat = origin['lat']
     lon = origin['lon']
     depth = origin['depth']
+    etime = origin['time']
     slat = stream[0].stats.coordinates.latitude
     slon = stream[0].stats.coordinates.longitude
 
@@ -329,7 +330,7 @@ def pick_travel(stream, origin, picker_config=None, config=None):
     if not len(arrivals):
         return (-1, 0)
     arrival = arrivals[0]
-    minloc = arrival.time
+    minloc = arrival.time + (etime - stream[0].stats.starttime)
     mean_snr = calc_snr(stream, minloc)
     return (minloc, mean_snr)
 
@@ -554,8 +555,8 @@ def pphase_pick(trace, period=None, damping=0.6, nbins=None,
         trace_copy.detrend(type='linear')
 
     if peak_selection == 'True':
-        ind_peak = np.nonzero(np.abs(trace_copy.data)
-                              == np.max(np.abs(trace_copy.data)))
+        ind_peak = np.nonzero(np.abs(trace_copy.data) ==
+                              np.max(np.abs(trace_copy.data)))
         trace_copy.data = trace_copy.data[0:ind_peak[0][0]]
 
     # Construct a fixed-base viscously damped SDF oscillator

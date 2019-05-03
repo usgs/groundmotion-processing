@@ -317,10 +317,14 @@ def _read_header(hdr_data, station, name, component, data_format,
         year, month, day, hour, minute, seconds, microseconds)
 
     # figure out station coordinates
-    coordinates['latitude'] = -hdr_data[2, 0] + \
-        ((hdr_data[2, 1] + hdr_data[2, 2] / 60.0) / 60.0)
-    coordinates['longitude'] = hdr_data[2, 3] + \
-        ((hdr_data[2, 4] + hdr_data[2, 5] / 60.0) / 60.0)
+    latdg = hdr_data[2, 0]
+    latmn = hdr_data[2, 1]
+    latsc = hdr_data[2, 2]
+    coordinates['latitude'] = _dms_to_dd(latdg, latmn, latsc) * -1
+    londg = hdr_data[2, 3]
+    lonmn = hdr_data[2, 4]
+    lonsc = hdr_data[2, 5]
+    coordinates['longitude'] = _dms_to_dd(londg, lonmn, lonsc)
     coordinates['elevation'] = 0.0
 
     # get other standard metadata
@@ -373,3 +377,9 @@ def _get_channel(component):
                 comp_angle = 180 + angle
 
     return comp_angle
+
+
+def _dms_to_dd(degrees, minutes, seconds):
+    # convert degrees/minutes/seconds to decimal degrees
+    dd = degrees + minutes / 60 + seconds / 3600
+    return dd
