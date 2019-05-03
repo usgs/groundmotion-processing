@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import os
-from gmprocess.io.seedname import get_channel_name
+from gmprocess.io.seedname import get_channel_name, is_channel_north
 
 
 def test_channel():
@@ -36,6 +36,20 @@ def test_channel():
     assert tchannel4 == 'HH1'
 
 
+def test_north():
+    # north-ish angles
+    assert is_channel_north(0)
+    assert is_channel_north(44)
+    assert is_channel_north(136)
+    assert is_channel_north(224)
+
+    assert not is_channel_north(90)
+    assert not is_channel_north(45)
+    assert not is_channel_north(314)
+    assert not is_channel_north(134)
+
+
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_channel()
+    test_north()

@@ -31,5 +31,22 @@ def get_channel_name(sample_rate, is_acceleration=True,
         if is_north:
             number = '1'
 
-    channel = band+code+number
+    channel = band + code + number
     return channel
+
+
+def is_channel_north(angle):
+    '''Determine whether horizontal angle is closer to North/South than East/West.
+
+    Args:
+        angle (float):
+            Input horizontal orientation of the sensor (0-360).
+
+    Returns:
+        bool: 
+            True if closer to North/South than East/West, False otherwise.
+    '''
+    if (angle > 315 or angle < 45) or (angle > 135 and angle < 225):
+        return True
+    else:
+        return False
