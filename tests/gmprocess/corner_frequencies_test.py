@@ -2,6 +2,7 @@
 import os
 
 import numpy as np
+from obspy.core.utcdatetime import UTCDateTime
 
 from gmprocess.streamcollection import StreamCollection
 from gmprocess.io.read import read_data
@@ -34,16 +35,16 @@ def test_corner_frequencies():
     for st in processed_streams:
         if st.passed:
             # Estimate noise/signal split time
-            split_conf = window_conf['split']
+            origin['time'] = UTCDateTime(origin['time'])
             event_time = origin['time']
             event_lon = origin['lon']
             event_lat = origin['lat']
             st = signal_split(
                 st,
+                origin,
                 event_time=event_time,
                 event_lon=event_lon,
-                event_lat=event_lat,
-                **split_conf)
+                event_lat=event_lat)
 
             # Estimate end of signal
             end_conf = window_conf['signal_end']
@@ -101,7 +102,7 @@ def test_corner_frequencies():
             hp.append(cfdict['highpass'])
     np.testing.assert_allclose(
         np.sort(hp),
-        [0.0030517578125, 0.013544549219578182, 0.02804439343254479, ],
+        [0.00751431, 0.01354455, 0.04250735],
         atol=1e-6
     )
 

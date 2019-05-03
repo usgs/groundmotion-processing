@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from gmprocess.phase import (PowerPicker, pphase_pick, pick_ar,
-                             pick_kalkan, pick_power, pick_baer, pick_yeck)
+                             pick_kalkan, pick_power, pick_baer,
+                             pick_yeck, pick_travel)
 from gmprocess.io.read import read_data
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.exception import GMProcessException
@@ -103,13 +104,13 @@ def test_all_pickers():
         x = 1
     stations = df['Stream'].unique()
     cmpdict = {'TW.ECU.BN': 'kalkan',
-               'TW.ELD.BN': 'power',
-               'TW.EGF.BN': 'power',
-               'TW.EAS.BN': 'power',
-               'TW.EDH.BN': 'power',
-               'TK.4304.HN': 'kalkan',
-               'TK.0921.HN': 'baer',
-               'TK.5405.HN': 'power',
+               'TW.ELD.BN': 'ar',
+               'TW.EGF.BN': 'ar',
+               'TW.EAS.BN': 'ar',
+               'TW.EDH.BN': 'ar',
+               'TK.4304.HN': 'ar',
+               'TK.0921.HN': 'ar',
+               'TK.5405.HN': 'ar',
                'NZ.HSES.HN': 'baer',
                'NZ.WTMC.HN': 'baer',
                'NZ.THZ.HN': 'power'}
@@ -119,6 +120,21 @@ def test_all_pickers():
         maxrow = station_df[station_df['Mean_SNR'] == max_snr].iloc[0]
         method = maxrow['Method']
         assert cmpdict[station] == method
+
+
+def test_travel_time():
+    datafiles, origin = read_data_dir('geonet', 'us1000778i', '*.V1A')
+    streams = []
+    for datafile in datafiles:
+        streams += read_data(datafile)
+
+    cmps = {'NZ.HSES.HN': 42.118045132851641,
+            'NZ.WTMC.HN': 40.77244584723671,
+            'NZ.THZ.HN': 42.025007954412246}
+    for stream in streams:
+        origin['time'] = UTCDateTime(origin['time'])
+        minloc, mean_snr = pick_travel(stream, origin)
+        np.testing.assert_almost_equal(minloc, cmps[stream.get_id()])
 
 
 def get_streams():
@@ -138,3 +154,4 @@ if __name__ == '__main__':
     test_all_pickers()
     test_pphase_picker()
     test_p_pick()
+    test_travel_time()

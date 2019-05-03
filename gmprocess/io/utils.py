@@ -138,7 +138,13 @@ def _walk_and_unzip(directory):
     for dirpath, sub_dirs, files in os.walk(directory, topdown=False):
         for f in files:
             full_file = os.path.join(dirpath, f)
-            if zipfile.is_zipfile(full_file):
+            is_zip = False
+            try:
+                zipfile.ZipFile(full_file, 'r')
+                is_zip = True
+            except:
+                pass
+            if is_zip:
                 has_zips = True
                 base, ext = os.path.splitext(f)
                 with zipfile.ZipFile(full_file, 'r') as zip:

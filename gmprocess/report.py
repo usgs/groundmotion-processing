@@ -113,7 +113,7 @@ def build_report(sc, directory, origin, config=None):
         report += '\n'
         if st[0].hasParameter('signal_split'):
             pick_method = st[0].getParameter('signal_split')['picker_type']
-            report += 'Pick Method: %s\n\n' % pick_method
+            report += 'Pick Method: %s\n\n' % str_for_latex(pick_method)
         if not st.passed:
             for tr in st:
                 if tr.hasParameter('failure'):

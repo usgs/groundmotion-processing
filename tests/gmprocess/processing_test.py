@@ -31,6 +31,7 @@ def test_process_streams():
     # Loma Prieta test station (nc216859)
 
     data_files, origin = read_data_dir('geonet', 'us1000778i', '*.V1A')
+    origin['time'] = UTCDateTime(origin['time'])
     streams = []
     for f in data_files:
         streams += read_data(f)
@@ -56,14 +57,14 @@ def test_process_streams():
 
     np.testing.assert_allclose(
         trace_maxes,
-        np.array([157.86557103, 240.42212954, 263.83768676]),
+        np.array([157.81975508, 240.33718094, 263.67804256]),
         rtol=1e-5
     )
 
 
 def test_free_field():
     data_files, origin = read_data_dir('kiknet', 'usp000hzq8')
-
+    origin['time'] = UTCDateTime(origin['time'])
     raw_streams = []
     for dfile in data_files:
         raw_streams += read_data(dfile)

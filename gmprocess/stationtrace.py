@@ -211,6 +211,11 @@ class StationTrace(Trace):
                     'bridge',
                     'dam',
                     'borehole',
+                    'hole',
+                    'crest',
+                    'toe',
+                    'foundation',
+                    'body',
                     'roof',
                     'floor']
         for ftype in non_free:
@@ -631,9 +636,12 @@ def _stats_from_inventory(data, inventory, channelid):
     format_specific = {}
     if station.description is not None and station.description != 'None':
         jsonstr = station.description
-        big_dict = json.loads(jsonstr)
-        standard.update(big_dict['standard'])
-        format_specific = big_dict['format_specific']
+        try:
+            big_dict = json.loads(jsonstr)
+            standard.update(big_dict['standard'])
+            format_specific = big_dict['format_specific']
+        except json.decoder.JSONDecodeError:
+            format_specific['description'] = jsonstr
 
     response = None
     if channel.response is not None:

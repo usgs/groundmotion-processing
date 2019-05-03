@@ -14,6 +14,51 @@ from gmprocess.stationstream import StationStream
 
 IGNORE_FORMATS = ['KNET']
 
+# Bureau of Reclamation has provided a table of location codes with
+# associated descriptions. We are using this primarily to determine whether
+# or not the sensor is free field. You may notice that the
+# "Down Hole Free Field"
+# code we have marked as *not* free field, since borehole sensors do not match
+# our definition of "free field".
+RE_NETWORK = {
+    '10': {'description': 'Free field (rock) in vicinity of crest/toe area', 'free_field': True},
+    '11': {'description': 'Free field (Left Abutment) either crest or toe', 'free_field': True},
+    '12': {'description': 'Free field (Right Abutment) either crest or toe', 'free_field': True},
+    '13': {'description': 'Free field (water) (Towards Left Abutment)', 'free_field': False},
+    '14': {'description': 'Free field (water) (Towards Right Abutment)', 'free_field': False},
+
+    '20': {'description': 'Toe (center)', 'free_field': False},
+    '21': {'description': 'Toe (Left Abutment)', 'free_field': False},
+    '22': {'description': 'Toe (Right Abutment)', 'free_field': False},
+    '23': {'description': 'Toe (Towards Left Abutment)', 'free_field': False},
+    '24': {'description': 'Toe (Towards Right Abutment)', 'free_field': False},
+
+    '30': {'description': 'Crest (center)', 'free_field': False},
+    '31': {'description': 'Crest (Left Abutment)', 'free_field': False},
+    '32': {'description': 'Crest (Right Abutment)', 'free_field': False},
+    '33': {'description': 'Crest (Towards Left Abutment)', 'free_field': False},
+    '34': {'description': 'Crest (Towards Right Abutment)', 'free_field': False},
+
+    '40': {'description': 'Foundation (center)', 'free_field': False},
+    '41': {'description': 'Foundation (Left Abutment)', 'free_field': False},
+    '42': {'description': 'Foundation (Right Abutment)', 'free_field': False},
+    '43': {'description': 'Foundation (Towards Left Abutment)', 'free_field': False},
+    '44': {'description': 'Foundation (Towards Right Abutment)', 'free_field': False},
+
+    '50': {'description': 'Body (center)', 'free_field': False},
+    '51': {'description': 'Body (Left Abutment)', 'free_field': False},
+    '52': {'description': 'Body (Right Abutment)', 'free_field': False},
+    '53': {'description': 'Body (Towards Left Abutment)', 'free_field': False},
+    '54': {'description': 'Body (Towards Right Abutment)', 'free_field': False},
+
+    '60': {'description': 'Down Hole Upper Body', 'free_field': False},
+    '61': {'description': 'Down Hole Mid Body', 'free_field': False},
+    '62': {'description': 'Down Hole Foundation', 'free_field': False},
+    '63': {'description': 'Down Hole Free Field', 'free_field': False},
+}
+
+LOCATION_CODES = {'RE': RE_NETWORK}
+
 
 def _get_station_file(filename, stream):
     filebase, fname = os.path.split(filename)
@@ -73,6 +118,16 @@ def read_fdsn(filename):
         trace = StationTrace(data=ttrace.data,
                              header=ttrace.stats,
                              inventory=inventory)
+        location = ttrace.stats.location
+        network = ttrace.stats.network
+        if network in LOCATION_CODES:
+            codes = LOCATION_CODES[network]
+            if location in codes:
+                sdict = codes[location]
+                if sdict['free_field']:
+                    trace.stats.standard.structure_type = 'free_field'
+                else:
+                    trace.stats.standard.structure_type = sdict['description']
         head, tail = os.path.split(filename)
         trace.stats['standard']['source_file'] = tail or os.path.basename(head)
         traces.append(trace)

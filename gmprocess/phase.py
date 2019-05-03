@@ -7,10 +7,15 @@ import numpy as np
 from scipy.signal import butter, lfilter, hilbert
 import scipy.linalg as alg
 from obspy.signal.trigger import ar_pick, pk_baer
+from obspy.core.utcdatetime import UTCDateTime
+from obspy.geodetics.base import locations2degrees
+from obspy.taup import TauPyModel
 
 # local imports
 from gmprocess.exception import GMProcessException
 from gmprocess.config import get_config
+
+NAN_TIME = UTCDateTime('1970-01-01T00:00:00')
 
 
 def butter_bandpass(lowcut, highcut, fs, order=5):
@@ -86,11 +91,11 @@ def STALTA_Earle(data, datao, sps, STAW, STAW2, LTAW, hanning, threshold,
 
     for i in range(np.size(envelope) - lta_samples - 1):
         lta[i + lta_samples + 1] = np.sum(envelope[i:i + lta_samples])
-        sta[i + lta_samples + 1] = np.sum(envelope[i + lta_samples + 1:i
-                                                   + lta_samples + sta_samples + 1])
-        sta2[i + lta_samples + 1] = np.sum(envelope[i + lta_samples + 1:i
-                                                    + lta_samples + 1
-                                                    + sta_samples2])
+        sta[i + lta_samples + 1] = np.sum(envelope[i + lta_samples + 1:i +
+                                                   lta_samples + sta_samples + 1])
+        sta2[i + lta_samples + 1] = np.sum(envelope[i + lta_samples + 1:i +
+                                                    lta_samples + 1 +
+                                                    sta_samples2])
 
     lta = lta / float(lta_samples)
     sta = sta / float(sta_samples)
@@ -106,8 +111,8 @@ def STALTA_Earle(data, datao, sps, STAW, STAW2, LTAW, hanning, threshold,
     triggers_off = []
 
     for i in range(np.size(ratio) - 1):
-        if(trigger is False and ratio[i] >= threshold
-           and ratio2[i] >= threshold2 and ratio[i] > ratio[i + 1]):
+        if(trigger is False and ratio[i] >= threshold and
+           ratio2[i] >= threshold2 and ratio[i] > ratio[i + 1]):
             triggers_on.append(i)
             trigger = True
         elif(trigger is True and ratio[i] <= threshdrop):
@@ -304,6 +309,29 @@ def pick_baer(stream, picker_config=None, config=None):
         raise GMProcessException(fmt % tpl)
     mean_snr = calc_snr(stream, minloc)
 
+    return (minloc, mean_snr)
+
+
+def pick_travel(stream, origin, picker_config=None, config=None):
+    model = TauPyModel(model="iasp91")
+    if stream[0].stats.starttime == NAN_TIME:
+        return (-1, 0)
+    lat = origin['lat']
+    lon = origin['lon']
+    depth = origin['depth']
+    etime = origin['time']
+    slat = stream[0].stats.coordinates.latitude
+    slon = stream[0].stats.coordinates.longitude
+
+    dist_deg = locations2degrees(lat, lon, slat, slon)
+    arrivals = model.get_travel_times(source_depth_in_km=int(depth),
+                                      distance_in_degree=dist_deg,
+                                      phase_list=['P', 'p', 'Pn'])
+    if not len(arrivals):
+        return (-1, 0)
+    arrival = arrivals[0]
+    minloc = arrival.time + (etime - stream[0].stats.starttime)
+    mean_snr = calc_snr(stream, minloc)
     return (minloc, mean_snr)
 
 
@@ -527,8 +555,8 @@ def pphase_pick(trace, period=None, damping=0.6, nbins=None,
         trace_copy.detrend(type='linear')
 
     if peak_selection == 'True':
-        ind_peak = np.nonzero(np.abs(trace_copy.data)
-                              == np.max(np.abs(trace_copy.data)))
+        ind_peak = np.nonzero(np.abs(trace_copy.data) ==
+                              np.max(np.abs(trace_copy.data)))
         trace_copy.data = trace_copy.data[0:ind_peak[0][0]]
 
     # Construct a fixed-base viscously damped SDF oscillator

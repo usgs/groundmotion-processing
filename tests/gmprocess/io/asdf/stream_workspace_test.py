@@ -16,6 +16,7 @@ from gmprocess.streamcollection import StreamCollection
 
 from h5py.h5py_warnings import H5pyDeprecationWarning
 from yaml import YAMLLoadWarning
+from obspy.core.utcdatetime import UTCDateTime
 
 import numpy as np
 import pandas as pd
@@ -57,6 +58,7 @@ def compare_streams(instream, outstream):
 def test_workspace():
     eventid = 'us1000778i'
     datafiles, origin = read_data_dir('geonet', eventid, '*.V1A')
+    origin['time'] = UTCDateTime(origin['time'])
     event = get_event_object(origin)
     tdir = tempfile.mkdtemp()
     try:
@@ -202,12 +204,13 @@ def test_workspace():
 
             workspace.setStreamMetrics(usid, labels=['processed'])
             df = workspace.getMetricsTable(usid, labels=['processed'])
-            cmpdict = {
-                'GREATER_OF_TWO_HORIZONTALS': [26.904, 4.9814, 99.5713],
-                'HN1': [24.5162, 4.9814, 99.5713],
-                'HN2': [26.904, 4.0292, 86.7985],
-                'HNZ': [16.0978, 2.5057, 156.0942]
-            }
+
+            data = np.array([[26.8877, 24.5076, 26.8877, 16.0931],
+                             [4.9814, 4.9814, 4.0292, 2.5057],
+                             [99.6077, 99.6077, 86.7887, 151.8803]])
+            cmpdict = pd.DataFrame(data,
+                                   columns=['GREATER_OF_TWO_HORIZONTALS', 'HN1', 'HN2', 'HNZ'])
+
             cmpframe = pd.DataFrame(cmpdict)
             assert df['PGA'].equals(cmpframe)
 
