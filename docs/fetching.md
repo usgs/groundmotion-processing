@@ -26,8 +26,8 @@ Some sources of significant motion data are:
    processed triggered strong motion sensor data.
  - The Taiwan Central Weather Bureau (CWB) collects triggered strong motion
    data, but it is not generally publicly available.
- - The Iranian Road, Housing & Urban Development Research Center (BHRC) provides partially 
-   processed triggered strong motion sensor data on their website.
+ - The Iranian Road, Housing & Urban Development Research Center (BHRC) provides 
+   partially  processed triggered strong motion sensor data on their website.
 
 Data from some of these services (FDSN, GeoNet, KNET, and NSMN at the time of
 this writing) can be downloaded automatically using the `datafetch` tool. Iran
@@ -53,7 +53,7 @@ parameters for all of the sections.
 Here is a sample configuration file that modifies only the FDSN portion of the
 `fetchers` section:
 
-```
+```yaml
 fetchers:
     FDSNFetcher:
         # search radius in dd
@@ -71,12 +71,15 @@ purposes of this exercise, create a ~/data/us2000j4df directory. Save the
 configuration snippet above to ~/data/us2000j4df/fdsn_config.yml.
 
 *NB*: *us2000j4df* here is the ANSS Comprehensive Catalog (ComCat) ID for a M4.0
-earthquake in Kansas in early 2019: https://earthquake.usgs.gov/earthquakes/eventpage/us2000j4df/executive
+earthquake in Kansas in early 2019:
+https://earthquake.usgs.gov/earthquakes/eventpage/us2000j4df/executive
 
 Run the following command:
 
-```
-datafetch ~/data/us2000j4df -i us2000j4df -f excel -c ~/data/us2000j4df/fdsn_config.yml -o
+```bash
+datafetch ~/data/us2000j4df \
+    -i us2000j4df \
+    -c ~/data/us2000j4df/fdsn_config.yml -o
 ```
 
 `datafetch` can use ComCat IDs like this to retrieve basic event information
@@ -84,8 +87,10 @@ or, if the event does not exist in ComCat (more likely for events less than
 M4.5 in areas outside the U.S.), you can specify the event by calling
 `datafetch` this way:
 
-```
-datafetch ~/data/us2000j4df -e 2019-01-16T03:34:30 37.065 -97.354 5.0 4.0 -f excel -c ~/data/us2000j4df/fdsn_config.yml -o
+```bash
+datafetch ~/data/us2000j4df \
+    -e 2019-01-16T03:34:30 37.065 -97.354 5.0 4.0 \
+    -c ~/data/us2000j4df/fdsn_config.yml -o
 ```
 
 where the arguments to `-e` are time (YYYY-MM-DDTHH:MM:SS format), latitude,
@@ -104,30 +109,41 @@ to make plots of these raw waveforms, like this:
 The peaks are visible here, but we are perhaps cutting off some of the latter
 part of the signal, so we can adjust the `time_after` field to be 180 seconds.
 
-Edit your custom config file, and re-run the command above. Your time series plot should now look more like this:
+Edit your custom config file, and re-run the command above. Your time series
+plot should now look more like this:
 
 <figure>
   <img width="800px" src="figs/OK.BLUF.HN_180sec.png" alt="Stream plot"/>
   <figcaption>Sample plot of a waveform stream downloaded via FDSN (185 seconds duration)</figcaption>
 </figure>
 
-Iterate with the configuration as you see fit. Once you are happy with the data
-that's been downloaded, you can try processing and extracting metrics from the waveforms.
+Iterate with the configuration as you see fit. Once you are happy with the
+data that's been downloaded, you can try processing and extracting metrics
+from the waveforms.
 
 Run the following command:
 
-```
-datafetch ~/data/us2000j4df -i us2000j4df -f excel -c ~/data/us2000j4df/fdsn_config.yml --directory ~/data/us2000j4df/raw
-```
-
-lots of logging output will stream by - you can save this to a file to be inspected later by amending the command:
-
-```
-datafetch ~/data/us2000j4df -i us2000j4df -f excel -c ~/data/us2000j4df/fdsn_config.yml --directory ~/data/us2000j4df/raw -l ~/data/us2000j4df/process.log
+```bash
+datafetch ~/data/us2000j4df \
+    -i us2000j4df \
+    -c ~/data/us2000j4df/fdsn_config.yml \
+    --directory ~/data/us2000j4df/raw
 ```
 
-Without all of the logging output, you should see results that look something like this:
+lots of logging output will stream by - you can save this to a file to be
+inspected later by amending the command:
+
+```bash
+datafetch ~/data/us2000j4df \
+    -i us2000j4df \
+    -c ~/data/us2000j4df/fdsn_config.yml \
+    --directory ~/data/us2000j4df/raw \
+    -l ~/data/us2000j4df/process.log
 ```
+
+Without all of the logging output, you should see results that look
+something like this:
+```bash
 Data from 3 stations saved to /Users/USER/data/us2000j4df
 Metrics: /Users/USER/data/us2000j4df/us2000j4df_metrics.xlsx
 Waveforms: /Users/USER/data/us2000j4df/us2000j4df_workspace.hdf
@@ -144,7 +160,7 @@ values for this channel are so high, let's modify the pre-testing portion of
 the configuration to allow this channel to pass checks. Add the following
 section to your custom config file (comments omitted here for brevity):
 
-```
+```yaml
 processing:
     - check_free_field:
         reject_non_free_field: True
@@ -223,8 +239,12 @@ processing:
 
 Once those changes are saved, run the same command again:
 
-```
-datafetch ~/data/us2000j4df -i us2000j4df -f excel -c ~/data/us2000j4df/fdsn_config.yml --directory ~/data/us2000j4df/raw -l ~/data/us2000j4df/process.log
+```bash
+datafetch ~/data/us2000j4df \
+    -i us2000j4df \
+    -c ~/data/us2000j4df/fdsn_config.yml \
+    --directory ~/data/us2000j4df/raw \
+    -l ~/data/us2000j4df/process.log
 ```
 
 Taking a look at the processing report shows that all streams have passed,
@@ -242,7 +262,7 @@ https://hinetwww11.bosai.go.jp/nied/registration/?LANG=en
 And then put your username and password information into the fetchers section
 of a custom config file, inserting your new username and password:
 
-```
+```yaml
 fetchers:
     KNETFetcher:
         user: YOUR_USERNAME
@@ -257,10 +277,13 @@ fetchers:
         dmag : 0.3
 ```
 
-Save this configuration to ~/data/jp_config.yml, then run the following command:
+Save this configuration to ~/data/jp_config.yml, then run the following
+command:
 
-```
-datafetch ~/data/us1000jd8k -i us1000jd8k -f excel -c ~/data/jp_config.yml
+```bash
+datafetch ~/data/us1000jd8k \
+    -i us1000jd8k \
+    -c ~/data/jp_config.yml
 ```
 
 Triggered data like this does not allow for any customization of the search
@@ -288,7 +311,9 @@ couple of layers of zip files, these should be unpacked down to raw files) in a
 directory with the data files found via FDSN, you can process them all using a
 command similar to the one below:
 
-```
-datafetch ~/tmp/usp000jadn -i usp000jadn -f excel --directory ~/data/usp000jadn/raw/
+```bash
+datafetch ~/tmp/usp000jadn \
+    -i usp000jadn \
+    --directory ~/data/usp000jadn/raw/
 ```
 
