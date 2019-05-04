@@ -119,16 +119,19 @@ in data files.
 
   <tfoot>
     <tr>
-      <td><font size="-1"><sup>*</sup>The FDSN "format" consists of 1) Any Obspy supported format (SAC, MiniSEED, etc.) and 2) A StationXML file containing station/sensor response information.</font></td>
+      <td><font size="-1"><sup>*</sup></font></td>
     </tr>
   </tfoot>
 </table>
 
+The FDSN "format" consists of:
 
+    1) Any Obspy supported format (SAC, MiniSEED, etc.) and
+    2) A StationXML file containing station/sensor response information.
 
 ## Usage
 
-```
+```python
 import glob
 from gmprocess.io.read import read_data
 
@@ -155,7 +158,7 @@ code to read it.
 
 ### The Format
 
-```
+```python
 Source: Complete Strong Motion Network
 Network: CS
 Station: ABCD
@@ -218,7 +221,7 @@ AND
 
  - gmprocess->data->testdata->complete->event.json->event.json (JSON file containing basic event information):
 
-```
+```python
 {
     "id": "csabcd1234",
     "time": "2019-05-01T12:34:55.010",
@@ -229,7 +232,7 @@ AND
 }
 ```
 
-```
+```python
 #!/usr/bin/env python
 
 # stlib imports

@@ -11,21 +11,26 @@ a single channel, as well as some basic metadata about the waveform start/end
 times, number of points, sampling rate/interval, and
 network/station/channel/location information.
 
-The StationTrace object builds on this metadata, adding to it the following features:
+The StationTrace object builds on this metadata, adding to it the following
+features:
 
  - Validation that length of data matches the number of points in the metadata.
  - Validation that required values are set in metadata (see standard below).
- - fail() method which can be used by processing routines to mark when processing of the 
-   StationTrace has failed some sort of check (signal to noise ratio, etc.)
- - free_field property which can be used to query the object to ensure that its data
-   comes from a free-field sensor (i.e., not attached to a structure). THIS IS NOT ALWAYS KNOWN!
- - Tracking of processing steps that have been performed - these are aligned with the 
-   SEIS-PROV standard for processing provenance, described here: http://seismicdata.github.io/SEIS-PROV/_generated_details.html#activities
+ - fail() method which can be used by processing routines to mark when
+   processing of the StationTrace has failed some sort of check (signal to
+   noise ratio, etc.)
+ - free_field property which can be used to query the object to ensure that its
+   data comes from a free-field sensor (i.e., not attached to a structure).
+   Note: this is not always known.
+ - Tracking of processing steps that have been performed - these are aligned
+   with the  SEIS-PROV standard for processing provenance, described here:
+   http://seismicdata.github.io/SEIS-PROV/_generated_details.html#activities
  - Tracking of arbitrary metadata in the form of a parameters dictionary.
- - In addition to the usual Trace metadata, StationTrace a `coordinates` dictionary containing
-   latitude, longitude, and elevation of the station, a `format_specific` dictionary containing
-   information found in the more esoteric formats defined by the engineering community. Finally, 
-   StationTrace contains the `standard` dictionary, described by the following table:
+ - In addition to the usual Trace metadata, StationTrace a `coordinates`
+   dictionary containing latitude, longitude, and elevation of the station, a
+   `format_specific` dictionary containing information found in the more
+   esoteric formats defined by the engineering community. Finally, StationTrace
+   contains the `standard` dictionary, described by the following table:
 
 <table>
   <tr>
@@ -163,7 +168,7 @@ This example below demonstrates reading data from the Taiwanese CWB
 data format, and saving it into a MiniSEED file accompanied by a 
 StationXML file, suitable for passing to other packages.
 
-```
+```python
 from gmprocess.io.read import read_data
 
 # this sample file can be found in the repository
@@ -186,7 +191,7 @@ together.
 
 ### Usage
 
-```
+```python
 import glob
 from gmprocess.io.read import read_data
 from gmprocess.streamcollection import StreamCollection
