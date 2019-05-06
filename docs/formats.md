@@ -70,7 +70,7 @@ in data files.
   </tr>
 
   <tr>
-    <td>FDSN<sup>*</sup></td>
+    <td>FDSN*</td>
     <td><a href="http://www.fdsn.org/networks/">International Federation of Digital Seismograph Networks (FDSN)</a></td>
     <td>counts</sup> (gals)</td>
     <td>Yes</td>
@@ -117,14 +117,9 @@ in data files.
     <td>No</td>
   </tr>
 
-  <tfoot>
-    <tr>
-      <td><font size="-1"><sup>*</sup></font></td>
-    </tr>
-  </tfoot>
 </table>
 
-The FDSN "format" consists of:
+* The FDSN "format" consists of:
 
     1) Any Obspy supported format (SAC, MiniSEED, etc.) and
     2) A StationXML file containing station/sensor response information.
