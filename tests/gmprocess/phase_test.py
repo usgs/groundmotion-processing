@@ -6,6 +6,7 @@ from gmprocess.io.read import read_data
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.exception import GMProcessException
 from gmprocess.config import get_config
+from gmprocess.streamcollection import StreamCollection
 from obspy import read, UTCDateTime
 from obspy.core.trace import Trace
 from obspy.core.stream import Stream
@@ -75,7 +76,6 @@ def test_all_pickers():
     for stream in streams:
         print(stream.get_id())
         for method in methods:
-            t1 = time.time()
             try:
                 if method == 'ar':
                     loc, mean_snr = pick_ar(
@@ -94,14 +94,12 @@ def test_all_pickers():
             except GMProcessException:
                 loc = -1
                 mean_snr = np.nan
-            t2 = time.time()
-            dt = t2 - t1
             row = {'Stream': stream.get_id(),
                    'Method': method,
                    'Pick_Time': loc,
                    'Mean_SNR': mean_snr}
             df = df.append(row, ignore_index=True)
-        x = 1
+
     stations = df['Stream'].unique()
     cmpdict = {'TW.ECU.BN': 'kalkan',
                'TW.ELD.BN': 'ar',
@@ -146,7 +144,7 @@ def get_streams():
     for datafile in datafiles:
         streams += read_data(datafile)
 
-    return streams
+    return StreamCollection(streams)
 
 
 if __name__ == '__main__':
