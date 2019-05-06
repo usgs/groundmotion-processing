@@ -92,6 +92,13 @@ class StationStream(Stream):
         """Some validation checks for Traces within the StationStream.
 
         """
+        # Check that id is consistent, and set id if it passes the check.
+        self.id = None
+        self.__check_id()
+
+        # The ID check is the only one that raises an exception, the
+        # rest of these label the stream as failed rather than raise
+        # an exception.
         self.__check_sample_rate()
         self.__check_npts()
         self.__check_starts()
@@ -116,29 +123,33 @@ class StationStream(Stream):
                 tr.fail('StationStream traces have different start '
                         'times.')
 
+    def __check_id(self):
+        # Check that id is consistent, and set id if it passes the check.
+        if len(self):
+            stats = self.traces[0].stats
+            id_str = ("%s.%s.%s" %
+                      (stats.network, stats.station, stats.channel[0:2]))
+
+            # Check that the id would be the same for all traces
+            for tr in self:
+                stats = tr.stats
+                test_str = ("%s.%s.%s" %
+                            (stats.network, stats.station, stats.channel[0:2]))
+                if id_str != test_str:
+                    raise ValueError(
+                        'Inconsistent stream ID for different traces.')
+            self.id = id_str
+
     def get_id(self):
         """
         Get the StationStream ID.
 
         This consists of the network, station, and first two characters of the
         channel (to indicate instrument type). This is currently consistent
-        with how the channels are grouped by StationStrea and ignores the
-        location code because it doesn't seem like it is defined in a
-        consistent fashion.
+        with how the channels are grouped and ignores the location code because
+        it doesn't seem like it is defined in a consistent fashion.
         """
-        stats = self.traces[0].stats
-        id_str = ("%s.%s.%s" %
-                  (stats.network, stats.station, stats.channel[0:2]))
-
-        # Check that the id would be the same for all traces
-        for tr in self:
-            stats = tr.stats
-            test_str = ("%s.%s.%s" %
-                        (stats.network, stats.station, stats.channel[0:2]))
-            if id_str != test_str:
-                raise ValueError(
-                    'Inconsistent stream ID for different traces.')
-        return id_str
+        return self.id
 
     @property
     def passed(self):

@@ -11,26 +11,34 @@ a single channel, as well as some basic metadata about the waveform start/end
 times, number of points, sampling rate/interval, and
 network/station/channel/location information.
 
-The StationTrace object builds on this metadata, adding to it the following
-features:
+gmprocess subclasses the Trace object with a StationTrace object, which provides
+the following additional features:
 
  - Validation that length of data matches the number of points in the metadata.
  - Validation that required values are set in metadata (see standard below).
- - fail() method which can be used by processing routines to mark when
+ - A `fail` method which can be used by processing routines to mark when
    processing of the StationTrace has failed some sort of check (signal to
    noise ratio, etc.)
- - free_field property which can be used to query the object to ensure that its
-   data comes from a free-field sensor (i.e., not attached to a structure).
-   Note: this is not always known.
- - Tracking of processing steps that have been performed - these are aligned
-   with the  SEIS-PROV standard for processing provenance, described here:
+ - A `free_field` property which can be used to query the object to ensure that
+   its data comes from a free-field sensor. Note: this is not always known
+   reliably, and different people have have different definitions of the term
+   `free_field`. When possible, we define a mapping between location code
+   and the `free_field` property. For example, see the `LOCATION_CODES`
+   variable `core.py` in `gmprocess.io.fdsn`.
+ - Methods (e.g., `getProvenance`, `setProvenance`) for tracking  processing
+   steps that have been performed. These are aligned with the SEIS-PROV
+   standard for processing provenance, described here:
    http://seismicdata.github.io/SEIS-PROV/_generated_details.html#activities
- - Tracking of arbitrary metadata in the form of a parameters dictionary.
- - In addition to the usual Trace metadata, StationTrace a `coordinates`
-   dictionary containing latitude, longitude, and elevation of the station, a
-   `format_specific` dictionary containing information found in the more
-   esoteric formats defined by the engineering community. Finally, StationTrace
-   contains the `standard` dictionary, described by the following table:
+ - Methods (e.g., `getParameter` and `setParameter`) for tracking of arbitrary
+   metadata in the form of a dictionary as trace property (`self.parameters`).
+ - In addition to the usual Trace metadata, StationTrace has
+   - a `coordinates` dictionary containing latitude, longitude, and elevation
+     of the station,
+   - a `format_specific` dictionary containing information found in some file
+     formats but cannot be expected across all formats, and
+   - a `standard` dictionary, metadata that we expect to find in all formats.
+     More details are given in this table:
+
 
 <table>
   <tr>
@@ -158,9 +166,27 @@ features:
 ## StationStream
 
 Obspy provides a Stream object that serves as a container for zero-to-many
-Trace objects. gmprocess builds on this object to contain StationTrace objects,
-and provides facilities for extracting Obspy inventory data structures, and 
-provenance from the contained StationTrace objects.
+Trace objects, and gmprocess subclasses the Stream object with the StationStream
+object, which contains StationTrace objects. It also provides facilities for
+extracting Obspy inventory data structures, and provenance from the contained
+StationTrace objects.
+
+
+The StationStream class is meant for grouping Traces from the same ``station''.
+In practice, what this really means is usually all of the channels from one
+instrument, with the same start and end times. Thus, the `StationStream `
+object has a `get_id` method, which returns a string that consists of the
+network code, station code, and the first two characters of hte channel code,
+since these should all be applicable to all traces in the StationStream object.
+
+StationStream checks that all of the StationTraces have the same ID, sample
+rates, number of points, and start times.
+
+StationStream also has a `passed` attribute. This is useful for tracking data
+that has not passed checks. In most of these cases, we do not want halt
+the execution of the processing code by raising an exception, but we do need
+to know that a problem occurred.
+
 
 ### Usage
 
