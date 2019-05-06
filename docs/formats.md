@@ -120,9 +120,8 @@ in data files.
 </table>
 
 \* The FDSN "format" consists of:
-
-    1) Any Obspy supported format (SAC, MiniSEED, etc.) and
-    2) A StationXML file containing station/sensor response information.
+1) Any Obspy supported format (SAC, MiniSEED, etc.) and
+2) A StationXML file containing station/sensor response information.
 
 ## Usage
 
