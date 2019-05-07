@@ -65,7 +65,7 @@ Downloader as the same name.
  - `sanitize` Only download data that has accompanying StationXML metadata.
  - `minimum_interstation_distance_in_m` Designed to avoid very close stations with the same data but different names.
 
-```
+```yaml
 fetchers:
     KNETFetcher:
         # NIED requires a username and a password, obtain these by
