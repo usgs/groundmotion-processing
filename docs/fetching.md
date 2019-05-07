@@ -176,8 +176,9 @@ Run the following command:
 
 ```bash
 datafetch ~/data/us2000j4df \
+    -o \
     -i us2000j4df \
-    -c ~/data/us2000j4df/fdsn_config.yml -o
+    -c ~/data/us2000j4df/fdsn_config.yml
 ```
 
 `datafetch` can use ComCat IDs like this to retrieve basic event information
@@ -187,8 +188,9 @@ M4.5 in areas outside the U.S.), you can specify the event by calling
 
 ```bash
 datafetch ~/data/us2000j4df \
+    -o \
     -e 2019-01-16T03:34:30 37.065 -97.354 5.0 4.0 \
-    -c ~/data/us2000j4df/fdsn_config.yml -o
+    -c ~/data/us2000j4df/fdsn_config.yml
 ```
 
 where the arguments to `-e` are time (YYYY-MM-DDTHH:MM:SS format), latitude,
