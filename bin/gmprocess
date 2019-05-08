@@ -206,7 +206,7 @@ def main(pparser, args):
                 custom_cfg = yaml.load(f, Loader=yaml.FullLoader)
                 update_dict(config, custom_cfg)
         except yaml.ParserError:
-            print('Config file %s does not seem to be valid YAML.'
+            print('Config file %s is not valid YAML.'
                   % args.config)
             sys.exit(1)
 
@@ -353,6 +353,11 @@ def main(pparser, args):
     else:
         dataframe.to_excel(framename)
         provdata.to_excel(provname, index=False)
+
+    # Write config file to output direcotry
+    conf_out = os.path.join(args.outdir, 'config.yml')
+    with open(conf_out, 'w') as outfile:
+        yaml.dump(config, outfile, default_flow_style=False)
 
     if args.amptools_format:
         ampfile_name = os.path.join(
