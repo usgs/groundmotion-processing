@@ -108,7 +108,7 @@ def signal_split(
                                 picker_config=picker_config,
                                 config=config)
     if loc > 0:
-        tsplit = st[0].times('utcdatetime')[0] + loc
+        tsplit = st[0].stats.starttime + loc
         preferred_picker = 'travel_time'
     else:
         pick_methods = ['ar', 'baer', 'power', 'kalkan']
@@ -143,12 +143,12 @@ def signal_split(
         max_snr = df['Mean_SNR'].max()
         if not np.isnan(max_snr):
             maxrow = df[df['Mean_SNR'] == max_snr].iloc[0]
-            tsplit = st[0].times('utcdatetime')[0] + maxrow['Pick_Time']
+            tsplit = st[0].stats.starttime + maxrow['Pick_Time']
             preferred_picker = maxrow['Method']
         else:
             tsplit = -1
 
-    if tsplit >= st[0].times('utcdatetime')[0]:
+    if tsplit >= st[0].stats.starttime:
         # Update trace params
         split_params = {
             'split_time': tsplit,
