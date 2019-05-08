@@ -74,14 +74,8 @@ def process_streams(streams, origin, config=None):
     Args:
         streams (list):
             A StreamCollection object.
-        origin (dict):
-            Dictionary with the following keys:
-              - id
-              - magnitude
-              - time (UTCDateTime object)
-              - lon
-              - lat
-              - depth
+        origin (ScalarEvent):
+            ScalarEvent object.
         config (dict): Configuration dictionary (or None). See get_config().
 
     Returns:
@@ -96,9 +90,9 @@ def process_streams(streams, origin, config=None):
 
     logging.info('Processing streams...')
 
-    event_time = origin['time']
-    event_lon = origin['lon']
-    event_lat = origin['lat']
+    event_time = origin.time
+    event_lon = origin.longitude
+    event_lat = origin.latitude
 
     # -------------------------------------------------------------------------
     # Begin noise/signal window steps
@@ -112,14 +106,11 @@ def process_streams(streams, origin, config=None):
         # Estimate noise/signal split time
         st = signal_split(
             st,
-            origin,
-            event_time=event_time,
-            event_lon=event_lon,
-            event_lat=event_lat)
+            origin)
 
         # Estimate end of signal
         end_conf = window_conf['signal_end']
-        event_mag = origin['magnitude']
+        event_mag = origin.magnitude
         st = signal_end(
             st,
             event_time=event_time,

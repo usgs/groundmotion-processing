@@ -331,14 +331,8 @@ def summary_plots(st, directory, origin):
             Stream of data.
         directory (str):
             Directory for saving plots.
-        origin (dict):
-            Dictionary with the following keys:
-              - id
-              - magnitude
-              - time (UTCDateTime object)
-              - lon
-              - lat
-              - depth
+        origin (ScalarEvent):
+            Flattened subclass of Obspy Event.
     """
     mpl.rcParams['font.size'] = 8
 
@@ -358,11 +352,11 @@ def summary_plots(st, directory, origin):
     logging.debug('passed: %s' % st.passed)
     if st.passed:
         plt.suptitle("M%s %s | %s (passed)" %
-                     (origin['magnitude'], origin['id'], stream_id),
+                     (origin.magnitude, origin.id, stream_id),
                      x=0.5, y=1.02)
     else:
         plt.suptitle("M%s %s | %s (failed)"
-                     % (origin['magnitude'], origin['id'], stream_id),
+                     % (origin.magnitude, origin.id, stream_id),
                      color='red', x=0.5, y=1.02)
 
     # Compute velocity
@@ -565,7 +559,7 @@ def summary_plots(st, directory, origin):
         plt.subplots_adjust(hspace=0.35, wspace=0.35, top=0.97)
         file_name = os.path.join(
             directory,
-            origin['id'] + '_' + stream_id + '.png')
+            origin.id + '_' + stream_id + '.png')
         plt.savefig(fname=file_name, bbox_inches='tight')
         plt.close('all')
 

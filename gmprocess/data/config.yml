@@ -426,6 +426,8 @@ pickers:
     
     travel_time:
         # this picker uses travel times using configured velocity model
+        # list of models can be found here:
+        # https://docs.obspy.org/packages/obspy.taup.html#basic-usage
         model : iasp91
 
 

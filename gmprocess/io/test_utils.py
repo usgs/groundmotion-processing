@@ -3,6 +3,8 @@ import glob
 import json
 import pkg_resources
 
+from gmprocess.event import ScalarEvent
+
 
 def read_data_dir(file_format, eventid, files=None):
     """Read desired data files and event dictionary from test directory.
@@ -50,6 +52,9 @@ def read_data_dir(file_format, eventid, files=None):
     if not os.path.isfile(jsonfile):
         event = None
     with open(jsonfile, 'rt') as f:
-        event = json.load(f)
-
+        tevent = json.load(f)
+        event = ScalarEvent()
+        event.fromParams(tevent['id'], tevent['time'],
+                         tevent['lat'], tevent['lon'],
+                         tevent['depth'], tevent['magnitude'])
     return (datafiles, event)

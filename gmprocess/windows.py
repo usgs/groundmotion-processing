@@ -64,7 +64,7 @@ def window_checks(st, min_noise_duration=0.5, min_signal_duration=5.0):
 
 
 def signal_split(
-        st, origin, event_time=None, event_lon=None, event_lat=None,
+        st, origin,
         picker_config=None,
         config=None):
     """
@@ -80,20 +80,12 @@ def signal_split(
     Args:
         st (StationStream):
             Stream of data.
-        origin (dict):
-            Dictionary with the following keys:
-              - id
-              - magnitude
-              - time (UTCDateTime object)
-              - lon
-              - lat
-              - depth
-        event_time (UTCDateTime):
-            Event origin time.
-        event_lon (float):
-            Event longitude.
-        event_lat (float):
-            Event latitude.
+        origin (ScalarEvent):
+            ScalarEvent object.
+        picker_config (dict):
+            Dictionary containing picker configuration information.
+        config (dict):
+            Dictionary containing system configuration information.
 
     Returns:
         trace with stats dict updated to include a
@@ -105,8 +97,7 @@ def signal_split(
         config = get_config()
 
     loc, mean_snr = pick_travel(st, origin,
-                                picker_config=picker_config,
-                                config=config)
+                                picker_config=picker_config)
     if loc > 0:
         tsplit = st[0].stats.starttime + loc
         preferred_picker = 'travel_time'

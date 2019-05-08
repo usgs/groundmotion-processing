@@ -18,8 +18,7 @@ import tempfile
 
 def test_asdf():
     eventid = 'us1000778i'
-    datafiles, origin = read_data_dir('geonet', eventid, '*.V1A')
-    event = get_event_object(origin)
+    datafiles, event = read_data_dir('geonet', eventid, '*.V1A')
     tdir = tempfile.mkdtemp()
     try:
         config = get_config()

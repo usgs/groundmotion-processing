@@ -19,7 +19,6 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import yaml
-from impactutils.colors.cpalette import ColorPalette
 
 from gmprocess.event import get_event_dict, get_event_object
 from gmprocess.io.global_fetcher import fetch_data
@@ -217,11 +216,11 @@ def main(pparser, args):
             os.makedirs(rawdir)
 
     if args.eventid:
-        edict = get_event_dict(args.eventid)
-        etime = edict['time'].datetime
+        edict = get_event_object(args.eventid)
+        etime = edict.time.datetime
     else:
         edict = parse_eventinfo(args.eventinfo)
-        etime = edict['time']
+        etime = edict.time
 
     if args.directory:
         streams, bad, errors = directory_to_streams(args.directory)
