@@ -1,0 +1,518 @@
+#!/usr/bin/env python
+
+import argparse
+import os
+import sys
+from datetime import datetime
+import logging
+import shutil
+import glob
+import warnings
+
+# third party imports
+from openpyxl.workbook.workbook import Workbook
+from openpyxl.utils.dataframe import dataframe_to_rows
+import numpy as np
+from impactutils.io.cmd import get_command_output
+from h5py.h5py_warnings import H5pyDeprecationWarning
+import matplotlib.pyplot as plt
+import cartopy.crs as ccrs
+import cartopy.feature as cfeature
+import yaml
+from impactutils.colors.cpalette import ColorPalette
+
+from gmprocess.event import get_event_dict, get_event_object
+from gmprocess.io.global_fetcher import fetch_data
+from gmprocess.logging import setup_logger
+from gmprocess.args import add_shared_args
+from gmprocess.config import get_config, update_dict
+from gmprocess.io.read_directory import directory_to_streams
+from gmprocess.streamcollection import StreamCollection
+from gmprocess.stream import streams_to_dataframe
+from gmprocess.processing import process_streams
+from gmprocess.io.asdf.stream_workspace import StreamWorkspace
+
+
+CONFIG = get_config()
+TIMEFMT = '%Y-%m-%dT%H:%M:%S'
+DEG2KM = 111.0
+
+
+class MyFormatter(argparse.RawTextHelpFormatter,
+                  argparse.ArgumentDefaultsHelpFormatter):
+    pass
+
+
+def parse_eventinfo(arginfo):
+    timestr, latstr, lonstr, depstr, magstr = arginfo
+    etime = datetime.strptime(timestr, TIMEFMT)
+    elat = float(latstr)
+    elon = float(lonstr)
+    edepth = float(depstr)
+    emag = float(magstr)
+    idstr = etime.strftime('%Y%m%d%H%M%S')
+
+    edict = {'id': idstr,
+             'time': etime,
+             'lat': elat,
+             'lon': elon,
+             'depth': edepth,
+             'magnitude': emag}
+    return edict
+
+
+def plot_stations(collection, edict, outdir):
+    # make a map of all of the station locations
+    lats = [stream[0].stats.coordinates.latitude for stream in collection]
+    lats = np.array(lats)
+    lons = [stream[0].stats.coordinates.longitude for stream in collection]
+    lons = np.array(lons)
+
+    # # let's capture a crude peak acceleration
+    # pgas = []
+    # for stream in collection:
+    #     pga = -999999999
+    #     for trace in stream:
+    #         if trace.stats.channel.endswith('Z'):
+    #             continue
+    #         if trace.max() > pga:
+    #             pga = np.abs(trace.max())
+    #     pgas.append(pga)
+    # pgas = np.array(pgas)
+
+    # # construct an array of colors from the PGA values
+    # cmap = plt.get_cmap('jet')
+    # levels = np.log(np.linspace(pgas.min(), pgas.max(), 100))
+    # nsteps = 256
+    # z0 = np.linspace(levels[0], levels[-2], nsteps)
+    # z1 = np.linspace(levels[1], levels[-1], nsteps)
+    # palette = ColorPalette.fromColorMap('pga', z0, z1, cmap)
+    # colors = []
+    # for pga in pgas:
+    #     colors.append(palette.getDataColor(np.log(pga)))
+
+    plt.figure(figsize=(8, 8))
+    ax = plt.axes(projection=ccrs.Mercator())
+
+    res = '50m'
+    land = cfeature.NaturalEarthFeature('physical', 'land', res)
+    ocean = cfeature.NaturalEarthFeature('physical', 'ocean', res)
+    borders = cfeature.NaturalEarthFeature('cultural',
+                                           'admin_0_boundary_lines_land',
+                                           res)
+    states = cfeature.NaturalEarthFeature('cultural',
+                                          'admin_1_states_provinces_lines',
+                                          res)
+
+    ax.add_feature(land, zorder=1, edgecolor='face',
+                   facecolor=cfeature.COLORS['land'])
+    ax.add_feature(ocean, zorder=1, edgecolor='face',
+                   facecolor=cfeature.COLORS['water'])
+    # ax.add_feature(borders, zorder=2, edgecolor='k')
+    # ax.add_feature(states, zorder=2, edgecolor='k')
+    ax.coastlines(resolution=res, zorder=2)
+
+    # determine the map aspect ratio and extent
+    xmin = lons.min()
+    xmax = lons.max()
+    ymin = lats.min()
+    ymax = lats.max()
+    xrange = xmax - xmin
+    if xmin > xmax:
+        xrange = xmax + 360 - xmin
+    yrange = ymax - ymin
+    # square up the aspect ratio
+    ymean = np.mean([ymin, ymax])
+    latconv = np.cos(np.radians(ymean))
+    xrange_km = xrange * latconv * DEG2KM
+    yrange_km = yrange * DEG2KM
+    side_len = max(xrange_km, yrange_km)
+    newxmin = edict['lon'] - (side_len / latconv / DEG2KM)
+    newxmax = edict['lon'] + (side_len / latconv / DEG2KM)
+    newymin = edict['lat'] - (side_len / DEG2KM)
+    newymax = edict['lat'] + (side_len / DEG2KM)
+
+    ax.set_extent([newxmin, newxmax, newymin, newymax],
+                  crs=ccrs.PlateCarree())
+    ax.plot([edict['lon']], [edict['lat']],
+            'r*', transform=ccrs.PlateCarree(), zorder=101)
+    ax.scatter(lons, lats, c='b', marker='.',
+               transform=ccrs.PlateCarree(), zorder=100)
+    dstr = edict['time'].strftime('%b %d, %Y')
+    tfmt = 'Stations (N=%i) for event M%.1f %s (%s)'
+    ttpl = (len(collection),
+            edict['magnitude'],
+            dstr,
+            edict['id'])
+    plt.title(tfmt % ttpl)
+
+    mapname = os.path.join(outdir, 'station_map.png')
+    plt.savefig(mapname)
+    return mapname
+
+
+def get_periods(imt, period_params):
+    if period_params['use_array']:
+        start = period_params['start']
+        stop = period_params['stop']
+        num = period_params['num']
+        if period_params['spacing'] == 'logspace':
+            periods = np.logspace(start, stop, num)
+        else:
+            periods = np.linspace(start, stop, num)
+        additional_periods = [
+            p for p in period_params['defined_periods']]
+        periods = set(np.append(periods, additional_periods))
+    else:
+        periods = set(
+            [p for p in period_params['defined_periods']])
+
+    periods = sorted(list(periods))
+    period_strings = []
+    for period in periods:
+        period_strings.append('%s(%.4f)' % (imt, period))
+
+    return period_strings
+
+
+def main(pparser, args):
+    if not args.eventid and not args.eventinfo:
+        print('Must specify either ComCat ID or event information')
+        pparser.print_help()
+        sys.exit(1)
+
+    if args.no_raw and args.download_only:
+        print('Specify one of --no-raw OR --download-only, not both.')
+        sys.exit(1)
+
+    setup_logger(args)
+    if args.log_file:
+        logger = logging.getLogger()
+        stream_handler = logger.handlers[0]
+        fhandler = logging.FileHandler(args.log_file)
+        logger.removeHandler(stream_handler)
+        logger.addHandler(fhandler)
+
+    logging.info("Running datafetch.")
+
+    config = get_config()
+
+    if args.config:
+        if not os.path.isfile(args.config):
+            print('Config file %s does not exist.' % args.config)
+            sys.exit(-1)
+        try:
+            with open(args.config, 'rt') as f:
+                custom_cfg = yaml.load(f, Loader=yaml.FullLoader)
+                update_dict(config, custom_cfg)
+        except yaml.ParserError:
+            print('Config file %s does not seem to be valid YAML.'
+                  % args.config)
+            sys.exit(1)
+
+    rawdir = None
+    if not args.no_raw:
+        rawdir = os.path.join(args.outdir, 'raw')
+        if not os.path.exists(rawdir):
+            os.makedirs(rawdir)
+
+    if args.eventid:
+        edict = get_event_dict(args.eventid)
+        etime = edict['time'].datetime
+    else:
+        edict = parse_eventinfo(args.eventinfo)
+        etime = edict['time']
+
+    if args.directory:
+        streams, bad, errors = directory_to_streams(args.directory)
+        collection = StreamCollection(streams, drop_non_free=True)
+    else:
+        collection, errors = fetch_data(
+            etime,
+            edict['lat'],
+            edict['lon'],
+            edict['depth'],
+            edict['magnitude'],
+            config=config,
+            rawdir=rawdir
+        )
+    if not len(collection):
+        print('No data files found. Here are any errors that '
+              'may have come up:')
+        for error in errors:
+            print(error)
+        sys.exit(0)
+
+    print('Completed data fetching stage;')
+    print(collection)
+
+    if not os.path.isdir(args.outdir):
+        os.makedirs(args.outdir)
+
+    if not args.no_plot:
+        print('Making plots...')
+        plotdir = os.path.join(args.outdir, 'plots')
+
+        mapname = plot_stations(collection, edict, args.outdir)
+
+        idx = None
+        for i, pstep in enumerate(config['processing']):
+            if 'summary_plots' in pstep:
+                idx = i
+                break
+        if idx is None:
+            pstep = {'summary_plots': {'directory': plotdir}}
+            config['processing'].append(pstep)
+        else:
+            pstep = config['processing'][idx]
+            pstep['summary_plots']['directory'] = plotdir
+
+        if 'build_report' in config:
+            config['build_report']['run'] = True
+            config['build_report']['directory'] = args.outdir
+        else:
+            config['build_report'] = {'run': True, 'directory': args.outdir}
+
+    # This is a hack to get the program to complete for problematic data that
+    # does not have elevation data. This needs to be updated/fixed soon!
+
+    for stream in collection:
+        for trace in stream:
+            if np.isnan(trace.stats.coordinates['elevation']):
+                logging.warning('Elevation is nan for %s!' % trace)
+                logging.warning('Setting elevation to 0.0 for %s.' % trace)
+                trace.stats.coordinates['elevation'] = 0.0
+
+    if not args.no_raw:
+        print('Plotting raw data...')
+        for stream in collection:
+            outfile = os.path.join(rawdir, '%s.png' % stream.get_id())
+            try:
+                stream.plot(outfile=outfile)
+                plt.close()
+            except Exception as e:
+                logging.info('Error in plotting raw data: %s' % e)
+
+    if args.download_only:
+        fmt = '%i raw files with plots saved to %s.'
+        tpl = (len(collection), rawdir)
+        print(fmt % tpl)
+        sys.exit(0)
+
+    processed = process_streams(collection, edict, config=config)
+    imts = config['metrics']['output_imts']
+    imcs = config['metrics']['output_imcs']
+    if 'SA' in imts:
+        if 'sa' in config['metrics']:
+            pparams = config['metrics']['sa']['periods']
+            sa_imts = get_periods('SA', pparams)
+            imts += sa_imts
+        imts.remove('SA')
+    if 'FAS' in imts:
+        if 'fas' in config['metrics']:
+            pparams = config['metrics']['fas']['periods']
+            fas_imts = get_periods('FAS', pparams)
+            imts += fas_imts
+        imts.remove('FAS')
+
+    dataframe = streams_to_dataframe(processed,
+                                     imcs=imcs, imts=imts,
+                                     event_time=edict['time'],
+                                     lat=edict['lat'],
+                                     lon=edict['lon'])
+
+    basename = edict['time'].strftime('%Y%m%d%H%M%S')
+    if args.eventid:
+        basename = args.eventid
+
+    framename = os.path.join(args.outdir, basename + '_metrics.csv')
+    if args.format == 'excel':
+        framename = os.path.join(args.outdir, basename + '_metrics.xlsx')
+    workname = os.path.join(args.outdir, basename + '_workspace.hdf')
+
+    # save the waveform data to an ASDF file.
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=H5pyDeprecationWarning)
+        event = get_event_object(edict)
+        if os.path.isfile(workname):
+            os.remove(workname)
+        workspace = StreamWorkspace(workname)
+        workspace.addStreams(event, collection, label='raw')
+        workspace.addStreams(event, processed, label='processed')
+        provdata = workspace.getProvenance(edict['id'], labels=['processed'])
+        provname = os.path.join(args.outdir, basename + '_provenance.csv')
+        if args.format == 'excel':
+            provname = os.path.join(args.outdir, basename + '_provenance.xlsx')
+
+        workspace.close()
+
+    # save dataframe to desired format
+    if args.format == 'csv':
+        dataframe.to_csv(framename, index=False)
+        provdata.to_csv(provname, index=False)
+    else:
+        dataframe.to_excel(framename)
+        provdata.to_excel(provname, index=False)
+
+    if args.amptools_format:
+        ampfile_name = os.path.join(
+            args.outdir, basename + '_amptools_metrics.xlsx')
+
+        wb = Workbook()
+        ws = wb.active
+        for r in dataframe_to_rows(dataframe, index=True, header=True):
+            ws.append(r)
+
+        # we don't need the index column, so we'll delete it here
+        ws.delete_cols(1)
+        ws.insert_rows(1)
+        ws['A1'] = 'REFERENCE'
+        ws['B1'] = dataframe['SOURCE'].iloc[0]
+        wb.save(ampfile_name)
+
+    # remove old pdf reports
+    pdf_files = glob.glob(os.path.join(args.outdir, 'gmprocess*.pdf'))
+    for pdf_file in pdf_files:
+        os.remove(pdf_file)
+
+    latest_tex = None
+    pdf_file = None
+    if not args.no_plot:
+        # there should be a .tex file in the output directory.
+        latexfiles = glob.glob(os.path.join(args.outdir, '*.tex'))
+        # get the most recent one
+
+        if len(latexfiles):
+            latest_tex = max(latexfiles, key=os.path.getctime)
+        if latest_tex is not None:
+            # Let's check the user's system
+            # to see if they have Latex installed.
+            latexpdf = shutil.which('pdflatex')
+            if latexpdf is None:
+                fmt = ('No LateX to PDF converter found on your '
+                       'system for report file "%s"')
+                print(fmt % latest_tex)
+            else:
+                fmt = '%s -halt-on-error %s'
+                tpl = (latexpdf, os.path.split(latest_tex)[-1])
+                cmd = fmt % tpl
+                odir = os.getcwd()
+                os.chdir(args.outdir)
+                res, stdout, stderr = get_command_output(cmd)
+                os.chdir(odir)
+                if not res:
+                    fmt = ('LateX to PDF conversion failed with '
+                           'errors: "%s" "%s"')
+                    print(fmt % (stdout, stderr))
+                else:
+                    latexbase, ext = os.path.splitext(latest_tex)
+                    pdf_file = latexbase + '.pdf'
+
+                    # rename report file
+                    newfile = os.path.join(args.outdir, 'gmprocess_report.pdf')
+                    os.rename(pdf_file, newfile)
+
+                    nukefiles = glob.glob(latexbase + '*')
+
+                    # nukefiles.remove(latest_tex)
+                    for nfile in nukefiles:
+                        os.remove(nfile)
+
+    print('Data from %i stations saved to %s' % (len(processed), args.outdir))
+    print('Metrics: %s' % framename)
+    print('Waveforms: %s' % workname)
+    if args.amptools_format:
+        print('Amptools file: %s' % ampfile_name)
+    print('Provenance (processing history): %s' % provname)
+    if not args.no_plot:
+        print('A station map has been saved to %s' % mapname)
+        print('%i plots saved to %s.' % (len(collection), plotdir))
+        if pdf_file is not None:
+            print('Processing Report (PDF): %s' % newfile)
+        else:
+            print('Processing Report (LateX): %s' % latest_tex)
+
+    sys.exit(0)
+
+
+if __name__ == '__main__':
+    desc = """Fetch data from any available online data source.
+
+    Creates in outdir:
+        - ASDF file containing original (possibly raw) and processed waveforms.
+        - CSV/Excel file containing configured stream metrics.
+        - Provenance CSV/Excel file with processing history for each Trace.
+        - LateX or PDF summary report of all processed files.
+        - (unless --no-plot selected) plots directory with processed plots.
+        - (unless --no-raw selected) raw directory with raw data files.
+
+    The summary report will be generated in LateX, and if you have
+    the "pdflatex" tool installed, that will be used to generate a PDF
+    version of the report.
+
+    The ASDF file and CSV/Excel file will be named with ComCat ID if
+    specified, otherwise by event time.
+
+    By default original waveform files will be saved and plotted in a 'raw'
+    directory under outdir. To turn this off, use the "no-raw" option.
+
+    To download data without processing, use the -d or --download-only option.
+
+    By default processed waveform files will be plotted and saved to a 'plots'
+    directory under outdir, and a LateX/PDF report will be generated in
+    outdir that uses the plot images. To turn this functionality off, use
+    the "no-plot" option.
+
+    If --amptools-format is specified, then the metrics file will be saved
+    to Excel format with an extra row at the top containing reference
+    information. If you are not a ShakeMap user, then you should probably
+    ignore this option.
+
+    Specific network information:
+    This tool can download data from the Japanese NIED website. However,
+    for this to work you will first need to obtain a username and password
+    from this website:
+
+    https://hinetwww11.bosai.go.jp/nied/registration/?LANG=en
+    """
+    parser = argparse.ArgumentParser(
+        description=desc, formatter_class=MyFormatter)
+
+    # Required arguments
+    parser.add_argument('outdir', help='Output file directory', type=str)
+
+    # non-positional arguments
+    parser.add_argument(
+        '-i', '--eventid', help='ComCat Event ID')
+    parser.add_argument(
+        '-e', '--eventinfo', type=str, nargs=5,
+        metavar=('TIME', 'LAT', 'LON', 'DEPTH', 'MAG'),
+        help='Event information as TIME(YYYY-MM-DDTHH:MM:SS) LAT LON DEP MAG')
+    parser.add_argument(
+        '-f', '--format',
+        help='Output format for metrics information',
+        choices=['excel', 'csv'], default='csv')
+    parser.add_argument(
+        '-c', '--config', help='Supply custom configuration file')
+    parser.add_argument(
+        '-o', '--download-only', action='store_true',
+        help='Download/plot raw only, no processing.')
+    parser.add_argument(
+        '--no-plot', action='store_true',
+        help='Do not make plots/report for processed waveforms')
+    parser.add_argument(
+        '--no-raw', action='store_true', help='Do not save raw streams')
+    parser.add_argument(
+        '-l', '--log-file',
+        help='Supply file name to store processing log info.')
+    hstr = 'Save metrics spreadsheet in ShakeMap Amptools friendly format'
+    parser.add_argument(
+        '-a', '--amptools-format', action='store_true', help=hstr)
+    hstr = 'Sidestep online data retrieval, read from local directory.'
+    parser.add_argument(
+        '--directory', help=hstr)
+    # Shared arguments
+    parser = add_shared_args(parser)
+
+    pargs = parser.parse_args()
+    main(parser, pargs)
