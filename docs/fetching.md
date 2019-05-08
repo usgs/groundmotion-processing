@@ -5,7 +5,7 @@ associated with a particular event, process it automatically, and generate
 stream metrics (i.e., components Rotd50 and greater of two horizontals, and
 intensity measures like PGA and MMI).
 
-To this end we have created the `datafetch` program, which allows a mostly
+To this end we have created the `gmprocess` program, which allows a mostly
 automated workflow for finding, downloading, and processing significant motion
 data and extracting summary information from it.
 
@@ -30,7 +30,7 @@ Some sources of significant motion data are:
    partially  processed triggered strong motion sensor data on their website.
 
 Data from some of these services (FDSN, GeoNet, KNET, and NSMN at the time of
-this writing) can be downloaded automatically using the `datafetch` tool. Iran
+this writing) can be downloaded automatically using `gmprocess`. Iran
 provides a web interface for downloading data (with a usage/citation
 agreement). Taiwan provides no public access to their data at this time. CESMD,
 at the time of this writing, is implementing an FDSN-compatible web interface to
@@ -142,7 +142,7 @@ fetchers:
 
 Particularly for data requests from FDSN networks, it can be helpful to iterate
 with different fetching parameters before starting on processing the data and
-extracting metrics. The `datafetch` program by default uses the configuration
+extracting metrics. The `gmprocess` program by default uses the configuration
 file found in the gmprocess repository for fetching and processing data, as
 well as calculating metrics. Optionally you can provide a custom configuration
 file with different parameters. These custom files need not specify the
@@ -175,19 +175,19 @@ https://earthquake.usgs.gov/earthquakes/eventpage/us2000j4df/executive
 Run the following command:
 
 ```bash
-datafetch ~/data/us2000j4df \
+gmprocess ~/data/us2000j4df \
     -o \
     -i us2000j4df \
     -c ~/data/us2000j4df/fdsn_config.yml
 ```
 
-`datafetch` can use ComCat IDs like this to retrieve basic event information
+`gmprocess` can use ComCat IDs like this to retrieve basic event information
 or, if the event does not exist in ComCat (more likely for events less than
 M4.5 in areas outside the U.S.), you can specify the event by calling
-`datafetch` this way:
+`gmprocess` this way:
 
 ```bash
-datafetch ~/data/us2000j4df \
+gmprocess ~/data/us2000j4df \
     -o \
     -e 2019-01-16T03:34:30 37.065 -97.354 5.0 4.0 \
     -c ~/data/us2000j4df/fdsn_config.yml
@@ -224,7 +224,7 @@ from the waveforms.
 Run the following command:
 
 ```bash
-datafetch ~/data/us2000j4df \
+gmprocess ~/data/us2000j4df \
     -i us2000j4df \
     -c ~/data/us2000j4df/fdsn_config.yml \
     --directory ~/data/us2000j4df/raw
@@ -234,7 +234,7 @@ lots of logging output will stream by - you can save this to a file to be
 inspected later by amending the command:
 
 ```bash
-datafetch ~/data/us2000j4df \
+gmprocess ~/data/us2000j4df \
     -i us2000j4df \
     -c ~/data/us2000j4df/fdsn_config.yml \
     --directory ~/data/us2000j4df/raw \
@@ -340,7 +340,7 @@ processing:
 Once those changes are saved, run the same command again:
 
 ```bash
-datafetch ~/data/us2000j4df \
+gmprocess ~/data/us2000j4df \
     -i us2000j4df \
     -c ~/data/us2000j4df/fdsn_config.yml \
     --directory ~/data/us2000j4df/raw \
@@ -381,14 +381,14 @@ Save this configuration to ~/data/jp_config.yml, then run the following
 command:
 
 ```bash
-datafetch ~/data/us1000jd8k \
+gmprocess ~/data/us1000jd8k \
     -i us1000jd8k \
     -c ~/data/jp_config.yml
 ```
 
 Triggered data like this does not allow for any customization of the search
 window for individual traces - the parameters above are instead used to find
-matching events on the source websites. For example, `datafetch` would take the
+matching events on the source websites. For example, `gmprocess` would take the
 origin time and hypocenter for event *us1000jd8k* from ComCat, and search the
 NIED website for events within a 100 km distance radius and a time window of
 +/- 60 seconds. Depth and magnitude thresholds are not currently used, but may
@@ -412,7 +412,7 @@ directory with the data files found via FDSN, you can process them all using a
 command similar to the one below:
 
 ```bash
-datafetch ~/tmp/usp000jadn \
+gmprocess ~/tmp/usp000jadn \
     -i usp000jadn \
     --directory ~/data/usp000jadn/raw/
 ```
