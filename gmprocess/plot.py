@@ -562,7 +562,7 @@ def summary_plots(st, directory, origin):
 
     # Do not save files if running tests
     if 'CALLED_FROM_PYTEST' not in os.environ:
-        plt.tight_layout()
+        plt.subplots_adjust(hspace=0.35, wspace=0.35, top=0.97)
         file_name = os.path.join(
             directory,
             origin['id'] + '_' + stream_id + '.png')
