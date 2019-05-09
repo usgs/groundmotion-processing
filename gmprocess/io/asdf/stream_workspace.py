@@ -122,7 +122,7 @@ class StreamWorkspace(object):
                 level = 'processed'
             self.dataset.add_waveforms(stream, tag=tag, event_id=event)
 
-            # add processing provenance info from streams
+            # add processing provenance info from traces
             if level == 'processed':
                 provdocs = stream.getProvenanceDocuments()
                 for provdoc, trace in zip(provdocs, stream):
@@ -134,6 +134,30 @@ class StreamWorkspace(object):
                     self.dataset.add_provenance_document(provdoc,
                                                          name=channel_tag)
 
+            # add processing parameters from streams
+            path = '%s_%s' % (tag, stream.get_id())
+            jdict = {}
+            for key in stream.getParameterKeys():
+                value = trace.getParameter(key)
+                jdict[key] = value
+
+            if len(jdict):
+                # NOTE: We would store this dictionary just as
+                # the parameters dictionary, but HDF cannot handle
+                # nested dictionaries.
+                # Also, this seems like a lot of effort
+                # just to store a string in HDF, but other
+                # approached failed. Suggestions are welcome.
+                jdict = _stringify_dict(jdict)
+                jsonbytes = json.dumps(jdict).encode('utf-8')
+                jsonarray = np.frombuffer(jsonbytes, dtype=np.uint8)
+                dtype = 'ProcessingParameters'
+                self.dataset.add_auxiliary_data(jsonarray,
+                                                data_type=dtype,
+                                                path=path,
+                                                parameters={})
+
+            # add processing parameters from traces
             for trace in stream:
                 path = '%s_%s' % (tag, trace.stats.channel)
                 jdict = {}
