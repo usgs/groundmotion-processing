@@ -19,7 +19,6 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import yaml
-from impactutils.colors.cpalette import ColorPalette
 
 from gmprocess.event import get_event_dict, get_event_object
 from gmprocess.io.global_fetcher import fetch_data
@@ -61,7 +60,7 @@ def parse_eventinfo(arginfo):
     return edict
 
 
-def plot_stations(collection, edict, outdir):
+def plot_stations(collection, event, outdir):
     # make a map of all of the station locations
     lats = [stream[0].stats.coordinates.latitude for stream in collection]
     lats = np.array(lats)
@@ -127,23 +126,23 @@ def plot_stations(collection, edict, outdir):
     xrange_km = xrange * latconv * DEG2KM
     yrange_km = yrange * DEG2KM
     side_len = max(xrange_km, yrange_km)
-    newxmin = edict['lon'] - (side_len / latconv / DEG2KM)
-    newxmax = edict['lon'] + (side_len / latconv / DEG2KM)
-    newymin = edict['lat'] - (side_len / DEG2KM)
-    newymax = edict['lat'] + (side_len / DEG2KM)
+    newxmin = event.longitude - (side_len / latconv / DEG2KM)
+    newxmax = event.longitude + (side_len / latconv / DEG2KM)
+    newymin = event.latitude - (side_len / DEG2KM)
+    newymax = event.latitude + (side_len / DEG2KM)
 
     ax.set_extent([newxmin, newxmax, newymin, newymax],
                   crs=ccrs.PlateCarree())
-    ax.plot([edict['lon']], [edict['lat']],
+    ax.plot([event.longitude], [event.latitude],
             'r*', transform=ccrs.PlateCarree(), zorder=101)
     ax.scatter(lons, lats, c='b', marker='.',
                transform=ccrs.PlateCarree(), zorder=100)
-    dstr = edict['time'].strftime('%b %d, %Y')
+    dstr = event.time.strftime('%b %d, %Y')
     tfmt = 'Stations (N=%i) for event M%.1f %s (%s)'
     ttpl = (len(collection),
-            edict['magnitude'],
+            event.magnitude,
             dstr,
-            edict['id'])
+            event.id)
     plt.title(tfmt % ttpl)
 
     mapname = os.path.join(outdir, 'station_map.png')
@@ -217,11 +216,11 @@ def main(pparser, args):
             os.makedirs(rawdir)
 
     if args.eventid:
-        edict = get_event_dict(args.eventid)
-        etime = edict['time'].datetime
+        event = get_event_object(args.eventid)
+        etime = event.time.datetime
     else:
-        edict = parse_eventinfo(args.eventinfo)
-        etime = edict['time']
+        event = parse_eventinfo(args.eventinfo)
+        etime = event.time
 
     if args.directory:
         streams, bad, errors = directory_to_streams(args.directory)
@@ -229,10 +228,10 @@ def main(pparser, args):
     else:
         collection, errors = fetch_data(
             etime,
-            edict['lat'],
-            edict['lon'],
-            edict['depth'],
-            edict['magnitude'],
+            event.latitude,
+            event.longitude,
+            event.depth_km,
+            event.magnitude,
             config=config,
             rawdir=rawdir
         )
@@ -253,7 +252,7 @@ def main(pparser, args):
         print('Making plots...')
         plotdir = os.path.join(args.outdir, 'plots')
 
-        mapname = plot_stations(collection, edict, args.outdir)
+        mapname = plot_stations(collection, event, args.outdir)
 
         idx = None
         for i, pstep in enumerate(config['processing']):
@@ -299,7 +298,7 @@ def main(pparser, args):
         print(fmt % tpl)
         sys.exit(0)
 
-    processed = process_streams(collection, edict, config=config)
+    processed = process_streams(collection, event, config=config)
     imts = config['metrics']['output_imts']
     imcs = config['metrics']['output_imcs']
     if 'SA' in imts:
@@ -317,11 +316,11 @@ def main(pparser, args):
 
     dataframe = streams_to_dataframe(processed,
                                      imcs=imcs, imts=imts,
-                                     event_time=edict['time'],
-                                     lat=edict['lat'],
-                                     lon=edict['lon'])
+                                     event_time=event.time,
+                                     lat=event.latitude,
+                                     lon=event.longitude)
 
-    basename = edict['time'].strftime('%Y%m%d%H%M%S')
+    basename = event.time.strftime('%Y%m%d%H%M%S')
     if args.eventid:
         basename = args.eventid
 
@@ -333,13 +332,12 @@ def main(pparser, args):
     # save the waveform data to an ASDF file.
     with warnings.catch_warnings():
         warnings.filterwarnings("ignore", category=H5pyDeprecationWarning)
-        event = get_event_object(edict)
         if os.path.isfile(workname):
             os.remove(workname)
         workspace = StreamWorkspace(workname)
         workspace.addStreams(event, collection, label='raw')
         workspace.addStreams(event, processed, label='processed')
-        provdata = workspace.getProvenance(edict['id'], labels=['processed'])
+        provdata = workspace.getProvenance(event.id, labels=['processed'])
         provname = os.path.join(args.outdir, basename + '_provenance.csv')
         if args.format == 'excel':
             provname = os.path.join(args.outdir, basename + '_provenance.xlsx')

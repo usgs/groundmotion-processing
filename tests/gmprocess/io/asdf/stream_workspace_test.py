@@ -57,9 +57,7 @@ def compare_streams(instream, outstream):
 
 def test_workspace():
     eventid = 'us1000778i'
-    datafiles, origin = read_data_dir('geonet', eventid, '*.V1A')
-    origin['time'] = UTCDateTime(origin['time'])
-    event = get_event_object(origin)
+    datafiles, event = read_data_dir('geonet', eventid, '*.V1A')
     tdir = tempfile.mkdtemp()
     try:
         with warnings.catch_warnings():
@@ -121,7 +119,7 @@ def test_workspace():
             assert label_summary.iloc[0]['Software'] == 'gmprocess'
 
             sc = StreamCollection(raw_streams)
-            processed_streams = process_streams(sc, origin, config=config)
+            processed_streams = process_streams(sc, event, config=config)
             workspace.addStreams(event, processed_streams, 'processed')
 
             idlist = workspace.getEventIds()
@@ -162,12 +160,11 @@ def test_workspace():
 
             # read in data from a second event and stash it in the workspace
             eventid = 'nz2018p115908'
-            datafiles, origin = read_data_dir('geonet', eventid, '*.V2A')
+            datafiles, event = read_data_dir('geonet', eventid, '*.V2A')
             raw_streams = []
             for dfile in datafiles:
                 raw_streams += read_data(dfile)
 
-            event = get_event_object(origin)
             workspace = StreamWorkspace.open(tfile)
             workspace.addStreams(event, raw_streams, label='foo')
 

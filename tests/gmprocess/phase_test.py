@@ -130,7 +130,6 @@ def test_travel_time():
             'NZ.WTMC.HN': 40.77244584723671,
             'NZ.THZ.HN': 42.025007954412246}
     for stream in streams:
-        origin['time'] = UTCDateTime(origin['time'])
         minloc, mean_snr = pick_travel(stream, origin)
         np.testing.assert_almost_equal(minloc, cmps[stream.get_id()])
 

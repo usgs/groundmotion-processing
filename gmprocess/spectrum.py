@@ -7,7 +7,7 @@ import numpy as np
 from obspy.geodetics.base import gps2dist_azimuth
 
 OUTPUT_UNITS = ["ACC", "VEL", "DISP"]
-M_TO_KM = 1.0/1000
+M_TO_KM = 1.0 / 1000
 
 # -----------------------------------------------------------------------------
 # Some constantts; probably should put these in a config file at some point:
@@ -16,7 +16,7 @@ M_TO_KM = 1.0/1000
 RP = 0.55
 
 # Partition of shear-wave energy into horizontal components
-VHC = 1/np.sqrt(2.0)
+VHC = 1 / np.sqrt(2.0)
 
 # Free surface effect
 FSE = 2.0
@@ -49,14 +49,8 @@ def fit_spectra(st, origin, kappa=0.035):
     Args:
         st (StationStream):
             Stream of data.
-        origin (dict):
-             Dictionary with the following keys:
-              - id
-              - magnitude
-              - time (UTCDateTime object)
-              - lon
-              - lat
-              - depth
+        origin (ScalarEvent):
+             ScalarEvent object.
         kappa (float):
             Site diminution factor (sec). Typical value for active cruststal
             regions is about 0.03-0.04, and stable continental regions is about
@@ -70,9 +64,9 @@ def fit_spectra(st, origin, kappa=0.035):
         # has been computed.
         if ('Z' not in tr.stats['channel'].upper()) & \
                 tr.hasParameter('smooth_signal_spectrum'):
-            event_mag = origin['magnitude']
-            event_lon = origin['lon']
-            event_lat = origin['lat']
+            event_mag = origin.magnitude
+            event_lon = origin.longitude
+            event_lat = origin.latitude
             dist = gps2dist_azimuth(
                 lat1=event_lat,
                 lon1=event_lon,
@@ -95,7 +89,7 @@ def fit_spectra(st, origin, kappa=0.035):
                 # corner frequency.
                 f0 = brune_f0(event_mag, TRIAL_STRESS_DROPS[i])
                 fmin = FMIN_FAC * f0
-                fmax = -np.log(FMAX_FAC)/np.pi/kappa
+                fmax = -np.log(FMAX_FAC) / np.pi / kappa
 
                 rms_f0.append(f0)
                 mod_spec = model(
@@ -186,7 +180,7 @@ def brune_f0(magnitude, stress_drop):
         float: Corner frequency (Hz).
     """
     M0 = moment_from_magnitude(magnitude)
-    f0 = 4.906e6 * SHEAR_VEL * (stress_drop/M0)**(1.0/3.0)
+    f0 = 4.906e6 * SHEAR_VEL * (stress_drop / M0)**(1.0 / 3.0)
     return f0
 
 
@@ -233,10 +227,10 @@ def brune(freq, magnitude, stress_drop=150, output_units="ACC"):
 
     M0 = moment_from_magnitude(magnitude)
     f0 = brune_f0(magnitude, stress_drop)
-    S = 1/(1 + (freq/f0)**2)
+    S = 1 / (1 + (freq / f0)**2)
     # pf_a = 2
     # pd_a = 1
-    C = RP * VHC * FSE/(4 * np.pi * DENSITY * SHEAR_VEL**3 * R0) * 1e-20
+    C = RP * VHC * FSE / (4 * np.pi * DENSITY * SHEAR_VEL**3 * R0) * 1e-20
 
     if output_units == "ACC":
         fpow = 2.0
@@ -378,7 +372,7 @@ def geometrical_spreading(freq, dist, model="REA99"):
         if dist <= dist_cross:
             geom = dist**(-1.0)
         else:
-            geom = (dist/dist_cross)**(-0.5)
+            geom = (dist / dist_cross)**(-0.5)
     else:
         raise ValueError('Unsupported anelastic attenuation model.')
     return geom
@@ -405,9 +399,9 @@ def anelastic_attenuation(freq, dist, model='REA99'):
 
     if model == 'REA99':
         # Frequency dependent quality factor
-        quality_factor = 180*freq**0.45
+        quality_factor = 180 * freq**0.45
         cq = 3.5
-        anelastic = np.exp(-np.pi*freq*dist/quality_factor/cq)
+        anelastic = np.exp(-np.pi * freq * dist / quality_factor / cq)
     elif model == 'none':
         anelastic = np.ones_like(freq)
     else:
@@ -449,7 +443,7 @@ def finite_fault_factor(magnitude, model="BT15"):
             c1 = 0.2350
             c2 = 0
             Mt = Mt2
-        logH = c0 + c1 * (magnitude - Mt) + c2*(magnitude - Mt)**2
+        logH = c0 + c1 * (magnitude - Mt) + c2 * (magnitude - Mt)**2
         h = 10**(logH)
     else:
         raise ValueError("Unsupported finite fault adjustment model.")

@@ -89,13 +89,13 @@ def build_report(sc, directory, origin, config=None):
     # Initialize report string with PREAMBLE
     report = PREAMBLE
     try:
-        timestr = origin['time'].strftime('%m/%d/%Y, %H:%M:%S')
+        timestr = origin.time.strftime('%m/%d/%Y, %H:%M:%S')
     except:
-        timestr = origin['time']
+        timestr = origin.time
     finally:
         timestr = ""
     report = report.replace(
-        '[RHEAD]', 'M%s %s, %s' % (origin['magnitude'], origin['id'], timestr)
+        '[RHEAD]', 'M%s %s, %s' % (origin.magnitude, origin.id, timestr)
     )
 
     # Loop over each StationStream and append it's page to the report
@@ -103,7 +103,7 @@ def build_report(sc, directory, origin, config=None):
     for st in sc:
         plot_path = os.path.join(
             '..', plot_dir,
-            origin['id'] + '_' + st.get_id() + '.png')
+            origin.id + '_' + st.get_id() + '.png')
         SB = STREAMBLOCK.replace('[PLOTPATH]', plot_path)
         report += SB
 
@@ -128,7 +128,7 @@ def build_report(sc, directory, origin, config=None):
     # Do not save report if running tests
     if 'CALLED_FROM_PYTEST' not in os.environ:
         file_name = ('gmprocess_report_%s_%s.tex'
-                     % (origin['id'], time.strftime("%Y%m%d-%H%M%S")))
+                     % (origin.id, time.strftime("%Y%m%d-%H%M%S")))
         file_path = os.path.join(directory, file_name)
         with open(file_path, 'w') as f:
             f.write(report)

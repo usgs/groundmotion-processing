@@ -15,6 +15,7 @@ from gmprocess.stationstream import StationStream
 from gmprocess.streamcollection import StreamCollection
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.exception import GMProcessException
+from gmprocess.event import ScalarEvent
 
 TIMEPAT = '[0-9]{4}-[0-9]{2}-[0-9]{2}T'
 
@@ -509,13 +510,14 @@ class StreamWorkspace(object):
         return False
 
     def getEvent(self, eventid):
-        """Get an Obspy Event object from the ASDF file.
+        """Get a ScalarEvent object from the ASDF file.
 
         Args:
             eventid (str): ID of event to search for in ASDF file.
 
         Returns:
-            Event: Obspy event object.
+            ScalarEvent: 
+                Flattened version of Obspy Event object.
         """
         eventobj = None
         for event in self.dataset.events:
@@ -525,7 +527,8 @@ class StreamWorkspace(object):
         if eventobj is None:
             fmt = 'Event with a resource id containing %s could not be found.'
             raise KeyError(fmt % eventid)
-        return eventobj
+        eventobj2 = ScalarEvent.fromEvent(eventobj)
+        return eventobj2
 
     def addStationMetrics(self, station_code, dict_or_metric_xml):
         """Add station metrics IMC/IMT information to ASDF file. Input
@@ -635,7 +638,8 @@ def unstringify_dict(indict):
 
 
 def _get_id(event):
-    eid = event.resource_id.id.replace('smi:local/', '')
+    eid = event.origins[0].resource_id.id
+
     return eid
 
 

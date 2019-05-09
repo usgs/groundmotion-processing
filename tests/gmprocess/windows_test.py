@@ -97,7 +97,6 @@ def test_signal_end():
 def test_signal_split2():
     datafiles, origin = read_data_dir(
         'knet', 'us2000cnnl', 'AOM0011801241951*')
-    origin['time'] = UTCDateTime(origin['time'])
     streams = []
     for datafile in datafiles:
         streams += read_data(datafile)

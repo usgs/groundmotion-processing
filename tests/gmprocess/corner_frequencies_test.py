@@ -35,20 +35,14 @@ def test_corner_frequencies():
     for st in processed_streams:
         if st.passed:
             # Estimate noise/signal split time
-            origin['time'] = UTCDateTime(origin['time'])
-            event_time = origin['time']
-            event_lon = origin['lon']
-            event_lat = origin['lat']
-            st = signal_split(
-                st,
-                origin,
-                event_time=event_time,
-                event_lon=event_lon,
-                event_lat=event_lat)
+            event_time = origin.time
+            event_lon = origin.longitude
+            event_lat = origin.latitude
+            st = signal_split(st, origin)
 
             # Estimate end of signal
             end_conf = window_conf['signal_end']
-            event_mag = origin['magnitude']
+            event_mag = origin.magnitude
             print(st)
             st = signal_end(
                 st,

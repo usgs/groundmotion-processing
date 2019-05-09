@@ -6,6 +6,153 @@ from obspy.core.utcdatetime import UTCDateTime
 from libcomcat.search import get_event_by_id
 
 
+class ScalarEvent(Event):
+    '''Class to represent a flattened Event with only 1 origin and 1 magnitude.
+
+    '''
+
+    def __init__(self, *args, **kwargs):
+        super(ScalarEvent, self).__init__(*args, **kwargs)
+
+    @classmethod
+    def fromEvent(cls, event):
+        eventobj = cls()
+
+        # copy the arrays
+        for origin in event.origins:
+            eventobj.origins.append(origin.copy())
+        for magnitude in event.magnitudes:
+            eventobj.magnitudes.append(magnitude.copy())
+        for station_magnitude in event.station_magnitudes:
+            eventobj.station_magnitudes.append(station_magnitude.copy())
+        for focal_mechanism in event.focal_mechanisms:
+            eventobj.focal_mechanisms.append(focal_mechanism.copy())
+        for amplitude in event.amplitudes:
+            eventobj.amplitudes.append(amplitude.copy())
+        for pick in event.picks:
+            eventobj.picks.append(pick.copy())
+        for comment in event.comments:
+            eventobj.comments.append(comment.copy())
+        for event_description in event.event_descriptions:
+            eventobj.event_descriptions.append(event_description.copy())
+
+        # copy the scalar stuff
+        if event.creation_info is not None:
+            eventobj.creation_info = event.creation_info.copy()
+        if event.resource_id is not None:
+            eventobj.resource_id = event.resource_id.copy()
+        eventobj.event_type = event.event_type
+        eventobj.event_type_certainty = event.event_type_certainty
+
+        return eventobj
+
+    def fromParams(self, id, time, lat, lon, depth, magnitude):
+        '''Create a ScalarEvent (subclass of Event).
+
+        Args:
+            id (str): 
+                Desired ID for the event, usually ComCat ID.
+            time (UTCDateTime):
+                Origin time of the event.
+            lat (float):
+                Latitude of origin.
+            lon (float):
+                Longitude of origin.
+            depth (float):
+                Depth of origin in **kilometers**.
+            magnitude (float):
+                Magnitude of earthquake.
+        '''
+        if isinstance(time, str):
+            try:
+                time = UTCDateTime(time)
+            except Exception as e:
+                fmt = 'Can\'t make UTCDateTime from string "%s" - error "%s"'
+                raise TypeError(fmt % (time, str(e)))
+
+        origin = Origin(resource_id=id,
+                        time=time,
+                        longitude=lon,
+                        latitude=lat,
+                        depth=depth * 1000)
+
+        self.origins = [origin]
+        magnitude = Magnitude(resource_id=id,
+                              mag=magnitude)
+        self.magnitudes = [magnitude]
+        self.resource_id = id
+
+    def __repr__(self):
+        if not hasattr(self, 'origins') or not hasattr(self, 'magnitudes'):
+            return 'Empty ScalarEvent'
+        fmt = '%s %s %.3f %.3f %.1fkm M%.1f'
+        tpl = (self.id, str(self.time),
+               self.latitude, self.longitude,
+               self.depth, self.magnitude)
+        return fmt % tpl
+
+    def _get_origin(self):
+        origin = self.preferred_origin()
+        if origin is None:
+            origin = self.origins[0]
+        return origin
+
+    def _get_magnitude(self):
+        magnitude = self.preferred_magnitude()
+        if magnitude is None:
+            magnitude = self.magnitudes[0]
+        return magnitude
+
+    @property
+    def id(self):
+        '''Return the origin resource_id.
+        '''
+        origin = self._get_origin()
+        return origin.resource_id.id
+
+    @property
+    def time(self):
+        '''Return the origin time.
+        '''
+        origin = self._get_origin()
+        return origin.time
+
+    @property
+    def latitude(self):
+        '''Return the origin latitude.
+        '''
+        origin = self._get_origin()
+        return origin.latitude
+
+    @property
+    def longitude(self):
+        '''Return the origin longitude.
+        '''
+        origin = self._get_origin()
+        return origin.longitude
+
+    @property
+    def depth(self):
+        '''Return the origin depth.
+        '''
+        origin = self._get_origin()
+        return origin.depth
+
+    @property
+    def depth_km(self):
+        '''Return the origin depth.
+        '''
+        origin = self._get_origin()
+        return origin.depth / 1000
+
+    @property
+    def magnitude(self):
+        '''Return the magnitude value.
+        '''
+        magnitude = self._get_magnitude()
+        return magnitude.mag
+
+
 def get_event_dict(eventid):
     """Get event dictionary from ComCat using event ID.
 
@@ -33,7 +180,7 @@ def get_event_dict(eventid):
 
 
 def get_event_object(dict_or_id):
-    """Get Obspy Event object using event ID or dictionary (see get_event_dict).
+    """Get ScalarEvent object using event ID or dictionary (see get_event_dict).
 
     Args:
         eventid (dict_or_id): Event ID that can be found in ComCat, or dict.
@@ -47,18 +194,11 @@ def get_event_object(dict_or_id):
         event_dict = dict_or_id.copy()
     else:
         raise Exception('Unknown input parameter to get_event_info()')
-
-    origin = Origin()
-    origin.resource_id = event_dict['id']
-    origin.latitude = event_dict['lat']
-    origin.longitude = event_dict['lon']
-    origin.depth = event_dict['depth']
-    origin.time = event_dict['time']
-
-    magnitude = Magnitude(mag=event_dict['magnitude'])
-    event = Event()
-    event.resource_id = event_dict['id']
-    event.origins = [origin]
-    event.magnitudes = [magnitude]
-
+    event = ScalarEvent()
+    event.fromParams(event_dict['id'],
+                     event_dict['time'],
+                     event_dict['lat'],
+                     event_dict['lon'],
+                     event_dict['depth'],
+                     event_dict['magnitude'])
     return event

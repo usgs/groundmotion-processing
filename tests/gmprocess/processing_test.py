@@ -31,7 +31,6 @@ def test_process_streams():
     # Loma Prieta test station (nc216859)
 
     data_files, origin = read_data_dir('geonet', 'us1000778i', '*.V1A')
-    origin['time'] = UTCDateTime(origin['time'])
     streams = []
     for f in data_files:
         streams += read_data(f)
@@ -64,7 +63,6 @@ def test_process_streams():
 
 def test_free_field():
     data_files, origin = read_data_dir('kiknet', 'usp000hzq8')
-    origin['time'] = UTCDateTime(origin['time'])
     raw_streams = []
     for dfile in data_files:
         raw_streams += read_data(dfile)
