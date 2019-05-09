@@ -1,0 +1,43 @@
+toc:
+  - title: Overview
+    subitems:
+      - page: Motivation
+        url: /motivation.html
+      - page: Features
+        url: /features.html
+      - page: Workspace
+        url: /workspace.html
+  - title: Getting Started
+    subitems:
+      - page: Installation
+        url: /install.html
+      - page: Configuration
+        url: /configuration.html
+  - title: Ingesting Data
+    subitems:
+      - page: File formats
+        url: /formats.html
+      - page: Fetching Data
+        url: /fetching.html
+  - title: Processing Data
+  - title: Exporting Data
+  - title: Examples
+    subitems:
+      - page: Ingesting data
+        url: /examples/ingest.html
+      - page: Fetching and processing data
+        url: /examples/fetch_process.html
+      - page: Exporting data
+        url: /examples/export.html
+  - title: Tests
+  - title: API
+    subitems:
+      - page: Data Structures
+        url: /data-structures.html
+        subsubitems:
+          - page: StationTrace
+            url: station-trace.html
+          - page: StationStream
+            url: station-stream.html
+          - page: StreamCollection
+            url: stream-collection.html

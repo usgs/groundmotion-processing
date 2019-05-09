@@ -1,0 +1,24 @@
+<div class="nav-sidebar">
+{% if site.data.navbar.toc[0] %}
+  {% for item in site.data.navbar.toc %}
+    <h3 class="nav-title">{{ item.title }}</h3>
+      {% if item.subitems[0] %}
+        <ul>
+          {% for entry in item.subitems %}
+              <li {% if entry.url == page.url %}class="active"{% endif %}>
+                <a  href="{{ entry.url }}">{{ entry.page }}</a>
+                {% if entry.subsubitems[0] %}
+                  <ul>
+                  {% for subentry in entry.subsubitems %}
+                      <li {% if subentry.url == page.url %}class="active"{% endif %}>
+                        <a  href="{{ subentry.url }}">{{ subentry.page }}</a></li>
+                  {% endfor %}
+                  </ul>
+                {% endif %}
+              </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endfor %}
+{% endif %}
+</div>
