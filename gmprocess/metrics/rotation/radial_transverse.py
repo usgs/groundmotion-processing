@@ -10,16 +10,18 @@ from gmprocess.stationstream import StationStream
 
 class Radial_Transverse(Rotation):
     """Class for computing the Radial Transverse rotation."""
-    def __init__(self, rotation_data, origin):
+
+    def __init__(self, rotation_data, event):
         """
         Args:
             rotation_data (obspy.core.stream.Stream or numpy.ndarray): Intensity
                     measurement component.
-            origin (obspy.core.event.Origin): Defines the focal time and
-                    geographical location of an earthquake hypocenter.
+            event (ScalarEvent): Defines the focal time, geographical
+                location and magnitude of an earthquake hypocenter.
+                    Default is None.
         """
-        super().__init__(rotation_data, origin=None)
-        self.origin = origin
+        super().__init__(rotation_data, event=None)
+        self.event = event
         self.result = self.get_radial_transverse()
 
     def get_radial_transverse(self):
@@ -37,24 +39,24 @@ class Radial_Transverse(Rotation):
         # Check that we have one northing and one easting channel
         if len(st_e) != 1 or len(st_n) != 1:
             raise Exception('Radial_Transverse: Stream must have one north '
-                    'and one east channel.')
+                            'and one east channel.')
 
         # Check that the orientations are orthogonal
-        if abs(st_e[0].stats.standard.horizontal_orientation -
-               st_n[0].stats.standard.horizontal_orientation) not in [90, 270]:
+        if abs(st_e[0].stats.standard.horizontal_orientation
+               - st_n[0].stats.standard.horizontal_orientation) not in [90, 270]:
             raise Exception('Radial_Transverse: Channels must be orthogonal.')
 
         # Check that the lengths of the two channels are the same
         if st_e[0].stats.npts != st_n[0].stats.npts:
             raise Exception('Radial_Transverse: East and north channels must '
-                    'have same length.')
+                            'have same length.')
 
         # First, rotate to North-East components if not already
         if st_n[0].stats.standard.horizontal_orientation != 0:
             az_diff = 360 - st_n[0].stats.standard.horizontal_orientation
             az_diff = np.deg2rad(az_diff)
             rotation_matrix = np.array([[np.cos(az_diff), np.sin(az_diff)],
-                                       [-np.sin(az_diff), np.cos(az_diff)]])
+                                        [-np.sin(az_diff), np.cos(az_diff)]])
             data = np.array([st_n[0].data, st_e[0].data])
             newdata = np.matmul(rotation_matrix, data)
 
@@ -71,7 +73,7 @@ class Radial_Transverse(Rotation):
         baz = gps2dist_azimuth(
             st_e[0].stats.coordinates.latitude,
             st_e[0].stats.coordinates.longitude,
-            self.origin.latitude, self.origin.longitude)[1]
+            self.event.latitude, self.event.longitude)[1]
         ne_stream.rotate(method='NE->RT', back_azimuth=baz)
         radial_transverse = StationStream([ne_stream[0], ne_stream[1]])
         return radial_transverse

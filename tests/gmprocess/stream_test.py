@@ -84,8 +84,8 @@ def test_grouping():
 
     dmg_streams = []
     for filename in dmg_files:
-        if (not os.path.basename(filename).startswith('Bad')
-                and not os.path.basename(filename).startswith('CE58667')):
+        if (not os.path.basename(filename).startswith('Bad') and
+                not os.path.basename(filename).startswith('CE58667')):
             dmg_streams += read_data(filename)
     dmg_streams = StreamCollection(dmg_streams)
     assert len(dmg_streams) == 2
@@ -165,25 +165,23 @@ def test_grouping():
 
 
 def test_to_dataframe():
-    cwb_files, _ = read_data_dir('geonet', 'nz2018p115908')
+    cwb_files, event = read_data_dir('geonet', 'nz2018p115908')
     st = read_data(cwb_files[0])[0]
-    origin = Origin(latitude=-40.05750000, longitude=176.54583333, depth=9000)
-    df1 = streams_to_dataframe([st, st], origin=origin)
+    df1 = streams_to_dataframe([st, st], event=event)
     np.testing.assert_array_equal(df1.STATION.tolist(), ['WPWS', 'WPWS'])
     np.testing.assert_array_equal(df1.NAME.tolist(),
-            ['Waipawa_District_Council', 'Waipawa_District_Council'])
+                                  ['Waipawa_District_Council', 'Waipawa_District_Council'])
     target_levels = ['ELEVATION', 'EPICENTRAL_DISTANCE',
-            'GREATER_OF_TWO_HORIZONTALS', 'HN1', 'HN2', 'HNZ',
-            'HYPOCENTRAL_DISTANCE', 'LAT', 'LON', 'NAME', 'NETID', 'SOURCE',
-            'STATION', '', 'PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
+                     'GREATER_OF_TWO_HORIZONTALS', 'HN1', 'HN2', 'HNZ',
+                     'HYPOCENTRAL_DISTANCE', 'LAT', 'LON', 'NAME', 'NETID', 'SOURCE',
+                     'STATION', '', 'PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
     idx = 0
     for s in df1.columns.levels:
         for col in s:
             assert col == target_levels[idx]
             idx += 1
 
-
-    ## This was previously not being tested
+    # This was previously not being tested
     """imts = ['PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
     imcs = ['GREATER_OF_TWO_HORIZONTALS', 'CHANNELS']
     homedir = os.path.dirname(os.path.abspath(__file__))

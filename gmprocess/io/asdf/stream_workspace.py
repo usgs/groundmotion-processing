@@ -350,7 +350,7 @@ class StreamWorkspace(object):
         return stations
 
     def setStreamMetrics(self, eventid, stations=None,
-                         labels=None, imclist=None, imtlist=None, origin=None):
+                         labels=None, imclist=None, imtlist=None):
         """Create station metrics for specified event/streams.
 
         Args:
@@ -372,18 +372,18 @@ class StreamWorkspace(object):
             raise KeyError(fmt % eventid)
 
         streams = self.getStreams(eventid, stations=stations, labels=labels)
-
+        event = self.getEvent(eventid)
         for stream in streams:
             tag = stream.tag
             station, label = tag.split('_')
             if imclist is None and imtlist is None:
                 summary = StationSummary.from_config(stream,
-                                                     origin=origin)
+                                                     event=event)
             else:
                 summary = StationSummary.from_stream(stream,
                                                      components=imclist,
                                                      imts=imtlist,
-                                                     origin=origin)
+                                                     event=event)
             xmlstr = summary.getMetricXML()
 
             path = '%s_%s_%s' % (eventid, summary.station_code.lower(), label)

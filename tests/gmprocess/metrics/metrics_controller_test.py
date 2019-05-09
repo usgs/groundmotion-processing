@@ -19,25 +19,24 @@ from gmprocess.stationstream import StationStream
 
 
 def test_controller():
-    datafiles, _ = read_data_dir(
+    datafiles, event = read_data_dir(
         'geonet', 'us1000778i', '20161113_110259_WTMC_20.V2A')
     datafile = datafiles[0]
     input_imts = ['pgv', 'pga', 'sa2', 'sa1.0', 'sa0.3',
-            'fas2', 'fas1.0', 'fas0.3', 'arias', 'invalid']
+                  'fas2', 'fas1.0', 'fas0.3', 'arias', 'invalid']
     input_imcs = ['rotd50', 'rotd100.0', 'gmrotd50', 'gmrotd100.0',
-            'radial_transverse', 'geometric_mean', 'arithmetic_mean', 'channels',
-            'greater_of_two_horizontals', 'invalid', 'quadratic_mean']
-    origin = Origin(latitude=42.6925, longitude=173.021944)
+                  'radial_transverse', 'geometric_mean', 'arithmetic_mean', 'channels',
+                  'greater_of_two_horizontals', 'invalid', 'quadratic_mean']
     stream_v2 = read_geonet(datafile)[0]
 
-    ## Testing for acceleration --------------------------
-    m1 = MetricsController(input_imts, input_imcs, stream_v2, origin=origin)
+    # Testing for acceleration --------------------------
+    m1 = MetricsController(input_imts, input_imcs, stream_v2, event=event)
     pgms = m1.pgms
 
     # testing for pga, pgv, sa
     target_imcs = ['ROTD(50.0)', 'ROTD(100.0)', 'GMROTD(50.0)',
-            'GMROTD(100.0)', 'HNR', 'HNT', 'GEOMETRIC_MEAN', 'ARITHMETIC_MEAN', 'HN1', 'HN2',
-            'HNZ', 'GREATER_OF_TWO_HORIZONTALS', 'QUADRATIC_MEAN']
+                   'GMROTD(100.0)', 'HNR', 'HNT', 'GEOMETRIC_MEAN', 'ARITHMETIC_MEAN', 'HN1', 'HN2',
+                   'HNZ', 'GREATER_OF_TWO_HORIZONTALS', 'QUADRATIC_MEAN']
     for col in ['PGA', 'PGV', 'SA(1.0)', 'SA(2.0)', 'SA(0.3)']:
         imt = pgms.loc[pgms['IMT'] == col]
         imcs = imt['IMC'].tolist()
@@ -50,7 +49,7 @@ def test_controller():
         imcs = imt['IMC'].tolist()
         assert len(imcs) == 3
         np.testing.assert_array_equal(np.sort(imcs), ['ARITHMETIC_MEAN',
-                'GEOMETRIC_MEAN', 'QUADRATIC_MEAN'])
+                                                      'GEOMETRIC_MEAN', 'QUADRATIC_MEAN'])
 
     # testing for arias
     imt = pgms.loc[pgms['IMT'] == 'ARIAS']
@@ -59,17 +58,17 @@ def test_controller():
     np.testing.assert_array_equal(np.sort(imcs), ['ARITHMETIC_MEAN'])
     _validate_steps(m1.step_sets, 'acc')
 
-    ## Testing for Velocity --------------------------
+    # Testing for Velocity --------------------------
     for trace in stream_v2:
         trace.stats.standard.units = 'veloc'
-    m = MetricsController(input_imts, input_imcs, stream_v2, origin=origin)
+    m = MetricsController(input_imts, input_imcs, stream_v2, event=event)
     pgms = m.pgms
 
     # testing for pga, pgv, sa
     target_imcs = ['ROTD(50.0)', 'ROTD(100.0)', 'GMROTD(50.0)',
-            'GMROTD(100.0)', 'HNR', 'HNT', 'GEOMETRIC_MEAN', 'ARITHMETIC_MEAN',
-            'QUADRATIC_MEAN', 'HN1', 'HN2',
-            'HNZ', 'GREATER_OF_TWO_HORIZONTALS']
+                   'GMROTD(100.0)', 'HNR', 'HNT', 'GEOMETRIC_MEAN', 'ARITHMETIC_MEAN',
+                   'QUADRATIC_MEAN', 'HN1', 'HN2',
+                   'HNZ', 'GREATER_OF_TWO_HORIZONTALS']
     for col in ['PGA', 'PGV', 'SA(1.0)', 'SA(2.0)', 'SA(0.3)']:
         imt = pgms.loc[pgms['IMT'] == col]
         imcs = imt['IMC'].tolist()
@@ -82,7 +81,7 @@ def test_controller():
         imcs = imt['IMC'].tolist()
         assert len(imcs) == 3
         np.testing.assert_array_equal(np.sort(imcs), ['ARITHMETIC_MEAN',
-                'GEOMETRIC_MEAN', 'QUADRATIC_MEAN'])
+                                                      'GEOMETRIC_MEAN', 'QUADRATIC_MEAN'])
 
     # testing for arias
     imt = pgms.loc[pgms['IMT'] == 'ARIAS']
@@ -91,11 +90,12 @@ def test_controller():
     np.testing.assert_array_equal(np.sort(imcs), ['ARITHMETIC_MEAN'])
     _validate_steps(m.step_sets, 'vel')
 
+
 def _validate_steps(step_sets, data_type):
     homedir = os.path.dirname(os.path.abspath(
         __file__))  # where is this script?
     pathfile = datafile_v2 = os.path.join(homedir, '..', '..', 'data',
-            'metrics_controller', 'workflows.csv')
+                                          'metrics_controller', 'workflows.csv')
     df = pd.read_csv(pathfile)
     wf_df = df.apply(lambda x: x.astype(str).str.lower())
     # test workflows
@@ -103,8 +103,8 @@ def _validate_steps(step_sets, data_type):
         steps = step_sets[step_set]
         imt = steps['imt']
         imc = steps['imc']
-        row = wf_df[(wf_df.IMT == imt) & (wf_df.IMC == imc) &
-                (wf_df.Data == data_type)]
+        row = wf_df[(wf_df.IMT == imt) & (wf_df.IMC == imc)
+                    & (wf_df.Data == data_type)]
         assert steps['Transform1'] == row['Transform1'].iloc[0]
         assert steps['Transform2'] == row['Transform2'].iloc[0]
         assert steps['Transform3'] == row['Transform3'].iloc[0]
@@ -113,10 +113,12 @@ def _validate_steps(step_sets, data_type):
         assert steps['Rotation'] == row['Rotation'].iloc[0]
         assert steps['Reduction'] == row['Reduction'].iloc[0]
 
+
 def test_exceptions():
     ddir = os.path.join('data', 'testdata', 'geonet')
     homedir = pkg_resources.resource_filename('gmprocess', ddir)
-    datafile_v2 = os.path.join(homedir, 'us1000778i', '20161113_110259_WTMC_20.V2A')
+    datafile_v2 = os.path.join(
+        homedir, 'us1000778i', '20161113_110259_WTMC_20.V2A')
     stream_v2 = read_geonet(datafile_v2)[0]
     # Check for origin Error
     passed = True
@@ -153,6 +155,7 @@ def test_exceptions():
         passed = False
     assert passed == False
 
+
 def test_end_to_end():
     datafiles, _ = read_data_dir(
         'geonet', 'us1000778i', '20161113_110259_WTMC_20.V2A')
@@ -164,7 +167,7 @@ def test_end_to_end():
     target_imts = np.sort(np.asarray(['SA(1.0)', 'PGA', 'PGV']))
     stream = read_geonet(datafile)[0]
     input_imcs = ['greater_of_two_horizontals', 'channels', 'rotd50',
-            'rotd100', 'invalid']
+                  'rotd100', 'invalid']
     input_imts = ['sa1.0', 'PGA', 'pgv', 'invalid']
     m = MetricsController(input_imts, input_imcs, stream)
     test_pgms = [
@@ -197,7 +200,7 @@ def test_end_to_end():
         df = sub_imt.loc[sub_imt['IMC'] == target_imc]
         assert len(df['IMT'].tolist()) == 1
         np.testing.assert_array_almost_equal(df['Result'].tolist()[0], value,
-                decimal=10)
+                                             decimal=10)
 
 
 if __name__ == '__main__':
