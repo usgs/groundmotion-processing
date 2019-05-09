@@ -74,6 +74,11 @@ COSMOS_ORIENTATIONS = {
     2000: ('Other (described in comments)', 'Othr')
 }
 
+VALID_AZIMUTH_INTS = np.concatenate(
+    [np.arange(1, 360), list(COSMOS_ORIENTATIONS)]
+)
+
+
 FILTERS = {
     0: 'None',
     1: 'Rectangular',
@@ -157,6 +162,7 @@ SENSOR_TYPES = {
     4500: 'Other Rotational series',
     9000: 'Other Other series'
 }
+
 
 
 def is_cosmos(filename):
@@ -369,7 +375,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     except ValueError:
         unknown = -999
     # required metadata
-    network_num = int_data[10]
+    network_num = int(int_data[10])
     # Get network from cosmos table or fdsn code sheet
     if network_num in COSMOS_NETWORKS:
         network = COSMOS_NETWORKS[network_num][0]
@@ -390,15 +396,19 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     logging.debug('network: %s' % network)
     hdr['station'] = lines[4][28:34].strip()
     logging.debug('station: %s' % hdr['station'])
-    horizontal_angle = float(int_data[53])
+    horizontal_angle = int(int_data[53])
     logging.debug('horizontal_angle: %s' % horizontal_angle)
+    if horizontal_angle not in VALID_AZIMUTH_INTS:
+        logging.warning("Horizontal_angle in COSMOS header is not valid.")
+    horizontal_angle = float(horizontal_angle)
+
     # Store delta and duration. Use them to calculate npts and sampling_rate
 
     # NOTE: flt_data[33] is the delta of the V0 format, and if we are reading
     # a V1 or V2 format then it may have been resampled. We should consider
     # adding flt_data[33] delta to the provenance record at some point.
 
-    delta = flt_data[61] * MSEC_TO_SEC
+    delta = float(flt_data[61]) * MSEC_TO_SEC
     if delta != unknown:
         hdr['delta'] = delta
         hdr['sampling_rate'] = 1 / delta
@@ -440,19 +450,19 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     hdr['channel'] = channel
     logging.debug('channel: %s' % hdr['channel'])
     if location == '':
-        location = int_data[55]
+        location = int(int_data[55])
         location = str(_check_assign(location, unknown, '--'))
         if len(location) < 2:
             location = location.zfill(2)
         hdr['location'] = location
     else:
         hdr['location'] = location
-    year = int_data[39]
-    month = int_data[41]
-    day = int_data[42]
-    hour = int_data[43]
-    minute = int_data[44]
-    second = flt_data[29]
+    year = int(int_data[39])
+    month = int(int_data[41])
+    day = int(int_data[42])
+    hour = int(int_data[43])
+    minute = int(int_data[44])
+    second = float(flt_data[29])
     # If anything more than seconds is excluded
     # It is considered inadequate time information
     if second == unknown:
@@ -482,9 +492,9 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
         raise ValueError('COSMOS file does not specify length.')
 
     # coordinate information
-    coordinates['latitude'] = flt_data[0]
-    coordinates['longitude'] = flt_data[1]
-    coordinates['elevation'] = flt_data[2]
+    coordinates['latitude'] = float(flt_data[0])
+    coordinates['longitude'] = float(flt_data[1])
+    coordinates['elevation'] = float(flt_data[2])
     for key in coordinates:
         if coordinates[key] == unknown:
             warnings.warn('Missing %r. Setting to np.nan.' % key, Warning)
@@ -496,10 +506,10 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     standard['horizontal_orientation'] = horizontal_orientation
     station_name = lines[4][40:-1].strip()
     standard['station_name'] = station_name
-    instrument_frequency = flt_data[39]
+    instrument_frequency = float(flt_data[39])
     standard['instrument_period'] = 1.0 / _check_assign(instrument_frequency,
                                                         unknown, np.nan)
-    instrument_damping = flt_data[40]
+    instrument_damping = float(flt_data[40])
     standard['instrument_damping'] = _check_assign(instrument_damping,
                                                    unknown, np.nan)
     process_line = lines[10][10:40]
@@ -525,7 +535,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
             standard['process_time'] = ''
     else:
         standard['process_time'] = ''
-    process_level = int_data[0]
+    process_level = int(int_data[0])
     if process_level == 0:
         standard['process_level'] = PROCESS_LEVELS['V0']
     elif process_level == 1:
@@ -537,26 +547,26 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     else:
         standard['process_level'] = PROCESS_LEVELS['V1']
     logging.debug("process_level: %s" % process_level)
-    serial = int_data[52]
+    serial = int(int_data[52])
     if serial != unknown:
         standard['sensor_serial_number'] = str(_check_assign(
             serial, unknown, ''))
     else:
         standard['sensor_serial_number'] = ''
-    instrument = int_data[51]
+    instrument = int(int_data[51])
     if instrument != unknown and instrument in SENSOR_TYPES:
         standard['instrument'] = SENSOR_TYPES[instrument]
     else:
         standard['instrument'] = lines[6][57:-1].strip()
-    structure_type = int_data[18]
+    structure_type = int(int_data[18])
     if structure_type != unknown and structure_type in BUILDING_TYPES:
         standard['structure_type'] = BUILDING_TYPES[structure_type]
     else:
         standard['structure_type'] = ''
-    frequency = flt_data[25]
+    frequency = float(flt_data[25])
     standard['corner_frequency'] = _check_assign(frequency, unknown, np.nan)
-    physical_parameter = int_data[2]
-    units = int_data[1]
+    physical_parameter = int(int_data[2])
+    units = int(int_data[1])
     if units != unknown and units in UNITS:
         standard['units'] = UNITS[units]
     else:
@@ -573,41 +583,41 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     if physical_parameter in PHYSICAL_UNITS:
         physical_parameter = PHYSICAL_UNITS[physical_parameter][0]
     format_specific['physical_units'] = physical_parameter
-    v30 = flt_data[3]
+    v30 = float(flt_data[3])
     format_specific['v30'] = _check_assign(v30, unknown, np.nan)
-    least_significant_bit = flt_data[21]
+    least_significant_bit = float(flt_data[21])
     format_specific['least_significant_bit'] = _check_assign(
         least_significant_bit, unknown, np.nan)
-    low_filter_type = int_data[60]
+    low_filter_type = int(int_data[60])
     if low_filter_type in FILTERS:
         format_specific['low_filter_type'] = FILTERS[low_filter_type]
     else:
         format_specific['low_filter_type'] = ''
-    low_filter_corner = flt_data[53]
+    low_filter_corner = float(flt_data[53])
     format_specific['low_filter_corner'] = _check_assign(
         low_filter_corner, unknown, np.nan)
-    low_filter_decay = flt_data[54]
+    low_filter_decay = float(flt_data[54])
     format_specific['low_filter_decay'] = _check_assign(
         low_filter_decay, unknown, np.nan)
-    high_filter_type = int_data[61]
+    high_filter_type = int(int_data[61])
     if high_filter_type in FILTERS:
         format_specific['high_filter_type'] = FILTERS[high_filter_type]
     else:
         format_specific['high_filter_type'] = ''
-    high_filter_corner = flt_data[56]
+    high_filter_corner = float(flt_data[56])
     format_specific['high_filter_corner'] = _check_assign(
         high_filter_corner, unknown, np.nan)
-    high_filter_decay = flt_data[57]
+    high_filter_decay = float(flt_data[57])
     format_specific['high_filter_decay'] = _check_assign(
         high_filter_decay, unknown, np.nan)
-    maximum = flt_data[63]
+    maximum = float(flt_data[63])
     format_specific['maximum'] = _check_assign(maximum, unknown, np.nan)
-    maximum_time = flt_data[64]
+    maximum_time = float(flt_data[64])
     format_specific['maximum_time'] = _check_assign(
         maximum_time, unknown, np.nan)
     format_specific['station_code'] = _check_assign(
         structure_type, unknown, np.nan)
-    record_flag = int_data[75]
+    record_flag = int(int_data[75])
     if record_flag == 0:
         format_specific['record_flag'] = 'No problem'
     elif record_flag == 1:
@@ -616,10 +626,10 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
         format_specific['record_flag'] = 'Unfixed problem'
     else:
         format_specific['record_flag'] = ''
-    scaling_factor = flt_data[87]
+    scaling_factor = float(flt_data[87])
     format_specific['scaling_factor'] = _check_assign(
         scaling_factor, unknown, np.nan)
-    scaling_factor = flt_data[41]
+    scaling_factor = float(flt_data[41])
     format_specific['sensor_sensitivity'] = _check_assign(
         scaling_factor, unknown, np.nan)
     # Set dictionary

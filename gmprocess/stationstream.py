@@ -92,6 +92,10 @@ class StationStream(Stream):
         """Some validation checks for Traces within the StationStream.
 
         """
+
+        # Check that channel codes are unique_npts
+        self.__check_channels()
+
         # Check that id is consistent, and set id if it passes the check.
         self.id = None
         self.__check_id()
@@ -122,6 +126,18 @@ class StationStream(Stream):
             for tr in self:
                 tr.fail('StationStream traces have different start '
                         'times.')
+
+    def __check_channels(self):
+        if len(self):
+            all_codes = []
+            for tr in self:
+                stats = tr.stats
+                all_codes.append(
+                    "%s.%s.%s" % (stats.network, stats.station, stats.channel))
+            if len(set(all_codes)) != len(all_codes):
+                for tr in self:
+                    tr.fail('Nonunique channel code in StationStream.')
+
 
     def __check_id(self):
         # Check that id is consistent, and set id if it passes the check.
