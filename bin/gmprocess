@@ -20,7 +20,7 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import yaml
 
-from gmprocess.event import get_event_dict, get_event_object
+from gmprocess.event import get_event_object
 from gmprocess.io.global_fetcher import fetch_data
 from gmprocess.logging import setup_logger
 from gmprocess.args import add_shared_args
@@ -96,12 +96,14 @@ def plot_stations(collection, event, outdir):
     res = '50m'
     land = cfeature.NaturalEarthFeature('physical', 'land', res)
     ocean = cfeature.NaturalEarthFeature('physical', 'ocean', res)
-    borders = cfeature.NaturalEarthFeature('cultural',
-                                           'admin_0_boundary_lines_land',
-                                           res)
-    states = cfeature.NaturalEarthFeature('cultural',
-                                          'admin_1_states_provinces_lines',
-                                          res)
+    borders = cfeature.NaturalEarthFeature(
+        'cultural',
+        'admin_0_boundary_lines_land',
+        res)
+    states = cfeature.NaturalEarthFeature(
+        'cultural',
+        'admin_1_states_provinces_lines',
+        res)
 
     ax.add_feature(land, zorder=1, edgecolor='face',
                    facecolor=cfeature.COLORS['land'])
@@ -175,6 +177,9 @@ def get_periods(imt, period_params):
 
 
 def main(pparser, args):
+    # Initialize a string to store summary text to be printed at the end.
+    summary_text = ""
+
     if not args.eventid and not args.eventinfo:
         print('Must specify either ComCat ID or event information')
         pparser.print_help()
@@ -192,21 +197,21 @@ def main(pparser, args):
         logger.removeHandler(stream_handler)
         logger.addHandler(fhandler)
 
-    logging.info("Running datafetch.")
+    # -------------------------------------------------------------------------
+    logging.info("Running gmprocess...")
 
     config = get_config()
 
     if args.config:
         if not os.path.isfile(args.config):
             print('Config file %s does not exist.' % args.config)
-            sys.exit(-1)
+            sys.exit(1)
         try:
             with open(args.config, 'rt') as f:
                 custom_cfg = yaml.load(f, Loader=yaml.FullLoader)
                 update_dict(config, custom_cfg)
         except yaml.ParserError:
-            print('Config file %s is not valid YAML.'
-                  % args.config)
+            print('Config file %s is not valid YAML.' % args.config)
             sys.exit(1)
 
     rawdir = None
@@ -242,13 +247,14 @@ def main(pparser, args):
             print(error)
         sys.exit(0)
 
-    print('Completed data fetching stage;')
+    print('Completed data fetching stage...')
     print(collection)
 
     if not os.path.isdir(args.outdir):
         os.makedirs(args.outdir)
 
     if not args.no_plot:
+        # ---------------------------------------------------------------------
         print('Making plots...')
         plotdir = os.path.join(args.outdir, 'plots')
 
@@ -298,7 +304,10 @@ def main(pparser, args):
         print(fmt % tpl)
         sys.exit(0)
 
+    # -------------------------------------------------------------------------
+    print("Processing streams...")
     processed = process_streams(collection, event, config=config)
+
     imts = config['metrics']['output_imts']
     imcs = config['metrics']['output_imcs']
     if 'SA' in imts:
@@ -314,13 +323,8 @@ def main(pparser, args):
             imts += fas_imts
         imts.remove('FAS')
 
-    dataframe = streams_to_dataframe(processed,
-                                     imcs=imcs, imts=imts,
-                                     event_time=event.time,
-                                     lat=event.latitude,
-                                     lon=event.longitude)
-
     basename = event.time.strftime('%Y%m%d%H%M%S')
+
     if args.eventid:
         basename = args.eventid
 
@@ -344,34 +348,52 @@ def main(pparser, args):
 
         workspace.close()
 
-    # save dataframe to desired format
-    if args.format == 'csv':
-        dataframe.to_csv(framename, index=False)
-        provdata.to_csv(provname, index=False)
-    else:
-        dataframe.to_excel(framename)
-        provdata.to_excel(provname, index=False)
+    summary_text += ('Data from %i stations saved to %s\n'
+                     % (len(processed), args.outdir))
+    summary_text += 'Waveforms: %s\n' % workname
 
     # Write config file to output direcotry
     conf_out = os.path.join(args.outdir, 'config.yml')
     with open(conf_out, 'w') as outfile:
         yaml.dump(config, outfile, default_flow_style=False)
+    summary_text += 'Processing config saved to: %s\n' % conf_out
 
-    if args.amptools_format:
-        ampfile_name = os.path.join(
-            args.outdir, basename + '_amptools_metrics.xlsx')
+    # Only do dataframe if there are passed streams:
+    if processed.n_passed:
+        dataframe = streams_to_dataframe(processed,
+                                         imcs=imcs, imts=imts,
+                                         event_time=edict['time'],
+                                         lat=edict['lat'],
+                                         lon=edict['lon'])
 
-        wb = Workbook()
-        ws = wb.active
-        for r in dataframe_to_rows(dataframe, index=True, header=True):
-            ws.append(r)
+        # save dataframe to desired format
+        if args.format == 'csv':
+            dataframe.to_csv(framename, index=False)
+            provdata.to_csv(provname, index=False)
+        else:
+            dataframe.to_excel(framename)
+            provdata.to_excel(provname, index=False)
 
-        # we don't need the index column, so we'll delete it here
-        ws.delete_cols(1)
-        ws.insert_rows(1)
-        ws['A1'] = 'REFERENCE'
-        ws['B1'] = dataframe['SOURCE'].iloc[0]
-        wb.save(ampfile_name)
+        summary_text += 'Provenance: %s\n' % provname
+        summary_text += 'Metrics: %s\n' % framename
+
+        if args.amptools_format:
+            ampfile_name = os.path.join(
+                args.outdir, basename + '_amptools_metrics.xlsx')
+
+            wb = Workbook()
+            ws = wb.active
+            for r in dataframe_to_rows(dataframe, index=True, header=True):
+                ws.append(r)
+
+            # we don't need the index column, so we'll delete it here
+            ws.delete_cols(1)
+            ws.insert_rows(1)
+            ws['A1'] = 'REFERENCE'
+            ws['B1'] = dataframe['SOURCE'].iloc[0]
+            wb.save(ampfile_name)
+
+            summary_text += 'Amptools file: %s\n' % ampfile_name
 
     # remove old pdf reports
     pdf_files = glob.glob(os.path.join(args.outdir, 'gmprocess*.pdf'))
@@ -407,6 +429,7 @@ def main(pparser, args):
                     fmt = ('LateX to PDF conversion failed with '
                            'errors: "%s" "%s"')
                     print(fmt % (stdout, stderr))
+                    print('Processing Report (LateX): %s' % latest_tex)
                 else:
                     latexbase, ext = os.path.splitext(latest_tex)
                     pdf_file = latexbase + '.pdf'
@@ -414,26 +437,17 @@ def main(pparser, args):
                     # rename report file
                     newfile = os.path.join(args.outdir, 'gmprocess_report.pdf')
                     os.rename(pdf_file, newfile)
+                    summary_text += 'Processing Report (PDF): %s\n' % newfile
 
                     nukefiles = glob.glob(latexbase + '*')
 
                     # nukefiles.remove(latest_tex)
                     for nfile in nukefiles:
                         os.remove(nfile)
+        summary_text += 'A station map has been saved to %s\n' % mapname
+        summary_text += '%i plots saved to %s.\n' % (len(collection), plotdir)
 
-    print('Data from %i stations saved to %s' % (len(processed), args.outdir))
-    print('Metrics: %s' % framename)
-    print('Waveforms: %s' % workname)
-    if args.amptools_format:
-        print('Amptools file: %s' % ampfile_name)
-    print('Provenance (processing history): %s' % provname)
-    if not args.no_plot:
-        print('A station map has been saved to %s' % mapname)
-        print('%i plots saved to %s.' % (len(collection), plotdir))
-        if pdf_file is not None:
-            print('Processing Report (PDF): %s' % newfile)
-        else:
-            print('Processing Report (LateX): %s' % latest_tex)
+    print(summary_text)
 
     sys.exit(0)
 

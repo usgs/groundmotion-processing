@@ -109,7 +109,7 @@ def compute_snr_trace(tr, bandwidth, check=None):
 
 
 def compute_snr(st, bandwidth, check=None):
-    """Compute SNR dictionaries for a trace.
+    """Compute SNR dictionaries for a stream, looping over all traces.
 
     Args:
         st (StationStream):

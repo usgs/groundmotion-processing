@@ -14,7 +14,7 @@ from gmprocess.windows import signal_split
 from gmprocess.windows import signal_end
 from gmprocess.windows import window_checks
 from gmprocess import corner_frequencies
-from gmprocess.snr import compute_snr
+from gmprocess.snr import compute_snr_trace
 
 # -----------------------------------------------------------------------------
 # Note: no QA on following imports because they need to be in namespace to be
@@ -24,6 +24,7 @@ from gmprocess.pretesting import (  # NOQA
     check_max_amplitude,
     check_sta_lta,
     check_free_field)
+from gmprocess.snr import compute_snr # NOQA
 from gmprocess.spectrum import fit_spectra  # NOQA
 from gmprocess.plot import summary_plots  # NOQA
 from gmprocess.report import build_report  # NOQA
@@ -582,7 +583,7 @@ def snr_check(st, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
 
     for tr in st:
         # Comput SNR
-        tr = compute_snr(tr, bandwidth)
+        tr = compute_snr_trace(tr, bandwidth)
 
         if st.passed and tr.hasParameter('snr'):
             snr_dict = tr.getParameter('snr')
