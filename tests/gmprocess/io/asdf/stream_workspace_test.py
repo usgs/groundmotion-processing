@@ -55,6 +55,31 @@ def compare_streams(instream, outstream):
                 assert np.abs(invalue - outvalue) < 1
 
 
+def test_stream_params():
+    eventid = 'us1000778i'
+    datafiles, event = read_data_dir('geonet',
+                                     eventid,
+                                     '20161113_110259_WTMC_20.V1A')
+    tdir = tempfile.mkdtemp()
+    streams = []
+    try:
+        streams += read_data(datafiles[0])
+        statsdict = {'name': 'Fred', 'age': 34}
+        streams[0].setStreamParam('stats', statsdict)
+        tfile = os.path.join(tdir, 'test.hdf')
+        workspace = StreamWorkspace(tfile)
+        workspace.addEvent(event)
+        workspace.addStreams(event, streams, label='stats')
+        outstreams = workspace.getStreams(event.id, labels=['stats'])
+        cmpdict = outstreams[0].getStreamParam('stats')
+        assert cmpdict == statsdict
+        workspace.close()
+    except Exception as e:
+        raise(e)
+    finally:
+        shutil.rmtree(tdir)
+
+
 def test_workspace():
     eventid = 'us1000778i'
     datafiles, event = read_data_dir('geonet', eventid, '*.V1A')
@@ -223,4 +248,5 @@ def test_workspace():
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
+    test_stream_params()
     test_workspace()

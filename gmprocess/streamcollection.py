@@ -327,10 +327,16 @@ class StreamCollection(object):
     def __group_by_net_sta_inst(self, drop_error_streams=True):
         trace_list = []
 
+        stream_params = {}
+
         # Need to make sure that tag will be preserved; tag only really should
         # be created once a StreamCollection has been written to an ASDF file
         # and then read back in.
         for stream in self:
+            # we have stream-based metadata that we need to preserve
+            if len(stream.parameters):
+                stream_params[stream.get_id()] = stream.parameters
+
             # Tag is a StationStream attribute; If it does not exist, make it
             # an empty string
             if hasattr(stream, 'tag'):
@@ -359,10 +365,10 @@ class StreamCollection(object):
             for idx2, trace2 in enumerate(trace_list):
                 if idx1 != idx2 and idx1 not in all_matches:
                     if (
-                        network == trace2.stats['network'] and
-                        station == trace2.stats['station'] and
-                        inst == trace2.stats['channel'][0:2] and
-                        free_field == trace2.free_field
+                        network == trace2.stats['network']
+                        and station == trace2.stats['station']
+                        and inst == trace2.stats['channel'][0:2]
+                        and free_field == trace2.free_field
                     ):
                         matches.append(idx2)
             if len(matches) > 1:
@@ -389,6 +395,11 @@ class StreamCollection(object):
 
             for st in streams:
                 if len(st):
+                    sid = st.get_id()
+                    # put stream parameters back in
+                    if sid in stream_params:
+                        st.parameters = stream_params[sid].copy()
+
                     # Put tag back as a stream attribute, assuming that the
                     # tag has stayed the same through the grouping process
                     if st[0].stats.tag:

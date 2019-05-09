@@ -135,10 +135,10 @@ class StreamWorkspace(object):
                                                          name=channel_tag)
 
             # add processing parameters from streams
-            path = '%s_%s' % (tag, stream.get_id())
+            path = '%s_%s' % (eventid, tag)
             jdict = {}
-            for key in stream.getParameterKeys():
-                value = trace.getParameter(key)
+            for key in stream.getStreamParamKeys():
+                value = stream.getStreamParam(key)
                 jdict[key] = value
 
             if len(jdict):
@@ -151,7 +151,7 @@ class StreamWorkspace(object):
                 jdict = _stringify_dict(jdict)
                 jsonbytes = json.dumps(jdict).encode('utf-8')
                 jsonarray = np.frombuffer(jsonbytes, dtype=np.uint8)
-                dtype = 'ProcessingParameters'
+                dtype = 'StreamProcessingParameters'
                 self.dataset.add_auxiliary_data(jsonarray,
                                                 data_type=dtype,
                                                 path=path,
@@ -159,7 +159,7 @@ class StreamWorkspace(object):
 
             # add processing parameters from traces
             for trace in stream:
-                path = '%s_%s' % (tag, trace.stats.channel)
+                path = '%s_%s_%s' % (eventid, tag, trace.stats.channel)
                 jdict = {}
                 for key in trace.getParameterKeys():
                     value = trace.getParameter(key)
@@ -174,7 +174,7 @@ class StreamWorkspace(object):
                     jdict = _stringify_dict(jdict)
                     jsonbytes = json.dumps(jdict).encode('utf-8')
                     jsonarray = np.frombuffer(jsonbytes, dtype=np.uint8)
-                    dtype = 'ProcessingParameters'
+                    dtype = 'TraceProcessingParameters'
                     self.dataset.add_auxiliary_data(jsonarray,
                                                     data_type=dtype,
                                                     path=path,
@@ -252,9 +252,12 @@ class StreamWorkspace(object):
             StreamCollection: Object containing list of organized
             StationStreams.
         """
-        auxholder = []
-        if 'ProcessingParameters' in self.dataset.auxiliary_data:
-            auxholder = self.dataset.auxiliary_data.ProcessingParameters
+        trace_auxholder = []
+        stream_auxholder = []
+        if 'TraceProcessingParameters' in self.dataset.auxiliary_data:
+            trace_auxholder = self.dataset.auxiliary_data.TraceProcessingParameters
+        if 'StreamProcessingParameters' in self.dataset.auxiliary_data:
+            stream_auxholder = self.dataset.auxiliary_data.StreamProcessingParameters
         streams = []
         all_tags = []
 
@@ -290,9 +293,12 @@ class StreamWorkspace(object):
                         if channel_tag in self.dataset.provenance.list():
                             provdoc = self.dataset.provenance[channel_tag]
                             trace.setProvenanceDocument(provdoc)
-                        trace_path = '%s_%s' % (tag, trace.stats.channel)
-                        if trace_path in auxholder:
-                            bytelist = auxholder[trace_path].data[:].tolist()
+                        trace_path = '%s_%s_%s' % (eventid,
+                                                   tag,
+                                                   trace.stats.channel)
+                        if trace_path in trace_auxholder:
+                            bytelist = trace_auxholder[trace_path].data[:].tolist(
+                            )
                             jsonstr = ''.join([chr(b) for b in bytelist])
                             jdict = json.loads(jsonstr)
                             # jdict = unstringify_dict(jdict)
@@ -302,6 +308,18 @@ class StreamWorkspace(object):
                         traces.append(trace)
                     stream = StationStream(traces=traces)
                     stream.tag = tag  # testing this out
+
+                    # look for stream-based metadata
+                    stream_path = '%s_%s' % (eventid, tag)
+                    if stream_path in stream_auxholder:
+                        bytelist = stream_auxholder[stream_path].data[:].tolist(
+                        )
+                        jsonstr = ''.join([chr(b) for b in bytelist])
+                        jdict = json.loads(jsonstr)
+                        # jdict = unstringify_dict(jdict)
+                        for key, value in jdict.items():
+                            stream.setStreamParam(key, value)
+
                     streams.append(stream)
         streams = StreamCollection(streams)
         return streams
