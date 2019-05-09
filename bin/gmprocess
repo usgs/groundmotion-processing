@@ -362,9 +362,7 @@ def main(pparser, args):
     if processed.n_passed:
         dataframe = streams_to_dataframe(processed,
                                          imcs=imcs, imts=imts,
-                                         event_time=edict['time'],
-                                         lat=edict['lat'],
-                                         lon=edict['lon'])
+                                         event=event)
 
         # save dataframe to desired format
         if args.format == 'csv':

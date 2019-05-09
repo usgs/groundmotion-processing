@@ -36,6 +36,13 @@ def test_stream():
     inv_channel1 = inventory2.networks[0].stations[0].channels[0]
     assert inv_channel1.code == inv2_channel1.code
 
+    # test the streamparam functionality
+    statsdict = {'name': 'Fred', 'age': 34}
+    invstream.setStreamParam('stats', statsdict)
+    assert invstream.getStreamParamKeys() == ['stats']
+    cmpdict = invstream.getStreamParam('stats')
+    assert statsdict == cmpdict
+
 
 def test_uneven_stream():
     inventory = get_inventory()

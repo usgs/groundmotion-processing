@@ -87,6 +87,7 @@ class StationStream(Stream):
                     self.append(trace)
 
         self.validate()
+        self.parameters = {}
 
     def validate(self):
         """Some validation checks for Traces within the StationStream.
@@ -200,6 +201,41 @@ class StationStream(Stream):
         lc = [_i.__str__(id_length, indent) for _i in self]
         out += ("\n" + ind_str).join(lc)
         return out
+
+    def setStreamParam(self, param_id, param_attributes):
+        """Add to the StationStreams's set of arbitrary metadata.
+
+        Args:
+            param_id (str):
+                Key for parameters dictionary.
+            param_attributes (dict or list):
+                Parameters for the given key.
+        """
+        self.parameters[param_id] = param_attributes
+
+    def getStreamParamKeys(self):
+        """Get a list of all available parameter keys.
+
+        Returns:
+            list: List of available parameter keys.
+        """
+        return list(self.parameters.keys())
+
+    def getStreamParam(self, param_id):
+        """Retrieve some arbitrary metadata.
+
+        Args:
+            param_id (str):
+                Key for parameters dictionary.
+
+        Returns:
+            dict or list:
+                Parameters for the given key.
+        """
+        if param_id not in self.parameters:
+            raise KeyError(
+                'Parameter %s not found in StationStream' % param_id)
+        return self.parameters[param_id]
 
     def getProvenanceDocuments(self):
         provdocs = []

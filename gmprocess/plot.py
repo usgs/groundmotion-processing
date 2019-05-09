@@ -11,7 +11,6 @@ from obspy.geodetics.base import gps2dist_azimuth
 
 from gmprocess.metrics.reduction.arias import Arias
 from gmprocess import spectrum
-from gmprocess.metrics.oscillators import get_velocity
 
 
 def get_time_from_percent(NIa, p, dt):
@@ -360,7 +359,8 @@ def summary_plots(st, directory, origin):
                      color='red', x=0.5, y=1.02)
 
     # Compute velocity
-    st_vel = get_velocity(st)
+    st_vel = st.copy()
+    st_vel = st_vel.integrate()
 
     # process channels in preferred sort order (i.e., HN1, HN2, HNZ)
     channels = [tr.stats.channel for tr in st]

@@ -80,7 +80,7 @@ def directory_to_dataframe(directory, imcs=None, imts=None, origin=None, process
     return dataframe
 
 
-def streams_to_dataframe(streams, imcs=None, imts=None, origin=None):
+def streams_to_dataframe(streams, imcs=None, imts=None, event=None):
     """Extract peak ground motions from list of processed StationStream objects.
 
     Note: The PGM columns underneath each channel will be variable
@@ -96,8 +96,8 @@ def streams_to_dataframe(streams, imcs=None, imts=None, origin=None):
             Strings designating desired components to create in table.
         imts (list):
             Strings designating desired PGMs to create in table.
-        origin (obspy.core.event.Origin): Defines the focal time and
-                geographical location of an earthquake hypocenter.
+        event (ScalarEvent): Defines the focal time, 
+                geographic location, and magnitude of an earthquake hypocenter.
                 Default is None.
 
     Returns:
@@ -153,7 +153,7 @@ def streams_to_dataframe(streams, imcs=None, imts=None, origin=None):
         if len(stream) < 3:
             continue
         stream_summary = StationSummary.from_stream(
-            stream, station_summary_imcs, station_summary_imts, origin)
+            stream, station_summary_imcs, station_summary_imts, event)
         summary = stream_summary.summary
         subdfs += [summary]
     dataframe = pd.concat(subdfs, axis=0).reset_index(drop=True)

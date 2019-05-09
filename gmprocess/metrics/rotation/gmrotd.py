@@ -7,16 +7,17 @@ from gmprocess.metrics.rotation.rotation import Rotation
 
 class GMROTD(Rotation):
     """Class for computing the GMROTD rotation."""
-    def __init__(self, rotation_data, origin=None):
+
+    def __init__(self, rotation_data, event=None):
         """
         Args:
-            rotation_data (obspy.core.stream.Stream or numpy.ndarray): Intensity
-                    measurement component.
-            origin (obspy.core.event.Origin): Defines the focal time and
-                    geographical location of an earthquake hypocenter.
+            rotation_data (obspy.core.stream.Stream or numpy.ndarray):
+                Intensity measurement component.
+            event (ScalarEvent): Defines the focal time, geographical
+                location and magnitude of an earthquake hypocenter.
                     Default is None.
         """
-        super().__init__(rotation_data, origin=None)
+        super().__init__(rotation_data, event=None)
         self.result = self.get_gmrotd()
 
     def get_gmrotd(self):

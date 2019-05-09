@@ -23,15 +23,16 @@ class MetricsController(object):
     """
     Class for compiling metrics.
     """
+
     def __init__(self, imts, imcs, timeseries, bandwidth=None, damping=None,
-            origin=None, smooth_type=None):
+                 event=None, smooth_type=None):
         """
         Args:
             imts (list): Intensity measurement types (string) to calculate.
             imcs (list): Intensity measurement components (string) to calculate.
             timeseries (StationStream): Stream of the timeseries data.
-            origin (obspy.core.event.Origin): Defines the focal time and
-                    geographical location of an earthquake hypocenter.
+            event (ScalarEvent): Defines the focal time, 
+                    geographic location, and magnitude of an earthquake hypocenter.
                     Default is None.
             damping (float): Damping for the oscillator calculation.
             bandwidth (float): Bandwidth for the smoothing calculation.
@@ -44,12 +45,12 @@ class MetricsController(object):
             imcs = [imcs]
         self.imts = set(np.sort([imt.lower() for imt in imts]))
         self.imcs = set(np.sort([imc.lower() for imc in imcs]))
-        if 'radial_transverse' in self.imcs and origin is None:
-            raise PGMException('MetricsController: Origin is required for '
-                    'radial_transverse imc')
+        if 'radial_transverse' in self.imcs and event is None:
+            raise PGMException('MetricsController: Event is required for '
+                               'radial_transverse imc')
         self.timeseries = timeseries
         self.validate_stream()
-        self.origin = origin
+        self.event = event
         self.config = get_config()
         self.damping = damping
         self.smooth_type = smooth_type
@@ -70,7 +71,7 @@ class MetricsController(object):
         self.pgms = self.execute_steps()
 
     @classmethod
-    def from_config(cls, timeseries, config=None, origin=None):
+    def from_config(cls, timeseries, config=None, event=None):
         """
         Create class instance from a config. Can be a custom config or the
         default config found in ~/.gmprocess/config.yml.
@@ -79,8 +80,8 @@ class MetricsController(object):
             timeseries (StationStream): Stream of the timeseries data.
             config (dictionary): Custom config. Default is None, and the
                     default config will be used.
-            origin (obspy.core.event.Origin): Defines the focal time and
-                    geographical location of an earthquake hypocenter.
+            event (ScalarEvent): Defines the focal time, 
+                    geographic location and magnitude of an earthquake hypocenter.
                     Default is None.
 
         Notes:
@@ -155,7 +156,7 @@ class MetricsController(object):
         smoothing = metrics['fas']['smoothing']
         bandwidth = metrics['fas']['bandwidth']
         controller = cls(imts, imcs, timeseries, bandwidth=bandwidth,
-                damping=damping, origin=origin, smooth_type=smoothing)
+                         damping=damping, event=event, smooth_type=smoothing)
         return controller
 
     @property
@@ -222,8 +223,10 @@ class MetricsController(object):
                 imc_path = 'gmprocess.metrics.imc.'
                 imt_mod = importlib.import_module(imt_path + imt)
                 imc_mod = importlib.import_module(imc_path + imc)
-                imt_class = self._get_subclass(inspect.getmembers(imt_mod, inspect.isclass), 'IMT')
-                imc_class = self._get_subclass(inspect.getmembers(imc_mod, inspect.isclass), 'IMC')
+                imt_class = self._get_subclass(
+                    inspect.getmembers(imt_mod, inspect.isclass), 'IMT')
+                imc_class = self._get_subclass(
+                    inspect.getmembers(imc_mod, inspect.isclass), 'IMC')
                 imt_class_instance = imt_class(imt, imc, period)
                 if not imt_class_instance.valid_combination(imc):
                     continue
@@ -276,36 +279,51 @@ class MetricsController(object):
             reduction_path = 'gmprocess.metrics.reduction.'
             try:
                 # Transform 1
-                t1_mod = importlib.import_module(transform_path + step_set['Transform1'])
-                t1_cls = self._get_subclass(inspect.getmembers(t1_mod, inspect.isclass), 'Transform')
+                t1_mod = importlib.import_module(
+                    transform_path + step_set['Transform1'])
+                t1_cls = self._get_subclass(inspect.getmembers(
+                    t1_mod, inspect.isclass), 'Transform')
                 t1 = t1_cls(tseries, self.damping, period, self._times).result
                 # Transform 2
-                t2_mod = importlib.import_module(transform_path + step_set['Transform2'])
-                t2_cls = self._get_subclass(inspect.getmembers(t2_mod, inspect.isclass), 'Transform')
+                t2_mod = importlib.import_module(
+                    transform_path + step_set['Transform2'])
+                t2_cls = self._get_subclass(inspect.getmembers(
+                    t2_mod, inspect.isclass), 'Transform')
                 t2 = t2_cls(t1, self.damping, period, self._times).result
                 # Rotation
-                rot_mod = importlib.import_module(rotation_path + step_set['Rotation'])
-                rot_cls = self._get_subclass(inspect.getmembers(rot_mod, inspect.isclass), 'Rotation')
-                rot = rot_cls(t2, self.origin).result
+                rot_mod = importlib.import_module(
+                    rotation_path + step_set['Rotation'])
+                rot_cls = self._get_subclass(inspect.getmembers(
+                    rot_mod, inspect.isclass), 'Rotation')
+                rot = rot_cls(t2, self.event).result
                 # Transform 3
-                t3_mod = importlib.import_module(transform_path + step_set['Transform3'])
-                t3_cls = self._get_subclass(inspect.getmembers(t3_mod, inspect.isclass), 'Transform')
+                t3_mod = importlib.import_module(
+                    transform_path + step_set['Transform3'])
+                t3_cls = self._get_subclass(inspect.getmembers(
+                    t3_mod, inspect.isclass), 'Transform')
                 t3 = t3_cls(rot, self.damping, period, self._times).result
                 # Combination 1
-                c1_mod = importlib.import_module(combination_path + step_set['Combination1'])
-                c1_cls = self._get_subclass(inspect.getmembers(c1_mod, inspect.isclass), 'Combination')
+                c1_mod = importlib.import_module(
+                    combination_path + step_set['Combination1'])
+                c1_cls = self._get_subclass(inspect.getmembers(
+                    c1_mod, inspect.isclass), 'Combination')
                 c1 = c1_cls(t3).result
                 # Reduction
-                red_mod = importlib.import_module(reduction_path + step_set['Reduction'])
-                red_cls = self._get_subclass(inspect.getmembers(red_mod, inspect.isclass), 'Reduction')
-                red = red_cls(c1, self.bandwidth, percentile, period, self.smooth_type).result
+                red_mod = importlib.import_module(
+                    reduction_path + step_set['Reduction'])
+                red_cls = self._get_subclass(inspect.getmembers(
+                    red_mod, inspect.isclass), 'Reduction')
+                red = red_cls(c1, self.bandwidth, percentile,
+                              period, self.smooth_type).result
                 # Combination 2
-                c2_mod = importlib.import_module(combination_path + step_set['Combination2'])
-                c2_cls = self._get_subclass(inspect.getmembers(c2_mod, inspect.isclass), 'Combination')
+                c2_mod = importlib.import_module(
+                    combination_path + step_set['Combination2'])
+                c2_cls = self._get_subclass(inspect.getmembers(
+                    c2_mod, inspect.isclass), 'Combination')
                 c2 = c2_cls(red).result
             except Exception as e:
                 msg = ('Error in calculation of %r: %r.\nResult '
-                        'cell will be set to np.nan.' % (imt_imc, str(e)))
+                       'cell will be set to np.nan.' % (imt_imc, str(e)))
                 logging.warning(msg)
                 c2 = {'': np.nan}
             subdf = self._format(c2, step_set)
@@ -328,19 +346,19 @@ class MetricsController(object):
         """
         if not isinstance(self.timeseries, StationStream):
             raise PGMException("MetricsController: Input timeseries must be "
-                    "a StationStream.")
+                               "a StationStream.")
         for idx, trace in enumerate(self.timeseries):
             units = trace.stats.standard.units
             trace_length = len(trace.data)
             if units.lower() != 'veloc' and units.lower() != 'acc':
                 raise PGMException("MetricsController: Trace units must be "
-                        "either 'veloc' or 'acc'.")
+                                   "either 'veloc' or 'acc'.")
             if idx == 0:
                 standard_length = trace_length
             else:
                 if trace_length != standard_length:
                     raise PGMException("MetricsController: Traces must all "
-                            "be the same length.")
+                                       "be the same length.")
 
     def _format(self, result, steps):
         """
@@ -380,7 +398,7 @@ class MetricsController(object):
 
         # For the cases such as channels or radial_transverse, where multiple
         # components are returned
-        if imt =='pga':
+        if imt == 'pga':
             multiplier = GAL_TO_PCTG
         else:
             multiplier = 1
@@ -407,7 +425,6 @@ class MetricsController(object):
         df = pd.DataFrame(data=dfdict)
         return df
 
-
     def _get_horizontal_time(self):
         """
         Get the 'times' array for a horizontal channel. This is required for
@@ -424,7 +441,7 @@ class MetricsController(object):
                 times = trace.times()
                 return times
         raise PGMException('MetricsController: At least one horizontal '
-        'channel is required for calculations of SA, ROTD, GMROTD, GM.')
+                           'channel is required for calculations of SA, ROTD, GMROTD, GM.')
 
     def _get_subclass(self, classes, base_class):
         """

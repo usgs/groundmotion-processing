@@ -7,13 +7,14 @@ from gmprocess.metrics.exception import PGMException
 
 class Rotation(object):
     """Base class for rotation calculations."""
-    def __init__(self, rotation_data, origin=None):
+
+    def __init__(self, rotation_data, event=None):
         """
         Args:
             rotation_data (obspy.core.stream.Stream or numpy.ndarray): Intensity
                     measurement component.
-            origin (obspy.core.event.Origin): Defines the focal time and
-                    geographical location of an earthquake hypocenter.
+            event (ScalarEvent): Defines the focal time, geographical
+                location and magnitude of an earthquake hypocenter.
                     Default is None.
         """
         self.rotation_data = rotation_data
@@ -36,13 +37,14 @@ class Rotation(object):
             # Z in the channel name
             if 'Z' not in trace.stats['channel'].upper():
                 horizontal_channels += [trace.copy()]
-        ## Test the horizontals
+        # Test the horizontals
         if len(horizontal_channels) > 2:
             raise PGMException('Rotation: More than two horizontal channels.')
         elif len(horizontal_channels) < 2:
             raise PGMException('Rotation: Less than two horizontal channels.')
         elif len(horizontal_channels[0].data) != len(horizontal_channels[1].data):
-            raise PGMException('Rotation: Horizontal channels have different lengths.')
+            raise PGMException(
+                'Rotation: Horizontal channels have different lengths.')
         return horizontal_channels
 
     def get_max(self, tr1, pick_peak, tr2=None, percentiles=50):
@@ -160,7 +162,6 @@ class Rotation(object):
         else:
             raise PGMException('Not a valid pick for the peak.')
 
-
     def rotate(self, tr1, tr2, combine=False, delta=1.0):
         """
         Rotates a trace through 180 degrees to obtain the
@@ -185,7 +186,8 @@ class Rotation(object):
             max_deg = 90
 
         num_rows = int(max_deg * (1.0 / delta) + 1)
-        degrees = np.deg2rad(np.linspace(0, max_deg, num_rows)).reshape((-1, 1))
+        degrees = np.deg2rad(np.linspace(
+            0, max_deg, num_rows)).reshape((-1, 1))
         cos_deg = np.cos(degrees)
         sin_deg = np.sin(degrees)
 

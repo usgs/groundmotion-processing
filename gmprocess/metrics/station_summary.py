@@ -38,7 +38,7 @@ class StationSummary(object):
         self._epicentral_distance = None
         self._hypocentral_distance = None
         self._imts = None
-        self._origin = None
+        self._event = None
         self._pgms = None
         self._smoothing = None
         self._starttime = None
@@ -128,14 +128,13 @@ class StationSummary(object):
         return self._epicentral_distance
 
     @classmethod
-    def from_config(cls, stream, config=None, origin=None):
+    def from_config(cls, stream, config=None, event=None):
         """
         Args:
             stream (obspy.core.stream.Stream): Strong motion timeseries
                 for one station.
-            origin (obspy.core.event.origin.Origin):
-                Origin for the event containing latitude, longitude, and
-                depth.
+            event (ScalarEvent):
+                Object containing latitude, longitude, depth, and magnitude.
             config (dictionary): Configuration dictionary.
 
         Note:
@@ -154,10 +153,10 @@ class StationSummary(object):
         station._smoothing = smoothing
         station._bandwidth = bandwidth
         station._stream = stream
-        station.origin = origin
+        station.event = event
         station.set_metadata()
         metrics = MetricsController.from_config(stream, config=config,
-                origin=origin)
+                                                event=event)
         pgms = metrics.pgms
         if pgms is None:
             station._components = metrics.imcs
@@ -218,7 +217,7 @@ class StationSummary(object):
         return station
 
     @classmethod
-    def from_stream(cls, stream, components, imts, origin=None,
+    def from_stream(cls, stream, components, imts, event=None,
                     damping=None, smoothing=None, bandwidth=None, config=None):
         """
         Args:
@@ -226,9 +225,9 @@ class StationSummary(object):
                 for one station.
             components (list): List of requested components (str).
             imts (list): List of requested imts (str).
-            origin (obspy.core.event.origin.Origin):
-                Origin for the event containing latitude, longitude, and
-                depth.
+            event (ScalarEvent):
+                Origin/magnitude for the event containing time, latitude, longitude,
+                depth, and magnitude.
             damping (float): Damping of oscillator. Default is None.
             smoothing (float): Smoothing method. Default is None.
             bandwidth (float): Bandwidth of smoothing. Default is None.
@@ -255,11 +254,12 @@ class StationSummary(object):
         station._smoothing = smoothing
         station._bandwidth = bandwidth
         station._stream = stream
-        station.origin = origin
+        station.event = event
         station.set_metadata()
         metrics = MetricsController(imts, components, stream,
-                bandwidth=bandwidth, damping=damping, origin=origin,
-                smooth_type=smoothing)
+                                    bandwidth=bandwidth, damping=damping,
+                                    event=event,
+                                    smooth_type=smoothing)
         pgms = metrics.pgms
         if pgms is None:
             station._components = metrics.imcs
@@ -294,7 +294,8 @@ class StationSummary(object):
             return value
 
     def get_summary(self):
-        columns = ['STATION', 'NAME', 'SOURCE', 'NETID', 'LAT', 'LON', 'ELEVATION']
+        columns = ['STATION', 'NAME', 'SOURCE',
+                   'NETID', 'LAT', 'LON', 'ELEVATION']
         if self.epicentral_distance is not None:
             columns += ['EPICENTRAL_DISTANCE']
         if self.hypocentral_distance is not None:
@@ -337,7 +338,6 @@ class StationSummary(object):
         pgm_dataframe = pd.DataFrame(pgm_data, columns=pgm_columns)
         dataframe = pd.concat([meta_dataframe, pgm_dataframe], axis=1)
         return dataframe
-
 
     @property
     def hypocentral_distance(self):
@@ -399,14 +399,17 @@ class StationSummary(object):
             elev = stats.coordinates.elevation
         self._elevation = elev
         self._coordinates = (lat, lon)
-        if self.origin is not None:
-            origin = self.origin
+        if self.event is not None:
+            event = self.event
             dist, _, _ = gps2dist_azimuth(lat, lon,
-                     origin.latitude, origin.longitude)
-            self._epicentral_distance = dist/1000
-            if origin.depth is not None:
-                self._hypocentral_distance = distance(lat, lon, elev/1000,
-                        origin.latitude, origin.longitude, origin.depth/1000)
+                                          event.latitude,
+                                          event.longitude)
+            self._epicentral_distance = dist / 1000
+            if event.depth is not None:
+                self._hypocentral_distance = distance(lat, lon, elev / 1000,
+                                                      event.latitude,
+                                                      event.longitude,
+                                                      event.depth / 1000)
 
     @property
     def smoothing(self):
@@ -464,8 +467,8 @@ class StationSummary(object):
         else:
             if not isinstance(stream, Stream):
                 logging.warning('Setting failed: not a stream object.')
-            elif (stream[0].stats['station'].upper() !=
-                  self.station_code.upper()):
+            elif (stream[0].stats['station'].upper()
+                  != self.station_code.upper()):
                 logging.warning(
                     'Setting failed: stream station does not match '
                     'StationSummary.station_code.')
@@ -560,7 +563,7 @@ class StationSummary(object):
                 imt_tag = etree.SubElement(root, imtstr, units=units)
 
             for imc in self.components:
-                imcstr = imc.lower().replace('(','').replace(')','')
+                imcstr = imc.lower().replace('(', '').replace(')', '')
                 imc_tag = etree.SubElement(imt_tag, imcstr)
                 idx = (self.pgms.IMT == imt) & (self.pgms.IMC == imc)
                 vals = self.pgms[idx].Result.tolist()
