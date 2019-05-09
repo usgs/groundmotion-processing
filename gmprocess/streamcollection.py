@@ -72,8 +72,17 @@ class StreamCollection(object):
 
         self.streams = newstreams
         self.__group_by_net_sta_inst()
-
         self.validate()
+
+        n = len(self.streams)
+        n_passed = 0
+        for stream in self:
+            if stream.passed:
+                n_passed += 1
+        n_failed = n - n_passed
+        self.n_passed = n_passed
+        self.n_failed = n_failed
+
 
     def validate(self):
         """Some validation checks across streams.
@@ -243,13 +252,8 @@ class StreamCollection(object):
         summary = ''
         n = len(self.streams)
         summary += '%s StationStreams(s) in StreamCollection:\n' % n
-        n_passed = 0
-        for stream in self:
-            if stream.passed:
-                n_passed += 1
-        summary += '    %s StationStreams(s) passed checks.\n' % n_passed
-        n_failed = n - n_passed
-        summary += '    %s StationStreams(s) failed checks.\n' % n_failed
+        summary += '    %s StationStreams(s) passed checks.\n' % self.n_passed
+        summary += '    %s StationStreams(s) failed checks.\n' % self.n_failed
         return summary
 
     def describe(self):
