@@ -24,14 +24,17 @@ def test_pga():
                                                      ['channels', 'greater_of_two_horizontals', 'gmrotd50',
                                                       'gmrotd100', 'gmrotd0'],
                                                      ['pga', 'sa1.0', 'saincorrect'])
-    station_dict = station_summary.pgms['PGA']
-    greater = station_dict['GREATER_OF_TWO_HORIZONTALS']
+    pga_df = station_summary.pgms[station_summary.pgms.IMT == 'PGA']
+    HN1 = pga_df[pga_df.IMC == 'HN1'].Result.iloc[0]
+    HN2 = pga_df[pga_df.IMC == 'HN2'].Result.iloc[0]
+    HNZ = pga_df[pga_df.IMC == 'HNZ'].Result.iloc[0]
+    greater = pga_df[pga_df.IMC == 'GREATER_OF_TWO_HORIZONTALS'].Result.iloc[0]
     np.testing.assert_almost_equal(
-        station_dict['HN2'], 81.28979591836733, decimal=1)
+        HN2, 81.28979591836733, decimal=1)
     np.testing.assert_almost_equal(
-        station_dict['HN1'], 99.3173469387755, decimal=1)
+        HN1, 99.3173469387755, decimal=1)
     np.testing.assert_almost_equal(
-        station_dict['HNZ'], 183.89693877551022, decimal=1)
+        HNZ, 183.89693877551022, decimal=1)
     np.testing.assert_almost_equal(greater, 99.3173469387755, decimal=1)
 
 

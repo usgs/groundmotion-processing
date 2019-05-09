@@ -1,5 +1,5 @@
-from gmprocess.metrics.rotations.rotation import Rotation
-from gmprocess.metrics.rotation import rotate
+# Local imports
+from gmprocess.metrics.rotation.rotation import Rotation
 
 
 class Rotd(Rotation):
@@ -25,5 +25,5 @@ class Rotd(Rotation):
         """
         horizontals = self._get_horizontals()
         osc1, osc2 = horizontals[0].data, horizontals[1].data
-        rotd = [rotate(osc1, osc2, combine=True)]
+        rotd = [self.rotate(osc1, osc2, combine=True)]
         return rotd

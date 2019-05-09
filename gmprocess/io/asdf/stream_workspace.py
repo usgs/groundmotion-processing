@@ -334,10 +334,14 @@ class StreamWorkspace(object):
         for stream in streams:
             tag = stream.tag
             station, label = tag.split('_')
-            summary = StationSummary.from_stream(stream,
-                                                 components=imclist,
-                                                 imts=imtlist,
-                                                 origin=origin)
+            if imclist is None and imtlist is None:
+                summary = StationSummary.from_config(stream,
+                                                     origin=origin)
+            else:
+                summary = StationSummary.from_stream(stream,
+                                                     components=imclist,
+                                                     imts=imtlist,
+                                                     origin=origin)
             xmlstr = summary.getMetricXML()
 
             path = '%s_%s_%s' % (eventid, summary.station_code.lower(), label)

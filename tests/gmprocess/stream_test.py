@@ -6,15 +6,19 @@ import os
 
 # third party imports
 import numpy as np
+from obspy.core.event import Origin
+import pandas as pd
+import pkg_resources
+
+# Local imports
 from gmprocess.io.geonet.core import read_geonet
 from gmprocess.io.knet.core import read_knet
 from gmprocess.io.read import read_data
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.processing import process_streams
-from gmprocess.stream import directory_to_dataframe
+from gmprocess.stream import directory_to_dataframe, streams_to_dataframe
 from gmprocess.streamcollection import StreamCollection
 from gmprocess.io.test_utils import read_data_dir
-import pkg_resources
 
 
 def test():
@@ -160,8 +164,27 @@ def test_grouping():
             assert len(stream) == 3
 
 
-def _test_to_dataframe():
-    imts = ['PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
+def test_to_dataframe():
+    cwb_files, _ = read_data_dir('geonet', 'nz2018p115908')
+    st = read_data(cwb_files[0])[0]
+    origin = Origin(latitude=-40.05750000, longitude=176.54583333, depth=9000)
+    df1 = streams_to_dataframe([st, st], origin=origin)
+    np.testing.assert_array_equal(df1.STATION.tolist(), ['WPWS', 'WPWS'])
+    np.testing.assert_array_equal(df1.NAME.tolist(),
+            ['Waipawa_District_Council', 'Waipawa_District_Council'])
+    target_levels = ['ELEVATION', 'EPICENTRAL_DISTANCE',
+            'GREATER_OF_TWO_HORIZONTALS', 'HN1', 'HN2', 'HNZ',
+            'HYPOCENTRAL_DISTANCE', 'LAT', 'LON', 'NAME', 'NETID', 'SOURCE',
+            'STATION', '', 'PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
+    idx = 0
+    for s in df1.columns.levels:
+        for col in s:
+            assert col == target_levels[idx]
+            idx += 1
+
+
+    ## This was previously not being tested
+    """imts = ['PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
     imcs = ['GREATER_OF_TWO_HORIZONTALS', 'CHANNELS']
     homedir = os.path.dirname(os.path.abspath(__file__))
 
@@ -263,11 +286,11 @@ def _test_to_dataframe():
                 dataframe_value = cwb_dataframe.iloc[idx, multi_idx].to_list()[
                     0]
                 streamsummary_value = pgms[imt][imc]
-                assert dataframe_value == streamsummary_value
+                assert dataframe_value == streamsummary_value"""
 
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
-    test_grouping()
-    test()
-    # test_to_dataframe()
+    """test_grouping()
+    test()"""
+    test_to_dataframe()

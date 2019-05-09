@@ -5,14 +5,14 @@ import os.path
 
 # third party imports
 import numpy as np
-from obspy.core.stream import Stream
-from obspy.core.trace import Trace
 
 # local imports
-from gmprocess.metrics.exception import PGMException
 from gmprocess.io.geonet.core import read_geonet
-from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.io.test_utils import read_data_dir
+from gmprocess.metrics.exception import PGMException
+from gmprocess.metrics.station_summary import StationSummary
+from gmprocess.stationstream import StationStream
+from gmprocess.stationtrace import StationTrace
 
 
 def test_gmrotd():
@@ -24,6 +24,8 @@ def test_gmrotd():
     station_summary = StationSummary.from_stream(stream_v2,
                                                  ['gmrotd0', 'gmrotd50',
                                                   'gmrotd100'], ['pga'])
+    pgms = station_summary.pgms
+    assert 'GMROTD(50.0)' in pgms.IMC.tolist()
 
 
 def test_exceptions():
@@ -32,31 +34,13 @@ def test_exceptions():
     datafile_v2 = datafiles[0]
     stream_v2 = read_geonet(datafile_v2)[0]
     stream1 = stream_v2.select(channel="HN1")
-    try:
-        StationSummary.from_stream(stream1, ['gmrotd50'], ['pga'])
-        sucess = True
-    except PGMException:
-        sucess = False
-    assert sucess == False
+    pgms = StationSummary.from_stream(stream1, ['gmrotd50'], ['pga']).pgms
+    assert np.isnan(pgms.Result.iloc[0])
 
     for trace in stream_v2:
         stream1.append(trace)
-    try:
-        StationSummary.from_stream(stream1, ['gmrotd50'], ['pga'])
-        sucess = True
-    except PGMException:
-        sucess = False
-    assert sucess == False
-
-    stream2 = Stream(
-        [stream_v2.select(channel="HN1")[0],
-            Trace(data=np.asarray([]), header={"channel": "HN2"})])
-    try:
-        StationSummary.from_stream(stream2, ['gmrotd50'], ['pga'])
-        sucess = True
-    except PGMException:
-        sucess = False
-    assert sucess == False
+    pgms = StationSummary.from_stream(stream1, ['gmrotd50'], ['pga']).pgms
+    assert np.isnan(pgms.Result.iloc[0])
 
 
 if __name__ == '__main__':

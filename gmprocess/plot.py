@@ -9,8 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from obspy.geodetics.base import gps2dist_azimuth
 
-from gmprocess.metrics.imt.arias import calculate_arias
-from gmprocess.metrics.oscillators import get_acceleration
+from gmprocess.metrics.reduction.arias import Arias
 from gmprocess import spectrum
 from gmprocess.metrics.oscillators import get_velocity
 
@@ -77,8 +76,8 @@ def plot_arias(stream, axes=None, axis_index=None,
     if len(stream) < 1:
         raise Exception('No traces contained within the provided stream.')
 
-    stream = get_acceleration(stream, units='m/s/s')
-    Ia = calculate_arias(stream, ['channels'], True)[0]
+    arias = Arias(stream)
+    Ia = arias.arias_stream
 
     starttime = stream[0].stats.starttime
     if title is None:
@@ -168,8 +167,9 @@ def plot_durations(stream, durations, axes=None, axis_index=None,
     if len(stream) < 1:
         raise Exception('No traces contained within the provided stream.')
 
-    stream = get_acceleration(stream, units='m/s/s')
-    NIa = calculate_arias(stream, ['channels'], True)[1]
+    arias = Arias(stream)
+    Ia = arias.arias_stream
+    NIa = Ia.normalize(False)
 
     starttime = stream[0].stats.starttime
     if title is None:

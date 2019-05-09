@@ -4,7 +4,7 @@ from obspy.geodetics.base import gps2dist_azimuth
 from obspy.core.stream import Stream
 
 # Local imports
-from gmprocess.metrics.rotations.rotation import Rotation
+from gmprocess.metrics.rotation.rotation import Rotation
 from gmprocess.stationstream import StationStream
 
 
@@ -36,16 +36,18 @@ class Radial_Transverse(Rotation):
 
         # Check that we have one northing and one easting channel
         if len(st_e) != 1 or len(st_n) != 1:
-            raise Exception('Stream must have one north and one east channel.')
+            raise Exception('Radial_Transverse: Stream must have one north '
+                    'and one east channel.')
 
         # Check that the orientations are orthogonal
         if abs(st_e[0].stats.standard.horizontal_orientation -
                st_n[0].stats.standard.horizontal_orientation) not in [90, 270]:
-            raise Exception('Channels must be orthogonal.')
+            raise Exception('Radial_Transverse: Channels must be orthogonal.')
 
         # Check that the lengths of the two channels are the same
         if st_e[0].stats.npts != st_n[0].stats.npts:
-            raise Exception('East and north channels must have same length.')
+            raise Exception('Radial_Transverse: East and north channels must '
+                    'have same length.')
 
         # First, rotate to North-East components if not already
         if st_n[0].stats.standard.horizontal_orientation != 0:

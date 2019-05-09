@@ -3,47 +3,26 @@
 # stdlib imports
 import warnings
 
+# third party imports
+import numpy as np
+
 # local imports
-from gmprocess.metrics.gather import get_pgm_classes, group_imcs
+from gmprocess.metrics.gather import gather_pgms
 
 
 def test_gather():
-    imcs = get_pgm_classes('imc')
-    imts = get_pgm_classes('imt')
-
-    required_imcs = ['calculate_channels',
-                     'calculate_greater_of_two_horizontals',
-                     'calculate_gmrotd']
-    required_imts = ['calculate_pga',
-                     'calculate_sa',
-                     'calculate_pgv']
-    for imc in required_imcs:
-        assert imc in imcs
-    for imt in required_imts:
-        assert imt in imts
-
-    imcs = ['rotd0', 'roti10', 'gmrotd22', 'gmroti10',
-            'rotd0invalid', 'roti10invalid', 'gmrotd22invalid',
-            'gmroti10invalid', 'greater_of_two_horizontals']
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        grouping = group_imcs(imcs)
-    target_dict = {
-        'rotd': [
-            0.0
-        ],
-        'roti': [
-            10.0
-        ],
-        'gmrotd': [
-            22.0
-        ],
-        'gmroti': [
-            10.0
-        ],
-        'greater_of_two_horizontals': ''
-    }
-    assert grouping == target_dict
+    target_imts = ['pga', 'pgv', 'sa', 'fas', 'arias']
+    target_imcs = ['CHANNELS', 'GMROTD', 'ROTD', 'RADIAL_TRANSVERSE',
+            'GREATER_OF_TWO_HORIZONTALS', 'ARITHMETIC_MEAN', 'GEOMETRIC_MEAN',
+            'QUADRATIC_MEAN']
+    target_imcs = ['channels', 'gmrotd', 'rotd', 'radial_transverse',
+            'greater_of_two_horizontals', 'arithmetic_mean', 'geometric_mean',
+            'quadratic_mean']
+    imts, imcs = gather_pgms()
+    assert len(imts) == len(target_imts)
+    assert len(imcs) == len(target_imcs)
+    np.testing.assert_array_equal(np.sort(imts), np.sort(target_imts))
+    np.testing.assert_array_equal(np.sort(imcs), np.sort(target_imcs))
 
 
 if __name__ == '__main__':

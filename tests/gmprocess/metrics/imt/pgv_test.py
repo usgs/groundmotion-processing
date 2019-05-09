@@ -29,10 +29,13 @@ def test_pgv():
                                                      ['channels', 'greater_of_two_horizontals',
                                                          'gmrotd50'],
                                                      ['pgv', 'sa1.0', 'saincorrect'])
-    station_dict = station_summary.pgms['PGV']
-    np.testing.assert_almost_equal(station_dict['HN2'], pgv_target['HN2'])
-    np.testing.assert_almost_equal(station_dict['HN1'], pgv_target['HN1'])
-    np.testing.assert_almost_equal(station_dict['HNZ'], pgv_target['HNZ'])
+    pgv_df = station_summary.pgms[station_summary.pgms.IMT == 'PGV']
+    HN1 = pgv_df[pgv_df.IMC == 'HN1'].Result.iloc[0]
+    HN2 = pgv_df[pgv_df.IMC == 'HN2'].Result.iloc[0]
+    HNZ = pgv_df[pgv_df.IMC == 'HNZ'].Result.iloc[0]
+    np.testing.assert_almost_equal(HN2, pgv_target['HN2'])
+    np.testing.assert_almost_equal(HN1, pgv_target['HN1'])
+    np.testing.assert_almost_equal(HNZ, pgv_target['HNZ'])
 
 
 if __name__ == '__main__':

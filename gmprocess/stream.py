@@ -18,8 +18,7 @@ DEFAULT_IMTS = ['PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
 DEFAULT_IMCS = ['GREATER_OF_TWO_HORIZONTALS', 'CHANNELS']
 
 
-def directory_to_dataframe(directory, imcs=None, imts=None, epi_dist=None,
-                           event_time=None, lat=None, lon=None, process=True):
+def directory_to_dataframe(directory, imcs=None, imts=None, origin=None, process=True):
     """Extract peak ground motions from list of Stream objects.
     Note: The PGM columns underneath each channel will be variable
     depending on the units of the Stream being passed in (velocity
@@ -32,11 +31,9 @@ def directory_to_dataframe(directory, imcs=None, imts=None, epi_dist=None,
                 in table.
         imts (list): Strings designating desired PGMs to create
                 in table.
-        epi_dist (float): Epicentral distance for processsing. If not included,
-                but the lat and lon are, the distance will be calculated.
-        event_time (float): Time of the event, used for processing.
-        lat (float): Epicentral latitude. Epicentral distance calculation.
-        lon (float): Epicentral longitude. Epicentral distance calculation.
+        origin (obspy.core.event.Origin): Defines the focal time and
+                geographical location of an earthquake hypocenter.
+                Default is None.
         process (bool): Process the stream using the config file.
     Returns:
         DataFrame: Pandas dataframe containing columns:
@@ -79,14 +76,11 @@ def directory_to_dataframe(directory, imcs=None, imts=None, epi_dist=None,
     grouped_streams = StreamCollection(streams)
 
     dataframe = streams_to_dataframe(
-        grouped_streams, imcs=imcs, imts=imts, epi_dist=epi_dist,
-        event_time=event_time, lat=lat, lon=lon, process=process)
+        grouped_streams, imcs=imcs, imts=imts, origin=origin)
     return dataframe
 
 
-def streams_to_dataframe(streams, imcs=None, imts=None,
-                         epi_dist=None, event_time=None,
-                         lat=None, lon=None):
+def streams_to_dataframe(streams, imcs=None, imts=None, origin=None):
     """Extract peak ground motions from list of processed StationStream objects.
 
     Note: The PGM columns underneath each channel will be variable
@@ -102,15 +96,9 @@ def streams_to_dataframe(streams, imcs=None, imts=None,
             Strings designating desired components to create in table.
         imts (list):
             Strings designating desired PGMs to create in table.
-        epi_dist (float):
-            Epicentral distance for processsing. If not included, but the lat
-            and lon are, the distance will be calculated.
-        event_time (float):
-            Time of the event, used for processing.
-        lat (float):
-            Epicentral latitude. Epicentral distance calculation.
-        lon (float):
-            Epicentral longitude. Epicentral distance calculation.
+        origin (obspy.core.event.Origin): Defines the focal time and
+                geographical location of an earthquake hypocenter.
+                Default is None.
 
     Returns:
         DataFrame: Pandas dataframe containing columns:
@@ -158,69 +146,17 @@ def streams_to_dataframe(streams, imcs=None, imts=None,
     else:
         station_summary_imts = imts
 
-    if lat is not None:
-        columns = ['STATION', 'NAME', 'SOURCE',
-                   'NETID', 'LAT', 'LON', 'DISTANCE']
-    else:
-        columns = ['STATION', 'NAME', 'SOURCE', 'NETID', 'LAT', 'LON']
-    station_pgms = []
-    imcs = []
-    imts = []
-    idx = 0
-    meta_data = []
+    subdfs = []
     for stream in streams:
         if not stream.passed:
             continue
         if len(stream) < 3:
             continue
-        # set meta_data
-        row = np.zeros(len(columns), dtype=list)
-        row[0] = stream[0].stats['station']
-        name_str = stream[0].stats['standard']['station_name']
-        row[1] = name_str
-        source = stream[0].stats.standard['source']
-        row[2] = source
-        row[3] = stream[0].stats['network']
-        latitude = stream[0].stats['coordinates']['latitude']
-        row[4] = latitude
-        longitude = stream[0].stats['coordinates']['longitude']
-        row[5] = longitude
-        if lat is not None:
-            dist, _, _ = gps2dist_azimuth(
-                lat, lon, latitude, longitude)
-            row[6] = dist / 1000
-            if epi_dist is None:
-                epi_dist = dist / 1000
-        meta_data.append(row)
-        origin = Origin(latitude=lat, longitude=lon)
         stream_summary = StationSummary.from_stream(
             stream, station_summary_imcs, station_summary_imts, origin)
-        pgms = stream_summary.pgms
-        station_pgms += [pgms]
-        imcs += stream_summary.components
-        imts += stream_summary.imts
-
-    meta_data = np.array(meta_data)
-    if not len(meta_data):
-        dataframe = pd.DataFrame()
-    else:
-        num_streams, _ = meta_data.shape
-        meta_columns = pd.MultiIndex.from_product([columns, ['']])
-        meta_dataframe = pd.DataFrame(meta_data, columns=meta_columns)
-        imcs = np.unique(imcs)
-        imts = np.unique(imts)
-        pgm_columns = pd.MultiIndex.from_product([imcs, imts])
-        pgm_data = np.zeros((num_streams, len(imts) * len(imcs)))
-        for idx, station in enumerate(station_pgms):
-            subindex = 0
-            for imc in imcs:
-                for imt in imts:
-                    if imc in station[imt]:
-                        pgm_data[idx][subindex] = station[imt][imc]
-                        subindex += 1
-        pgm_dataframe = pd.DataFrame(pgm_data, columns=pgm_columns)
-
-        dataframe = pd.concat([meta_dataframe, pgm_dataframe], axis=1)
+        summary = stream_summary.summary
+        subdfs += [summary]
+    dataframe = pd.concat(subdfs, axis=0).reset_index(drop=True)
 
     return dataframe
 

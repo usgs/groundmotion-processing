@@ -2,8 +2,7 @@
 import numpy as np
 
 # Local imports
-from gmprocess.metrics.rotations.rotation import Rotation
-from gmprocess.metrics.rotation import rotate
+from gmprocess.metrics.rotation.rotation import Rotation
 
 
 class GMROTD(Rotation):
@@ -29,7 +28,7 @@ class GMROTD(Rotation):
         """
         horizontals = self._get_horizontals()
         osc1, osc2 = horizontals[0].data, horizontals[1].data
-        osc1_rot, osc2_rot = rotate(osc1, osc2, combine=False)
+        osc1_rot, osc2_rot = self.rotate(osc1, osc2, combine=False)
         osc1_max = np.amax(osc1_rot, 1)
         osc2_max = np.amax(osc2_rot, 1)
         rotd = np.sqrt(osc1_max * osc2_max)

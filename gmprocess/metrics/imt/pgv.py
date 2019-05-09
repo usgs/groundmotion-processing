@@ -1,51 +1,23 @@
-# stdlib imports
-import logging
-
-# local imports
-from gmprocess.metrics.exception import PGMException
-from gmprocess.metrics.gather import get_pgm_classes, group_imcs
+# Local imports
+from gmprocess.metrics.imt.imt import IMT
 
 
-def calculate_pgv(stream, imcs, origin=None):
-    """
-    Calculate the peak ground velocity.
-
-    Args:
-        stream (obspy.core.stream.Stream): streams of strong ground motion.
-            Traces in stream must be in units of cm/s.
-        imcs (list): list of imcs.
-        origin (obspy.core.event.origin.Origin):
-            Obspy event origin object.
-
-    Returns:
-        dictionary: Dictionary of pgv for different components.
-    """
-    pgv_dict = {}
-    # check units and add channel pga
-    for trace in stream:
-        if trace.stats['units'] != 'cm/s':
-            raise PGMException('Invalid units for PGV: %r. '
-                               'Units must be cm/s' % trace.stats['units'])
-    grouped_imcs = group_imcs(imcs)
-    # gather imc classes
-    pgm_classes = get_pgm_classes('imc')
-    # store pgv for imcs
-    for imc in grouped_imcs:
-        if 'calculate_' + imc in pgm_classes:
-            pgv_func = pgm_classes['calculate_' + imc]
-            pgv = pgv_func(stream, origin=origin,
-                           percentiles=grouped_imcs[imc])
-            if imc.find('rot') >= 0:
-                for percentile in pgv:
-                    pgv_dict[imc.upper() + str(percentile)] = pgv[percentile]
-            elif imc.find('channels') >= 0:
-                for channel in pgv:
-                    pgv_dict[channel] = pgv[channel]
-            elif imc.find('radial_transverse') >= 0:
-                for channel in pgv:
-                    pgv_dict[channel] = pgv[channel]
-            else:
-                pgv_dict[imc.upper()] = pgv
-        else:
-            logging.warning('Not a valid IMC: %r. Skipping...' % imc)
-    return pgv_dict
+class PGV(IMT):
+    """Class defining steps and invalid imts, for peak ground velocity."""
+    def __init__(self, imt, imc, period=None):
+        """
+        Args:
+            imt (string): Intensity measurement type.
+            imc (string): Intensity measurement component.
+            period (float): Period for fourier amplitude spectra and
+                    spectral amplitudes. Default is None. Not used by PGV.
+        """
+    def __init__(self, imt, imc, period=None):
+        super().__init__(imt, imc, period=None)
+        self._steps = {
+                'Transform2': 'null_transform',
+                'Transform3': 'null_transform',
+                'Combination1': 'null_combination',
+                'Reduction': 'max',
+        }
+        self._invalid_imcs = []
