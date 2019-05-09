@@ -17,11 +17,11 @@ def test_gmprocess():
     gmprocess = os.path.abspath(os.path.join(tpath, '..', '..',
                                              'bin', 'gmprocess'))
     dpath = os.path.join('data', 'testdata', 'knet', eid)
-    cfgpath = dpath = os.path.join('data',
-                                   'testdata',
-                                   'knet',
-                                   eid,
-                                   'config.yml')
+    cfgpath = os.path.join('data',
+                           'testdata',
+                           'knet',
+                           eid,
+                           'config.yml')
     knetdir = pkg_resources.resource_filename('gmprocess', dpath)
     cfgfile = pkg_resources.resource_filename('gmprocess', cfgpath)
     try:
