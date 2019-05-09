@@ -228,8 +228,12 @@ def main(pparser, args):
         etime = event.time
 
     if args.directory:
-        streams, bad, errors = directory_to_streams(args.directory)
-        collection = StreamCollection(streams, drop_non_free=True)
+        if os.path.exists(args.directory):
+            streams, bad, errors = directory_to_streams(args.directory)
+            collection = StreamCollection(streams, drop_non_free=True)
+        else:
+            print("%s does not exist. Existing." % args.direcotry)
+            sys.exti(1)
     else:
         collection, errors = fetch_data(
             etime,
