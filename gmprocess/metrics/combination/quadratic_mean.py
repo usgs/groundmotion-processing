@@ -5,31 +5,32 @@ import numpy as np
 from gmprocess.metrics.combination.combination import Combination
 
 
-class GM(Combination):
-    """Class for calculation of geometric mean."""
+class Quadratic_Mean(Combination):
+    """Class for calculation of quadratic mean."""
     def __init__(self, combination_data):
         """
         Args:
             combination_data (dictionary or numpy.ndarray): Data for calculation.
         """
         super().__init__(combination_data)
-        self.result = self.get_gm()
+        self.result = self.get_quadratic_mean()
 
-    def get_gm(self):
+    def get_quadratic_mean(self):
         """
-        Performs calculation of geometric mean.
+        Performs calculation of quadratic mean.
 
         Returns:
-            gm: Dictionary of geometric mean.
+            gm: Dictionary of quadratic mean.
         """
         if isinstance(self.combination_data, dict):
             horizontals = self._get_horizontals()
             h1, h2 = horizontals[0], horizontals[1]
-            gm = {'' : np.sqrt(h1 * h1)}
+            qm = {'' : np.sqrt(np.mean([h1**2, h2**2]))}
         else:
             horizontals = self.combination_data
             time_freq = horizontals[0]
             h1, h2 = horizontals[1], horizontals[2]
-            gm = [time_freq]
-            gm += [np.sqrt(np.abs(h1)* np.abs(h2))]
-        return gm
+            qm = [time_freq]
+            qm += [np.sqrt(np.mean(
+                [np.abs(trace)**2 for trace in [h1, h2]], axis=0))]
+        return qm

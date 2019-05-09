@@ -182,7 +182,7 @@ def test_workspace():
             imclist = ['greater_of_two_horizontals',
                        'channels',
                        'rotd50',
-                       'rotd100']
+                       'rotd100', 'arithmetic_mean']
             imtlist = ['sa1.0', 'PGA', 'pgv', 'fas2.0', 'arias']
             usid = 'us1000778i'
             tags = workspace.getStreamTags(usid)
@@ -190,13 +190,13 @@ def test_workspace():
                                        imclist=imclist, imtlist=imtlist)
             summary = workspace.getStreamMetrics(eventid, instation, 'foo')
             summary_series = summary.toSeries()['ARIAS']
-            cmpseries = pd.Series({'GEOMETRIC_MEAN': np.NaN,
-                                   'GREATER_OF_TWO_HORIZONTALS': 0.0005,
-                                   'HN1': 0.0001,
-                                   'HN2': 0.0005,
-                                   'HNZ': 0.0000,
-                                   'ROTD100.0': 0.0005,
-                                   'ROTD50.0': 0.0003})
+            cmpseries = pd.Series({'ARITHMETIC_MEAN': 0.0001,
+                                   'GREATER_OF_TWO_HORIZONTALS':np.NaN,
+                                   'HN1': np.NaN,
+                                   'HN2': np.NaN,
+                                   'HNZ': np.NaN,
+                                   'ROTD100.0': np.NaN,
+                                   'ROTD50.0': np.NaN})
             assert cmpseries.equals(summary_series)
 
             workspace.setStreamMetrics(usid, labels=['processed'])

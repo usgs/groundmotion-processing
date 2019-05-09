@@ -1,61 +1,22 @@
-# stdlib imports
-import logging
-
-# local imports
-from gmprocess.metrics.exception import PGMException
-from gmprocess.metrics.gather import get_pgm_classes, group_imcs
+# Local imports
+from gmprocess.metrics.imt.imt import IMT
 
 
-def calculate_sa(stream, imcs, rotation_matrix=None, origin=None):
-    """
-    Calculate the peak ground acceleration.
-
-    Args:
-        stream (obspy.core.stream.Stream): streams of strong ground motion.
-            Traces in stream must be in units of %%g.
-        imcs (list): list of imcs.
-        rotation_matrix (ndarray): A rotation matrix for the rotd component.
-            This is required when the rotd component is requested.
-        origin (obspy.core.event.origin.Origin):
-            Obspy event origin object.
-
-    Returns:
-        dictionary: Dictionary of sa for different components.
-    """
-    sa_dict = {}
-    # check units and add channel pga
-    for trace in stream:
-        if trace.stats['units'] != '%%g':
-            raise PGMException('Invalid units for sa: %r. '
-                               'Units must be %%g' % trace.stats['units'])
-    grouped_imcs = group_imcs(imcs)
-    # gather imc classes
-    pgm_classes = get_pgm_classes('imc')
-    # store sa for imcs
-    for imc in grouped_imcs:
-        if 'calculate_' + imc in pgm_classes:
-            sa_func = pgm_classes['calculate_' + imc]
-            sa = sa_func(stream, origin=origin, percentiles=grouped_imcs[imc])
-            if imc == 'rotd':
-                if rotation_matrix is None:
-                    raise PGMException(
-                        'The rotation matrix must be included '
-                        'in order to calculate the rotd component.')
-                sa = sa_func(rotation_matrix, origin=origin,
-                             percentiles=grouped_imcs[imc], rotated=True)
-                for percentile in sa:
-                    sa_dict[imc.upper() + str(percentile)] = sa[percentile]
-            elif imc.find('rot') >= 0:
-                for percentile in sa:
-                    sa_dict[imc.upper() + str(percentile)] = sa[percentile]
-            elif imc.find('channels') >= 0:
-                for channel in sa:
-                    sa_dict[channel] = sa[channel]
-            elif imc.find('radial_transverse') >= 0:
-                for channel in sa:
-                    sa_dict[channel] = sa[channel]
-            else:
-                sa_dict[imc.upper()] = sa
-        else:
-            logging.warning('Not a valid IMC: %r. Skipping...' % imc)
-    return sa_dict
+class SA(IMT):
+    """Class defining steps and invalid imts, for spectral amplitudes."""
+    def __init__(self, imt, imc, period):
+        """
+        Args:
+            imt (string): Intensity measurement type.
+            imc (string): Intensity measurement component.
+            period (float): Period for fourier amplitude spectra and
+                    spectral amplitudes.
+        """
+        super().__init__(imt, imc, period=None)
+        self._steps = {
+                'Transform2': 'oscillator',
+                'Transform3': 'null_transform',
+                'Combination1': 'null_combination',
+                'Reduction': 'max',
+        }
+        self._invalid_imcs = []

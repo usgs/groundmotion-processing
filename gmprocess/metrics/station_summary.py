@@ -4,29 +4,23 @@ import logging
 import re
 
 # third party imports
+from lxml import etree
 import numpy as np
 from obspy.core.stream import Stream
-from lxml import etree
+from obspy.geodetics.base import gps2dist_azimuth
+from openquake.hazardlib.geo.geodetic import distance
 import pandas as pd
 
 # local imports
 from gmprocess.config import get_config
-from gmprocess.metrics.imt.arias import calculate_arias
-from gmprocess.metrics.imt.pga import calculate_pga
-from gmprocess.metrics.imt.pgv import calculate_pgv
-from gmprocess.metrics.imt.sa import calculate_sa
-from gmprocess.metrics.imt.fas import calculate_fas
-from gmprocess.metrics.gather import get_pgm_classes
-from gmprocess.metrics.oscillators import (
-    get_acceleration, get_spectral, get_velocity)
+from gmprocess.metrics.gather import gather_pgms
+from gmprocess.metrics.metrics_controller import MetricsController
 
-
-CONFIG = get_config()
 
 XML_UNITS = {'pga': '%g',
              'pgv': 'cm/s',
              'sa': '%g',
-             'arias': 'cm/s',
+             'arias': 'm/s',
              'fas': 'cm/s'}
 
 
@@ -38,14 +32,19 @@ class StationSummary(object):
     def __init__(self):
         self._bandwidth = None
         self._components = None
+        self._coordinates = None
         self._damping = None
+        self._elevation = None
+        self._epicentral_distance = None
+        self._hypocentral_distance = None
         self._imts = None
+        self._origin = None
+        self._pgms = None
         self._smoothing = None
+        self._starttime = None
         self._station_code = None
         self._stream = None
-        self._oscillators = None
-        self._pgms = None
-        self._origin = None
+        self._summary = None
 
     @property
     def available_imcs(self):
@@ -55,7 +54,7 @@ class StationSummary(object):
         Returns:
             list: List of available components (str).
         """
-        return [key for key in get_pgm_classes('imc')]
+        return [x for x in gather_pgms()[1]]
 
     @property
     def available_imts(self):
@@ -65,7 +64,7 @@ class StationSummary(object):
         Returns:
             list: List of available measurement types (str).
         """
-        return [key for key in get_pgm_classes('imt')]
+        return [x for x in gather_pgms()[0]]
 
     @property
     def bandwidth(self):
@@ -85,17 +84,17 @@ class StationSummary(object):
         Returns:
             list: List of requested/calculated components (str).
         """
-        return self._components
+        return list(self._components)
 
-    @components.setter
-    def components(self, components):
+    @property
+    def coordinates(self):
         """
-        Helper method to set the components attribute.
+        Helper method returning the coordinates of the station.
 
-        Args:
-            components (list): List of components (str).
+        Returns:
+            list: List of coordinates (str).
         """
-        self._components = list(components)
+        return self._coordinates
 
     @property
     def damping(self):
@@ -107,6 +106,73 @@ class StationSummary(object):
             float: Damping used in SA calculation.
         """
         return self._damping
+
+    @property
+    def elevation(self):
+        """
+        Helper method for getting the station elevation.
+
+        Returns:
+            float: Station elevation
+        """
+        return self._elevation
+
+    @property
+    def epicentral_distance(self):
+        """
+        Helper method for getting the epicentral distance.
+
+        Returns:
+            float: Epicentral distance.
+        """
+        return self._epicentral_distance
+
+    @classmethod
+    def from_config(cls, stream, config=None, origin=None):
+        """
+        Args:
+            stream (obspy.core.stream.Stream): Strong motion timeseries
+                for one station.
+            origin (obspy.core.event.origin.Origin):
+                Origin for the event containing latitude, longitude, and
+                depth.
+            config (dictionary): Configuration dictionary.
+
+        Note:
+            Assumes a processed stream with units of gal (1 cm/s^2).
+            No processing is done by this class.
+        """
+        if config is None:
+            config = get_config()
+        station = cls()
+
+        damping = config['metrics']['sa']['damping']
+        smoothing = config['metrics']['fas']['smoothing']
+        bandwidth = config['metrics']['fas']['bandwidth']
+
+        station._damping = damping
+        station._smoothing = smoothing
+        station._bandwidth = bandwidth
+        station._stream = stream
+        station.origin = origin
+        station.set_metadata()
+        metrics = MetricsController.from_config(stream, config=config,
+                origin=origin)
+        pgms = metrics.pgms
+        if pgms is None:
+            station._components = metrics.imcs
+            station._imts = metrics.imts
+            station.pgms = pd.DataFrame.from_dict({
+                'IMT': [],
+                'IMC': [],
+                'Result': []
+            })
+        else:
+            station._components = set(pgms['IMC'].tolist())
+            station._imts = set(pgms['IMT'].tolist())
+            station.pgms = pgms
+        station._summary = station.get_summary()
+        return station
 
     @classmethod
     def from_pgms(cls, station_code, pgms):
@@ -131,221 +197,157 @@ class StationSummary(object):
             parametric data from COMCAT.
         """
         station = cls()
-        station.station_code = station_code
-        station.pgms = pgms
+        station._station_code = station_code
+        dfdict = {'IMT': [], 'IMC': [], 'Result': []}
+        for imt in pgms:
+            for imc in pgms[imt]:
+                dfdict['IMT'] += [imt]
+                dfdict['IMC'] += [imc]
+                dfdict['Result'] += [pgms[imt][imc]]
+        pgmdf = pd.DataFrame.from_dict(dfdict)
+        station.pgms = pgmdf
         imts = [key for key in pgms]
         components = []
         for imt in pgms:
             components += [imc for imc in pgms[imt]]
-        station.components = np.sort(np.unique(components))
-        station.imts = np.sort(imts)
+        station._components = np.sort(np.unique(components))
+        station._imts = np.sort(imts)
         # stream should be set later with corrected a corrected stream
         # this stream (in units of gal or 1 cm/s^2) can be used to
         # calculate and set oscillators
         return station
 
     @classmethod
-    def from_stream(cls, stream, components=None, imts=None, origin=None,
-                    damping=None, smoothing=None, bandwidth=None):
+    def from_stream(cls, stream, components, imts, origin=None,
+                    damping=None, smoothing=None, bandwidth=None, config=None):
         """
         Args:
             stream (obspy.core.stream.Stream): Strong motion timeseries
                 for one station.
             components (list): List of requested components (str).
             imts (list): List of requested imts (str).
-            damping (float): Damping of oscillator. Default is 5% (0.05)
             origin (obspy.core.event.origin.Origin):
-                Origin for the event containing latitude and longitude.
+                Origin for the event containing latitude, longitude, and
+                depth.
+            damping (float): Damping of oscillator. Default is None.
+            smoothing (float): Smoothing method. Default is None.
+            bandwidth (float): Bandwidth of smoothing. Default is None.
+            config (dictionary): Configuration dictionary.
 
         Note:
             Assumes a processed stream with units of gal (1 cm/s^2).
             No processing is done by this class.
         """
+        if config is None:
+            config = get_config()
         station = cls()
-        if imts is None:
-            imts = set(np.sort(CONFIG['metrics']['output_imts']))
-            sa_period_params = CONFIG['metrics']['sa']['periods']
-            fas_period_params = CONFIG['metrics']['fas']['periods']
-            period_sets = []
-            for period_params in [sa_period_params, fas_period_params]:
-                if period_params['use_array']:
-                    start = period_params['start']
-                    stop = period_params['stop']
-                    num = period_params['num']
-                    if period_params['spacing'] == 'logspace':
-                        periods = np.logspace(start, stop, num)
-                    else:
-                        periods = np.linspace(start, stop, num)
-                    additional_periods = [
-                        p for p in period_params['defined_periods']]
-                    periods = set(np.append(periods, additional_periods))
-                else:
-                    periods = set(
-                        [p for p in period_params['defined_periods']])
-                period_sets += [periods]
-            sa_periods, fas_periods = period_sets[0], period_sets[1]
-        else:
-            period_dict = station.parse_periods(set(np.sort(imts)))
-            imts = period_dict['imts']
-            sa_periods = period_dict['sa_periods']
-            fas_periods = period_dict['fas_periods']
-        if components is None:
-            components = set(np.sort(CONFIG['metrics']['output_imcs']))
-        else:
-            components = set(np.sort(components))
+        imts = np.sort(imts)
+        components = np.sort(components)
 
         if damping is None:
-            damping = CONFIG['metrics']['sa']['damping']
+            damping = config['metrics']['sa']['damping']
         if smoothing is None:
-            smoothing = CONFIG['metrics']['fas']['smoothing']
+            smoothing = config['metrics']['fas']['smoothing']
         if bandwidth is None:
-            bandwidth = CONFIG['metrics']['fas']['bandwidth']
+            bandwidth = config['metrics']['fas']['bandwidth']
 
         station._damping = damping
         station._smoothing = smoothing
         station._bandwidth = bandwidth
-        station.station_code = stream[0].stats['station']
-        station.stream = stream
+        station._stream = stream
         station.origin = origin
-
-        # Get oscillators
-        rot = False
-        for component in components:
-            if component.upper().startswith('ROTD'):
-                rot = True
-        station.generate_oscillators(imts, sa_periods, fas_periods, rot)
-        # Gather pgm/imt for each
-        station.pgms = station.gather_pgms(components, fas_periods)
+        station.set_metadata()
+        metrics = MetricsController(imts, components, stream,
+                bandwidth=bandwidth, damping=damping, origin=origin,
+                smooth_type=smoothing)
+        pgms = metrics.pgms
+        if pgms is None:
+            station._components = metrics.imcs
+            station._imts = metrics.imts
+            station.pgms = pd.DataFrame.from_dict({
+                'IMT': [],
+                'IMC': [],
+                'Result': []
+            })
+        else:
+            station._components = set(pgms['IMC'].tolist())
+            station._imts = set(pgms['IMT'].tolist())
+            station.pgms = pgms
+        station._summary = station.get_summary()
         return station
-
-    def gather_pgms(self, components, periods):
-        """
-        Gather pgms by getting components for each imt.
-
-        Args:
-            components (list): List of imcs.
-            periods (list): List of periods for the calculate_fas method.
-
-        Returns:
-            dictionary: Dictionary of pgms.
-
-        Notes:
-            Assumes generate_oscillators has already been called for
-            this class instance. Smoothing and bandwidth parameters must be set.
-        """
-        pgm_dict = {}
-        for oscillator in self.oscillators:
-            if oscillator.find('ROT') < 0:
-                stream = self.oscillators[oscillator]
-                if oscillator == 'PGA':
-                    pga = calculate_pga(stream, components, self.origin)
-                    pgm_dict[oscillator] = pga
-                elif oscillator == 'PGV':
-                    pgv = calculate_pgv(stream, components, self.origin)
-                    pgm_dict[oscillator] = pgv
-                elif oscillator.startswith('SA'):
-                    if oscillator + '_ROT' in self.oscillators:
-                        rotation_matrix = self.oscillators[oscillator + '_ROT']
-                        sa = calculate_sa(stream, components, rotation_matrix,
-                                          self.origin)
-                    else:
-                        sa = calculate_sa(stream, components, self.origin)
-                    pgm_dict[oscillator] = sa
-                elif oscillator.startswith('FAS'):
-                    fas = calculate_fas(stream, components, periods,
-                                        self.smoothing, self.bandwidth)
-                    for period in fas:
-                        tag = 'FAS(' + str(period) + ')'
-                        pgm_dict[tag] = {}
-                        pgm_dict[tag]['GEOMETRIC_MEAN'] = fas[period]
-                elif oscillator.startswith('ARIAS'):
-                    arias = calculate_arias(stream, components,
-                                            origin=self.origin)
-                    pgm_dict[oscillator] = arias
-        components = []
-        for imt in pgm_dict:
-            components += [imc for imc in pgm_dict[imt]]
-        self.components = set(components)
-        return pgm_dict
-
-    def generate_oscillators(self, imts, sa_periods, fas_periods, rotate=False):
-        """
-        Create dictionary of requested imt and its coinciding oscillators.
-
-        Args:
-            imts (list): List of imts.
-            sa_periods (list): List of periods. Used to generate the SA
-                    oscillators.
-            fas_periods (list): List of periods. Used to generate the FAS
-                    oscillators.
-            rotate (bool): Whether to rotate the sa oscillators for the ROTD
-                    component.
-
-        Returns:
-            dictionary: dictionary of oscillators for each imt.
-
-        Notes:
-            Damping value must be set.
-        """
-        if self.stream is None:
-            raise Exception('StationSummary.stream is not set.')
-        oscillator_dict = OrderedDict()
-        for imt in imts:
-            stream = self.stream.copy()
-            if imt.upper() == 'PGA':
-                oscillator = get_acceleration(stream)
-                oscillator_dict['PGA'] = oscillator
-            elif imt.upper() == 'PGV':
-                oscillator = get_velocity(stream)
-                oscillator_dict['PGV'] = oscillator
-            elif imt.upper() == 'FAS':
-                oscillator = get_acceleration(stream, 'cm/s/s')
-                oscillator_dict['FAS'] = oscillator
-            elif imt.upper().startswith('SA'):
-                for period in sa_periods:
-                    tag = 'SA(' + str(period) + ')'
-                    oscillator = get_spectral(
-                        period, stream,
-                        damping=self.damping)
-                    oscillator_dict[tag] = oscillator
-                    if rotate:
-                        oscillator = get_spectral(
-                            period, stream,
-                            damping=self.damping, rotation='nongm')
-                        oscillator_dict[tag + '_ROT'] = oscillator
-            elif imt.upper() == 'ARIAS':
-                oscillator = get_acceleration(stream, units='m/s/s')
-                oscillator_dict['ARIAS'] = oscillator
-            else:
-                fmt = "Invalid imt: %r. Skipping..."
-                logging.warning(fmt % (imt))
-        imts = []
-        for key in oscillator_dict:
-            if key == 'FAS':
-                for period in fas_periods:
-                    imts += ['FAS(' + str(period) + ')']
-            elif key.find('ROT') < 0:
-                imts += [key]
-
-        self.imts = imts
-        self.oscillators = oscillator_dict
 
     def get_pgm(self, imt, imc):
         """
-        Get a value for a requested imt and imc from pgms dictionary.
-
-        Args:
-            imt (str): Intensity measurement type.
-            imc (str): Intensity measurement component.
+        Finds the imt/imc value requested.
 
         Returns:
-            float: Peak ground motion value.
+            float: Value for the imt, imc requested.
         """
-        if self.pgms is None:
-            raise Exception('No pgms have been calculated.')
         imt = imt.upper()
         imc = imc.upper()
-        return self.pgms[imt][imc]
+        if imt not in self.imts or imc not in self.components:
+            return np.nan
+        else:
+            imt_df = self.pgms.loc[self.pgms.IMT == imt]
+            imc_df = imt_df.loc[imt_df.IMC == imc]
+            value = imc_df['Result'].tolist()[0]
+            return value
+
+    def get_summary(self):
+        columns = ['STATION', 'NAME', 'SOURCE', 'NETID', 'LAT', 'LON', 'ELEVATION']
+        if self.epicentral_distance is not None:
+            columns += ['EPICENTRAL_DISTANCE']
+        if self.hypocentral_distance is not None:
+            columns += ['HYPOCENTRAL_DISTANCE']
+        # set meta_data
+        row = np.zeros(len(columns), dtype=list)
+        row[0] = self.station_code
+        name_str = self.stream[0].stats['standard']['station_name']
+        row[1] = name_str
+        source = self.stream[0].stats.standard['source']
+        row[2] = source
+        row[3] = self.stream[0].stats['network']
+        row[4] = self.coordinates[0]
+        row[5] = self.coordinates[1]
+        row[6] = self.elevation
+        if self.epicentral_distance is not None:
+            row[7] = self.epicentral_distance
+            if self.hypocentral_distance is not None:
+                row[8] = self.hypocentral_distance
+        elif self.hypocentral_distance is not None:
+            row[7] = self.hypocentral_distance
+        imcs = self.components
+        imts = self.imts
+        pgms = self.pgms
+        meta_columns = pd.MultiIndex.from_product([columns, ['']])
+        meta_dataframe = pd.DataFrame(np.array([row]), columns=meta_columns)
+        pgm_columns = pd.MultiIndex.from_product([imcs, imts])
+        pgm_data = np.zeros((1, len(imts) * len(imcs)))
+        subindex = 0
+        for imc in imcs:
+            for imt in imts:
+                dfidx = (pgms.IMT == imt) & (pgms.IMC == imc)
+                result = pgms[dfidx].Result.tolist()
+                if len(result) == 0:
+                    value = np.nan
+                else:
+                    value = result[0]
+                pgm_data[0][subindex] = value
+                subindex += 1
+        pgm_dataframe = pd.DataFrame(pgm_data, columns=pgm_columns)
+        dataframe = pd.concat([meta_dataframe, pgm_dataframe], axis=1)
+        return dataframe
+
+
+    @property
+    def hypocentral_distance(self):
+        """
+        Helper method for getting the hypocentral distance.
+
+        Returns:
+            float: Hypocentral distance.
+        """
+        return self._hypocentral_distance
 
     @property
     def imts(self):
@@ -356,78 +358,7 @@ class StationSummary(object):
         Returns:
             list: List of requested/calculated measurement types (str).
         """
-        return self._imts
-
-    @imts.setter
-    def imts(self, imts):
-        """
-        Helper method to set the imts attribute.
-
-        Args:
-            imts (list): List of imts (str).
-        """
-        self._imts = list(imts)
-
-    @property
-    def oscillators(self):
-        """
-        Helper method returning a station's oscillators.
-
-        Returns:
-            dictionary: Stream for each imt.
-        """
-        return self._oscillators
-
-    @oscillators.setter
-    def oscillators(self, oscillators):
-        """
-        Helper method to set the oscillators attribute.
-
-        Args:
-            oscillators (dictionary): Stream for each imt.
-        """
-        self._oscillators = oscillators
-
-    def parse_periods(self, imts):
-        """
-        Parse the periods for the FAS and SA imts.
-
-        Args:
-            imts (list): List of imts.
-
-        Returns:
-            dictionary: Defines the stripped imts (period is now removed from
-                    the string), the sa periods, and fas periods.
-        """
-        sa_periods = []
-        fas_periods = []
-        stripped_imts = []
-        for imt in imts:
-            if imt.upper().startswith('SA'):
-                try:
-                    period = float(re.search('\d+\.*\d*', imt).group())
-                    if period not in sa_periods:
-                        sa_periods += [period]
-                    if 'SA' not in stripped_imts:
-                        stripped_imts += ['SA']
-                except Exception:
-                    fmt = "Invalid period for imt: %r. Skipping..."
-                    logging.warning(fmt % (imt))
-            elif imt.upper().startswith('FAS'):
-                try:
-                    period = float(re.search('\d+\.*\d*', imt).group())
-                    if period not in fas_periods:
-                        fas_periods += [period]
-                    if 'FAS' not in stripped_imts:
-                        stripped_imts += ['FAS']
-                except Exception:
-                    fmt = "Invalid period for imt: %r. Skipping..."
-                    logging.warning(fmt % (imt))
-            else:
-                stripped_imts += [imt.upper()]
-        period_dict = {'imts': stripped_imts, 'sa_periods': sa_periods,
-                       'fas_periods': fas_periods}
-        return period_dict
+        return list(self._imts)
 
     @property
     def pgms(self):
@@ -449,6 +380,34 @@ class StationSummary(object):
         """
         self._pgms = pgms
 
+    def set_metadata(self):
+        """
+        Set the metadata for the station
+        """
+        stats = self.stream[0].stats
+        self._starttime = stats.starttime
+        self._station_code = stats.station
+        if 'coordinates' not in stats:
+            self._elevation = np.nan
+            self._coordinates = (np.nan, np.nan)
+            return
+        lat = stats.coordinates.latitude
+        lon = stats.coordinates.longitude
+        if 'elevation' not in stats.coordinates or np.isnan(stats.coordinates.elevation):
+            elev = 0
+        else:
+            elev = stats.coordinates.elevation
+        self._elevation = elev
+        self._coordinates = (lat, lon)
+        if self.origin is not None:
+            origin = self.origin
+            dist, _, _ = gps2dist_azimuth(lat, lon,
+                     origin.latitude, origin.longitude)
+            self._epicentral_distance = dist/1000
+            if origin.depth is not None:
+                self._hypocentral_distance = distance(lat, lon, elev/1000,
+                        origin.latitude, origin.longitude, origin.depth/1000)
+
     @property
     def smoothing(self):
         """
@@ -461,6 +420,16 @@ class StationSummary(object):
         return self._smoothing
 
     @property
+    def starttime(self):
+        """
+        Helper method returning a station's starttime.
+
+        Returns:
+            str: Start time for one station.
+        """
+        return self._starttime
+
+    @property
     def station_code(self):
         """
         Helper method returning a station's station code.
@@ -469,21 +438,6 @@ class StationSummary(object):
             str: Station code for one station.
         """
         return self._station_code
-
-    @station_code.setter
-    def station_code(self, station_code):
-        """
-        Helper method to set the station code attribute.
-
-        Args:
-            station_code (str): Station code for one station.
-        """
-        if self.station_code is not None:
-            logging.warning(
-                'Setting failed: the station code cannot be '
-                'changed. A new instance of StationSummary must be created.')
-        else:
-            self._station_code = station_code
 
     @property
     def stream(self):
@@ -518,9 +472,19 @@ class StationSummary(object):
             else:
                 self._stream = stream
 
+    @property
+    def summary(self):
+        """
+        Helper method returning a station's summary.
+
+        Returns:
+            pandas.Dataframe: Summary for one station.
+        """
+        return self._summary
+
     @classmethod
     def fromMetricXML(cls, xmlstr):
-        imtlist = ['pga', 'pgv', 'sa', 'fas', 'arias']
+        imtlist = gather_pgms()[0]
         root = etree.fromstring(xmlstr)
         pgms = {}
         station_code = None
@@ -545,7 +509,6 @@ class StationSummary(object):
                     tdict[imc] = value
 
                 pgms[imt] = tdict
-
         station = cls.from_pgms(station_code, pgms)
         station._damping = damping
         return station
@@ -569,7 +532,7 @@ class StationSummary(object):
         FLOAT_MATCH = r'[0-9]*\.[0-9]*'
         root = etree.Element('waveform_metrics',
                              station_code=self.station_code)
-        for imt, imcdict in self.pgms.items():
+        for imt in self.imts:
             imtstr = imt.lower()
             units = None
             if imtstr in XML_UNITS:
@@ -596,9 +559,15 @@ class StationSummary(object):
             else:
                 imt_tag = etree.SubElement(root, imtstr, units=units)
 
-            for imc, value in imcdict.items():
-                imcstr = imc.lower()
+            for imc in self.components:
+                imcstr = imc.lower().replace('(','').replace(')','')
                 imc_tag = etree.SubElement(imt_tag, imcstr)
+                idx = (self.pgms.IMT == imt) & (self.pgms.IMC == imc)
+                vals = self.pgms[idx].Result.tolist()
+                if len(vals) == 0:
+                    value = np.nan
+                else:
+                    value = vals[0]
                 imc_tag.text = '%.4f' % value
         xmlstr = etree.tostring(root, pretty_print=True,
                                 encoding='utf-8', xml_declaration=True)
@@ -617,11 +586,13 @@ class StationSummary(object):
         index = pd.MultiIndex.from_product([imts, imcs])
         data = []
         for imt in imts:
-            imt_dict = self.pgms[imt]
             for imc in imcs:
-                if imc not in imt_dict:
-                    data.append(np.nan)
+                idx = (self.pgms.IMT == imt) & (self.pgms.IMC == imc)
+                vals = self.pgms[idx].Result.tolist()
+                if len(vals) == 0:
+                    value = np.nan
                 else:
-                    data.append(imt_dict[imc])
+                    value = vals[0]
+                data.append(value)
         series = pd.Series(data, index)
         return series

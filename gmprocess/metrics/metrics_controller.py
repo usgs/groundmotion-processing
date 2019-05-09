@@ -13,8 +13,8 @@ import pandas as pd
 from gmprocess.config import get_config
 from gmprocess.constants import GAL_TO_PCTG
 from gmprocess.metrics.exception import PGMException
-from gmprocess.metrics.metrics_controller_imc.imc import IMC
-from gmprocess.metrics.metrics_controller_imt.imt import IMT
+from gmprocess.metrics.imc.imc import IMC
+from gmprocess.metrics.imt.imt import IMT
 from gmprocess.metrics.gather import gather_pgms
 from gmprocess.stationstream import StationStream
 
@@ -155,7 +155,7 @@ class MetricsController(object):
         smoothing = metrics['fas']['smoothing']
         bandwidth = metrics['fas']['bandwidth']
         controller = cls(imts, imcs, timeseries, bandwidth=bandwidth,
-                damping=damping, origin=origin, smooth_type=smooth_type)
+                damping=damping, origin=origin, smooth_type=smoothing)
         return controller
 
     @property
@@ -194,9 +194,13 @@ class MetricsController(object):
             # the imt string
             if imt.startswith('sa'):
                 period = self._parse_period(imt)
+                if period is None:
+                    continue
                 imt = 'sa'
             elif imt.startswith('fas'):
                 period = self._parse_period(imt)
+                if period is None:
+                    continue
                 imt = 'fas'
             if imt not in self._available_imts:
                 continue
@@ -214,8 +218,8 @@ class MetricsController(object):
                 if imc not in self._available_imcs:
                     continue
                 # Import
-                imt_path = 'gmprocess.metrics.metrics_controller_imt.'
-                imc_path = 'gmprocess.metrics.metrics_controller_imc.'
+                imt_path = 'gmprocess.metrics.imt.'
+                imc_path = 'gmprocess.metrics.imc.'
                 imt_mod = importlib.import_module(imt_path + imt)
                 imc_mod = importlib.import_module(imc_path + imc)
                 imt_class = self._get_subclass(inspect.getmembers(imt_mod, inspect.isclass), 'IMT')
@@ -267,7 +271,7 @@ class MetricsController(object):
             tseries = self.timeseries.copy()
             # paths
             transform_path = 'gmprocess.metrics.transform.'
-            rotation_path = 'gmprocess.metrics.rotations.'
+            rotation_path = 'gmprocess.metrics.rotation.'
             combination_path = 'gmprocess.metrics.combination.'
             reduction_path = 'gmprocess.metrics.reduction.'
             try:
@@ -324,7 +328,7 @@ class MetricsController(object):
         """
         if not isinstance(self.timeseries, StationStream):
             raise PGMException("MetricsController: Input timeseries must be "
-                    "a timeseries.")
+                    "a StationStream.")
         for idx, trace in enumerate(self.timeseries):
             units = trace.stats.standard.units
             trace_length = len(trace.data)
@@ -366,11 +370,11 @@ class MetricsController(object):
         period = steps['period']
         percentile = steps['percentile']
         if period is not None:
-            imt_str = imt.upper() + '(' + period + ')'
+            imt_str = '%s(%s)' % (imt.upper(), float(period))
         else:
             imt_str = imt.upper()
         if percentile is not None:
-            imc_str = imc.upper() + '(' + percentile + ')'
+            imc_str = '%s(%s)' % (imc.upper(), float(percentile))
         else:
             imc_str = imc.upper()
 
@@ -386,9 +390,20 @@ class MetricsController(object):
                 dfdict['IMC'] += [r]
                 dfdict['Result'] += [result[r] * multiplier]
         else:
-            dfdict['IMT'] += [imt_str]
-            dfdict['IMC'] += [imc_str]
-            dfdict['Result'] += [result[''] * multiplier]
+            # Deal with nan values for channels and radial transverse
+            if imc == 'radial_transverse' and '' in result:
+                dfdict['IMT'] += [imt_str, imt_str]
+                dfdict['IMC'] += ['HNR', 'HNT']
+                dfdict['Result'] += [np.nan, np.nan]
+            elif imc == 'channels' and '' in result:
+                dfdict['IMT'] += [imt_str, imt_str, imt_str]
+                dfdict['IMC'] += ['HN1', 'HN2', 'HNZ']
+                dfdict['Result'] += [np.nan, np.nan, np.nan]
+            else:
+                dfdict['IMT'] += [imt_str]
+                dfdict['IMC'] += [imc_str]
+                for r in result:
+                    dfdict['Result'] += [result[r] * multiplier]
         df = pd.DataFrame(data=dfdict)
         return df
 
@@ -449,8 +464,10 @@ class MetricsController(object):
         period = re.findall('\d+', imt)
         if len(period) > 1:
             period = '.'.join(period)
-        else:
+        elif len(period) == 1:
             period = period[0]
+        else:
+            period = None
         return period
 
     def _parse_percentile(self, imc):
@@ -473,6 +490,8 @@ class MetricsController(object):
         percentile = re.findall('\d+', imc)
         if len(percentile) > 1:
             percentile = '.'.join(percentile)
-        else:
+        elif len(percentile) == 1:
             percentile = percentile[0]
+        else:
+            percentile = None
         return percentile

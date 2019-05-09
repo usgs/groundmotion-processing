@@ -26,9 +26,11 @@ def test_bhrc():
              '5526': 1.319720}
 
     for stream in raw_streams:
-        summary = StationSummary.from_stream(stream)
+        summary = StationSummary.from_config(stream)
         cmp_value = peaks[summary.station_code]
-        pga = summary.pgms['PGA']['GREATER_OF_TWO_HORIZONTALS']
+        imt = summary.pgms.loc[summary.pgms.IMT == 'PGA']
+        g2h = imt.loc[imt.IMC == 'GREATER_OF_TWO_HORIZONTALS']
+        pga = g2h['Result'].tolist()[0]
         np.testing.assert_almost_equal(cmp_value, pga)
     #     fmt = '%s: %.3f, %.3f'
     #     tpl = (stream[0].stats.station,

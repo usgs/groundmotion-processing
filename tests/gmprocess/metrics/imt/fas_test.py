@@ -6,12 +6,12 @@ import re
 
 # third party imports
 import numpy as np
-from obspy.core.stream import Stream
-from obspy.core.trace import Trace
 import pkg_resources
 
-# local imports
-from gmprocess.metrics.imt.fas import calculate_fas
+# Local imports
+from gmprocess.metrics.station_summary import StationSummary
+from gmprocess.stationstream import StationStream
+from gmprocess.stationtrace import StationTrace
 
 
 def test_fas():
@@ -25,7 +25,7 @@ def test_fas():
     p1 = os.path.join(datadir, 'peer', 'RSN763_LOMAP_GIL067.AT2')
     p2 = os.path.join(datadir, 'peer', 'RSN763_LOMAP_GIL337.AT2')
 
-    stream = Stream()
+    stream = StationStream([])
     for idx, fpath in enumerate([p1, p2]):
         with open(fpath) as file_obj:
             for _ in range(3):
@@ -35,20 +35,39 @@ def test_fas():
             dt = float(meta[1])
             accels = np.array(
                 [col for line in file_obj for col in line.split()])
-        trace = Trace(data=accels, header={
+        trace = StationTrace(data=accels, header={
             'channel': 'H' + str(idx),
             'delta': dt,
-            'units': 'g'})
+            'units': 'acc',
+            'standard': {'corner_frequency': np.nan,
+                'station_name': '',
+                'source': 'json',
+                'instrument': '',
+                'instrument_period': np.nan,
+                'source_format': 'json',
+                'comments': '',
+                'structure_type': '',
+                'sensor_serial_number': '',
+                'source_file': '',
+                'process_level': 'raw counts',
+                'process_time': '',
+                'horizontal_orientation': np.nan,
+                'units': 'acc',
+                'instrument_damping': np.nan}})
         stream.append(trace)
 
     freqs, fas = np.loadtxt(fas_file, unpack=True,
                             usecols=(0, 1), delimiter=',')
     # scaling required on the test data as it was not accounted for originally
-    fas_dict = calculate_fas(stream, '', 1 / freqs, 'konno_ohmachi', 30)
-    for f in fas_dict:
-        idx = np.argwhere(freqs == 1 / f)
+    imts = ['fas' + str(1/p) for p in freqs]
+    summary = StationSummary.from_stream(stream, ['quadratic_mean'], imts,
+            bandwidth=30)
+    pgms = summary.pgms
+    for idx, f in enumerate(freqs):
+        fstr = 'FAS(' + str(1/f) + ')'
+        fval = pgms[pgms.IMT == fstr].Result.tolist()[0]
         np.testing.assert_array_almost_equal(
-            fas_dict[f], fas[idx] / len(trace.data))
+                fval, fas[idx]/len(stream[0].data))
 
     # test exceptions
     failed = False

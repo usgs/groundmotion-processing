@@ -110,7 +110,7 @@ class StreamCollection(object):
 
         return cls(streams)
 
-    def to_dataframe(self, origin_dict, imcs=None, imts=None):
+    def to_dataframe(self, origin, imcs=None, imts=None):
         """Get a summary dataframe of streams.
 
         Note: The PGM columns underneath each channel will be variable
@@ -122,7 +122,7 @@ class StreamCollection(object):
         Args:
             directory (str):
                 Directory of ground motion files (streams).
-            origin_dict (dict):
+            origin_dict (obspy):
                 Dictionary with the following keys:
                    - id
                    - magnitude
@@ -174,6 +174,10 @@ class StreamCollection(object):
         """
         streams = self.streams
         num_streams = len(streams)
+        # dept for an origin object should be stored in meters
+        origin = Origin(resource_id=origin['id'], latitude=origin['lat'],
+                longitude=origin['lon'], time=origin['time'],
+                depth=origin['depth']*1000)
 
         if imcs is None:
             station_summary_imcs = DEFAULT_IMCS
@@ -184,55 +188,26 @@ class StreamCollection(object):
         else:
             station_summary_imts = imts
 
-        columns = ['STATION', 'NAME', 'SOURCE',
-                   'NETID', 'LAT', 'LON', 'DISTANCE']
-        meta_data = np.empty((num_streams, len(columns)), dtype=list)
+        if imcs is None:
+            station_summary_imcs = DEFAULT_IMCS
+        else:
+            station_summary_imcs = imcs
+        if imts is None:
+            station_summary_imts = DEFAULT_IMTS
+        else:
+            station_summary_imts = imts
 
-        station_pgms = []
-        imcs = []
-        imts = []
-        for idx, stream in enumerate(streams):
-            # set meta_data
-            meta_data[idx][0] = stream[0].stats['station']
-            name_str = stream[0].stats['standard']['station_name']
-            meta_data[idx][1] = name_str
-            source = stream[0].stats.standard['source']
-            meta_data[idx][2] = source
-            meta_data[idx][3] = stream[0].stats['network']
-            latitude = stream[0].stats['coordinates']['latitude']
-            meta_data[idx][4] = latitude
-            longitude = stream[0].stats['coordinates']['longitude']
-            meta_data[idx][5] = longitude
-
-            dist, _, _ = gps2dist_azimuth(
-                origin_dict['lat'], origin_dict['lon'], latitude, longitude)
-            meta_data[idx][6] = dist / 1000
-
-            origin_obj = Origin(latitude=origin_dict['lat'],
-                                longitude=origin_dict['lon'])
-
+        subdfs = []
+        for stream in streams:
+            if not stream.passed:
+                continue
+            if len(stream) < 3:
+                continue
             stream_summary = StationSummary.from_stream(
-                stream, station_summary_imcs, station_summary_imts, origin_obj)
-            pgms = stream_summary.pgms
-            station_pgms += [pgms]
-            imcs += stream_summary.components
-            imts += stream_summary.imts
-
-        meta_columns = pd.MultiIndex.from_product([columns, ['']])
-        meta_dataframe = pd.DataFrame(meta_data, columns=meta_columns)
-        imcs = np.unique(imcs)
-        imts = np.unique(imts)
-        pgm_columns = pd.MultiIndex.from_product([imcs, imts])
-        pgm_data = np.zeros((num_streams, len(imts) * len(imcs)))
-        for idx, station in enumerate(station_pgms):
-            subindex = 0
-            for imc in imcs:
-                for imt in imts:
-                    pgm_data[idx][subindex] = station[imt][imc]
-                    subindex += 1
-        pgm_dataframe = pd.DataFrame(pgm_data, columns=pgm_columns)
-
-        dataframe = pd.concat([meta_dataframe, pgm_dataframe], axis=1)
+                stream, station_summary_imcs, station_summary_imts, origin)
+            summary = stream_summary.summary
+            subdfs += [summary]
+        dataframe = pd.concat(subdfs, axis=0).reset_index(drop=True)
 
         return dataframe
 

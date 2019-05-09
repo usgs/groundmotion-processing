@@ -1,5 +1,5 @@
 # Local import
-from gmprocess.metrics.oscillators import get_metrics_controller_spectral
+from gmprocess.metrics.oscillators import get_spectral
 from gmprocess.metrics.transform.transform import Transform
 
 
@@ -28,6 +28,6 @@ class oscillator(Transform):
             spectrals: StationStream or numpy.ndarray with the
                     differentiated data.
         """
-        spectrals = get_metrics_controller_spectral(self.period,
+        spectrals = get_spectral(self.period,
                 self.transform_data, damping=self.damping, times=self.times)
         return spectrals

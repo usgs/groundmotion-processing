@@ -1,5 +1,5 @@
 # Local imports
-from gmprocess.metrics.rotations.rotation import Rotation
+from gmprocess.metrics.rotation.rotation import Rotation
 
 
 class Null_Rotation(Rotation):

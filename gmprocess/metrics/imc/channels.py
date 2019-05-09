@@ -1,23 +1,22 @@
-# third party imports
-import numpy as np
+# Local imports
+from gmprocess.metrics.imc.imc import IMC
 
 
-def calculate_channels(stream, **kwargs):
-    """Return the pgm for each channel in a given input Stream.
-
-    NB: The input Stream should have already been "processed",
-    i.e., filtered, detrended, tapered, etc.)
-
-    Args:
-        stream (Obspy Stream): Stream containing one or Traces of
-            acceleration data in gals.
-        kwargs (**args): Ignored by this class.
-
-    Returns:
-        dictionary: Dictionary of peak ground motion for each channel.
-    """
-    channels_dict = {}
-    for trace in stream:
-        channel = trace.stats['channel']
-        channels_dict[channel] = np.abs(trace.max())
-    return channels_dict
+class Channels(IMC):
+    """Class defining steps and invalid imts, for channels."""
+    def __init__(self, imc, imt, percentile=None, period=None):
+        """
+        Args:
+            imc (string): Intensity measurement component.
+            imt (string): Intensity measurement type.
+            percentile (float): Percentile for rotations. Default is None.
+                    Not used by Channels.
+            period (float): Period for fourier amplitude spectra and
+                    spectral amplitudes.  Default is None. Not used by Channels.
+        """
+        super().__init__(imc, imt, percentile=None, period=None)
+        self._steps = {
+                'Rotation': 'null_rotation',
+                'Combination2': 'null_combination',
+        }
+        self._invalid_imts = ['FAS', 'ARIAS']

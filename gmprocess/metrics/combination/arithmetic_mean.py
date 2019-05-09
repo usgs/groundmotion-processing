@@ -5,7 +5,7 @@ import numpy as np
 from gmprocess.metrics.combination.combination import Combination
 
 
-class AM(Combination):
+class Arithmetic_Mean(Combination):
     """Class for calculation of arithmetic mean."""
     def __init__(self, combination_data):
         """
@@ -13,9 +13,9 @@ class AM(Combination):
             combination_data (dictionary): Data for calculation.
         """
         super().__init__(combination_data)
-        self.result = self.get_am()
+        self.result = self.get_arithmetic_mean()
 
-    def get_am(self):
+    def get_arithmetic_mean(self):
         """
         Performs calculation of arithmetic mean.
 
@@ -26,4 +26,10 @@ class AM(Combination):
             horizontals = self._get_horizontals()
             h1, h2 = horizontals[0], horizontals[1]
             am = {'': 0.5 * (h1 + h1)}
+        else:
+            horizontals = self.combination_data
+            time_freq = horizontals[0]
+            h1, h2 = horizontals[1], horizontals[2]
+            am = [time_freq]
+            am += [np.mean([h1, h2], axis=0)]
         return am

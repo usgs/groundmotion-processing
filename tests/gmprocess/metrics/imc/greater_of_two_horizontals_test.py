@@ -12,21 +12,17 @@ from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.io.test_utils import read_data_dir
 
 
-def test_channels():
+def test_greater_of_two_horizontals():
     datafiles, _ = read_data_dir(
         'geonet', 'us1000778i', '20161113_110259_WTMC_20.V2A')
     datafile_v2 = datafiles[0]
     stream_v2 = read_geonet(datafile_v2)[0]
     station_summary = StationSummary.from_stream(stream_v2,
-                                                 ['channels'], ['pga'])
-    station_dict = station_summary.pgms['PGA']
-    np.testing.assert_almost_equal(
-        station_dict['HN2'], 81.28979591836733, decimal=1)
-    np.testing.assert_almost_equal(
-        station_dict['HN1'], 99.3173469387755, decimal=1)
-    np.testing.assert_almost_equal(
-        station_dict['HNZ'], 183.89693877551022, decimal=1)
+                                                 ['greater_of_two_horizontals'], ['pga'])
+    station = station_summary.pgms[station_summary.pgms.IMT == 'PGA']
+    greater = station[station.IMC == 'GREATER_OF_TWO_HORIZONTALS'].Result.iloc[0]
+    np.testing.assert_almost_equal(greater, 99.3173469387755, decimal=1)
 
 
 if __name__ == '__main__':
-    test_channels()
+    test_greater_of_two_horizontals()

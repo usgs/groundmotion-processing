@@ -25,8 +25,8 @@ def test_controller():
     input_imts = ['pgv', 'pga', 'sa2', 'sa1.0', 'sa0.3',
             'fas2', 'fas1.0', 'fas0.3', 'arias', 'invalid']
     input_imcs = ['rotd50', 'rotd100.0', 'gmrotd50', 'gmrotd100.0',
-            'radial_transverse', 'gm', 'am', 'channels',
-            'greater_of_two_horizontals', 'invalid']
+            'radial_transverse', 'geometric_mean', 'arithmetic_mean', 'channels',
+            'greater_of_two_horizontals', 'invalid', 'quadratic_mean']
     origin = Origin(latitude=42.6925, longitude=173.021944)
     stream_v2 = read_geonet(datafile)[0]
 
@@ -35,27 +35,28 @@ def test_controller():
     pgms = m1.pgms
 
     # testing for pga, pgv, sa
-    target_imcs = ['ROTD(50)', 'ROTD(100.0)', 'GMROTD(50)',
-            'GMROTD(100.0)', 'HNR', 'HNT', 'GM', 'AM', 'HN1', 'HN2',
-            'HNZ', 'GREATER_OF_TWO_HORIZONTALS']
-    for col in ['PGA', 'PGV', 'SA(1.0)', 'SA(2)', 'SA(0.3)']:
+    target_imcs = ['ROTD(50.0)', 'ROTD(100.0)', 'GMROTD(50.0)',
+            'GMROTD(100.0)', 'HNR', 'HNT', 'GEOMETRIC_MEAN', 'ARITHMETIC_MEAN', 'HN1', 'HN2',
+            'HNZ', 'GREATER_OF_TWO_HORIZONTALS', 'QUADRATIC_MEAN']
+    for col in ['PGA', 'PGV', 'SA(1.0)', 'SA(2.0)', 'SA(0.3)']:
         imt = pgms.loc[pgms['IMT'] == col]
         imcs = imt['IMC'].tolist()
         assert len(imcs) == len(target_imcs)
         np.testing.assert_array_equal(np.sort(imcs), np.sort(target_imcs))
 
     # testing for fas
-    for col in ['FAS(1.0)', 'FAS(2)', 'FAS(0.3)']:
+    for col in ['FAS(1.0)', 'FAS(2.0)', 'FAS(0.3)']:
         imt = pgms.loc[pgms['IMT'] == col]
         imcs = imt['IMC'].tolist()
-        assert len(imcs) == 1
-        np.testing.assert_array_equal(np.sort(imcs), ['GM'])
+        assert len(imcs) == 3
+        np.testing.assert_array_equal(np.sort(imcs), ['ARITHMETIC_MEAN',
+                'GEOMETRIC_MEAN', 'QUADRATIC_MEAN'])
 
     # testing for arias
     imt = pgms.loc[pgms['IMT'] == 'ARIAS']
     imcs = imt['IMC'].tolist()
     assert len(imcs) == 1
-    np.testing.assert_array_equal(np.sort(imcs), ['AM'])
+    np.testing.assert_array_equal(np.sort(imcs), ['ARITHMETIC_MEAN'])
     _validate_steps(m1.step_sets, 'acc')
 
     ## Testing for Velocity --------------------------
@@ -65,27 +66,29 @@ def test_controller():
     pgms = m.pgms
 
     # testing for pga, pgv, sa
-    target_imcs = ['ROTD(50)', 'ROTD(100.0)', 'GMROTD(50)',
-            'GMROTD(100.0)', 'HNR', 'HNT', 'GM', 'AM', 'HN1', 'HN2',
+    target_imcs = ['ROTD(50.0)', 'ROTD(100.0)', 'GMROTD(50.0)',
+            'GMROTD(100.0)', 'HNR', 'HNT', 'GEOMETRIC_MEAN', 'ARITHMETIC_MEAN',
+            'QUADRATIC_MEAN', 'HN1', 'HN2',
             'HNZ', 'GREATER_OF_TWO_HORIZONTALS']
-    for col in ['PGA', 'PGV', 'SA(1.0)', 'SA(2)', 'SA(0.3)']:
+    for col in ['PGA', 'PGV', 'SA(1.0)', 'SA(2.0)', 'SA(0.3)']:
         imt = pgms.loc[pgms['IMT'] == col]
         imcs = imt['IMC'].tolist()
         assert len(imcs) == len(target_imcs)
         np.testing.assert_array_equal(np.sort(imcs), np.sort(target_imcs))
 
     # testing for fas
-    for col in ['FAS(1.0)', 'FAS(2)', 'FAS(0.3)']:
+    for col in ['FAS(1.0)', 'FAS(2.0)', 'FAS(0.3)']:
         imt = pgms.loc[pgms['IMT'] == col]
         imcs = imt['IMC'].tolist()
-        assert len(imcs) == 1
-        np.testing.assert_array_equal(np.sort(imcs), ['GM'])
+        assert len(imcs) == 3
+        np.testing.assert_array_equal(np.sort(imcs), ['ARITHMETIC_MEAN',
+                'GEOMETRIC_MEAN', 'QUADRATIC_MEAN'])
 
     # testing for arias
     imt = pgms.loc[pgms['IMT'] == 'ARIAS']
     imcs = imt['IMC'].tolist()
     assert len(imcs) == 1
-    np.testing.assert_array_equal(np.sort(imcs), ['AM'])
+    np.testing.assert_array_equal(np.sort(imcs), ['ARITHMETIC_MEAN'])
     _validate_steps(m.step_sets, 'vel')
 
 def _validate_steps(step_sets, data_type):
@@ -129,7 +132,7 @@ def test_exceptions():
     st3 = stream_v2.select(component='Z')
     st1 = StationStream([st2[0], st3[0]])
     passed = True
-    m = MetricsController('pga', 'gm', st1)
+    m = MetricsController('pga', 'geometric_mean', st1)
     pgm = m.pgms
     result = pgm['Result'].tolist()[0]
     assert np.isnan(result)
@@ -165,20 +168,20 @@ def test_end_to_end():
     input_imts = ['sa1.0', 'PGA', 'pgv', 'invalid']
     m = MetricsController(input_imts, input_imcs, stream)
     test_pgms = [
-        ('PGV', 'ROTD(100)', 114.24894584734818),
-        ('PGV', 'ROTD(50)', 81.55436750525355),
+        ('PGV', 'ROTD(100.0)', 114.24894584734818),
+        ('PGV', 'ROTD(50.0)', 81.55436750525355),
         ('PGV', 'HNZ', 37.47740000000001),
         ('PGV', 'HN1', 100.81460000000004),
         ('PGV', 'HN2', 68.4354),
         ('PGV', 'GREATER_OF_TWO_HORIZONTALS', 100.81460000000004),
-        ('PGA', 'ROTD(100)', 100.73875535385548),
-        ('PGA', 'ROTD(50)', 91.40178541935455),
+        ('PGA', 'ROTD(100.0)', 100.73875535385548),
+        ('PGA', 'ROTD(50.0)', 91.40178541935455),
         ('PGA', 'HNZ', 183.7722361866693),
         ('PGA', 'HN1', 99.24999872535474),
         ('PGA', 'HN2', 81.23467239067368),
         ('PGA', 'GREATER_OF_TWO_HORIZONTALS', 99.24999872535474),
-        ('SA(1.0)', 'ROTD(100)', 146.9023350124098),
-        ('SA(1.0)', 'ROTD(50)', 106.03202302692158),
+        ('SA(1.0)', 'ROTD(100.0)', 146.9023350124098),
+        ('SA(1.0)', 'ROTD(50.0)', 106.03202302692158),
         ('SA(1.0)', 'HNZ', 27.74118995438756),
         ('SA(1.0)', 'HN1', 136.25041187387063),
         ('SA(1.0)', 'HN2', 84.69296738413021),
