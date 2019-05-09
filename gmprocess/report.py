@@ -44,7 +44,7 @@ PREAMBLE = """
 \\pagestyle{fancy}
 \\fancyhf{}
 \\renewcommand{\headrulewidth}{0pt}
-\\chead{[RHEAD]}
+\\chead{[CHEAD]}
 \\rfoot{\\thepage}
 \\lfoot{\\today}
 
@@ -71,7 +71,10 @@ def build_report(sc, directory, origin, config=None):
             StreamCollection of data.
         directory (str):
             Directory for saving report.
-
+        origin (ScalarEvent):
+            ScalarEvent object.
+        config (dict):
+            Config dictionary.
     """
     # Need to get config to know where the plots are located
     if config is None:
@@ -88,14 +91,9 @@ def build_report(sc, directory, origin, config=None):
 
     # Initialize report string with PREAMBLE
     report = PREAMBLE
-    try:
-        timestr = origin.time.strftime('%m/%d/%Y, %H:%M:%S')
-    except:
-        timestr = origin.time
-    finally:
-        timestr = ""
+    timestr = origin.time.strftime('%m/%d/%Y, %H:%M:%S')
     report = report.replace(
-        '[RHEAD]', 'M%s %s, %s' % (origin.magnitude, origin.id, timestr)
+        '[CHEAD]', 'M%s %s, %s' % (origin.magnitude, origin.id, timestr)
     )
 
     # Loop over each StationStream and append it's page to the report
