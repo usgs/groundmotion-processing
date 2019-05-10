@@ -14,7 +14,7 @@ functions:
  - read_FORMAT: This function returns a list of StationStream objects for each file. Some
    formats contain many channels of data in one file, some only have one per file.
 
-gmprocess provides a wrapper around all of these readers called `read_data`, which dynamically 
+gmprocess provides a wrapper around all of these readers called `read_data`, which dynamically
 discovers the format and attempts to read in the data. Users should prefer this method of reading
 in data files.
 
@@ -22,10 +22,10 @@ in data files.
 
 <table>
   <tr>
-    <th>Format</td>
-    <th>Usual Provider</td>
-    <th>Typical Units</td>
-    <th>Online Access Available</td>
+    <th>Format</th>
+    <th>Usual Provider</th>
+    <th>Typical Units</th>
+    <th>Online Access Available</th>
     <th>Automated Retrieval via gmprocess</th>
   </tr>
 
@@ -119,11 +119,11 @@ in data files.
 
 </table>
 
-\* The FDSN "format" consists of:
+The FDSN "format" consists of:
 1) Any Obspy supported format (SAC, MiniSEED, etc.) and
 2) A StationXML file containing station/sensor response information.
 
-## Usage
+## Sample Usage
 
 ```python
 import glob
@@ -197,7 +197,7 @@ information needed to construct a StationStream of minimal use includes:
  - Distinction between horizontal and vertical channels
  - Either a channel orientation (0-360) or some indication of what is E-W and N-S
 
-Record start time is *strongly* desired, but a "NaN" record start time value of 
+Record start time is *strongly* desired, but a "NaN" record start time value of
 1970-01-01 00:00:00 will be inserted by Obspy if not supplied.
 
 The code below contains comments that should be useful as guides when writing
@@ -211,7 +211,7 @@ Assumptions: The event ID associated with this record is **csabcd1234**.
 
  - gmprocess->data->testdata->complete->csabcd1234->complete.dat (at least one example of the file format)
 
-AND 
+AND
 
  - gmprocess->data->testdata->complete->event.json->event.json (JSON file containing basic event information):
 
@@ -252,7 +252,7 @@ def is_complete(filename):
         filename (str):
             Input candidate Complete format file.
     Returns:
-        bool: 
+        bool:
             True if input file matches the Complete format, False otherwise.
     '''
     try:
