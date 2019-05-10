@@ -349,8 +349,22 @@ class StreamWorkspace(object):
                     stations.append(station)
         return stations
 
-    def setStreamMetrics(self, eventid, stations=None,
-                         labels=None, imclist=None, imtlist=None):
+    def setStreamMetrics(self, eventid, label, summary):
+        xmlstr = summary.getMetricXML()
+        path = '%s_%s_%s' % (eventid, summary.station_code.lower(), label)
+
+        # this seems like a lot of effort
+        # just to store a string in HDF, but other
+        # approached failed. Suggestions are welcome.
+        jsonarray = np.frombuffer(xmlstr, dtype=np.uint8)
+        dtype = 'WaveFormMetrics'
+        self.dataset.add_auxiliary_data(jsonarray,
+                                        data_type=dtype,
+                                        path=path,
+                                        parameters={})
+
+    def calcStreamMetrics(self, eventid, stations=None,
+                          labels=None, imclist=None, imtlist=None):
         """Create station metrics for specified event/streams.
 
         Args:

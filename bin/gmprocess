@@ -29,12 +29,17 @@ from gmprocess.io.read_directory import directory_to_streams
 from gmprocess.streamcollection import StreamCollection
 from gmprocess.stream import streams_to_dataframe
 from gmprocess.processing import process_streams
+from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 
 
 CONFIG = get_config()
 TIMEFMT = '%Y-%m-%dT%H:%M:%S'
 DEG2KM = 111.0
+
+NON_IMCS = ['ELEVATION', 'EPICENTRAL_DISTANCE',
+            'HYPOCENTRAL_DISTANCE', 'LAT', 'LON', 'NAME', 'NETID',
+            'SOURCE', 'STATION']
 
 
 class MyFormatter(argparse.RawTextHelpFormatter,
@@ -58,6 +63,24 @@ def parse_eventinfo(arginfo):
              'depth': edepth,
              'magnitude': emag}
     return edict
+
+
+def _get_summary(row):
+    # in our dataframe, imcs are the top level, and imts are below.
+    # to construct a new stationsummary, we need these to be inverted.
+    candidate_imcs = row.index.levels[0]
+    imtlist = list(filter(None, row.index.levels[1]))
+    imclist = list(set(candidate_imcs) - set(NON_IMCS))
+    pgms = {}
+    for imc in imclist:
+        for imt in imtlist:
+            if imt in row[imc]:
+                if imt in pgms and len(pgms[imt]):
+                    pgms[imt][imc] = row[imc][imt]
+                else:
+                    pgms[imt] = {imc: row[imc][imt]}
+    summary = StationSummary.from_pgms(row['STATION'].item(), pgms)
+    return summary
 
 
 def plot_stations(collection, event, outdir):
@@ -332,25 +355,12 @@ def main(pparser, args):
     if args.eventid:
         basename = args.eventid
 
+    provname = os.path.join(args.outdir, basename + '_provenance.csv')
+
     framename = os.path.join(args.outdir, basename + '_metrics.csv')
     if args.format == 'excel':
         framename = os.path.join(args.outdir, basename + '_metrics.xlsx')
     workname = os.path.join(args.outdir, basename + '_workspace.hdf')
-
-    # save the waveform data to an ASDF file.
-    with warnings.catch_warnings():
-        warnings.filterwarnings("ignore", category=H5pyDeprecationWarning)
-        if os.path.isfile(workname):
-            os.remove(workname)
-        workspace = StreamWorkspace(workname)
-        workspace.addStreams(event, collection, label='raw')
-        workspace.addStreams(event, processed, label='processed')
-        provdata = workspace.getProvenance(event.id, labels=['processed'])
-        provname = os.path.join(args.outdir, basename + '_provenance.csv')
-        if args.format == 'excel':
-            provname = os.path.join(args.outdir, basename + '_provenance.xlsx')
-
-        workspace.close()
 
     summary_text += ('Data from %i stations saved to %s\n'
                      % (len(processed), args.outdir))
@@ -367,14 +377,6 @@ def main(pparser, args):
         dataframe = streams_to_dataframe(processed,
                                          imcs=imcs, imts=imts,
                                          event=event)
-
-        # save dataframe to desired format
-        if args.format == 'csv':
-            dataframe.to_csv(framename, index=False)
-            provdata.to_csv(provname, index=False)
-        else:
-            dataframe.to_excel(framename)
-            provdata.to_excel(provname, index=False)
 
         summary_text += 'Provenance: %s\n' % provname
         summary_text += 'Metrics: %s\n' % framename
@@ -396,6 +398,39 @@ def main(pparser, args):
             wb.save(ampfile_name)
 
             summary_text += 'Amptools file: %s\n' % ampfile_name
+
+    # save the waveform data to an ASDF file.
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=H5pyDeprecationWarning)
+        if os.path.isfile(workname):
+            os.remove(workname)
+        workspace = StreamWorkspace(workname)
+        workspace.addStreams(event, collection, label='raw')
+        workspace.addStreams(event, processed, label='processed')
+
+        # add in the metrics we've already calculated
+        for idx, row in dataframe.iterrows():
+            summary = _get_summary(row)
+            eid = args.eventid
+            workspace.setStreamMetrics(eid, 'processed', summary)
+
+        provdata = workspace.getProvenance(event.id, labels=['processed'])
+
+        if args.format == 'excel':
+            provname = os.path.join(args.outdir, basename + '_provenance.xlsx')
+
+        # debugging
+        metrics_table = workspace.getMetricsTable(eid, labels=['processed'])
+
+        workspace.close()
+
+    # save dataframe to desired format
+    if args.format == 'csv':
+        dataframe.to_csv(framename, index=False)
+        provdata.to_csv(provname, index=False)
+    else:
+        dataframe.to_excel(framename)
+        provdata.to_excel(provname, index=False)
 
     # remove old pdf reports
     pdf_files = glob.glob(os.path.join(args.outdir, 'gmprocess*.pdf'))
