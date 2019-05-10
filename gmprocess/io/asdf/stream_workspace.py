@@ -349,8 +349,22 @@ class StreamWorkspace(object):
                     stations.append(station)
         return stations
 
-    def setStreamMetrics(self, eventid, stations=None,
-                         labels=None, imclist=None, imtlist=None):
+    def setStreamMetrics(self, eventid, label, summary):
+        xmlstr = summary.getMetricXML()
+        path = '%s_%s_%s' % (eventid, summary.station_code.lower(), label)
+
+        # this seems like a lot of effort
+        # just to store a string in HDF, but other
+        # approached failed. Suggestions are welcome.
+        jsonarray = np.frombuffer(xmlstr, dtype=np.uint8)
+        dtype = 'WaveFormMetrics'
+        self.dataset.add_auxiliary_data(jsonarray,
+                                        data_type=dtype,
+                                        path=path,
+                                        parameters={})
+
+    def calcStreamMetrics(self, eventid, stations=None,
+                          labels=None, imclist=None, imtlist=None):
         """Create station metrics for specified event/streams.
 
         Args:
@@ -465,8 +479,7 @@ class StreamWorkspace(object):
         if 'WaveFormMetrics' not in self.dataset.auxiliary_data:
             raise KeyError('Waveform metrics not found in workspace.')
         auxholder = self.dataset.auxiliary_data.WaveFormMetrics
-        tag = '%s_%s' % (station.lower(), label)
-        stream_path = '%s_%s' % (eventid, tag)
+        stream_path = '%s_%s_%s' % (eventid, station.lower(), label)
         if stream_path not in auxholder:
             fmt = 'Waveform metrics for event %s and stream %s not found in workspace.'
             raise KeyError(fmt % (eventid, tag))

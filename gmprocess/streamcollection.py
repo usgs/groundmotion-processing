@@ -186,8 +186,8 @@ class StreamCollection(object):
         num_streams = len(streams)
         # dept for an origin object should be stored in meters
         origin = Origin(resource_id=origin['id'], latitude=origin['lat'],
-                longitude=origin['lon'], time=origin['time'],
-                depth=origin['depth']*1000)
+                        longitude=origin['lon'], time=origin['time'],
+                        depth=origin['depth'] * 1000)
 
         if imcs is None:
             station_summary_imcs = DEFAULT_IMCS
@@ -366,10 +366,10 @@ class StreamCollection(object):
             for idx2, trace2 in enumerate(trace_list):
                 if idx1 != idx2 and idx1 not in all_matches:
                     if (
-                        network == trace2.stats['network']
-                        and station == trace2.stats['station']
-                        and inst == trace2.stats['channel'][0:2]
-                        and free_field == trace2.free_field
+                        network == trace2.stats['network'] and
+                        station == trace2.stats['station'] and
+                        inst == trace2.stats['channel'][0:2] and
+                        free_field == trace2.free_field
                     ):
                         matches.append(idx2)
             if len(matches) > 1:

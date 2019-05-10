@@ -23,6 +23,8 @@ XML_UNITS = {'pga': '%g',
              'arias': 'm/s',
              'fas': 'cm/s'}
 
+DEFAULT_DAMPING = 0.05
+
 
 class StationSummary(object):
     """
@@ -467,8 +469,8 @@ class StationSummary(object):
         else:
             if not isinstance(stream, Stream):
                 logging.warning('Setting failed: not a stream object.')
-            elif (stream[0].stats['station'].upper()
-                  != self.station_code.upper()):
+            elif (stream[0].stats['station'].upper() !=
+                  self.station_code.upper()):
                 logging.warning(
                     'Setting failed: stream station does not match '
                     'StationSummary.station_code.')
@@ -555,7 +557,10 @@ class StationSummary(object):
                            'units': units}
                 if imtstr.startswith('sa'):
                     imtstr = 'sa'
-                    attdict['damping'] = '%.2f' % self._damping
+                    damping = self._damping
+                    if damping is None:
+                        damping = DEFAULT_DAMPING
+                    attdict['damping'] = '%.2f' % damping
                 else:
                     imtstr = 'fas'
                 imt_tag = etree.SubElement(root, imtstr, attrib=attdict)

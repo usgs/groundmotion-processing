@@ -12,6 +12,7 @@ from gmprocess.processing import process_streams
 from gmprocess.config import get_config
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.event import get_event_object
+from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.streamcollection import StreamCollection
 
 from h5py.h5py_warnings import H5pyDeprecationWarning
@@ -202,40 +203,7 @@ def test_workspace():
                                                stations=[instation],
                                                labels=['foo'])[0]
             assert instation == this_stream[0].stats.station
-
-            # set and retrieve waveform metrics in the file
-            imclist = ['greater_of_two_horizontals',
-                       'channels',
-                       'rotd50',
-                       'rotd100', 'arithmetic_mean']
-            imtlist = ['sa1.0', 'PGA', 'pgv', 'fas2.0', 'arias']
             usid = 'us1000778i'
-            tags = workspace.getStreamTags(usid)
-            workspace.setStreamMetrics(eventid, labels=['foo'],
-                                       imclist=imclist, imtlist=imtlist)
-            summary = workspace.getStreamMetrics(eventid, instation, 'foo')
-            summary_series = summary.toSeries()['ARIAS']
-            cmpseries = pd.Series({'ARITHMETIC_MEAN': 0.0001,
-                                   'GREATER_OF_TWO_HORIZONTALS':np.NaN,
-                                   'HN1': np.NaN,
-                                   'HN2': np.NaN,
-                                   'HNZ': np.NaN,
-                                   'ROTD100.0': np.NaN,
-                                   'ROTD50.0': np.NaN})
-            assert cmpseries.equals(summary_series)
-
-            workspace.setStreamMetrics(usid, labels=['processed'])
-            df = workspace.getMetricsTable(usid, labels=['processed'])
-
-            data = np.array([[26.8877, 24.5076, 26.8877, 16.0931],
-                             [4.9814, 4.9814, 4.0292, 2.5057],
-                             [99.6077, 99.6077, 86.7887, 151.8803]])
-            cmpdict = pd.DataFrame(data,
-                                   columns=['GREATER_OF_TWO_HORIZONTALS', 'HN1', 'HN2', 'HNZ'])
-
-            cmpframe = pd.DataFrame(cmpdict)
-            assert df['PGA'].equals(cmpframe)
-
             inventory = workspace.getInventory(usid)
             codes = [station.code for station in inventory.networks[0].stations]
             assert sorted(codes) == ['HSES', 'THZ', 'WPWS', 'WTMC']
@@ -246,7 +214,73 @@ def test_workspace():
         shutil.rmtree(tdir)
 
 
+def test_metrics():
+    eventid = 'usb000syza'
+    datafiles, event = read_data_dir('knet',
+                                     eventid,
+                                     '*')
+    datadir = os.path.split(datafiles[0])[0]
+    raw_streams = StreamCollection.from_directory(datadir)
+    config = get_config()
+    # turn off sta/lta check and snr checks
+    newconfig = drop_processing(config, ['check_sta_lta', 'compute_snr'])
+    processed_streams = process_streams(raw_streams, event, config=newconfig)
+
+    tdir = tempfile.mkdtemp()
+    try:
+        tfile = os.path.join(tdir, 'test.hdf')
+        workspace = StreamWorkspace(tfile)
+        workspace.addEvent(event)
+        workspace.addStreams(event, processed_streams, label='processed')
+        stream1 = processed_streams[0]
+        stream2 = processed_streams[1]
+        summary1 = StationSummary.from_config(stream1)
+        summary2 = StationSummary.from_config(stream2)
+        workspace.setStreamMetrics(event.id, 'processed', summary1)
+        workspace.setStreamMetrics(event.id, 'processed', summary2)
+        summary1_a = workspace.getStreamMetrics(event.id,
+                                                stream1[0].stats.station,
+                                                'processed')
+        s1_df_in = summary1.pgms.sort_values(['IMT', 'IMC'])
+        s1_df_out = summary1_a.pgms.sort_values(['IMT', 'IMC'])
+        array1 = s1_df_in['Result'].as_matrix()
+        array2 = s1_df_out['Result'].as_matrix()
+        np.testing.assert_almost_equal(array1, array2, decimal=4)
+
+        df = workspace.getMetricsTable(event.id)
+        cmp_series = {'GREATER_OF_TWO_HORIZONTALS': 0.6787,
+                      'HN1': 0.3869,
+                      'HN2': 0.6787,
+                      'HNZ': 0.7663}
+        pga_dict = df.iloc[0]['PGA'].to_dict()
+        for key, value in pga_dict.items():
+            value2 = cmp_series[key]
+            np.testing.assert_almost_equal(value, value2, decimal=4)
+
+        workspace.close()
+    except Exception as e:
+        raise(e)
+    finally:
+        shutil.rmtree(tdir)
+
+
+def drop_processing(config, keys):
+    newconfig = config.copy()
+    newprocess = []
+    for pdict in newconfig['processing']:
+        found = False
+        for key in keys:
+            if key in pdict:
+                found = True
+                break
+        if not found:
+            newprocess.append(pdict)
+    newconfig['processing'] = newprocess
+    return newconfig
+
+
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
+    test_metrics()
     test_stream_params()
     test_workspace()
