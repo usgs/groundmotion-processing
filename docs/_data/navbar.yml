@@ -15,7 +15,7 @@ toc:
         url: /configuration.html
   - title: Ingesting Data
     subitems:
-      - page: File formats
+      - page: Reading Data
         url: /formats.html
       - page: Fetching Data
         url: /fetching.html
