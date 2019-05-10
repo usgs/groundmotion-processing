@@ -25,8 +25,12 @@ toc:
     subitems:
       - page: Ingesting data
         url: /examples/ingest.html
-      - page: Fetching and processing data
+      - page: Fetching and processing waveforms
         url: /examples/fetch_process.html
+      - page: Computing waveform metrics
+        url: /examples/waveform_metrics.html
+      - page: Computing station metrics
+        url: /examples/station_metrics.html
       - page: Exporting data
         url: /examples/export.html
   - title: Tests
