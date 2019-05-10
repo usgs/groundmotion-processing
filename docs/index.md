@@ -1,36 +1,34 @@
-# Overview
+# Motivation
 
-This is a project designed to provide a number of functions related to
-parsing and processing ground-motion data, building on top of the
-[ObsPy](https://github.com/obspy/obspy/wiki) Python module. Most of
-the extensions that we provide are to import data from a variety of
-formats and perform standard processing, such as baseline correction,
-computing ground-motion intensity measures and station metrics.
+* Facilitate creation of ground-motion data sets for multiple types of analysis.
+
+* Leverage best practices from the community to standardize processing algorithms used in ShakeMap ground-motion processing software.
+
+* Disentangle ground-motion processing (broad range of uses) from specific applications, e.g., ShakeMap generation.
 
 <figure>
   <img width="600px" src="figs/workspace.png" alt="Digagram of workspace"/>
 </figure>
 
-Current functionality includes:
+# Objective
 
-* Readers for a variety of formats not supported by ObsPy. See the
-  `gmprocess.io` subpackage. All readers return ObsPy streams.
-* Ground-motion record summary methods (i.e., intensity measures or metrics)
-  in `gmprocess.metrics` subpackage.
-* The `gmprocess.processing.py` module uses ObsPy and our own methods for
-  processing ground-motion records. We are working towards logging each
-  processing step with the
-  [SEIS-PROV](http://seismicdata.github.io/SEIS-PROV/index.html)
-  provenance standard.
-* We are also working towards storing records, event/station metadata, and
-  provenance information in the
-  [ASDF](https://seismic-data.org/) format. 
+The goal of this project is to update, restructure, and consolidate existing
+USGS ground-motion processing software to incorporate recent advances from
+researchers at the USGS, PEER, and others. It will standardize tools for
+multiple USGS ground-motion products and enable scientists within the USGS and
+the external community to develop and expand ground-motion datasets used in many
+different applications. Additionally, it will provide a standard interface for
+local storage of recorded and synthetic ground-motion waveforms and intensity
+metrics, as well as event and station metadata, in one container that can be
+easily distributed. The resulting open-source software will provide customizable
+processed ground-motion waveforms and intensity metrics, while adhering to USGS
+software standards, including documentation, peer review, testing, and
+continuous integration.
 
+# Target Use Cases
 
-# Installation
+* Standardize processing of ground-motion waveform data, including ground-motion simulations, for deriving a wide variety of Intensity Measure Types (IMTs) for real-time and simulation-based scenario ShakeMap production.
 
-See the top-level [README](https://github.com/usgs/groundmotion-processing).
+* Develop uniformly processed ground-motion data sets leveraging data from a variety of sources for use in development and analysis of ground-motion prediction equations, shaking duration, site response, testing of earthquake early warning algorithms, and testing seismic velocity models.
 
-# Workspace
-
-* [Workspace](workspace.md)
+* Facilitate access to and routine processing of waveform and parametric data from a wide variety of data sources in many different formats, including COSMOS, PEER/NGA, CESMD/VDC, and international strong motion data sets.

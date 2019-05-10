@@ -2,7 +2,7 @@ toc:
   - title: Overview
     subitems:
       - page: Motivation
-        url: /motivation.html
+        url: /
       - page: Features
         url: /features.html
       - page: Workspace
@@ -36,8 +36,8 @@ toc:
         url: /data-structures.html
         subsubitems:
           - page: StationTrace
-            url: station-trace.html
+            url: /station-trace.html
           - page: StationStream
-            url: station-stream.html
+            url: /station-stream.html
           - page: StreamCollection
-            url: stream-collection.html
+            url: /stream-collection.html
