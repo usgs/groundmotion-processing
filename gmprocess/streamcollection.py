@@ -8,8 +8,6 @@ various rules, such as all traces within a stream are from the same station.
 import copy
 import logging
 
-import numpy as np
-from obspy.geodetics import gps2dist_azimuth
 from obspy.core.event import Origin
 import pandas as pd
 
@@ -74,15 +72,18 @@ class StreamCollection(object):
         self.__group_by_net_sta_inst()
         self.validate()
 
-        n = len(self.streams)
+    @property
+    def n_passed(self):
         n_passed = 0
         for stream in self:
             if stream.passed:
                 n_passed += 1
-        n_failed = n - n_passed
-        self.n_passed = n_passed
-        self.n_failed = n_failed
+        return n_passed
 
+    @property
+    def n_failed(self):
+        n = len(self.streams)
+        return n - self.n_passed
 
     def validate(self):
         """Some validation checks across streams.
@@ -416,8 +417,8 @@ def split_station(grouped_trace_list):
             if trace.stats.location in streams_dict:
                 streams_dict[trace.stats.location] += trace
             else:
-                streams_dict[trace.stats.location] = StationStream(traces=[
-                                                                   trace])
+                streams_dict[trace.stats.location] = \
+                    StationStream(traces=[trace])
         streams = list(streams_dict.values())
     else:
         streams = [StationStream(traces=grouped_trace_list)]
