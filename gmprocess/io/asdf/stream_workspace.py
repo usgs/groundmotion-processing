@@ -479,8 +479,7 @@ class StreamWorkspace(object):
         if 'WaveFormMetrics' not in self.dataset.auxiliary_data:
             raise KeyError('Waveform metrics not found in workspace.')
         auxholder = self.dataset.auxiliary_data.WaveFormMetrics
-        tag = '%s_%s' % (station.lower(), label)
-        stream_path = '%s_%s' % (eventid, tag)
+        stream_path = '%s_%s_%s' % (eventid, station.lower(), label)
         if stream_path not in auxholder:
             fmt = 'Waveform metrics for event %s and stream %s not found in workspace.'
             raise KeyError(fmt % (eventid, tag))

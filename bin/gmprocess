@@ -419,9 +419,6 @@ def main(pparser, args):
         if args.format == 'excel':
             provname = os.path.join(args.outdir, basename + '_provenance.xlsx')
 
-        # debugging
-        metrics_table = workspace.getMetricsTable(eid, labels=['processed'])
-
         workspace.close()
 
     # save dataframe to desired format
