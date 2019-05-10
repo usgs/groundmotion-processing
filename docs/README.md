@@ -36,3 +36,7 @@ $ bundle exec jekyll serve
 * (Static Files)[https://jekyllrb.com/docs/static-files/]
 * (Navigation)[https://jekyllrb.com/tutorials/navigation/]
 * (Variables)[https://jekyllrb.com/docs/variables/]
+
+## Quick Reference
+
+* Include script `{% include_relative FILENAME %}`
