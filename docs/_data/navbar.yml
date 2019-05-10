@@ -13,30 +13,72 @@ toc:
         url: /install.html
       - page: Configuration
         url: /configuration.html
-  - title: Ingesting Data
+      - page: Running the code
+        url: /running.html
+  - title: Processing steps
     subitems:
-      - page: Reading Data
-        url: /formats.html
-      - page: Fetching Data
+      - page: Reading data
+        url: /reading.html
+      - page: Fetching data
         url: /fetching.html
-  - title: Processing Data
-  - title: Exporting Data
-  - title: Examples
+      - page: Windowing data
+        url: /windowing.html
+      - page: Waveform processing
+        url: /processing.html
+        subsubitems:
+        - page: Initial quality control
+          url: /processing-initialqc.html
+        - page: Removing instrument response
+          url: /processing-removeresponse.html
+        - page: Phase pickers
+          url: /processing-phasepickers.html
+        - page: Baseline correction
+          url: /processing-baselinecorrection.html
+        - page: Processing report
+          url: /processing-report.html
+      - page: Waveform metrics
+        url: /waveform-metrics.html
+      - page: Station metrics
+        url: /station-metrics.html
+  - title: Using gmprocess
     subitems:
+      - page: gmprocess
+        url: /gmprocess.html
       - page: Ingesting data
-        url: /examples/ingest.html
-      - page: Fetching and processing waveforms
-        url: /examples/fetch_process.html
+        url: /examples/gmprocess/ingesting.html
+      - page: Fetching waveforms
+        url: /examples/gmprocess/fetching.html
+      - page: Processing waveforms
+        url: /examples/gmprocess/processing.html
       - page: Computing waveform metrics
-        url: /examples/waveform_metrics.html
+        url: /examples/gmprocess/waveform-metrics.html
       - page: Computing station metrics
-        url: /examples/station_metrics.html
+        url: /examples/gmprocess/station-metrics.html
       - page: Exporting data
-        url: /examples/export.html
+        url: /examples/gmprocess/exporting.html
+  - title: Using Python scripts
+    subitems:
+      - page: Python scripting
+        url: /scripting.html
+      - page: Ingesting data
+        url: /examples/scripting/ingesting.html
+      - page: Fetching waveforms
+        url: /examples/scripting/fetching.html
+      - page: Processing waveforms
+        url: /examples/scripting/processing.html
+      - page: Computing waveform metrics
+        url: /examples/scripting/waveform-metrics.html
+      - page: Computing station metrics
+        url: /examples/scripting/station-metrics.html
+      - page: Exporting data
+        url: /examples/scripting/exporting.html
   - title: Tests
+    subitems:
+      - page: Running the test suite
+        url: /tests.html
   - title: API
     subitems:
-      - page: Data Structures
+      - page: Data structures
         url: /data-structures.html
         subsubitems:
           - page: StationTrace
@@ -45,3 +87,7 @@ toc:
             url: /station-stream.html
           - page: StreamCollection
             url: /stream-collection.html
+  - title: Developer
+    subitems:
+      - page: Adding new data readers
+        url: /developer/readers.html

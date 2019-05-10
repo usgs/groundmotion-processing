@@ -4,7 +4,7 @@
 
 * Import data from local filesystem using a wide variety of formats or fetch data using web services from FDSN data centers.
 
-* Can compute add additional waveform or station metrics by starting at an intermediate stage.
+* Compute add additional waveform or station metrics by starting at an intermediate stage.
 
 * Plug-and-play architecture for efficiently evaluating data reprocessed with new or alternative algorithms.
 
@@ -12,4 +12,4 @@
 
 ## Design
 
-The code is written in Python and builds upon [ObsPy](https://github.com/obspy/obspy/wiki) and [PyASDF](https://seismic-data.org/), including [SEIS-PROV](http://seismicdata.github.io/SEIS-PROV/index.html) for storing provenance information.
+The code is written in Python and builds upon [ObsPy](https://www.obspy.org) and [PyASDF](https://seismicdata.github.io/pyasdf/), including [SEIS-PROV](http://seismicdata.github.io/SEIS-PROV/index.html) for storing provenance information.
