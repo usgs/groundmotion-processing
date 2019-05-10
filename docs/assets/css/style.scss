@@ -28,7 +28,7 @@ div.nav-sidebar {
  overflow-y: auto;
  padding: 1em 1em 1em 1em;
 }
-div.nav-sidebar li.active a {
+div.nav-sidebar li.active > a {
   font-weight: bold;
 }
 
