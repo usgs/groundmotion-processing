@@ -16,3 +16,22 @@ header {
 footer {
     width: 95%;
 }
+
+h3.nav-title {
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+div.nav-sidebar {
+ width: 15em;
+ position: absolute!important;
+ overflow-x: auto;
+ overflow-y: auto;
+ padding: 1em 1em 1em 1em;
+}
+div.nav-sidebar li.active > a {
+  font-weight: bold;
+}
+
+body section.main-content {
+  margin-left: 15em;
+}

@@ -1,5 +1,7 @@
 ## Preview documentation locally
 
+See (GitHub Pages Help)[https://help.github.com/en/articles/setting-up-your-github-pages-site-locally-with-jekyll] for more information.
+
 1. Verify you have ruby 2.1.0 or later
 ```
 $ ruby --version
@@ -27,3 +29,15 @@ $ bundle install
 $ cd groundmotion-processing/docs
 $ bundle exec jekyll serve
 ```
+
+## Jekyll documentation
+
+* (Data Files)[https://jekyllrb.com/docs/datafiles/]
+* (Static Files)[https://jekyllrb.com/docs/static-files/]
+* (Navigation)[https://jekyllrb.com/tutorials/navigation/]
+* (Variables)[https://jekyllrb.com/docs/variables/]
+
+## Quick Reference
+
+* Table of contents is set in in `_data/navbar.yml`
+* Include script `{% include_relative FILENAME %}`

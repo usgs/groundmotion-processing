@@ -1,148 +1,4 @@
-# Reading Data
-
-Triggered Strong motion data can come in many formats, few of which are
-familiar to seismologists. Many of the older formats were written using
-FORTRAN, and so are fixed-width, 80 character wide text formats.
-
-gmprocess provides readers for many of these formats. Each reader is a package
-under the `gmprocess/io` directory in the repository, where that package
-contains at least one module called `core.py`, which implements at least two
-functions:
-
- - is_FORMAT: Where FORMAT is the name of the package (knet, geonet, etc.) This function
-   returns True if the input file is of that format, False otherwise.
- - read_FORMAT: This function returns a list of StationStream objects for each file. Some
-   formats contain many channels of data in one file, some only have one per file.
-
-gmprocess provides a wrapper around all of these readers called `read_data`, which dynamically 
-discovers the format and attempts to read in the data. Users should prefer this method of reading
-in data files.
-
-## Supported Formats
-
-<table>
-  <tr>
-    <th>Format</td>
-    <th>Usual Provider</td>
-    <th>Typical Units</td>
-    <th>Online Access Available</td>
-    <th>Automated Retrieval via gmprocess</th>
-  </tr>
-
-  <tr>
-    <td>ASDF ( Adaptable Seismic Data Format)</td>
-    <td>USGS gmprocess</td>
-    <td>any</td>
-    <td>No</td>
-    <td>No</td>
-  </tr>
-
-  <tr>
-    <td>BHRC</td>
-    <td><a href="https://ismn.bhrc.ac.ir/en">Iran Road, Housing & Urban Development Research Center (BHRC)</a></td>
-    <td>cm/s<sup>2</sup> (gals)</td>
-    <td>Yes</td>
-    <td>No</td>
-  </tr>
-
-  <tr>
-    <td>COSMOS</td>
-    <td><a href="https://strongmotioncenter.org/">Center for Engineering Strong Motion Data (CESMD)</a></td>
-    <td>cm/s<sup>2</sup> (gals)</td>
-    <td>Yes</td>
-    <td>No</td>
-  </tr>
-
-  <tr>
-    <td>CWB</td>
-    <td><a href="https://www.cwb.gov.tw/eng/">Taiwan Central Weather Bureau (CWB)</a></td>
-    <td>cm/s<sup>2</sup> (gals)</td>
-    <td>No</td>
-    <td>No</td>
-  </tr>
-
-  <tr>
-    <td>DMG</td>
-    <td><a href="https://strongmotioncenter.org/">Center for Engineering Strong Motion Data (CESMD)</a></td>
-    <td>cm/s<sup>2</sup> (gals)</td>
-    <td>Yes</td>
-    <td>No</td>
-  </tr>
-
-  <tr>
-    <td>FDSN*</td>
-    <td><a href="http://www.fdsn.org/networks/">International Federation of Digital Seismograph Networks (FDSN)</a></td>
-    <td>counts</sup> (gals)</td>
-    <td>Yes</td>
-    <td>Yes</td>
-  </tr>
-
-  <tr>
-    <td>GEONET</td>
-    <td><a href="https://www.geonet.org.nz/">New Zealand GeoNet</a></td>
-    <td>cm/s<sup>2</sup> (gals)</td>
-    <td>Yes</td>
-    <td>Yes</td>
-  </tr>
-
-  <tr>
-    <td>KNET/KIKNET</td>
-    <td><a href="http://www.kyoshin.bosai.go.jp/">Japanese National Research Institute for Earth Science and Disaster Resilience</a></td>
-    <td>cm/s<sup>2</sup> (gals)</td>
-    <td>Yes</td>
-    <td>Yes</td>
-  </tr>
-
-  <tr>
-    <td>NSMN</td>
-    <td><a href="http://kyhdata.deprem.gov.tr/2K/kyhdata_v4.php">National Strong-Motion Network of Turkey (TR-NSMN)</a></td>
-    <td>cm/s<sup>2</sup> (gals)</td>
-    <td>Yes</td>
-    <td>Yes</td>
-  </tr>
-
-  <tr>
-    <td>SMC</td>
-    <td><a href="https://strongmotioncenter.org/">Center for Engineering Strong Motion Data (CESMD)</a></td>
-    <td>cm/s<sup>2</sup> (gals)</td>
-    <td>Yes</td>
-    <td>No</td>
-  </tr>
-
-  <tr>
-    <td>USC</td>
-    <td><a href="https://strongmotioncenter.org/">Center for Engineering Strong Motion Data (CESMD)</a></td>
-    <td>cm/s<sup>2</sup> (gals)</td>
-    <td>Yes</td>
-    <td>No</td>
-  </tr>
-
-</table>
-
-\* The FDSN "format" consists of:
-1) Any Obspy supported format (SAC, MiniSEED, etc.) and
-2) A StationXML file containing station/sensor response information.
-
-## Usage
-
-```python
-import glob
-from gmprocess.io.read import read_data
-
-# these sample files can be found in the repository
-# under gmprocess/data/testdata/knet/us2000cnnl
-# knet files are stored one channel per file.
-datafiles = glob.glob('AOM0011801241951.*')
-streams = []
-for datafile in datafiles:
-  streams += read_data(datafile)
-```
-
-For users that need to know more about the formats of the files they are
-reading, the command line program `gminfo` distributed with gmprocess can be
-used to inspect the files before attempting to read them.
-
-## Writing a data reader
+# Writing a data reader
 
 Most of the difficulty in writing data file readers for the various formats
 supported by gmprocess comes in handling the various types of headers and
@@ -150,7 +6,7 @@ inconsistencies in adherence to the various standards. Here we'll be removing
 those from the equation and presenting a semi-idealized data format and some
 code to read it.
 
-### The Format
+## The Format
 
 ```python
 Source: Complete Strong Motion Network
@@ -182,7 +38,7 @@ Sampling Rate (Hz): 100
      0.010     0.020     0.030
 ```
 
-### The Code
+## The Code
 
 The sample module below has been tested with the above data, and can be used as
 a template for writing a data reader for a new format. This data format is (as
@@ -197,7 +53,7 @@ information needed to construct a StationStream of minimal use includes:
  - Distinction between horizontal and vertical channels
  - Either a channel orientation (0-360) or some indication of what is E-W and N-S
 
-Record start time is *strongly* desired, but a "NaN" record start time value of 
+Record start time is *strongly* desired, but a "NaN" record start time value of
 1970-01-01 00:00:00 will be inserted by Obspy if not supplied.
 
 The code below contains comments that should be useful as guides when writing
@@ -211,7 +67,7 @@ Assumptions: The event ID associated with this record is **csabcd1234**.
 
  - gmprocess->data->testdata->complete->csabcd1234->complete.dat (at least one example of the file format)
 
-AND 
+AND
 
  - gmprocess->data->testdata->complete->event.json->event.json (JSON file containing basic event information):
 
@@ -252,7 +108,7 @@ def is_complete(filename):
         filename (str):
             Input candidate Complete format file.
     Returns:
-        bool: 
+        bool:
             True if input file matches the Complete format, False otherwise.
     '''
     try:

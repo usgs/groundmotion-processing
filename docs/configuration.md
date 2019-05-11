@@ -1,17 +1,13 @@
 # Configuration
 
-gmprocess uses a format called Yet Another Markup Language (YAML) for
-configuring data retrieval, processing steps, report generation, etc. There is
-a default configuration file in the gmprocess repository, which can be viewed here:
+The primary method for specifying parameters is a configuration file in the [Yet Another Markup Language (YAML)](https://yaml.org/). A default configuration file [gmprocess/data/config.yml](https://github.com/usgs/groundmotion-processing/blob/master/gmprocess/data/config.yml) is bundled with the code.
 
-https://github.com/usgs/groundmotion-processing/blob/master/gmprocess/data/config.yml
-
-This file will be installed with the software on your system. A custom copy of
-this config can be created by using the `gmsetup` program:
-
-`gmsetup --help`
+You can generate a custom copy of this configuration file using the `gmsetup`
+program:
 
 ```
+$ gmsetup --help
+
 usage: gmsetup [-h] [-d | -q] [-f FULL_NAME [FULL_NAME ...]] [-e EMAIL] [-l]
                [-s SECTIONS [SECTIONS ...]] [-o]
                config_file
@@ -36,7 +32,7 @@ optional arguments:
   -o, --overwrite       Overwrite existing config file at the same location.
 ```
 
-## Sections
+## Sections in the configuration file
 
 ### fetchers
 
@@ -53,5 +49,3 @@ See the [configuration section of "Fetching Data"](fetching.md#configuration "Fe
 ### metrics
 
 ### pickers
-
-
