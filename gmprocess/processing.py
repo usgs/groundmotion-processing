@@ -24,6 +24,8 @@ from gmprocess.pretesting import (  # NOQA
     check_max_amplitude,
     check_sta_lta,
     check_free_field)
+from gmprocess.filtering import lowpass_filter, highpass_filter # NOQA
+from gmprocess.adjust_highpass import adjust_highpass_corner  # NOQA
 from gmprocess.snr import compute_snr # NOQA
 from gmprocess.spectrum import fit_spectra  # NOQA
 from gmprocess.plot import summary_plots  # NOQA
@@ -428,100 +430,6 @@ def get_corner_frequencies(st, method='constant', constant=None, snr=None):
     else:
         raise ValueError("Corner frequency 'method' must be either "
                          "'constant' or 'snr'.")
-    return st
-
-
-def highpass_filter(st, filter_order=5, number_of_passes=2):
-    """
-    Highpass filter.
-
-    Args:
-        st (StationStream):
-            Stream of data.
-        filter_order (int):
-            Filter order.
-        number_of_passes (int):
-            Number of passes.
-
-    Returns:
-        stream: Filtered streams.
-    """
-    if not st.passed:
-        return st
-
-    if number_of_passes == 1:
-        zerophase = False
-    elif number_of_passes == 2:
-        zerophase = True
-    else:
-        raise ValueError("number_of_passes must be 1 or 2.")
-
-    for tr in st:
-        freq_prov = tr.getParameter('corner_frequencies')
-        freq = freq_prov['highpass']
-        tr.filter(type="highpass",
-                  freq=freq,
-                  corners=filter_order,
-                  zerophase=zerophase)
-        tr.setProvenance(
-            'highpass_filter',
-            {
-                'filter_type': 'Butterworth',
-                'filter_order': filter_order,
-                'number_of_passes': number_of_passes,
-                'corner_frequency': freq
-            }
-        )
-    return st
-
-
-def lowpass_filter(st, filter_order=5, number_of_passes=2):
-    """
-    Lowpass filter.
-
-    Args:
-        st (StationStream):
-            Stream of data.
-        filter_order (int):
-            Filter order.
-        number_of_passes (int):
-            Number of passes.
-
-    Returns:
-        stream: Filtered streams.
-    """
-    if not st.passed:
-        return st
-
-    if number_of_passes == 1:
-        zerophase = False
-    elif number_of_passes == 2:
-        zerophase = True
-    else:
-        raise ValueError("number_of_passes must be 1 or 2.")
-
-    for tr in st:
-        freq_prov = tr.getParameter('corner_frequencies')
-        freq = freq_prov['lowpass']
-
-        # Only perform low pass filter if corner is less than Nyquist frequency
-        # (half of the sampling rate)
-        if freq >= (0.5 * tr.stats.sampling_rate):
-            continue
-
-        tr.filter(type="lowpass",
-                  freq=freq,
-                  corners=filter_order,
-                  zerophase=zerophase)
-        tr.setProvenance(
-            'lowpass_filter',
-            {
-                'filter_type': 'Butterworth',
-                'filter_order': filter_order,
-                'number_of_passes': number_of_passes,
-                'corner_frequency': freq
-            }
-        )
     return st
 
 
