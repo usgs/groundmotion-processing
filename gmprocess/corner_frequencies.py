@@ -15,8 +15,8 @@ def constant(st, highpass=0.08, lowpass=20.0):
     """Use constant corner frequencies across all records.
 
     Args:
-        tr (StationTrace):
-            Trace of data.
+        st (StationStream):
+            Stream of data.
         highpass (float):
             Highpass corner frequency (Hz).
         lowpass (float):
@@ -41,8 +41,8 @@ def snr(st, same_horiz=True, bandwidth=20):
     """Use constant corner frequencies across all records.
 
     Args:
-        tr (StationTrace):
-            Trace of data.
+        st (StationStream):
+            Stream of data.
         same_horiz (bool):
             If True, horizontal traces in the stream must have the same
             corner frequencies.
