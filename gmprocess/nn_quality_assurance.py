@@ -318,7 +318,7 @@ def getHusidIndex(husid, threshold):
 def calculateSNR_min(ft_freq, snr):
     # Frequencies must be available between 0.1 and 20 Hz
     lower_index, upper_index = getFreqIndex(ft_freq, 0.1, 20)
-    snr_min = round(min(snr[lower_index:upper_index]), 5)
+    snr_min = min(snr[lower_index:upper_index])
     return snr_min
 
 
@@ -385,8 +385,8 @@ def getClassificationMetrics(tr, p_pick, delta_t):
         calculateHusid(acc2, t)
 
     # calculate max amplitudes of acc time series, final is geomean
-    PGA1 = round(np.max(np.abs(acc1)), 7)
-    PGA2 = round(np.max(np.abs(acc2)), 7)
+    PGA1 = np.max(np.abs(acc1))
+    PGA2 = np.max(np.abs(acc2))
     amp1_pe = max(abs(acc1[0:index_p_arrival]))
     amp2_pe = max(abs(acc2[0:index_p_arrival]))
     PGA = np.sqrt(PGA1*PGA2)
@@ -481,57 +481,57 @@ def getClassificationMetrics(tr, p_pick, delta_t):
     # snr metrics - min, max and averages
     lower_index, upper_index = getFreqIndex(smooth_ft1_freq, 0.1, 20)
     snrgm = np.divide(smooth_ftgm, smooth_ftgm_pe)
-    snr_min = round(min(snrgm[lower_index:upper_index]), 5)
-    snr_max = round(max(snrgm), 5)
+    snr_min = min(snrgm[lower_index:upper_index])
+    snr_max = max(snrgm)
 
     lower_index_average, upper_index_average = getFreqIndex(snr1_freq, 0.1, 10)
-    snr_average = round(np.trapz(
+    snr_average = (np.trapz(
         snrgm[lower_index_average:upper_index_average],
         snr1_freq[lower_index_average:upper_index_average]) /
-        (snr1_freq[upper_index_average]-snr1_freq[lower_index_average]), 5)
+        (snr1_freq[upper_index_average]-snr1_freq[lower_index_average]))
 
     lower_index_average, upper_index_average = getFreqIndex(
         snr1_freq, 0.1, 0.5)
-    ft_a1 = round(np.trapz(
+    ft_a1 = (np.trapz(
         smooth_ftgm[lower_index_average:upper_index_average],
         snr1_freq[lower_index_average:upper_index_average]) /
-        (snr1_freq[upper_index_average]-snr1_freq[lower_index_average]), 5)
-    snr_a1 = round(np.trapz(
+        (snr1_freq[upper_index_average]-snr1_freq[lower_index_average]))
+    snr_a1 = (np.trapz(
         snrgm[lower_index_average:upper_index_average],
         snr1_freq[lower_index_average:upper_index_average]) /
-        (snr1_freq[upper_index_average]-snr1_freq[lower_index_average]), 5)
+        (snr1_freq[upper_index_average]-snr1_freq[lower_index_average]))
 
     lower_index_average, upper_index_average = getFreqIndex(
         snr1_freq, 0.5, 1.0)
-    ft_a2 = round(np.trapz(
+    ft_a2 = (np.trapz(
         smooth_ftgm[lower_index_average:upper_index_average],
         snr1_freq[lower_index_average:upper_index_average]) /
-        (snr1_freq[upper_index_average]-snr1_freq[lower_index_average]), 5)
-    snr_a2 = round(np.trapz(
+        (snr1_freq[upper_index_average]-snr1_freq[lower_index_average]))
+    snr_a2 = (np.trapz(
         snrgm[lower_index_average:upper_index_average],
         snr1_freq[lower_index_average:upper_index_average]) /
-        (snr1_freq[upper_index_average]-snr1_freq[lower_index_average]), 5)
+        (snr1_freq[upper_index_average]-snr1_freq[lower_index_average]))
 
     lower_index_average, upper_index_average = getFreqIndex(
         snr1_freq, 1.0, 2.0)
-    snr_a3 = round(np.trapz(
+    snr_a3 = (np.trapz(
         snrgm[lower_index_average:upper_index_average],
         snr1_freq[lower_index_average:upper_index_average]) /
-        (snr1_freq[upper_index_average]-snr1_freq[lower_index_average]), 5)
+        (snr1_freq[upper_index_average]-snr1_freq[lower_index_average]))
 
     lower_index_average, upper_index_average = getFreqIndex(
         snr1_freq, 2.0, 5.0)
-    snr_a4 = round(np.trapz(
+    snr_a4 = (np.trapz(
         snrgm[lower_index_average:upper_index_average],
         snr1_freq[lower_index_average:upper_index_average]) /
-        (snr1_freq[upper_index_average]-snr1_freq[lower_index_average]), 5)
+        (snr1_freq[upper_index_average]-snr1_freq[lower_index_average]))
 
     lower_index_average, upper_index_average = getFreqIndex(
         snr1_freq, 5.0, 10.0)
-    snr_a5 = round(np.trapz(
+    snr_a5 = (np.trapz(
         snrgm[lower_index_average:upper_index_average],
         snr1_freq[lower_index_average:upper_index_average]) /
-        (snr1_freq[upper_index_average]-snr1_freq[lower_index_average]), 5)
+        (snr1_freq[upper_index_average]-snr1_freq[lower_index_average]))
 
     ft_a1_a2 = ft_a1 / ft_a2
 
@@ -547,14 +547,14 @@ def getClassificationMetrics(tr, p_pick, delta_t):
         (smooth_ft1_freq[lower_index]-smooth_ft1_freq[0]))
 
     signal2_max = max(smooth_ft2)
-    lf2 = round(np.trapz(
+    lf2 = (np.trapz(
         smooth_ft2[0:lower_index],
         smooth_ft1_freq[0:lower_index]) /
-        (smooth_ft1_freq[lower_index]-smooth_ft1_freq[0]), 5)
-    lf2_pe = round(np.trapz(
+        (smooth_ft1_freq[lower_index]-smooth_ft1_freq[0]))
+    lf2_pe = (np.trapz(
         smooth_ft2_pe[0:lower_index],
         smooth_ft1_freq[0:lower_index]) /
-        (smooth_ft1_freq[lower_index]-smooth_ft1_freq[0]), 5)
+        (smooth_ft1_freq[lower_index]-smooth_ft1_freq[0]))
 
     signal_ratio_max = max([lf1/signal1_max, lf2/signal2_max])
     signal_pe_ratio_max = max([lf1_pe/signal1_max, lf2_pe/signal2_max])
@@ -703,5 +703,8 @@ def NNet_QA(st, acceptance_threshold, model_name):
     st.setStreamParam(
         'nnet_qa', nnet_dict
     )
+    if not flag_accept:
+        for tr in st:
+            tr.fail('Failed NNet QA check.')
 
     return st

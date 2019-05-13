@@ -191,10 +191,10 @@ processing:
             min_freq: 0.2
             max_freq: 5.0
         
-    - NNet_QA:
-        # Neural network quality assurance method by Bellagamba et al. (2019)
-        acceptance_threshold: 0.5
-        model_name: CantWell
+    # - NNet_QA:
+    #     # Neural network quality assurance method by Bellagamba et al. (2019)
+    #     acceptance_threshold: 0.5
+    #     model_name: CantWell
 
     - get_corner_frequencies:
         # Corner frequency selection can use constant values, or selected
