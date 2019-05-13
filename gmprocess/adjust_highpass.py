@@ -50,7 +50,6 @@ def adjust_highpass_corner(st, step_factor=1.5, maximum_freq=0.5,
             f_hp = initial_corners['highpass']
             ok = __disp_checks(tr, max_final_displacement,
                                max_displacment_ratio)
-            print(f_hp)
             while not ok:
                 f_hp = step_factor * f_hp
                 if f_hp > maximum_freq:
@@ -59,7 +58,6 @@ def adjust_highpass_corner(st, step_factor=1.5, maximum_freq=0.5,
                     break
                 initial_corners['highpass'] = f_hp
                 tr.setParameter('corner_frequencies', initial_corners)
-                print(f_hp)
                 ok = __disp_checks(tr, max_final_displacement,
                                    max_displacment_ratio)
     return st
