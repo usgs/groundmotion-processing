@@ -1,0 +1,386 @@
+#!/usr/bin/env python
+
+import argparse
+import os
+import sys
+from datetime import datetime
+import logging
+import shutil
+import glob
+import warnings
+import json
+
+# third party imports
+import numpy as np
+from impactutils.io.cmd import get_command_output
+from h5py.h5py_warnings import H5pyDeprecationWarning
+import matplotlib.pyplot as plt
+import yaml
+import pandas as pd
+
+
+from gmprocess.event import get_event_object
+from gmprocess.io.global_fetcher import fetch_data
+from gmprocess.io.fetch_utils import plot_raw
+from gmprocess.logging import setup_logger
+from gmprocess.args import add_shared_args
+from gmprocess.config import get_config, update_dict
+from gmprocess.io.read_directory import directory_to_streams
+from gmprocess.streamcollection import StreamCollection
+from gmprocess.stream import streams_to_dataframe
+from gmprocess.processing import process_streams
+from gmprocess.metrics.station_summary import StationSummary
+from gmprocess.io.asdf.stream_workspace import StreamWorkspace
+
+NON_IMT_COLUMNS = ['STATION', 'NAME', 'SOURCE', 'NETID', 'LAT', 'LON']
+FLATFILE_COLUMNS = ['EarthquakeId', 'Network', 'StationCode',
+                    'StationDescription',
+                    'StationLatitude', 'StationLongitude',
+                    'StationElevation', 'SamplingRate',
+                    'EpicentralDistance', 'HypocentralDistance',
+                    'HN1Lowpass', 'HN1Highpass',
+                    'HN2Lowpass', 'HN2Highpass']
+
+CONFIG = get_config()
+TIMEFMT = '%Y-%m-%dT%H:%M:%S'
+DEG2KM = 111.0
+
+NON_IMCS = ['ELEVATION', 'EPICENTRAL_DISTANCE',
+            'HYPOCENTRAL_DISTANCE', 'LAT', 'LON', 'NAME', 'NETID',
+            'SOURCE', 'STATION']
+
+
+class MyFormatter(argparse.RawTextHelpFormatter,
+                  argparse.ArgumentDefaultsHelpFormatter):
+    pass
+
+
+def _get_summary(row):
+    # in our dataframe, imcs are the top level, and imts are below.
+    # to construct a new stationsummary, we need these to be inverted.
+    candidate_imcs = row.index.levels[0]
+    imtlist = list(filter(None, row.index.levels[1]))
+    imclist = list(set(candidate_imcs) - set(NON_IMCS))
+    pgms = {}
+    for imc in imclist:
+        for imt in imtlist:
+            if imt in row[imc]:
+                if imt in pgms and len(pgms[imt]):
+                    pgms[imt][imc] = row[imc][imt]
+                else:
+                    pgms[imt] = {imc: row[imc][imt]}
+    summary = StationSummary.from_pgms(row['STATION'].item(), pgms)
+    return summary
+
+
+def _parse_event_file(eventfile):
+    df = pd.read_csv(eventfile, sep=',', header=None)
+    nrows, ncols = df.shape
+    events = []
+    if ncols == 1:
+        df.columns = ['eventid']
+        for idx, row in df.iterrows():
+            event = get_event_object(row['eventid'])
+            events.append(event)
+    elif ncols == 6:
+        df.columns = ['id', 'time', 'lat', 'lon', 'depth', 'magnitude']
+        df['time'] = pd.to_datetime(df['time'])
+        for idx, row in df.iterrows():
+            rowdict = row.to_dict()
+            event = get_event_object(rowdict)
+            events.append(event)
+    else:
+        print('Unsupported file format for input text file.')
+        sys.exit(1)
+    return events
+
+
+def _update_config(custom_cfg_file):
+    config = get_config()
+
+    if custom_cfg_file:
+        if not os.path.isfile(custom_cfg_file):
+            print('Config file %s does not exist.' % custom_cfg_file)
+            sys.exit(1)
+        try:
+            with open(custom_cfg_file, 'rt') as f:
+                custom_cfg = yaml.load(f, Loader=yaml.FullLoader)
+                update_dict(config, custom_cfg)
+        except yaml.ParserError:
+            print('Config file %s is not valid YAML.' % custom_cfg_file)
+            sys.exit(1)
+
+    return config
+
+
+def _set_plots(config, event_dir):
+    # ---------------------------------------------------------------------
+    print('Making plots...')
+    plotdir = os.path.join(event_dir, 'plots')
+
+    idx = None
+    for i, pstep in enumerate(config['processing']):
+        if 'summary_plots' in pstep:
+            idx = i
+            break
+    if idx is None:
+        pstep = {'summary_plots': {'directory': plotdir}}
+        config['processing'].append(pstep)
+    else:
+        pstep = config['processing'][idx]
+        pstep['summary_plots']['directory'] = plotdir
+
+    return config
+
+
+def _fix_nan_elevations(tcollection):
+    for stream in tcollection:
+        for trace in stream:
+            if np.isnan(trace.stats.coordinates['elevation']):
+                logging.warning('Elevation is nan for %s!' % trace)
+                logging.warning('Setting elevation to 0.0 for %s.' % trace)
+                trace.stats.coordinates['elevation'] = 0.0
+
+
+def _read_event_json_files(eventfiles):
+    events = []
+    for eventfile in eventfiles:
+        with open(eventfile, 'rt') as f:
+            eventdict = json.load(f)
+            # eventdict['depth'] *= 1000
+            event = get_event_object(eventdict)
+            events.append(event)
+    return events
+
+
+def _get_event_files(directory):
+    eventfiles = []
+    for root, dirs, files in os.walk(directory):
+        for name in files:
+            if name == 'event.json':
+                fullname = os.path.join(root, name)
+                eventfiles.append(fullname)
+    return eventfiles
+
+
+def main(pparser, args):
+    # Initialize a string to store summary text to be printed at the end.
+    summary_text = ""
+
+    if not args.eventids and not args.textfile and not args.directory:
+        txt = '''Must specify either:
+         - ComCat IDs (-i option)
+         - text file with IDs or event information (-t option)
+         - directory containing event subdirectories (--directory option)
+           where the event directories are structured:
+           - event directory name is a ComCat event ID OR
+           - event directory contains an event.json file like this:
+            {
+                "id": "us1000778i",
+                "time": "2016-11-13T11:02:56.340000",
+                "lat": -42.7373,
+                "lon": 173.054,
+                "depth": 15.11,
+                "magnitude": 7.8
+            }
+            The event ID in this JSON file MUST match the directory containing the file.
+        '''
+        print(txt)
+        pparser.print_help()
+        sys.exit(1)
+
+    if args.no_raw and args.download_only:
+        print('Specify one of --no-raw OR --download-only, not both.')
+        sys.exit(1)
+
+    # get output table file extension
+    ext = 'csv'
+    if args.format == 'excel':
+        ext = 'xlsx'
+
+    setup_logger(args)
+    if args.log_file:
+        logger = logging.getLogger()
+        stream_handler = logger.handlers[0]
+        fhandler = logging.FileHandler(args.log_file)
+        logger.removeHandler(stream_handler)
+        logger.addHandler(fhandler)
+
+    # -------------------------------------------------------------------------
+    logging.info("Running fetchflat...")
+
+    config = _update_config(args.config)
+
+    events = []
+    if args.eventids:
+        for eventid in args.eventids:
+            event = get_event_object(eventid)
+            events.append(event)
+    elif args.textfile:
+        events = _parse_event_file(args.textfile)
+    elif args.directory:
+        eventfiles = _get_event_files(args.directory)
+        if not len(eventfiles):
+            eventids = os.listdir(args.directory)
+            try:
+                for eventid in eventids:
+                    event = get_event_object(eventid)
+                    events.append(event)
+            except Exception:
+                fstr = ('Could not match at least some of '
+                        'input directory names with ComCat IDs. Returning.')
+                print(fstr)
+                sys.exit(1)
+        else:
+            events = _read_event_json_files(eventfiles)
+
+    if not os.path.isdir(args.outdir):
+        os.makedirs(args.outdir)
+
+    collection = []
+    errors = []
+
+    workname = os.path.join(args.outdir, 'workspace.hdf')
+    if os.path.isfile(workname):
+        os.remove(workname)
+    workspace = StreamWorkspace(workname)
+    for event in events:
+        event_dir = os.path.join(args.outdir, event.id)
+        if not os.path.exists(event_dir):
+            os.makedirs(event_dir)
+        rawdir = None
+        if not args.no_raw:
+            rawdir = os.path.join(event_dir, 'raw')
+            if not os.path.exists(rawdir):
+                os.makedirs(rawdir)
+        if args.directory:
+            eventdir = os.path.join(args.directory, event.id)
+            streams, bad, terrors = directory_to_streams(eventdir)
+            tcollection = StreamCollection(streams)
+        else:
+            tcollection, terrors = fetch_data(event.time.datetime,
+                                              event.latitude,
+                                              event.longitude,
+                                              event.depth_km,
+                                              event.magnitude,
+                                              config=config,
+                                              rawdir=rawdir)
+
+        # plot raw data
+        if not args.no_plot:
+            config = _set_plots(config, event_dir)
+
+            if not args.no_raw:
+                print('Plotting raw data...')
+                plot_raw(rawdir, tcollection, event)
+
+        # set NaN station elevations to 0
+        _fix_nan_elevations(tcollection)
+
+        if args.download_only:
+            continue
+
+        # process the data for this event
+        processed = process_streams(tcollection, event, config=config)
+
+        workspace.addEvent(event)
+        workspace.addStreams(event, tcollection, 'unprocessed')
+        workspace.addStreams(event, processed, 'processed')
+        workspace.calcStreamMetrics(event.id, labels=['processed'])
+
+        collection += tcollection
+        errors += terrors
+
+    if not len(collection):
+        print('No data files found. Here are any errors that '
+              'may have come up:')
+        for error in errors:
+            print(error)
+        sys.exit(0)
+
+    event_table, imc_tables = workspace.getFlatTables(labels=['processed'])
+    event_name = os.path.join(args.outdir, 'event_table.%s' % ext)
+    if args.format == 'excel':
+        event_table.to_excel(event_name)
+        for imc, imc_table in imc_tables.items():
+            imc_name = os.path.join(args.outdir, '%s_table.%s' % (imc, ext))
+            imc_table.to_excel(imc_name)
+    else:
+        event_table.to_csv(event_name)
+        for imc, imc_table in imc_tables.items():
+            imc_name = os.path.join(args.outdir, '%s_table.%s' % (imc, ext))
+            imc_table.to_csv(imc_name)
+
+    sys.exit(0)
+
+
+if __name__ == '__main__':
+    desc = """Fetch data for multiple events from any available online data source.
+
+    Creates in outdir:
+        - ASDF file containing original (possibly raw) and processed waveforms.
+        - CSV/Excel files:
+          - <EVENTID>_events.csv File containing origin information
+          - <EVENTID>_<IMC>.csv File containing IMT values for any configured IMC.
+
+
+   
+
+    The ASDF file and CSV/Excel file will be named with ComCat ID if
+    specified, otherwise by event time.
+
+    By default original waveform files will be saved and plotted in a 'raw'
+    directory under outdir. To turn this off, use the "no-raw" option.
+
+    To download data without processing, use the -d or --download-only option.
+
+    By default processed waveform files will be plotted and saved to a 'plots'
+    directory under outdir. To turn this functionality off, use
+    the "no-plot" option.
+
+    Specific network information:
+    This tool can download data from the Japanese NIED website. However,
+    for this to work you will first need to obtain a username and password
+    from this website:
+
+    https://hinetwww11.bosai.go.jp/nied/registration/?LANG=en
+    """
+    parser = argparse.ArgumentParser(
+        description=desc, formatter_class=MyFormatter)
+
+    # Required arguments
+    parser.add_argument('outdir', help='Output file directory', type=str)
+
+    # non-positional arguments
+    parser.add_argument(
+        '-i', '--eventids', help='ComCat Event IDs', nargs='+')
+    text_help = '''Text file containing lines of ComCat Event IDs or 
+    event information (TIME LAT LON DEPTH MAG)
+    '''
+    parser.add_argument(
+        '-t', '--textfile', help=text_help)
+    parser.add_argument(
+        '-f', '--format',
+        help='Output format for metrics information',
+        choices=['excel', 'csv'], default='csv')
+    parser.add_argument(
+        '-c', '--config', help='Supply custom configuration file')
+    parser.add_argument(
+        '-o', '--download-only', action='store_true',
+        help='Download/plot raw only, no processing.')
+    parser.add_argument(
+        '--no-plot', action='store_true',
+        help='Do not make plots/report for processed waveforms')
+    parser.add_argument(
+        '--no-raw', action='store_true', help='Do not save raw streams')
+    parser.add_argument(
+        '-l', '--log-file',
+        help='Supply file name to store processing log info.')
+    hstr = 'Sidestep online data retrieval, read from local directory.'
+    parser.add_argument(
+        '--directory', help=hstr)
+    # Shared arguments
+    parser = add_shared_args(parser)
+
+    pargs = parser.parse_args()
+    main(parser, pargs)

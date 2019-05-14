@@ -22,6 +22,7 @@ import yaml
 
 from gmprocess.event import get_event_object
 from gmprocess.io.global_fetcher import fetch_data
+from gmprocess.io.fetch_utils import plot_raw
 from gmprocess.logging import setup_logger
 from gmprocess.args import add_shared_args
 from gmprocess.config import get_config, update_dict
@@ -247,7 +248,8 @@ def main(pparser, args):
         event = get_event_object(args.eventid)
         etime = event.time.datetime
     else:
-        event = parse_eventinfo(args.eventinfo)
+        edict = parse_eventinfo(args.eventinfo)
+        event = get_event_object(edict)
         etime = event.time
 
     if args.directory:
@@ -317,13 +319,7 @@ def main(pparser, args):
 
     if not args.no_raw:
         print('Plotting raw data...')
-        for stream in collection:
-            outfile = os.path.join(rawdir, '%s.png' % stream.get_id())
-            try:
-                stream.plot(outfile=outfile)
-                plt.close()
-            except Exception as e:
-                logging.info('Error in plotting raw data: %s' % e)
+        plot_raw(rawdir, collection, event)
 
     if args.download_only:
         fmt = '%i raw files with plots saved to %s.'

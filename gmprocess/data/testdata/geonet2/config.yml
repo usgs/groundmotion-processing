@@ -1,123 +1,4 @@
 # -----------------------------------------------------------------------------
-# This section is for configuring data fetching routines.
-fetchers:
-    KNETFetcher:
-        # NIED requires a username and a password, obtain these by
-        # visiting this page:
-        # https://hinetwww11.bosai.go.jp/nied/registration/
-        user: USERNAME
-        password: PASSWORD
-        # define the distance search radius (km)
-        radius : 100
-        # define the time search threshold (sec)
-        dt : 60
-        # define the depth search threshold (km)
-        ddepth : 30
-        # define the magnitude search threshold (km)
-        dmag : 0.3
-    GeoNetFetcher:
-        # define the distance search radius (km)
-        radius : 100
-        # define the time search threshold (sec)
-        dt : 16
-        # define the depth search threshold (km)
-        ddepth : 30
-        # define the magnitude search threshold (km)
-        dmag : 0.3
-    TurkeyFetcher:
-        # define the distance search radius (km)
-        radius : 100
-        # define the time search threshold (sec)
-        dt : 16
-        # define the depth search threshold (km)
-        ddepth : 30
-        # define the magnitude search threshold (km)
-        dmag : 0.3
-    FDSNFetcher:
-        # search radius in dd
-        radius : 4 
-        # seconds before arrival time
-        time_before : 30 
-        # seconds after arrival time
-        time_after : 420 
-        channels : ["BH?", "HH?", "BN?", "HN?"] # only get strong motion and high-gain channels
-        
-        network : "*"
-
-        # SY is a network for synthetic data
-        exclude_networks : 
-            - SY
-        
-        # uncomment this section to add stations that should be avoided
-        # exclude_stations:
-        #    - ABC*
-
-        # If True (default), MiniSEED files with gaps and/or overlaps will be rejected.
-        reject_channels_with_gaps : True
-
-        # The minimum length of the data as a fraction of the requested time frame. 
-        # After a channel has been downloaded it will be checked that its total 
-        # length is at least that fraction of the requested time span. 
-        # Will be rejected otherwise. Must be between 0.0 and 1.0.
-        minimum_length : 0.1
-
-        # Only download data that has accompanying StationXML metadata.
-        sanitize : True
-
-        # The minimum inter-station distance. 
-        # Data from any new station closer to any 
-        # existing station will not be downloaded. 
-        minimum_interstation_distance_in_m: 0.0
-
-
-        
-# -----------------------------------------------------------------------------
-# Options for readers
-read:
-    # Resampling rate if times are unevenly spaced
-    resample_rate: 200
-
-# -----------------------------------------------------------------------------
-# Options for separating noise/signal windows
-#
-#    |<---Noise Window--->|<-----Signal Window----->|
-#    |                    |                         |
-#    |                    |  /\          /\/\       |
-#    |____________________|_/  \  /\    /    \/\____|
-#    |                    |     \/  \  /            |
-#    |                    |          \/             |
-#
-#    record_start       split              signal_end
-
-windows:
-
-    signal_end:
-        # The end of the signal can be set using a phase velocity.
-        # Alternatively, it can be set with duration model, where the mean
-        # 5-95% significant duration (Ds) is added to the split time. The mean
-        # Ds can also be extended by a number of standard deviations (epsilon).
-
-        # Valid options for "method" are "velocity" and "model"
-        method: model
-        vmin: 1.0
-        # Minimum duration in sec for use with 'vmin' option.
-        floor: 120
-        # Duration model
-        model: AS16
-        # Number of standard deviations; if epsilon is 1.0, then the signal
-        # window duration is the mean Ds + 1 standard deviation.
-        epsilon: 2.0
-
-    window_checks:
-        # Minimum noise duration; can be zero but this will allow for errors
-        # to occur if requesting signal-to-noise ratios.
-        do_check: True
-        min_noise_duration: 1.0
-
-        min_signal_duration: 5.0
-
-
-# -----------------------------------------------------------------------------
 # This section is for processing steps that will affect the waveform and get
 # recorded as seismological provenance data.
 processing:
@@ -140,25 +21,10 @@ processing:
     - max_traces:
         n_max: 3
 
-    # Require a minimum sample rate
-    - min_sample_rate:
-        min_sps: 20.0
-
     - detrend:
         # Supported obspy methods (besides the baseline described below):
         #     constant, demean, linear, polynomial, simple, spline
         detrending_method: demean
-
-    - check_zero_crossings:
-        # Require a minimum number of zero crossings per second.
-        min_crossings: 1.0
-
-    # STA/LTA is computed for record and the max value must exceed the threshold
-    # below. Units are sec for window lenghts.
-    - check_sta_lta:
-        sta_length: 1.0
-        lta_length: 20.0
-        threshold: 3.0
 
     - remove_response:
         # Outuput units. Must be 'ACC', 'VEL', or 'DISP'.
@@ -185,21 +51,6 @@ processing:
         #     constant, demean, linear, polynomial, simple, spline
         detrending_method: demean
 
-    - compute_snr:
-        # Presense of this check says to do the signa-to-noise ratio check. Requires
-        # minimum SNR of `threshold` between `min_freq` and `max_freq` using
-        # Konno-Omachi smoothed spectra with `bandwidth` parameter.
-        bandwidth: 20.0
-        check:
-            threshold: 3.0
-            min_freq: 0.2
-            max_freq: 5.0
-        
-    # - NNet_QA:
-    #     # Neural network quality assurance method by Bellagamba et al. (2019)
-    #     acceptance_threshold: 0.5
-    #     model_name: CantWell
-
     - get_corner_frequencies:
         # Corner frequency selection can use constant values, or selected
         # dynamically from the signal-to-noise-ratio.
@@ -216,35 +67,6 @@ processing:
             # as configured in the snr_check step.
             same_horiz: True
 
-    # Apply a cap to the lowpass corner frequency so that it is guaranteed to be
-    # less than or equal to fn_fac * fn, where fn is the Nyquist frequency
-    - lowpass_max_frequency:
-        fn_fac: 0.9
-
-    # - adjust_highpass_corner:
-    #     # Options for further refinement of the highpass corner. Currently, this
-    #     # includes criteria employed by:
-    #     #
-    #     #     Dawood, H.M., Rodriguez-Marek, A., Bayless, J., Goulet, C. and
-    #     #     Thompson, E. (2016). A flatfile for the KiK-net database processed
-    #     #     using an automated protocol. Earthquake Spectra, 32(2), pp.1281-1302.
-    #
-    #     # This algorithm begins with an initial corner frequency that was selected
-    #     # as configured in the `get_corner_frequencies` step. It then chcks the
-    #     # criteria descibed below; if the criteria are not met then the high pass
-    #     # corner is increased the multiplicative step factor until the criteria
-    #     # are met:
-    #     step_factor: 1.3
-    #
-    #     # If the criteria are not satisfied for a corner frequency below this
-    #     # threshold then the stream will be rejected/failed:
-    #     maximum_freq: 0.9
-    #
-    #     # Maximum value (in cm) for final displacement:
-    #     max_final_displacement: 0.025
-    #
-    #     # Maximum ratio of the final displacement to the maximum displacement:
-    #     max_displacment_ratio: 0.2
 
     # - resample:
     #
