@@ -9,29 +9,29 @@ fetchers:
         password: PASSWORD
         # define the distance search radius (km)
         radius : 100
-        # define the time search threshokd (sec)
+        # define the time search threshold (sec)
         dt : 60
-        # define the depth search threshokd (km)
+        # define the depth search threshold (km)
         ddepth : 30
-        # define the magnitude search threshokd (km)
+        # define the magnitude search threshold (km)
         dmag : 0.3
     GeoNetFetcher:
         # define the distance search radius (km)
         radius : 100
-        # define the time search threshokd (sec)
+        # define the time search threshold (sec)
         dt : 16
-        # define the depth search threshokd (km)
+        # define the depth search threshold (km)
         ddepth : 30
-        # define the magnitude search threshokd (km)
+        # define the magnitude search threshold (km)
         dmag : 0.3
     TurkeyFetcher:
         # define the distance search radius (km)
         radius : 100
-        # define the time search threshokd (sec)
+        # define the time search threshold (sec)
         dt : 16
-        # define the depth search threshokd (km)
+        # define the depth search threshold (km)
         ddepth : 30
-        # define the magnitude search threshokd (km)
+        # define the magnitude search threshold (km)
         dmag : 0.3
     FDSNFetcher:
         # search radius in dd
