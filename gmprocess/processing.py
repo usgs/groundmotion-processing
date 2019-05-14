@@ -24,9 +24,11 @@ from gmprocess.pretesting import (  # NOQA
     check_max_amplitude,
     check_sta_lta,
     check_free_field)
-from gmprocess.filtering import lowpass_filter, highpass_filter # NOQA
+from gmprocess.filtering import lowpass_filter, highpass_filter  # NOQA
 from gmprocess.adjust_highpass import adjust_highpass_corner  # NOQA
-from gmprocess.snr import compute_snr # NOQA
+from gmprocess.zero_crossings import check_zero_crossings  # NOQA
+from gmprocess.nn_quality_assurance import NNet_QA  # NOQA
+from gmprocess.snr import compute_snr  # NOQA
 from gmprocess.spectrum import fit_spectra  # NOQA
 from gmprocess.plot import summary_plots  # NOQA
 from gmprocess.report import build_report  # NOQA

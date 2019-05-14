@@ -2,6 +2,7 @@
 import os
 import time
 from shutil import which
+import logging
 
 # third party imports
 import numpy as np
@@ -80,6 +81,15 @@ def build_report(sc, directory, origin, config=None):
     if config is None:
         config = get_config()
     processing_steps = config['processing']
+
+    # Check that summary plots are in the config processing steps
+    processing_steps = config['processing']
+    steps = [list(ps.keys())[0] for ps in processing_steps]
+    if 'summary_plots' not in steps:
+        logging.warning('Cannot make reports because summary plots '
+                        'were not made.')
+        return sc
+
     # World's ugliest list comprehension:
     spd = [psd for psd in processing_steps
            if list(psd.keys())[0] == 'summary_plots'][0]
