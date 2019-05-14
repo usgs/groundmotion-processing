@@ -189,7 +189,7 @@ class MetricsController(object):
             # necessary
             if imt == 'pgv' and self.timeseries[0].stats.standard.units == 'acc':
                 integrate = True
-            elif imt != 'pgv' and self.timeseries[0].stats.standard.units == 'veloc':
+            elif imt != 'pgv' and self.timeseries[0].stats.standard.units == 'vel':
                 differentiate = True
             # SA and FAS imts include a period which must be parsed from
             # the imt string
@@ -336,7 +336,7 @@ class MetricsController(object):
     def validate_stream(self):
         """
         Validates that the input is a StationStream, the units are either
-        'veloc' or 'acc', and the length of the traces are all equal.
+        'vel' or 'acc', and the length of the traces are all equal.
 
         Railses:
             PGMException for the cases where:
@@ -350,9 +350,9 @@ class MetricsController(object):
         for idx, trace in enumerate(self.timeseries):
             units = trace.stats.standard.units
             trace_length = len(trace.data)
-            if units.lower() != 'veloc' and units.lower() != 'acc':
+            if units.lower() != 'vel' and units.lower() != 'acc':
                 raise PGMException("MetricsController: Trace units must be "
-                                   "either 'veloc' or 'acc'.")
+                                   "either 'vel' or 'acc'.")
             if idx == 0:
                 standard_length = trace_length
             else:

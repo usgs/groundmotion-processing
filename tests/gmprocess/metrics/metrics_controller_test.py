@@ -60,7 +60,7 @@ def test_controller():
 
     # Testing for Velocity --------------------------
     for trace in stream_v2:
-        trace.stats.standard.units = 'veloc'
+        trace.stats.standard.units = 'vel'
     m = MetricsController(input_imts, input_imcs, stream_v2, event=event)
     pgms = m.pgms
 
