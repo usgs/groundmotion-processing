@@ -31,13 +31,9 @@ def test_nnet():
 
     update = {
         'processing': [
-            {'check_free_field': {'reject_non_free_field': True}},
-            {'check_max_amplitude': {'max': '2e6', 'min': 5}},
-            {'max_traces': {'n_max': 3}},
             {'detrend': {'detrending_method': 'demean'}},
-            #            {'check_zero_crossings': {'min_crossings': 10}},
+            # {'check_zero_crossings': {'min_crossings': 10}},
             {'detrend': {'detrending_method': 'linear'}},
-            {'detrend': {'detrending_method': 'demean'}},
             {'compute_snr': {'bandwidth': 20.0,
                              'check': {'max_freq': 5.0,
                                        'min_freq': 0.2,
@@ -54,7 +50,7 @@ def test_nnet():
         streams += read_data(f)
 
     sc = StreamCollection(streams)
-    test = process_streams(sc, origin)
+    test = process_streams(sc, origin, conf)
     nnet_dict = test[0].getStreamParam('nnet_qa')
     np.testing.assert_allclose(
         nnet_dict['score_HQ'], 0.99319980988565215, rtol=1e-5)
