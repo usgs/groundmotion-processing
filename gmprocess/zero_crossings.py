@@ -25,6 +25,6 @@ def check_zero_crossings(st, min_crossings=10):
                         {'crossing_rate': z_rate})
 
         if zero_count_tr <= min_crossings:
-            tr.failed('Zero crossing rate too low.')
+            tr.fail('Zero crossing rate too low.')
 
     return st
