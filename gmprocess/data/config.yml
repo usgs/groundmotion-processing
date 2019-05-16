@@ -146,8 +146,8 @@ processing:
         detrending_method: demean
 
     - check_zero_crossings:
-        # Require a minimum number of zero crossings.
-        min_crossings: 10
+        # Require a minimum number of zero crossings per second.
+        min_crossings: 1.0
 
     # STA/LTA is computed for record and the max value must exceed the threshold
     # below. Units are sec for window lenghts.
