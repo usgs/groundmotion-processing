@@ -30,18 +30,13 @@ from gmprocess.zero_crossings import check_zero_crossings  # NOQA
 from gmprocess.nn_quality_assurance import NNet_QA  # NOQA
 from gmprocess.snr import compute_snr  # NOQA
 from gmprocess.spectrum import fit_spectra  # NOQA
-from gmprocess.plot import summary_plots  # NOQA
-from gmprocess.report import build_report  # NOQA
 # -----------------------------------------------------------------------------
 
 M_TO_CM = 100.0
 
 # List of processing steps that require an origin
 # besides the arguments in the conf file.
-REQ_ORIGIN = [
-    'build_report',
-    'summary_plots'
-]
+REQ_ORIGIN = []
 
 
 TAPER_TYPES = {
@@ -169,13 +164,6 @@ def process_streams(streams, origin, config=None):
                 stream = globals()[step_name](stream)
             else:
                 stream = globals()[step_name](stream, **step_args)
-
-    # Build the summary report?
-    build_conf = config['build_report']
-    if build_conf['run']:
-        build_report(processed_streams,
-                     build_conf['directory'],
-                     origin, config=config)
 
     logging.info('Finished processing streams.')
     return processed_streams

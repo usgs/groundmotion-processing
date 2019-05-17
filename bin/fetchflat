@@ -43,6 +43,7 @@ FLATFILE_COLUMNS = ['EarthquakeId', 'Network', 'StationCode',
 
 CONFIG = get_config()
 TIMEFMT = '%Y-%m-%dT%H:%M:%S'
+TIMEFMT2 = '%Y-%m-%dT%H:%M:%S.%f'
 DEG2KM = 111.0
 
 NON_IMCS = ['ELEVATION', 'EPICENTRAL_DISTANCE',
@@ -248,6 +249,18 @@ def main(pparser, args):
         event_dir = os.path.join(args.outdir, event.id)
         if not os.path.exists(event_dir):
             os.makedirs(event_dir)
+
+        # create event.json file in each directory
+        edict = {'id': event.id,
+                 'time': event.time.strftime(TIMEFMT2),
+                 'lat': event.latitude,
+                 'lon': event.longitude,
+                 'depth': event.depth,
+                 'magnitude': event.magnitude}
+        eventfile = os.path.join(event_dir, 'event.json')
+        with open(eventfile, 'wt') as f:
+            json.dump(edict, f)
+
         rawdir = None
         if not args.no_raw:
             rawdir = os.path.join(event_dir, 'raw')
@@ -298,7 +311,7 @@ def main(pparser, args):
             print(error)
         sys.exit(0)
 
-    event_table, imc_tables = workspace.getFlatTables(labels=['processed'])
+    event_table, imc_tables = workspace.getFlatTables(label='processed')
     event_name = os.path.join(args.outdir, 'event_table.%s' % ext)
     if args.format == 'excel':
         event_table.to_excel(event_name)

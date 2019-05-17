@@ -24,13 +24,13 @@ EVENT_TABLE_COLUMNS = ['id', 'time', 'latitude',
 NON_IMT_COLUMNS = ['ELEVATION', 'EPICENTRAL_DISTANCE',
                    'HYPOCENTRAL_DISTANCE', 'LAT', 'LON',
                    'NAME', 'NETID', 'SOURCE', 'STATION']
-FLATFILE_COLUMNS = ['EarthquakeId', 'Network', 'StationCode',
-                    'StationDescription',
+FLATFILE_COLUMNS = ['EarthquakeId', 'Network', 'NetworkDescription',
+                    'StationCode', 'StationDescription',
                     'StationLatitude', 'StationLongitude',
                     'StationElevation', 'SamplingRate',
                     'EpicentralDistance', 'HypocentralDistance',
-                    'HN1Lowpass', 'HN1Highpass',
-                    'HN2Lowpass', 'HN2Highpass']
+                    'H1Lowpass', 'H1Highpass',
+                    'H2Lowpass', 'H2Highpass', 'SourceFile']
 
 
 class StreamWorkspace(object):
@@ -427,7 +427,46 @@ class StreamWorkspace(object):
                                             path=path,
                                             parameters={})
 
-    def getFlatTables(self, labels=None):
+    def getFlatTables(self, label):
+        '''Retrieve dataframes containing event information and IMC/IMT metrics.
+
+        Args:
+            label (str): Calculate metrics only for the given label.
+
+        Returns:
+            tuple: Elements are:
+                   - pandas DataFrame containing event information:
+                     - id Event ID
+                     - time Time of origin
+                     - latitude Latitude of origin
+                     - longitude Longitude of origin
+                     - depth Depth of origin (km)
+                     - magnitude Magnitude at origin (km)
+                   - dictionary of DataFrames, where keys are IMCs and
+                     values are DataFrames with columns:
+                     - EarthquakeId Earthquake id from event table
+                     - Network Network code
+                     - StationCode Station code
+                     - StationDescription Long form description of station
+                       location (may be blank)
+                     - StationLatitude Station latitude
+                     - StationLongitude Station longitude
+                     - StationElevation Station elevation
+                     - SamplingRate Data sampling rate in Hz
+                     - EpicentralDistance Distance from origin epicenter
+                       (surface) to station
+                     - HypocentralDistance Distance from origin hypocenter
+                       (depth) to station
+                     - HN1Lowpass Low pass filter corner frequency for first
+                       horizontal channel
+                     - HN1Highpass High pass filter corner frequency for first
+                       horizontal channel
+                     - HN2Lowpass Low pass filter corner frequency for second
+                       horizontal channel
+                     - HN2Highpass High pass filter corner frequency for
+                       second horizontal channel
+                     - ...desired IMTs (PGA, PGV, SA(0.3), etc.)
+        '''
         event_table = pd.DataFrame(columns=EVENT_TABLE_COLUMNS)
         imc_tables = {}
         for eventid in self.getEventIds():
@@ -439,8 +478,10 @@ class StreamWorkspace(object):
                      'depth': event.depth,
                      'magnitude': event.magnitude}
             event_table = event_table.append(edict, ignore_index=True)
-            streams = self.getStreams(eventid, labels=labels)
+            streams = self.getStreams(eventid, labels=[label])
             for stream in streams:
+                if not stream.passed:
+                    continue
                 summary = StationSummary.from_config(stream, event=event)
                 imclist = summary.pgms['IMC'].unique().tolist()
                 imtlist = summary.pgms['IMT'].unique().tolist()
@@ -457,6 +498,8 @@ class StreamWorkspace(object):
                         imc_table = imc_table.append(row, ignore_index=True)
                         imc_tables[imc] = imc_table
 
+        # for imc, imc_table in imc_tables.items():
+        #     imc_tables[imc] = imc_table[cols]
         return (event_table, imc_tables)
 
     def getMetricsTable(self, eventid, stations=None, labels=None):
@@ -684,7 +727,7 @@ class StreamWorkspace(object):
             labels = self.getLabels()
         for station in stations:
             for label in labels:
-                all_tags.append('%s_%s' % (station.lower(), label))
+                all_tags.append('%s_%s_%s' % (eventid, station.lower(), label))
         cols = ['Record', 'Processing Step',
                 'Step Attribute', 'Attribute Value']
         df = pd.DataFrame(columns=cols)
@@ -786,13 +829,21 @@ def _get_flatrow(stream, summary, event, imc):
 
     h1_lowfilt = h1.getProvenance('lowpass_filter')
     h1_highfilt = h1.getProvenance('highpass_filter')
-    h1_lowpass = h1_lowfilt[0]['corner_frequency']
-    h1_highpass = h1_highfilt[0]['corner_frequency']
+    h1_lowpass = np.nan
+    h1_highpass = np.nan
+    if len(h1_lowfilt):
+        h1_lowpass = h1_lowfilt[0]['corner_frequency']
+    if len(h1_highfilt):
+        h1_highpass = h1_highfilt[0]['corner_frequency']
 
     h2_lowfilt = h2.getProvenance('lowpass_filter')
     h2_highfilt = h2.getProvenance('highpass_filter')
-    h2_lowpass = h2_lowfilt[0]['corner_frequency']
-    h2_highpass = h2_highfilt[0]['corner_frequency']
+    h2_lowpass = np.nan
+    h2_highpass = np.nan
+    if len(h2_lowfilt):
+        h2_lowpass = h2_lowfilt[0]['corner_frequency']
+    if len(h2_highfilt):
+        h2_highpass = h2_highfilt[0]['corner_frequency']
 
     row = {'EarthquakeId': event.id,
            'Network': stream[0].stats.network,
@@ -806,9 +857,10 @@ def _get_flatrow(stream, summary, event, imc):
            'EpicentralDistance': summary.epicentral_distance,
            'HypocentralDistance': summary.hypocentral_distance,
            'H1Lowpass': h1_lowpass,
-           'HN1Highpass': h1_highpass,
-           'HN2Lowpass': h2_lowpass,
-           'HN2Highpass': h2_highpass}
+           'H1Highpass': h1_highpass,
+           'H2Lowpass': h2_lowpass,
+           'H2Highpass': h2_highpass,
+           'SourceFile': stream[0].stats.standard.source_file}
     imt_frame = summary.pgms[summary.pgms['IMC'] == imc].drop('IMC', axis=1)
     imts = dict(zip(imt_frame['IMT'], imt_frame['Result']))
     row.update(imts)

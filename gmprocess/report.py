@@ -1,12 +1,13 @@
 # stdlib imports
 import os
-import time
 from shutil import which
 import logging
+import glob
 
 # third party imports
 import numpy as np
 import pandas as pd
+from impactutils.io.cmd import get_command_output
 
 # local imports
 from gmprocess.config import get_config
@@ -63,7 +64,7 @@ STREAMBLOCK = """
 """
 
 
-def build_report(sc, directory, origin, config=None):
+def build_report_latex(sc, directory, plot_dir, origin, config=None):
     """
     Build latex summary report.
 
@@ -76,24 +77,16 @@ def build_report(sc, directory, origin, config=None):
             ScalarEvent object.
         config (dict):
             Config dictionary.
+    Returns:
+        tuple:
+            - Name of pdf or latex report file created.
+            - boolean indicating whether PDF creation was successful.
+
     """
     # Need to get config to know where the plots are located
     if config is None:
         config = get_config()
     processing_steps = config['processing']
-
-    # Check that summary plots are in the config processing steps
-    processing_steps = config['processing']
-    steps = [list(ps.keys())[0] for ps in processing_steps]
-    if 'summary_plots' not in steps:
-        logging.warning('Cannot make reports because summary plots '
-                        'were not made.')
-        return sc
-
-    # World's ugliest list comprehension:
-    spd = [psd for psd in processing_steps
-           if list(psd.keys())[0] == 'summary_plots'][0]
-    plot_dir = spd['summary_plots']['directory']
 
     # Check if directory exists, and if not, create it.
     if not os.path.exists(directory):
@@ -133,18 +126,39 @@ def build_report(sc, directory, origin, config=None):
     # Finish the latex file
     report += POSTAMBLE
 
+    res = False
     # Do not save report if running tests
     if 'CALLED_FROM_PYTEST' not in os.environ:
-        file_name = ('gmprocess_report_%s_%s.tex'
-                     % (origin.id, time.strftime("%Y%m%d-%H%M%S")))
-        file_path = os.path.join(directory, file_name)
-        with open(file_path, 'w') as f:
+        file_name = ('report_%s.tex' % (origin.id))
+        latex_file = os.path.join(directory, file_name)
+        with open(latex_file, 'w') as f:
             f.write(report)
 
         # Can we find pdflatex?
-        pdflatex_bin = which('pdflatex')
-        # rc, so, se = get_command_output('%s %s' % (pdflatex_bin, file_path))
-    return st
+        current_directory = os.getcwd()
+        os.chdir(directory)
+        try:
+            pdflatex_bin = which('pdflatex')
+            cmd = '%s %s' % (pdflatex_bin, latex_file)
+            res, stdout, stderr = get_command_output(cmd)
+            report_file = latex_file
+            if res:
+                base, ext = os.path.splitext(latex_file)
+                pdf_file = base + '.pdf'
+                if os.path.isfile(pdf_file):
+                    report_file = pdf_file
+                    auxfiles = glob.glob(base + '*')
+                    auxfiles.remove(pdf_file)
+                    for auxfile in auxfiles:
+                        os.remove(auxfile)
+                else:
+                    res = False
+        except Exception:
+            pass
+        finally:
+            os.chdir(current_directory)
+
+    return (report_file, res)
 
 
 def get_prov_latex(st):

@@ -8,6 +8,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 from obspy.geodetics.base import gps2dist_azimuth
+from obspy.core.utcdatetime import UTCDateTime
 
 from gmprocess.metrics.reduction.arias import Arias
 from gmprocess import spectrum
@@ -80,8 +81,8 @@ def plot_arias(stream, axes=None, axis_index=None,
 
     starttime = stream[0].stats.starttime
     if title is None:
-        title = ('Event on ' + str(starttime.month) + '/'
-                 + str(starttime.day) + '/' + str(starttime.year))
+        title = ('Event on ' + str(starttime.month) + '/' +
+                 str(starttime.day) + '/' + str(starttime.year))
     if xlabel is None:
         xlabel = 'Time (s)'
     if ylabel is None:
@@ -172,8 +173,8 @@ def plot_durations(stream, durations, axes=None, axis_index=None,
 
     starttime = stream[0].stats.starttime
     if title is None:
-        title = ('Event on ' + str(starttime.month) + '/'
-                 + str(starttime.day) + '/' + str(starttime.year))
+        title = ('Event on ' + str(starttime.month) + '/' +
+                 str(starttime.day) + '/' + str(starttime.year))
     if xlabel is None:
         xlabel = 'Time (s)'
     if ylabel is None:
@@ -303,8 +304,8 @@ def plot_moveout(streams, epilat, epilon, channel, cmap='viridis',
     ax.invert_yaxis()
     ax.legend(bbox_to_anchor=(1, 1), fontsize=minfontsize)
     if title is None:
-        title = ('Event on ' + str(starttime.month) + '/'
-                 + str(starttime.day) + '/' + str(starttime.year))
+        title = ('Event on ' + str(starttime.month) + '/' +
+                 str(starttime.day) + '/' + str(starttime.year))
         if scale != 1:
             title += ' scaled by ' + str(scale)
     if xlabel is None:
@@ -443,13 +444,14 @@ def summary_plots(st, directory, origin):
             trace_status = " (passed)"
         trace_title = tr.get_id() + trace_status
         ax[j].set_title(trace_title)
-        dtimes = tr.times('utcdatetime') - tr.times('utcdatetime')[0]
+        dtimes = tr.times('utcdatetime') - tr.stats.starttime
         ax[j].plot(dtimes, tr.data, 'k', linewidth=0.5)
 
         # Show signal split as vertical dashed line
         if tr.hasParameter('signal_split'):
             split_dict = tr.getParameter('signal_split')
-            dsec = split_dict['split_time'] - tr.times('utcdatetime')[0]
+            sptime = UTCDateTime(split_dict['split_time'])
+            dsec = sptime - tr.stats.starttime
             ax[j].axvline(dsec,
                           color='red', linestyle='dashed')
 
@@ -459,13 +461,14 @@ def summary_plots(st, directory, origin):
         # ---------------------------------------------------------------------
         # Velocity time series plot
         tr_vel = st_vel[j]
-        dtimes = tr_vel.times('utcdatetime') - tr_vel.times('utcdatetime')[0]
+        dtimes = tr_vel.times('utcdatetime') - tr_vel.stats.starttime
         ax[j + ntrace].plot(dtimes, tr_vel.data, 'k', linewidth=0.5)
 
         # Show signal split as vertical dashed line
         if tr.hasParameter('signal_split'):
             split_dict = tr.getParameter('signal_split')
-            dsec = split_dict['split_time'] - tr.times('utcdatetime')[0]
+            sptime = UTCDateTime(split_dict['split_time'])
+            dsec = sptime - tr.stats.starttime
             ax[j + ntrace].axvline(dsec, color='red', linestyle='dashed')
 
         ax[j + ntrace].set_xlabel('Time (s)')
@@ -560,7 +563,7 @@ def summary_plots(st, directory, origin):
         file_name = os.path.join(
             directory,
             origin.id + '_' + stream_id + '.png')
-        plt.savefig(fname=file_name, bbox_inches='tight')
+        plt.savefig(fname=file_name)
         plt.close('all')
 
     return st

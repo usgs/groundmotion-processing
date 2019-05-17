@@ -152,6 +152,8 @@ class KNETFetcher(DataFetcher):
         self.user = user
         self.password = password
         tz = pytz.UTC
+        if isinstance(time, UTCDateTime):
+            time = time.datetime
         self.time = tz.localize(time)
         self.lat = lat
         self.lon = lon
