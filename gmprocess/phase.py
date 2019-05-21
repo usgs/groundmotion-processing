@@ -490,6 +490,10 @@ def calc_snr(stream, minloc):
         signal = np.array(trace.data, dtype=float)
         noise = np.array(trace.data, dtype=float)[0:int(minloc / dt)]
         aps = np.mean(np.power(signal, 2))  # average power of signal
+        if aps == 0:
+            trace.fail('Signal window mean is 0.')
+            snr_values.append(0.0)
+            continue
         apn = np.mean(np.power(noise, 2))   # average power of noise
         if apn == 0:
             apn = 0.00001
