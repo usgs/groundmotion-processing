@@ -286,6 +286,57 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
     return st
 
 
+def lowpass_max_frequency(st, fn_fac=0.9):
+    """
+    Cap lowpass corner as a fraction of the Nyquist.
+
+    Args:
+        st (StationStream):
+            Stream of data.
+        fn_fac (float):
+            Factor to be multipled by the Nyquest to cap the lowpass filter.
+
+    Returns:
+        StationStream: Resampled stream.
+    """
+    if not st.passed:
+        return st
+
+    for tr in st:
+        fn = 0.5 * tr.stats.sampling_rate
+        max_flp = fn * fn_fac
+        freq_dict = tr.getParameter('corner_frequencies')
+        if freq_dict['lowpass'] > max_flp:
+            freq_dict['lowpass'] = max_flp
+            tr.setParameter('corner_frequencies', freq_dict)
+
+    return st
+
+
+def min_sample_rate(st, min_sps=20.0):
+    """
+    Discard records if the sample rate doers not exceed minimum.
+
+    Args:
+        st (StationStream):
+            Stream of data.
+        min_sps (float):
+            Minimum samples per second.
+
+    Returns:
+        StationStream: Stream checked for sample rate criteria.
+    """
+    if not st.passed:
+        return st
+
+    for tr in st:
+        actual_sps = tr.stats.sampling_rate
+        if actual_sps < min_sps:
+            tr.fail('Minimum sample rate of %s not exceeded.' % min_sps)
+
+    return st
+
+
 def detrend(st, detrending_method=None):
     """
     Detrend stream.

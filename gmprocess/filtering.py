@@ -48,19 +48,22 @@ def highpass_filter_trace(tr, filter_order=5, number_of_passes=2):
 
     freq_dict = tr.getParameter('corner_frequencies')
     freq = freq_dict['highpass']
-    tr.filter(type="highpass",
-              freq=freq,
-              corners=filter_order,
-              zerophase=zerophase)
-    tr.setProvenance(
-        'highpass_filter',
-        {
-            'filter_type': 'Butterworth',
-            'filter_order': filter_order,
-            'number_of_passes': number_of_passes,
-            'corner_frequency': freq
-        }
-    )
+    try:
+        tr.filter(type="highpass",
+                  freq=freq,
+                  corners=filter_order,
+                  zerophase=zerophase)
+        tr.setProvenance(
+            'highpass_filter',
+            {
+                'filter_type': 'Butterworth',
+                'filter_order': filter_order,
+                'number_of_passes': number_of_passes,
+                'corner_frequency': freq
+            }
+        )
+    except Exception as e:
+        tr.fail("Lowpass filter failed with excpetion: %s" % e)
     return tr
 
 
@@ -112,17 +115,20 @@ def lowpass_filter_trace(tr, filter_order=5, number_of_passes=2):
 
     freq_dict = tr.getParameter('corner_frequencies')
     freq = freq_dict['lowpass']
-    tr.filter(type="lowpass",
-              freq=freq,
-              corners=filter_order,
-              zerophase=zerophase)
-    tr.setProvenance(
-        'lowpass_filter',
-        {
-            'filter_type': 'Butterworth',
-            'filter_order': filter_order,
-            'number_of_passes': number_of_passes,
-            'corner_frequency': freq
-        }
-    )
+    try:
+        tr.filter(type="lowpass",
+                  freq=freq,
+                  corners=filter_order,
+                  zerophase=zerophase)
+        tr.setProvenance(
+            'lowpass_filter',
+            {
+                'filter_type': 'Butterworth',
+                'filter_order': filter_order,
+                'number_of_passes': number_of_passes,
+                'corner_frequency': freq
+            }
+        )
+    except Exception as e:
+        tr.fail("Lowpass filter failed with excpetion: %s" % e)
     return tr

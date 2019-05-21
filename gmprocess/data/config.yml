@@ -140,6 +140,10 @@ processing:
     - max_traces:
         n_max: 3
 
+    # Require a minimum sample rate
+    - min_sample_rate:
+        min_sps: 20.0
+
     - detrend:
         # Supported obspy methods (besides the baseline described below):
         #     constant, demean, linear, polynomial, simple, spline
@@ -211,6 +215,11 @@ processing:
             # For dynamic filtering, we require a minimum SNR threshold between
             # as configured in the snr_check step.
             same_horiz: True
+
+    # Apply a cap to the lowpass corner frequency so that it is guaranteed to be
+    # less than or equal to fn_fac * fn, where fn is the Nyquist frequency
+    - lowpass_max_frequency:
+        fn_fac: 0.9
 
     # - adjust_highpass_corner:
     #     # Options for further refinement of the highpass corner. Currently, this
