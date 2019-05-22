@@ -121,6 +121,10 @@ def _read_header(filename):
         head, tail = os.path.split(filename)
         standard['source_file'] = tail or os.path.basename(head)
 
+        # this field can be used for instrument correction
+        # when data is in counts
+        standard['instrument_sensitivity'] = np.nan
+
         # fill out the stats stuff
         stimestr = re.search(TIME_RE, lines[11]).group()
         # 20/07/2017 22:30:58.000000 (GMT)

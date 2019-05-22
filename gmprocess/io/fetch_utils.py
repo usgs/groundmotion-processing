@@ -2,6 +2,7 @@
 import os.path
 import json
 import warnings
+import glob
 
 # third party imports
 from obspy.geodetics.base import locations2degrees
@@ -20,13 +21,27 @@ from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.io.read_directory import directory_to_streams
 from gmprocess.io.global_fetcher import fetch_data
 from gmprocess.streamcollection import StreamCollection
+from gmprocess.event import ScalarEvent
 
 TIMEFMT2 = '%Y-%m-%dT%H:%M:%S.%f'
 
 
 def download(event, event_dir, config, directory):
+    """Download data or load data from local directory, turn into Streams.
+
+    Args:
+        event (ScalarEvent): Object containing basic event hypocenter, origin time, magnitude.
+        event_dir (str): Path where raw directory should be created (if downloading).
+        config (dict): Dictionary with gmprocess configuration information.
+        directory (str): Path where raw data already exists.
+    Returns:
+        tuple:
+            - StreamWorkspace: Contains the event and raw streams.
+            - str: Name of workspace HDF file.
+            - StreamCollection: Raw data StationStreams.
+    """
     # generate the raw directory
-    rawdir = get_rawdir(event_dir, event)
+    rawdir = get_rawdir(event_dir)
 
     if directory is None:
         tcollection, terrors = fetch_data(event.time.datetime,
@@ -65,6 +80,28 @@ def download(event, event_dir, config, directory):
 
 
 def parse_event_file(eventfile):
+    """Parse text file containing basic event information.
+
+    Files can contain:
+        - one column, in which case that column
+          contains ComCat event IDs.
+        - Six columns, in which case those columns should be:
+          - id: any string (no spaces)
+          - time: Any ISO standard for date/time.
+          - lat: Earthquake latitude in decimal degrees.
+          - lon: Earthquake longitude in decimal degrees.
+          - depth: Earthquake longitude in kilometers.
+          - magnitude: Earthquake magnitude.
+
+    NB: THERE SHOULD NOT BE ANY HEADERS ON THIS FILE!
+
+    Args:
+        eventfile (str): Path to event text file
+
+    Returns:
+        list: ScalarEvent objects constructed from list of event information.
+
+    """
     df = pd.read_csv(eventfile, sep=',', header=None)
     nrows, ncols = df.shape
     events = []
@@ -86,6 +123,16 @@ def parse_event_file(eventfile):
 
 
 def get_event_files(directory):
+    """Get list of event.json files found underneath a data directory.
+
+    Args:
+        directory (str): Path to directory containing input raw data, where
+                         subdirectories must be event directories containing
+                         event.json files, where the id in that file matches
+                         the directory under which it is found.
+    Returns:
+        List of event.json files.
+    """
     eventfiles = []
     for root, dirs, files in os.walk(directory):
         for name in files:
@@ -96,6 +143,14 @@ def get_event_files(directory):
 
 
 def read_event_json_files(eventfiles):
+    """Read event.json file and return ScalarEvent object.
+
+    Args:
+        eventfiles (list): Event.json files to be read.
+    Returns:
+        list: ScalarEvent objects.
+
+    """
     events = []
     for eventfile in eventfiles:
         with open(eventfile, 'rt') as f:
@@ -107,14 +162,43 @@ def read_event_json_files(eventfiles):
 
 
 def get_events(eventids, textfile, eventinfo, directory):
+    """Return a list of events from one of the four inputs:
+
+    Args:
+        eventids (list or None): List of ComCat event IDs.
+        textfile (str or None): Path to text file containing event IDs or info.
+        eventinfo (list or None): List containing:
+                                  - id Any string, no spaces.
+                                  - time Any ISO-compatible date/time string.
+                                  - latitude Latitude in decimal degrees.
+                                  - longitude Longitude in decimal degrees.
+                                  - depth Depth in kilometers.
+                                  - magnitude Earthquake magnitude.
+        directory (str): Path to a directory containing event subdirectories, each containing
+                         an event.json file, where the ID in the json file matches the subdirectory
+                         containing it.
+    Returns:
+        list: ScalarEvent objects.
+
+    """
     events = []
-    if eventids:
+    if eventids is not None:
         for eventid in eventids:
             event = get_event_object(eventid)
             events.append(event)
-    elif textfile:
+    elif textfile is not None:
         events = parse_event_file(textfile)
-    elif directory:
+    elif eventinfo is not None:
+        eid = eventinfo[0]
+        time = eventinfo[1]
+        lat = float(eventinfo[2])
+        lon = float(eventinfo[3])
+        dep = float(eventinfo[4])
+        mag = float(eventinfo[5])
+        event = ScalarEvent()
+        event.fromParams(eid, time, lat, lon, dep, mag)
+        events = [event]
+    elif directory is not None:
         eventfiles = get_event_files(directory)
         if not len(eventfiles):
             eventids = os.listdir(directory)
@@ -130,6 +214,12 @@ def get_events(eventids, textfile, eventinfo, directory):
 
 
 def create_event_file(event, event_dir):
+    """Write event.json file in event_dir.
+
+    Args:
+        event (ScalarEvent): Input event object.
+        event_dir (str): Directory where event.json should be written.
+    """
     # create event.json file in each directory
     edict = {'id': event.id,
              'time': event.time.strftime(TIMEFMT2),
@@ -142,7 +232,13 @@ def create_event_file(event, event_dir):
         json.dump(edict, f)
 
 
-def get_rawdir(event_dir, event):
+def get_rawdir(event_dir):
+    """Find or create raw directory if necessary.
+
+    Args:
+        event_dir (str): Directory where raw directory will be found or
+                         created.
+    """
     rawdir = os.path.join(event_dir, 'raw')
     if not os.path.exists(rawdir):
         os.makedirs(rawdir)
@@ -150,6 +246,15 @@ def get_rawdir(event_dir, event):
 
 
 def save_shakemap_amps(processed, event, event_dir):
+    """Write ShakeMap peak amplitudes to an Excel spreadsheet.
+
+    Args:
+        processed (StreamCollection): Processed waveforms.
+        event (ScalarEvent): Event object.
+        event_dir (str): Directory where peak amps should be written.
+    Returns:
+        str: Path to output amps spreadsheet.
+    """
     ampfile_name = None
     if processed.n_passed:
         dataframe = streams_to_dataframe(processed,
@@ -178,6 +283,15 @@ def save_shakemap_amps(processed, event, event_dir):
 
 
 def update_config(custom_cfg_file):
+    """Merge custom config with default.
+
+    Args:
+        custom_cfg_file (str): Path to custom config.
+
+    Returns:
+        dict: Merged config dictionary.
+
+    """
     config = get_config()
 
     if not os.path.isfile(custom_cfg_file):
@@ -193,6 +307,14 @@ def update_config(custom_cfg_file):
 
 
 def plot_raw(rawdir, tcollection, event):
+    """Make PNG plots of a collection of raw waveforms.
+
+    Args:
+        rawdir (str): Directory where PNG files should be saved.
+        tcollection (StreamCollection): Sequence of streams.
+        event (ScalarEvent): Event object. 
+
+    """
     model = TauPyModel(model="iasp91")
     source_depth = event.depth_km
     eqlat = event.latitude

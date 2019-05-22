@@ -33,6 +33,10 @@ fetchers:
         ddepth : 30
         # define the magnitude search threshold (km)
         dmag : 0.3
+    CosmosFetcher:
+        # define the distance search radius (km)
+        radius : 10
+        
     FDSNFetcher:
         # search radius in dd
         radius : 4 

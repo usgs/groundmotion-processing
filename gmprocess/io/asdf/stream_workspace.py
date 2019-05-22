@@ -2,12 +2,14 @@
 import json
 import re
 import copy
+import warnings
 
 # third party imports
 import pyasdf
 import numpy as np
 from obspy.core.utcdatetime import UTCDateTime
 import pandas as pd
+from h5py.h5py_warnings import H5pyDeprecationWarning
 
 # local imports
 from gmprocess.stationtrace import StationTrace, TIMEFMT_MS
@@ -71,17 +73,20 @@ class StreamWorkspace(object):
         Returns:
             str: Summary string representation of the file.
         """
-        fmt = 'Events: %i Stations: %i Streams: %i'
-        nevents = len(self.dataset.events)
-        stations = []
-        nstreams = 0
-        for waveform in self.dataset.waveforms:
-            inventory = waveform['StationXML']
-            nstreams += len(waveform.get_waveform_tags())
-            for station in inventory.networks[0].stations:
-                stations.append(station.code)
-        stations = set(stations)
-        nstations = len(stations)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore",
+                                  category=H5pyDeprecationWarning)
+            fmt = 'Events: %i Stations: %i Streams: %i'
+            nevents = len(self.dataset.events)
+            stations = []
+            nstreams = 0
+            for waveform in self.dataset.waveforms:
+                inventory = waveform['StationXML']
+                nstreams += len(waveform.get_waveform_tags())
+                for station in inventory.networks[0].stations:
+                    stations.append(station.code)
+            stations = set(stations)
+            nstations = len(stations)
         return fmt % (nevents, nstations, nstreams)
 
     def addEvent(self, event):
@@ -215,7 +220,7 @@ class StreamWorkspace(object):
             list: List of processing labels.
         """
         provtags = self.dataset.provenance.list()
-        labels = list(set([ptag.split('_')[1] for ptag in provtags]))
+        labels = list(set([ptag.split('_')[2] for ptag in provtags]))
         return labels
 
     def getStreamTags(self, eventid, label=None):
@@ -599,7 +604,7 @@ class StreamWorkspace(object):
         cols = ['Label', 'UserID', 'UserName',
                 'UserEmail', 'Software', 'Version']
         df = pd.DataFrame(columns=cols, index=None)
-        labels = list(set([ptag.split('_')[1] for ptag in provtags]))
+        labels = list(set([ptag.split('_')[2] for ptag in provtags]))
         labeldict = {}
         for label in labels:
             for ptag in provtags:

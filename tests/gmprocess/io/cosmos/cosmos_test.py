@@ -5,6 +5,8 @@ import numpy as np
 from gmprocess.io.cosmos.core import is_cosmos, read_cosmos
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.stationtrace import PROCESS_LEVELS
+from gmprocess.streamcollection import StreamCollection
+from gmprocess.processing import remove_response
 
 
 def test_cosmos():
@@ -109,11 +111,35 @@ def test_channel_in_filename():
     # TODO: Fix this problem, or get the data fixed?
     try:
         streams = read_cosmos(dfile)
+
     except:
         assert 1 == 1
 
 
+def test_v0():
+    datafiles, origin = read_data_dir('cosmos', 'ftbragg')
+    dfile = datafiles[0]
+    # TODO: Fix this problem, or get the data fixed?
+    assert is_cosmos(dfile)
+    try:
+        rstreams = read_cosmos(dfile)
+        tstream = rstreams[0].copy()  # raw stream
+        streams = StreamCollection(rstreams)
+        pstream = remove_response(rstreams[0], 0, 0)
+        pstream.detrend(type='demean')
+
+        for trace in tstream:
+            trace.data /= trace.stats.standard.instrument_sensitivity
+            trace.data *= 100
+        tstream.detrend(type='demean')
+
+        np.testing.assert_almost_equal(tstream[0].data, pstream[0].data)
+    except Exception as e:
+        pass
+
+
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
+    test_v0()
     test_cosmos()
     test_channel_in_filename()

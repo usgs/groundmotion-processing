@@ -36,29 +36,32 @@ def test_arias():
         'units': 'm/s/s',
         'channel': 'HN1',
         'standard': {'corner_frequency': np.nan,
-            'station_name': '',
-            'source': 'json',
-            'source_file': '',
-            'instrument': '',
-            'instrument_period': np.nan,
-            'source_format': 'json',
-            'comments': '',
-            'structure_type': '',
-            'sensor_serial_number': '',
-            'process_level': 'raw counts',
-            'process_time': '',
-            'horizontal_orientation': np.nan,
-            'units': 'acc',
-            'instrument_damping': np.nan}
+                     'station_name': '',
+                     'source': 'json',
+                     'source_file': '',
+                     'instrument': '',
+                     'instrument_period': np.nan,
+                     'source_format': 'json',
+                     'comments': '',
+                     'structure_type': '',
+                     'sensor_serial_number': '',
+                     'process_level': 'raw counts',
+                     'process_time': '',
+                     'horizontal_orientation': np.nan,
+                     'units': 'acc',
+                     'instrument_sensitivity': np.nan,
+                     'instrument_damping': np.nan}
     }
     # input is cm/s/s output is m/s/s
     trace = StationTrace(data=acc * 100, header=header)
     trace2 = trace.copy()
     trace2.stats.channel = 'HN2'
     stream = StationStream([trace, trace2])
-    station = StationSummary.from_stream(stream, ['ARITHMETIC_MEAN'], ['arias'])
+    station = StationSummary.from_stream(
+        stream, ['ARITHMETIC_MEAN'], ['arias'])
     pgms = station.pgms
-    Ia = pgms[(pgms.IMT == 'ARIAS') & (pgms.IMC == 'ARITHMETIC_MEAN')].Result.tolist()[0]
+    Ia = pgms[(pgms.IMT == 'ARIAS') & (
+        pgms.IMC == 'ARITHMETIC_MEAN')].Result.tolist()[0]
     # the target has only one decimal place and is in cm/s/s
     Ia = Ia * 100
     np.testing.assert_almost_equal(Ia, target_IA, decimal=1)

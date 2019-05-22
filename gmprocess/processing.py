@@ -201,7 +201,8 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
     Returns:
         StationStream: Instrument-response-corrected stream.
     """
-
+    if inv is None:
+        inv = st.getInventory()
     if output not in ['ACC', 'VEL', 'DISP']:
         raise ValueError('Output value of %s is invalid. Must be ACC, VEL, '
                          'or DISP.' % output)
@@ -247,12 +248,8 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                 'remove_response',
                 {
                     'method': 'remove_sensitivity',
-                    'inventory': inv,
-                    'f1': f1,
-                    'f2': f2,
-                    'f3': f3,
-                    'f4': f4,
-                    'water_level': water_level
+                    'input_units': 'counts',
+                    'output_units': 'cm/s'
                 }
             )
         elif tr.stats.channel[1] == 'N':
@@ -262,7 +259,8 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                 'remove_response',
                 {
                     'method': 'remove_sensitivity',
-                    'inventory': inv
+                    'input_units': 'counts',
+                    'output_units': 'cm/s^2'
                 }
             )
         else:

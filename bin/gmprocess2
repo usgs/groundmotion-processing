@@ -29,11 +29,10 @@ from gmprocess.report import build_report_latex
 from gmprocess.plot import summary_plots
 from gmprocess.config import get_config
 
-CMD_TUPLES = [('download', ('Download data from all available online sources. '
-                            'No-op if --directory is selected.')),
+CMD_TUPLES = [('assemble', ('Download data from all available online sources, or '
+                            'load raw data from files if --directory is selected.')),
               ('process', ('Process data using steps defined '
                            'in configuration file.')),
-              ('plot', 'Create diagnostic plots of each stream.'),
               ('report', 'Create a summary report for each event specified.'),
 
               ('provenance', 'Generate provenance table in --format format.'),
@@ -48,6 +47,13 @@ TAG_FMT = '%Y%m%d%H%M%S'
 class MyFormatter(argparse.RawTextHelpFormatter,
                   argparse.ArgumentDefaultsHelpFormatter):
     pass
+
+
+def append_file(files_created, tag, filename):
+    if tag in files_created:
+        files_created[tag].append(filename)
+    else:
+        files_created[tag] = [filename]
 
 
 def main(pparser, args):
@@ -87,9 +93,6 @@ def main(pparser, args):
         print('Exiting.\n')
         sys.exit(1)
 
-    # TODO: You must have either 'download' or --directory, not both
-    pass
-
     eventids = args.eventids
     textfile = args.textfile
     eventinfo = args.eventinfo
@@ -110,71 +113,99 @@ def main(pparser, args):
 
     workspace_files = []
 
+    files_created = {}
+
     for event in events:
         event_dir = os.path.join(outdir, event.id)
         if not os.path.exists(event_dir):
             os.makedirs(event_dir)
 
         workname = os.path.join(event_dir, 'workspace.hdf')
+        workspace_exists = os.path.isfile(workname)
+        workspace_has_processed = False
+        workspace = None
+        processing_done = False
+        if workspace_exists:
+            workspace_files.append(workname)
+            workspace = StreamWorkspace.open(workname)
+            labels = workspace.getLabels()
+            labels.remove('unprocessed')
+            if len(labels) == 1:
+                process_tag = labels[0]
+                workspace_has_processed = True
+            else:
+                if 'process' not in pcommands:
+                    fmt = '\nThere are %i sets of processed data in %s.'
+                    tpl = (len(labels), workname)
+                    print(fmt % tpl)
+                    print(('This software can only handle one set of '
+                           'processed data. Exiting.\n'))
+                    sys.exit(1)
 
         download_done = False
-        if 'download' in pcommands or input_directory is not None:
-            workspace, workspace_file, tcollection = download(event, event_dir,
-                                                              config,
-                                                              input_directory)
+        if 'assemble' in pcommands:
+            logging.info('Downloading/loading raw streams...')
+            workspace, workspace_file, rstreams = download(event, event_dir,
+                                                           config,
+                                                           input_directory)
+
             download_done = True
+            append_file(files_created, 'Workspace', workname)
         else:
-            if not os.path.isfile(workname):
+            if not workspace_exists:
                 print('\nYou opted not to download or process from input.')
                 print('No previous HDF workspace file could be found.')
-                print('Try re-running with the download command or the ')
-                print('--directory option.\n')
+                print('Try re-running with the assemble command with or ')
+                print('without the --directory option.\n')
                 sys.exit(1)
-            workspace = StreamWorkspace(workname)
-            tcollection = workspace.getStreams(event.id,
-                                               labels=['unprocessed'])
-            download_done = True
+            if 'process' in pcommands:
+                logging.info('Getting raw streams from workspace...')
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore",
+                                          category=H5pyDeprecationWarning)
+                    rstreams = workspace.getStreams(event.id,
+                                                    labels=['unprocessed'])
+                download_done = True
+            else:
+                if workspace_has_processed:
+                    logging.info('Getting processed streams from workspace...')
+                    with warnings.catch_warnings():
+                        warnings.simplefilter("ignore",
+                                              category=H5pyDeprecationWarning)
+                        pstreams = workspace.getStreams(event.id,
+                                                        labels=[process_tag])
+                    download_done = True
+                    processing_done = True
 
-        processing_done = False
-        if 'process' in pcommands and download_done:
-            processed = process_streams(tcollection, event, config=config)
+        if workname not in workspace_files:
+            workspace_files.append(workname)
+
+        if 'process' in pcommands and download_done and not processing_done:
+            logging.info('Processing raw streams for event %s...' % event.id)
+            pstreams = process_streams(rstreams, event, config=config)
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore",
                                       category=H5pyDeprecationWarning)
-                workspace.addStreams(event, processed, label=process_tag)
+                workspace.addStreams(event, pstreams, label=process_tag)
             processing_done = True
-        else:
-            workspace = StreamWorkspace(workname)
-            labels = workspace.getLabels()
-            labels.remove('unprocessed')
-            if len(labels) > 1:
-                fmt = '\nThere are %i sets of processed data in %s.'
-                tpl = (len(labels), workname)
-                print(fmt % tpl)
-                print(('This software can only handle one set of '
-                       'processed data. Exiting.\n'))
-                sys.exit(1)
-            else:
-                tcollection = workspace.getStreams(event.id,
-                                                   labels=[labels[0]])
-                processing_done = True
 
-        plotting_done = False
-        if 'plot' in pcommands and processing_done:
+        reporting_done = False
+        if 'report' in pcommands and processing_done:
+            logging.info(
+                'Creating diagnostic plots for event %s...' % event.id)
             plot_dir = os.path.join(event_dir, 'plots')
             if not os.path.isdir(plot_dir):
                 os.makedirs(plot_dir)
-            for stream in processed:
+            for stream in pstreams:
                 summary_plots(stream, plot_dir, event)
-            plotting_done = True
 
-        reporting_done = False
-        if 'report' in pcommands and plotting_done:
+            logging.info(
+                'Creating diagnostic report for event %s...' % event.id)
             # Build the summary report?
             build_conf = config['build_report']
             report_format = build_conf['format']
             if report_format == 'latex':
-                report_file, success = build_report_latex(processed,
+                report_file, success = build_report_latex(pstreams,
                                                           event_dir,
                                                           plot_dir,
                                                           event, config=config)
@@ -183,6 +214,7 @@ def main(pparser, args):
                 success = False
             if os.path.isfile(report_file) and success:
                 reporting_done = True
+                append_file(files_created, 'Summary report', report_file)
 
         provenance_done = False
         if 'provenance' in pcommands and processing_done:
@@ -193,23 +225,24 @@ def main(pparser, args):
                                                    labels=[process_tag])
             if args.format == 'csv':
                 csvfile = os.path.join(event_dir, 'provenance.csv')
+                append_file(files_created, 'Provenance', csvfile)
                 provdata.to_csv(csvfile)
             else:
                 excelfile = os.path.join(event_dir, 'provenance.xlsx')
+                append_file(files_created, 'Provenance', excelfile)
                 provdata.to_excel(excelfile, index=False)
             provenance_done = True
 
         shakemap_done = False
         if 'shakemap' in pcommands and processing_done:
-            shakemap_file = save_shakemap_amps(processed, event, event_dir)
+            shakemap_file = save_shakemap_amps(pstreams, event, event_dir)
             shakemap_done = True
+            append_file(files_created, 'shakemap', shakemap_file)
 
         workspace.close()
 
-    c1 = 'export' in pcommands
-    c2 = 'process' in pcommands
-    c3 = len(workspace_files)
-    if c1 and c2 and c3:
+    # if n_passed is zero, don't
+    if 'export' in pcommands and processing_done and len(workspace_files):
         event_table = None
         imc_tables = {}
         for workspace_file in workspace_files:
@@ -233,16 +266,27 @@ def main(pparser, args):
 
         if args.format == 'csv':
             eventfile = os.path.join(outdir, 'events.csv')
-            event_table.to_csv(eventfile)
+            event_table.to_csv(eventfile, index=False)
+            append_file(files_created, 'Event table', eventfile)
             for imc, imc_table in imc_tables.items():
                 imcfile = os.path.join(outdir, '%s.csv' % imc.lower())
-                imc_table.to_csv(imcfile)
+                imc_table.to_csv(imcfile, index=False)
+                append_file(files_created, 'IMC tables', imcfile)
         else:
             eventfile = os.path.join(outdir, 'events.xlsx')
             event_table.to_excel(eventfile, index=False)
+            append_file(files_created, 'Event table', eventfile)
             for imc, imc_table in imc_tables.items():
                 imcfile = os.path.join(outdir, '%s.xlsx' % imc.lower())
                 imc_table.to_excel(imcfile, index=False)
+                append_file(files_created, 'IMC tables', imcfile)
+
+    print('\nThe following files have been created:')
+    for file_type, file_list in files_created.items():
+        print('File type: %s' % file_type)
+        for fname in file_list:
+            print('\t%s' % fname)
+    print('\nProcessing is complete.\n')
 
 
 def get_command_help():

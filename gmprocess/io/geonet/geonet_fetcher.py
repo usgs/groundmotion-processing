@@ -82,7 +82,7 @@ class GeoNetFetcher(DataFetcher):
 
         if 'fetchers' in config:
             if 'GeoNetFetcher' in config['fetchers']:
-                fetch_cfg = config['fetchers']['KNETFetcher']
+                fetch_cfg = config['fetchers']['GeoNetFetcher']
                 if 'radius' in fetch_cfg:
                     cfg_radius = float(fetch_cfg['radius'])
                 if 'dt' in fetch_cfg:

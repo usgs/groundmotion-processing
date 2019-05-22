@@ -289,6 +289,6 @@ def test_to_dataframe():
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
-    """test_grouping()
-    test()"""
+    test_grouping()
+    test()
     test_to_dataframe()

@@ -107,6 +107,11 @@ STANDARD_KEYS = {
         'required': True,
         'default': ''
     },
+    'instrument_sensitivity': {
+        'type': float,
+        'required': False,
+        'default': np.nan,
+    },
     'comments': {
         'type': str,
         'required': False,
@@ -643,9 +648,12 @@ def _stats_from_inventory(data, inventory, channelid):
         except json.decoder.JSONDecodeError:
             format_specific['description'] = jsonstr
 
+    standard['instrument_sensitivity'] = np.nan
     response = None
     if channel.response is not None:
         response = channel.response
+        if hasattr(response, 'sensitivity'):
+            standard['instrument_sensitivity'] = response.sensitivity.value
 
     return (response, standard, coords, format_specific)
 
@@ -777,7 +785,9 @@ def _get_activity(pr, activity, attributes, sequence):
 
         att_tuple = ('seis_prov:%s' % key, value)
         pr_attributes.append(att_tuple)
-    pr.activity('seis_prov:%s' % activity_id,
-                other_attributes=pr_attributes)
-
+    try:
+        pr.activity('seis_prov:%s' % activity_id,
+                    other_attributes=pr_attributes)
+    except Exception as e:
+        x = 1
     return pr

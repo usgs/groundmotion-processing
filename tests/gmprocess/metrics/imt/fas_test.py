@@ -40,34 +40,35 @@ def test_fas():
             'delta': dt,
             'units': 'acc',
             'standard': {'corner_frequency': np.nan,
-                'station_name': '',
-                'source': 'json',
-                'instrument': '',
-                'instrument_period': np.nan,
-                'source_format': 'json',
-                'comments': '',
-                'structure_type': '',
-                'sensor_serial_number': '',
-                'source_file': '',
-                'process_level': 'raw counts',
-                'process_time': '',
-                'horizontal_orientation': np.nan,
-                'units': 'acc',
-                'instrument_damping': np.nan}})
+                         'station_name': '',
+                         'source': 'json',
+                         'instrument': '',
+                         'instrument_period': np.nan,
+                         'source_format': 'json',
+                         'comments': '',
+                         'structure_type': '',
+                         'sensor_serial_number': '',
+                         'source_file': '',
+                         'process_level': 'raw counts',
+                         'process_time': '',
+                         'horizontal_orientation': np.nan,
+                         'units': 'acc',
+                         'instrument_sensitivity': np.nan,
+                         'instrument_damping': np.nan}})
         stream.append(trace)
 
     freqs, fas = np.loadtxt(fas_file, unpack=True,
                             usecols=(0, 1), delimiter=',')
     # scaling required on the test data as it was not accounted for originally
-    imts = ['fas' + str(1/p) for p in freqs]
+    imts = ['fas' + str(1 / p) for p in freqs]
     summary = StationSummary.from_stream(stream, ['quadratic_mean'], imts,
-            bandwidth=30)
+                                         bandwidth=30)
     pgms = summary.pgms
     for idx, f in enumerate(freqs):
-        fstr = 'FAS(' + str(1/f) + ')'
+        fstr = 'FAS(' + str(1 / f) + ')'
         fval = pgms[pgms.IMT == fstr].Result.tolist()[0]
         np.testing.assert_array_almost_equal(
-                fval, fas[idx]/len(stream[0].data))
+            fval, fas[idx] / len(stream[0].data))
 
     # test exceptions
     failed = False

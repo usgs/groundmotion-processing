@@ -7,7 +7,8 @@ import numpy as np
 from obspy.core.stream import Stream
 from obspy.core.utcdatetime import UTCDateTime
 from obspy.core.inventory import (Inventory, Network, Station,
-                                  Channel, Site, Equipment, Comment)
+                                  Channel, Site, Equipment, Comment,
+                                  Response, InstrumentSensitivity)
 # local imports
 from .stationtrace import StationTrace
 from gmprocess.exception import GMProcessException
@@ -138,7 +139,6 @@ class StationStream(Stream):
             if len(set(all_codes)) != len(all_codes):
                 for tr in self:
                     tr.fail('Nonunique channel code in StationStream.')
-
 
     def __check_id(self):
         # Check that id is consistent, and set id if it passes the check.
@@ -350,6 +350,17 @@ def _channel_from_stats(stats):
     response = None
     if 'response' in stats:
         response = stats['response']
+
+    # we may have instrument sensitivity...
+    if not np.isnan(stats['standard']['instrument_sensitivity']):
+        sens = stats['standard']['instrument_sensitivity']
+        frequency = 1 / stats['standard']['instrument_period']
+        sensitivity = InstrumentSensitivity(sens,
+                                            frequency=frequency,
+                                            input_units='M/S',
+                                            output_units='COUNTS')
+        response = Response(instrument_sensitivity=sensitivity)
+
     comments = Comment(stats.standard.comments)
     logging.debug('channel: %s' % stats.channel)
     channel = Channel(stats.channel,

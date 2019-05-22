@@ -224,6 +224,10 @@ def _get_header_info(file, data):
         'via Central Weather Bureau'
     standard['source_format'] = 'cwb'
 
+    # this field can be used for instrument correction
+    # when data is in counts
+    standard['instrument_sensitivity'] = np.nan
+
     if 'station_name' not in standard:
         standard['station_name'] = ''
     if 'instrument' not in standard:
