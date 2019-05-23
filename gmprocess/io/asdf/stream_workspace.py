@@ -299,7 +299,6 @@ class StreamWorkspace(object):
                 if eventid in waveform[tag][0].stats.asdf.event_ids:
                     tstream = waveform[tag].copy()
                     inventory = waveform['StationXML']
-#                    traces = []
                     for ttrace in tstream:
                         trace = StationTrace(data=ttrace.data,
                                              header=ttrace.stats,
@@ -320,11 +319,9 @@ class StreamWorkspace(object):
                                 trace_path].data[:].tolist()
                             jsonstr = ''.join([chr(b) for b in bytelist])
                             jdict = json.loads(jsonstr)
-                            # jdict = unstringify_dict(jdict)
                             for key, value in jdict.items():
                                 trace.setParameter(key, value)
 
-#                        traces.append(trace)
                         stream = StationStream(traces=[trace])
                         stream.tag = tag  # testing this out
 
@@ -335,7 +332,6 @@ class StreamWorkspace(object):
                                 stream_path].data[:].tolist()
                             jsonstr = ''.join([chr(b) for b in bytelist])
                             jdict = json.loads(jsonstr)
-                            # jdict = unstringify_dict(jdict)
                             for key, value in jdict.items():
                                 stream.setStreamParam(key, value)
 
