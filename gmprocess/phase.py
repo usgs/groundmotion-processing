@@ -346,7 +346,10 @@ def pick_travel(stream, origin, picker_config=None):
                                       phase_list=['P', 'p', 'Pn'])
     if not len(arrivals):
         return (-1, 0)
+
+    # arrival time is time since origin
     arrival = arrivals[0]
+    # we need time since start of the record
     minloc = arrival.time + (etime - stream[0].stats.starttime)
     mean_snr = calc_snr(stream, minloc)
     return (minloc, mean_snr)

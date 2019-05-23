@@ -31,4 +31,11 @@ continuous integration.
 
 * Develop uniformly processed ground-motion data sets leveraging data from a variety of sources for use in development and analysis of ground-motion prediction equations, shaking duration, site response, testing of earthquake early warning algorithms, and testing seismic velocity models.
 
-* Facilitate access to and routine processing of waveform and parametric data from a wide variety of data sources in many different formats, including COSMOS, PEER/NGA, CESMD/VDC, and international strong motion data sets.
+* Facilitate access to and routine processing of waveform and parametric data from a wide variety of data sources in many different formats, including COSMOS, PEER/NGA, CESMD/VDC, and international strong motion data sets. These parametric data can be formatted per-event or in the style of the NGA "flat" files.
+
+* Convert files from any of the various strong-motion formats into a standard
+capable of being read by modern seismological processing software (i.e., Obspy).
+
+* Facilitate the creation of relational databases containing relevant waveform
+metadata, stream/station metrics, etc.
+

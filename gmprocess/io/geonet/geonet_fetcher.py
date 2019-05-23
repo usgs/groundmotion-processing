@@ -82,7 +82,7 @@ class GeoNetFetcher(DataFetcher):
 
         if 'fetchers' in config:
             if 'GeoNetFetcher' in config['fetchers']:
-                fetch_cfg = config['fetchers']['KNETFetcher']
+                fetch_cfg = config['fetchers']['GeoNetFetcher']
                 if 'radius' in fetch_cfg:
                     cfg_radius = float(fetch_cfg['radius'])
                 if 'dt' in fetch_cfg:
@@ -98,6 +98,8 @@ class GeoNetFetcher(DataFetcher):
         dmag = _get_first_value(dmag, cfg_dmag, DMAG)
 
         tz = pytz.UTC
+        if isinstance(time, UTCDateTime):
+            time = time.datetime
         self.time = tz.localize(time)
         self.lat = lat
         self.lon = lon

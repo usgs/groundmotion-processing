@@ -119,6 +119,8 @@ class TurkeyFetcher(DataFetcher):
         dmag = _get_first_value(dmag, cfg_dmag, DMAG)
 
         tz = pytz.UTC
+        if isinstance(time, UTCDateTime):
+            time = time.datetime
         self.time = tz.localize(time)
         self.lat = lat
         self.lon = lon

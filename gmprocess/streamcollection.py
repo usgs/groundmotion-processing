@@ -93,7 +93,7 @@ class StreamCollection(object):
         all_labels = []
         for stream in self:
             if hasattr(stream, 'tag'):
-                station, label = stream.tag.split('_')
+                eventid, station, label = stream.tag.split('_')
                 all_labels.append(label)
             else:
                 all_labels.append("")

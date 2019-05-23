@@ -3,6 +3,8 @@
 import os.path
 from gmprocess.io.fdsn.core import read_fdsn
 from gmprocess.io.test_utils import read_data_dir
+from gmprocess.streamcollection import StreamCollection
+from gmprocess.processing import process_streams
 
 
 def test():
@@ -19,6 +21,10 @@ def test():
         streams += read_fdsn(datafile)
 
     assert streams[0].get_id() == 'TA.M04C.HN'
+
+    # DEBUGGING
+    sc = StreamCollection(streams)
+    psc = process_streams(sc, origin)
 
 
 if __name__ == '__main__':

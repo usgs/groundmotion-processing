@@ -21,6 +21,9 @@ class ScalarEvent(Event):
         # copy the arrays
         for origin in event.origins:
             eventobj.origins.append(origin.copy())
+            oldid = eventobj.origins[-1].resource_id.id
+            eventobj.origins[-1].resource_id.id = oldid.replace(
+                'smi:local/', '')
         for magnitude in event.magnitudes:
             eventobj.magnitudes.append(magnitude.copy())
         for station_magnitude in event.station_magnitudes:
@@ -88,7 +91,7 @@ class ScalarEvent(Event):
         fmt = '%s %s %.3f %.3f %.1fkm M%.1f'
         tpl = (self.id, str(self.time),
                self.latitude, self.longitude,
-               self.depth, self.magnitude)
+               self.depth_km, self.magnitude)
         return fmt % tpl
 
     def _get_origin(self):

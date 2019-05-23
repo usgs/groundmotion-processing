@@ -11,6 +11,7 @@ import logging
 # third party
 import numpy as np
 from obspy.core.trace import Stats
+import scipy.constants as sp
 
 # local imports
 from gmprocess.constants import UNIT_CONVERSIONS
@@ -19,12 +20,13 @@ from gmprocess.stationstream import StationStream
 from gmprocess.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
 from gmprocess.io.seedname import get_channel_name
 
-
-MSEC_TO_SEC = 1/1000.0
+MICRO_TO_VOLT = 1e6  # convert microvolts to volts
+MSEC_TO_SEC = 1 / 1000.0
 TEXT_HDR_ROWS = 14
 VALID_MARKERS = [
     'CORRECTED ACCELERATION',
-    'UNCORRECTED ACCELERATION'
+    'UNCORRECTED ACCELERATION',
+    'RAW ACCELERATION COUNTS'
 ]
 
 code_file = pkg_resources.resource_filename('gmprocess', 'data/fdsn_codes.csv')
@@ -75,7 +77,7 @@ COSMOS_ORIENTATIONS = {
 }
 
 VALID_AZIMUTH_INTS = np.concatenate(
-    [np.arange(1, 360), list(COSMOS_ORIENTATIONS)]
+    [np.arange(1, 361), list(COSMOS_ORIENTATIONS)]
 )
 
 
@@ -162,7 +164,6 @@ SENSOR_TYPES = {
     4500: 'Other Rotational series',
     9000: 'Other Other series'
 }
-
 
 
 def is_cosmos(filename):
@@ -279,7 +280,9 @@ def _read_channel(filename, line_offset, location=''):
         data *= UNIT_CONVERSIONS[unit]
         logging.debug('Data converted from %s to cm/s/s' % (unit))
     else:
-        raise GMProcessException('COSMOS: %s is not a supported unit.' % unit)
+        if unit != 'counts':
+            raise GMProcessException(
+                'COSMOS: %s is not a supported unit.' % unit)
 
     if hdr['standard']['units'] != 'acc':
         raise GMProcessException('COSMOS: Only acceleration data accepted.')
@@ -425,6 +428,8 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
                     is_acceleration=True,
                     is_vertical=True,
                     is_north=False)
+
+                horizontal_angle = 360.0  # Obspy cannot have this value exceed 360
         elif horizontal_angle >= 0 and horizontal_angle <= 360:
             if (
                 horizontal_angle > 315
@@ -588,6 +593,9 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     least_significant_bit = float(flt_data[21])
     format_specific['least_significant_bit'] = _check_assign(
         least_significant_bit, unknown, np.nan)
+    gain = float(flt_data[46])
+    format_specific['gain'] = _check_assign(gain,
+                                            unknown, np.nan)
     low_filter_type = int(int_data[60])
     if low_filter_type in FILTERS:
         format_specific['low_filter_type'] = FILTERS[low_filter_type]
@@ -632,6 +640,17 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     scaling_factor = float(flt_data[41])
     format_specific['sensor_sensitivity'] = _check_assign(
         scaling_factor, unknown, np.nan)
+
+    # for V0 files, set a standard field called instrument_sensitivity
+    ctov = least_significant_bit / MICRO_TO_VOLT
+    vtog = 1 / format_specific['sensor_sensitivity']
+    if not np.isnan(format_specific['gain']):
+        gain = format_specific['gain']
+    else:
+        gain = 1.0
+    denom = ctov * vtog * (1.0 / gain) * sp.g
+    standard['instrument_sensitivity'] = 1 / denom
+
     # Set dictionary
     hdr['standard'] = standard
     hdr['coordinates'] = coordinates
@@ -679,6 +698,8 @@ def _read_lines(skip_rows, filename):
         data_arr = comment
     else:
         # parse out the format of the data
+        # sometimes header has newline characters in it...
+        header = header.replace('\n', '')
         format_data = re.findall('\d+', header[header.find('format=') + 8:])
         cols = int(format_data[0])
         fmt = int(format_data[1])

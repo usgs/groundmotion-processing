@@ -135,6 +135,10 @@ def _read_header_lines(filename, offset):
     head, tail = os.path.split(filename)
     standard['source_file'] = tail or os.path.basename(head)
 
+    # this field can be used for instrument correction
+    # when data is in counts
+    standard['instrument_sensitivity'] = np.nan
+
     # fill out the stats stuff
     # we don't know the start of the trace
     header['starttime'] = UTCDateTime(1970, 1, 1)

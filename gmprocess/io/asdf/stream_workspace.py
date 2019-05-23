@@ -2,22 +2,37 @@
 import json
 import re
 import copy
+import warnings
 
 # third party imports
 import pyasdf
 import numpy as np
 from obspy.core.utcdatetime import UTCDateTime
 import pandas as pd
+from h5py.h5py_warnings import H5pyDeprecationWarning
 
 # local imports
 from gmprocess.stationtrace import StationTrace, TIMEFMT_MS
 from gmprocess.stationstream import StationStream
 from gmprocess.streamcollection import StreamCollection
 from gmprocess.metrics.station_summary import StationSummary
+from gmprocess.stream import streams_to_dataframe
 from gmprocess.exception import GMProcessException
 from gmprocess.event import ScalarEvent
 
 TIMEPAT = '[0-9]{4}-[0-9]{2}-[0-9]{2}T'
+EVENT_TABLE_COLUMNS = ['id', 'time', 'latitude',
+                       'longitude', 'depth', 'magnitude']
+NON_IMT_COLUMNS = ['ELEVATION', 'EPICENTRAL_DISTANCE',
+                   'HYPOCENTRAL_DISTANCE', 'LAT', 'LON',
+                   'NAME', 'NETID', 'SOURCE', 'STATION']
+FLATFILE_COLUMNS = ['EarthquakeId', 'Network', 'NetworkDescription',
+                    'StationCode', 'StationDescription',
+                    'StationLatitude', 'StationLongitude',
+                    'StationElevation', 'SamplingRate',
+                    'EpicentralDistance', 'HypocentralDistance',
+                    'H1Lowpass', 'H1Highpass',
+                    'H2Lowpass', 'H2Highpass', 'SourceFile']
 
 
 class StreamWorkspace(object):
@@ -58,17 +73,20 @@ class StreamWorkspace(object):
         Returns:
             str: Summary string representation of the file.
         """
-        fmt = 'Events: %i Stations: %i Streams: %i'
-        nevents = len(self.dataset.events)
-        stations = []
-        nstreams = 0
-        for waveform in self.dataset.waveforms:
-            inventory = waveform['StationXML']
-            nstreams += len(waveform.get_waveform_tags())
-            for station in inventory.networks[0].stations:
-                stations.append(station.code)
-        stations = set(stations)
-        nstations = len(stations)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore",
+                                  category=H5pyDeprecationWarning)
+            fmt = 'Events: %i Stations: %i Streams: %i'
+            nevents = len(self.dataset.events)
+            stations = []
+            nstreams = 0
+            for waveform in self.dataset.waveforms:
+                inventory = waveform['StationXML']
+                nstreams += len(waveform.get_waveform_tags())
+                for station in inventory.networks[0].stations:
+                    stations.append(station.code)
+            stations = set(stations)
+            nstations = len(stations)
         return fmt % (nevents, nstations, nstreams)
 
     def addEvent(self, event):
@@ -108,14 +126,15 @@ class StreamWorkspace(object):
             is_raw = not len(stream[0].getProvenanceKeys())
 
             if label is not None:
-                tag = '%s_%s' % (station.lower(), label)
+                tag = '%s_%s_%s' % (eventid, station.lower(), label)
             else:
                 if station.lower() in station_dict:
                     station_sequence = station_dict[station.lower()] + 1
                 else:
                     station_sequence = 1
                 station_dict[station.lower()] = station_sequence
-                tag = '%s_%05i' % (station.lower(), station_sequence)
+                tag = '%s_%s_%05i' % (
+                    eventid, station.lower(), station_sequence)
             if is_raw:
                 level = 'raw'
             else:
@@ -201,7 +220,7 @@ class StreamWorkspace(object):
             list: List of processing labels.
         """
         provtags = self.dataset.provenance.list()
-        labels = list(set([ptag.split('_')[1] for ptag in provtags]))
+        labels = list(set([ptag.split('_')[2] for ptag in provtags]))
         return labels
 
     def getStreamTags(self, eventid, label=None):
@@ -267,7 +286,7 @@ class StreamWorkspace(object):
             labels = self.getLabels()
         for station in stations:
             for label in labels:
-                all_tags.append('%s_%s' % (station.lower(), label))
+                all_tags.append('%s_%s_%s' % (eventid, station.lower(), label))
 
         for waveform in self.dataset.waveforms:
             ttags = waveform.get_waveform_tags()
@@ -344,7 +363,7 @@ class StreamWorkspace(object):
                     event_match = eventid in waveform[tag][0].stats.asdf.event_ids
                 if not event_match:
                     continue
-                station, _ = tag.split('_')
+                eventid, station, _ = tag.split('_')
                 if station not in stations:
                     stations.append(station)
         return stations
@@ -388,8 +407,9 @@ class StreamWorkspace(object):
         streams = self.getStreams(eventid, stations=stations, labels=labels)
         event = self.getEvent(eventid)
         for stream in streams:
+            lengths = [len(trace) for trace in stream]
             tag = stream.tag
-            station, label = tag.split('_')
+            eventid, station, label = tag.split('_')
             if imclist is None and imtlist is None:
                 summary = StationSummary.from_config(stream,
                                                      event=event)
@@ -411,6 +431,81 @@ class StreamWorkspace(object):
                                             data_type=dtype,
                                             path=path,
                                             parameters={})
+
+    def getFlatTables(self, label):
+        '''Retrieve dataframes containing event information and IMC/IMT metrics.
+
+        Args:
+            label (str): Calculate metrics only for the given label.
+
+        Returns:
+            tuple: Elements are:
+                   - pandas DataFrame containing event information:
+                     - id Event ID
+                     - time Time of origin
+                     - latitude Latitude of origin
+                     - longitude Longitude of origin
+                     - depth Depth of origin (km)
+                     - magnitude Magnitude at origin (km)
+                   - dictionary of DataFrames, where keys are IMCs and
+                     values are DataFrames with columns:
+                     - EarthquakeId Earthquake id from event table
+                     - Network Network code
+                     - StationCode Station code
+                     - StationDescription Long form description of station
+                       location (may be blank)
+                     - StationLatitude Station latitude
+                     - StationLongitude Station longitude
+                     - StationElevation Station elevation
+                     - SamplingRate Data sampling rate in Hz
+                     - EpicentralDistance Distance from origin epicenter
+                       (surface) to station
+                     - HypocentralDistance Distance from origin hypocenter
+                       (depth) to station
+                     - HN1Lowpass Low pass filter corner frequency for first
+                       horizontal channel
+                     - HN1Highpass High pass filter corner frequency for first
+                       horizontal channel
+                     - HN2Lowpass Low pass filter corner frequency for second
+                       horizontal channel
+                     - HN2Highpass High pass filter corner frequency for
+                       second horizontal channel
+                     - ...desired IMTs (PGA, PGV, SA(0.3), etc.)
+        '''
+        event_table = pd.DataFrame(columns=EVENT_TABLE_COLUMNS)
+        imc_tables = {}
+        for eventid in self.getEventIds():
+            event = self.getEvent(eventid)
+            edict = {'id': event.id,
+                     'time': event.time,
+                     'latitude': event.latitude,
+                     'longitude': event.longitude,
+                     'depth': event.depth,
+                     'magnitude': event.magnitude}
+            event_table = event_table.append(edict, ignore_index=True)
+            streams = self.getStreams(eventid, labels=[label])
+            for stream in streams:
+                if not stream.passed:
+                    continue
+                summary = StationSummary.from_config(stream, event=event)
+                imclist = summary.pgms['IMC'].unique().tolist()
+                imtlist = summary.pgms['IMT'].unique().tolist()
+                for imc in imclist:
+                    if imc not in imc_tables:
+                        cols = FLATFILE_COLUMNS + imtlist
+                        imc_table = pd.DataFrame(columns=cols)
+                        row = _get_flatrow(stream, summary, event, imc)
+                        imc_table = imc_table.append(row, ignore_index=True)
+                        imc_tables[imc] = imc_table
+                    else:
+                        imc_table = imc_tables[imc]
+                        row = _get_flatrow(stream, summary, event, imc)
+                        imc_table = imc_table.append(row, ignore_index=True)
+                        imc_tables[imc] = imc_table
+
+        # for imc, imc_table in imc_tables.items():
+        #     imc_tables[imc] = imc_table[cols]
+        return (event_table, imc_tables)
 
     def getMetricsTable(self, eventid, stations=None, labels=None):
         """Return a pandas DataFrame summarizing the metrics for given Streams.
@@ -509,7 +604,7 @@ class StreamWorkspace(object):
         cols = ['Label', 'UserID', 'UserName',
                 'UserEmail', 'Software', 'Version']
         df = pd.DataFrame(columns=cols, index=None)
-        labels = list(set([ptag.split('_')[1] for ptag in provtags]))
+        labels = list(set([ptag.split('_')[2] for ptag in provtags]))
         labeldict = {}
         for label in labels:
             for ptag in provtags:
@@ -575,7 +670,7 @@ class StreamWorkspace(object):
             eventid (str): ID of event to search for in ASDF file.
 
         Returns:
-            ScalarEvent: 
+            ScalarEvent:
                 Flattened version of Obspy Event object.
         """
         eventobj = None
@@ -637,7 +732,7 @@ class StreamWorkspace(object):
             labels = self.getLabels()
         for station in stations:
             for label in labels:
-                all_tags.append('%s_%s' % (station.lower(), label))
+                all_tags.append('%s_%s_%s' % (eventid, station.lower(), label))
         cols = ['Record', 'Processing Step',
                 'Step Attribute', 'Attribute Value']
         df = pd.DataFrame(columns=cols)
@@ -726,3 +821,52 @@ def _get_agents(provdoc):
     if 'email' not in person:
         person['email'] = ''
     return (person, software)
+
+
+def _get_flatrow(stream, summary, event, imc):
+    h1 = stream.select(channel='*1')
+    h2 = stream.select(channel='*2')
+    if not len(h1):
+        h1 = stream.select(channel='*N')
+        h2 = stream.select(channel='*E')
+    h1 = h1[0]
+    h2 = h2[0]
+
+    h1_lowfilt = h1.getProvenance('lowpass_filter')
+    h1_highfilt = h1.getProvenance('highpass_filter')
+    h1_lowpass = np.nan
+    h1_highpass = np.nan
+    if len(h1_lowfilt):
+        h1_lowpass = h1_lowfilt[0]['corner_frequency']
+    if len(h1_highfilt):
+        h1_highpass = h1_highfilt[0]['corner_frequency']
+
+    h2_lowfilt = h2.getProvenance('lowpass_filter')
+    h2_highfilt = h2.getProvenance('highpass_filter')
+    h2_lowpass = np.nan
+    h2_highpass = np.nan
+    if len(h2_lowfilt):
+        h2_lowpass = h2_lowfilt[0]['corner_frequency']
+    if len(h2_highfilt):
+        h2_highpass = h2_highfilt[0]['corner_frequency']
+
+    row = {'EarthquakeId': event.id,
+           'Network': stream[0].stats.network,
+           'NetworkDescription': stream[0].stats.standard.source,
+           'StationCode': stream[0].stats.station,
+           'StationDescription': stream[0].stats.standard.station_name,
+           'StationLatitude': stream[0].stats.coordinates.latitude,
+           'StationLongitude': stream[0].stats.coordinates.longitude,
+           'StationElevation': stream[0].stats.coordinates.elevation,
+           'SamplingRate': stream[0].stats.sampling_rate,
+           'EpicentralDistance': summary.epicentral_distance,
+           'HypocentralDistance': summary.hypocentral_distance,
+           'H1Lowpass': h1_lowpass,
+           'H1Highpass': h1_highpass,
+           'H2Lowpass': h2_lowpass,
+           'H2Highpass': h2_highpass,
+           'SourceFile': stream[0].stats.standard.source_file}
+    imt_frame = summary.pgms[summary.pgms['IMC'] == imc].drop('IMC', axis=1)
+    imts = dict(zip(imt_frame['IMT'], imt_frame['Result']))
+    row.update(imts)
+    return row

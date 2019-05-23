@@ -340,6 +340,10 @@ def _read_header(hdr_data, station, name, component, data_format,
     standard['corner_frequency'] = np.nan
     standard['source_format'] = 'geonet'
 
+    # this field can be used for instrument correction
+    # when data is in counts
+    standard['instrument_sensitivity'] = np.nan
+
     # get format specific metadata
     format_specific['sensor_bit_resolution'] = resolution
 

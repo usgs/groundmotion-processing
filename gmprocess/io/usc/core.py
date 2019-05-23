@@ -394,6 +394,11 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
         standard['source'] = ('Los Angeles Basin Seismic Network, University '
                               'of Southern California')
         standard['source_format'] = 'usc'
+
+        # this field can be used for instrument correction
+        # when data is in counts
+        standard['instrument_sensitivity'] = np.nan
+
         # Get format specific
         format_specific['fractional_unit'] = flt_data[4]
 

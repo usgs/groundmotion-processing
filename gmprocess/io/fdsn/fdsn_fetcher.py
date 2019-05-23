@@ -124,6 +124,8 @@ class FDSNFetcher(DataFetcher):
         channels = _get_first_value(channels, cfg_channels, CHANNELS)
 
         tz = pytz.UTC
+        if isinstance(time, UTCDateTime):
+            time = time.datetime
         self.time = tz.localize(time)
         self.lat = lat
         self.lon = lon

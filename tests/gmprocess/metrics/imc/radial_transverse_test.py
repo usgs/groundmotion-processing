@@ -44,19 +44,20 @@ def test_radial_transverse():
         tr.stats['coordinates'] = {'latitude': stalat}
         tr.stats['coordinates']['longitude'] = stalon
         tr.stats['standard'].update({'corner_frequency': np.nan,
-            'station_name': '',
-            'source': 'json',
-            'instrument': '',
-            'instrument_period': np.nan,
-            'source_format': 'json',
-            'comments': '',
-            'structure_type': '',
-            'source_file': '',
-            'sensor_serial_number': '',
-            'process_level': 'raw counts',
-            'process_time': '',
-            'units': 'acc',
-            'instrument_damping': np.nan})
+                                     'station_name': '',
+                                     'source': 'json',
+                                     'instrument': '',
+                                     'instrument_period': np.nan,
+                                     'source_format': 'json',
+                                     'comments': '',
+                                     'structure_type': '',
+                                     'source_file': '',
+                                     'sensor_serial_number': '',
+                                     'process_level': 'raw counts',
+                                     'process_time': '',
+                                     'units': 'acc',
+                                     'instrument_sensitivity': np.nan,
+                                     'instrument_damping': np.nan})
     baz = gps2dist_azimuth(stalat, stalon,
                            origin.latitude, origin.longitude)[1]
 
@@ -86,9 +87,9 @@ def test_radial_transverse():
     SEW_inv = read_inventory(os.path.join(datadir, 'inventory_sew.xml'))
     stalat, stalon = inv[0][0][0].latitude, inv[0][0][0].longitude
 
-    ## This needs to be checked. The target data doesn't appear to be
-    ## correct. This can be updated when a tolerance is added to the rotate
-    ## method.
+    # This needs to be checked. The target data doesn't appear to be
+    # correct. This can be updated when a tolerance is added to the rotate
+    # method.
     """traces = []
     for tr in SEW_st:
         tr.stats.coordinates = {'latitude': stalat,
@@ -129,17 +130,21 @@ def test_radial_transverse():
     copy1 = st2.copy()
     copy1[0].stats.channel = copy1[0].stats.channel[:-1] + '3'
     pgms = StationSummary.from_stream(
-            copy1, ['radial_transverse'], ['pga'], origin).pgms
-    assert np.isnan(pgms[(pgms.IMT == 'PGA') & (pgms.IMC == 'HNR')].Result.iloc[0])
-    assert np.isnan(pgms[(pgms.IMT == 'PGA') & (pgms.IMC == 'HNT')].Result.iloc[0])
+        copy1, ['radial_transverse'], ['pga'], origin).pgms
+    assert np.isnan(pgms[(pgms.IMT == 'PGA') & (
+        pgms.IMC == 'HNR')].Result.iloc[0])
+    assert np.isnan(pgms[(pgms.IMT == 'PGA') & (
+        pgms.IMC == 'HNT')].Result.iloc[0])
 
     # Test failure case when channels are not orthogonal
     copy3 = st2.copy()
     copy3[0].stats.standard.horizontal_orientation = 100
     pgms = StationSummary.from_stream(
-            copy3, ['radial_transverse'], ['pga'], origin).pgms
-    assert np.isnan(pgms[(pgms.IMT == 'PGA') & (pgms.IMC == 'HNR')].Result.iloc[0])
-    assert np.isnan(pgms[(pgms.IMT == 'PGA') & (pgms.IMC == 'HNT')].Result.iloc[0])
+        copy3, ['radial_transverse'], ['pga'], origin).pgms
+    assert np.isnan(pgms[(pgms.IMT == 'PGA') & (
+        pgms.IMC == 'HNR')].Result.iloc[0])
+    assert np.isnan(pgms[(pgms.IMT == 'PGA') & (
+        pgms.IMC == 'HNT')].Result.iloc[0])
 
 
 if __name__ == '__main__':

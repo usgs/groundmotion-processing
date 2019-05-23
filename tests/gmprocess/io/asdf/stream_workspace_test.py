@@ -152,20 +152,23 @@ def test_workspace():
             assert idlist[0] == eventid
 
             event_tags = workspace.getStreamTags(eventid)
-            assert sorted(event_tags) == ['hses_processed', 'hses_raw',
-                                          'thz_processed', 'thz_raw',
-                                          'wtmc_processed', 'wtmc_raw']
+            assert sorted(event_tags) == ['us1000778i_hses_processed',
+                                          'us1000778i_hses_raw',
+                                          'us1000778i_thz_processed',
+                                          'us1000778i_thz_raw',
+                                          'us1000778i_wtmc_processed',
+                                          'us1000778i_wtmc_raw']
             outstream = workspace.getStreams(eventid,
                                              stations=['hses'],
                                              labels=['processed'])[0]
 
             provenance = workspace.getProvenance(eventid, labels=['processed'])
-            first_row = pd.Series({'Record': 'NZ.HSES.HN1',
+            first_row = pd.Series({'Record': 'PROCESSED.NZ.HSES.HN1',
                                    'Processing Step': 'Remove Response',
                                    'Step Attribute': 'input_units',
                                    'Attribute Value': 'counts'})
 
-            last_row = pd.Series({'Record': 'NZ.WTMC.HNZ',
+            last_row = pd.Series({'Record': 'PROCESSED.NZ.WTMC.HNZ',
                                   'Processing Step': 'Lowpass Filter',
                                   'Step Attribute': 'number_of_passes',
                                   'Attribute Value': 2})

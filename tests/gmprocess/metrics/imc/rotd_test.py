@@ -27,39 +27,41 @@ def test_rotd():
     osc1_data = osc1_data.T[1] * 100
     osc2_data = osc2_data.T[1] * 100
     tr1 = StationTrace(data=osc1_data, header={'channel': 'HN1', 'delta': 0.01,
-                                        'npts': 24001, 'standard':
-                                                {'corner_frequency': np.nan,
-                                                    'station_name': '',
-                                                    'source': 'json',
-                                                    'instrument': '',
-                                                    'instrument_period': np.nan,
-                                                    'source_format': 'json',
-                                                    'comments': '',
-                                                    'source_file': '',
-                                                    'structure_type': '',
-                                                    'horizontal_orientation': np.nan,
-                                                    'sensor_serial_number': '',
-                                                    'process_level': 'raw counts',
-                                                    'process_time': '',
-                                                    'units': 'acc',
-                                                    'instrument_damping': np.nan}})
+                                               'npts': 24001, 'standard':
+                                               {'corner_frequency': np.nan,
+                                                'station_name': '',
+                                                'source': 'json',
+                                                'instrument': '',
+                                                'instrument_period': np.nan,
+                                                'source_format': 'json',
+                                                'comments': '',
+                                                'source_file': '',
+                                                'structure_type': '',
+                                                'horizontal_orientation': np.nan,
+                                                'sensor_serial_number': '',
+                                                'process_level': 'raw counts',
+                                                'process_time': '',
+                                                'units': 'acc',
+                                                'instrument_sensitivity': np.nan,
+                                                'instrument_damping': np.nan}})
     tr2 = StationTrace(data=osc2_data, header={'channel': 'HN2', 'delta': 0.01,
-                                        'npts': 24001, 'standard':
-                                                {'corner_frequency': np.nan,
-                                                    'station_name': '',
-                                                    'source': 'json',
-                                                    'instrument': '',
-                                                    'instrument_period': np.nan,
-                                                    'source_format': 'json',
-                                                    'comments': '',
-                                                    'structure_type': '',
-                                                    'source_file': '',
-                                                    'horizontal_orientation': np.nan,
-                                                    'sensor_serial_number': '',
-                                                    'process_level': 'raw counts',
-                                                    'process_time': '',
-                                                    'units': 'acc',
-                                                    'instrument_damping': np.nan}})
+                                               'npts': 24001, 'standard':
+                                               {'corner_frequency': np.nan,
+                                                'station_name': '',
+                                                'source': 'json',
+                                                'instrument': '',
+                                                'instrument_period': np.nan,
+                                                'source_format': 'json',
+                                                'comments': '',
+                                                'structure_type': '',
+                                                'source_file': '',
+                                                'horizontal_orientation': np.nan,
+                                                'sensor_serial_number': '',
+                                                'process_level': 'raw counts',
+                                                'process_time': '',
+                                                'units': 'acc',
+                                                'instrument_sensitivity': np.nan,
+                                                'instrument_damping': np.nan}})
     st = StationStream([tr1, tr2])
 
     target_pga50 = 4.12528265306
@@ -91,7 +93,8 @@ def test_exceptions():
     stream_v2 = read_geonet(datafile_v2)[0]
     stream1 = stream_v2.select(channel="HN1")
     pgms = StationSummary.from_stream(stream1, ['rotd50'], ['pga']).pgms
-    assert np.isnan(pgms[(pgms.IMT == 'PGA') & (pgms.IMC == 'ROTD(50.0)')].Result.iloc[0])
+    assert np.isnan(pgms[(pgms.IMT == 'PGA') & (
+        pgms.IMC == 'ROTD(50.0)')].Result.iloc[0])
 
 
 if __name__ == '__main__':

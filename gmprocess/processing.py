@@ -30,18 +30,13 @@ from gmprocess.zero_crossings import check_zero_crossings  # NOQA
 from gmprocess.nn_quality_assurance import NNet_QA  # NOQA
 from gmprocess.snr import compute_snr  # NOQA
 from gmprocess.spectrum import fit_spectra  # NOQA
-from gmprocess.plot import summary_plots  # NOQA
-from gmprocess.report import build_report  # NOQA
 # -----------------------------------------------------------------------------
 
 M_TO_CM = 100.0
 
 # List of processing steps that require an origin
 # besides the arguments in the conf file.
-REQ_ORIGIN = [
-    'build_report',
-    'summary_plots'
-]
+REQ_ORIGIN = []
 
 
 TAPER_TYPES = {
@@ -170,13 +165,6 @@ def process_streams(streams, origin, config=None):
             else:
                 stream = globals()[step_name](stream, **step_args)
 
-    # Build the summary report?
-    build_conf = config['build_report']
-    if build_conf['run']:
-        build_report(processed_streams,
-                     build_conf['directory'],
-                     origin, config=config)
-
     logging.info('Finished processing streams.')
     return processed_streams
 
@@ -213,7 +201,8 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
     Returns:
         StationStream: Instrument-response-corrected stream.
     """
-
+    if inv is None:
+        inv = st.getInventory()
     if output not in ['ACC', 'VEL', 'DISP']:
         raise ValueError('Output value of %s is invalid. Must be ACC, VEL, '
                          'or DISP.' % output)
@@ -259,12 +248,8 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                 'remove_response',
                 {
                     'method': 'remove_sensitivity',
-                    'inventory': inv,
-                    'f1': f1,
-                    'f2': f2,
-                    'f3': f3,
-                    'f4': f4,
-                    'water_level': water_level
+                    'input_units': 'counts',
+                    'output_units': 'cm/s'
                 }
             )
         elif tr.stats.channel[1] == 'N':
@@ -274,7 +259,8 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                 'remove_response',
                 {
                     'method': 'remove_sensitivity',
-                    'inventory': inv
+                    'input_units': 'counts',
+                    'output_units': 'cm/s^2'
                 }
             )
         else:

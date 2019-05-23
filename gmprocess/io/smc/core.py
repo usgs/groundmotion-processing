@@ -481,6 +481,10 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     format_specific['filter_poles'] = floatheader[4, 0]
     standard['units'] = 'acc'
 
+    # this field can be used for instrument correction
+    # when data is in counts
+    standard['instrument_sensitivity'] = np.nan
+
     # read in the comment lines
     with open(filename) as f:
         skip = ASCII_HEADER_LINES + INTEGER_HEADER_LINES + FLOAT_HEADER_LINES
