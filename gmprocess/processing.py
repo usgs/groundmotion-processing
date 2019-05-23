@@ -231,7 +231,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                     pre_filt=(f1, f2, f3, f4))
             except Exception as e:
                 reason = ('Encountered an error when attempting to remove '
-                          'instrument response: ' + e)
+                          'instrument response: %s' % str(e))
                 tr.fail(reason)
                 continue
 
@@ -253,16 +253,22 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                 }
             )
         elif tr.stats.channel[1] == 'N':
-            tr.remove_sensitivity(inventory=inv)
-            tr.data *= M_TO_CM  # Convert from m/s/s to cm/s/s
-            tr.setProvenance(
-                'remove_response',
-                {
-                    'method': 'remove_sensitivity',
-                    'input_units': 'counts',
-                    'output_units': 'cm/s^2'
-                }
-            )
+            try:
+                tr.remove_sensitivity(inventory=inv)
+                tr.data *= M_TO_CM  # Convert from m/s/s to cm/s/s
+                tr.setProvenance(
+                    'remove_response',
+                    {
+                        'method': 'remove_sensitivity',
+                        'input_units': 'counts',
+                        'output_units': 'cm/s^2'
+                    }
+                )
+            except Exception as e:
+                reason = ('Encountered an error when attempting to remove '
+                          'instrument sensitivity: %s' % str(e))
+                tr.fail(reason)
+                continue
         else:
             reason = ('This instrument type is not supported. '
                       'The instrument code must be either H '

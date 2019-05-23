@@ -94,6 +94,7 @@ class StationStream(Stream):
         """Some validation checks for Traces within the StationStream.
 
         """
+        logging.debug(self)
 
         # Check that channel codes are unique_npts
         self.__check_channels()
