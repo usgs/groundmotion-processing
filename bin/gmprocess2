@@ -217,6 +217,8 @@ def main(pparser, args):
 
         provenance_done = False
         if 'provenance' in pcommands and processing_done:
+            logging.info(
+                'Creating provenance table for event %s...' % event.id)
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore",
                                       category=H5pyDeprecationWarning)
@@ -234,6 +236,8 @@ def main(pparser, args):
 
         shakemap_done = False
         if 'shakemap' in pcommands and processing_done:
+            logging.info(
+                'Creating shakemap table for event %s...' % event.id)
             shakemap_file = save_shakemap_amps(pstreams, event, event_dir)
             shakemap_done = True
             append_file(files_created, 'shakemap', shakemap_file)
@@ -242,10 +246,14 @@ def main(pparser, args):
 
     # if n_passed is zero, don't
     if 'export' in pcommands and processing_done and len(workspace_files):
+
         event_table = None
         imc_tables = {}
         for workspace_file in workspace_files:
             workspace = StreamWorkspace.open(workspace_file)
+            eventid = workspace.getEventIds()[0]
+            logging.info(
+                'Creating flatfile tables for event %s...' % eventid)
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore",
                                       category=H5pyDeprecationWarning)
