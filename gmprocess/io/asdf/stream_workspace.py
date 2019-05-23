@@ -299,7 +299,7 @@ class StreamWorkspace(object):
                 if eventid in waveform[tag][0].stats.asdf.event_ids:
                     tstream = waveform[tag].copy()
                     inventory = waveform['StationXML']
-                    traces = []
+#                    traces = []
                     for ttrace in tstream:
                         trace = StationTrace(data=ttrace.data,
                                              header=ttrace.stats,
@@ -316,30 +316,30 @@ class StreamWorkspace(object):
                                                    tag,
                                                    trace.stats.channel)
                         if trace_path in trace_auxholder:
-                            bytelist = trace_auxholder[trace_path].data[:].tolist(
-                            )
+                            bytelist = trace_auxholder[
+                                trace_path].data[:].tolist()
                             jsonstr = ''.join([chr(b) for b in bytelist])
                             jdict = json.loads(jsonstr)
                             # jdict = unstringify_dict(jdict)
                             for key, value in jdict.items():
                                 trace.setParameter(key, value)
 
-                        traces.append(trace)
-                    stream = StationStream(traces=traces)
-                    stream.tag = tag  # testing this out
+#                        traces.append(trace)
+                        stream = StationStream(traces=[trace])
+                        stream.tag = tag  # testing this out
 
-                    # look for stream-based metadata
-                    stream_path = '%s_%s' % (eventid, tag)
-                    if stream_path in stream_auxholder:
-                        bytelist = stream_auxholder[stream_path].data[:].tolist(
-                        )
-                        jsonstr = ''.join([chr(b) for b in bytelist])
-                        jdict = json.loads(jsonstr)
-                        # jdict = unstringify_dict(jdict)
-                        for key, value in jdict.items():
-                            stream.setStreamParam(key, value)
+                        # look for stream-based metadata
+                        stream_path = '%s_%s' % (eventid, tag)
+                        if stream_path in stream_auxholder:
+                            bytelist = stream_auxholder[
+                                stream_path].data[:].tolist()
+                            jsonstr = ''.join([chr(b) for b in bytelist])
+                            jdict = json.loads(jsonstr)
+                            # jdict = unstringify_dict(jdict)
+                            for key, value in jdict.items():
+                                stream.setStreamParam(key, value)
 
-                    streams.append(stream)
+                        streams.append(stream)
         streams = StreamCollection(streams)
         return streams
 
