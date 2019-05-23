@@ -15,14 +15,10 @@ from h5py.h5py_warnings import H5pyDeprecationWarning
 
 # local imports
 from gmprocess.args import add_shared_args
-from gmprocess.io.fetch_utils import (create_event_file,
-                                      get_events, get_rawdir,
-                                      update_config, save_shakemap_amps,
-                                      plot_raw, download)
+from gmprocess.io.fetch_utils import (get_events, update_config,
+                                      save_shakemap_amps, download,
+                                      draw_stations_map)
 from gmprocess.logging import setup_logger
-from gmprocess.io.global_fetcher import fetch_data
-from gmprocess.io.read_directory import directory_to_streams
-from gmprocess.streamcollection import StreamCollection
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.processing import process_streams
 from gmprocess.report import build_report_latex
@@ -198,6 +194,9 @@ def main(pparser, args):
                 os.makedirs(plot_dir)
             for stream in pstreams:
                 summary_plots(stream, plot_dir, event)
+
+            mapfile = draw_stations_map(pstreams, event, event_dir)
+            append_file(files_created, 'Station map', mapfile)
 
             logging.info(
                 'Creating diagnostic report for event %s...' % event.id)

@@ -12,6 +12,11 @@ import pandas as pd
 from openpyxl import load_workbook
 import yaml
 from h5py.h5py_warnings import H5pyDeprecationWarning
+import numpy as np
+from impactutils.mapping.city import Cities
+from impactutils.mapping.mercatormap import MercatorMap
+from impactutils.mapping.scalebar import draw_scale
+from cartopy import feature as cfeature
 
 # local imports
 from gmprocess.event import get_event_object
@@ -24,6 +29,9 @@ from gmprocess.streamcollection import StreamCollection
 from gmprocess.event import ScalarEvent
 
 TIMEFMT2 = '%Y-%m-%dT%H:%M:%S.%f'
+
+OCEAN_COLOR = [0.77647059, 0.76862745, 0.79215686]
+LAND_COLOR = [0.92156863, 0.92156863, 0.92156863]
 
 
 def download(event, event_dir, config, directory):
@@ -120,6 +128,53 @@ def parse_event_file(eventfile):
     else:
         return None
     return events
+
+
+def draw_stations_map(pstreams, event, event_dir):
+    # draw map of stations and cities and stuff
+    lats = np.array([stream[0].stats.coordinates['latitude']
+                     for stream in pstreams])
+    lons = np.array([stream[0].stats.coordinates['longitude']
+                     for stream in pstreams])
+    map_width = event.magnitude
+    cy = event.latitude
+    cx = event.longitude
+    xmin = lons.min()
+    xmax = lons.max()
+    ymin = lats.min()
+    ymax = lats.max()
+    if xmax - xmin < map_width:
+        xmin = cx - map_width / 2
+        xmax = cx + map_width / 2
+    if ymax - ymin < map_width:
+        ymin = cy - map_width / 2
+        ymax = cy + map_width / 2
+    bounds = (xmin, xmax, ymin, ymax)
+    figsize = (10, 10)
+    cities = Cities.fromDefault()
+    mmap = MercatorMap(bounds, figsize, cities)
+    mmap.drawCities(draw_dots=True)
+    ax = mmap.axes
+    draw_scale(ax)
+    ax.plot(cx, cy, 'r*', markersize=16,
+            transform=mmap.geoproj, zorder=8)
+    ax.scatter(lons, lats, c='#fc3adf', marker='^', edgecolors='k',
+               transform=mmap.geoproj, zorder=100, s=48)
+    scale = '50m'
+    land = cfeature.NaturalEarthFeature(category='physical',
+                                        name='land',
+                                        scale=scale,
+                                        facecolor=LAND_COLOR)
+    ocean = cfeature.NaturalEarthFeature(category='physical',
+                                         name='ocean',
+                                         scale=scale,
+                                         facecolor=OCEAN_COLOR)
+    ax.add_feature(land)
+    ax.add_feature(ocean)
+    ax.coastlines(resolution=scale, zorder=10, linewidth=1)
+    mapfile = os.path.join(event_dir, 'stations_map.png')
+    plt.savefig(mapfile)
+    return mapfile
 
 
 def get_event_files(directory):
