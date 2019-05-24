@@ -343,7 +343,7 @@ def summary_plots(st, directory, origin):
     # Setup figure for stream
     nrows = 4
     ntrace = min(len(st), 3)
-    fig = plt.figure(figsize=(3.8 * ntrace, 10))
+    fig = plt.figure(figsize=(3.9 * ntrace, 10))
     gs = fig.add_gridspec(nrows, ntrace, height_ratios=[1, 1, 2, 2])
     ax = [plt.subplot(g) for g in gs]
 
@@ -559,7 +559,8 @@ def summary_plots(st, directory, origin):
 
     # Do not save files if running tests
     if 'CALLED_FROM_PYTEST' not in os.environ:
-        plt.subplots_adjust(hspace=0.35, wspace=0.35, top=0.97)
+        plt.subplots_adjust(left=0.05, right=0.97, hspace=0.25,
+                            wspace=0.2, top=0.97)
         file_name = os.path.join(
             directory,
             origin.id + '_' + stream_id + '.png')

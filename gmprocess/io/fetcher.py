@@ -16,47 +16,50 @@ class DataFetcher(object):
         """Create a DataFetcher instance.
 
         Args:
-            time (datetime): 
+            time (datetime):
                 Origin time.
-            lat (float): 
+            lat (float):
                 Origin latitude.
-            lon (float): 
+            lon (float):
                 Origin longitude.
-            depth (float): 
+            depth (float):
                 Origin depth.
-            magnitude (float): 
+            magnitude (float):
                 Origin magnitude.
-            user (str): 
+            user (str):
                 (Optional) username for site.
-            password (str): 
+            password (str):
                 (Optional) password for site.
-            radius (float): 
+            radius (float):
                 Search radius (km).
-            dt (float): 
+            dt (float):
                 Search time window (sec).
-            ddepth (float): 
+            ddepth (float):
                 Search depth window (km).
-            dmag (float): 
+            dmag (float):
                 Search magnitude window (magnitude units).
-            rawdir (str): 
+            rawdir (str):
                 Path to location where raw data will be stored.
                 If not specified, raw data will be deleted.
             config (dict):
-                Dictionary containing configuration. 
+                Dictionary containing configuration.
                 If None, retrieve global config.
             drop_non_free (bool):
-                Option to ignore non-free-field (borehole, sensors on structures, etc.)
+                Option to ignore non-free-field (borehole, sensors on
+                structures, etc.)
         """
         # this method should be implemented in the child class
         pass
 
     def getMatchingEvents(self, solve=True):
-        """For appropriate fetchers, return a list of dictionaries matching input parameters.
+        """
+        For appropriate fetchers, return a list of dictionaries matching
+        input parameters.
 
         Args:
-            solve (bool): 
-                If set to True, then this method 
-                should return a list with a maximum of one event.
+            solve (bool):
+                If set to True, then this method should return a list with
+                a maximum of one event.
 
         Returns:
             list: List of event dictionaries, with fields:
@@ -85,7 +88,7 @@ class DataFetcher(object):
         """Reduce a list of events down to one that best matches the input.
 
         Args:
-            events (list): 
+            events (list):
                 List of dictionaries with fields:
                 - time Event time (UTC)
                 - lat Event latitude

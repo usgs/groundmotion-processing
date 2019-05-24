@@ -56,14 +56,14 @@ def get_config(section=None):
 
     Args:
         section (str):
-            Name of section in the config to extract (i.e., 'fetchers', 
+            Name of section in the config to extract (i.e., 'fetchers',
             'processing', 'pickers', etc.) If None, whole config is returned.
 
     Returns:
-        dictionary: 
+        dictionary:
             Configuration parameters.
     Raises:
-        IndexError: 
+        IndexError:
             If input section name is not found.
     """
     file_to_use = CONFIG_FILE

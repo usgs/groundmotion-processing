@@ -3,9 +3,6 @@ import glob
 import os
 
 # third party imports
-import numpy as np
-from obspy.geodetics import gps2dist_azimuth
-from obspy.core.event import Origin
 import pandas as pd
 
 # local imports
@@ -18,7 +15,8 @@ DEFAULT_IMTS = ['PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
 DEFAULT_IMCS = ['GREATER_OF_TWO_HORIZONTALS', 'CHANNELS']
 
 
-def directory_to_dataframe(directory, imcs=None, imts=None, origin=None, process=True):
+def directory_to_dataframe(directory, imcs=None, imts=None, origin=None,
+                           process=True):
     """Extract peak ground motions from list of Stream objects.
     Note: The PGM columns underneath each channel will be variable
     depending on the units of the Stream being passed in (velocity
@@ -44,7 +42,8 @@ def directory_to_dataframe(directory, imcs=None, imts=None, origin=None, process
             - NETWORK Short network code.
             - LAT Station latitude
             - LON Station longitude
-            - DISTANCE Epicentral distance (km) (if epicentral lat/lon provided)
+            - DISTANCE Epicentral distance (km) (if epicentral lat/lon
+              provided)
             - HN1 East-west channel (or H1) (multi-index with pgm columns):
                 - PGA Peak ground acceleration (%g).
                 - PGV Peak ground velocity (cm/s).
@@ -96,7 +95,7 @@ def streams_to_dataframe(streams, imcs=None, imts=None, event=None):
             Strings designating desired components to create in table.
         imts (list):
             Strings designating desired PGMs to create in table.
-        event (ScalarEvent): Defines the focal time, 
+        event (ScalarEvent): Defines the focal time,
                 geographic location, and magnitude of an earthquake hypocenter.
                 Default is None.
 

@@ -39,7 +39,8 @@ def fetch_data(time, lat, lon,
             Path to location where raw data will be stored. If not specified,
             raw data will be deleted.
         drop_non_free (bool):
-            Option to ignore non-free-field (borehole, sensors on structures, etc.)
+            Option to ignore non-free-field (borehole, sensors on structures,
+            etc.)
 
      Returns:
         StreamCollection: StreamCollection object.

@@ -90,12 +90,18 @@ def STALTA_Earle(data, datao, sps, STAW, STAW2, LTAW, hanning, threshold,
     lta = np.zeros(np.size(envelope))
 
     for i in range(np.size(envelope) - lta_samples - 1):
-        lta[i + lta_samples + 1] = np.sum(envelope[i:i + lta_samples])
-        sta[i + lta_samples + 1] = np.sum(envelope[i + lta_samples + 1:i
-                                                   + lta_samples + sta_samples + 1])
-        sta2[i + lta_samples + 1] = np.sum(envelope[i + lta_samples + 1:i
-                                                    + lta_samples + 1
-                                                    + sta_samples2])
+        lta[i + lta_samples + 1] = np.sum(
+            envelope[i:i + lta_samples]
+        )
+        sta[i + lta_samples + 1] = np.sum(
+            envelope[i + lta_samples + 1:i
+                     + lta_samples + sta_samples + 1]
+        )
+        sta2[i + lta_samples + 1] = np.sum(
+            envelope[i + lta_samples + 1:i
+                     + lta_samples + 1
+                     + sta_samples2]
+        )
 
     lta = lta / float(lta_samples)
     sta = sta / float(sta_samples)
@@ -185,7 +191,8 @@ def pick_kalkan(stream, picker_config=None, config=None):
         stream (StationStream):
             Stream containing waveforms that need to be picked.
         picker_config (dict):
-            Dictionary with parameters for Kalkan P-phase picker. See picker.yml.
+            Dictionary with parameters for Kalkan P-phase picker.
+            See picker.yml.
         config (dict):
             Configuration dictionary. Key value here is:
                 windows:
@@ -529,7 +536,8 @@ def pphase_pick(trace, period=None, damping=0.6, nbins=None,
             StationTrace containing waveform (acceleration or velocity) data.
         period (float):
             Undamped natural period of the sensor in seconds.
-            Defaults to 0.01s for sample rates >= 100, 0.1s for sample rates < 100.
+            Defaults to 0.01s for sample rates >= 100, 0.1s for sample
+            rates < 100.
         damping (float):
             Damping ratio.
         nbins (int):
@@ -573,7 +581,7 @@ def pphase_pick(trace, period=None, damping=0.6, nbins=None,
     # Normalize input to prevent numerical instability from very low amplitudes
     trace_copy.data = trace_copy.data / np.max(np.abs(trace_copy.data))
 
-    if filtflag is not 0:
+    if filtflag != 0:
         trace_copy.filter(type='bandpass', freqmin=flp, freqmax=fhp,
                           corners=4, zerophase=True)
         trace_copy.detrend(type='linear')
@@ -611,7 +619,7 @@ def pphase_pick(trace, period=None, damping=0.6, nbins=None,
     TF = indx.size
 
     # Update first onset
-    if TF is not 0:
+    if TF != 0:
         loc = (indx[TF - 1] + 1) * dt
     else:
         # try nbins/2
@@ -621,7 +629,7 @@ def pphase_pick(trace, period=None, damping=0.6, nbins=None,
         indx = np.nonzero(np.multiply(trace_copy.data[0:locs[0] - 1],
                                       trace_copy.data[1:locs[0]]) < 0)[0]
         TF = indx.size
-        if TF is not 0:
+        if TF != 0:
             loc = (indx[TF - 1] + 1) * dt
         else:
             loc = -1

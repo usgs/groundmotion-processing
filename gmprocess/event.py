@@ -53,7 +53,7 @@ class ScalarEvent(Event):
         '''Create a ScalarEvent (subclass of Event).
 
         Args:
-            id (str): 
+            id (str):
                 Desired ID for the event, usually ComCat ID.
             time (UTCDateTime):
                 Origin time of the event.

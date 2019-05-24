@@ -8,8 +8,6 @@ import pprint
 # third party imports
 import pytz
 from obspy.core.utcdatetime import UTCDateTime
-from obspy.core.stream import read
-from obspy import read_inventory
 from obspy.clients.fdsn.mass_downloader import (CircularDomain,
                                                 Restrictions,
                                                 MassDownloader)
@@ -18,8 +16,6 @@ from obspy.clients.fdsn.mass_downloader import (CircularDomain,
 from gmprocess.io.fetcher import DataFetcher, _get_first_value
 from gmprocess.io.fdsn.core import read_fdsn
 from gmprocess.streamcollection import StreamCollection
-from gmprocess.stationtrace import StationTrace
-from gmprocess.stationstream import StationStream
 from gmprocess.config import get_config
 
 
@@ -66,10 +62,11 @@ class FDSNFetcher(DataFetcher):
             rawdir (str): Path to location where raw data will be stored.
                           If not specified, raw data will be deleted.
             config (dict):
-                Dictionary containing configuration. 
+                Dictionary containing configuration.
                 If None, retrieve global config.
             drop_non_free (bool):
-                Option to ignore non-free-field (borehole, sensors on structures, etc.)
+                Option to ignore non-free-field (borehole, sensors on
+                structures, etc.)
         """
         # what values do we use for search thresholds?
         # In order of priority:
@@ -105,13 +102,15 @@ class FDSNFetcher(DataFetcher):
                 if 'exclude_stations' in fetch_cfg:
                     exclude_stations = fetch_cfg['exclude_stations']
                 if 'reject_channels_with_gaps' in fetch_cfg:
-                    reject_channels_with_gaps = fetch_cfg['reject_channels_with_gaps']
+                    reject_channels_with_gaps = \
+                        fetch_cfg['reject_channels_with_gaps']
                 if 'minimum_length' in fetch_cfg:
                     minimum_length = fetch_cfg['minimum_length']
                 if 'sanitize' in fetch_cfg:
                     sanitize = fetch_cfg['sanitize']
                 if 'minimum_interstation_distance_in_m' in fetch_cfg:
-                    minimum_interstation_distance_in_m = fetch_cfg['minimum_interstation_distance_in_m']
+                    minimum_interstation_distance_in_m = \
+                        fetch_cfg['minimum_interstation_distance_in_m']
                 if 'network' in fetch_cfg:
                     network = fetch_cfg['network']
         radius = _get_first_value(radius, cfg_radius, RADIUS)
@@ -143,7 +142,8 @@ class FDSNFetcher(DataFetcher):
         self.reject_channels_with_gaps = reject_channels_with_gaps
         self.minimum_length = minimum_length
         self.sanitize = sanitize
-        self.minimum_interstation_distance_in_m = minimum_interstation_distance_in_m
+        self.minimum_interstation_distance_in_m = \
+            minimum_interstation_distance_in_m
 
         self.drop_non_free = drop_non_free
         self.BOUNDS = [-180, 180, -90, 90]
