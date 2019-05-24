@@ -6,12 +6,12 @@
         <ul>
           {% for entry in item.subitems %}
               <li {% if entry.url == page.url %}class="active"{% endif %}>
-                <a  href="{{ entry.url }}">{{ entry.page }}</a>
+                <a  href="{{ site.baseurl}}{{ entry.url }}">{{ entry.page }}</a>
                 {% if entry.subsubitems[0] %}
                   <ul>
                   {% for subentry in entry.subsubitems %}
                       <li {% if subentry.url == page.url %}class="active"{% endif %}>
-                        <a  href="{{ subentry.url }}">{{ subentry.page }}</a></li>
+                        <a  href="{{ site.baseurl}}{{ subentry.url }}">{{ subentry.page }}</a></li>
                   {% endfor %}
                   </ul>
                 {% endif %}
