@@ -6,7 +6,6 @@ import os
 from importlib import import_module
 import pkg_resources
 import yaml
-import logging
 
 import numpy as np
 import pandas as pd

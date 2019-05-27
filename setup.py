@@ -31,7 +31,8 @@ setup(
     description='USGS ShakeMap Ground Motion Processing Tools',
     include_package_data=True,
     author='Mike Hearne, Heather Schovanec, John, Rekoske, Eric Thompson',
-    author_email='mhearne@usgs.gov, hschovanec@usgs.gov, jrekoske@usgs.gov, emthompson@usgs.gov',
+    author_email=('mhearne@usgs.gov, hschovanec@usgs.gov, '
+                  'jrekoske@usgs.gov, emthompson@usgs.gov'),
     url='https://github.com/usgs/groundmotion-processing',
     version=versioneer.get_version(),
     mdclass=versioneer.get_cmdclass(),

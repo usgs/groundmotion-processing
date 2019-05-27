@@ -144,9 +144,10 @@ PROV_TIME_FMT = '%Y-%m-%dT%H:%M:%S.%fZ'
 ACTIVITIES = {'waveform_simulation': {'code': 'ws',
                                       'label': 'Waveform Simulation'},
               'taper': {'code': 'tp', 'label': 'Taper'},
-              'stack_cross_correlations': {'code': 'sc',
-                                           'label': 'Stack Cross Correlations'},
-              'simulate_response': {'code': 'sr', 'label': 'Simulate Response'},
+              'stack_cross_correlations': {
+                  'code': 'sc', 'label': 'Stack Cross Correlations'},
+              'simulate_response': {
+                  'code': 'sr', 'label': 'Simulate Response'},
               'rotate': {'code': 'rt', 'label': 'Rotate'},
               'resample': {'code': 'rs', 'label': 'Resample'},
               'remove_response': {'code': 'rr', 'label': 'Remove Response'},
@@ -164,8 +165,8 @@ ACTIVITIES = {'waveform_simulation': {'code': 'ws',
               'decimate': {'code': 'dc', 'label': 'Decimate'},
               'cut': {'code': 'ct', 'label': 'Cut'},
               'cross_correlate': {'code': 'co', 'label': 'Cross Correlate'},
-              'calculate_adjoint_source': {'code': 'ca',
-                                           'label': 'Calculate Adjoint Source'},
+              'calculate_adjoint_source': {
+                  'code': 'ca', 'label': 'Calculate Adjoint Source'},
               'bandstop_filter': {'code': 'bs', 'label': 'Bandstop Filter'},
               'bandpass_filter': {'code': 'bp', 'label': 'Bandpass Filter'}
               }
@@ -389,7 +390,6 @@ class StationTrace(Trace):
         for record in provdoc.get_records():
             ident = record.identifier.localpart
             parts = ident.split('_')
-            sp = parts[0]
             sptype = parts[1]
             # hashid = '_'.join(parts[2:])
             # sp, sptype, hashid = ident.split('_')
@@ -491,7 +491,6 @@ class StationTrace(Trace):
                 values.append(str(value))
             index += 1
 
-        levels = [indices, steps, attributes]
         mdict = {'Index': indices,
                  'Process Step': steps,
                  'Process Attribute': attributes,
@@ -711,7 +710,8 @@ def _get_person_agent(pr):
     person_id = "seis_prov:sp001_pp_%s" % hashstr
     pr.agent(person_id, other_attributes=((
         ("prov:label", username),
-        ("prov:type", prov.identifier.QualifiedName(prov.constants.PROV, "Person")),
+        ("prov:type", prov.identifier.QualifiedName(
+            prov.constants.PROV, "Person")),
         ("seis_prov:name", fullname),
         ("seis_prov:email", email)
     )))
@@ -761,7 +761,8 @@ def _get_activity(pr, activity, attributes, sequence):
         attributes (dict):
             The attributes associated with the activity.
         sequence (int):
-            Integer used to identify the order in which the activities were performed.
+            Integer used to identify the order in which the activities were
+            performed.
     Returns:
         prov.model.ProvDocument:
             Provenance document updated with input activity.
@@ -785,9 +786,6 @@ def _get_activity(pr, activity, attributes, sequence):
 
         att_tuple = ('seis_prov:%s' % key, value)
         pr_attributes.append(att_tuple)
-    try:
-        pr.activity('seis_prov:%s' % activity_id,
-                    other_attributes=pr_attributes)
-    except Exception as e:
-        x = 1
+    pr.activity('seis_prov:%s' % activity_id,
+                other_attributes=pr_attributes)
     return pr

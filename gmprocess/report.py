@@ -1,7 +1,6 @@
 # stdlib imports
 import os
 from shutil import which
-import logging
 import glob
 
 # third party imports
@@ -10,6 +9,7 @@ import pandas as pd
 from impactutils.io.cmd import get_command_output
 
 # local imports
+import gmprocess
 from gmprocess.config import get_config
 
 PREAMBLE = """
@@ -18,6 +18,7 @@ PREAMBLE = """
 \\renewcommand{\\familydefault}{\\sfdefault}
 
 \\usepackage{graphicx}
+\\usepackage{tikz}
 
 % grffile allows for multiple dots in image file name
 \\usepackage{grffile}
@@ -34,8 +35,8 @@ PREAMBLE = """
 
 \\geometry{
    left=0.75in,
-   top=0.5in,
-   total={7in,10in},
+   top=0.0in,
+   total={7in,10.5in},
    includeheadfoot
 }
 
@@ -46,9 +47,12 @@ PREAMBLE = """
 \\pagestyle{fancy}
 \\fancyhf{}
 \\renewcommand{\headrulewidth}{0pt}
-\\chead{[CHEAD]}
-\\rfoot{\\thepage}
-\\lfoot{\\today}
+\\cfoot{\\thepage}
+%%\\lfoot{\\today}
+
+\\tikzstyle{box} = [
+    draw=blue, fill=blue!20, thick,
+    rectangle, rounded corners]
 
 \\begin{document}
 """
@@ -58,8 +62,47 @@ POSTAMBLE = """
 """
 
 STREAMBLOCK = """
-\\includegraphics[height=6.5in]
+\\begin{tikzpicture}[remember picture,overlay]
+   \\draw[box] (0, 0.5) rectangle (9, 1.0) node[pos=.5]
+       {\\normalsize [EVENT]};
+   \\draw[box] (10, 0.5) rectangle (17, 1.0) node[pos=.5]
+       {\\normalsize [STATION]};
+\\end{tikzpicture}
+
+\\includegraphics[height=5.75in]
     {[PLOTPATH]}
+
+
+"""
+
+TITLEBLOCK = """
+\\begin{center}
+
+\\vfill
+
+\\large Summary Report
+
+\\vspace{1cm}
+
+gmprocess
+
+\\vspace{1cm}
+
+Code version: [VERSION]
+
+\\vspace{1cm}
+
+\\today
+
+\\vspace{1cm}
+
+\\includegraphics[width=0.9\\textwidth]
+    {[MAPPATH]}
+\\end{center}
+
+\\vfill
+
+\\newpage\n\n
 
 """
 
@@ -86,7 +129,6 @@ def build_report_latex(sc, directory, plot_dir, origin, config=None):
     # Need to get config to know where the plots are located
     if config is None:
         config = get_config()
-    processing_steps = config['processing']
 
     # Check if directory exists, and if not, create it.
     if not os.path.exists(directory):
@@ -94,10 +136,18 @@ def build_report_latex(sc, directory, plot_dir, origin, config=None):
 
     # Initialize report string with PREAMBLE
     report = PREAMBLE
-    timestr = origin.time.strftime('%m/%d/%Y, %H:%M:%S')
-    report = report.replace(
-        '[CHEAD]', 'M%s %s, %s' % (origin.magnitude, origin.id, timestr)
-    )
+    timestr = origin.time.strftime('%m/%d/%Y %H:%M:%S')
+
+    # Does the map exist?
+    map_file = os.path.join(directory, 'stations_map.png')
+    if os.path.isfile(map_file):
+        TB = TITLEBLOCK.replace(
+            '[MAPPATH]', map_file
+        )
+        TB = TB.replace(
+            '[VERSION]', gmprocess.__version__
+        )
+        report += TB
 
     # Loop over each StationStream and append it's page to the report
     # do not include more than three.
@@ -106,6 +156,13 @@ def build_report_latex(sc, directory, plot_dir, origin, config=None):
             '..', plot_dir,
             origin.id + '_' + st.get_id() + '.png')
         SB = STREAMBLOCK.replace('[PLOTPATH]', plot_path)
+        SB = SB.replace(
+            '[EVENT]', 'M %s - %s - %s'
+            % (origin.magnitude, origin.id, timestr)
+        )
+        SB = SB.replace(
+            '[STATION]', st.get_id()
+        )
         report += SB
 
         prov_latex = get_prov_latex(st)
@@ -202,7 +259,7 @@ def get_prov_latex(st):
 
     newdf = newdf.drop(labels='Index', axis='columns')
     prov_string = newdf.to_latex(index=False)
-    prov_string = '\\scriptsize\n' + prov_string
+    prov_string = '\\tiny\n' + prov_string
     return prov_string
 
 

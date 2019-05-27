@@ -13,8 +13,6 @@ import pandas as pd
 from gmprocess.config import get_config
 from gmprocess.constants import GAL_TO_PCTG
 from gmprocess.metrics.exception import PGMException
-from gmprocess.metrics.imc.imc import IMC
-from gmprocess.metrics.imt.imt import IMT
 from gmprocess.metrics.gather import gather_pgms
 from gmprocess.stationstream import StationStream
 
@@ -28,16 +26,22 @@ class MetricsController(object):
                  event=None, smooth_type=None):
         """
         Args:
-            imts (list): Intensity measurement types (string) to calculate.
-            imcs (list): Intensity measurement components (string) to calculate.
-            timeseries (StationStream): Stream of the timeseries data.
-            event (ScalarEvent): Defines the focal time, 
-                    geographic location, and magnitude of an earthquake hypocenter.
-                    Default is None.
-            damping (float): Damping for the oscillator calculation.
-            bandwidth (float): Bandwidth for the smoothing calculation.
-            smoothing (string): Currently not used, as konno_ohmachi is the
-                    only smoothing type.
+            imts (list):
+                Intensity measurement types (string) to calculate.
+            imcs (list):
+                Intensity measurement components (string) to
+                calculate. timeseries (StationStream): Stream of the
+                timeseries data.
+            event (ScalarEvent):
+                Defines the focal time, geographic location, and magnitude of
+                an earthquake hypocenter. Default is None.
+            damping (float):
+                Damping for the oscillator calculation.
+            bandwidth (float):
+                Bandwidth for the smoothing calculation.
+            smoothing (string):
+                Currently not used, as konno_ohmachi is the only smoothing
+                type.
         """
         if not isinstance(imts, (list, np.ndarray)):
             imts = [imts]
@@ -77,12 +81,14 @@ class MetricsController(object):
         default config found in ~/.gmprocess/config.yml.
 
         Args:
-            timeseries (StationStream): Stream of the timeseries data.
-            config (dictionary): Custom config. Default is None, and the
-                    default config will be used.
-            event (ScalarEvent): Defines the focal time, 
-                    geographic location and magnitude of an earthquake hypocenter.
-                    Default is None.
+            timeseries (StationStream):
+                Stream of the timeseries data.
+            config (dictionary):
+                Custom config. Default is None, and the default config will
+                be used.
+            event (ScalarEvent):
+                Defines the focal time, geographic location and magnitude of
+                an earthquake hypocenter. Default is None.
 
         Notes:
             Custom configs must be in the following format:
@@ -187,9 +193,11 @@ class MetricsController(object):
             baseimt = imt
             # Determine whether an integration/differentiation step is
             # necessary
-            if imt == 'pgv' and self.timeseries[0].stats.standard.units == 'acc':
+            if (imt == 'pgv' and
+                    self.timeseries[0].stats.standard.units == 'acc'):
                 integrate = True
-            elif imt != 'pgv' and self.timeseries[0].stats.standard.units == 'vel':
+            elif (imt != 'pgv' and
+                  self.timeseries[0].stats.standard.units == 'vel'):
                 differentiate = True
             # SA and FAS imts include a period which must be parsed from
             # the imt string
@@ -366,8 +374,10 @@ class MetricsController(object):
         imt imc result
 
         Args:
-            result (dict): Result of the imt/imc calculation
-            steps (dict): The set of steps that are used to calculate 'result'
+            result (dict):
+                Result of the imt/imc calculation.
+            steps (dict):
+                The set of steps that are used to calculate 'result'.
 
         Returns:
             pandas.DataFrame: Dataframe listing the imc, imt, and result in
@@ -440,8 +450,10 @@ class MetricsController(object):
             if 'Z' not in trace.stats['channel'].upper():
                 times = trace.times()
                 return times
-        raise PGMException('MetricsController: At least one horizontal '
-                           'channel is required for calculations of SA, ROTD, GMROTD, GM.')
+        raise PGMException(
+            'MetricsController: At least one horizontal '
+            'channel is required for calculations of SA, ROTD, GMROTD, GM.'
+        )
 
     def _get_subclass(self, classes, base_class):
         """

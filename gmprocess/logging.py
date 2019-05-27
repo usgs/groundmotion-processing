@@ -5,19 +5,20 @@ import logging.config
 def setup_logger(args=None, level='info'):
     """Setup the logger options.
 
-    This is written to handle a few different situations. It is called by command line
-    programs that will hand off the args object. However, it may also be used for
-    interactive sessions/notebooks where we want to suppress warnings, especially those
-    from dependencies that are out of our control. For this, the args object is not
-    available and will be None, and we then control the logging verbosity with the 
-    level argument (only used if args is None).
+    This is written to handle a few different situations. It is called by
+    command line programs that will hand off the args object. However, it
+    may also be used for interactive sessions/notebooks where we want to
+    suppress warnings, especially those from dependencies that are out of
+    our control. For this, the args object is not available and will be None,
+    and we then control the logging verbosity with the level argument (only
+    used if args is None).
 
     Args:
         args (argparse):
             Must contain logging options in gmprocess.args.add_shared_args.
         level (str):
-            String indicating logging level; either 'info', 'debug', or 'error'. Only used
-            if args in None.
+            String indicating logging level; either 'info', 'debug', or
+            'error'. Only used if args in None.
 
     """
 
