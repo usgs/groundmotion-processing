@@ -29,7 +29,7 @@ def test_stationsummary():
     origin = Origin(latitude=42.6925, longitude=173.021944)
 
     target_imcs = np.sort(np.asarray(['GREATER_OF_TWO_HORIZONTALS',
-                                      'HN1', 'HN2', 'HNZ', 'ROTD(50.0)',
+                                      'H1', 'H2', 'Z', 'ROTD(50.0)',
                                       'ROTD(100.0)']))
     target_imts = np.sort(np.asarray(['SA(1.0)', 'PGA', 'PGV']))
     stream = read_geonet(datafile)[0]
@@ -52,7 +52,7 @@ def test_stationsummary():
                                       target_imcs)
         np.testing.assert_array_equal(np.sort(stream_summary.imts),
                                       target_imts)
-        np.testing.assert_almost_equal(stream_summary.get_pgm('PGA', 'HN1'),
+        np.testing.assert_almost_equal(stream_summary.get_pgm('PGA', 'H1'),
                                        99.3173469387755, decimal=1)
         target_available = np.sort(np.asarray([
             'greater_of_two_horizontals', 'geometric_mean', 'arithmetic_mean',
@@ -71,23 +71,23 @@ def test_stationsummary():
         'PGV': {
             'ROTD(100.0)': 114.24894584734818,
             'ROTD(50.0)': 81.55436750525355,
-            'HNZ': 37.47740000000001,
-            'HN1': 100.81460000000004,
-            'HN2': 68.4354,
+            'Z': 37.47740000000001,
+            'H1': 100.81460000000004,
+            'H2': 68.4354,
             'GREATER_OF_TWO_HORIZONTALS': 100.81460000000004},
         'PGA': {
             'ROTD(100.0)': 100.73875535385548,
             'ROTD(50.0)': 91.40178541935455,
-            'HNZ': 183.7722361866693,
-            'HN1': 99.24999872535474,
-            'HN2': 81.23467239067368,
+            'Z': 183.7722361866693,
+            'H1': 99.24999872535474,
+            'H2': 81.23467239067368,
             'GREATER_OF_TWO_HORIZONTALS': 99.24999872535474},
         'SA(1.0)': {
             'ROTD(100.0)': 146.9023350124098,
             'ROTD(50.0)': 106.03202302692158,
-            'HNZ': 27.74118995438756,
-            'HN1': 136.25041187387063,
-            'HN2': 84.69296738413021,
+            'Z': 27.74118995438756,
+            'H1': 136.25041187387063,
+            'H2': 84.69296738413021,
             'GREATER_OF_TWO_HORIZONTALS': 136.25041187387063}
     }
     pgms = stream_summary.pgms
@@ -98,7 +98,7 @@ def test_stationsummary():
             results = imc.Result.tolist()
             assert len(results) == 1
             np.testing.assert_almost_equal(results[0], test_pgms[imt_str][imc_str],
-                    decimal=10)
+                                           decimal=10)
 
     # Test with fas
     stream = read_geonet(datafile)[0]
@@ -109,7 +109,7 @@ def test_stationsummary():
          'geometric_mean'],
         ['sa1.0', 'PGA', 'pgv', 'fas2.0'])
     target_imcs = np.sort(np.asarray(['GREATER_OF_TWO_HORIZONTALS',
-                                      'HN1', 'HN2', 'HNZ',
+                                      'H1', 'H2', 'Z',
                                       'GEOMETRIC_MEAN']))
     target_imts = np.sort(np.asarray(['SA(1.0)',
                                       'PGA', 'PGV', 'FAS(2.0)']))
@@ -122,7 +122,7 @@ def test_stationsummary():
     stream = read_geonet(datafile)[0]
     stream_summary = StationSummary.from_config(stream)
     target_imcs = np.sort(np.asarray(['GREATER_OF_TWO_HORIZONTALS',
-                                      'HN1', 'HN2', 'HNZ']))
+                                      'H1', 'H2', 'Z']))
     target_imts = np.sort(np.asarray(['SA(1.0)', 'SA(2.0)', 'SA(3.0)',
                                       'SA(0.3)', 'PGA', 'PGV', 'FAS(1.0)', 'FAS(2.0)',
                                       'FAS(3.0)', 'FAS(0.3)']))
@@ -142,8 +142,8 @@ def test_stationsummary():
     print(xmlstr.decode('utf-8'))
 
     stream2 = StationSummary.fromMetricXML(xmlstr)
-    cmp1 = np.sort(['GREATER_OF_TWO_HORIZONTALS', 'HN1', 'HN2', 'HNZ',
-            'ROTD100.0', 'ROTD50.0'])
+    cmp1 = np.sort(['GREATER_OF_TWO_HORIZONTALS', 'H1', 'H2', 'Z',
+                    'ROTD100.0', 'ROTD50.0'])
     cmp2 = np.sort(stream2.components)
     np.testing.assert_array_equal(cmp1, cmp2)
     imt1 = np.sort(stream_summary.imts)

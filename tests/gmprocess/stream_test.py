@@ -172,14 +172,28 @@ def test_to_dataframe():
     np.testing.assert_array_equal(df1.NAME.tolist(),
                                   ['Waipawa_District_Council', 'Waipawa_District_Council'])
     target_levels = ['ELEVATION', 'EPICENTRAL_DISTANCE',
-                     'GREATER_OF_TWO_HORIZONTALS', 'HN1', 'HN2', 'HNZ',
+                     'GREATER_OF_TWO_HORIZONTALS', 'H1', 'H2', 'Z',
                      'HYPOCENTRAL_DISTANCE', 'LAT', 'LON', 'NAME', 'NETID', 'SOURCE',
                      'STATION', '', 'PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
-    idx = 0
-    for s in df1.columns.levels:
-        for col in s:
-            assert col == target_levels[idx]
-            idx += 1
+
+    # let's use sets to make sure all the columns are present in whatever order
+    cmp1 = set(['ELEVATION', 'EPICENTRAL_DISTANCE',
+                'GREATER_OF_TWO_HORIZONTALS', 'H1', 'H2',
+                'HYPOCENTRAL_DISTANCE', 'LAT', 'LON',
+                'NAME', 'NETID', 'SOURCE', 'STATION', 'Z'])
+    cmp2 = set(['', 'PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)'])
+    header1 = set(df1.columns.levels[0])
+    header2 = set(df1.columns.levels[1])
+    assert header1 == cmp1
+    assert header2 == cmp2
+    # idx = 0
+    # for s in df1.columns.levels:
+    #     for col in s:
+    #         try:
+    #             assert col == target_levels[idx]
+    #         except Exception as e:
+    #             x = 1
+    #         idx += 1
 
     # This was previously not being tested
     """imts = ['PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']

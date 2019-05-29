@@ -252,9 +252,9 @@ def test_metrics():
 
         df = workspace.getMetricsTable(event.id)
         cmp_series = {'GREATER_OF_TWO_HORIZONTALS': 0.6787,
-                      'HN1': 0.3869,
-                      'HN2': 0.6787,
-                      'HNZ': 0.7663}
+                      'H1': 0.3869,
+                      'H2': 0.6787,
+                      'Z': 0.7663}
         pga_dict = df.iloc[0]['PGA'].to_dict()
         for key, value in pga_dict.items():
             value2 = cmp_series[key]

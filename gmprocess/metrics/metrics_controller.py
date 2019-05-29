@@ -334,7 +334,25 @@ class MetricsController(object):
                        'cell will be set to np.nan.' % (imt_imc, str(e)))
                 logging.warning(msg)
                 c2 = {'': np.nan}
-            subdf = self._format(c2, step_set)
+
+            # we don't want to have separate columns for 'HN1' and 'HNN' and
+            # 'BHN'. Instead we want all of these to be considered as simply
+            # the "first horizontal channel".
+            if 'channels' in imt_imc:
+                new_c2 = {}
+                for channel, value in c2.items():
+                    if channel.endswith('1') or channel.endswith('N'):
+                        newchannel = 'H1'
+                    elif channel.endswith('2') or channel.endswith('E'):
+                        newchannel = 'H2'
+                    elif channel.endswith('Z'):
+                        newchannel = 'Z'
+                    else:
+                        newchannel = channel
+                    new_c2[newchannel] = value
+            else:
+                new_c2 = c2.copy()
+            subdf = self._format(new_c2, step_set)
             if df is None:
                 df = subdf
             else:

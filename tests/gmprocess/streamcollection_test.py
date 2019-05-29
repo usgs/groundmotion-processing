@@ -88,7 +88,7 @@ def test_StreamCollection():
         origin = json.load(f)
     dmg_df = sc_test.to_dataframe(origin)
     np.testing.assert_allclose(
-        dmg_df['HN1']['PGA'],
+        dmg_df['H1']['PGA'],
         0.145615,
         atol=1e5)
 

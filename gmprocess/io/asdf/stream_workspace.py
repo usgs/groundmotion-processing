@@ -27,7 +27,8 @@ NON_IMT_COLUMNS = ['ELEVATION', 'EPICENTRAL_DISTANCE',
                    'HYPOCENTRAL_DISTANCE', 'LAT', 'LON',
                    'NAME', 'NETID', 'SOURCE', 'STATION']
 FLATFILE_COLUMNS = ['EarthquakeId', 'Network', 'NetworkDescription',
-                    'StationCode', 'StationDescription',
+                    'StationCode', 'StationID',
+                    'StationDescription',
                     'StationLatitude', 'StationLongitude',
                     'StationElevation', 'SamplingRate',
                     'EpicentralDistance', 'HypocentralDistance',
@@ -476,7 +477,7 @@ class StreamWorkspace(object):
                      'time': event.time,
                      'latitude': event.latitude,
                      'longitude': event.longitude,
-                     'depth': event.depth,
+                     'depth': event.depth_km,
                      'magnitude': event.magnitude}
             event_table = event_table.append(edict, ignore_index=True)
             streams = self.getStreams(eventid, labels=[label])
@@ -491,11 +492,15 @@ class StreamWorkspace(object):
                         cols = FLATFILE_COLUMNS + imtlist
                         imc_table = pd.DataFrame(columns=cols)
                         row = _get_flatrow(stream, summary, event, imc)
+                        if not len(row):
+                            continue
                         imc_table = imc_table.append(row, ignore_index=True)
                         imc_tables[imc] = imc_table
                     else:
                         imc_table = imc_tables[imc]
                         row = _get_flatrow(stream, summary, event, imc)
+                        if not len(row):
+                            continue
                         imc_table = imc_table.append(row, ignore_index=True)
                         imc_tables[imc] = imc_table
 
@@ -825,6 +830,9 @@ def _get_flatrow(stream, summary, event, imc):
     if not len(h1):
         h1 = stream.select(channel='*N')
         h2 = stream.select(channel='*E')
+
+    if not len(h1) or not len(h2):
+        return {}
     h1 = h1[0]
     h2 = h2[0]
 
@@ -850,6 +858,7 @@ def _get_flatrow(stream, summary, event, imc):
            'Network': stream[0].stats.network,
            'NetworkDescription': stream[0].stats.standard.source,
            'StationCode': stream[0].stats.station,
+           'StationID': stream.get_id(),
            'StationDescription': stream[0].stats.standard.station_name,
            'StationLatitude': stream[0].stats.coordinates.latitude,
            'StationLongitude': stream[0].stats.coordinates.longitude,
