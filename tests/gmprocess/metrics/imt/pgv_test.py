@@ -23,6 +23,13 @@ def test_pgv():
         vtrace = trace.copy()
         vtrace.integrate()
         pgv_target[vtrace.stats['channel']] = np.abs(vtrace.max())
+
+    # we've replaced HN1 etc. with H1 so channel names are not the same as
+    # the original trace
+    pgv_target['H1'] = pgv_target['HN1']
+    pgv_target['H2'] = pgv_target['HN2']
+    pgv_target['Z'] = pgv_target['HNZ']
+
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         station_summary = StationSummary.from_stream(stream_v2,
@@ -30,12 +37,12 @@ def test_pgv():
                                                          'gmrotd50'],
                                                      ['pgv', 'sa1.0', 'saincorrect'])
     pgv_df = station_summary.pgms[station_summary.pgms.IMT == 'PGV']
-    HN1 = pgv_df[pgv_df.IMC == 'HN1'].Result.iloc[0]
-    HN2 = pgv_df[pgv_df.IMC == 'HN2'].Result.iloc[0]
-    HNZ = pgv_df[pgv_df.IMC == 'HNZ'].Result.iloc[0]
-    np.testing.assert_almost_equal(HN2, pgv_target['HN2'])
-    np.testing.assert_almost_equal(HN1, pgv_target['HN1'])
-    np.testing.assert_almost_equal(HNZ, pgv_target['HNZ'])
+    HN1 = pgv_df[pgv_df.IMC == 'H1'].Result.iloc[0]
+    HN2 = pgv_df[pgv_df.IMC == 'H2'].Result.iloc[0]
+    HNZ = pgv_df[pgv_df.IMC == 'Z'].Result.iloc[0]
+    np.testing.assert_almost_equal(HN2, pgv_target['H2'])
+    np.testing.assert_almost_equal(HN1, pgv_target['H1'])
+    np.testing.assert_almost_equal(HNZ, pgv_target['Z'])
 
 
 if __name__ == '__main__':

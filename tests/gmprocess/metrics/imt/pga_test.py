@@ -25,9 +25,9 @@ def test_pga():
                                                       'gmrotd100', 'gmrotd0'],
                                                      ['pga', 'sa1.0', 'saincorrect'])
     pga_df = station_summary.pgms[station_summary.pgms.IMT == 'PGA']
-    HN1 = pga_df[pga_df.IMC == 'HN1'].Result.iloc[0]
-    HN2 = pga_df[pga_df.IMC == 'HN2'].Result.iloc[0]
-    HNZ = pga_df[pga_df.IMC == 'HNZ'].Result.iloc[0]
+    HN1 = pga_df[pga_df.IMC == 'H1'].Result.iloc[0]
+    HN2 = pga_df[pga_df.IMC == 'H2'].Result.iloc[0]
+    HNZ = pga_df[pga_df.IMC == 'Z'].Result.iloc[0]
     greater = pga_df[pga_df.IMC == 'GREATER_OF_TWO_HORIZONTALS'].Result.iloc[0]
     np.testing.assert_almost_equal(
         HN2, 81.28979591836733, decimal=1)

@@ -9,9 +9,86 @@ import matplotlib.pyplot as plt
 import numpy as np
 from obspy.geodetics.base import gps2dist_azimuth
 from obspy.core.utcdatetime import UTCDateTime
+from impactutils.colors.cpalette import ColorPalette
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 from gmprocess.metrics.reduction.arias import Arias
 from gmprocess import spectrum
+
+MINMAG = 4.0
+MAXMAG = 7.0
+
+BOTTOM = 0.1
+AX1_LEFT = 0.1
+AX1_WIDTH = 0.8
+AX1_HEIGHT = 0.8
+AX2_WIDTH = 0.1
+AX2_HEIGHT = 1.0
+
+
+def plot_regression(event_table, imc_table, imt, filename,
+                    distance_metric='EpicentralDistance',
+                    colormap='viridis'):
+
+    fig = plt.figure(figsize=(10, 5))
+    # ax = plt.subplot(1, 1, 1)
+    ax = fig.add_axes([BOTTOM, AX1_LEFT, AX1_WIDTH, AX1_HEIGHT])
+
+    if distance_metric not in imc_table.columns:
+        raise KeyError('Distance metric "%s" not found in table' %
+                       distance_metric)
+    imt = imt.upper()
+    if imt not in imc_table.columns:
+        raise KeyError('IMT "%s" not found in table' % imt)
+    # get the event information
+    # group imt data by event id
+    # plot imts by event using colors banded by magnitude
+    eventids = event_table['id']
+    # set up the color bands
+    minmag = event_table['magnitude'].min()
+    min_mag = min(np.floor(minmag * 2.0) / 2.0, MINMAG)
+    maxmag = event_table['magnitude'].max()
+    max_mag = max(np.ceil(maxmag * 2.0) / 2.0, MAXMAG)
+    z0 = np.arange(min_mag, max_mag, 0.5)
+    z1 = np.arange(min_mag + 0.5, max_mag + 0.5, 0.5)
+    cmap = plt.get_cmap(colormap)
+    palette = ColorPalette.fromColorMap('mag', z0, z1, cmap)
+
+    colors = []
+    for zval in np.arange(min_mag, max_mag + 0.5, 0.5):
+        tcolor = palette.getDataColor(zval, 'hex')
+        colors.append(tcolor)
+    cmap2 = mpl.colors.ListedColormap(colors)
+
+    for eventid in eventids:
+        emag = event_table[event_table['id'] == eventid].magnitude.values[0]
+        norm_mag = (emag - min_mag) / (max_mag - min_mag)
+        color = cmap2(norm_mag)
+        erows = imc_table[imc_table['EarthquakeId'] == eventid]
+        distance = erows[distance_metric]
+        imtdata = erows[imt]
+        ax.loglog(distance, imtdata, mfc=color,
+                  mec='k', marker='o', linestyle='None')
+        ax.set_xlabel('%s(km)' % distance_metric)
+        ax.set_ylabel(imt)
+
+    bounds = np.arange(min_mag, max_mag + 1.0, 0.5)
+    norm = mpl.colors.BoundaryNorm(bounds, cmap2.N)
+
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes("right", size="3%", pad=0.05)
+
+    mpl.colorbar.ColorbarBase(cax, cmap=cmap2,
+                              norm=norm,
+                              ticks=bounds,  # optional
+                              spacing='proportional',
+                              orientation='vertical')
+
+    plt.sca(ax)
+    plt.suptitle('%s vs %s (N=%i)' % (distance_metric, imt, len(eventids)))
+    plt.title('for component %s' % ())
+
+    plt.savefig(filename)
 
 
 def get_time_from_percent(NIa, p, dt):
@@ -81,8 +158,8 @@ def plot_arias(stream, axes=None, axis_index=None,
 
     starttime = stream[0].stats.starttime
     if title is None:
-        title = ('Event on ' + str(starttime.month) + '/' +
-                 str(starttime.day) + '/' + str(starttime.year))
+        title = ('Event on ' + str(starttime.month) + '/'
+                 + str(starttime.day) + '/' + str(starttime.year))
     if xlabel is None:
         xlabel = 'Time (s)'
     if ylabel is None:
@@ -173,8 +250,8 @@ def plot_durations(stream, durations, axes=None, axis_index=None,
 
     starttime = stream[0].stats.starttime
     if title is None:
-        title = ('Event on ' + str(starttime.month) + '/' +
-                 str(starttime.day) + '/' + str(starttime.year))
+        title = ('Event on ' + str(starttime.month) + '/'
+                 + str(starttime.day) + '/' + str(starttime.year))
     if xlabel is None:
         xlabel = 'Time (s)'
     if ylabel is None:
@@ -304,8 +381,8 @@ def plot_moveout(streams, epilat, epilon, channel, cmap='viridis',
     ax.invert_yaxis()
     ax.legend(bbox_to_anchor=(1, 1), fontsize=minfontsize)
     if title is None:
-        title = ('Event on ' + str(starttime.month) + '/' +
-                 str(starttime.day) + '/' + str(starttime.year))
+        title = ('Event on ' + str(starttime.month) + '/'
+                 + str(starttime.day) + '/' + str(starttime.year))
         if scale != 1:
             title += ' scaled by ' + str(scale)
     if xlabel is None:

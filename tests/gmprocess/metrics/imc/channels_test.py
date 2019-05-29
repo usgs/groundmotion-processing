@@ -21,11 +21,11 @@ def test_channels():
                                                  ['channels'], ['pga'])
     channel = station_summary.pgms[station_summary.pgms.IMT == 'PGA']
     np.testing.assert_almost_equal(
-        channel[channel.IMC == 'HN2'].Result.iloc[0], 81.28979591836733, decimal=1)
+        channel[channel.IMC == 'H2'].Result.iloc[0], 81.28979591836733, decimal=1)
     np.testing.assert_almost_equal(
-        channel[channel.IMC == 'HN1'].Result.iloc[0], 99.3173469387755, decimal=1)
+        channel[channel.IMC == 'H1'].Result.iloc[0], 99.3173469387755, decimal=1)
     np.testing.assert_almost_equal(
-        channel[channel.IMC == 'HNZ'].Result.iloc[0], 183.89693877551022, decimal=1)
+        channel[channel.IMC == 'Z'].Result.iloc[0], 183.89693877551022, decimal=1)
 
 
 if __name__ == '__main__':

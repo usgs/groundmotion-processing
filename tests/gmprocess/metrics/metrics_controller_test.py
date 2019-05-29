@@ -35,8 +35,8 @@ def test_controller():
 
     # testing for pga, pgv, sa
     target_imcs = ['ROTD(50.0)', 'ROTD(100.0)', 'GMROTD(50.0)',
-                   'GMROTD(100.0)', 'HNR', 'HNT', 'GEOMETRIC_MEAN', 'ARITHMETIC_MEAN', 'HN1', 'HN2',
-                   'HNZ', 'GREATER_OF_TWO_HORIZONTALS', 'QUADRATIC_MEAN']
+                   'GMROTD(100.0)', 'HNR', 'HNT', 'GEOMETRIC_MEAN', 'ARITHMETIC_MEAN', 'H1', 'H2',
+                   'Z', 'GREATER_OF_TWO_HORIZONTALS', 'QUADRATIC_MEAN']
     for col in ['PGA', 'PGV', 'SA(1.0)', 'SA(2.0)', 'SA(0.3)']:
         imt = pgms.loc[pgms['IMT'] == col]
         imcs = imt['IMC'].tolist()
@@ -67,8 +67,8 @@ def test_controller():
     # testing for pga, pgv, sa
     target_imcs = ['ROTD(50.0)', 'ROTD(100.0)', 'GMROTD(50.0)',
                    'GMROTD(100.0)', 'HNR', 'HNT', 'GEOMETRIC_MEAN', 'ARITHMETIC_MEAN',
-                   'QUADRATIC_MEAN', 'HN1', 'HN2',
-                   'HNZ', 'GREATER_OF_TWO_HORIZONTALS']
+                   'QUADRATIC_MEAN', 'H1', 'H2',
+                   'Z', 'GREATER_OF_TWO_HORIZONTALS']
     for col in ['PGA', 'PGV', 'SA(1.0)', 'SA(2.0)', 'SA(0.3)']:
         imt = pgms.loc[pgms['IMT'] == col]
         imcs = imt['IMC'].tolist()
@@ -162,7 +162,7 @@ def test_end_to_end():
     datafile = datafiles[0]
 
     target_imcs = np.sort(np.asarray(['GREATER_OF_TWO_HORIZONTALS',
-                                      'HN1', 'HN2', 'HNZ', 'ROTD50.0',
+                                      'H1', 'H2', 'Z', 'ROTD50.0',
                                       'ROTD100.0']))
     target_imts = np.sort(np.asarray(['SA(1.0)', 'PGA', 'PGV']))
     stream = read_geonet(datafile)[0]
@@ -173,21 +173,21 @@ def test_end_to_end():
     test_pgms = [
         ('PGV', 'ROTD(100.0)', 114.24894584734818),
         ('PGV', 'ROTD(50.0)', 81.55436750525355),
-        ('PGV', 'HNZ', 37.47740000000001),
-        ('PGV', 'HN1', 100.81460000000004),
-        ('PGV', 'HN2', 68.4354),
+        ('PGV', 'Z', 37.47740000000001),
+        ('PGV', 'H1', 100.81460000000004),
+        ('PGV', 'H2', 68.4354),
         ('PGV', 'GREATER_OF_TWO_HORIZONTALS', 100.81460000000004),
         ('PGA', 'ROTD(100.0)', 100.73875535385548),
         ('PGA', 'ROTD(50.0)', 91.40178541935455),
-        ('PGA', 'HNZ', 183.7722361866693),
-        ('PGA', 'HN1', 99.24999872535474),
-        ('PGA', 'HN2', 81.23467239067368),
+        ('PGA', 'Z', 183.7722361866693),
+        ('PGA', 'H1', 99.24999872535474),
+        ('PGA', 'H2', 81.23467239067368),
         ('PGA', 'GREATER_OF_TWO_HORIZONTALS', 99.24999872535474),
         ('SA(1.0)', 'ROTD(100.0)', 146.9023350124098),
         ('SA(1.0)', 'ROTD(50.0)', 106.03202302692158),
-        ('SA(1.0)', 'HNZ', 27.74118995438756),
-        ('SA(1.0)', 'HN1', 136.25041187387063),
-        ('SA(1.0)', 'HN2', 84.69296738413021),
+        ('SA(1.0)', 'Z', 27.74118995438756),
+        ('SA(1.0)', 'H1', 136.25041187387063),
+        ('SA(1.0)', 'H2', 84.69296738413021),
         ('SA(1.0)', 'GREATER_OF_TWO_HORIZONTALS', 136.25041187387063)
     ]
     pgms = m.pgms
@@ -199,6 +199,7 @@ def test_end_to_end():
         sub_imt = pgms.loc[pgms['IMT'] == target_imt]
         df = sub_imt.loc[sub_imt['IMC'] == target_imc]
         assert len(df['IMT'].tolist()) == 1
+
         np.testing.assert_array_almost_equal(df['Result'].tolist()[0], value,
                                              decimal=10)
 

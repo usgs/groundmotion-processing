@@ -3,11 +3,39 @@
 # stdlib imports
 import os.path
 import matplotlib
+import tempfile
+import shutil
 
 # third party imports
 from gmprocess.io.read import read_data
-from gmprocess.plot import plot_arias, plot_durations, plot_moveout
+from gmprocess.plot import (plot_arias, plot_durations,
+                            plot_moveout, plot_regression)
+import matplotlib.pyplot as plt
+import pandas as pd
 from gmprocess.io.test_utils import read_data_dir
+import pkg_resources
+
+
+def test_regression():
+    datapath = os.path.join('data', 'testdata')
+    testroot = pkg_resources.resource_filename('gmprocess', datapath)
+    event_file = os.path.join(testroot, 'events.xlsx')
+    imc_file = os.path.join(testroot, 'greater_of_two_horizontals.xlsx')
+    event_table = pd.read_excel(event_file)
+    imc_table = pd.read_excel(imc_file)
+    imt = 'PGA'
+
+    tdir = tempfile.mkdtemp()
+    try:
+        tfile = os.path.join(tdir, 'regression.png')
+        tfile = os.path.join(os.path.expanduser('~'), 'regression.png')
+        plot_regression(event_table, imc_table, imt, tfile, colormap='jet')
+        print(tfile)
+        x = 1
+    except Exception as e:
+        pass
+    finally:
+        shutil.rmtree(tdir)
 
 
 def test_plot():
@@ -57,4 +85,5 @@ def test_plot():
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
-    test_plot()
+    test_regression()
+    # test_plot()

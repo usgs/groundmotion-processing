@@ -22,7 +22,7 @@ from gmprocess.logging import setup_logger
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.processing import process_streams
 from gmprocess.report import build_report_latex
-from gmprocess.plot import summary_plots
+from gmprocess.plot import summary_plots, plot_regression
 from gmprocess.config import get_config
 
 CMD_TUPLES = [('assemble', ('Download data from all available online sources, or '
@@ -163,13 +163,17 @@ def main(pparser, args):
                                                     labels=['unprocessed'])
                 download_done = True
             else:
+                need_processed = set(['report', 'shakemap'])
+                need_pstreams = len(need_processed.intersection(pcommands))
                 if workspace_has_processed:
-                    logging.info('Getting processed streams from workspace...')
-                    with warnings.catch_warnings():
-                        warnings.simplefilter("ignore",
-                                              category=H5pyDeprecationWarning)
-                        pstreams = workspace.getStreams(event.id,
-                                                        labels=[process_tag])
+                    if need_pstreams:
+                        logging.info(
+                            'Getting processed streams from workspace...')
+                        with warnings.catch_warnings():
+                            warnings.simplefilter("ignore",
+                                                  category=H5pyDeprecationWarning)
+                            pstreams = workspace.getStreams(event.id,
+                                                            labels=[process_tag])
                     download_done = True
                     processing_done = True
 
@@ -246,11 +250,17 @@ def main(pparser, args):
 
     # if n_passed is zero, don't
     if 'export' in pcommands and processing_done and len(workspace_files):
-
         event_table = None
         imc_tables = {}
         for workspace_file in workspace_files:
             workspace = StreamWorkspace.open(workspace_file)
+            labels = workspace.getLabels()
+            labels.remove('unprocessed')
+            if len(labels) == 0:
+                fmt = ('Workspace file "%s" appears to have no processed data. '
+                       'Skipping.')
+                print(fmt % workspace_file)
+                continue
             eventid = workspace.getEventIds()[0]
             logging.info(
                 'Creating flatfile tables for event %s...' % eventid)
@@ -258,7 +268,7 @@ def main(pparser, args):
                 warnings.simplefilter("ignore",
                                       category=H5pyDeprecationWarning)
                 tevent_table, timc_tables = workspace.getFlatTables(
-                    process_tag)
+                    labels[0])
             if event_table is None:
                 event_table = tevent_table
             else:
@@ -267,8 +277,9 @@ def main(pparser, args):
                 imc_tables = timc_tables
             else:
                 for imc, imc_table in imc_tables.items():
-                    timc_table = timc_tables[imc]
-                    imc_tables[imc] = pd.concat([imc_table, timc_table])
+                    if imc in timc_tables:
+                        timc_table = timc_tables[imc]
+                        imc_tables[imc] = pd.concat([imc_table, timc_table])
             workspace.close()
 
         if args.format == 'csv':
@@ -287,6 +298,30 @@ def main(pparser, args):
                 imcfile = os.path.join(outdir, '%s.xlsx' % imc.lower())
                 imc_table.to_excel(imcfile, index=False)
                 append_file(files_created, 'IMC tables', imcfile)
+
+        # make a regression plot of the most common imc/imt combination we can find
+        pref_imcs = ['GREATER_OF_TWO_HORIZONTALS', 'ROTD50']
+        pref_imts = ['PGA', 'PGV', 'SA(1.0)']
+        found_imc = None
+        found_imt = None
+        for imc in pref_imcs:
+            if imc in imc_tables:
+                for imt in pref_imts:
+                    if imt in imc_tables[imc].columns:
+                        found_imt = imt
+                        found_imc = imc
+                        break
+                if found_imc:
+                    break
+        if found_imc and found_imt:
+            pngfile = '%s_%s.png' % (found_imc, found_imt)
+            regression_file = os.path.join(outdir, pngfile)
+            plot_regression(event_table, imc_tables[found_imc],
+                            found_imt, regression_file,
+                            distance_metric='EpicentralDistance',
+                            colormap='jet')
+            append_file(files_created,
+                        'Multi-event regression plot', regression_file)
 
     print('\nThe following files have been created:')
     for file_type, file_list in files_created.items():
@@ -307,7 +342,13 @@ def get_command_help():
 
 
 if __name__ == '__main__':
-    description = '''Do everything.
+    description = '''Download, process, and extract metrics from raw ground motion data.
+
+    This program will allow the user to:
+     - download raw data from a number of sources, including:
+       - Any FDSN provider which serves waveform data
+       - Japan's KNET/KikNet repository (requires login info)
+       - 
     '''
 
     parser = argparse.ArgumentParser(
