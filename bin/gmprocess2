@@ -25,17 +25,19 @@ from gmprocess.report import build_report_latex
 from gmprocess.plot import summary_plots, plot_regression
 from gmprocess.config import get_config
 
-CMD_TUPLES = [('assemble', ('Download data from all available online sources, or '
-                            'load raw data from files if --directory is selected.')),
-              ('process', ('Process data using steps defined '
-                           'in configuration file.')),
-              ('report', 'Create a summary report for each event specified.'),
+CMD_TUPLES = [
+    ('assemble', ('Download data from all available online sources, or '
+                  'load raw data from files if --directory is selected.')),
+    ('process', ('Process data using steps defined '
+                 'in configuration file.')),
+    ('report', 'Create a summary report for each event specified.'),
 
-              ('provenance', 'Generate provenance table in --format format.'),
-              ('export', ('Generate metrics tables (NGA-style "flat" files) '
-                          'for all events and IMCs.')),
-              ('shakemap', ('Generate ShakeMap-friendly peak ground motions '
-                            'table.'))]
+    ('provenance', 'Generate provenance table in --format format.'),
+    ('export', ('Generate metrics tables (NGA-style "flat" files) '
+                'for all events and IMCs.')),
+    ('shakemap', ('Generate ShakeMap-friendly peak ground motions '
+                  'table.'))
+]
 
 TAG_FMT = '%Y%m%d%H%M%S'
 
@@ -170,10 +172,10 @@ def main(pparser, args):
                         logging.info(
                             'Getting processed streams from workspace...')
                         with warnings.catch_warnings():
-                            warnings.simplefilter("ignore",
-                                                  category=H5pyDeprecationWarning)
-                            pstreams = workspace.getStreams(event.id,
-                                                            labels=[process_tag])
+                            warnings.simplefilter(
+                                "ignore", category=H5pyDeprecationWarning)
+                            pstreams = workspace.getStreams(
+                                event.id, labels=[process_tag])
                     download_done = True
                     processing_done = True
 
@@ -208,10 +210,12 @@ def main(pparser, args):
             build_conf = config['build_report']
             report_format = build_conf['format']
             if report_format == 'latex':
-                report_file, success = build_report_latex(pstreams,
-                                                          event_dir,
-                                                          plot_dir,
-                                                          event, config=config)
+                report_file, success = build_report_latex(
+                    pstreams,
+                    event_dir,
+                    event,
+                    config=config
+                )
             else:
                 report_file = ''
                 success = False
@@ -257,8 +261,8 @@ def main(pparser, args):
             labels = workspace.getLabels()
             labels.remove('unprocessed')
             if len(labels) == 0:
-                fmt = ('Workspace file "%s" appears to have no processed data. '
-                       'Skipping.')
+                fmt = ('Workspace file "%s" appears to have no processed '
+                       'data. Skipping.')
                 print(fmt % workspace_file)
                 continue
             eventid = workspace.getEventIds()[0]
@@ -299,7 +303,8 @@ def main(pparser, args):
                 imc_table.to_excel(imcfile, index=False)
                 append_file(files_created, 'IMC tables', imcfile)
 
-        # make a regression plot of the most common imc/imt combination we can find
+        # make a regression plot of the most common imc/imt combination we
+        # can find
         pref_imcs = ['GREATER_OF_TWO_HORIZONTALS', 'ROTD50']
         pref_imts = ['PGA', 'PGV', 'SA(1.0)']
         found_imc = None
@@ -348,7 +353,7 @@ if __name__ == '__main__':
      - download raw data from a number of sources, including:
        - Any FDSN provider which serves waveform data
        - Japan's KNET/KikNet repository (requires login info)
-       - 
+       - ...
     '''
 
     parser = argparse.ArgumentParser(
@@ -391,8 +396,9 @@ if __name__ == '__main__':
                         help='Output format for tabular information',
                         choices=['excel', 'csv'], default='csv')
 
-    tag_help = ('Processing label (single word, no spaces) to attach to processed files. '
-                'Defaults to the current time in YYYYMMDDHHMMSS format.')
+    tag_help = ('Processing label (single word, no spaces) to attach to '
+                'processed files. Defaults to the current time in '
+                'YYYYMMDDHHMMSS format.')
     parser.add_argument('-p', '--process-tag',
                         help=tag_help)
 

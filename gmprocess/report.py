@@ -107,7 +107,7 @@ Code version: [VERSION]
 """
 
 
-def build_report_latex(sc, directory, plot_dir, origin, config=None):
+def build_report_latex(sc, directory, origin, config=None):
     """
     Build latex summary report.
 
@@ -142,7 +142,7 @@ def build_report_latex(sc, directory, plot_dir, origin, config=None):
     map_file = os.path.join(directory, 'stations_map.png')
     if os.path.isfile(map_file):
         TB = TITLEBLOCK.replace(
-            '[MAPPATH]', map_file
+            '[MAPPATH]', 'stations_map.png'
         )
         TB = TB.replace(
             '[VERSION]', gmprocess.__version__
@@ -153,8 +153,7 @@ def build_report_latex(sc, directory, plot_dir, origin, config=None):
     # do not include more than three.
     for st in sc:
         plot_path = os.path.join(
-            '..', plot_dir,
-            origin.id + '_' + st.get_id() + '.png')
+            'plots', origin.id + '_' + st.get_id() + '.png')
         SB = STREAMBLOCK.replace('[PLOTPATH]', plot_path)
         SB = SB.replace(
             '[EVENT]', 'M %s - %s - %s'
@@ -186,21 +185,28 @@ def build_report_latex(sc, directory, plot_dir, origin, config=None):
     res = False
     # Do not save report if running tests
     if 'CALLED_FROM_PYTEST' not in os.environ:
+
+        # Set working directory to be the event subdirectory
+        current_directory = os.getcwd()
+        os.chdir(directory)
+
+        # File name relative to current location
         file_name = ('report_%s.tex' % (origin.id))
+
+        # File name for printing out later relative base directory
         latex_file = os.path.join(directory, file_name)
-        with open(latex_file, 'w') as f:
+        with open(file_name, 'w') as f:
             f.write(report)
 
         # Can we find pdflatex?
-        current_directory = os.getcwd()
-        os.chdir(directory)
         try:
             pdflatex_bin = which('pdflatex')
-            cmd = '%s %s' % (pdflatex_bin, latex_file)
+            pdflatex_options = '-halt-on-error'
+            cmd = '%s %s %s' % (pdflatex_bin, pdflatex_options, file_name)
             res, stdout, stderr = get_command_output(cmd)
             report_file = latex_file
             if res:
-                base, ext = os.path.splitext(latex_file)
+                base, ext = os.path.splitext(file_name)
                 pdf_file = base + '.pdf'
                 if os.path.isfile(pdf_file):
                     report_file = pdf_file
@@ -210,7 +216,12 @@ def build_report_latex(sc, directory, plot_dir, origin, config=None):
                         os.remove(auxfile)
                 else:
                     res = False
+            else:
+                print('pdflatex output:')
+                print(stdout.decode())
+                print(stderr.decode())
         except Exception:
+            report_file = None
             pass
         finally:
             os.chdir(current_directory)
