@@ -321,10 +321,12 @@ def main(pparser, args):
         if found_imc and found_imt:
             pngfile = '%s_%s.png' % (found_imc, found_imt)
             regression_file = os.path.join(outdir, pngfile)
-            plot_regression(event_table, imc_tables[found_imc],
-                            found_imt, regression_file,
+            plot_regression(event_table, found_imc,
+                            imc_tables[found_imc],
+                            found_imt,
+                            regression_file,
                             distance_metric='EpicentralDistance',
-                            colormap='jet')
+                            colormap='viridis_r')
             append_file(files_created,
                         'Multi-event regression plot', regression_file)
 

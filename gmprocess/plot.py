@@ -15,8 +15,9 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 from gmprocess.metrics.reduction.arias import Arias
 from gmprocess import spectrum
 
-MINMAG = 4.0
-MAXMAG = 7.0
+MIN_MAG = 4.0
+MAX_MAG = 7.0
+DELTA_MAG = 0.5
 
 BOTTOM = 0.1
 AX1_LEFT = 0.1
@@ -26,10 +27,15 @@ AX2_WIDTH = 0.1
 AX2_HEIGHT = 1.0
 
 
-def plot_regression(event_table, imc_table, imt, filename,
+def plot_regression(event_table, imc, imc_table, imt, filename,
                     distance_metric='EpicentralDistance',
                     colormap='viridis'):
+    """ Make summary "regression" plot.
 
+    TODO: Add GMPE curve and compute mean/sd for all the observations
+    and then also report the standardized residuals.
+
+    """
     fig = plt.figure(figsize=(10, 5))
     # ax = plt.subplot(1, 1, 1)
     ax = fig.add_axes([BOTTOM, AX1_LEFT, AX1_WIDTH, AX1_HEIGHT])
@@ -46,11 +52,11 @@ def plot_regression(event_table, imc_table, imt, filename,
     eventids = event_table['id']
     # set up the color bands
     minmag = event_table['magnitude'].min()
-    min_mag = min(np.floor(minmag * 2.0) / 2.0, MINMAG)
+    min_mag = min(np.floor(minmag / DELTA_MAG) * DELTA_MAG, MIN_MAG)
     maxmag = event_table['magnitude'].max()
-    max_mag = max(np.ceil(maxmag * 2.0) / 2.0, MAXMAG)
+    max_mag = max(np.ceil(maxmag / DELTA_MAG) * DELTA_MAG, MAX_MAG)
     z0 = np.arange(min_mag, max_mag, 0.5)
-    z1 = np.arange(min_mag + 0.5, max_mag + 0.5, 0.5)
+    z1 = np.arange(min_mag + DELTA_MAG, max_mag + DELTA_MAG, DELTA_MAG)
     cmap = plt.get_cmap(colormap)
     palette = ColorPalette.fromColorMap('mag', z0, z1, cmap)
 
@@ -78,15 +84,16 @@ def plot_regression(event_table, imc_table, imt, filename,
     divider = make_axes_locatable(ax)
     cax = divider.append_axes("right", size="3%", pad=0.05)
 
-    mpl.colorbar.ColorbarBase(cax, cmap=cmap2,
-                              norm=norm,
-                              ticks=bounds,  # optional
-                              spacing='proportional',
-                              orientation='vertical')
+    mpl.colorbar.ColorbarBase(
+        cax, cmap=cmap2,
+        norm=norm,
+        ticks=bounds,  # optional
+        spacing='proportional',
+        orientation='vertical')
 
     plt.sca(ax)
-    plt.suptitle('%s vs %s (N=%i)' % (distance_metric, imt, len(eventids)))
-    plt.title('for component %s' % ())
+    plt.suptitle('%s vs %s (#eqks=%i)' % (distance_metric, imt, len(eventids)))
+    plt.title('for component %s' % (imc))
 
     plt.savefig(filename)
 

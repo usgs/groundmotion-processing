@@ -21,6 +21,7 @@ def test_regression():
     testroot = pkg_resources.resource_filename('gmprocess', datapath)
     event_file = os.path.join(testroot, 'events.xlsx')
     imc_file = os.path.join(testroot, 'greater_of_two_horizontals.xlsx')
+    imc = 'G2H'
     event_table = pd.read_excel(event_file)
     imc_table = pd.read_excel(imc_file)
     imt = 'PGA'
@@ -29,11 +30,11 @@ def test_regression():
     try:
         tfile = os.path.join(tdir, 'regression.png')
         tfile = os.path.join(os.path.expanduser('~'), 'regression.png')
-        plot_regression(event_table, imc_table, imt, tfile, colormap='jet')
+        plot_regression(event_table, imc, imc_table,
+                        imt, tfile, colormap='jet')
         print(tfile)
-        x = 1
     except Exception as e:
-        pass
+        raise e
     finally:
         shutil.rmtree(tdir)
 
