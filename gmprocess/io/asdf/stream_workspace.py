@@ -151,8 +151,10 @@ class StreamWorkspace(object):
                            trace.stats.channel.lower())
                     channel = '%s_%s_%s' % tpl
                     channel_tag = '%s_%s' % (tag, channel)
-                    self.dataset.add_provenance_document(provdoc,
-                                                         name=channel_tag)
+                    self.dataset.add_provenance_document(
+                        provdoc,
+                        name=channel_tag
+                    )
 
             # add processing parameters from streams
             path = '%s_%s' % (eventid, tag)
@@ -172,10 +174,12 @@ class StreamWorkspace(object):
                 jsonbytes = json.dumps(jdict).encode('utf-8')
                 jsonarray = np.frombuffer(jsonbytes, dtype=np.uint8)
                 dtype = 'StreamProcessingParameters'
-                self.dataset.add_auxiliary_data(jsonarray,
-                                                data_type=dtype,
-                                                path=path,
-                                                parameters={})
+                self.dataset.add_auxiliary_data(
+                    jsonarray,
+                    data_type=dtype,
+                    path=path,
+                    parameters={}
+                )
 
             # add processing parameters from traces
             for trace in stream:
@@ -195,10 +199,12 @@ class StreamWorkspace(object):
                     jsonbytes = json.dumps(jdict).encode('utf-8')
                     jsonarray = np.frombuffer(jsonbytes, dtype=np.uint8)
                     dtype = 'TraceProcessingParameters'
-                    self.dataset.add_auxiliary_data(jsonarray,
-                                                    data_type=dtype,
-                                                    path=path,
-                                                    parameters={})
+                    self.dataset.add_auxiliary_data(
+                        jsonarray,
+                        data_type=dtype,
+                        path=path,
+                        parameters={}
+                    )
             inventory = stream.getInventory()
             self.dataset.add_stationxml(inventory)
 
@@ -374,10 +380,12 @@ class StreamWorkspace(object):
         # approached failed. Suggestions are welcome.
         jsonarray = np.frombuffer(xmlstr, dtype=np.uint8)
         dtype = 'WaveFormMetrics'
-        self.dataset.add_auxiliary_data(jsonarray,
-                                        data_type=dtype,
-                                        path=path,
-                                        parameters={})
+        self.dataset.add_auxiliary_data(
+            jsonarray,
+            data_type=dtype,
+            path=path,
+            parameters={}
+        )
 
     def calcStreamMetrics(self, eventid, stations=None,
                           labels=None, imclist=None, imtlist=None):
@@ -411,10 +419,11 @@ class StreamWorkspace(object):
                 summary = StationSummary.from_config(stream,
                                                      event=event)
             else:
-                summary = StationSummary.from_stream(stream,
-                                                     components=imclist,
-                                                     imts=imtlist,
-                                                     event=event)
+                summary = StationSummary.from_stream(
+                    stream,
+                    components=imclist,
+                    imts=imtlist,
+                    event=event)
             xmlstr = summary.getMetricXML()
 
             path = '%s_%s_%s' % (eventid, summary.station_code.lower(), label)
@@ -424,12 +433,14 @@ class StreamWorkspace(object):
             # approached failed. Suggestions are welcome.
             jsonarray = np.frombuffer(xmlstr, dtype=np.uint8)
             dtype = 'WaveFormMetrics'
-            self.dataset.add_auxiliary_data(jsonarray,
-                                            data_type=dtype,
-                                            path=path,
-                                            parameters={})
+            self.dataset.add_auxiliary_data(
+                jsonarray,
+                data_type=dtype,
+                path=path,
+                parameters={}
+            )
 
-    def getFlatTables(self, label):
+    def getTables(self, label):
         '''Retrieve dataframes containing event information and IMC/IMT metrics.
 
         Args:
@@ -473,12 +484,14 @@ class StreamWorkspace(object):
         imc_tables = {}
         for eventid in self.getEventIds():
             event = self.getEvent(eventid)
-            edict = {'id': event.id,
-                     'time': event.time,
-                     'latitude': event.latitude,
-                     'longitude': event.longitude,
-                     'depth': event.depth_km,
-                     'magnitude': event.magnitude}
+            edict = {
+                'id': event.id,
+                'time': event.time,
+                'latitude': event.latitude,
+                'longitude': event.longitude,
+                'depth': event.depth_km,
+                'magnitude': event.magnitude
+            }
             event_table = event_table.append(edict, ignore_index=True)
             streams = self.getStreams(eventid, labels=[label])
             for stream in streams:
@@ -491,14 +504,14 @@ class StreamWorkspace(object):
                     if imc not in imc_tables:
                         cols = FLATFILE_COLUMNS + imtlist
                         imc_table = pd.DataFrame(columns=cols)
-                        row = _get_flatrow(stream, summary, event, imc)
+                        row = _get_table_row(stream, summary, event, imc)
                         if not len(row):
                             continue
                         imc_table = imc_table.append(row, ignore_index=True)
                         imc_tables[imc] = imc_table
                     else:
                         imc_table = imc_tables[imc]
-                        row = _get_flatrow(stream, summary, event, imc)
+                        row = _get_table_row(stream, summary, event, imc)
                         if not len(row):
                             continue
                         imc_table = imc_table.append(row, ignore_index=True)
@@ -824,7 +837,7 @@ def _get_agents(provdoc):
     return (person, software)
 
 
-def _get_flatrow(stream, summary, event, imc):
+def _get_table_row(stream, summary, event, imc):
     h1 = stream.select(channel='*1')
     h2 = stream.select(channel='*2')
     if not len(h1):

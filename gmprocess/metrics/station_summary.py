@@ -1,5 +1,4 @@
 # stdlib imports
-from collections import OrderedDict
 import logging
 import re
 
@@ -228,8 +227,8 @@ class StationSummary(object):
             components (list): List of requested components (str).
             imts (list): List of requested imts (str).
             event (ScalarEvent):
-                Origin/magnitude for the event containing time, latitude, longitude,
-                depth, and magnitude.
+                Origin/magnitude for the event containing time, latitude,
+                longitude, depth, and magnitude.
             damping (float): Damping of oscillator. Default is None.
             smoothing (float): Smoothing method. Default is None.
             bandwidth (float): Bandwidth of smoothing. Default is None.
@@ -395,7 +394,8 @@ class StationSummary(object):
             return
         lat = stats.coordinates.latitude
         lon = stats.coordinates.longitude
-        if 'elevation' not in stats.coordinates or np.isnan(stats.coordinates.elevation):
+        if ('elevation' not in stats.coordinates or
+                np.isnan(stats.coordinates.elevation)):
             elev = 0
         else:
             elev = stats.coordinates.elevation
@@ -408,10 +408,12 @@ class StationSummary(object):
                                           event.longitude)
             self._epicentral_distance = dist / 1000
             if event.depth is not None:
-                self._hypocentral_distance = distance(lat, lon, elev / 1000,
-                                                      event.latitude,
-                                                      event.longitude,
-                                                      event.depth / 1000)
+                self._hypocentral_distance = distance(
+                    lat, lon, elev / 1000,
+                    event.latitude,
+                    event.longitude,
+                    event.depth / 1000
+                )
 
     @property
     def smoothing(self):
@@ -586,8 +588,8 @@ class StationSummary(object):
 
         Returns:
             Series:
-                Multi-Indexed Pandas Series where IMTs are top-level indices and
-                components are sub-indices.
+                Multi-Indexed Pandas Series where IMTs are top-level indices
+                and components are sub-indices.
         """
         imts = self.imts
         imcs = self.components
