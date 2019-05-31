@@ -30,10 +30,12 @@ AX2_HEIGHT = 1.0
 def plot_regression(event_table, imc, imc_table, imt, filename,
                     distance_metric='EpicentralDistance',
                     colormap='viridis'):
-    """ Make summary "regression" plot.
+    """Make summary "regression" plot.
 
-    TODO: Add GMPE curve and compute mean/sd for all the observations
-    and then also report the standardized residuals.
+    TODO:
+      * Add GMPE curve and compute mean/sd for all the observations
+        and then also report the standardized residuals.
+      * Better definitions of column names and units.
 
     """
     fig = plt.figure(figsize=(10, 5))
@@ -44,6 +46,16 @@ def plot_regression(event_table, imc, imc_table, imt, filename,
         raise KeyError('Distance metric "%s" not found in table' %
                        distance_metric)
     imt = imt.upper()
+
+    # Stupid hack to get units for now. Need a better, more systematic
+    # approach
+    if imt.startswith("SA") | (imt == "PGA"):
+        units = "%g"
+    elif imt == "PGV":
+        units = "cm/s"
+    else:
+        raise Exception('Unknown units for IMT %s' % imt)
+
     if imt not in imc_table.columns:
         raise KeyError('IMT "%s" not found in table' % imt)
     # get the event information
@@ -75,8 +87,9 @@ def plot_regression(event_table, imc, imc_table, imt, filename,
         imtdata = erows[imt]
         ax.loglog(distance, imtdata, mfc=color,
                   mec='k', marker='o', linestyle='None')
-        ax.set_xlabel('%s(km)' % distance_metric)
-        ax.set_ylabel(imt)
+
+    ax.set_xlabel('%s (km)' % distance_metric)
+    ax.set_ylabel('%s (%s)' % (imt, units))
 
     bounds = np.arange(min_mag, max_mag + 1.0, 0.5)
     norm = mpl.colors.BoundaryNorm(bounds, cmap2.N)

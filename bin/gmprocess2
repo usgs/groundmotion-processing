@@ -267,11 +267,11 @@ def main(pparser, args):
                 continue
             eventid = workspace.getEventIds()[0]
             logging.info(
-                'Creating flatfile tables for event %s...' % eventid)
+                'Creating tables for event %s...' % eventid)
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore",
                                       category=H5pyDeprecationWarning)
-                tevent_table, timc_tables = workspace.getFlatTables(
+                tevent_table, timc_tables = workspace.getTables(
                     labels[0])
             if event_table is None:
                 event_table = tevent_table
