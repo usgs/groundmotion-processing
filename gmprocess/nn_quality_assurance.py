@@ -7,9 +7,16 @@ import os
 
 
 def isNumber(s):
-    """
-    Check if a string is a number
-    """
+    '''
+    Check if given input is a number.
+
+    Args:
+        s (any type):
+            Data to test
+
+    Returns:
+        bool: True if is a number, False if isn't
+    '''
     try:
         float(s)
         return True
@@ -19,9 +26,20 @@ def isNumber(s):
 
 
 def loadCSV(data_path, row_ignore=0, col_ignore=0):
-    """
-    Load the csv data file
-    """
+    '''
+    Load csv files from a given path and returns a list of list. 
+    For all imported data, check if is a number. If so, returns a
+    float. If not, returns a string.
+
+    Args:
+        data_path (string): path to the csv to load
+        row_ignore (int): number of rows to ignore
+        col_ignore (int) : number of columns to ignore
+
+    Returns:
+        list of list: containing the data from the csv
+    '''
+
     M = []
     with open(data_path) as csvfile:
         readCSV = csv.reader(csvfile)
@@ -44,9 +62,15 @@ def loadCSV(data_path, row_ignore=0, col_ignore=0):
 
 
 def sigmoid(v_input):
-    """
-    Compute sigmoid function for each array entry
-    """
+    '''
+    Performs a sigmoid operation on the input (1/(e(-x)+1))
+
+    Args: 
+        v_input (float): a number defined on R (real)
+
+    Returns:
+        float: sigmoid result (a number between 0 and 1)
+    '''
     v_act = []
     for x in v_input:
         v_act.append(1./(1+np.exp(-x)))
@@ -54,9 +78,15 @@ def sigmoid(v_input):
 
 
 def tanh(v_input):
-    """
-    Compute tanh function for each array entry
-    """
+    '''
+    Performs a hyperbolic tangent operation on the input (2/(e(2x)+1))
+
+    Args: 
+        v_input (float) a number defined on R (real)
+
+    Returns:
+        float: tanh result (a number between -1 and 1)
+    '''
     v_act = []
     for x in v_input:
         v_act.append(np.tanh(x))
@@ -64,12 +94,15 @@ def tanh(v_input):
 
 
 class neuralNet():
-    """
-    Class to encapsulate the Bellagamba et al. neural net data
-    screening method.
-    """
-
+    '''
+    Class allowing the instantiation and use of simple (1 or 2 layers) 
+    neural networks
+    '''
     def __init__(self):
+        '''
+        Instantiate an empty neural network (no weights, functions, or 
+        biases loaded
+        '''
         self.n_input = 0
         self.n_neuron_H1 = 0
         self.n_neuron_H2 = -1
@@ -86,6 +119,14 @@ class neuralNet():
 
     # loadNN: load and build neural network model
     def loadNN(self, nn_path):
+        '''
+        Populate an instantated neural netowrk with data contained in a 
+        specific folder.
+
+        Args: 
+            nn_path (string): path to the folder containing the required
+            information (masterF.txt, weights.csv, biases.csv)
+        '''
         data_path = os.path.join(nn_path, 'masterF.txt')
         with open(data_path) as masterF:
             readCSV = csv.reader(masterF)
@@ -131,6 +172,18 @@ class neuralNet():
             self.b_H2 = np.asarray(loadCSV(data_path))
 
     def useNN(self, v_input):
+        '''
+        Use a populated neural network (i.e. from the input, returns the 
+        classification score or the regression result).
+
+        Args:
+            v_input (list or np.array): list or numpy array of the inputs 
+            (must be all numerical). Size must be equal to the NN input layer
+            size.
+
+        Returns: 
+            v_inter (np.array): numpy array containing the results. 
+        '''
         v_inter = np.array([])
         # Transform input if required
         if isinstance(v_input, list):
@@ -165,9 +218,19 @@ class neuralNet():
 
 
 def deskewData(data, model_name):
-    """
-    Deskew the data according to chosen model
-    """
+    '''
+    Performs the deskewing operations used in Bellagamba et al. (2019) on the
+    quality metrics vector. Depending on the selected model. 
+
+    Args: 
+        data (list of floats): 20 quality metrics computed as described in the 
+        paper
+        model_name (string): name of the selected model. Available 'Cant' and 
+        'CantWell' as described in the paper
+
+    Returns: 
+        list of float: processed (deskewed) data
+    '''
     if model_name == 'Cant':
         for i in range(len(data)):
             if i == 0 or i == 1 or i == 11 or i == 15 or i == 16:
@@ -242,9 +305,18 @@ def deskewData(data, model_name):
 
 
 def standardizeData(data, mu, sigma):
-    """
-    Apply transform functions to data
-    """
+    '''
+    Performs a standardization operation on the given data ((X-mu)/sigma)
+
+    Args:
+        data (list of float): data to standardize (size represents the 
+        dimensionality of the data and not the number of point to standardize)
+        mu (list of float): means
+        sigma (list of float): standard deviation
+
+    Returns: 
+        list o float: standardized data
+    ''' 
     for i in range(len(data)):
         data[i] = (data[i]-mu[i])/sigma[i]
 
@@ -252,9 +324,18 @@ def standardizeData(data, mu, sigma):
 
 
 def decorrelateData(data, M):
-    """
-    Apply Mahalanobis transform on data
-    """
+    '''
+    Decorrelate the data based on a Mahalanobis tranform. The transformation
+    matrix is given as an input.
+
+    Args:
+        data (np.array): numpy array containing the data to be decorrelated 
+        (size = N).
+        M (np.array): decorrelation matrix (size NxN)
+
+    Returns: 
+        list of float containing the decorrelated data
+    '''
     M = np.array(M)
     data = M.dot(data)
     data = np.transpose(data)
@@ -263,9 +344,18 @@ def decorrelateData(data, M):
 
 
 def preprocessQualityMetrics(qm, model_name):
-    """
-    preprocessQualtiyMetrics: deskew, standardize and decorrelate the QM
-    """
+    '''
+    Pre-process the quality metrics according to Bellagamba et al. (2019)
+    (i.e. deskews, standardizes and decorrelates the quality metrics)
+
+    Args:
+        qm (list of float): quality metrics estimated according to the paper
+        model_name (string): name of the used model for processing. Available: 
+        'Cant' and 'CantWell'. 
+
+    Returns:
+        list of float containing the pre-processed quality metrics.
+    '''
     # Building dir path from model name
     data_path = os.path.join('data', 'nn_qa')
     data_path = os.path.join(data_path, model_name)
@@ -287,10 +377,10 @@ def preprocessQualityMetrics(qm, model_name):
 def get_husid(acceleration, time_vector):
     """
     Returns the Husid vector, defined as \int{acceleration ** 2.}
-    :param numpy.ndarray acceleration:
-        Vector of acceleration values
-    :param float time_step:
-        Time-step of record (s)
+    
+    Args:
+        acceleration (np.array): Vector of acceleration values
+        time_vector (np.array): Time vector in seconds
     """
     husid = np.hstack([0., cumtrapz(acceleration ** 2., time_vector)])
     AI = husid / max(husid)
@@ -298,10 +388,17 @@ def get_husid(acceleration, time_vector):
 
 
 def getFreqIndex(ft_freq, lower, upper):
-    """
-    Returns the upper and lower indices of a range of frequencies
+    '''
+    Gets the indices of a frequency range in the frequency vector
 
-    """
+    Args:
+        ft_freq (list of float): list of ordred frequencies
+        lower (float): lower boud of the frequency range
+        upper (float): upper bound of the frequency range
+
+    Returns: 
+        int, int: the indices bounding the range
+    '''
     lower_indices = [i for i, x in enumerate(ft_freq) if x > lower]
     upper_indices = [i for i, x in enumerate(ft_freq) if x < upper]
     lower_index = min(lower_indices)
@@ -310,12 +407,33 @@ def getFreqIndex(ft_freq, lower, upper):
 
 
 def getHusidIndex(husid, threshold):
+    '''
+    Returns the index of the husid for a particular threshold
+
+    Args:
+        husid (list of float): husid vector
+        threshold (float): threshold not to be exceeded
+
+    Returns:
+        int: the index of the latest value below the threshold
+    '''
     husid_indices = [i for i, x in enumerate(husid) if x > threshold]
     husid_index = min(husid_indices)
     return husid_index
 
 
 def calculateSNR_min(ft_freq, snr):
+    '''
+    Calculate the SNR min between 0.1 and 20 Hz
+
+    Args:
+        ft_freq (list of float): vector of frequencies used in the Fourier 
+        spectrum
+        snr (list of float): vector of the snr at the frequencies in ft_freq
+
+    Returns:
+        float: min snr between 0.1 and 20 Hz
+    '''
     # Frequencies must be available between 0.1 and 20 Hz
     lower_index, upper_index = getFreqIndex(ft_freq, 0.1, 20)
     snr_min = min(snr[lower_index:upper_index])
@@ -323,9 +441,19 @@ def calculateSNR_min(ft_freq, snr):
 
 
 def calculateHusid(acc, t):
-    """
-    Uses the obspy function to estimate the Arias and index of duration
-    """
+    '''
+    Calculate the husid and Arias of a signal.
+
+    Args:
+        acc (np.array): accelerogram vector
+        t (np.array): time vector (constant time step)
+
+    Returns:
+        husid: vector of floats
+        AI: vector of floats
+        Arias: float, max value of AI
+        husid index at 5, 75 and 95% (used for duration)
+    '''
     husid, AI = get_husid(acc, t)
     Arias = max(husid)
     husid_index_5 = getHusidIndex(AI, 0.05)
@@ -335,7 +463,22 @@ def calculateHusid(acc, t):
 
 
 def getClassificationMetrics(tr, p_pick, delta_t):
+    '''
+    Compute the quality metrics as in Bellagamba et al. (2019). More details 
+    in the paper. 
 
+    WARNINGS: - Acceleration untis changed into g at the beginning!
+              - Vertical component is not used!
+
+    Args:
+        tr (list of list of float): each list contains an horizontal trace
+        p_pick (float): estimated P-wave arrival time (in seconds) from the 
+        start of the record
+        delta_t (float): time step used in the record in seconds (decimal)
+
+    Returns:
+        List of float containing the quality metrics (size = 20)
+    '''
     ########################################
     # Acceleration units changed into g!!! #
     #    Vertical component not used!!!    #
@@ -582,9 +725,17 @@ def getClassificationMetrics(tr, p_pick, delta_t):
 
 
 def computeQualityMetrics(st):
-    """
-    Compute quality metrics as in Bellagamba et al. (2019)
-    """
+    '''
+    Get the 2 horizontal components and format the P-wave arrival time before 
+    launching the computation of the qualtiy metrics as in Bellagamba et al. 
+    (2019)
+
+    Args: 
+        st (list of trace): a list of trace as defined in gmprocess (USGS)
+
+    Returns:
+        List of float containing the 20 quality metrics
+    '''
     # Initialize dictionary of variables necessary to the computation of the QM
     tr = {}
 
@@ -662,10 +813,29 @@ def computeQualityMetrics(st):
 
 
 def NNet_QA(st, acceptance_threshold, model_name):
-    """
-    Main function for computing  QA metrics as in Bellagamba et al. (2019)
+    '''
+    Assess the quality of a stream by analyzing its two horizontal components 
+    as described in Bellagamba et al. (2019). Performs three steps: 
+        1) Compute the quality metrics (see paper for more info)
+        2) Pre-process the quality metrics (deskew, standardize and decorrelate)
+        3) Evaluate the quality using a neural network-based model
+    2 models are available: 'Cant' and 'CantWell'. 
+    To minimize the number of low quality ground motion included, the natural 
+    acceptance threshold 0.5 can be raised (up to an extreme value of 0.95).
+    Recommended parameters are: 
+        acceptance_threshold = 0.5 or 0.6 
+        model_name = 'CantWell'
 
-    """
+    Args:
+        st (list of traces): the ground motion record to analyze. Should contain at least 2 orthogonal  horizontal traces.
+        acceptance_threshold (float): threshold from which GM records are 
+        considered acceptable
+        model_name (string): name of the used model ('Cant' or 'CantWell')
+
+    Returns:
+        st: stream of traces tagged with quality scores and flags, 
+        used model name and acceptance threshold
+    '''
     # Create the path to the NN folder based on model name
     nn_path = os.path.join('data', 'nn_qa')
     nn_path = os.path.join(nn_path, model_name)
