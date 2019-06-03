@@ -388,7 +388,7 @@ class StreamWorkspace(object):
         )
 
     def calcStreamMetrics(self, eventid, stations=None,
-                          labels=None, imclist=None, imtlist=None):
+                          labels=None, config=None):
         """Create station metrics for specified event/streams.
 
         Args:
@@ -412,18 +412,10 @@ class StreamWorkspace(object):
         streams = self.getStreams(eventid, stations=stations, labels=labels)
         event = self.getEvent(eventid)
         for stream in streams:
-            lengths = [len(trace) for trace in stream]
             tag = stream.tag
             eventid, station, label = tag.split('_')
-            if imclist is None and imtlist is None:
-                summary = StationSummary.from_config(stream,
-                                                     event=event)
-            else:
-                summary = StationSummary.from_stream(
-                    stream,
-                    components=imclist,
-                    imts=imtlist,
-                    event=event)
+            summary = StationSummary.from_config(
+                stream, event=event, config=config)
             xmlstr = summary.getMetricXML()
 
             path = '%s_%s_%s' % (eventid, summary.station_code.lower(), label)
@@ -440,7 +432,7 @@ class StreamWorkspace(object):
                 parameters={}
             )
 
-    def getTables(self, label):
+    def getTables(self, label, config=None):
         '''Retrieve dataframes containing event information and IMC/IMT metrics.
 
         Args:
@@ -497,7 +489,12 @@ class StreamWorkspace(object):
             for stream in streams:
                 if not stream.passed:
                     continue
-                summary = StationSummary.from_config(stream, event=event)
+                if config is None:
+                    station = stream[0].stats.station
+                    summary = self.getStreamMetrics(eventid, station, label)
+                else:
+                    summary = StationSummary.from_config(
+                        stream, event=event, config=config)
                 imclist = summary.pgms['IMC'].unique().tolist()
                 imtlist = summary.pgms['IMT'].unique().tolist()
                 for imc in imclist:
@@ -517,8 +514,6 @@ class StreamWorkspace(object):
                         imc_table = imc_table.append(row, ignore_index=True)
                         imc_tables[imc] = imc_table
 
-        # for imc, imc_table in imc_tables.items():
-        #     imc_tables[imc] = imc_table[cols]
         return (event_table, imc_tables)
 
     def getMetricsTable(self, eventid, stations=None, labels=None):
@@ -888,3 +883,23 @@ def _get_table_row(stream, summary, event, imc):
     imts = dict(zip(imt_frame['IMT'], imt_frame['Result']))
     row.update(imts)
     return row
+
+
+def _append_summary(summary, imclist, imtlist, imc_tables):
+    for imc in imclist:
+        if imc not in imc_tables:
+            cols = FLATFILE_COLUMNS + imtlist
+            imc_table = pd.DataFrame(columns=cols)
+            row = _get_table_row(stream, summary, event, imc)
+            if not len(row):
+                continue
+            imc_table = imc_table.append(row, ignore_index=True)
+            imc_tables[imc] = imc_table
+        else:
+            imc_table = imc_tables[imc]
+            row = _get_table_row(stream, summary, event, imc)
+            if not len(row):
+                continue
+            imc_table = imc_table.append(row, ignore_index=True)
+            imc_tables[imc] = imc_table
+    return imc_tables

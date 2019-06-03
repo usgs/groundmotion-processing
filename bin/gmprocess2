@@ -189,6 +189,9 @@ def main(pparser, args):
                 warnings.simplefilter("ignore",
                                       category=H5pyDeprecationWarning)
                 workspace.addStreams(event, pstreams, label=process_tag)
+                workspace.calcStreamMetrics(event.id,
+                                            labels=[process_tag],
+                                            config=config)
             processing_done = True
 
         reporting_done = False
@@ -271,8 +274,12 @@ def main(pparser, args):
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore",
                                       category=H5pyDeprecationWarning)
-                tevent_table, timc_tables = workspace.getTables(
-                    labels[0])
+                if args.recompute_metrics:
+                    tevent_table, timc_tables = workspace.getTables(
+                        labels[0], config=config)
+                else:
+                    tevent_table, timc_tables = workspace.getTables(
+                        labels[0], config=None)
             if event_table is None:
                 event_table = tevent_table
             else:
@@ -406,6 +413,9 @@ if __name__ == '__main__':
 
     parser.add_argument('-c', '--config',
                         help='Supply custom configuration file')
+
+    parser.add_argument('-r', '--recompute-metrics', action='store_true',
+                        help='Recompute metrics (i.e. from new config)')
 
     parser.add_argument('-l', '--log-file',
                         help='Supply file name to store processing log info.')
