@@ -217,6 +217,38 @@ def test_workspace():
         shutil.rmtree(tdir)
 
 
+def test_metrics2():
+    eventid = 'usb000syza'
+    datafiles, event = read_data_dir('knet',
+                                     eventid,
+                                     '*')
+    datadir = os.path.split(datafiles[0])[0]
+    raw_streams = StreamCollection.from_directory(datadir)
+    config = get_config()
+    config['metrics']['output_imts'].append('Arias')
+    config['metrics']['output_imcs'].append('arithmetic_mean')
+    # turn off sta/lta check and snr checks
+    newconfig = drop_processing(config, ['check_sta_lta', 'compute_snr'])
+    processed_streams = process_streams(raw_streams, event, config=newconfig)
+
+    tdir = tempfile.mkdtemp()
+    try:
+        tfile = os.path.join(tdir, 'test.hdf')
+        workspace = StreamWorkspace(tfile)
+        workspace.addEvent(event)
+        workspace.addStreams(event, processed_streams, label='processed')
+        workspace.calcStreamMetrics(event.id, labels=['processed'])
+        etable, imc_tables1 = workspace.getTables('processed')
+        etable2, imc_tables2 = workspace.getTables('processed', config=config)
+        assert 'ARITHMETIC_MEAN' not in imc_tables1
+        assert 'ARITHMETIC_MEAN' in imc_tables2
+        assert 'ARIAS' in imc_tables2['ARITHMETIC_MEAN']
+    except Exception as e:
+        raise(e)
+    finally:
+        shutil.rmtree(tdir)
+
+
 def test_metrics():
     eventid = 'usb000syza'
     datafiles, event = read_data_dir('knet',
@@ -284,6 +316,7 @@ def drop_processing(config, keys):
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
+    test_metrics2()
     test_metrics()
     test_stream_params()
     test_workspace()
