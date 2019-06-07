@@ -62,7 +62,8 @@ Installation and Dependencies
 - The ``install.sh`` script installs this package and all other dependencies,
   including python and the required python libraries. It is regularly tested
   on OSX, CentOS, and Ubuntu.
-- Alternative install with conda: 
+- Alternative install with conda (**not** recommended currently because we are
+  not able to keep it up to do with the rapid rate of development): 
 .. code-block::
 
     conda install gmprocess
