@@ -3,6 +3,7 @@ import json
 import re
 import copy
 import warnings
+import logging
 
 # third party imports
 import pyasdf
@@ -10,6 +11,8 @@ import numpy as np
 from obspy.core.utcdatetime import UTCDateTime
 import pandas as pd
 from h5py.h5py_warnings import H5pyDeprecationWarning
+from obspy.geodetics.base import gps2dist_azimuth
+from openquake.hazardlib.geo.geodetic import distance
 
 # local imports
 from gmprocess.stationtrace import StationTrace, TIMEFMT_MS
@@ -123,6 +126,7 @@ class StreamWorkspace(object):
         station_dict = {}
         for stream in streams:
             station = stream[0].stats['station']
+            logging.info('Adding waveforms for station %s' % station)
             # is this a raw file? Check the trace for provenance info.
             is_raw = not len(stream[0].getProvenanceKeys())
 
@@ -372,20 +376,87 @@ class StreamWorkspace(object):
         return stations
 
     def setStreamMetrics(self, eventid, label, summary):
-        xmlstr = summary.getMetricXML()
+        xmlstr = summary.get_metric_xml()
         path = '%s_%s_%s' % (eventid, summary.station_code.lower(), label)
 
+        self.insert_aux(xmlstr, 'WaveFormMetrics', path)
+
+    def insert_aux(self, datastr, data_name, path):
         # this seems like a lot of effort
         # just to store a string in HDF, but other
         # approached failed. Suggestions are welcome.
-        jsonarray = np.frombuffer(xmlstr, dtype=np.uint8)
-        dtype = 'WaveFormMetrics'
+        databuf = datastr.encode('utf-8')
+        data_array = np.frombuffer(databuf, dtype=np.uint8)
+        dtype = data_name
         self.dataset.add_auxiliary_data(
-            jsonarray,
+            data_array,
             data_type=dtype,
             path=path,
             parameters={}
         )
+
+    def calcStationMetrics(self, eventid, stations=None, labels=None):
+        """Calculate distance measures for each station.
+
+        """
+        if not self.hasEvent(eventid):
+            fmt = 'No event matching %s found in workspace.'
+            raise KeyError(fmt % eventid)
+
+        streams = self.getStreams(eventid, stations=stations, labels=labels)
+        event = self.getEvent(eventid)
+        for stream in streams:
+            tag = stream.tag
+            _, station, label = tag.split('_')
+            elat = event.latitude
+            elon = event.longitude
+            edepth = event.depth_km
+            slat = stream[0].stats.coordinates.latitude
+            slon = stream[0].stats.coordinates.longitude
+            sdep = stream[0].stats.coordinates.elevation
+            epidist_m, _, _ = gps2dist_azimuth(elat, elon, slat, slon)
+            hypocentral_distance = distance(elat, elon, sdep,
+                                            slat, slon, edepth)
+            xmlfmt = '''<station_metrics>
+            <hypocentral_distance units="km">%.1f</hypocentral_distance>
+            <epicentral_distance units="km">%.1f</epicentral_distance>
+            </station_metrics>
+            '''
+            xmlstr = xmlfmt % (epidist_m / 1000, hypocentral_distance)
+            path = '%s_%s_%s' % (eventid, station.lower(), label)
+            self.insert_aux(xmlstr, 'StationMetrics', path)
+
+    def getStationMetrics(self, eventid, station, label):
+        """Extract a StationSummary object from the ASDF file for a given input Stream.
+
+        Args:
+            eventid (str):
+                ID of event to search for in ASDF file.
+            station (str):
+                Station to return metrics from.
+            label (str):
+                Processing label to return metrics from.
+
+        Returns:
+            StationSummary: Object containing all stream metrics.
+        """
+        if 'WaveFormMetrics' not in self.dataset.auxiliary_data:
+            raise KeyError('Waveform metrics not found in workspace.')
+        auxholder = self.dataset.auxiliary_data.WaveFormMetrics
+        stream_path = '%s_%s_%s' % (eventid, station.lower(), label)
+        if stream_path not in auxholder:
+            fmt = 'Waveform metrics for event %s and stream %s not found in workspace.'
+            raise KeyError(fmt % (eventid, tag))
+        bytelist = auxholder[stream_path].data[:].tolist()
+        xmlstr = ''.join([chr(b) for b in bytelist])
+        summary = StationSummary.fromMetricXML(xmlstr.encode('utf-8'))
+        return summary
+
+    def calcMetrics(self, eventid, stations=None, labels=None, config=None):
+        self.calcStreamMetrics(eventid,
+                               stations=stations,
+                               labels=labels, config=config)
+        self.calcStationMetrics(eventid, stations=stations, labels=labels)
 
     def calcStreamMetrics(self, eventid, stations=None,
                           labels=None, config=None):
@@ -416,14 +487,15 @@ class StreamWorkspace(object):
             eventid, station, label = tag.split('_')
             summary = StationSummary.from_config(
                 stream, event=event, config=config)
-            xmlstr = summary.getMetricXML()
+            xmlstr = summary.get_metric_xml()
 
             path = '%s_%s_%s' % (eventid, summary.station_code.lower(), label)
 
             # this seems like a lot of effort
             # just to store a string in HDF, but other
             # approached failed. Suggestions are welcome.
-            jsonarray = np.frombuffer(xmlstr, dtype=np.uint8)
+            xmlbytes = xmlstr.encode('utf-8')
+            jsonarray = np.frombuffer(xmlbytes, dtype=np.uint8)
             dtype = 'WaveFormMetrics'
             self.dataset.add_auxiliary_data(
                 jsonarray,
@@ -588,8 +660,21 @@ class StreamWorkspace(object):
             fmt = 'Waveform metrics for event %s and stream %s not found in workspace.'
             raise KeyError(fmt % (eventid, tag))
         bytelist = auxholder[stream_path].data[:].tolist()
-        xmlstr = ''.join([chr(b) for b in bytelist])
-        summary = StationSummary.fromMetricXML(xmlstr.encode('utf-8'))
+        xml_stream = ''.join([chr(b) for b in bytelist])
+        xml_stream = xml_stream.encode('utf-8')
+
+        if 'StationMetrics' not in self.dataset.auxiliary_data:
+            raise KeyError('Station metrics not found in workspace.')
+        auxholder = self.dataset.auxiliary_data.StationMetrics
+        stream_path = '%s_%s_%s' % (eventid, station.lower(), label)
+        if stream_path not in auxholder:
+            fmt = 'Station metrics for event %s and stream %s not found in workspace.'
+            raise KeyError(fmt % (eventid, tag))
+        bytelist = auxholder[stream_path].data[:].tolist()
+        xml_station = ''.join([chr(b) for b in bytelist])
+        xml_station = xml_station.encode('utf-8')
+
+        summary = StationSummary.from_xml(xml_stream, xml_station)
         return summary
 
     def summarizeLabels(self):
@@ -692,18 +777,6 @@ class StreamWorkspace(object):
             raise KeyError(fmt % eventid)
         eventobj2 = ScalarEvent.fromEvent(eventobj)
         return eventobj2
-
-    def addStationMetrics(self, station_code, dict_or_metric_xml):
-        """Add station metrics IMC/IMT information to ASDF file. Input
-        can either be a dict (?) or pre-defined XML file. XML
-        data will be written to ASDF file.
-        """
-        pass
-
-    def getStationMetrics(self, station_code):
-        """Retrieve station metrics given station code.
-        """
-        pass
 
     def getProvenance(self, eventid, stations=None, labels=None):
         """Return DataFrame with processing history for streams matching input criteria.

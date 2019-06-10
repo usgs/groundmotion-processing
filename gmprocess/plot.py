@@ -51,7 +51,7 @@ def plot_regression(event_table, imc, imc_table, imt, filename,
     # approach
     if imt.startswith("SA") | (imt == "PGA"):
         units = "%g"
-    elif imt == "PGV":
+    elif imt.startswith('FAS') or imt in ['ARIAS', 'PGV']:
         units = "cm/s"
     else:
         raise Exception('Unknown units for IMT %s' % imt)

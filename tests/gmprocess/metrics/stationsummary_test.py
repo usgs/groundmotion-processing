@@ -138,10 +138,12 @@ def test_stationsummary():
                'rotd100.0']
     imtlist = ['sa1.0', 'PGA', 'pgv', 'fas2.0', 'arias']
     stream_summary = StationSummary.from_stream(stream, imclist, imtlist)
-    xmlstr = stream_summary.getMetricXML()
-    print(xmlstr.decode('utf-8'))
+    xmlstr = stream_summary.get_metric_xml()
+    print(xmlstr)
 
-    stream2 = StationSummary.fromMetricXML(xmlstr)
+    xml_station = stream_summary.get_station_xml()
+
+    stream2 = StationSummary.from_xml(xmlstr, xml_station)
     cmp1 = np.sort(['GREATER_OF_TWO_HORIZONTALS', 'H1', 'H2', 'Z',
                     'ROTD100.0', 'ROTD50.0'])
     cmp2 = np.sort(stream2.components)

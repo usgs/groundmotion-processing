@@ -237,7 +237,7 @@ def test_metrics2():
         workspace = StreamWorkspace(tfile)
         workspace.addEvent(event)
         workspace.addStreams(event, processed_streams, label='processed')
-        workspace.calcStreamMetrics(event.id, labels=['processed'])
+        workspace.calcMetrics(event.id, labels=['processed'])
         etable, imc_tables1 = workspace.getTables('processed')
         etable2, imc_tables2 = workspace.getTables('processed', config=config)
         assert 'ARITHMETIC_MEAN' not in imc_tables1
@@ -273,6 +273,7 @@ def test_metrics():
         summary2 = StationSummary.from_config(stream2)
         workspace.setStreamMetrics(event.id, 'processed', summary1)
         workspace.setStreamMetrics(event.id, 'processed', summary2)
+        workspace.calcStationMetrics(event.id, labels=['processed'])
         summary1_a = workspace.getStreamMetrics(event.id,
                                                 stream1[0].stats.station,
                                                 'processed')

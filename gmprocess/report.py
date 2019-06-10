@@ -226,6 +226,9 @@ def build_report_latex(sc, directory, origin, config=None):
         finally:
             os.chdir(current_directory)
 
+    # make report file an absolute path
+    report_file = os.path.join(directory, report_file)
+
     return (report_file, res)
 
 

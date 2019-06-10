@@ -4,6 +4,13 @@ from gmprocess.metrics.imc.imc import IMC
 
 class Greater_Of_Two_Horizontals(IMC):
     """Class defining steps and invalid imts, for greater of two horizontals."""
+
+    # making invalid IMTs a class variable because
+    # 1) it doesn't change with instances
+    # 2) information can now be retrieved without
+    #    instantiating first
+    _invalid_imts = ['ARIAS', 'FAS']
+
     def __init__(self, imc, imt, percentile=None, period=None):
         """
         Args:
@@ -17,7 +24,6 @@ class Greater_Of_Two_Horizontals(IMC):
         """
         super().__init__(imc, imt, percentile=None, period=None)
         self._steps = {
-                'Rotation': 'null_rotation',
-                'Combination2': 'greater_of_two_horizontals',
+            'Rotation': 'null_rotation',
+            'Combination2': 'greater_of_two_horizontals',
         }
-        self._invalid_imts = ['ARIAS', 'FAS']

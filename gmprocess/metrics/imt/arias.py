@@ -5,6 +5,14 @@ from gmprocess.metrics.imt.imt import IMT
 
 class Arias(IMT):
     """Class defining steps and invalid imts, for arias intensity."""
+
+    # making invalid IMCs a class variable because
+    # 1) it doesn't change with instances
+    # 2) information can now be retrieved without
+    #    instantiating first
+    imts, imcs = gather_pgms()
+    _invalid_imcs = [imc for imc in imcs if imc != 'arithmetic_mean']
+
     def __init__(self, imt, imc, period=None):
         """
         Args:
@@ -15,10 +23,8 @@ class Arias(IMT):
         """
         super().__init__(imt, imc, period=None)
         self._steps = {
-                'Transform2': 'null_transform',
-                'Transform3': 'null_transform',
-                'Combination1': 'null_combination',
-                'Reduction': 'arias',
+            'Transform2': 'null_transform',
+            'Transform3': 'null_transform',
+            'Combination1': 'null_combination',
+            'Reduction': 'arias',
         }
-        imts, imcs = gather_pgms()
-        self._invalid_imcs = [imc for imc in imcs if imc != 'arithmetic_mean']

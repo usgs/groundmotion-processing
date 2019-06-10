@@ -4,6 +4,13 @@ from gmprocess.metrics.imc.imc import IMC
 
 class Radial_Transverse(IMC):
     """Class defining steps and invalid imts, for radial transverse."""
+
+    # making invalid IMTs a class variable because
+    # 1) it doesn't change with instances
+    # 2) information can now be retrieved without
+    #    instantiating first
+    _invalid_imts = ['FAS', 'ARIAS']
+
     def __init__(self, imc, imt, percentile=None, period=None):
         """
         Args:
@@ -17,7 +24,6 @@ class Radial_Transverse(IMC):
         """
         super().__init__(imc, imt, percentile=None, period=None)
         self._steps = {
-                'Rotation': 'radial_transverse',
-                'Combination2': 'null_combination',
+            'Rotation': 'radial_transverse',
+            'Combination2': 'null_combination',
         }
-        self._invalid_imts = ['FAS', 'ARIAS']

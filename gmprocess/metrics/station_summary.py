@@ -180,7 +180,6 @@ class StationSummary(object):
         Args:
             station_code (str): Station code for the given pgms.
             pgms (dictionary): Dictionary of pgms.
-
         Note:
             The pgm dictionary must be formated as imts with subdictionaries
             containing imcs:
@@ -490,11 +489,34 @@ class StationSummary(object):
         return self._summary
 
     @classmethod
-    def fromMetricXML(cls, xmlstr):
+    def from_xml(cls, xml_stream, xml_station):
+        """Instantiate a StationSummary from metrics XML stored in ASDF file.
+
+        <waveform_metrics>
+            <rot_d50>
+                <pga units="m/s**2">0.45</pga>
+                <sa percent_damping="5.0" units="g">
+                <value period="2.0">0.2</value>
+            </rot_d50>
+            <maximum_component>
+            </maximum_component>
+        </waveform_metrics>
+
+        <station_metrics>
+            <hypocentral_distance units="km">100</hypocentral_distance>
+            <epicentral_distance units="km">120</epicentral_distance>
+        </station_metrics>
+
+        Args:
+            xml_stream (str): Stream metrics XML string in format above.
+            xml_station (str): Station metrics XML string in format above.
+        Returns:
+            StationSummary: Object summarizing all station metrics.
+
+        """
         imtlist = gather_pgms()[0]
-        root = etree.fromstring(xmlstr)
+        root = etree.fromstring(xml_stream)
         pgms = {}
-        station_code = None
         damping = None
         for element in root.iter():
             etag = element.tag
@@ -518,9 +540,18 @@ class StationSummary(object):
                 pgms[imt] = tdict
         station = cls.from_pgms(station_code, pgms)
         station._damping = damping
+        # extract info from station metrics, fill in metadata
+        root = etree.fromstring(xml_station)  # station metrics element
+        for element in root.iter():
+            etag = element.tag
+            if etag == 'epicentral_distance':
+                station._epicentral_distance = float(element.text)
+            if etag == 'hypocentral_distance':
+                station._hypocentral_distance = float(element.text)
+
         return station
 
-    def getMetricXML(self):
+    def get_metric_xml(self):
         """Return XML for waveform metrics as defined for our ASDF implementation.
 
         Returns:
@@ -580,7 +611,30 @@ class StationSummary(object):
                     value = vals[0]
                 imc_tag.text = '%.4f' % value
         xmlstr = etree.tostring(root, pretty_print=True,
-                                encoding='utf-8', xml_declaration=True)
+                                encoding='unicode')
+        return xmlstr
+
+    def get_station_xml(self):
+        """Return XML for waveform metrics as defined for our ASDF implementation.
+
+        Returns:
+            str: XML in the form:
+                <station_metrics>
+                    <hypocentral_distance units="km">%.1f</hypocentral_distance>
+                    <epicentral_distance units="km">%.1f</epicentral_distance>
+                </station_metrics>
+        """
+        xmlfmt = '''<station_metrics>
+            <hypocentral_distance units="km">%.1f</hypocentral_distance>
+            <epicentral_distance units="km">%.1f</epicentral_distance>
+            </station_metrics>'''
+        epidist = np.nan
+        hypodist = np.nan
+        if self.epicentral_distance:
+            epidist = self.epicentral_distance
+        if self.hypocentral_distance:
+            hypodist = self.hypocentral_distance
+        xmlstr = xmlfmt % (hypodist, epidist)
         return xmlstr
 
     def toSeries(self):
