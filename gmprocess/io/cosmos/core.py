@@ -502,8 +502,13 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     coordinates['elevation'] = float(flt_data[2])
     for key in coordinates:
         if coordinates[key] == unknown:
-            warnings.warn('Missing %r. Setting to np.nan.' % key, Warning)
-            coordinates[key] = np.nan
+            if key != elevation:
+                warnings.warn('Missing %r. Setting to np.nan.' % key, Warning)
+                coordinates[key] = np.nan
+            else:
+                warnings.warn('Missing %r. Setting to 0.0.' % key, Warning)
+                coordinates[key] = 0.0
+
     hdr['coordinates'] = coordinates
 
     # standard metadata

@@ -71,7 +71,7 @@ def test_usc():
     # assert stats['npts'] == 7340
     np.testing.assert_almost_equal(stats.coordinates['latitude'], 34.419, 3)
     np.testing.assert_almost_equal(stats.coordinates['longitude'], -118.426, 3)
-    assert str(stats.coordinates['elevation']) == 'nan'
+    assert stats.coordinates['elevation'] == 0.0
     assert stats.standard['horizontal_orientation'] == 0
     assert stats.standard['instrument_period'] == 0.039
     assert stats.standard['instrument_damping'] == .577

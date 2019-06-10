@@ -643,7 +643,8 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
     latitude, longitude = _get_coords(latitude_str, longitude_str)
     coordinates['latitude'] = latitude
     coordinates['longitude'] = longitude
-    coordinates['elevation'] = np.nan
+    logging.warn('Setting elevation to 0.0')
+    coordinates['elevation'] = 0.0
 
     # Standard metadata
     standard['horizontal_orientation'] = float(angle)

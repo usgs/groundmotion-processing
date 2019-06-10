@@ -5,11 +5,11 @@ import os
 from datetime import datetime
 import re
 import copy
+import logging
 
 # third party imports
 import numpy as np
 from scipy import constants
-from obspy.core.utcdatetime import UTCDateTime
 
 # local
 from gmprocess.stationstream import StationStream
@@ -145,6 +145,8 @@ def _read_header(filename):
         altitude = 0.0
         if len(altparts) > 1 and len(altparts[1].strip()):
             altitude = float(altparts[1].strip())
+        else:
+            logging.warn('Setting elevation to 0.0')
         coords = {'latitude': float(lat_str),
                   'longitude': float(lon_str),
                   'elevation': altitude}

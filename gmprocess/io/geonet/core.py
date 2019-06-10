@@ -325,6 +325,7 @@ def _read_header(hdr_data, station, name, component, data_format,
     lonmn = hdr_data[2, 4]
     lonsc = hdr_data[2, 5]
     coordinates['longitude'] = _dms_to_dd(londg, lonmn, lonsc)
+    logging.warn('Setting elevation to 0.0')
     coordinates['elevation'] = 0.0
 
     # get other standard metadata
