@@ -4,6 +4,13 @@ from gmprocess.metrics.imc.imc import IMC
 
 class Quadratic_Mean(IMC):
     """Class defining steps and invalid imts, for quadratic mean."""
+
+    # making invalid IMTs a class variable because
+    # 1) it doesn't change with instances
+    # 2) information can now be retrieved without
+    #    instantiating first
+    _invalid_imts = ['ARIAS']
+
     def __init__(self, imc, imt, percentile=None, period=None):
         """
         Args:
@@ -16,10 +23,9 @@ class Quadratic_Mean(IMC):
         """
         super().__init__(imc, imt, percentile=None, period=None)
         self._steps = {
-                'Rotation': 'null_rotation',
-                'Combination2': 'quadratic_mean',
+            'Rotation': 'null_rotation',
+            'Combination2': 'quadratic_mean',
         }
         if imt.startswith('fas'):
             self._steps['Combination1'] = 'quadratic_mean'
             self._steps['Combination2'] = 'null_combination'
-        self._invalid_imts = ['ARIAS']

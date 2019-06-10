@@ -1,8 +1,6 @@
 import importlib
 import inspect
 import os
-import logging
-
 
 EXCLUDED_MODULES = ['__init__.py', 'imt.py', 'imc.py']
 BASE = os.path.dirname(os.path.abspath(__file__))

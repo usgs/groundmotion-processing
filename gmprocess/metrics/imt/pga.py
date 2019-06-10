@@ -4,6 +4,13 @@ from gmprocess.metrics.imt.imt import IMT
 
 class PGA(IMT):
     """Class defining steps and invalid imts, for peak ground acceleration."""
+
+    # making invalid IMCs a class variable because
+    # 1) it doesn't change with instances
+    # 2) information can now be retrieved without
+    #    instantiating first
+    _invalid_imcs = []
+
     def __init__(self, imt, imc, period=None):
         """
         Args:
@@ -14,9 +21,8 @@ class PGA(IMT):
         """
         super().__init__(imt, imc, period=None)
         self._steps = {
-                'Transform2': 'null_transform',
-                'Transform3': 'null_transform',
-                'Combination1': 'null_combination',
-                'Reduction': 'max',
+            'Transform2': 'null_transform',
+            'Transform3': 'null_transform',
+            'Combination1': 'null_combination',
+            'Reduction': 'max',
         }
-        self._invalid_imcs = []

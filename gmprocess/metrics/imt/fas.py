@@ -2,9 +2,19 @@
 from gmprocess.metrics.gather import gather_pgms
 from gmprocess.metrics.imt.imt import IMT
 
+imts, imcs = gather_pgms()
+valid_imcs = ['geometric_mean', 'arithmetic_mean', 'quadratic_mean']
+
 
 class FAS(IMT):
     """Class defining steps and invalid imts, for fourier amplitude spectra."""
+
+    # making invalid IMCs a class variable because
+    # 1) it doesn't change with instances
+    # 2) information can now be retrieved without
+    #    instantiating first
+    _invalid_imcs = [imc for imc in imcs if imc not in valid_imcs]
+
     def __init__(self, imt, imc, period):
         """
         Args:
@@ -15,10 +25,7 @@ class FAS(IMT):
         """
         super().__init__(imt, imc, period=None)
         self._steps = {
-                'Transform2': 'null_transform',
-                'Transform3': 'fft',
-                'Reduction': 'smooth_select',
+            'Transform2': 'null_transform',
+            'Transform3': 'fft',
+            'Reduction': 'smooth_select',
         }
-        imts, imcs = gather_pgms()
-        valid_imcs = ['geometric_mean', 'arithmetic_mean', 'quadratic_mean']
-        self._invalid_imcs = [imc for imc in imcs if imc not in valid_imcs]
