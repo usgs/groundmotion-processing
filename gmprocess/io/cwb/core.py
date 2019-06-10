@@ -207,7 +207,8 @@ def _get_header_info(file, data):
         timedelta(seconds=secs, microseconds=microsecs)
 
     # Set defaults
-    coordinates['elevation'] = np.nan
+    logging.warn('Setting elevation to 0.0')
+    coordinates['elevation'] = 0.0
     if 'longitude' not in coordinates:
         coordinates['longitude'] = np.nan
     if 'latitude' not in coordinates:

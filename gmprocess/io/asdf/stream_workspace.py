@@ -376,12 +376,29 @@ class StreamWorkspace(object):
         return stations
 
     def setStreamMetrics(self, eventid, label, summary):
+        """Set stream metrics from a StationSummary.
+
+        Args:
+            eventid (str):
+                Event ID corresponding to an Event in the workspace.
+            label (str):
+                Processing label to associate with stream metrics.
+            summary (StationSummary):
+                StationSummary object containing stream metrics.
+        """
         xmlstr = summary.get_metric_xml()
         path = '%s_%s_%s' % (eventid, summary.station_code.lower(), label)
 
         self.insert_aux(xmlstr, 'WaveFormMetrics', path)
 
     def insert_aux(self, datastr, data_name, path):
+        """Insert a string (usually json or xml) into Auxilliary array.
+
+        Args:
+            datastr (str): String containing data to insert into Aux array.
+            data_name (str): What this data should be called in the ASDF file.
+            path (str): The aux path where this data should be stored.
+        """
         # this seems like a lot of effort
         # just to store a string in HDF, but other
         # approached failed. Suggestions are welcome.
@@ -398,6 +415,13 @@ class StreamWorkspace(object):
     def calcStationMetrics(self, eventid, stations=None, labels=None):
         """Calculate distance measures for each station.
 
+        Args:
+            eventid (str):
+                ID of event to search for in ASDF file.
+            stations (list):
+                List of stations to create metrics for.
+            labels (list):
+                List of processing labels to create metrics for.
         """
         if not self.hasEvent(eventid):
             fmt = 'No event matching %s found in workspace.'
@@ -453,6 +477,17 @@ class StreamWorkspace(object):
         return summary
 
     def calcMetrics(self, eventid, stations=None, labels=None, config=None):
+        """Calculate both stream and station metrics for a set of waveforms.
+
+        Args:
+            eventid (str):
+                ID of event to search for in ASDF file.
+            stations (list):
+                List of stations to create metrics for.
+            labels (list):
+                List of processing labels to create metrics for.
+            config (dict): Configuration dictionary.
+        """
         self.calcStreamMetrics(eventid,
                                stations=stations,
                                labels=labels, config=config)
@@ -473,8 +508,8 @@ class StreamWorkspace(object):
                 List of valid component names.
             imtlist (list):
                 List of valid IMT names.
-            origin (obspy event origin object):
-                Origin object for the event.
+            config (dict):
+                Config dictionary.
         """
         if not self.hasEvent(eventid):
             fmt = 'No event matching %s found in workspace.'
@@ -509,6 +544,7 @@ class StreamWorkspace(object):
 
         Args:
             label (str): Calculate metrics only for the given label.
+            config (dict): Config dictionary.
 
         Returns:
             tuple: Elements are:

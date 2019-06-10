@@ -443,9 +443,11 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     if lon > 0:
         lon = -1 * lon
     coordinates['longitude'] = lon
-    coordinates['elevation'] = 0
+    coordinates['elevation'] = 0.0
     if floatheader[2, 2] != missing_data:
         coordinates['elevation'] = floatheader[2, 2]
+    else:
+        logging.warn('Setting elevation to 0.0')
 
     # figure out the channel code
     if format_specific['vertical_orientation'] in [0, 180]:
