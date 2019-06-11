@@ -5,16 +5,19 @@ This class functions as a list of StationStream objects, and enforces
 various rules, such as all traces within a stream are from the same station.
 """
 
+import re
+import copy
+import logging
+import fnmatch
+
+from obspy.core.event import Origin
+import pandas as pd
+
 from gmprocess.exception import GMProcessException
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.stationstream import StationStream
 from gmprocess.io.read_directory import directory_to_streams
-import copy
-import logging
 
-from obspy.core.event import Origin
-import pandas as pd
-import numpy as np
 
 INDENT = 2
 
@@ -101,7 +104,7 @@ class StreamCollection(object):
             raise GMProcessException(
                 'Only one label allowed within a StreamCollection.')
 
-    def select_colocated(self, preferece=["HN?", "BN?", "HH?", "BH?"]):
+    def select_colocated(self, preference=["HN?", "BN?", "HH?", "BH?"]):
         """
         Detect colocated instruments and select the preferred instrument type.
 
@@ -120,7 +123,7 @@ class StreamCollection(object):
                   list then label all as failed.
 
         Args:
-            preferece (list):
+            preference (list):
                 List of strings indicating preferred instrument types.
         """
 
@@ -148,28 +151,29 @@ class StreamCollection(object):
             # Are there colocated instruments for this group?
             if len(group) > 1:
                 # If so, loop over list of preferred instruments
-                group_insts = np.array([self[g].get_inst() for g in group])
+                group_insts = [self[g].get_inst() for g in group]
 
                 # Loop over preferred instruments
                 no_match = True
-                for pref in preferece:
+                for pref in preference:
                     # Is this instrument available in the group?
-                    idx = np.where(pref[0:2] == group_insts)[0]
-                    if len(idx):
+                    r = re.compile(pref[0:2])
+                    inst_match = list(filter(r.match, group_insts))
+                    if len(inst_match):
                         no_match = False
                         # Select index; if more than one, we just take the
                         # first one because we don't know any better
-                        keep = idx[0]
+                        keep = inst_match[0]
 
                         # Label all non-selected streams in the group as failed
-                        to_fail = list(range(len(group)))
-                        del to_fail[keep]
+                        to_fail = group_insts
+                        to_fail.remove(keep)
                         for tf in to_fail:
-                            for tr in self[group[tf]]:
-                                tr.fail(
-                                    'Colocated with %s.'
-                                    % self[group[keep]].get_id()
-                                )
+                            for st in self.select(instrument=tf):
+                                for tr in st:
+                                    tr.fail(
+                                        'Colocated with %s instrument.' % keep
+                                    )
 
                         break
                 if no_match:
@@ -264,7 +268,6 @@ class StreamCollection(object):
                     - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).
         """
         streams = self.streams
-        num_streams = len(streams)
         # dept for an origin object should be stored in meters
         origin = Origin(resource_id=origin['id'], latitude=origin['lat'],
                         longitude=origin['lon'], time=origin['time'],
@@ -405,6 +408,40 @@ class StreamCollection(object):
         Copy method.
         """
         return copy.deepcopy(self)
+
+    def select(self, network=None, station=None, instrument=None):
+        """
+        Return a new StreamCollection with only those StationStreams
+        that match the selection criteria.
+
+        Based on obspy's `select` method for traces.
+
+        Args:
+            network (str):
+                Network code.
+            station (str):
+                Station code.
+            instrument (str):
+                Instrument code; i.e., the first two characters of the
+                channel.
+        """
+        sel = []
+        for st in self:
+            inst = st.get_inst()
+            net_sta = st.get_net_sta()
+            net = net_sta.split('.')[0]
+            sta = net_sta.split('.')[1]
+            if network is not None:
+                if not fnmatch.fnmatch(net.upper(), network.upper()):
+                    continue
+            if station is not None:
+                if not fnmatch.fnmatch(sta.upper(), station.upper()):
+                    continue
+            if instrument is not None:
+                if not fnmatch.fnmatch(inst.upper(), instrument.upper()):
+                    continue
+            sel.append(st)
+        return self.__class__(sel)
 
     def __group_by_net_sta_inst(self):
         trace_list = []

@@ -15,7 +15,7 @@ def test_colocated():
 
     # What if no preference is matched?
     sc = StreamCollection.from_directory(datadir)
-    sc.select_colocated(preferece=["XX?"])
+    sc.select_colocated(preference=["XX"])
     assert sc.n_passed == 1
     assert sc.n_failed == 6
 
