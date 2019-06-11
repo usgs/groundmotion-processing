@@ -523,7 +523,7 @@ class StreamWorkspace(object):
             try:
                 summary = StationSummary.from_config(
                     stream, event=event, config=config)
-            except PGMException as pgme:
+            except Exception as pgme:
                 fmt = 'Could not create stream metrics for event %s, station %s: "%s"'
                 logging.warning(fmt % (eventid, station, str(pgme)))
             xmlstr = summary.get_metric_xml()
