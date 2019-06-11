@@ -165,6 +165,11 @@ def process_streams(streams, origin, config=None):
             else:
                 stream = globals()[step_name](stream, **step_args)
 
+    # -------------------------------------------------------------------------
+    # Begin colocated instrument selection
+    colocated_conf = config['colocated']
+    processed_streams.select_colocated(**colocated_conf)
+
     logging.info('Finished processing streams.')
     return processed_streams
 

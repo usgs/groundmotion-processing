@@ -5,16 +5,16 @@ This class functions as a list of StationStream objects, and enforces
 various rules, such as all traces within a stream are from the same station.
 """
 
+from gmprocess.exception import GMProcessException
+from gmprocess.metrics.station_summary import StationSummary
+from gmprocess.stationstream import StationStream
+from gmprocess.io.read_directory import directory_to_streams
 import copy
 import logging
 
 from obspy.core.event import Origin
 import pandas as pd
-
-from gmprocess.io.read_directory import directory_to_streams
-from gmprocess.stationstream import StationStream
-from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.exception import GMProcessException
+import numpy as np
 
 INDENT = 2
 
@@ -100,6 +100,87 @@ class StreamCollection(object):
         if len(set(all_labels)) > 1:
             raise GMProcessException(
                 'Only one label allowed within a StreamCollection.')
+
+    def select_colocated(self, preferece=["HN?", "BN?", "HH?", "BH?"]):
+        """
+        Detect colocated instruments and select the preferred instrument type.
+
+        This uses the a list of the first two channel characters, given as
+        'preference' in the 'colocated' section of the config. The algorithm
+        is:
+
+            1) Generate list of StationStreams that have the same station code.
+            2) For each colocated group, loop over the list of preferred
+               instrument codes, select the first one that is encountered by
+               labeling all others a failed.
+
+                * If the preferred instrument type matches more than one
+                  StationStream, pick the first (hopefully this never happens).
+                * If no StationStream matches any of the codes in the preferred
+                  list then label all as failed.
+
+        Args:
+            preferece (list):
+                List of strings indicating preferred instrument types.
+        """
+
+        # Create a list of streams with matching id (combo of net and station).
+        all_matches = []
+        match_list = []
+        for idx1, stream1 in enumerate(self):
+            if idx1 in all_matches:
+                continue
+            matches = [idx1]
+            net_sta = stream1.get_net_sta()
+            for idx2, stream2 in enumerate(self):
+                if idx1 != idx2 and idx1 not in all_matches:
+                    if (net_sta == stream2.get_net_sta()):
+                        matches.append(idx2)
+            if len(matches) > 1:
+                match_list.append(matches)
+                all_matches.extend(matches)
+            else:
+                if matches[0] not in all_matches:
+                    match_list.append(matches)
+                    all_matches.extend(matches)
+
+        for group in match_list:
+            # Are there colocated instruments for this group?
+            if len(group) > 1:
+                # If so, loop over list of preferred instruments
+                group_insts = np.array([self[g].get_inst() for g in group])
+
+                # Loop over preferred instruments
+                no_match = True
+                for pref in preferece:
+                    # Is this instrument available in the group?
+                    idx = np.where(pref[0:2] == group_insts)[0]
+                    if len(idx):
+                        no_match = False
+                        # Select index; if more than one, we just take the
+                        # first one because we don't know any better
+                        keep = idx[0]
+
+                        # Label all non-selected streams in the group as failed
+                        to_fail = list(range(len(group)))
+                        del to_fail[keep]
+                        for tf in to_fail:
+                            for tr in self[group[tf]]:
+                                tr.fail(
+                                    'Colocated with %s.'
+                                    % self[group[keep]].get_id()
+                                )
+
+                        break
+                if no_match:
+                    # Fail all Streams in group
+                    for g in group:
+                        for tr in self[g]:
+                            tr.fail(
+                                'No instruments match entries in the '
+                                'colocated instrument preference list for '
+                                'this station.'
+                            )
 
     @classmethod
     def from_directory(cls, directory):
@@ -325,7 +406,7 @@ class StreamCollection(object):
         """
         return copy.deepcopy(self)
 
-    def __group_by_net_sta_inst(self, drop_error_streams=True):
+    def __group_by_net_sta_inst(self):
         trace_list = []
 
         stream_params = {}
@@ -387,11 +468,11 @@ class StreamCollection(object):
                 grouped_trace_list.append(
                     trace_list[i]
                 )
-            # some networks (Bureau of Reclamation, at the time of this writing)
-            # use the location field to indicate different sensors at (roughly)
-            # the same location.
-            # if we know this (as in the case of BOR), we can use this to trim
-            # the stations into 3-channel streams.
+            # some networks (e.g., Bureau of Reclamation, at the time of this
+            # writing) use the location field to indicate different sensors at
+            # (roughly) the same location. If we know this (as in the case of
+            # BOR), we can use this to trim the stations into 3-channel
+            # streams.
             streams = split_station(grouped_trace_list)
 
             for st in streams:

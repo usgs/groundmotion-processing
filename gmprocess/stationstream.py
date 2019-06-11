@@ -169,6 +169,18 @@ class StationStream(Stream):
         """
         return self.id
 
+    def get_net_sta(self):
+        """
+        Get just the network and station compopnent of the ID.
+        """
+        return '.'.join(self.get_id().split('.')[0:2])
+
+    def get_inst(self):
+        """
+        Get just the network and station compopnent of the ID.
+        """
+        return self.get_id().split('.')[2]
+
     @property
     def passed(self):
         """
