@@ -1,46 +1,63 @@
 #!/usr/bin/env python
 
+# stdlib imports
 import argparse
-import os
-import sys
-from datetime import datetime
 import logging
-import shutil
-import glob
+import os.path
+import sys
+import textwrap
+from datetime import datetime
 import warnings
 
 # third party imports
-from openpyxl.workbook.workbook import Workbook
-from openpyxl.utils.dataframe import dataframe_to_rows
-import numpy as np
-from impactutils.io.cmd import get_command_output
+import pandas as pd
 from h5py.h5py_warnings import H5pyDeprecationWarning
-import matplotlib.pyplot as plt
-import cartopy.crs as ccrs
-import cartopy.feature as cfeature
-import yaml
 
-from gmprocess.event import get_event_object
-from gmprocess.io.global_fetcher import fetch_data
-from gmprocess.io.fetch_utils import plot_raw
-from gmprocess.logging import setup_logger
+# local imports
 from gmprocess.args import add_shared_args
-from gmprocess.config import get_config, update_dict
-from gmprocess.io.read_directory import directory_to_streams
-from gmprocess.streamcollection import StreamCollection
-from gmprocess.stream import streams_to_dataframe
-from gmprocess.processing import process_streams
-from gmprocess.metrics.station_summary import StationSummary
+from gmprocess.io.fetch_utils import (get_events, update_config,
+                                      save_shakemap_amps, download,
+                                      draw_stations_map)
+from gmprocess.logging import setup_logger
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
+from gmprocess.processing import process_streams
+from gmprocess.report import build_report_latex
+from gmprocess.plot import summary_plots, plot_regression
+from gmprocess.config import get_config
 
+CMD_TUPLES = [
+    ('assemble', ('Download data from all available online sources, or '
+                  'load raw data from files if --directory is selected.')),
+    ('process', ('Process data using steps defined '
+                 'in configuration file.')),
+    ('report', 'Create a summary report for each event specified.'),
 
-CONFIG = get_config()
-TIMEFMT = '%Y-%m-%dT%H:%M:%S'
-DEG2KM = 111.0
+    ('provenance', 'Generate provenance table in --format format.'),
+    ('export', ('Generate metrics tables (NGA-style "flat" files) '
+                'for all events and IMCs.')),
+    ('shakemap', ('Generate ShakeMap-friendly peak ground motions '
+                  'table.'))
+]
 
-NON_IMCS = ['ELEVATION', 'EPICENTRAL_DISTANCE',
-            'HYPOCENTRAL_DISTANCE', 'LAT', 'LON', 'NAME', 'NETID',
-            'SOURCE', 'STATION']
+NON_IMT_COLS = set(['EarthquakeId',
+                    'Network',
+                    'NetworkDescription',
+                    'StationCode',
+                    'StationID',
+                    'StationDescription',
+                    'StationLatitude',
+                    'StationLongitude',
+                    'StationElevation',
+                    'SamplingRate',
+                    'EpicentralDistance',
+                    'HypocentralDistance',
+                    'H1Lowpass',
+                    'H1Highpass',
+                    'H2Lowpass',
+                    'H2Highpass',
+                    'SourceFile'])
+
+TAG_FMT = '%Y%m%d%H%M%S'
 
 
 class MyFormatter(argparse.RawTextHelpFormatter,
@@ -48,171 +65,18 @@ class MyFormatter(argparse.RawTextHelpFormatter,
     pass
 
 
-def parse_eventinfo(arginfo):
-    timestr, latstr, lonstr, depstr, magstr = arginfo
-    etime = datetime.strptime(timestr, TIMEFMT)
-    elat = float(latstr)
-    elon = float(lonstr)
-    edepth = float(depstr)
-    emag = float(magstr)
-    idstr = etime.strftime('%Y%m%d%H%M%S')
-
-    edict = {'id': idstr,
-             'time': etime,
-             'lat': elat,
-             'lon': elon,
-             'depth': edepth,
-             'magnitude': emag}
-    return edict
-
-
-def _get_summary(row):
-    # in our dataframe, imcs are the top level, and imts are below.
-    # to construct a new stationsummary, we need these to be inverted.
-    candidate_imcs = row.index.levels[0]
-    imtlist = list(filter(None, row.index.levels[1]))
-    imclist = list(set(candidate_imcs) - set(NON_IMCS))
-    pgms = {}
-    for imc in imclist:
-        for imt in imtlist:
-            if imt in row[imc]:
-                if imt in pgms and len(pgms[imt]):
-                    pgms[imt][imc] = row[imc][imt]
-                else:
-                    pgms[imt] = {imc: row[imc][imt]}
-    summary = StationSummary.from_pgms(row['STATION'].item(), pgms)
-    return summary
-
-
-def plot_stations(collection, event, outdir):
-    # make a map of all of the station locations
-    lats = [stream[0].stats.coordinates.latitude for stream in collection]
-    lats = np.array(lats)
-    lons = [stream[0].stats.coordinates.longitude for stream in collection]
-    lons = np.array(lons)
-
-    # # let's capture a crude peak acceleration
-    # pgas = []
-    # for stream in collection:
-    #     pga = -999999999
-    #     for trace in stream:
-    #         if trace.stats.channel.endswith('Z'):
-    #             continue
-    #         if trace.max() > pga:
-    #             pga = np.abs(trace.max())
-    #     pgas.append(pga)
-    # pgas = np.array(pgas)
-
-    # # construct an array of colors from the PGA values
-    # cmap = plt.get_cmap('jet')
-    # levels = np.log(np.linspace(pgas.min(), pgas.max(), 100))
-    # nsteps = 256
-    # z0 = np.linspace(levels[0], levels[-2], nsteps)
-    # z1 = np.linspace(levels[1], levels[-1], nsteps)
-    # palette = ColorPalette.fromColorMap('pga', z0, z1, cmap)
-    # colors = []
-    # for pga in pgas:
-    #     colors.append(palette.getDataColor(np.log(pga)))
-
-    plt.figure(figsize=(8, 8))
-    ax = plt.axes(projection=ccrs.Mercator())
-
-    res = '50m'
-    land = cfeature.NaturalEarthFeature('physical', 'land', res)
-    ocean = cfeature.NaturalEarthFeature('physical', 'ocean', res)
-    borders = cfeature.NaturalEarthFeature(
-        'cultural',
-        'admin_0_boundary_lines_land',
-        res)
-    states = cfeature.NaturalEarthFeature(
-        'cultural',
-        'admin_1_states_provinces_lines',
-        res)
-
-    ax.add_feature(land, zorder=1, edgecolor='face',
-                   facecolor=cfeature.COLORS['land'])
-    ax.add_feature(ocean, zorder=1, edgecolor='face',
-                   facecolor=cfeature.COLORS['water'])
-    # ax.add_feature(borders, zorder=2, edgecolor='k')
-    # ax.add_feature(states, zorder=2, edgecolor='k')
-    ax.coastlines(resolution=res, zorder=2)
-
-    # determine the map aspect ratio and extent
-    xmin = lons.min()
-    xmax = lons.max()
-    ymin = lats.min()
-    ymax = lats.max()
-    xrange = xmax - xmin
-    if xmin > xmax:
-        xrange = xmax + 360 - xmin
-    yrange = ymax - ymin
-    # square up the aspect ratio
-    ymean = np.mean([ymin, ymax])
-    latconv = np.cos(np.radians(ymean))
-    xrange_km = xrange * latconv * DEG2KM
-    yrange_km = yrange * DEG2KM
-    side_len = max(xrange_km, yrange_km)
-    newxmin = event.longitude - (side_len / latconv / DEG2KM)
-    newxmax = event.longitude + (side_len / latconv / DEG2KM)
-    newymin = event.latitude - (side_len / DEG2KM)
-    newymax = event.latitude + (side_len / DEG2KM)
-
-    ax.set_extent([newxmin, newxmax, newymin, newymax],
-                  crs=ccrs.PlateCarree())
-    ax.plot([event.longitude], [event.latitude],
-            'r*', transform=ccrs.PlateCarree(), zorder=101)
-    ax.scatter(lons, lats, c='b', marker='.',
-               transform=ccrs.PlateCarree(), zorder=100)
-    dstr = event.time.strftime('%b %d, %Y')
-    tfmt = 'Stations (N=%i) for event M%.1f %s (%s)'
-    ttpl = (len(collection),
-            event.magnitude,
-            dstr,
-            event.id)
-    plt.title(tfmt % ttpl)
-
-    mapname = os.path.join(outdir, 'station_map.png')
-    plt.savefig(mapname)
-    return mapname
-
-
-def get_periods(imt, period_params):
-    if period_params['use_array']:
-        start = period_params['start']
-        stop = period_params['stop']
-        num = period_params['num']
-        if period_params['spacing'] == 'logspace':
-            periods = np.logspace(start, stop, num)
-        else:
-            periods = np.linspace(start, stop, num)
-        additional_periods = [
-            p for p in period_params['defined_periods']]
-        periods = set(np.append(periods, additional_periods))
+def append_file(files_created, tag, filename):
+    if tag in files_created:
+        files_created[tag].append(filename)
     else:
-        periods = set(
-            [p for p in period_params['defined_periods']])
-
-    periods = sorted(list(periods))
-    period_strings = []
-    for period in periods:
-        period_strings.append('%s(%.4f)' % (imt, period))
-
-    return period_strings
+        files_created[tag] = [filename]
 
 
 def main(pparser, args):
-    # Initialize a string to store summary text to be printed at the end.
-    summary_text = ""
+    # get the process tag from the user or define by current datetime
+    process_tag = args.process_tag or datetime.utcnow().strftime(TAG_FMT)
 
-    if not args.eventid and not args.eventinfo:
-        print('Must specify either ComCat ID or event information')
-        pparser.print_help()
-        sys.exit(1)
-
-    if args.no_raw and args.download_only:
-        print('Specify one of --no-raw OR --download-only, not both.')
-        sys.exit(1)
-
+    # logging
     setup_logger(args)
     if args.log_file:
         logger = logging.getLogger()
@@ -221,343 +85,367 @@ def main(pparser, args):
         logger.removeHandler(stream_handler)
         logger.addHandler(fhandler)
 
-    # -------------------------------------------------------------------------
-    logging.info("Running gmprocess...")
-
-    config = get_config()
-
-    if args.config:
-        if not os.path.isfile(args.config):
-            print('Config file %s does not exist.' % args.config)
-            sys.exit(1)
-        try:
-            with open(args.config, 'rt') as f:
-                custom_cfg = yaml.load(f, Loader=yaml.FullLoader)
-                update_dict(config, custom_cfg)
-        except yaml.ParserError:
-            print('Config file %s is not valid YAML.' % args.config)
+    # config handling
+    configfile = args.config
+    if configfile is not None:
+        config = update_config(configfile)
+        if config is None:
+            print('\nCustom config file %s is invalid. Exiting.')
             sys.exit(1)
 
-    rawdir = None
-    if not args.no_raw:
-        rawdir = os.path.join(args.outdir, 'raw')
-        if not os.path.exists(rawdir):
-            os.makedirs(rawdir)
-
-    if args.eventid:
-        event = get_event_object(args.eventid)
-        etime = event.time.datetime
     else:
-        edict = parse_eventinfo(args.eventinfo)
-        event = get_event_object(edict)
-        etime = event.time
+        config = get_config()
 
-    if args.directory:
-        if os.path.exists(args.directory):
-            streams, bad, errors = directory_to_streams(args.directory)
-            collection = StreamCollection(streams, drop_non_free=True)
+    outdir = args.outdir
+    pcommands = args.commands
+    all_commands = set([cmd_tuple[0] for cmd_tuple in CMD_TUPLES])
+    if not set(pcommands) <= all_commands:
+        invalid_commands = list(set(pcommands) - all_commands)
+        print('\nThe following commands are not valid:')
+        for command in invalid_commands:
+            print('\t%s' % command)
+        print(('\nPlease read the documentation and select from the list of '
+               'appropriate pcommands.'))
+        print('Exiting.\n')
+        sys.exit(1)
+
+    eventids = args.eventids
+    textfile = args.textfile
+    eventinfo = args.eventinfo
+    input_directory = args.directory
+    if not eventids and not textfile and not input_directory and not eventinfo:
+        print('You must specify one of: -i, -t, -e or --directory.')
+        print('Exiting.')
+        sys.exit(1)
+
+    # get a list of ScalarEvent objects from one of the inputs
+    events = get_events(eventids, textfile, eventinfo, input_directory)
+    if not len(events):
+        print('No event information was found. Exiting.')
+        sys.exit(1)
+
+    if not os.path.isdir(outdir):
+        os.makedirs(outdir)
+
+    workspace_files = []
+
+    files_created = {}
+
+    for event in events:
+        event_dir = os.path.join(outdir, event.id)
+        if not os.path.exists(event_dir):
+            os.makedirs(event_dir)
+
+        workname = os.path.join(event_dir, 'workspace.hdf')
+        workspace_exists = os.path.isfile(workname)
+        workspace_has_processed = False
+        workspace = None
+        processing_done = False
+        if workspace_exists:
+            workspace_files.append(workname)
+            workspace = StreamWorkspace.open(workname)
+            labels = workspace.getLabels()
+            if len(labels):
+                labels.remove('unprocessed')
+            if len(labels) == 1:
+                process_tag = labels[0]
+                workspace_has_processed = True
+            else:
+                if 'process' not in pcommands:
+                    fmt = '\nThere are %i sets of processed data in %s.'
+                    tpl = (len(labels), workname)
+                    print(fmt % tpl)
+                    print(('This software can only handle one set of '
+                           'processed data. Exiting.\n'))
+                    sys.exit(1)
+
+        download_done = False
+        if 'assemble' in pcommands:
+            logging.info('Downloading/loading raw streams...')
+            workspace, workspace_file, rstreams = download(event, event_dir,
+                                                           config,
+                                                           input_directory)
+
+            download_done = True
+            append_file(files_created, 'Workspace', workname)
         else:
-            print("%s does not exist. Existing." % args.direcotry)
-            sys.exti(1)
-    else:
-        collection, errors = fetch_data(
-            etime,
-            event.latitude,
-            event.longitude,
-            event.depth_km,
-            event.magnitude,
-            config=config,
-            rawdir=rawdir
-        )
-    if not len(collection):
-        print('No data files found. Here are any errors that '
-              'may have come up:')
-        for error in errors:
-            print(error)
-        sys.exit(0)
+            if not workspace_exists:
+                print('\nYou opted not to download or process from input.')
+                print('No previous HDF workspace file could be found.')
+                print('Try re-running with the assemble command with or ')
+                print('without the --directory option.\n')
+                sys.exit(1)
+            if 'process' in pcommands:
+                logging.info('Getting raw streams from workspace...')
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore",
+                                          category=H5pyDeprecationWarning)
+                    rstreams = workspace.getStreams(event.id,
+                                                    labels=['unprocessed'])
+                download_done = True
+            else:
+                need_processed = set(['report', 'shakemap'])
+                need_pstreams = len(need_processed.intersection(pcommands))
+                if workspace_has_processed:
+                    if need_pstreams:
+                        logging.info(
+                            'Getting processed streams from workspace...')
+                        with warnings.catch_warnings():
+                            warnings.simplefilter(
+                                "ignore", category=H5pyDeprecationWarning)
+                            pstreams = workspace.getStreams(
+                                event.id, labels=[process_tag])
+                    download_done = True
+                    processing_done = True
 
-    print('Completed data fetching stage...')
-    print(collection)
+        if workname not in workspace_files:
+            workspace_files.append(workname)
 
-    if not os.path.isdir(args.outdir):
-        os.makedirs(args.outdir)
+        if 'process' in pcommands and download_done and not processing_done:
+            logging.info('Processing raw streams for event %s...' % event.id)
+            pstreams = process_streams(rstreams, event, config=config)
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore",
+                                      category=H5pyDeprecationWarning)
+                workspace.addStreams(event, pstreams, label=process_tag)
+                workspace.calcMetrics(event.id,
+                                      labels=[process_tag],
+                                      config=config)
+            processing_done = True
 
-    if not args.no_plot:
-        # ---------------------------------------------------------------------
-        print('Making plots...')
-        plotdir = os.path.join(args.outdir, 'plots')
+        reporting_done = False
+        if 'report' in pcommands and processing_done:
+            logging.info(
+                'Creating diagnostic plots for event %s...' % event.id)
+            plot_dir = os.path.join(event_dir, 'plots')
+            if not os.path.isdir(plot_dir):
+                os.makedirs(plot_dir)
+            for stream in pstreams:
+                summary_plots(stream, plot_dir, event)
 
-        mapname = plot_stations(collection, event, args.outdir)
+            mapfile = draw_stations_map(pstreams, event, event_dir)
+            append_file(files_created, 'Station map', mapfile)
 
-        idx = None
-        for i, pstep in enumerate(config['processing']):
-            if 'summary_plots' in pstep:
-                idx = i
-                break
-        if idx is None:
-            pstep = {'summary_plots': {'directory': plotdir}}
-            config['processing'].append(pstep)
-        else:
-            pstep = config['processing'][idx]
-            pstep['summary_plots']['directory'] = plotdir
+            logging.info(
+                'Creating diagnostic report for event %s...' % event.id)
+            # Build the summary report?
+            build_conf = config['build_report']
+            report_format = build_conf['format']
+            if report_format == 'latex':
+                report_file, success = build_report_latex(
+                    pstreams,
+                    event_dir,
+                    event,
+                    config=config
+                )
+            else:
+                report_file = ''
+                success = False
+            if os.path.isfile(report_file) and success:
+                reporting_done = True
+                append_file(files_created, 'Summary report', report_file)
 
-        if 'build_report' in config:
-            config['build_report']['run'] = True
-            config['build_report']['directory'] = args.outdir
-        else:
-            config['build_report'] = {'run': True, 'directory': args.outdir}
+        provenance_done = False
+        if 'provenance' in pcommands and processing_done:
+            logging.info(
+                'Creating provenance table for event %s...' % event.id)
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore",
+                                      category=H5pyDeprecationWarning)
+                provdata = workspace.getProvenance(event.id,
+                                                   labels=[process_tag])
+            if args.format == 'csv':
+                csvfile = os.path.join(event_dir, 'provenance.csv')
+                append_file(files_created, 'Provenance', csvfile)
+                provdata.to_csv(csvfile)
+            else:
+                excelfile = os.path.join(event_dir, 'provenance.xlsx')
+                append_file(files_created, 'Provenance', excelfile)
+                provdata.to_excel(excelfile, index=False)
+            provenance_done = True
 
-    # This is a hack to get the program to complete for problematic data that
-    # does not have elevation data. This needs to be updated/fixed soon!
-
-    for stream in collection:
-        for trace in stream:
-            if np.isnan(trace.stats.coordinates['elevation']):
-                logging.warning('Elevation is nan for %s!' % trace)
-                logging.warning('Setting elevation to 0.0 for %s.' % trace)
-                trace.stats.coordinates['elevation'] = 0.0
-
-    if not args.no_raw:
-        print('Plotting raw data...')
-        plot_raw(rawdir, collection, event)
-
-    if args.download_only:
-        fmt = '%i raw files with plots saved to %s.'
-        tpl = (len(collection), rawdir)
-        print(fmt % tpl)
-        sys.exit(0)
-
-    # -------------------------------------------------------------------------
-    print("Processing streams...")
-    processed = process_streams(collection, event, config=config)
-
-    imts = config['metrics']['output_imts']
-    imcs = config['metrics']['output_imcs']
-    if 'SA' in imts:
-        if 'sa' in config['metrics']:
-            pparams = config['metrics']['sa']['periods']
-            sa_imts = get_periods('SA', pparams)
-            imts += sa_imts
-        imts.remove('SA')
-    if 'FAS' in imts:
-        if 'fas' in config['metrics']:
-            pparams = config['metrics']['fas']['periods']
-            fas_imts = get_periods('FAS', pparams)
-            imts += fas_imts
-        imts.remove('FAS')
-
-    basename = event.time.strftime('%Y%m%d%H%M%S')
-
-    if args.eventid:
-        basename = args.eventid
-
-    provname = os.path.join(args.outdir, basename + '_provenance.csv')
-
-    framename = os.path.join(args.outdir, basename + '_metrics.csv')
-    if args.format == 'excel':
-        framename = os.path.join(args.outdir, basename + '_metrics.xlsx')
-    workname = os.path.join(args.outdir, basename + '_workspace.hdf')
-
-    summary_text += ('Data from %i stations saved to %s\n'
-                     % (len(processed), args.outdir))
-    summary_text += 'Waveforms: %s\n' % workname
-
-    # Write config file to output direcotry
-    conf_out = os.path.join(args.outdir, 'config.yml')
-    with open(conf_out, 'w') as outfile:
-        yaml.dump(config, outfile, default_flow_style=False)
-    summary_text += 'Processing config saved to: %s\n' % conf_out
-
-    # Only do dataframe if there are passed streams:
-    if processed.n_passed:
-        dataframe = streams_to_dataframe(processed,
-                                         imcs=imcs, imts=imts,
-                                         event=event)
-
-        summary_text += 'Provenance: %s\n' % provname
-        summary_text += 'Metrics: %s\n' % framename
-
-        if args.amptools_format:
-            ampfile_name = os.path.join(
-                args.outdir, basename + '_amptools_metrics.xlsx')
-
-            wb = Workbook()
-            ws = wb.active
-            for r in dataframe_to_rows(dataframe, index=True, header=True):
-                ws.append(r)
-
-            # we don't need the index column, so we'll delete it here
-            ws.delete_cols(1)
-            ws.insert_rows(1)
-            ws['A1'] = 'REFERENCE'
-            ws['B1'] = dataframe['SOURCE'].iloc[0]
-            wb.save(ampfile_name)
-
-            summary_text += 'Amptools file: %s\n' % ampfile_name
-
-    # save the waveform data to an ASDF file.
-    with warnings.catch_warnings():
-        warnings.filterwarnings("ignore", category=H5pyDeprecationWarning)
-        if os.path.isfile(workname):
-            os.remove(workname)
-        workspace = StreamWorkspace(workname)
-        workspace.addStreams(event, collection, label='raw')
-        workspace.addStreams(event, processed, label='processed')
-
-        # add in the metrics we've already calculated
-        for idx, row in dataframe.iterrows():
-            summary = _get_summary(row)
-            eid = args.eventid
-            workspace.setStreamMetrics(eid, 'processed', summary)
-
-        provdata = workspace.getProvenance(event.id, labels=['processed'])
-
-        if args.format == 'excel':
-            provname = os.path.join(args.outdir, basename + '_provenance.xlsx')
+        shakemap_done = False
+        if 'shakemap' in pcommands and processing_done:
+            logging.info(
+                'Creating shakemap table for event %s...' % event.id)
+            shakemap_file = save_shakemap_amps(pstreams, event, event_dir)
+            shakemap_done = True
+            append_file(files_created, 'shakemap', shakemap_file)
 
         workspace.close()
 
-    # save dataframe to desired format
-    if args.format == 'csv':
-        dataframe.to_csv(framename, index=False)
-        provdata.to_csv(provname, index=False)
-    else:
-        dataframe.to_excel(framename)
-        provdata.to_excel(provname, index=False)
-
-    # remove old pdf reports
-    pdf_files = glob.glob(os.path.join(args.outdir, 'gmprocess*.pdf'))
-    for pdf_file in pdf_files:
-        os.remove(pdf_file)
-
-    latest_tex = None
-    pdf_file = None
-    if not args.no_plot:
-        # there should be a .tex file in the output directory.
-        latexfiles = glob.glob(os.path.join(args.outdir, '*.tex'))
-        # get the most recent one
-
-        if len(latexfiles):
-            latest_tex = max(latexfiles, key=os.path.getctime)
-        if latest_tex is not None:
-            # Let's check the user's system
-            # to see if they have Latex installed.
-            latexpdf = shutil.which('pdflatex')
-            if latexpdf is None:
-                fmt = ('No LateX to PDF converter found on your '
-                       'system for report file "%s"')
-                print(fmt % latest_tex)
-            else:
-                fmt = '%s -halt-on-error %s'
-                tpl = (latexpdf, os.path.split(latest_tex)[-1])
-                cmd = fmt % tpl
-                odir = os.getcwd()
-                os.chdir(args.outdir)
-                res, stdout, stderr = get_command_output(cmd)
-                os.chdir(odir)
-                if not res:
-                    fmt = ('LateX to PDF conversion failed with '
-                           'errors: "%s" "%s"')
-                    print(fmt % (stdout, stderr))
-                    print('Processing Report (LateX): %s' % latest_tex)
+    # if n_passed is zero, don't
+    if 'export' in pcommands and processing_done and len(workspace_files):
+        event_table = None
+        imc_tables = {}
+        for workspace_file in workspace_files:
+            workspace = StreamWorkspace.open(workspace_file)
+            labels = workspace.getLabels()
+            labels.remove('unprocessed')
+            if len(labels) == 0:
+                fmt = ('Workspace file "%s" appears to have no processed '
+                       'data. Skipping.')
+                print(fmt % workspace_file)
+                continue
+            eventid = workspace.getEventIds()[0]
+            logging.info(
+                'Creating tables for event %s...' % eventid)
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore",
+                                      category=H5pyDeprecationWarning)
+                if args.recompute_metrics:
+                    tevent_table, timc_tables = workspace.getTables(
+                        labels[0], config=config)
                 else:
-                    latexbase, ext = os.path.splitext(latest_tex)
-                    pdf_file = latexbase + '.pdf'
+                    tevent_table, timc_tables = workspace.getTables(
+                        labels[0], config=None)
+            if event_table is None:
+                event_table = tevent_table
+            else:
+                event_table = pd.concat([event_table, tevent_table])
+            if not len(imc_tables):
+                imc_tables = timc_tables
+            else:
+                for imc, imc_table in imc_tables.items():
+                    if imc in timc_tables:
+                        timc_table = timc_tables[imc]
+                        imc_tables[imc] = pd.concat([imc_table, timc_table])
+            workspace.close()
 
-                    # rename report file
-                    newfile = os.path.join(args.outdir, 'gmprocess_report.pdf')
-                    os.rename(pdf_file, newfile)
-                    summary_text += 'Processing Report (PDF): %s\n' % newfile
+        if args.format == 'csv':
+            eventfile = os.path.join(outdir, 'events.csv')
+            event_table.to_csv(eventfile, index=False)
+            append_file(files_created, 'Event table', eventfile)
+            for imc, imc_table in imc_tables.items():
+                imcfile = os.path.join(outdir, '%s.csv' % imc.lower())
+                imc_table.to_csv(imcfile, index=False)
+                append_file(files_created, 'IMC tables', imcfile)
+        else:
+            eventfile = os.path.join(outdir, 'events.xlsx')
+            event_table.to_excel(eventfile, index=False)
+            append_file(files_created, 'Event table', eventfile)
+            for imc, imc_table in imc_tables.items():
+                imcfile = os.path.join(outdir, '%s.xlsx' % imc.lower())
+                imc_table.to_excel(imcfile, index=False)
+                append_file(files_created, 'IMC tables', imcfile)
 
-                    nukefiles = glob.glob(latexbase + '*')
+        # make a regression plot of the most common imc/imt combination we
+        # can find
+        pref_imcs = ['GREATER_OF_TWO_HORIZONTALS', 'H1', 'H2']
+        pref_imts = ['PGA', 'PGV', 'SA(1.0)']
+        found_imc = None
+        found_imt = None
+        for imc in pref_imcs:
+            if imc in imc_tables:
+                for imt in pref_imts:
+                    if imt in imc_tables[imc].columns:
+                        found_imt = imt
+                        found_imc = imc
+                        break
+                if found_imc:
+                    break
+        # now look for whatever IMC/IMTcombination we can find
+        if len(imc_tables) and not found_imc:
+            found_imc = list(imc_tables.keys())[0]
+            table_cols = set(imc_tables[found_imc].columns)
+            imtlist = list(table_cols - NON_IMT_COLS)
+            found_imt = imtlist[0]
 
-                    # nukefiles.remove(latest_tex)
-                    for nfile in nukefiles:
-                        os.remove(nfile)
-        summary_text += 'A station map has been saved to %s\n' % mapname
-        summary_text += '%i plots saved to %s.\n' % (len(collection), plotdir)
+        if found_imc and found_imt:
+            pngfile = '%s_%s.png' % (found_imc, found_imt)
+            regression_file = os.path.join(outdir, pngfile)
+            plot_regression(event_table, found_imc,
+                            imc_tables[found_imc],
+                            found_imt,
+                            regression_file,
+                            distance_metric='EpicentralDistance',
+                            colormap='viridis_r')
+            append_file(files_created,
+                        'Multi-event regression plot', regression_file)
 
-    print(summary_text)
+    print('\nThe following files have been created:')
+    for file_type, file_list in files_created.items():
+        print('File type: %s' % file_type)
+        for fname in file_list:
+            print('\t%s' % fname)
+    print('\nProcessing is complete.\n')
 
-    sys.exit(0)
+
+def get_command_help():
+    nuggets = []
+    for command, description in CMD_TUPLES:
+        nugget = ' -%s: %s' % (command, description)
+        nuggets.append(nugget)
+
+    command_string = '\n' + '\n'.join(nuggets)
+    return command_string
 
 
 if __name__ == '__main__':
-    desc = """Fetch data from any available online data source.
+    description = '''Download, process, and extract metrics from raw ground motion data.
 
-    Creates in outdir:
-        - ASDF file containing original (possibly raw) and processed waveforms.
-        - CSV/Excel file containing configured stream metrics.
-        - Provenance CSV/Excel file with processing history for each Trace.
-        - LateX or PDF summary report of all processed files.
-        - (unless --no-plot selected) plots directory with processed plots.
-        - (unless --no-raw selected) raw directory with raw data files.
+    This program will allow the user to:
+     - download raw data from a number of sources, including:
+       - Any FDSN provider which serves waveform data
+       - Japan's KNET/KikNet repository (requires login info)
+       - ...
+    '''
 
-    The summary report will be generated in LateX, and if you have
-    the "pdflatex" tool installed, that will be used to generate a PDF
-    version of the report.
-
-    The ASDF file and CSV/Excel file will be named with ComCat ID if
-    specified, otherwise by event time.
-
-    By default original waveform files will be saved and plotted in a 'raw'
-    directory under outdir. To turn this off, use the "no-raw" option.
-
-    To download data without processing, use the -d or --download-only option.
-
-    By default processed waveform files will be plotted and saved to a 'plots'
-    directory under outdir, and a LateX/PDF report will be generated in
-    outdir that uses the plot images. To turn this functionality off, use
-    the "no-plot" option.
-
-    If --amptools-format is specified, then the metrics file will be saved
-    to Excel format with an extra row at the top containing reference
-    information. If you are not a ShakeMap user, then you should probably
-    ignore this option.
-
-    Specific network information:
-    This tool can download data from the Japanese NIED website. However,
-    for this to work you will first need to obtain a username and password
-    from this website:
-
-    https://hinetwww11.bosai.go.jp/nied/registration/?LANG=en
-    """
     parser = argparse.ArgumentParser(
-        description=desc, formatter_class=MyFormatter)
+        description=description, formatter_class=MyFormatter)
 
-    # Required arguments
+    # ***************positional arguments
     parser.add_argument('outdir', help='Output file directory', type=str)
 
-    # non-positional arguments
-    parser.add_argument(
-        '-i', '--eventid', help='ComCat Event ID')
-    parser.add_argument(
-        '-e', '--eventinfo', type=str, nargs=5,
-        metavar=('TIME', 'LAT', 'LON', 'DEPTH', 'MAG'),
-        help='Event information as TIME(YYYY-MM-DDTHH:MM:SS) LAT LON DEP MAG')
-    parser.add_argument(
-        '-f', '--format',
-        help='Output format for metrics information',
-        choices=['excel', 'csv'], default='csv')
-    parser.add_argument(
-        '-c', '--config', help='Supply custom configuration file')
-    parser.add_argument(
-        '-o', '--download-only', action='store_true',
-        help='Download/plot raw only, no processing.')
-    parser.add_argument(
-        '--no-plot', action='store_true',
-        help='Do not make plots/report for processed waveforms')
-    parser.add_argument(
-        '--no-raw', action='store_true', help='Do not save raw streams')
-    parser.add_argument(
-        '-l', '--log-file',
-        help='Supply file name to store processing log info.')
-    hstr = 'Save metrics spreadsheet in ShakeMap Amptools friendly format'
-    parser.add_argument(
-        '-a', '--amptools-format', action='store_true', help=hstr)
-    hstr = 'Sidestep online data retrieval, read from local directory.'
-    parser.add_argument(
-        '--directory', help=hstr)
+    # command arguments
+    cmd_help = get_command_help()
+    parser.add_argument('commands', help=cmd_help, type=str, nargs='+')
+
+    # ***************optional arguments
+    parser.add_argument('-i', '--eventids',
+                        help='ComCat Event IDs', nargs='+')
+
+    text_help = '''Text file containing lines of ComCat Event IDs or
+    event information (ID TIME LAT LON DEPTH MAG)
+    '''
+    parser.add_argument('-t', '--textfile',
+                        help=text_help)
+
+    event_help = ('Single event information as ID TIME(YYYY-MM-DDTHH:MM:SS) '
+                  'LAT LON DEP MAG')
+    parser.add_argument('-e', '--eventinfo', type=str, nargs=6,
+                        metavar=('ID', 'TIME', 'LAT', 'LON', 'DEPTH', 'MAG'),
+                        help=event_help)
+
+    hstr = ('Sidestep online data retrieval, read from local directory. '
+            'This directory should contain any number of event data '
+            'directories, which should contain data files in a known format '
+            'and an event.json file, which should be the JSON form of a '
+            'dictionary with fields: id, time, lat, lon, depth, magnitude. '
+            'The id field must match the event directory name.'
+            )
+    hstr = '\n'.join(textwrap.wrap(hstr))
+    parser.add_argument('--directory', help=hstr)
+
+    parser.add_argument('-f', '--format',
+                        help='Output format for tabular information',
+                        choices=['excel', 'csv'], default='csv')
+
+    tag_help = ('Processing label (single word, no spaces) to attach to '
+                'processed files. Defaults to the current time in '
+                'YYYYMMDDHHMMSS format.')
+    parser.add_argument('-p', '--process-tag',
+                        help=tag_help)
+
+    parser.add_argument('-c', '--config',
+                        help='Supply custom configuration file')
+
+    parser.add_argument('-r', '--recompute-metrics', action='store_true',
+                        help='Recompute metrics (i.e. from new config)')
+
+    parser.add_argument('-l', '--log-file',
+                        help='Supply file name to store processing log info.')
+
     # Shared arguments
     parser = add_shared_args(parser)
 
