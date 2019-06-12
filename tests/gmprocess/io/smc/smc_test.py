@@ -69,7 +69,8 @@ def test_bad():
     except Exception as e:
         msg = str(e)
         if 'nonsensical' not in msg:
-            assert 1 == 2
+            fmt = 'SMC read errored out for unexpected reason "%s"'
+            raise AssertionError(fmt % msg)
 
 
 if __name__ == '__main__':
