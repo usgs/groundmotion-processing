@@ -50,3 +50,7 @@ for Japan, but does not require a username and password.
 
 ## Reading Data from Local Files
 
+There are many cases where data will be found on the local file system, and not online.
+`gmprocess` also supports this use case via the `--directory` option.
+
+TODO: Add explanation

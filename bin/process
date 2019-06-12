@@ -75,6 +75,13 @@ def append_file(files_created, tag, filename):
 
 
 def main(pparser, args):
+    pd.set_option('display.width', 1000)
+    pd.set_option('display.max_colwidth', 120)
+    pd.set_option('display.max_rows', 1000)
+
+    if not os.path.isfile(args.file):
+        raise FileNotFoundError('%s does not exist.' % args.file)
+
     if args.eventid is not None and args.eventinfo is not None:
         print('\nSpecify one of -i or -e options, not both.\n')
         sys.exit(1)
@@ -82,6 +89,11 @@ def main(pparser, args):
     if args.eventid is None and args.eventinfo is None:
         print('\nYou must specify one of -i or -e options.\n')
         sys.exit(1)
+
+    outdir = args.outdir
+
+    if not os.path.isdir(outdir):
+        os.makedirs(outdir)
 
     # get the process tag from the user or define by current datetime
     process_tag = args.process_tag or datetime.utcnow().strftime(TAG_FMT)
@@ -118,14 +130,77 @@ def main(pparser, args):
         event = ScalarEvent()
         event.fromParams(eid, time, lat, lon, dep, mag)
 
+    files_created = {}
+
     # read in the data
-    for dfile in args.files:
-        if not os.path.isfile(dfile):
-            raise FileNotFoundError('%s does not exist.' % dfile)
-        rstreams = read_data(dfile)
+    dfile = args.file
+    rstreams = StreamCollection(read_data(dfile))
 
     # process the data
-    pstreams = process_streams(rstreams)
+    pstreams = process_streams(rstreams, event, config)
+
+    # open the output workspace file
+    fpath, ftmp = os.path.split(dfile)
+    fname, fext = os.path.splitext(ftmp)
+    workname = os.path.join(outdir, fname + '.hdf')
+    if os.path.isfile(workname):
+        os.remove(workname)
+    workspace = StreamWorkspace.open(workname)
+    files_created['ASDF Workspace File'] = [workname]
+    workspace.addStreams(event, rstreams, label='raw')
+    workspace.addStreams(event, pstreams, label=process_tag)
+
+    if args.plot:
+        # do any grouping that we can
+        pnames = []
+        for stream in pstreams:
+            plotname = summary_plots(stream, outdir, event)
+            pnames.append(plotname)
+        files_created['Diagnostic Plots'] = pnames
+
+    if args.provenance:
+        provdata = workspace.getProvenance(event.id,
+                                           labels=[process_tag])
+        if args.format == 'csv':
+            csvfile = os.path.join(outdir, 'provenance.csv')
+            files_created['Processing Provenance'] = [csvfile]
+            provdata.to_csv(csvfile)
+        else:
+            excelfile = os.path.join(outdir, 'provenance.xlsx')
+            files_created['Processing Provenance'] = [excelfile]
+            provdata.to_excel(excelfile, index=False)
+
+    # tell the user which traces failed checks, and why
+    failframe = pd.DataFrame(
+        columns=['Source File', 'Trace ID', 'Module', 'Reason for Failure'])
+    for stream in pstreams:
+        for trace in stream:
+            if trace.hasParameter('failure'):
+                source_file = trace.stats.standard.source_file
+                fdict = trace.getParameter('failure')
+                row = {'Source File': source_file,
+                       'Trace ID': trace.id,
+                       'Module': fdict['module'],
+                       'Reason for Failure': fdict['reason']}
+                failframe = failframe.append(row, ignore_index=True)
+
+    if not stream.passed:
+        hdr = 'Processing Failures:'
+        flowerbox = '#' * len(hdr)
+        print()
+        print(flowerbox)
+        print('Processing Failures:')
+        print(failframe)
+        print(flowerbox)
+
+    print('\nThe following files have been created:')
+    for file_type, file_list in files_created.items():
+        print('File type: %s' % file_type)
+        for fname in file_list:
+            print('\t%s' % fname)
+    print('\nProcessing is complete.\n')
+
+    workspace.close()
 
 
 def get_command_help():
@@ -146,11 +221,13 @@ if __name__ == '__main__':
         description=description, formatter_class=MyFormatter)
 
     # ***************positional arguments
-    parser.add_argument('files', help='Input data file', type=str)
+    parser.add_argument('file', help='Input data file', type=str)
+
+    parser.add_argument('outdir', help='Output directory', type=str)
 
     # ***************optional arguments
     parser.add_argument('-i', '--eventid',
-                        help='ComCat Event ID', nargs=1)
+                        help='ComCat Event ID')
 
     event_help = ('Single event information as ID TIME(YYYY-MM-DDTHH:MM:SS) '
                   'LAT LON DEP MAG')
@@ -165,8 +242,14 @@ if __name__ == '__main__':
     tag_help = ('Processing label (single word, no spaces) to attach to '
                 'processed files. Defaults to the current time in '
                 'YYYYMMDDHHMMSS format.')
-    parser.add_argument('-p', '--process-tag',
+    parser.add_argument('-t', '--process-tag',
                         help=tag_help)
+
+    parser.add_argument('-p', '--plot', action='store_true',
+                        help='Generate diagnostic plots for all streams in input file.')
+
+    parser.add_argument('-r', '--provenance', action='store_true',
+                        help='Generate provenance table for each stream in input file.')
 
     parser.add_argument('-c', '--config',
                         help='Supply custom configuration file')
