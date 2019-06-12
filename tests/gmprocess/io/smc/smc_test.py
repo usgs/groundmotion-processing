@@ -59,6 +59,20 @@ def test_smc():
     assert success == False
 
 
+def test_bad():
+    dpath = os.path.join('data', 'testdata', 'duplicate_records')
+    datadir = pkg_resources.resource_filename('gmprocess', dpath)
+    tfile = 'np01002r_4225a_u.smc'
+    dfile = os.path.join(datadir, tfile)
+    try:
+        streams = read_smc(dfile)
+    except Exception as e:
+        msg = str(e)
+        if 'nonsensical' not in msg:
+            assert 1 == 2
+
+
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
+    test_bad()
     test_smc()

@@ -22,6 +22,11 @@ FLOAT_HEADER_WIDTHS = 5 * [15]
 DATA_COLUMNS = 8
 FLOAT_DATA_WIDTHS = 8 * [10]
 
+# some smc records have nonsensically high sampling rate values
+# in the header. This is what we think is the upper end
+# of sensical.
+MAX_ALLOWED_SAMPLE_RATE = 1e5
+
 VALID_HEADERS = {
     '1 UNCORRECTED ACCELEROGRAM': 'V1',
     '2 CORRECTED ACCELEROGRAM': 'V2'
@@ -311,9 +316,9 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     jday = intheader[0, 2]
     hour = intheader[0, 3]
     minute = intheader[0, 4]
-    if (year != missing_data
-            and jday != missing_data and hour != missing_data
-            and minute != missing_data):
+    if (year != missing_data and
+            jday != missing_data and hour != missing_data and
+            minute != missing_data):
 
         # Handle second if missing
         second = 0
@@ -434,6 +439,9 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     # float headers are 10 lines of 5 floats each
     missing_data = floatheader[0, 0]
     stats['sampling_rate'] = floatheader[0, 1]
+    if stats['sampling_rate'] >= MAX_ALLOWED_SAMPLE_RATE:
+        fmt = 'Sampling rate of %.2g samples/second is nonsensical.'
+        raise Exception(fmt % stats['sampling_rate'])
     coordinates['latitude'] = floatheader[2, 0]
     # the documentation for SMC says that sometimes longitudes are
     # positive in the western hemisphere. Since it is very unlikely
