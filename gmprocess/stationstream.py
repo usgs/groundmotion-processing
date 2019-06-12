@@ -169,6 +169,18 @@ class StationStream(Stream):
         """
         return self.id
 
+    def get_net_sta(self):
+        """
+        Get just the network and station compopnent of the ID.
+        """
+        return '.'.join(self.get_id().split('.')[0:2])
+
+    def get_inst(self):
+        """
+        Get just the network and station compopnent of the ID.
+        """
+        return self.get_id().split('.')[2]
+
     @property
     def passed(self):
         """
@@ -185,8 +197,10 @@ class StationStream(Stream):
         String summary of the StationStream.
 
         Args:
-            extended (bool): Unused; kept for compatibility with ObsPy parent class.
-            indent (int): Number of characters to indent.
+            extended (bool):
+                Unused; kept for compatibility with ObsPy parent class.
+            indent (int):
+                Number of characters to indent.
         """
         if self.traces:
             id_length = self and max(len(tr.id) for tr in self) or 0

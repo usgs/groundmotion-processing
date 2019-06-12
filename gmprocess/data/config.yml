@@ -306,6 +306,24 @@ processing:
         kappa: 0.035
 
 # -----------------------------------------------------------------------------
+# This section is for handling colocated instruments that have otherwise
+# passed tests. For reference:
+#
+#    B?? = Broad band
+#    H?? = High broad band
+#    ?N? = Accelerometer
+#    ?H? = High gain seismometer
+#
+# Note: for now, lets prefer accelerometers, but once we have a reliable
+# clipping detection algorithm, it probably makes sense to change the
+# preference to high gain seismometers.
+
+
+colocated:
+    preference: ["HN?", "BN?", "HH?", "BH?"]
+
+
+# -----------------------------------------------------------------------------
 # This is for building a report, with a one-page summary of the data in each
 # StationStream per page. It will write out the latex file, and then look for
 # the `pdflatex` command and attempt to build the pdf. This requires
