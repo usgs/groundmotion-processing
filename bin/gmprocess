@@ -273,6 +273,11 @@ def main(pparser, args):
             append_file(files_created, 'shakemap', shakemap_file)
 
         workspace.close()
+        # since we don't know how many events users will be processing,
+        # let's guard against memory issues by clearing out the big data
+        # structures
+        del rstreams
+        del pstreams
 
     # if n_passed is zero, don't
     if 'export' in pcommands and processing_done and len(workspace_files):

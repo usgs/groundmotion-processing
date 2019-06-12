@@ -1,4 +1,6 @@
-# Using gmprocess to Download Data
+# Data Assembly
+
+## Downloading Data from Remote Data Centers
 
 Downloading triggered data from one of the supported sites (Japan, New Zealand,
 and Turkey) is somewhat easier, with Japan being a minor exception. In order to
@@ -30,7 +32,7 @@ command:
 gmprocess ~/data/japan assemble -i us1000jd8k -c ~/data/japan/jp_config.yml
 ```
 
-This will create a 
+This will create a us1000jd8k directory under ~/data/japan (see gmprocess overview.)
 
 Triggered data like this does not allow for any customization of the search
 window for individual traces - the parameters above are instead used to find
@@ -42,3 +44,9 @@ be in the future.
 
 The above command should download 160 stations, and processing may take tens of
 minutes, depending on the performance of the system on which it is running.
+
+Retrieving triggered data from New Zealand or Turkey is similar to the process
+for Japan, but does not require a username and password.
+
+## Reading Data from Local Files
+
