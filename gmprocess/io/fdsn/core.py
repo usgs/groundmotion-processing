@@ -64,7 +64,7 @@ LOCATION_CODES = {'RE': RE_NETWORK}
 def _get_station_file(filename, stream):
     filebase, fname = os.path.split(filename)
     station = stream[0].stats.station
-    xmlfiles = glob.glob(os.path.join(filebase, '*%s*.xml' % station))
+    xmlfiles = glob.glob(os.path.join(filebase, '*%s.xml' % station))
     if len(xmlfiles) != 1:
         return 'None'
     xmlfile = xmlfiles[0]
