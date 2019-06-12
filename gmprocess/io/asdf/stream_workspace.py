@@ -520,8 +520,12 @@ class StreamWorkspace(object):
         for stream in streams:
             tag = stream.tag
             eventid, station, label = tag.split('_')
-            summary = StationSummary.from_config(
-                stream, event=event, config=config)
+            try:
+                summary = StationSummary.from_config(
+                    stream, event=event, config=config)
+            except Exception as pgme:
+                fmt = 'Could not create stream metrics for event %s, station %s: "%s"'
+                logging.warning(fmt % (eventid, station, str(pgme)))
             xmlstr = summary.get_metric_xml()
 
             path = '%s_%s_%s' % (eventid, summary.station_code.lower(), label)

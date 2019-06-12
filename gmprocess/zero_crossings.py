@@ -27,16 +27,17 @@ def check_zero_crossings(st, min_crossings=1.0):
         # within the trimmed window
         trcopy = tr.copy()
 
-        etime = tr.getParameter('signal_end')['end_time']
-        split_time = tr.getParameter('signal_split')['split_time']
+        if tr.hasParameter('signal_end'):
+            etime = tr.getParameter('signal_end')['end_time']
+            split_time = tr.getParameter('signal_split')['split_time']
 
-        trcopy.trim(starttime=split_time, endtime=etime)
+            trcopy.trim(starttime=split_time, endtime=etime)
 
         zarray = np.multiply(trcopy.data[0:-1], trcopy.data[1:])
         zindices = [i for (i, z) in enumerate(zarray) if z < 0]
         zero_count_tr = len(zindices)
 
-        z_rate = zero_count_tr/dur
+        z_rate = zero_count_tr / dur
 
         # Put results back into the original trace, not the copy
         tr.setParameter('ZeroCrossingRate',

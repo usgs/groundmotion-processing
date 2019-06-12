@@ -655,6 +655,7 @@ def summary_plots(st, directory, origin):
     stream_id = st.get_id()
 
     # Do not save files if running tests
+    file_name = None
     if 'CALLED_FROM_PYTEST' not in os.environ:
         plt.subplots_adjust(left=0.05, right=0.97, hspace=0.25,
                             wspace=0.2, top=0.97)
@@ -664,4 +665,4 @@ def summary_plots(st, directory, origin):
         plt.savefig(fname=file_name)
         plt.close('all')
 
-    return st
+    return file_name

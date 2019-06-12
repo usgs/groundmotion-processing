@@ -1,0 +1,264 @@
+#!/usr/bin/env python
+
+# stdlib imports
+import argparse
+import logging
+import os.path
+import sys
+from datetime import datetime
+import warnings
+
+# third party imports
+import pandas as pd
+from h5py.h5py_warnings import H5pyDeprecationWarning
+
+# local imports
+from gmprocess.args import add_shared_args
+from gmprocess.io.fetch_utils import (get_events, update_config,
+                                      save_shakemap_amps, download,
+                                      draw_stations_map)
+from gmprocess.logging import setup_logger
+from gmprocess.io.asdf.stream_workspace import StreamWorkspace
+from gmprocess.processing import process_streams
+from gmprocess.report import build_report_latex
+from gmprocess.plot import summary_plots, plot_regression
+from gmprocess.config import get_config
+from gmprocess.event import get_event_object, ScalarEvent
+from gmprocess.io.read import read_data
+from gmprocess.streamcollection import StreamCollection
+
+CMD_TUPLES = [
+    ('assemble', ('Download data from all available online sources, or '
+                  'load raw data from files if --directory is selected.')),
+    ('process', ('Process data using steps defined '
+                 'in configuration file.')),
+    ('report', 'Create a summary report for each event specified.'),
+
+    ('provenance', 'Generate provenance table in --format format.'),
+    ('export', ('Generate metrics tables (NGA-style "flat" files) '
+                'for all events and IMCs.')),
+    ('shakemap', ('Generate ShakeMap-friendly peak ground motions '
+                  'table.'))
+]
+
+NON_IMT_COLS = set(['EarthquakeId',
+                    'Network',
+                    'NetworkDescription',
+                    'StationCode',
+                    'StationID',
+                    'StationDescription',
+                    'StationLatitude',
+                    'StationLongitude',
+                    'StationElevation',
+                    'SamplingRate',
+                    'EpicentralDistance',
+                    'HypocentralDistance',
+                    'H1Lowpass',
+                    'H1Highpass',
+                    'H2Lowpass',
+                    'H2Highpass',
+                    'SourceFile'])
+
+TAG_FMT = '%Y%m%d%H%M%S'
+
+
+class MyFormatter(argparse.RawTextHelpFormatter,
+                  argparse.ArgumentDefaultsHelpFormatter):
+    pass
+
+
+def append_file(files_created, tag, filename):
+    if tag in files_created:
+        files_created[tag].append(filename)
+    else:
+        files_created[tag] = [filename]
+
+
+def main(pparser, args):
+    pd.set_option('display.width', 1000)
+    pd.set_option('display.max_colwidth', 120)
+    pd.set_option('display.max_rows', 1000)
+
+    if not os.path.isfile(args.file):
+        raise FileNotFoundError('%s does not exist.' % args.file)
+
+    if args.eventid is not None and args.eventinfo is not None:
+        print('\nSpecify one of -i or -e options, not both.\n')
+        sys.exit(1)
+
+    if args.eventid is None and args.eventinfo is None:
+        print('\nYou must specify one of -i or -e options.\n')
+        sys.exit(1)
+
+    outdir = args.outdir
+
+    if not os.path.isdir(outdir):
+        os.makedirs(outdir)
+
+    # get the process tag from the user or define by current datetime
+    process_tag = args.process_tag or datetime.utcnow().strftime(TAG_FMT)
+
+    # logging
+    setup_logger(args)
+    if args.log_file:
+        logger = logging.getLogger()
+        stream_handler = logger.handlers[0]
+        fhandler = logging.FileHandler(args.log_file)
+        logger.removeHandler(stream_handler)
+        logger.addHandler(fhandler)
+
+    # config handling
+    configfile = args.config
+    if configfile is not None:
+        config = update_config(configfile)
+        if config is None:
+            print('\nCustom config file %s is invalid. Exiting.')
+            sys.exit(1)
+
+    else:
+        config = get_config()
+
+    if args.eventid:
+        event = get_event_object(args.eventid)
+    else:
+        eid = args.eventinfo[0]
+        time = args.eventinfo[1]
+        lat = float(args.eventinfo[2])
+        lon = float(args.eventinfo[3])
+        dep = float(args.eventinfo[4])
+        mag = float(args.eventinfo[5])
+        event = ScalarEvent()
+        event.fromParams(eid, time, lat, lon, dep, mag)
+
+    files_created = {}
+
+    # read in the data
+    dfile = args.file
+    rstreams = StreamCollection(read_data(dfile))
+
+    # process the data
+    pstreams = process_streams(rstreams, event, config)
+
+    # open the output workspace file
+    fpath, ftmp = os.path.split(dfile)
+    fname, fext = os.path.splitext(ftmp)
+    workname = os.path.join(outdir, fname + '.hdf')
+    if os.path.isfile(workname):
+        os.remove(workname)
+    workspace = StreamWorkspace.open(workname)
+    files_created['ASDF Workspace File'] = [workname]
+    workspace.addStreams(event, rstreams, label='raw')
+    workspace.addStreams(event, pstreams, label=process_tag)
+
+    if args.plot:
+        # do any grouping that we can
+        pnames = []
+        for stream in pstreams:
+            plotname = summary_plots(stream, outdir, event)
+            pnames.append(plotname)
+        files_created['Diagnostic Plots'] = pnames
+
+    if args.provenance:
+        provdata = workspace.getProvenance(event.id,
+                                           labels=[process_tag])
+        if args.format == 'csv':
+            csvfile = os.path.join(outdir, 'provenance.csv')
+            files_created['Processing Provenance'] = [csvfile]
+            provdata.to_csv(csvfile)
+        else:
+            excelfile = os.path.join(outdir, 'provenance.xlsx')
+            files_created['Processing Provenance'] = [excelfile]
+            provdata.to_excel(excelfile, index=False)
+
+    # tell the user which traces failed checks, and why
+    failframe = pd.DataFrame(
+        columns=['Source File', 'Trace ID', 'Module', 'Reason for Failure'])
+    for stream in pstreams:
+        for trace in stream:
+            if trace.hasParameter('failure'):
+                source_file = trace.stats.standard.source_file
+                fdict = trace.getParameter('failure')
+                row = {'Source File': source_file,
+                       'Trace ID': trace.id,
+                       'Module': fdict['module'],
+                       'Reason for Failure': fdict['reason']}
+                failframe = failframe.append(row, ignore_index=True)
+
+    if not stream.passed:
+        hdr = 'Processing Failures:'
+        flowerbox = '#' * len(hdr)
+        print()
+        print(flowerbox)
+        print('Processing Failures:')
+        print(failframe)
+        print(flowerbox)
+
+    print('\nThe following files have been created:')
+    for file_type, file_list in files_created.items():
+        print('File type: %s' % file_type)
+        for fname in file_list:
+            print('\t%s' % fname)
+    print('\nProcessing is complete.\n')
+
+    workspace.close()
+
+
+def get_command_help():
+    nuggets = []
+    for command, description in CMD_TUPLES:
+        nugget = ' -%s: %s' % (command, description)
+        nuggets.append(nugget)
+
+    command_string = '\n' + '\n'.join(nuggets)
+    return command_string
+
+
+if __name__ == '__main__':
+    description = '''Process data from a single station.
+    '''
+
+    parser = argparse.ArgumentParser(
+        description=description, formatter_class=MyFormatter)
+
+    # ***************positional arguments
+    parser.add_argument('file', help='Input data file', type=str)
+
+    parser.add_argument('outdir', help='Output directory', type=str)
+
+    # ***************optional arguments
+    parser.add_argument('-i', '--eventid',
+                        help='ComCat Event ID')
+
+    event_help = ('Single event information as ID TIME(YYYY-MM-DDTHH:MM:SS) '
+                  'LAT LON DEP MAG')
+    parser.add_argument('-e', '--eventinfo', type=str, nargs=6,
+                        metavar=('ID', 'TIME', 'LAT', 'LON', 'DEPTH', 'MAG'),
+                        help=event_help)
+
+    parser.add_argument('-f', '--format',
+                        help='Output format for tabular information',
+                        choices=['excel', 'csv'], default='csv')
+
+    tag_help = ('Processing label (single word, no spaces) to attach to '
+                'processed files. Defaults to the current time in '
+                'YYYYMMDDHHMMSS format.')
+    parser.add_argument('-t', '--process-tag',
+                        help=tag_help)
+
+    parser.add_argument('-p', '--plot', action='store_true',
+                        help='Generate diagnostic plots for all streams in input file.')
+
+    parser.add_argument('-r', '--provenance', action='store_true',
+                        help='Generate provenance table for each stream in input file.')
+
+    parser.add_argument('-c', '--config',
+                        help='Supply custom configuration file')
+
+    parser.add_argument('-l', '--log-file',
+                        help='Supply file name to store processing log info.')
+
+    # Shared arguments
+    parser = add_shared_args(parser)
+
+    pargs = parser.parse_args()
+    main(parser, pargs)
