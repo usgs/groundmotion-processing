@@ -343,6 +343,8 @@ def pick_travel(stream, origin, picker_config=None):
     lat = origin.latitude
     lon = origin.longitude
     depth = origin.depth_km
+    if depth < 0:
+        depth = 0
     etime = origin.time
     slat = stream[0].stats.coordinates.latitude
     slon = stream[0].stats.coordinates.longitude

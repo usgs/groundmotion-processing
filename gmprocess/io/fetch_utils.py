@@ -377,6 +377,8 @@ def plot_raw(rawdir, tcollection, event):
     """
     model = TauPyModel(model="iasp91")
     source_depth = event.depth_km
+    if source_depth < 0:
+        source_depth = 0
     eqlat = event.latitude
     eqlon = event.longitude
     for stream in tcollection:
