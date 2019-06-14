@@ -526,6 +526,7 @@ class StreamWorkspace(object):
             except Exception as pgme:
                 fmt = 'Could not create stream metrics for event %s, station %s: "%s"'
                 logging.warning(fmt % (eventid, station, str(pgme)))
+                continue
             xmlstr = summary.get_metric_xml()
 
             path = '%s_%s_%s' % (eventid, summary.station_code.lower(), label)
