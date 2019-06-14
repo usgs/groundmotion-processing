@@ -12,6 +12,7 @@ import warnings
 # third party imports
 import pandas as pd
 from h5py.h5py_warnings import H5pyDeprecationWarning
+import psutil
 
 # local imports
 from gmprocess.args import add_shared_args
@@ -256,8 +257,13 @@ def main(args):
         # since we don't know how many events users will be processing,
         # let's guard against memory issues by clearing out the big data
         # structures
-        del rstreams
-        del pstreams
+        # del rstreams
+        # del pstreams
+        pmem = psutil.virtual_memory()
+        pct = pmem.used / pmem.total
+        fmt = 'Finishing event %s (%i streams) - memory usage = %.2f %%'
+        tpl = (event.id, len(rstreams), pct)
+        logging.info(fmt % tpl)
 
     # if n_passed is zero, don't
     if args.export and processing_done and workspace_files:
