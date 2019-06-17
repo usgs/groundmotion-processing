@@ -274,6 +274,20 @@ def _read_channel(filename, line_offset, location=''):
 
     # read in the data
     nrows, data = _read_lines(skiprows, filename)
+
+    # Check for "off-by-one" problem that sometimes occurs with cosmos data
+    # Notes:
+    #     - We cannot do this check inside _get_header_info because we don't
+    #       have the data there.
+    #     - That method is written to set npts from the header as documented in
+    #       the spec ("lenght" == npts*dt) but it appears that sometimes a
+    #       different convention is used where the "length" of the record is
+    #       actually is actuation (npts-1)*dt. In this case, we need to
+    #       recompute duration and npts
+    if hdr['npts'] == (len(data) - 1):
+        hdr['npts'] = len(data)
+        hdr['duration'] = (hdr['npts'] - 1) * hdr['delta']
+
     # check units
     unit = hdr['format_specific']['physical_units']
     if unit in UNIT_CONVERSIONS:
