@@ -408,7 +408,7 @@ class StationSummary(object):
             self._epicentral_distance = dist / 1000
             if event.depth is not None:
                 self._hypocentral_distance = distance(
-                    lat, lon, elev / 1000,
+                    lat, lon, -elev / 1000,
                     event.latitude,
                     event.longitude,
                     event.depth / 1000
