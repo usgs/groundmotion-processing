@@ -24,6 +24,8 @@ XML_UNITS = {'pga': '%g',
 
 DEFAULT_DAMPING = 0.05
 
+M_PER_KM = 1000
+
 
 class StationSummary(object):
     """
@@ -393,8 +395,8 @@ class StationSummary(object):
             return
         lat = stats.coordinates.latitude
         lon = stats.coordinates.longitude
-        if ('elevation' not in stats.coordinates or
-                np.isnan(stats.coordinates.elevation)):
+        if ('elevation' not in stats.coordinates
+                or np.isnan(stats.coordinates.elevation)):
             elev = 0
         else:
             elev = stats.coordinates.elevation
@@ -405,13 +407,13 @@ class StationSummary(object):
             dist, _, _ = gps2dist_azimuth(lat, lon,
                                           event.latitude,
                                           event.longitude)
-            self._epicentral_distance = dist / 1000
+            self._epicentral_distance = dist / M_PER_KM
             if event.depth is not None:
                 self._hypocentral_distance = distance(
-                    lat, lon, -elev / 1000,
+                    lat, lon, -elev / M_PER_KM,
                     event.latitude,
                     event.longitude,
-                    event.depth / 1000
+                    event.depth / M_PER_KM
                 )
 
     @property
@@ -470,8 +472,8 @@ class StationSummary(object):
         else:
             if not isinstance(stream, Stream):
                 logging.warning('Setting failed: not a stream object.')
-            elif (stream[0].stats['station'].upper() !=
-                  self.station_code.upper()):
+            elif (stream[0].stats['station'].upper()
+                  != self.station_code.upper()):
                 logging.warning(
                     'Setting failed: stream station does not match '
                     'StationSummary.station_code.')

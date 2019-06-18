@@ -38,6 +38,8 @@ FLATFILE_COLUMNS = ['EarthquakeId', 'Network', 'NetworkDescription',
                     'H1Lowpass', 'H1Highpass',
                     'H2Lowpass', 'H2Highpass', 'SourceFile']
 
+M_PER_KM = 1000
+
 
 class StreamWorkspace(object):
     def __init__(self, filename, exists=False):
@@ -439,14 +441,14 @@ class StreamWorkspace(object):
             slon = stream[0].stats.coordinates.longitude
             sdep = stream[0].stats.coordinates.elevation
             epidist_m, _, _ = gps2dist_azimuth(elat, elon, slat, slon)
-            hypocentral_distance = distance(elat, elon, -sdep / 1000,
+            hypocentral_distance = distance(elat, elon, -sdep / M_PER_KM,
                                             slat, slon, edepth)
             xmlfmt = '''<station_metrics>
             <hypocentral_distance units="km">%.1f</hypocentral_distance>
             <epicentral_distance units="km">%.1f</epicentral_distance>
             </station_metrics>
             '''
-            xmlstr = xmlfmt % (hypocentral_distance, epidist_m / 1000)
+            xmlstr = xmlfmt % (hypocentral_distance, epidist_m / M_PER_KM)
             path = '%s_%s_%s' % (eventid, station.lower(), label)
             self.insert_aux(xmlstr, 'StationMetrics', path)
 
