@@ -52,6 +52,8 @@ class MyFormatter(argparse.RawTextHelpFormatter,
 
 
 def format_helptext(text):
+    '''Format help text, including wrapping.
+    '''
     return '\n'.join(textwrap.wrap(text))
 
 
@@ -95,7 +97,7 @@ def main(args):
 
     # get a list of ScalarEvent objects from one of the inputs
     events = get_events(eventids, textfile, eventinfo, input_directory)
-    if not len(events):
+    if not events:
         print('No event information was found. Exiting.')
         sys.exit(1)
 
@@ -121,7 +123,7 @@ def main(args):
             workspace_files.append(workname)
             workspace = StreamWorkspace.open(workname)
             labels = workspace.getLabels()
-            if len(labels):
+            if labels:
                 labels.remove('unprocessed')
             if len(labels) == 1:
                 process_tag = labels[0]
@@ -258,14 +260,14 @@ def main(args):
         del pstreams
 
     # if n_passed is zero, don't
-    if args.export and processing_done and len(workspace_files):
+    if args.export and processing_done and workspace_files:
         event_table = None
         imc_tables = {}
         for workspace_file in workspace_files:
             workspace = StreamWorkspace.open(workspace_file)
             labels = workspace.getLabels()
             labels.remove('unprocessed')
-            if len(labels) == 0:
+            if not labels:
                 fmt = ('Workspace file "%s" appears to have no processed '
                        'data. Skipping.')
                 print(fmt % workspace_file)
@@ -286,7 +288,7 @@ def main(args):
                 event_table = tevent_table
             else:
                 event_table = pd.concat([event_table, tevent_table])
-            if not len(imc_tables):
+            if not imc_tables:
                 imc_tables = timc_tables
             else:
                 for imc, imc_table in imc_tables.items():
@@ -328,7 +330,7 @@ def main(args):
                 if found_imc:
                     break
         # now look for whatever IMC/IMTcombination we can find
-        if len(imc_tables) and not found_imc:
+        if imc_tables and not found_imc:
             found_imc = list(imc_tables.keys())[0]
             table_cols = set(imc_tables[found_imc].columns)
             imtlist = list(table_cols - NON_IMT_COLS)
