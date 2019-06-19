@@ -182,7 +182,7 @@ def main(args):
             workspace_files.append(workname)
 
         if args.process and download_done and not processing_done:
-            logging.info('Processing raw streams for event %s...' % event.id)
+            logging.info('Processing raw streams for event %s...', event.id)
             pstreams = process_streams(rstreams, event, config=config)
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore",
@@ -196,7 +196,7 @@ def main(args):
         reporting_done = False
         if args.report and processing_done:
             logging.info(
-                'Creating diagnostic plots for event %s...' % event.id)
+                'Creating diagnostic plots for event %s...', event.id)
             plot_dir = os.path.join(event_dir, 'plots')
             if not os.path.isdir(plot_dir):
                 os.makedirs(plot_dir)
@@ -207,7 +207,7 @@ def main(args):
             append_file(files_created, 'Station map', mapfile)
 
             logging.info(
-                'Creating diagnostic report for event %s...' % event.id)
+                'Creating diagnostic report for event %s...', event.id)
             # Build the summary report?
             build_conf = config['build_report']
             report_format = build_conf['format']
@@ -228,7 +228,7 @@ def main(args):
         provenance_done = False
         if args.provenance and processing_done:
             logging.info(
-                'Creating provenance table for event %s...' % event.id)
+                'Creating provenance table for event %s...', event.id)
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore",
                                       category=H5pyDeprecationWarning)
@@ -247,7 +247,7 @@ def main(args):
         shakemap_done = False
         if args.shakemap and processing_done:
             logging.info(
-                'Creating shakemap table for event %s...' % event.id)
+                'Creating shakemap table for event %s...', event.id)
             shakemap_file = save_shakemap_amps(pstreams, event, event_dir)
             shakemap_done = True
             append_file(files_created, 'shakemap', shakemap_file)
@@ -274,7 +274,7 @@ def main(args):
                 continue
             eventid = workspace.getEventIds()[0]
             logging.info(
-                'Creating tables for event %s...' % eventid)
+                'Creating tables for event %s...', eventid)
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore",
                                       category=H5pyDeprecationWarning)
