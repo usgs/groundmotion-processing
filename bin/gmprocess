@@ -114,6 +114,8 @@ def main(args):
         workspace_exists = os.path.isfile(workname)
         workspace_has_processed = False
         workspace = None
+        rstreams = None
+        pstreams = None
         processing_done = False
         if workspace_exists:
             workspace_files.append(workname)
@@ -126,11 +128,11 @@ def main(args):
                 workspace_has_processed = True
             else:
                 if not args.process:
-                    fmt = '\nThere are %i sets of processed data in %s.'
-                    tpl = (len(labels), workname)
-                    print(fmt % tpl)
-                    print(('This software can only handle one set of '
-                           'processed data. Exiting.\n'))
+                    print(format_helptext(
+                        '\nThere are {} sets of processed data in {}.'
+                        'This software can only handle one set of '
+                        'processed data. Exiting.'.format(
+                            len(labels), workname)))
                     sys.exit(1)
 
         download_done = False
