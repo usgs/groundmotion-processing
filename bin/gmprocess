@@ -25,20 +25,6 @@ from gmprocess.report import build_report_latex
 from gmprocess.plot import summary_plots, plot_regression
 from gmprocess.config import get_config
 
-CMD_TUPLES = [
-    ('assemble', ('Download data from all available online sources, or '
-                  'load raw data from files if --directory is selected.')),
-    ('process', ('Process data using steps defined '
-                 'in configuration file.')),
-    ('report', 'Create a summary report for each event specified.'),
-
-    ('provenance', 'Generate provenance table in --format format.'),
-    ('export', ('Generate metrics tables (NGA-style "flat" files) '
-                'for all events and IMCs.')),
-    ('shakemap', ('Generate ShakeMap-friendly peak ground motions '
-                  'table.'))
-]
-
 NON_IMT_COLS = set(['EarthquakeId',
                     'Network',
                     'NetworkDescription',
@@ -65,6 +51,12 @@ class MyFormatter(argparse.RawTextHelpFormatter,
     pass
 
 
+def format_helptext(text):
+    '''Format help text, including wrapping.
+    '''
+    return '\n'.join(textwrap.wrap(text))
+
+
 def append_file(files_created, tag, filename):
     if tag in files_created:
         files_created[tag].append(filename)
@@ -72,7 +64,7 @@ def append_file(files_created, tag, filename):
         files_created[tag] = [filename]
 
 
-def main(pparser, args):
+def main(args):
     # get the process tag from the user or define by current datetime
     process_tag = args.process_tag or datetime.utcnow().strftime(TAG_FMT)
 
@@ -97,30 +89,15 @@ def main(pparser, args):
         config = get_config()
 
     outdir = args.outdir
-    pcommands = args.commands
-    all_commands = set([cmd_tuple[0] for cmd_tuple in CMD_TUPLES])
-    if not set(pcommands) <= all_commands:
-        invalid_commands = list(set(pcommands) - all_commands)
-        print('\nThe following commands are not valid:')
-        for command in invalid_commands:
-            print('\t%s' % command)
-        print(('\nPlease read the documentation and select from the list of '
-               'appropriate pcommands.'))
-        print('Exiting.\n')
-        sys.exit(1)
 
     eventids = args.eventids
     textfile = args.textfile
     eventinfo = args.eventinfo
     input_directory = args.directory
-    if not eventids and not textfile and not input_directory and not eventinfo:
-        print('You must specify one of: -i, -t, -e or --directory.')
-        print('Exiting.')
-        sys.exit(1)
 
     # get a list of ScalarEvent objects from one of the inputs
     events = get_events(eventids, textfile, eventinfo, input_directory)
-    if not len(events):
+    if not events:
         print('No event information was found. Exiting.')
         sys.exit(1)
 
@@ -128,7 +105,6 @@ def main(pparser, args):
         os.makedirs(outdir)
 
     workspace_files = []
-
     files_created = {}
 
     for event in events:
@@ -140,27 +116,29 @@ def main(pparser, args):
         workspace_exists = os.path.isfile(workname)
         workspace_has_processed = False
         workspace = None
+        rstreams = None
+        pstreams = None
         processing_done = False
         if workspace_exists:
             workspace_files.append(workname)
             workspace = StreamWorkspace.open(workname)
             labels = workspace.getLabels()
-            if len(labels):
+            if labels:
                 labels.remove('unprocessed')
             if len(labels) == 1:
                 process_tag = labels[0]
                 workspace_has_processed = True
             else:
-                if 'process' not in pcommands:
-                    fmt = '\nThere are %i sets of processed data in %s.'
-                    tpl = (len(labels), workname)
-                    print(fmt % tpl)
-                    print(('This software can only handle one set of '
-                           'processed data. Exiting.\n'))
+                if not args.process:
+                    print(format_helptext(
+                        '\nThere are {} sets of processed data in {}.'
+                        'This software can only handle one set of '
+                        'processed data. Exiting.'.format(
+                            len(labels), workname)))
                     sys.exit(1)
 
         download_done = False
-        if 'assemble' in pcommands:
+        if args.assemble:
             logging.info('Downloading/loading raw streams...')
             workspace, workspace_file, rstreams = download(event, event_dir,
                                                            config,
@@ -170,12 +148,15 @@ def main(pparser, args):
             append_file(files_created, 'Workspace', workname)
         else:
             if not workspace_exists:
-                print('\nYou opted not to download or process from input.')
-                print('No previous HDF workspace file could be found.')
-                print('Try re-running with the assemble command with or ')
-                print('without the --directory option.\n')
+                print(format_helptext(
+                    '\n'
+                    'You opted not to download or process from input. No '
+                    'previous HDF workspace file could be found. Try re-running '
+                    'with the assemble command with or without the --directory '
+                    'option.'
+                    ))
                 sys.exit(1)
-            if 'process' in pcommands:
+            if args.process:
                 logging.info('Getting raw streams from workspace...')
                 with warnings.catch_warnings():
                     warnings.simplefilter("ignore",
@@ -184,8 +165,7 @@ def main(pparser, args):
                                                     labels=['unprocessed'])
                 download_done = True
             else:
-                need_processed = set(['report', 'shakemap'])
-                need_pstreams = len(need_processed.intersection(pcommands))
+                need_pstreams = args.report or args.shakemap
                 if workspace_has_processed:
                     if need_pstreams:
                         logging.info(
@@ -201,8 +181,8 @@ def main(pparser, args):
         if workname not in workspace_files:
             workspace_files.append(workname)
 
-        if 'process' in pcommands and download_done and not processing_done:
-            logging.info('Processing raw streams for event %s...' % event.id)
+        if args.process and download_done and not processing_done:
+            logging.info('Processing raw streams for event %s...', event.id)
             pstreams = process_streams(rstreams, event, config=config)
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore",
@@ -214,9 +194,9 @@ def main(pparser, args):
             processing_done = True
 
         reporting_done = False
-        if 'report' in pcommands and processing_done:
+        if args.report and processing_done:
             logging.info(
-                'Creating diagnostic plots for event %s...' % event.id)
+                'Creating diagnostic plots for event %s...', event.id)
             plot_dir = os.path.join(event_dir, 'plots')
             if not os.path.isdir(plot_dir):
                 os.makedirs(plot_dir)
@@ -227,7 +207,7 @@ def main(pparser, args):
             append_file(files_created, 'Station map', mapfile)
 
             logging.info(
-                'Creating diagnostic report for event %s...' % event.id)
+                'Creating diagnostic report for event %s...', event.id)
             # Build the summary report?
             build_conf = config['build_report']
             report_format = build_conf['format']
@@ -246,9 +226,9 @@ def main(pparser, args):
                 append_file(files_created, 'Summary report', report_file)
 
         provenance_done = False
-        if 'provenance' in pcommands and processing_done:
+        if args.provenance and processing_done:
             logging.info(
-                'Creating provenance table for event %s...' % event.id)
+                'Creating provenance table for event %s...', event.id)
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore",
                                       category=H5pyDeprecationWarning)
@@ -265,9 +245,9 @@ def main(pparser, args):
             provenance_done = True
 
         shakemap_done = False
-        if 'shakemap' in pcommands and processing_done:
+        if args.shakemap and processing_done:
             logging.info(
-                'Creating shakemap table for event %s...' % event.id)
+                'Creating shakemap table for event %s...', event.id)
             shakemap_file = save_shakemap_amps(pstreams, event, event_dir)
             shakemap_done = True
             append_file(files_created, 'shakemap', shakemap_file)
@@ -280,21 +260,21 @@ def main(pparser, args):
         del pstreams
 
     # if n_passed is zero, don't
-    if 'export' in pcommands and processing_done and len(workspace_files):
+    if args.export and processing_done and workspace_files:
         event_table = None
         imc_tables = {}
         for workspace_file in workspace_files:
             workspace = StreamWorkspace.open(workspace_file)
             labels = workspace.getLabels()
             labels.remove('unprocessed')
-            if len(labels) == 0:
+            if not labels:
                 fmt = ('Workspace file "%s" appears to have no processed '
                        'data. Skipping.')
                 print(fmt % workspace_file)
                 continue
             eventid = workspace.getEventIds()[0]
             logging.info(
-                'Creating tables for event %s...' % eventid)
+                'Creating tables for event %s...', eventid)
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore",
                                       category=H5pyDeprecationWarning)
@@ -308,7 +288,7 @@ def main(pparser, args):
                 event_table = tevent_table
             else:
                 event_table = pd.concat([event_table, tevent_table])
-            if not len(imc_tables):
+            if not imc_tables:
                 imc_tables = timc_tables
             else:
                 for imc, imc_table in imc_tables.items():
@@ -350,7 +330,7 @@ def main(pparser, args):
                 if found_imc:
                     break
         # now look for whatever IMC/IMTcombination we can find
-        if len(imc_tables) and not found_imc:
+        if imc_tables and not found_imc:
             found_imc = list(imc_tables.keys())[0]
             table_cols = set(imc_tables[found_imc].columns)
             imtlist = list(table_cols - NON_IMT_COLS)
@@ -376,83 +356,126 @@ def main(pparser, args):
     print('\nProcessing is complete.\n')
 
 
-def get_command_help():
-    nuggets = []
-    for command, description in CMD_TUPLES:
-        nugget = ' -%s: %s' % (command, description)
-        nuggets.append(nugget)
-
-    command_string = '\n' + '\n'.join(nuggets)
-    return command_string
-
-
 if __name__ == '__main__':
     description = '''Download, process, and extract metrics from raw ground motion data.
 
-    This program will allow the user to:
-     - download raw data from a number of sources, including:
-       - Any FDSN provider which serves waveform data
-       - Japan's KNET/KikNet repository (requires login info)
-       - ...
-    '''
+This program will allow the user to:
+   - download raw data from a number of sources, including:
+   - Any FDSN provider which serves waveform data
+   - Japan's KNET/KikNet repository (requires login info)
+   - ...
+'''
 
     parser = argparse.ArgumentParser(
         description=description, formatter_class=MyFormatter)
 
-    # ***************positional arguments
-    parser.add_argument('outdir', help='Output file directory', type=str)
+    # ***** Required arguments
+    parser.add_argument('-o', '--output-directory', help='Output directory',
+                        metavar="DIRECTORY", action='store', type=str,
+                        required=True, dest='outdir')
 
-    # command arguments
-    cmd_help = get_command_help()
-    parser.add_argument('commands', help=cmd_help, type=str, nargs='+')
+    # ***** Command arguments
+    help_assemble = format_helptext(
+        'Download data from all available online sources, or load raw data from '
+        'files if --directory is selected.'
+        )
+    parser.add_argument('--assemble', help=help_assemble,
+                        action='store_true', dest='assemble')
 
-    # ***************optional arguments
-    parser.add_argument('-i', '--eventids',
-                        help='ComCat Event IDs', nargs='+')
+    help_process = format_helptext(
+        'Process data using steps defined in configuration file.'
+        )
+    parser.add_argument('--process', help=help_process,
+                        action='store_true', dest='process')
 
-    text_help = '''Text file containing lines of ComCat Event IDs or
-    event information (ID TIME LAT LON DEPTH MAG)
-    '''
-    parser.add_argument('-t', '--textfile',
-                        help=text_help)
+    help_report = format_helptext(
+        'Create a summary report for each event specified.'
+        )
+    parser.add_argument('--report', help=help_report, action='store_true',
+                        dest='report')
 
-    event_help = ('Single event information as ID TIME(YYYY-MM-DDTHH:MM:SS) '
-                  'LAT LON DEP MAG')
-    parser.add_argument('-e', '--eventinfo', type=str, nargs=6,
-                        metavar=('ID', 'TIME', 'LAT', 'LON', 'DEPTH', 'MAG'),
-                        help=event_help)
+    help_provenance = format_helptext(
+        'Generate provenance table in --format format.'
+        )
+    parser.add_argument('--provenance', help=help_provenance,
+                        action='store_true', dest='provenance')
 
-    hstr = ('Sidestep online data retrieval, read from local directory. '
-            'This directory should contain any number of event data '
-            'directories, which should contain data files in a known format '
-            'and an event.json file, which should be the JSON form of a '
-            'dictionary with fields: id, time, lat, lon, depth, magnitude. '
-            'The id field must match the event directory name.'
-            )
-    hstr = '\n'.join(textwrap.wrap(hstr))
-    parser.add_argument('--directory', help=hstr)
+    help_export = format_helptext(
+        'Generate metrics tables (NGA-style "flat" files) for all events '
+        'and IMCs.'
+        )
+    parser.add_argument('--export', help=help_export, action='store_true',
+                        dest='export')
 
-    parser.add_argument('-f', '--format',
-                        help='Output format for tabular information',
-                        choices=['excel', 'csv'], default='csv')
+    help_shakemap = format_helptext(
+        'Generate ShakeMap-friendly peak ground motions table.'
+        )
+    parser.add_argument('--shakemap', help=help_shakemap,
+                        action='store_true', dest='shakemap')
 
-    tag_help = ('Processing label (single word, no spaces) to attach to '
-                'processed files. Defaults to the current time in '
-                'YYYYMMDDHHMMSS format.')
-    parser.add_argument('-p', '--process-tag',
-                        help=tag_help)
+    # # ***** Optional arguments
+    group = parser.add_mutually_exclusive_group(required=True)
+    help_eventids = format_helptext(
+        'ComCat Event IDs'
+        )
+    group.add_argument('--eventids', help=help_eventids, nargs='+')
 
-    parser.add_argument('-c', '--config',
-                        help='Supply custom configuration file')
+    help_textfile = format_helptext(
+        'Text file containing lines of ComCat Event IDs or event '
+        'information (ID TIME LAT LON DEPTH MAG)'
+        )
+    group.add_argument('--textfile', help=help_textfile, action='store',
+                       dest='textfile')
 
-    parser.add_argument('-r', '--recompute-metrics', action='store_true',
-                        help='Recompute metrics (i.e. from new config)')
+    help_event = format_helptext(
+        'Single event information as ID TIME(YYYY-MM-DDTHH:MM:SS) LAT LON DEP MAG'
+        )
+    group.add_argument('--eventinfo', help=help_event, type=str, nargs=6,
+                       metavar=('ID', 'TIME', 'LAT', 'LON', 'DEPTH', 'MAG'))
 
-    parser.add_argument('-l', '--log-file',
-                        help='Supply file name to store processing log info.')
+    help_dir = format_helptext(
+        'Sidestep online data retrieval, read from local directory. This '
+        'directory should contain any number of event data directories, which '
+        'should contain data files in a known format and an event.json file, '
+        'which should be the JSON form of a dictionary with fields: id, time, '
+        'lat, lon, depth, magnitude. The id field must match the event '
+        'directory name.'
+        )
+    group.add_argument('--directory', help=help_dir, action='store',
+                       dest='directory')
 
-    # Shared arguments
+    help_format = format_helptext(
+        'Output format for tabular information'
+        )
+    parser.add_argument('--format', help=help_format,
+                        choices=['excel', 'csv'], default='csv', dest='format')
+
+    help_tag = format_helptext(
+        'Processing label (single word, no spaces) to attach to processed files.'
+        'Defaults to the current time in YYYYMMDDHHMMSS format.'
+        )
+    parser.add_argument('--process-tag', help=help_tag, action='store',
+                        type=str, dest='process_tag')
+
+    help_config = format_helptext(
+        'Supply custom configuration file'
+        )
+    parser.add_argument('--config', help=help_config, action='store',
+                        type=str, dest='config')
+
+    help_recompute = format_helptext(
+        'Recompute metrics (i.e. from new config)'
+        )
+    parser.add_argument('--recompute-metrics', help=help_recompute,
+                        action='store_true', dest='recompute_metrics')
+
+    help_logfile = format_helptext(
+        'Supply file name to store processing log info.'
+        )
+    parser.add_argument('--log-file', help=help_logfile, action='store',
+                        dest='log_file')
+
+    # ***** Shared arguments
     parser = add_shared_args(parser)
-
     pargs = parser.parse_args()
-    main(parser, pargs)
+    main(pargs)
