@@ -1,8 +1,3 @@
----
-layout: default
-title: Motivation
-
----
 # Objective
 
 The goal of this project is to update, restructure, and consolidate
