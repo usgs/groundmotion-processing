@@ -5,7 +5,7 @@ import argparse
 
 
 def main(pparser, args):
-    pass
+    print("This command is deprecated. Please use 'gmprocess' instead.")
 
 
 if __name__ == '__main__':
