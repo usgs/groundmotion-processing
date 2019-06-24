@@ -1,4 +1,4 @@
-# Processing waveforms using gmprocess
+# Waveform processing
 
 :TODO: Add general description. Point to configuration.
 

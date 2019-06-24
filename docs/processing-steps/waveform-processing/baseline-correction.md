@@ -1,3 +1,3 @@
-# Windowing Data
+# Baseline correction
 
 :TODO: Write this section.

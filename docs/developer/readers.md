@@ -1,4 +1,4 @@
-# Writing a data reader
+# Adding a new data reader
 
 Most of the difficulty in writing data file readers for the various formats
 supported by gmprocess comes in handling the various types of headers and
