@@ -8,11 +8,14 @@ import sys
 import textwrap
 from datetime import datetime
 import warnings
+from collections import namedtuple
+import glob
 
 # third party imports
 import pandas as pd
 from h5py.h5py_warnings import H5pyDeprecationWarning
 import psutil
+import numpy as np
 
 # local imports
 from gmprocess.args import add_shared_args
@@ -65,18 +68,185 @@ def append_file(files_created, tag, filename):
         files_created[tag] = [filename]
 
 
-def main(args):
+def process_event(outdir, event, pcommands,
+                  config, input_directory,
+                  process_tag, logfile,
+                  files_created):
+
+    # setup logging to write to the input logfile
+    argthing = namedtuple('args', ['debug', 'quiet'])
+    args = argthing(debug=True, quiet=False)
+    setup_logger(args)
+
+    logger = logging.getLogger()
+    stream_handler = logger.handlers[0]
+    fhandler = logging.FileHandler(logfile)
+    logger.removeHandler(stream_handler)
+    logger.addHandler(fhandler)
+
+    event_dir = os.path.join(outdir, event.id)
+    if not os.path.exists(event_dir):
+        os.makedirs(event_dir)
+
+    workname = os.path.join(event_dir, 'workspace.hdf')
+    workspace_exists = os.path.isfile(workname)
+    workspace_has_processed = False
+    workspace = None
+    processing_done = False
+    if workspace_exists:
+
+        workspace = StreamWorkspace.open(workname)
+        labels = workspace.getLabels()
+        if len(labels):
+            labels.remove('unprocessed')
+        if len(labels) == 1:
+            process_tag = labels[0]
+            workspace_has_processed = True
+        else:
+            if 'process' not in pcommands:
+                fmt = '\nThere are %i sets of processed data in %s.'
+                tpl = (len(labels), workname)
+                print(fmt % tpl)
+                print(('This software can only handle one set of '
+                       'processed data. Exiting.\n'))
+                sys.exit(1)
+
+    download_done = False
+    if 'assemble' in pcommands:
+        logging.info('Downloading/loading raw streams...')
+        workspace, workspace_file, rstreams = download(event, event_dir,
+                                                       config,
+                                                       input_directory)
+
+        download_done = True
+        append_file(files_created, 'Workspace', workname)
+    else:
+        if not workspace_exists:
+            print('\nYou opted not to download or process from input.')
+            print('No previous HDF workspace file could be found.')
+            print('Try re-running with the assemble command with or ')
+            print('without the --directory option.\n')
+            sys.exit(1)
+        if 'process' in pcommands:
+            logging.info('Getting raw streams from workspace...')
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore",
+                                      category=H5pyDeprecationWarning)
+                rstreams = workspace.getStreams(event.id,
+                                                labels=['unprocessed'])
+            download_done = True
+        else:
+            need_processed = set(['report', 'shakemap'])
+            need_pstreams = len(need_processed.intersection(pcommands))
+            if workspace_has_processed:
+                if need_pstreams:
+                    logging.info(
+                        'Getting processed streams from workspace...')
+                    with warnings.catch_warnings():
+                        warnings.simplefilter(
+                            "ignore", category=H5pyDeprecationWarning)
+                        pstreams = workspace.getStreams(
+                            event.id, labels=[process_tag])
+                download_done = True
+                processing_done = True
+
+    if 'process' in pcommands and download_done and not processing_done and len(rstreams):
+        logging.info('Processing raw streams for event %s...' % event.id)
+        pstreams = process_streams(rstreams, event, config=config)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore",
+                                  category=H5pyDeprecationWarning)
+            workspace.addStreams(event, pstreams, label=process_tag)
+            workspace.calcMetrics(event.id,
+                                  labels=[process_tag],
+                                  config=config)
+        processing_done = True
+
+    reporting_done = False
+    if 'report' in pcommands and processing_done and len(pstreams):
+        logging.info(
+            'Creating diagnostic plots for event %s...' % event.id)
+        plot_dir = os.path.join(event_dir, 'plots')
+        if not os.path.isdir(plot_dir):
+            os.makedirs(plot_dir)
+        for stream in pstreams:
+            summary_plots(stream, plot_dir, event)
+
+        mapfile = draw_stations_map(pstreams, event, event_dir)
+        append_file(files_created, 'Station map', mapfile)
+
+        logging.info(
+            'Creating diagnostic report for event %s...' % event.id)
+        # Build the summary report?
+        build_conf = config['build_report']
+        report_format = build_conf['format']
+        if report_format == 'latex':
+            report_file, success = build_report_latex(
+                pstreams,
+                event_dir,
+                event,
+                config=config
+            )
+        else:
+            report_file = ''
+            success = False
+        if os.path.isfile(report_file) and success:
+            reporting_done = True
+            append_file(files_created, 'Summary report', report_file)
+
+    provenance_done = False
+    if 'provenance' in pcommands and processing_done and len(pstreams):
+        logging.info(
+            'Creating provenance table for event %s...' % event.id)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore",
+                                  category=H5pyDeprecationWarning)
+            provdata = workspace.getProvenance(event.id,
+                                               labels=[process_tag])
+        if args.format == 'csv':
+            csvfile = os.path.join(event_dir, 'provenance.csv')
+            append_file(files_created, 'Provenance', csvfile)
+            provdata.to_csv(csvfile)
+        else:
+            excelfile = os.path.join(event_dir, 'provenance.xlsx')
+            append_file(files_created, 'Provenance', excelfile)
+            provdata.to_excel(excelfile, index=False)
+        provenance_done = True
+
+    shakemap_done = False
+    if 'shakemap' in pcommands and processing_done and len(pstreams):
+        logging.info(
+            'Creating shakemap table for event %s...' % event.id)
+        shakemap_file = save_shakemap_amps(pstreams, event, event_dir)
+        shakemap_done = True
+        append_file(files_created, 'shakemap', shakemap_file)
+
+    workspace.close()
+    # since we don't know how many events users will be processing,
+    # let's guard against memory issues by clearing out the big data
+    # structures
+    # del rstreams
+    # del pstreams
+    pmem = psutil.virtual_memory()
+    pct = pmem.used / pmem.total
+    fmt = 'Finishing event %s (%i streams) - memory usage = %.2f %%'
+    tpl = (event.id, len(rstreams), pct)
+    logging.info(fmt % tpl)
+
+    return workname
+
+def find_workspace_files(outdir):
+    workspace_files = []
+    for root, dirs, files in os.walk(outdir):
+        for tfile in files:
+            if tfile.endswith('.hdf'):
+                fullfile = os.path.join(root, tfile)
+                workspace_files.append(fullfile)
+    return workspace_files
+
+def main(pparser, args):
     # get the process tag from the user or define by current datetime
     process_tag = args.process_tag or datetime.utcnow().strftime(TAG_FMT)
-
-    # logging
-    setup_logger(args)
-    if args.log_file:
-        logger = logging.getLogger()
-        stream_handler = logger.handlers[0]
-        fhandler = logging.FileHandler(args.log_file)
-        logger.removeHandler(stream_handler)
-        logger.addHandler(fhandler)
 
     # config handling
     configfile = args.config
@@ -108,165 +278,85 @@ def main(args):
     workspace_files = []
     files_created = {}
 
-    for event in events:
-        event_dir = os.path.join(outdir, event.id)
-        if not os.path.exists(event_dir):
-            os.makedirs(event_dir)
+    logbase = 'gmprocess_batch_log_'
+    logfmt = logbase + '%i.txt'
 
-        workname = os.path.join(event_dir, 'workspace.hdf')
-        workspace_exists = os.path.isfile(workname)
-        workspace_has_processed = False
-        workspace = None
-        rstreams = None
-        pstreams = None
-        processing_done = False
-        if workspace_exists:
-            workspace_files.append(workname)
-            workspace = StreamWorkspace.open(workname)
-            labels = workspace.getLabels()
-            if labels:
-                labels.remove('unprocessed')
-            if len(labels) == 1:
-                process_tag = labels[0]
-                workspace_has_processed = True
-            else:
-                if not args.process:
-                    print(format_helptext(
-                        '\nThere are {} sets of processed data in {}.'
-                        'This software can only handle one set of '
-                        'processed data. Exiting.'.format(
-                            len(labels), workname)))
-                    sys.exit(1)
+    process_commands = set(['assemble','process','report','shakemap','provenance'])
+    if len(process_commands.intersection(set(pcommands))) > 0:
+        if args.num_processes:
+            # parallelize processing on events using forked processes
+            eventids = [event.id for event in events]
+            eventdict = dict(zip(eventids, events))
+            chunks = np.array_split(eventids, args.num_processes)
+            for i in range(0, len(chunks)):
+                try:
+                    pid = os.fork()
+                except OSError:
+                    sys.stderr.write("Could not create a child process\n")
+                    continue
 
-        download_done = False
-        if args.assemble:
-            logging.info('Downloading/loading raw streams...')
-            workspace, workspace_file, rstreams = download(event, event_dir,
-                                                           config,
-                                                           input_directory)
+                if pid == 0:
+                    chunk = chunks[i]
+                    logfile = os.path.join(outdir, logfmt % os.getpid())
+                    for eventid in chunk:
+                        event = eventdict[eventid]
+                        workname = process_event(outdir, event, pcommands,
+                                                config, input_directory, process_tag,
+                                                logfile, files_created)
+                        workspace_files.append(workname)
+                    os._exit(0)
+                else:
+                    print("Parent: created child process %i." % pid)
 
-            download_done = True
-            append_file(files_created, 'Workspace', workname)
+            for i in range(0, len(chunks)):
+                child_id, _ = os.waitpid(0, 0)
+                print('Child process %i has finished.' % child_id)
         else:
-            if not workspace_exists:
-                print(format_helptext(
-                    '\n'
-                    'You opted not to download or process from input. No '
-                    'previous HDF workspace file could be found. Try re-running '
-                    'with the assemble command with or without the --directory '
-                    'option.'
-                    ))
-                sys.exit(1)
-            if args.process:
-                logging.info('Getting raw streams from workspace...')
-                with warnings.catch_warnings():
-                    warnings.simplefilter("ignore",
-                                          category=H5pyDeprecationWarning)
-                    rstreams = workspace.getStreams(event.id,
-                                                    labels=['unprocessed'])
-                download_done = True
-            else:
-                need_pstreams = args.report or args.shakemap
-                if workspace_has_processed:
-                    if need_pstreams:
-                        logging.info(
-                            'Getting processed streams from workspace...')
-                        with warnings.catch_warnings():
-                            warnings.simplefilter(
-                                "ignore", category=H5pyDeprecationWarning)
-                            pstreams = workspace.getStreams(
-                                event.id, labels=[process_tag])
-                    download_done = True
-                    processing_done = True
+            logfile = os.path.join(outdir, logfmt % os.getpid())
+            for event in events:
+                workname = process_event(outdir, event, pcommands,
+                                        config, input_directory, process_tag,
+                                        logfile, files_created)
+                workspace_files.append(workname)
 
-        if workname not in workspace_files:
-            workspace_files.append(workname)
+     # logging
+    logger = None
+    setup_logger(args)
+    if args.log_file:
+        logger = logging.getLogger()
+        stream_handler = logger.handlers[0]
+        fhandler = logging.FileHandler(args.log_file)
+        logger.removeHandler(stream_handler)
+        logger.addHandler(fhandler)
 
-        if args.process and download_done and not processing_done:
-            logging.info('Processing raw streams for event %s...', event.id)
-            pstreams = process_streams(rstreams, event, config=config)
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore",
-                                      category=H5pyDeprecationWarning)
-                workspace.addStreams(event, pstreams, label=process_tag)
-                workspace.calcMetrics(event.id,
-                                      labels=[process_tag],
-                                      config=config)
-            processing_done = True
+    # transfer the logfile contents into our global logger
+    # first get the handler
+    if logger is None:
+        logger = logging.getLogger()
+    handler = logger.handlers[0]
+    # then get the current formatter
+    old_format = handler.formatter
+    handler.setFormatter(logging.Formatter('%(message)s'))
+    logfiles = glob.glob(os.path.join(outdir, logbase + '*'))
+    for logfile in logfiles:
+        with open(logfile, 'rt') as logobj:
+            for line in logobj.readlines():
+                logging.info(line)
+        os.remove(logfile)
 
-        reporting_done = False
-        if args.report and processing_done:
-            logging.info(
-                'Creating diagnostic plots for event %s...', event.id)
-            plot_dir = os.path.join(event_dir, 'plots')
-            if not os.path.isdir(plot_dir):
-                os.makedirs(plot_dir)
-            for stream in pstreams:
-                summary_plots(stream, plot_dir, event)
+    # reset handler back to original formatter
+    handler.setFormatter(old_format)
 
-            mapfile = draw_stations_map(pstreams, event, event_dir)
-            append_file(files_created, 'Station map', mapfile)
 
-            logging.info(
-                'Creating diagnostic report for event %s...', event.id)
-            # Build the summary report?
-            build_conf = config['build_report']
-            report_format = build_conf['format']
-            if report_format == 'latex':
-                report_file, success = build_report_latex(
-                    pstreams,
-                    event_dir,
-                    event,
-                    config=config
-                )
-            else:
-                report_file = ''
-                success = False
-            if os.path.isfile(report_file) and success:
-                reporting_done = True
-                append_file(files_created, 'Summary report', report_file)
 
-        provenance_done = False
-        if args.provenance and processing_done:
-            logging.info(
-                'Creating provenance table for event %s...', event.id)
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore",
-                                      category=H5pyDeprecationWarning)
-                provdata = workspace.getProvenance(event.id,
-                                                   labels=[process_tag])
-            if args.format == 'csv':
-                csvfile = os.path.join(event_dir, 'provenance.csv')
-                append_file(files_created, 'Provenance', csvfile)
-                provdata.to_csv(csvfile)
-            else:
-                excelfile = os.path.join(event_dir, 'provenance.xlsx')
-                append_file(files_created, 'Provenance', excelfile)
-                provdata.to_excel(excelfile, index=False)
-            provenance_done = True
-
-        shakemap_done = False
-        if args.shakemap and processing_done:
-            logging.info(
-                'Creating shakemap table for event %s...', event.id)
-            shakemap_file = save_shakemap_amps(pstreams, event, event_dir)
-            shakemap_done = True
-            append_file(files_created, 'shakemap', shakemap_file)
-
-        workspace.close()
-        # since we don't know how many events users will be processing,
-        # let's guard against memory issues by clearing out the big data
-        # structures
-        # del rstreams
-        # del pstreams
-        pmem = psutil.virtual_memory()
-        pct = pmem.used / pmem.total
-        fmt = 'Finishing event %s (%i streams) - memory usage = %.2f %%'
-        tpl = (event.id, len(rstreams), pct)
-        logging.info(fmt % tpl)
+    logging.info('%i workspace files created' % len(workspace_files))
 
     # if n_passed is zero, don't
-    if args.export and processing_done and workspace_files:
+    if 'export' in pcommands:
+        if not len(workspace_files):
+            # look for hdf files
+            workspace_files = find_workspace_files(outdir)
+
         event_table = None
         imc_tables = {}
         for workspace_file in workspace_files:
@@ -480,6 +570,10 @@ This program will allow the user to:
         )
     parser.add_argument('--log-file', help=help_logfile, action='store',
                         dest='log_file')
+
+    nhelpstr = 'Number of parallel processes to run over events.'
+    parser.add_argument('-n', '--num-processes', default=2,
+                        type=int, help=nhelpstr)
 
     # ***** Shared arguments
     parser = add_shared_args(parser)
