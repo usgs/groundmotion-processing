@@ -51,7 +51,7 @@ def test_nnet():
 
     sc = StreamCollection(streams)
     test = process_streams(sc, origin, conf)
-    nnet_dict = test[0].getStreamParam('nnet_qa')
+    nnet_dict = test.select(station='HSES')[0].getStreamParam('nnet_qa')
     np.testing.assert_allclose(
         nnet_dict['score_HQ'], 0.99319980988565215, rtol=1e-5)
 
