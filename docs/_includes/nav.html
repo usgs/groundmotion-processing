@@ -1,17 +1,27 @@
-<div class="nav-sidebar">
+<nav role="navigation" aria-label="Main navigation">
 {% if site.data.navbar.toc[0] %}
   {% for item in site.data.navbar.toc %}
-    <h3 class="nav-title">{{ item.title }}</h3>
+    <h3 class="navigation-title">{{ item.title }}</h3>
       {% if item.subitems[0] %}
-        <ul>
-          {% for entry in item.subitems %}
-              <li {% if entry.url == page.url %}class="active"{% endif %}>
-                <a  href="{{ site.baseurl}}{{ entry.url }}">{{ entry.page }}</a>
-                {% if entry.subsubitems[0] %}
-                  <ul>
+        <ul class="navigation-list">
+	  {% for entry in item.subitems %}
+            {% if entry.url == page.url %}
+              {% assign parent_section = item.title %}
+	    {% endif %}
+	  <li class="nagivation-list-item">
+              <a class="navigation-list-link {% if entry.url == page.url %}active{% endif %}" href="{{ site.baseurl}}{{ entry.url }}">{{ entry.page }}</a>
+              {% if entry.subsubitems[0] %}
+	          <ul class="navigation-list-child-list">
                   {% for subentry in entry.subsubitems %}
-                      <li {% if subentry.url == page.url %}class="active"{% endif %}>
-                        <a  href="{{ site.baseurl}}{{ subentry.url }}">{{ subentry.page }}</a></li>
+
+                    {% if subentry.url == page.url %}
+                      {% assign parent_section = item.title %}
+                      {% assign parent = entry.page %}
+		    {% assign parent_url = site.baseurl | append: entry.url %}
+                    {% endif %}
+
+		    <li class="navigation-list-item">
+                        <a class="navigation-list-link {% if subentry.url == page.url %}active{% endif %}" href="{{ site.baseurl}}{{ subentry.url }}">{{ subentry.page }}</a></li>
                   {% endfor %}
                   </ul>
                 {% endif %}
@@ -21,4 +31,4 @@
       {% endif %}
     {% endfor %}
 {% endif %}
-</div>
+</nav>

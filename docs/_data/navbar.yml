@@ -1,93 +1,95 @@
 toc:
   - title: Overview
     subitems:
-      - page: Motivation
+      - page: Objective
         url: /
       - page: Features
-        url: /features.html
+        url: /overview/features.html
       - page: Workspace
-        url: /workspace.html
+        url: /overview/workspace.html
   - title: Getting Started
     subitems:
       - page: Installation
-        url: /install.html
+        url: /getting-started/install.html
       - page: Configuration
-        url: /configuration.html
+        url: /getting-started/configuration.html
       - page: Running the code
-        url: /running.html
+        url: /getting-started/running.html
   - title: Processing steps
     subitems:
       - page: Reading data
-        url: /reading.html
+        url: /processing-steps/reading.html
       - page: Fetching data
-        url: /fetching.html
+        url: /processing-steps/fetching.html
       - page: Windowing data
-        url: /windowing.html
+        url: /processing-steps/windowing.html
       - page: Waveform processing
-        url: /processing.html
+        url: /processing-steps/waveform-processing.html
         subsubitems:
         - page: Initial quality control
-          url: /processing-initialqc.html
+          url: /processing-steps/waveform-processing/initial-qc.html
         - page: Removing instrument response
-          url: /processing-removeresponse.html
+          url: /processing-steps/waveform-processing/remove-response.html
         - page: Phase pickers
-          url: /processing-phasepickers.html
+          url: /processing-steps/waveform-processing/phase-pickers.html
         - page: Baseline correction
-          url: /processing-baselinecorrection.html
+          url: /processing-steps/waveform-processing/baseline-correction.html
         - page: Processing report
-          url: /processing-report.html
+          url: /processing-steps/waveform-processing/report.html
       - page: Waveform metrics
-        url: /waveform-metrics.html
+        url: /processing-steps/waveform-metrics.html
       - page: Station metrics
-        url: /station-metrics.html
+        url: /processing-steps/station-metrics.html
   - title: Using gmprocess
     subitems:
       - page: gmprocess
-        url: /gmprocess.html
+        url: /gmprocess/gmprocess.html
       - page: Ingesting data
-        url: /examples/gmprocess/ingesting.html
-      - page: Fetching waveforms
-        url: /examples/gmprocess/fetching.html
-      - page: Processing waveforms
-        url: /examples/gmprocess/processing.html
+        url: /gmprocess/ingesting.html
+      - page: Fetching data
+        url: /gmprocess/fetching.html
+      - page: Waveform processing
+        url: /gmprocess/waveform-processing.html
       - page: Computing waveform metrics
-        url: /examples/gmprocess/waveform-metrics.html
+        url: /gmprocess/waveform-metrics.html
       - page: Computing station metrics
-        url: /examples/gmprocess/station-metrics.html
+        url: /gmprocess/station-metrics.html
       - page: Exporting data
-        url: /examples/gmprocess/exporting.html
-  - title: Using Python scripts
+        url: /gmprocess/exporting.html
+  - title: Python scripting
     subitems:
-      - page: Python scripting
-        url: /scripting.html
+      - page: Writing Python scripts
+        url: /scripting/scripting.html
+      - page: Modules
+        url: /scripting/modules.html
+      - page: Data structures
+        url: /scripting/data-structures.html
+        subsubitems:
+          - page: StationTrace
+            url: /scripting/data-structures/station-trace.html
+          - page: StationStream
+            url: /scripting/data-structures/station-stream.html
+          - page: StreamCollection
+            url: /scripting/data-structures/stream-collection.html
       - page: Ingesting data
-        url: /examples/scripting/ingesting.html
-      - page: Fetching waveforms
-        url: /examples/scripting/fetching.html
-      - page: Processing waveforms
-        url: /examples/scripting/processing.html
+        url: /scripting/ingesting.html
+      - page: Fetching data
+        url: /scripting/fetching.html
+      - page: Waveform processing
+        url: /scripting/waveform-processing.html
       - page: Computing waveform metrics
-        url: /examples/scripting/waveform-metrics.html
+        url: /scripting/waveform-metrics.html
       - page: Computing station metrics
-        url: /examples/scripting/station-metrics.html
+        url: /scripting/station-metrics.html
       - page: Exporting data
-        url: /examples/scripting/exporting.html
+        url: /scripting/exporting.html
   - title: Tests
     subitems:
       - page: Running the test suite
-        url: /tests.html
-  - title: API
-    subitems:
-      - page: Data structures
-        url: /data-structures.html
-        subsubitems:
-          - page: StationTrace
-            url: /station-trace.html
-          - page: StationStream
-            url: /station-stream.html
-          - page: StreamCollection
-            url: /stream-collection.html
+        url: /tests/tests.html
   - title: Developer
     subitems:
+      - page: Code layout
+        url: /developer/code-layout.html
       - page: Adding new data readers
         url: /developer/readers.html
