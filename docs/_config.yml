@@ -5,3 +5,7 @@ baseurl: /groundmotion-processing
 aux_links:
     "GitHub repository":
       - "//github.com/usgs/groundmotion-processing"
+
+plugins:
+  - jekyll-seo-tag
+  
