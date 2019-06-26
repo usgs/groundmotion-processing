@@ -22,6 +22,9 @@ REVERSE_UNITS = {
     'cm/s': 'vel'
 }
 
+# Number of samples for Landzos interpolation.
+N_LANCZOS = 20
+
 # if we find places for these in the standard metadata,
 # remove them from this list. Anything here will
 # be extracted from the stats standard dictionary,
@@ -48,16 +51,84 @@ class StationStream(Stream):
             # and trim the trace before we add it to the stream.
             starts = [trace.stats.starttime for trace in traces]
             ends = [trace.stats.endtime for trace in traces]
-            newstart = max(starts)
-            newend = min(ends)
-            if newstart >= newend:
-                for trace in traces:
-                    trace.fail(
-                        'Trimming start/end times across traces for '
-                        'this stream resulting in a start time after '
-                        'the end time.'
-                    )
-                    self.append(trace)
+            sts = [s.timestamp for s in starts]
+            ets = [e.timestamp for e in ends]
+
+            # Do we need to try to fix the start/end times?
+            times_match = len(set(sts)) == 1 & len(set(ets)) == 1
+            if not times_match:
+                newstart = max(starts)
+                newend = min(ends)
+                if newstart >= newend:
+                    for trace in traces:
+                        trace.fail(
+                            'Trimming start/end times across traces for '
+                            'this stream resulting in a start time after '
+                            'the end time.'
+                        )
+                        self.append(trace)
+                else:
+                    # First try to simply cut, the most minimally invasive
+                    # option
+                    for trace in traces:
+                        if inventory is None:
+                            if not isinstance(trace, StationTrace):
+                                raise ValueError(
+                                    'Input Traces to StationStream must be of '
+                                    'subtype StationTrace unless an invenotry '
+                                    'is also provided.')
+                        else:
+                            if not isinstance(trace, StationTrace):
+                                trace = StationTrace(
+                                    data=trace.data,
+                                    header=trace.stats,
+                                    inventory=inventory
+                                )
+
+                        # Apply the new start/end times
+                        trace = trace.slice(starttime=newstart,
+                                            endtime=newend)
+                        trace.setProvenance(
+                            'cut',
+                            {
+                                'new_start_time': newstart,
+                                'new_end_time': newend
+                            }
+                        )
+
+                        self.append(trace)
+
+                    # Did that work?
+                    starts = [trace.stats.starttime for trace in self.traces]
+                    sts = [s.timestamp for s in starts]
+                    ends = [trace.stats.endtime for trace in self.traces]
+                    ets = [e.timestamp for e in ends]
+                    deltas = [trace.stats.delta for trace in self.traces]
+                    new_delta = min(deltas)
+                    newstart = max(starts)
+                    newend = min(ends)
+                    new_duration = newend-newstart
+                    new_npts = int(new_duration / new_delta + 1)
+                    success = len(set(sts)) == 1 & len(set(ets)) == 1
+
+                    # If not, resample
+                    if not success:
+                        for tr in self.traces:
+                            tr.interpolate(
+                                sampling_rate=1/new_delta,
+                                method='lanczos',
+                                starttime=newstart,
+                                npts=new_npts,
+                                a=N_LANCZOS)
+                            tr.setProvenance(
+                                'interpolate',
+                                {
+                                    'interpolation_method': 'lanczos',
+                                    'new_number_of_samples': new_npts,
+                                    'new_start_time': newstart,
+                                    'a': N_LANCZOS
+                                }
+                            )
             else:
                 for trace in traces:
                     if inventory is None:
@@ -73,18 +144,6 @@ class StationStream(Stream):
                                 header=trace.stats,
                                 inventory=inventory
                             )
-
-                    # Apply the new start/end times
-                    trace = trace.slice(starttime=newstart,
-                                        endtime=newend)
-                    trace.setProvenance(
-                        'cut',
-                        {
-                            'new_start_time': newstart,
-                            'new_end_time': newend
-                        }
-                    )
-
                     self.append(trace)
 
         self.validate()
