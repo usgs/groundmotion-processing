@@ -38,10 +38,14 @@ def download(event, event_dir, config, directory):
     """Download data or load data from local directory, turn into Streams.
 
     Args:
-        event (ScalarEvent): Object containing basic event hypocenter, origin time, magnitude.
-        event_dir (str): Path where raw directory should be created (if downloading).
-        config (dict): Dictionary with gmprocess configuration information.
-        directory (str): Path where raw data already exists.
+        event (ScalarEvent):
+            Object containing basic event hypocenter, origin time, magnitude.
+        event_dir (str):
+            Path where raw directory should be created (if downloading).
+        config (dict):
+            Dictionary with gmprocess configuration information.
+        directory (str):
+            Path where raw data already exists.
     Returns:
         tuple:
             - StreamWorkspace: Contains the event and raw streams.
@@ -52,13 +56,14 @@ def download(event, event_dir, config, directory):
     rawdir = get_rawdir(event_dir)
 
     if directory is None:
-        tcollection, terrors = fetch_data(event.time.datetime,
-                                          event.latitude,
-                                          event.longitude,
-                                          event.depth_km,
-                                          event.magnitude,
-                                          config=config,
-                                          rawdir=rawdir)
+        tcollection, terrors = fetch_data(
+            event.time.datetime,
+            event.latitude,
+            event.longitude,
+            event.depth_km,
+            event.magnitude,
+            config=config,
+            rawdir=rawdir)
         # create an event.json file in each event directory,
         # in case user is simply downloading for now
         create_event_file(event, event_dir)
@@ -109,7 +114,8 @@ def parse_event_file(eventfile):
     NB: THERE SHOULD NOT BE ANY HEADERS ON THIS FILE!
 
     Args:
-        eventfile (str): Path to event text file
+        eventfile (str):
+            Path to event text file
 
     Returns:
         list: ScalarEvent objects constructed from list of event information.
@@ -225,18 +231,23 @@ def get_events(eventids, textfile, eventinfo, directory):
     """Return a list of events from one of the four inputs:
 
     Args:
-        eventids (list or None): List of ComCat event IDs.
-        textfile (str or None): Path to text file containing event IDs or info.
-        eventinfo (list or None): List containing:
-                                  - id Any string, no spaces.
-                                  - time Any ISO-compatible date/time string.
-                                  - latitude Latitude in decimal degrees.
-                                  - longitude Longitude in decimal degrees.
-                                  - depth Depth in kilometers.
-                                  - magnitude Earthquake magnitude.
-        directory (str): Path to a directory containing event subdirectories, each containing
-                         an event.json file, where the ID in the json file matches the subdirectory
-                         containing it.
+        eventids (list or None):
+            List of ComCat event IDs.
+        textfile (str or None):
+            Path to text file containing event IDs or info.
+        eventinfo (list or None):
+            List containing:
+                - id Any string, no spaces.
+                - time Any ISO-compatible date/time string.
+                - latitude Latitude in decimal degrees.
+                - longitude Longitude in decimal degrees.
+                - depth Depth in kilometers.
+                - magnitude Earthquake magnitude.
+        directory (str):
+            Path to a directory containing event subdirectories, each
+            containing an event.json file, where the ID in the json file
+            matches the subdirectory containing it.
+
     Returns:
         list: ScalarEvent objects.
 
@@ -277,8 +288,10 @@ def create_event_file(event, event_dir):
     """Write event.json file in event_dir.
 
     Args:
-        event (ScalarEvent): Input event object.
-        event_dir (str): Directory where event.json should be written.
+        event (ScalarEvent):
+            Input event object.
+        event_dir (str):
+            Directory where event.json should be written.
     """
     # create event.json file in each directory
     edict = {'id': event.id,
@@ -296,8 +309,8 @@ def get_rawdir(event_dir):
     """Find or create raw directory if necessary.
 
     Args:
-        event_dir (str): Directory where raw directory will be found or
-                         created.
+        event_dir (str):
+            Directory where raw directory will be found or created.
     """
     rawdir = os.path.join(event_dir, 'raw')
     if not os.path.exists(rawdir):
@@ -309,9 +322,13 @@ def save_shakemap_amps(processed, event, event_dir):
     """Write ShakeMap peak amplitudes to an Excel spreadsheet.
 
     Args:
-        processed (StreamCollection): Processed waveforms.
-        event (ScalarEvent): Event object.
-        event_dir (str): Directory where peak amps should be written.
+        processed (StreamCollection):
+            Processed waveforms.
+        event (ScalarEvent):
+            Event object.
+        event_dir (str):
+            Directory where peak amps should be written.
+
     Returns:
         str: Path to output amps spreadsheet.
     """
@@ -346,7 +363,8 @@ def update_config(custom_cfg_file):
     """Merge custom config with default.
 
     Args:
-        custom_cfg_file (str): Path to custom config.
+        custom_cfg_file (str):
+            Path to custom config.
 
     Returns:
         dict: Merged config dictionary.
@@ -370,9 +388,12 @@ def plot_raw(rawdir, tcollection, event):
     """Make PNG plots of a collection of raw waveforms.
 
     Args:
-        rawdir (str): Directory where PNG files should be saved.
-        tcollection (StreamCollection): Sequence of streams.
-        event (ScalarEvent): Event object. 
+        rawdir (str):
+            Directory where PNG files should be saved.
+        tcollection (StreamCollection):
+            Sequence of streams.
+        event (ScalarEvent):
+            Event object.
 
     """
     model = TauPyModel(model="iasp91")
@@ -385,8 +406,10 @@ def plot_raw(rawdir, tcollection, event):
         stlat = stream[0].stats.coordinates['latitude']
         stlon = stream[0].stats.coordinates['longitude']
         dist = locations2degrees(eqlat, eqlon, stlat, stlon)
-        arrivals = model.get_travel_times(source_depth_in_km=source_depth,
-                                          distance_in_degree=dist, phase_list=['P', 'p', 'Pn'])
+        arrivals = model.get_travel_times(
+            source_depth_in_km=source_depth,
+            distance_in_degree=dist,
+            phase_list=['P', 'p', 'Pn'])
         arrival = arrivals[0]
         arrival_time = arrival.time
         ptime = arrival_time + (event.time - stream[0].stats.starttime)
