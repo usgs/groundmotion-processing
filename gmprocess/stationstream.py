@@ -113,7 +113,6 @@ class StationStream(Stream):
 
                     # If not, resample
                     if not success:
-                        print('resampling')
                         for tr in self.traces:
                             tr.interpolate(
                                 sampling_rate=1/new_delta,
