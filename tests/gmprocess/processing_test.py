@@ -49,7 +49,8 @@ def test_process_streams():
     # container than on my local mac. So testing individual traces need to
     # not care about trace order.
 
-    trace_maxes = np.sort([np.max(np.abs(t.data)) for t in test[0]])
+    trace_maxes = np.sort(
+        [np.max(np.abs(t.data)) for t in test.select(station='HSES')[0]])
 
     np.testing.assert_allclose(
         trace_maxes,
