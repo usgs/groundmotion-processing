@@ -71,12 +71,6 @@ def download(event, event_dir, config, directory):
         streams, bad, terrors = directory_to_streams(directory)
         tcollection = StreamCollection(streams)
 
-    # TODO: find a better way to handle nan elevations
-    for stream in tcollection:
-        if np.isnan(stream[0].stats.coordinates.elevation):
-            for trace in stream:
-                trace.stats.coordinates.elevation = 0.0
-
     # plot the raw waveforms
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", category=UserWarning)

@@ -71,7 +71,7 @@ def append_file(files_created, tag, filename):
 def process_event(outdir, event, pcommands,
                   config, input_directory,
                   process_tag, logfile,
-                  files_created):
+                  files_created, output_format):
 
     # setup logging to write to the input logfile
     argthing = namedtuple('args', ['debug', 'quiet'])
@@ -203,7 +203,7 @@ def process_event(outdir, event, pcommands,
                                   category=H5pyDeprecationWarning)
             provdata = workspace.getProvenance(event.id,
                                                labels=[process_tag])
-        if args.format == 'csv':
+        if output_format == 'csv':
             csvfile = os.path.join(event_dir, 'provenance.csv')
             append_file(files_created, 'Provenance', csvfile)
             provdata.to_csv(csvfile)
@@ -235,6 +235,7 @@ def process_event(outdir, event, pcommands,
 
     return workname
 
+
 def find_workspace_files(outdir):
     workspace_files = []
     for root, dirs, files in os.walk(outdir):
@@ -244,7 +245,8 @@ def find_workspace_files(outdir):
                 workspace_files.append(fullfile)
     return workspace_files
 
-def main(pparser, args):
+
+def main(args):
     # get the process tag from the user or define by current datetime
     process_tag = args.process_tag or datetime.utcnow().strftime(TAG_FMT)
 
@@ -281,7 +283,24 @@ def main(pparser, args):
     logbase = 'gmprocess_batch_log_'
     logfmt = logbase + '%i.txt'
 
-    process_commands = set(['assemble','process','report','shakemap','provenance'])
+    # compare list of all commands with list of actual commands
+    process_commands = set(['assemble', 'process',
+                            'report', 'shakemap',
+                            'provenance'])
+    pcommands = []
+    if args.assemble:
+        pcommands.append('assemble')
+    if args.process:
+        pcommands.append('process')
+    if args.provenance:
+        pcommands.append('provenance')
+    if args.report:
+        pcommands.append('report')
+    if args.shakemap:
+        pcommands.append('shakemap')
+    if args.export:
+        pcommands.append('export')
+
     if len(process_commands.intersection(set(pcommands))) > 0:
         if args.num_processes:
             # parallelize processing on events using forked processes
@@ -301,8 +320,8 @@ def main(pparser, args):
                     for eventid in chunk:
                         event = eventdict[eventid]
                         workname = process_event(outdir, event, pcommands,
-                                                config, input_directory, process_tag,
-                                                logfile, files_created)
+                                                 config, input_directory, process_tag,
+                                                 logfile, files_created, args.format)
                         workspace_files.append(workname)
                     os._exit(0)
                 else:
@@ -315,8 +334,8 @@ def main(pparser, args):
             logfile = os.path.join(outdir, logfmt % os.getpid())
             for event in events:
                 workname = process_event(outdir, event, pcommands,
-                                        config, input_directory, process_tag,
-                                        logfile, files_created)
+                                         config, input_directory, process_tag,
+                                         logfile, files_created, args.format)
                 workspace_files.append(workname)
 
      # logging
@@ -346,8 +365,6 @@ def main(pparser, args):
 
     # reset handler back to original formatter
     handler.setFormatter(old_format)
-
-
 
     logging.info('%i workspace files created' % len(workspace_files))
 
@@ -474,38 +491,38 @@ This program will allow the user to:
     help_assemble = format_helptext(
         'Download data from all available online sources, or load raw data from '
         'files if --directory is selected.'
-        )
+    )
     parser.add_argument('--assemble', help=help_assemble,
                         action='store_true', dest='assemble')
 
     help_process = format_helptext(
         'Process data using steps defined in configuration file.'
-        )
+    )
     parser.add_argument('--process', help=help_process,
                         action='store_true', dest='process')
 
     help_report = format_helptext(
         'Create a summary report for each event specified.'
-        )
+    )
     parser.add_argument('--report', help=help_report, action='store_true',
                         dest='report')
 
     help_provenance = format_helptext(
         'Generate provenance table in --format format.'
-        )
+    )
     parser.add_argument('--provenance', help=help_provenance,
                         action='store_true', dest='provenance')
 
     help_export = format_helptext(
         'Generate metrics tables (NGA-style "flat" files) for all events '
         'and IMCs.'
-        )
+    )
     parser.add_argument('--export', help=help_export, action='store_true',
                         dest='export')
 
     help_shakemap = format_helptext(
         'Generate ShakeMap-friendly peak ground motions table.'
-        )
+    )
     parser.add_argument('--shakemap', help=help_shakemap,
                         action='store_true', dest='shakemap')
 
@@ -513,19 +530,19 @@ This program will allow the user to:
     group = parser.add_mutually_exclusive_group(required=True)
     help_eventids = format_helptext(
         'ComCat Event IDs'
-        )
+    )
     group.add_argument('--eventids', help=help_eventids, nargs='+')
 
     help_textfile = format_helptext(
         'Text file containing lines of ComCat Event IDs or event '
         'information (ID TIME LAT LON DEPTH MAG)'
-        )
+    )
     group.add_argument('--textfile', help=help_textfile, action='store',
                        dest='textfile')
 
     help_event = format_helptext(
         'Single event information as ID TIME(YYYY-MM-DDTHH:MM:SS) LAT LON DEP MAG'
-        )
+    )
     group.add_argument('--eventinfo', help=help_event, type=str, nargs=6,
                        metavar=('ID', 'TIME', 'LAT', 'LON', 'DEPTH', 'MAG'))
 
@@ -536,38 +553,38 @@ This program will allow the user to:
         'which should be the JSON form of a dictionary with fields: id, time, '
         'lat, lon, depth, magnitude. The id field must match the event '
         'directory name.'
-        )
+    )
     group.add_argument('--directory', help=help_dir, action='store',
                        dest='directory')
 
     help_format = format_helptext(
         'Output format for tabular information'
-        )
+    )
     parser.add_argument('--format', help=help_format,
                         choices=['excel', 'csv'], default='csv', dest='format')
 
     help_tag = format_helptext(
         'Processing label (single word, no spaces) to attach to processed files.'
         'Defaults to the current time in YYYYMMDDHHMMSS format.'
-        )
+    )
     parser.add_argument('--process-tag', help=help_tag, action='store',
                         type=str, dest='process_tag')
 
     help_config = format_helptext(
         'Supply custom configuration file'
-        )
+    )
     parser.add_argument('--config', help=help_config, action='store',
                         type=str, dest='config')
 
     help_recompute = format_helptext(
         'Recompute metrics (i.e. from new config)'
-        )
+    )
     parser.add_argument('--recompute-metrics', help=help_recompute,
                         action='store_true', dest='recompute_metrics')
 
     help_logfile = format_helptext(
         'Supply file name to store processing log info.'
-        )
+    )
     parser.add_argument('--log-file', help=help_logfile, action='store',
                         dest='log_file')
 
