@@ -233,7 +233,7 @@ def _read_volume_one(filename, line_offset, location='', units='acc'):
     # "--".
 
     hdr = _get_header_info_v1(
-        int_data, flt_data, lines, 'V2', location=location)
+        int_data, flt_data, lines, 'V1', location=location)
     head, tail = os.path.split(filename)
     hdr['standard']['source_file'] = tail or os.path.basename(head)
 
