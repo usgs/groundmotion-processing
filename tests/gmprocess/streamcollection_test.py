@@ -4,11 +4,12 @@ import os
 import numpy as np
 import json
 import pkg_resources
-import logging
 
 from gmprocess.io.read_directory import directory_to_streams
 from gmprocess.logging import setup_logger
 from gmprocess.streamcollection import StreamCollection
+
+from obspy import UTCDateTime
 
 setup_logger()
 
@@ -64,7 +65,7 @@ def test_StreamCollection():
 
     test_copy = dmg_sc.copy()
     assert test_copy[0][0].stats['standard']['process_level'] == \
-        'corrected physical units'
+        'uncorrected physical units'
 
     stream1 = test_copy[0]
     test_append = usc_sc.append(stream1)
@@ -92,7 +93,114 @@ def test_StreamCollection():
         0.145615,
         atol=1e5)
 
+    # Check the from_traces method
+    traces = []
+    for st in sc_test:
+        for tr in st:
+            traces.append(tr)
+    sc_test = StreamCollection.from_traces(traces)
+    assert len(sc_test) == 1
+
+
+def test_duplicates():
+    datapath = os.path.join('data', 'testdata', 'duplicate_records')
+    datadir = pkg_resources.resource_filename('gmprocess', datapath)
+    streams = directory_to_streams(datadir)[0]
+
+    sc_bad = StreamCollection(streams=streams, handle_duplicates=False)
+    # Check that we begin with having three streams
+    assert len(sc_bad) == 3
+
+    sc = StreamCollection(streams=streams, handle_duplicates=True)
+    # Check that we now only have two streams in the StreamCollection
+    assert len(sc) == 2
+    assert len(sc[0]) == 3
+    assert len(sc[1]) == 3
+
+    # Check that we kept the 'CE' network and not the 'ZZ' network
+    assert sc.select(station='23837')[0][0].stats.network == 'CE'
+
+    # Now try changing the process levels of one of the streams
+    for tr in sc_bad.select(network='ZZ')[0]:
+        tr.stats.standard.process_level = 'uncorrected physical units'
+    for tr in sc_bad.select(network='CE')[0]:
+        tr.stats.standard.process_level = 'corrected physical units'
+
+    sc = StreamCollection(streams=sc_bad.streams, handle_duplicates=True)
+    # Now, we should have kept the 'ZZ' network and not the 'CE' network
+    assert sc.select(station='23837')[0][0].stats.network == 'ZZ'
+
+    # Now change the process preference order to see if we get back the
+    # original results
+    sc = StreamCollection(streams=sc_bad.streams, handle_duplicates=True,
+                          process_level_preference=['V2', 'V1'])
+    assert sc.select(station='23837')[0][0].stats.network == 'CE'
+
+    # Check that decreasing the distance tolerance results in streams now being
+    # treated as different streams
+    sc = StreamCollection(streams=streams, max_dist_tolerance=10,
+                          handle_duplicates=True)
+    assert len(sc) == 3
+
+    # Change the streams to have the same processing level
+    for st in sc_bad:
+        for tr in st:
+            tr.stats.standard.process_level = 'uncorrected physical units'
+
+    # Try changing the preferred format order
+    sc = StreamCollection(streams=sc_bad.streams, handle_duplicates=True,
+                          format_preference=['dmg', 'cosmos'])
+    assert sc.select(station='23837')[0][0].stats.network == 'ZZ'
+
+    sc = StreamCollection(streams=sc_bad.streams, handle_duplicates=True,
+                          format_preference=['cosmos', 'dmg'])
+    assert sc.select(station='23837')[0][0].stats.network == 'CE'
+
+    # Set process level and format to be he same
+    for st in sc_bad:
+        for tr in st:
+            tr.stats.standard.source_format = 'cosmos'
+
+    # Check that we keep the CE network due to the bad starttime on ZZ
+    sc = StreamCollection(streams=sc_bad.streams, handle_duplicates=True)
+    assert sc.select(station='23837')[0][0].stats.network == 'CE'
+
+    for tr in sc_bad.select(network='CE')[0]:
+        tr.stats.starttime = UTCDateTime(0)
+    for tr in sc_bad.select(network='ZZ')[0]:
+        tr.stats.starttime = UTCDateTime(2018, 8, 29, 2, 33, 0)
+
+    sc = StreamCollection(streams=sc_bad.streams, handle_duplicates=True)
+    assert sc.select(station='23837')[0][0].stats.network == 'ZZ'
+
+    for tr in sc_bad.select(network='ZZ')[0]:
+        tr.stats.starttime = UTCDateTime(0)
+        tr.trim(endtime=UTCDateTime(5))
+
+    sc = StreamCollection(streams=sc_bad.streams, handle_duplicates=True)
+    assert sc.select(station='23837')[0][0].stats.network == 'CE'
+
+    for tr in sc_bad.select(network='CE')[0]:
+        tr.trim(endtime=UTCDateTime(2))
+
+    sc = StreamCollection(streams=sc_bad.streams, handle_duplicates=True)
+    assert sc.select(station='23837')[0][0].stats.network == 'ZZ'
+
+    for tr in sc_bad.select(network='ZZ')[0]:
+        tr.trim(endtime=UTCDateTime(2))
+        tr.resample(20)
+
+    sc = StreamCollection(streams=sc_bad.streams, handle_duplicates=True)
+    assert sc.select(station='23837')[0][0].stats.network == 'CE'
+
+    for tr in sc_bad.select(network='ZZ')[0]:
+        tr.resample(10)
+
+    sc = StreamCollection(streams=sc_bad.streams, handle_duplicates=True)
+    assert sc.select(station='23837')[0][0].stats.network == 'CE'
+
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_StreamCollection()
+    test_duplicates()

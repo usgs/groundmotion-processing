@@ -10,13 +10,17 @@ import copy
 import logging
 import fnmatch
 
+from obspy import UTCDateTime
 from obspy.core.event import Origin
+from obspy.geodetics import gps2dist_azimuth
 import pandas as pd
 
 from gmprocess.exception import GMProcessException
 from gmprocess.metrics.station_summary import StationSummary
+from gmprocess.stationtrace import REV_PROCESS_LEVELS
 from gmprocess.stationstream import StationStream
 from gmprocess.io.read_directory import directory_to_streams
+from gmprocess.config import get_config
 
 
 INDENT = 2
@@ -44,13 +48,29 @@ class StreamCollection(object):
 
     """
 
-    def __init__(self, streams=None, drop_non_free=True):
+    def __init__(self, streams=None, drop_non_free=True,
+                 handle_duplicates=True, max_dist_tolerance=None,
+                 process_level_preference=None, format_preference=None):
         """
         Args:
             streams (list):
                 List of StationStream objects.
             drop_non_free (bool):
                 If True, drop non-free-field Streams from the collection.
+            hande_duplicates (bool):
+                If True, remove duplicate data from the collection.
+            max_dist_tolerance (float):
+                Maximum distance tolerance for determining whether two streams
+                are at the same location (in meters).
+            process_level_preference (list):
+                A list containing 'V0', 'V1', 'V2', with the order determining
+                which process level is the most preferred (most preferred goes
+                first in the list).
+            format_preference (list):
+                A list continaing strings of the file source formats (found
+                in gmprocess.io). Does not need to list all of the formats.
+                Example: ['cosmos', 'dmg'] indicates that cosmos files are
+                preferred over dmg files.
         """
 
         # Some initial checks of input streams
@@ -72,6 +92,11 @@ class StreamCollection(object):
                 newstreams.append(s)
 
         self.streams = newstreams
+        if handle_duplicates:
+            self.__handle_duplicates(
+                max_dist_tolerance,
+                process_level_preference,
+                format_preference)
         self.__group_by_net_sta_inst()
         self.validate()
 
@@ -202,7 +227,22 @@ class StreamCollection(object):
 
         # Might eventually want to include some of the missed files and
         # error info but don't have a sensible place to put it currently.
+        return cls(streams)
 
+    @classmethod
+    def from_traces(cls, traces):
+        """
+        Create a StreamCollection instance from a list of traces.
+
+        Args:
+            traces (list):
+                List of StationTrace objects.
+
+        Returns:
+            StreamCollection instance.
+        """
+
+        streams = [StationStream([tr]) for tr in traces]
         return cls(streams)
 
     def to_dataframe(self, origin, imcs=None, imts=None):
@@ -444,30 +484,12 @@ class StreamCollection(object):
         return self.__class__(sel)
 
     def __group_by_net_sta_inst(self):
+
         trace_list = []
-
-        stream_params = {}
-
-        # Need to make sure that tag will be preserved; tag only really should
-        # be created once a StreamCollection has been written to an ASDF file
-        # and then read back in.
-        for stream in self:
-            # we have stream-based metadata that we need to preserve
-            if len(stream.parameters):
-                stream_params[stream.get_id()] = stream.parameters
-
-            # Tag is a StationStream attribute; If it does not exist, make it
-            # an empty string
-            if hasattr(stream, 'tag'):
-                tag = stream.tag
-            else:
-                tag = ""
-            # Since we have to deconstruct the stream groupings each time, we
-            # need to stick the tag into the trace stats dictionary temporarily
-            for trace in stream:
-                tr = trace
-                tr.stats.tag = tag
-                trace_list += [tr]
+        stream_params = gather_stream_parameters(self.streams)
+        for st in self.streams:
+            for tr in st:
+                trace_list.append(tr)
 
         # Create a list of traces with matching net, sta.
         all_matches = []
@@ -511,21 +533,145 @@ class StreamCollection(object):
             # BOR), we can use this to trim the stations into 3-channel
             # streams.
             streams = split_station(grouped_trace_list)
+            streams = insert_stream_parameters(streams, stream_params)
 
             for st in streams:
-                if len(st):
-                    sid = st.get_id()
-                    # put stream parameters back in
-                    if sid in stream_params:
-                        st.parameters = stream_params[sid].copy()
-
-                    # Put tag back as a stream attribute, assuming that the
-                    # tag has stayed the same through the grouping process
-                    if st[0].stats.tag:
-                        st.tag = st[0].stats.tag
                 grouped_streams.append(st)
 
         self.streams = grouped_streams
+
+    def __handle_duplicates(self, max_dist_tolerance,
+                            process_level_preference, format_preference):
+        """
+        Removes duplicate data from the StreamCollection, based on the
+        process level and format preferences.
+
+        Args:
+            max_dist_tolerance (float):
+                Maximum distance tolerance for determining whether two streams
+                are at the same location (in meters).
+            process_level_preference (list):
+                A list containing 'V0', 'V1', 'V2', with the order determining
+                which process level is the most preferred (most preferred goes
+                first in the list).
+            format_preference (list):
+                A list continaing strings of the file source formats (found
+                in gmprocess.io). Does not need to list all of the formats.
+                Example: ['cosmos', 'dmg'] indicates that cosmos files are
+                preferred over dmg files.
+        """
+
+        # If arguments are None, check the config
+        # If not in the config, use the default values at top of the file
+        if max_dist_tolerance is None:
+            max_dist_tolerance = get_config('duplicate')['max_dist_tolerance']
+
+        if process_level_preference is None:
+            process_level_preference = \
+                get_config('duplicate')['process_level_preference']
+
+        if format_preference is None:
+            format_preference = get_config('duplicate')['format_preference']
+
+        stream_params = gather_stream_parameters(self.streams)
+
+        traces = []
+        for st in self.streams:
+            for tr in st:
+                traces.append(tr)
+        preferred_traces = [traces[0]]
+
+        for tr_to_add in traces:
+            is_duplicate = False
+            for tr_pref in preferred_traces:
+                if are_duplicates(tr_to_add, tr_pref, max_dist_tolerance):
+                    is_duplicate = True
+                    break
+
+            if is_duplicate:
+                if choose_preferred(
+                 tr_to_add, tr_pref,
+                 process_level_preference, format_preference) == tr_to_add:
+                    preferred_traces.remove(tr_pref)
+                    logging.info('Trace %s (%s) is a duplicate and '
+                                 'has been removed from the StreamCollection.'
+                                 % (tr_pref.id,
+                                    tr_pref.stats.standard.source_file))
+                    preferred_traces.append(tr_to_add)
+                else:
+                    logging.info('Trace %s (%s) is a duplicate and '
+                                 'has been removed from the StreamCollection.'
+                                 % (tr_to_add.id,
+                                    tr_to_add.stats.standard.source_file))
+
+            else:
+                preferred_traces.append(tr_to_add)
+
+        streams = [StationStream([tr]) for tr in preferred_traces]
+        streams = insert_stream_parameters(streams, stream_params)
+        self.streams = streams
+
+
+def gather_stream_parameters(streams):
+    """
+    Helper function for gathering the stream parameters into a datastructure
+    and sticking the stream tag into the trace stats dictionaries.
+
+    Args:
+        streams (list): list of StationStream objects.
+
+    Returns:
+        dict. Dictionary of the stream parameters.
+    """
+    stream_params = {}
+
+    # Need to make sure that tag will be preserved; tag only really should
+    # be created once a StreamCollection has been written to an ASDF file
+    # and then read back in.
+    for stream in streams:
+        # we have stream-based metadata that we need to preserve
+        if len(stream.parameters):
+            stream_params[stream.get_id()] = stream.parameters
+
+        # Tag is a StationStream attribute; If it does not exist, make it
+        # an empty string
+        if hasattr(stream, 'tag'):
+            tag = stream.tag
+        else:
+            tag = ""
+        # Since we have to deconstruct the stream groupings each time, we
+        # need to stick the tag into the trace stats dictionary temporarily
+        for trace in stream:
+            tr = trace
+            tr.stats.tag = tag
+
+    return stream_params
+
+
+def insert_stream_parameters(streams, stream_params):
+    """
+    Helper function for inserting the stream parameters back to the streams.
+
+    Args:
+        streams (list): list of StationStream objects.
+        stream_params (dict): Dictionary of stream parameters.
+
+    Returns:
+        list of StationStream objects with stream parameters.
+    """
+    for st in streams:
+        if len(st):
+            sid = st.get_id()
+            # put stream parameters back in
+            if sid in stream_params:
+                st.parameters = stream_params[sid].copy()
+
+            # Put tag back as a stream attribute, assuming that the
+            # tag has stayed the same through the grouping process
+            if st[0].stats.tag:
+                st.tag = st[0].stats.tag
+
+    return streams
 
 
 def split_station(grouped_trace_list):
@@ -541,3 +687,101 @@ def split_station(grouped_trace_list):
     else:
         streams = [StationStream(traces=grouped_trace_list)]
     return streams
+
+
+def are_duplicates(tr1, tr2, max_dist_tolerance):
+    """
+    Determines whether two StationTraces are duplicates by checking the
+    station, channel codes, and the distance between them.
+
+    Args:
+        tr1 (StationTrace):
+            1st trace.
+        tr2 (StationTrace):
+            2nd trace.
+        max_dist_tolerance (float):
+            Maximum distance tolerance for determining whether two streams
+            are at the same location (in meters).
+
+    Returns:
+        bool. True if traces are duplicates, False otherwise.
+    """
+
+    # First, check if the ids match (net.sta.loc.cha)
+    if tr1.id == tr2.id:
+        return True
+    # If not matching IDs, check the station, instrument code, and distance
+    else:
+        distance = gps2dist_azimuth(
+            tr1.stats.coordinates.latitude, tr1.stats.coordinates.longitude,
+            tr2.stats.coordinates.latitude, tr2.stats.coordinates.longitude)[0]
+        if (tr1.stats.station == tr2.stats.station and
+            tr1.stats.location == tr2.stats.location and
+            tr1.stats.channel == tr2.stats.channel and
+           distance < max_dist_tolerance):
+            return True
+        else:
+            return False
+
+
+def choose_preferred(tr1, tr2, process_level_preference, format_preference):
+    """
+    Determines which trace is preferred. Returns the preferred the trace.
+
+    Args:
+        tr1 (StationTrace):
+            1st trace.
+        tr2 (StationTrace):
+            2nd trace.
+        process_level_preference (list):
+            A list containing 'V0', 'V1', 'V2', with the order determining
+            which process level is the most preferred (most preferred goes
+            first in the list).
+        format_preference (list):
+            A list continaing strings of the file source formats (found
+            in gmprocess.io). Does not need to list all of the formats.
+            Example: ['cosmos', 'dmg'] indicates that cosmos files are
+            preferred over dmg files.
+
+    Returns:
+        The preferred trace (StationTrace).
+    """
+
+    tr1_pref = process_level_preference.index(
+        REV_PROCESS_LEVELS[tr1.stats.standard.process_level])
+    tr2_pref = process_level_preference.index(
+        REV_PROCESS_LEVELS[tr2.stats.standard.process_level])
+
+    if tr1_pref < tr2_pref:
+        return tr1
+    elif tr1_pref > tr2_pref:
+        return tr2
+    else:
+        if (tr1.stats.standard.source_format in format_preference and
+           tr2.stats.standard.source_format in format_preference):
+            # Determine preferred format
+            tr1_form_pref = format_preference.index(
+                tr1.stats.standard.source_format)
+            tr2_form_pref = format_preference.index(
+                tr2.stats.standard.source_format)
+            if tr1_form_pref < tr2_form_pref:
+                return tr1
+            elif tr1_form_pref > tr2_form_pref:
+                return tr2
+            else:
+                if (tr1.stats.starttime == UTCDateTime(0) and
+                   tr2.stats.starttime != UTCDateTime(0)):
+                    return tr2
+                elif (tr1.stats.starttime != UTCDateTime(0) and
+                      tr2.stats.starttime == UTCDateTime(0)):
+                    return tr1
+                else:
+                    if tr1.stats.npts > tr2.stats.npts:
+                        return tr1
+                    elif tr2.stats.npts > tr1.stats.npts:
+                        return tr2
+                    else:
+                        if tr2.stats.sampling_rate > tr1.stats.sampling_rate:
+                            return tr2
+                        else:
+                            return tr1

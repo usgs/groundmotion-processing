@@ -91,7 +91,7 @@ def test_dmg_v1():
             assert stats.standard['instrument_period'] == 0.039
             assert stats.standard['instrument_damping'] == 0.556
             assert stats.format_specific['time_sd'] == 0.114
-        assert stats.standard['process_level'] == PROCESS_LEVELS['V2']
+        assert stats.standard['process_level'] == PROCESS_LEVELS['V1']
         assert stats.standard['source_format'] == 'dmg'
         assert stats.standard['source'] == 'unknown'
 
