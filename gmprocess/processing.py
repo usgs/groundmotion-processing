@@ -60,6 +60,10 @@ TAPER_TYPES = {
     'triang': 'Triangular'
 }
 
+ABBREV_UNITS = {'ACC': 'cm/s^2',
+                'VEL': 'cm/s',
+                'DISP': 'cm'}
+
 
 def process_streams(streams, origin, config=None):
     """
@@ -234,6 +238,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                 tr.remove_response(
                     inventory=inv, output=output, water_level=water_level,
                     pre_filt=(f1, f2, f3, f4))
+                tr.stats.standard.units = output.lower()
             except Exception as e:
                 reason = ('Encountered an error when attempting to remove '
                           'instrument response: %s' % str(e))
@@ -248,25 +253,26 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                 tr.fail(reason)
                 continue
 
-            tr.data *= M_TO_CM  # Convert from m/s/s to cm/s/s
+            tr.data *= M_TO_CM  # Convert from m to cm
             tr.setProvenance(
                 'remove_response',
                 {
                     'method': 'remove_sensitivity',
                     'input_units': 'counts',
-                    'output_units': 'cm/s'
+                    'output_units': ABBREV_UNITS[output]
                 }
             )
         elif tr.stats.channel[1] == 'N':
             try:
                 tr.remove_sensitivity(inventory=inv)
-                tr.data *= M_TO_CM  # Convert from m/s/s to cm/s/s
+                tr.data *= M_TO_CM  # Convert from m to cm
+                tr.stats.standard.units = output.lower()
                 tr.setProvenance(
                     'remove_response',
                     {
                         'method': 'remove_sensitivity',
                         'input_units': 'counts',
-                        'output_units': 'cm/s^2'
+                        'output_units': ABBREV_UNITS[output]
                     }
                 )
             except Exception as e:
