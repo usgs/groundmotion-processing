@@ -93,10 +93,11 @@ class StreamCollection(object):
 
         self.streams = newstreams
         if handle_duplicates:
-            self.__handle_duplicates(
-                max_dist_tolerance,
-                process_level_preference,
-                format_preference)
+            if len(self.streams):
+                self.__handle_duplicates(
+                    max_dist_tolerance,
+                    process_level_preference,
+                    format_preference)
         self.__group_by_net_sta_inst()
         self.validate()
 
