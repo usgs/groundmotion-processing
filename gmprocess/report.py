@@ -24,7 +24,7 @@ PREAMBLE = """
 \\usepackage{grffile}
 
 % Turn off default page numbers
-\\usepackage{nopageno}
+% \\usepackage{nopageno}
 
 % Needed for table rules
 \\usepackage{booktabs}
@@ -201,7 +201,7 @@ def build_report_latex(sc, directory, origin, config=None):
         # Can we find pdflatex?
         try:
             pdflatex_bin = which('pdflatex')
-            pdflatex_options = '-halt-on-error'
+            pdflatex_options = '-interaction=nonstopmode -halt-on-error'
             cmd = '%s %s %s' % (pdflatex_bin, pdflatex_options, file_name)
             res, stdout, stderr = get_command_output(cmd)
             report_file = latex_file

@@ -141,6 +141,7 @@ class MetricsController(object):
                         periods = np.linspace(start, stop, num=num)
                     for period in periods:
                         imts += ['sa' + str(period)]
+                else:
                     for period in metrics['sa']['periods']['defined_periods']:
                         imts += ['sa' + str(period)]
             elif imt == 'fas':
@@ -154,6 +155,7 @@ class MetricsController(object):
                         periods = np.linspace(start, stop, num=num)
                     for period in periods:
                         imts += ['fas' + str(period)]
+                else:
                     for period in metrics['fas']['periods']['defined_periods']:
                         imts += ['fas' + str(period)]
             else:
