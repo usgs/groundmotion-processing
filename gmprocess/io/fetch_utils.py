@@ -399,7 +399,7 @@ def plot_raw(rawdir, tcollection, event):
     for stream in tcollection:
         stlat = stream[0].stats.coordinates['latitude']
         stlon = stream[0].stats.coordinates['longitude']
-        dist = locations2degrees(eqlat, eqlon, stlat, stlon)
+        dist = float(locations2degrees(eqlat, eqlon, stlat, stlon))
         arrivals = model.get_travel_times(
             source_depth_in_km=source_depth,
             distance_in_degree=dist,
