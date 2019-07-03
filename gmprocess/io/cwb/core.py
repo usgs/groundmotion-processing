@@ -9,7 +9,7 @@ import numpy as np
 from obspy.core.trace import Stats
 
 # local imports
-from gmprocess.io.seedname import get_channel_name
+from gmprocess.io.seedname import get_channel_name, get_units_type
 from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.stationstream import StationStream
 
@@ -77,6 +77,7 @@ def read_cwb(filename, **kwargs):
         is_vertical=True,
         is_north=False)
     hdr_z['standard']['horizontal_orientation'] = np.nan
+    hdr_z['standard']['units_type'] = get_units_type(hdr_z['channel'])
 
     hdr_h1 = hdr.copy()
     hdr_h1['channel'] = get_channel_name(
@@ -85,6 +86,7 @@ def read_cwb(filename, **kwargs):
         is_vertical=False,
         is_north=True)
     hdr_h1['standard']['horizontal_orientation'] = np.nan
+    hdr_h1['standard']['units_type'] = get_units_type(hdr_h1['channel'])
 
     hdr_h2 = hdr.copy()
     hdr_h2['channel'] = get_channel_name(
@@ -93,6 +95,7 @@ def read_cwb(filename, **kwargs):
         is_vertical=False,
         is_north=False)
     hdr_h2['standard']['horizontal_orientation'] = np.nan
+    hdr_h2['standard']['units_type'] = get_units_type(hdr_h2['channel'])
 
     stats_z = Stats(hdr_z)
     stats_h1 = Stats(hdr_h1)

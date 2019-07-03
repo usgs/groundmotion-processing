@@ -18,7 +18,7 @@ from gmprocess.constants import UNIT_CONVERSIONS
 from gmprocess.exception import GMProcessException
 from gmprocess.stationstream import StationStream
 from gmprocess.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
-from gmprocess.io.seedname import get_channel_name
+from gmprocess.io.seedname import get_channel_name, get_units_type
 
 MICRO_TO_VOLT = 1e6  # convert microvolts to volts
 MSEC_TO_SEC = 1 / 1000.0
@@ -526,6 +526,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     hdr['coordinates'] = coordinates
 
     # standard metadata
+    standard['units_type'] = get_units_type(channel)
     standard['source'] = source
     standard['horizontal_orientation'] = horizontal_orientation
     station_name = lines[4][40:-1].strip()

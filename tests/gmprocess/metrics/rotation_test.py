@@ -39,6 +39,7 @@ def test_rotation():
                                                             'source_file': '',
                                                             'horizontal_orientation': np.nan,
                                                             'units': 'acc',
+                                                            'units_type': 'acc,',
                                                             'instrument_sensitivity': np.nan,
                                                             'instrument_damping': np.nan}})
     tr2 = StationTrace(data=osc2_data, header={'channel': 'HN2', 'delta': 0.01,
@@ -57,6 +58,7 @@ def test_rotation():
                                                             'process_time': '',
                                                             'horizontal_orientation': np.nan,
                                                             'units': 'acc',
+                                                            'units_type': 'acc',
                                                             'instrument_sensitivity': np.nan,
                                                             'instrument_damping': np.nan}})
     st = StationStream([tr1, tr2])

@@ -11,7 +11,7 @@ from obspy.core.trace import Stats
 import numpy as np
 
 # local imports
-from gmprocess.io.seedname import get_channel_name
+from gmprocess.io.seedname import get_channel_name, get_units_type
 from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.stationstream import StationStream
 
@@ -159,6 +159,7 @@ def read_knet(filename):
     data *= calib
 
     # fill out the rest of the standard dictionary
+    standard['units_type'] = get_units_type(hdr['channel'])
     standard['horizontal_orientation'] = np.nan
     standard['instrument_period'] = np.nan
     standard['instrument_damping'] = np.nan

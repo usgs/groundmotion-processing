@@ -15,7 +15,7 @@ import numpy as np
 from gmprocess.constants import UNIT_CONVERSIONS
 from gmprocess.exception import GMProcessException
 from gmprocess.io.usc.core import is_usc
-from gmprocess.io.seedname import get_channel_name
+from gmprocess.io.seedname import get_channel_name, get_units_type
 from gmprocess.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
 from gmprocess.stationstream import StationStream
 from gmprocess.io.utils import is_evenly_spaced, resample_uneven_trace
@@ -495,6 +495,7 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
     coordinates['elevation'] = np.nan
 
     # Standard metadata
+    standard['units_type'] = get_units_type(hdr['channel'])
     standard['horizontal_orientation'] = float(angle)
     standard['instrument_period'] = flt_data[0]
     standard['instrument_damping'] = flt_data[1]
@@ -647,6 +648,7 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
     coordinates['elevation'] = 0.0
 
     # Standard metadata
+    standard['units_type'] = get_units_type(hdr['channel'])
     standard['horizontal_orientation'] = float(angle)
     standard['instrument_period'] = flt_data[0]
     standard['instrument_damping'] = flt_data[1]

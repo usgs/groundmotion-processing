@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 
 # stdlib imports
-import os.path
 import warnings
-import pkg_resources
 
 # third party imports
 import numpy as np
@@ -13,8 +11,6 @@ from obspy.core.event import Origin
 from gmprocess.io.geonet.core import read_geonet
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.io.test_utils import read_data_dir
-from gmprocess.streamcollection import StreamCollection
-from gmprocess.processing import remove_response
 
 
 def cmp_dicts(adict, bdict):
@@ -156,33 +152,5 @@ def test_stationsummary():
     np.testing.assert_array_equal(imt1, imt2)
 
 
-def test_broadband_strongmotion():
-
-    dir = os.path.join(
-        pkg_resources.resource_filename('gmprocess', 'data'),
-        'testdata', 'fdsn', 'uw61251926')
-    sc = StreamCollection.from_directory(dir)
-
-    for st in sc:
-        st.detrend('demean')
-        remove_response(st, 0.001, 0.005)
-        print(st)
-
-    # Calculate metrics
-    st_bh = sc.select(instrument='BH')[0]
-    st_en = sc.select(instrument='EN')[0]
-
-    sum_bh = StationSummary.from_stream(
-        st_bh, components=['channels'], imts=['PGA'])
-    sum_en = StationSummary.from_stream(
-        st_en, components=['channels'], imts=['PGA'])
-
-    np.testing.assert_allclose(
-        float(sum_bh.pgms['Result']),
-        float(sum_en.pgms['Result']),
-        rtol=0.1)
-
-
 if __name__ == '__main__':
     test_stationsummary()
-    test_broadband_strongmotion()

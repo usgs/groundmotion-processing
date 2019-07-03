@@ -11,7 +11,7 @@ from obspy.core.trace import Stats
 import numpy as np
 
 # local imports
-from gmprocess.io.seedname import get_channel_name
+from gmprocess.io.seedname import get_channel_name, get_units_type
 from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.stationstream import StationStream
 
@@ -329,6 +329,7 @@ def _read_header(hdr_data, station, name, component, data_format,
     coordinates['elevation'] = 0.0
 
     # get other standard metadata
+    standard['units_type'] = get_units_type(hdr['channel'])
     standard['instrument_period'] = 1 / hdr_data[4, 0]
     standard['instrument_damping'] = hdr_data[4, 1]
     standard['process_time'] = ''

@@ -8,6 +8,8 @@ import pprint
 # third party imports
 import pytz
 from obspy.core.utcdatetime import UTCDateTime
+from obspy.clients.fdsn.header import URL_MAPPINGS
+from obspy.clients.fdsn import Client
 from obspy.clients.fdsn.mass_downloader import (CircularDomain,
                                                 Restrictions,
                                                 MassDownloader)
@@ -147,6 +149,7 @@ class FDSNFetcher(DataFetcher):
 
         self.drop_non_free = drop_non_free
         self.BOUNDS = [-180, 180, -90, 90]
+        self.config = config
 
     def getMatchingEvents(self, solve=True):
         """Return a list of dictionaries matching input parameters.
@@ -228,8 +231,23 @@ class FDSNFetcher(DataFetcher):
         pp.pprint(restrictions.__dict__)
         # DEBUGGING
 
-        # No specified providers will result in all known ones being queried.
-        mdl = MassDownloader()
+        # For each of the providers, check if we have a username and password
+        # provided in the config. If we do, initialize the client with the
+        # username and password. Otherwise, use default initalization.
+        fdsn_config = self.config['fetchers']['FDSNFetcher']
+        client_list = []
+        for provider_str in URL_MAPPINGS.keys():
+            if provider_str in fdsn_config:
+                client = Client(
+                    provider_str,
+                    user=fdsn_config[provider_str]['user'],
+                    password=fdsn_config[provider_str]['password'])
+            else:
+                client = Client(provider_str)
+            client_list.append(client)
+
+        # Pass off the initalized clients to the Mass Downloader
+        mdl = MassDownloader(providers=client_list)
 
         # we can have a problem of file overlap, so let's remove existing
         # mseed files from the raw directory.

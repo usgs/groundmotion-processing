@@ -35,6 +35,19 @@ def get_channel_name(sample_rate, is_acceleration=True,
     return channel
 
 
+def get_units_type(channel):
+    """
+    Determines the units type ('acc' or 'vel') based on the three-character
+    channel code. The units type indicates whether the instrument natively
+    measures acceleration or velocity.
+    """
+
+    if channel[1] == 'N':
+        return 'acc'
+    else:
+        return 'vel'
+
+
 def is_channel_north(angle):
     '''Determine whether horizontal angle is closer to North/South than East/West.
 
@@ -43,7 +56,7 @@ def is_channel_north(angle):
             Input horizontal orientation of the sensor (0-360).
 
     Returns:
-        bool: 
+        bool:
             True if closer to North/South than East/West, False otherwise.
     '''
     if (angle > 315 or angle < 45) or (angle > 135 and angle < 225):

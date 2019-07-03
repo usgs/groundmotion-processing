@@ -609,6 +609,7 @@ class StreamWorkspace(object):
                 else:
                     summary = StationSummary.from_config(
                         stream, event=event, config=config)
+
                 imclist = summary.pgms['IMC'].unique().tolist()
                 imtlist = summary.pgms['IMT'].unique().tolist()
                 for imc in imclist:
@@ -948,6 +949,7 @@ def _get_agents(provdoc):
 
 
 def _get_table_row(stream, summary, event, imc):
+
     h1 = stream.select(channel='*1')
     h2 = stream.select(channel='*2')
     if not len(h1):

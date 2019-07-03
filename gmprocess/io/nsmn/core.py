@@ -14,7 +14,7 @@ from scipy import constants
 # local
 from gmprocess.stationstream import StationStream
 from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
-from gmprocess.io.seedname import get_channel_name
+from gmprocess.io.seedname import get_channel_name, get_units_type
 
 
 TIMEFMT = '%d/%m/%Y %H:%M:%S.%f'
@@ -69,12 +69,15 @@ def read_nsmn(filename):
     header1['standard']['horizontal_orientation'] = 0.0
     header1['channel'] = get_channel_name(
         header['sampling_rate'], True, False, True)
+    header1['standard']['units_type'] = get_units_type(header1['channel'])
     header2['standard']['horizontal_orientation'] = 90.0
     header2['channel'] = get_channel_name(
         header['sampling_rate'], True, False, False)
+    header2['standard']['units_type'] = get_units_type(header2['channel'])
     header3['standard']['horizontal_orientation'] = 0.0
     header3['channel'] = get_channel_name(
         header['sampling_rate'], True, True, False)
+    header3['standard']['units_type'] = get_units_type(header3['channel'])
 
     # three columns of NS, EW, UD
     # data = np.genfromtxt(filename, skip_header=TEXT_HDR_ROWS,
