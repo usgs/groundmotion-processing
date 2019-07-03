@@ -156,6 +156,7 @@ def process_event(outdir, event, pcommands,
         with warnings.catch_warnings():
             warnings.simplefilter("ignore",
                                   category=H5pyDeprecationWarning)
+            print('The process tag is:')
             workspace.addStreams(event, pstreams, label=process_tag)
             workspace.calcMetrics(event.id,
                                   labels=[process_tag],
@@ -395,6 +396,7 @@ def main(args):
                     tevent_table, timc_tables = workspace.getTables(
                         labels[0], config=config)
                 else:
+                    print('Getting event tables')
                     tevent_table, timc_tables = workspace.getTables(
                         labels[0], config=None)
             if event_table is None:

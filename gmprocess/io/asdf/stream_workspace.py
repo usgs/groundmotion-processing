@@ -600,6 +600,8 @@ class StreamWorkspace(object):
             }
             event_table = event_table.append(edict, ignore_index=True)
             streams = self.getStreams(eventid, labels=[label])
+            print('The length of streams is:', len(streams))
+            print('Streams is:', streams)
             for stream in streams:
                 if not stream.passed:
                     continue
@@ -609,13 +611,19 @@ class StreamWorkspace(object):
                 else:
                     summary = StationSummary.from_config(
                         stream, event=event, config=config)
+
+                print('The summary is:', summary.pgms)
                 imclist = summary.pgms['IMC'].unique().tolist()
                 imtlist = summary.pgms['IMT'].unique().tolist()
+
+                print('the IMC list is:', imclist)
                 for imc in imclist:
                     if imc not in imc_tables:
                         cols = FLATFILE_COLUMNS + imtlist
                         imc_table = pd.DataFrame(columns=cols)
+                        print('The imc_table is:', imc_table)
                         row = _get_table_row(stream, summary, event, imc)
+                        print('The row is:', row)
                         if not len(row):
                             continue
                         imc_table = imc_table.append(row, ignore_index=True)
@@ -627,6 +635,8 @@ class StreamWorkspace(object):
                             continue
                         imc_table = imc_table.append(row, ignore_index=True)
                         imc_tables[imc] = imc_table
+
+                print('The IMC table is:', imc_tables)
 
         return (event_table, imc_tables)
 
@@ -948,11 +958,16 @@ def _get_agents(provdoc):
 
 
 def _get_table_row(stream, summary, event, imc):
+    print('The stream is:', stream)
+
     h1 = stream.select(channel='*1')
     h2 = stream.select(channel='*2')
     if not len(h1):
         h1 = stream.select(channel='*N')
         h2 = stream.select(channel='*E')
+
+    print('H1 is:', h1)
+    print('H2 is:', h2)
 
     if not len(h1) or not len(h2):
         return {}

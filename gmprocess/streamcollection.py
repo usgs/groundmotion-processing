@@ -580,7 +580,7 @@ class StreamCollection(object):
         for st in self.streams:
             for tr in st:
                 traces.append(tr)
-        preferred_traces = [traces[0]]
+        preferred_traces = []
 
         for tr_to_add in traces:
             is_duplicate = False
