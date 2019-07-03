@@ -19,7 +19,6 @@ from gmprocess.stationtrace import StationTrace, TIMEFMT_MS
 from gmprocess.stationstream import StationStream
 from gmprocess.streamcollection import StreamCollection
 from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.stream import streams_to_dataframe
 from gmprocess.exception import GMProcessException
 from gmprocess.event import ScalarEvent
 
@@ -163,7 +162,6 @@ class StreamWorkspace(object):
                     )
 
             # add processing parameters from streams
-            path = '%s_%s' % (eventid, tag)
             jdict = {}
             for key in stream.getStreamParamKeys():
                 value = stream.getStreamParam(key)
@@ -183,13 +181,13 @@ class StreamWorkspace(object):
                 self.dataset.add_auxiliary_data(
                     jsonarray,
                     data_type=dtype,
-                    path=path,
+                    path=tag,
                     parameters={}
                 )
 
             # add processing parameters from traces
             for trace in stream:
-                path = '%s_%s_%s' % (eventid, tag, trace.stats.channel)
+                path = '%s_%s' % (tag, trace.stats.channel)
                 jdict = {}
                 for key in trace.getParameterKeys():
                     value = trace.getParameter(key)
@@ -232,8 +230,11 @@ class StreamWorkspace(object):
         Returns:
             list: List of processing labels.
         """
-        provtags = self.dataset.provenance.list()
-        labels = list(set([ptag.split('_')[2] for ptag in provtags]))
+        all_tags = []
+        for w in self.dataset.waveforms:
+            all_tags.extend(w.get_waveform_tags())
+        all_labels = list(set([at.split('_')[2] for at in all_tags]))
+        labels = list(set(all_labels))
         return labels
 
     def getStreamTags(self, eventid, label=None):
@@ -324,9 +325,8 @@ class StreamWorkspace(object):
                         if channel_tag in self.dataset.provenance.list():
                             provdoc = self.dataset.provenance[channel_tag]
                             trace.setProvenanceDocument(provdoc)
-                        trace_path = '%s_%s_%s' % (eventid,
-                                                   tag,
-                                                   trace.stats.channel)
+                        trace_path = '%s_%s' % (
+                            tag, trace.stats.channel)
                         if trace_path in trace_auxholder:
                             bytelist = trace_auxholder[
                                 trace_path].data[:].tolist()
@@ -339,10 +339,9 @@ class StreamWorkspace(object):
                         stream.tag = tag  # testing this out
 
                         # look for stream-based metadata
-                        stream_path = '%s_%s' % (eventid, tag)
-                        if stream_path in stream_auxholder:
+                        if tag in stream_auxholder:
                             bytelist = stream_auxholder[
-                                stream_path].data[:].tolist()
+                                tag].data[:].tolist()
                             jsonstr = ''.join([chr(b) for b in bytelist])
                             jdict = json.loads(jsonstr)
                             for key, value in jdict.items():

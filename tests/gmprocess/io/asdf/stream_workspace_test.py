@@ -11,23 +11,22 @@ from gmprocess.io.read import read_data
 from gmprocess.processing import process_streams
 from gmprocess.config import get_config
 from gmprocess.io.test_utils import read_data_dir
-from gmprocess.event import get_event_object
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.streamcollection import StreamCollection
 
 from h5py.h5py_warnings import H5pyDeprecationWarning
 from yaml import YAMLLoadWarning
-from obspy.core.utcdatetime import UTCDateTime
 
 import numpy as np
 import pandas as pd
+import pytest
 
 
 def compare_streams(instream, outstream):
     pkeys = instream[0].getParameterKeys()
     for key in pkeys:
         if not outstream[0].hasParameter(key):
-            assert 1 == 2
+            raise Exception('outstream[0] missing key.')
         invalue = instream[0].getParameter(key)
         outvalue = outstream[0].getParameter(key)
         if isinstance(invalue, (int, float, str)):
@@ -58,9 +57,11 @@ def compare_streams(instream, outstream):
 
 def test_stream_params():
     eventid = 'us1000778i'
-    datafiles, event = read_data_dir('geonet',
-                                     eventid,
-                                     '20161113_110259_WTMC_20.V1A')
+    datafiles, event = read_data_dir(
+        'geonet',
+        eventid,
+        '20161113_110259_WTMC_20.V1A'
+    )
     tdir = tempfile.mkdtemp()
     streams = []
     try:
@@ -117,16 +118,12 @@ def test_workspace():
             assert sorted(stations) == ['hses', 'thz', 'wtmc']
 
             # test retrieving tags for an event that doesn't exist
-            try:
+            with pytest.raises(KeyError):
                 workspace.getStreamTags('foo')
-            except KeyError:
-                assert 1 == 1
 
             # test retrieving event that doesn't exist
-            try:
+            with pytest.raises(KeyError):
                 workspace.getEvent('foo')
-            except KeyError:
-                assert 1 == 1
 
             instream = None
             for stream in raw_streams:
@@ -134,7 +131,7 @@ def test_workspace():
                     instream = stream
                     break
             if instream is None:
-                assert 1 == 2
+                raise ValueError('Instream should not be none.')
             outstream = workspace.getStreams(eventid,
                                              stations=['hses'],
                                              labels=['raw'])[0]
@@ -183,7 +180,7 @@ def test_workspace():
                     instream = stream
                     break
             if instream is None:
-                assert 1 == 2
+                raise ValueError('Instream should not be none.')
             compare_streams(instream, outstream)
             workspace.close()
 
@@ -251,9 +248,7 @@ def test_metrics2():
 
 def test_metrics():
     eventid = 'usb000syza'
-    datafiles, event = read_data_dir('knet',
-                                     eventid,
-                                     '*')
+    datafiles, event = read_data_dir('knet', eventid, '*')
     datadir = os.path.split(datafiles[0])[0]
     raw_streams = StreamCollection.from_directory(datadir)
     config = get_config()
@@ -284,10 +279,12 @@ def test_metrics():
         np.testing.assert_almost_equal(array1, array2, decimal=4)
 
         df = workspace.getMetricsTable(event.id)
-        cmp_series = {'GREATER_OF_TWO_HORIZONTALS': 0.6787,
-                      'H1': 0.3869,
-                      'H2': 0.6787,
-                      'Z': 0.7663}
+        cmp_series = {
+            'GREATER_OF_TWO_HORIZONTALS': 0.6787,
+            'H1': 0.3869,
+            'H2': 0.6787,
+            'Z': 0.7663
+        }
         pga_dict = df.iloc[0]['PGA'].to_dict()
         for key, value in pga_dict.items():
             value2 = cmp_series[key]
