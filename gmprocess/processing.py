@@ -8,6 +8,7 @@ import logging
 
 from scipy.optimize import curve_fit
 
+from gmprocess.stationtrace import PROCESS_LEVELS
 from gmprocess.streamcollection import StreamCollection
 from gmprocess.config import get_config
 from gmprocess.windows import signal_split
@@ -174,6 +175,10 @@ def process_streams(streams, origin, config=None):
     colocated_conf = config['colocated']
     processed_streams.select_colocated(**colocated_conf)
 
+    for st in processed_streams:
+        for tr in st:
+            tr.stats.standard.process_level = PROCESS_LEVELS['V2']
+
     logging.info('Finished processing streams.')
     return processed_streams
 
@@ -239,6 +244,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                     inventory=inv, output=output, water_level=water_level,
                     pre_filt=(f1, f2, f3, f4))
                 tr.stats.standard.units = output.lower()
+                tr.stats.standard.process_level = PROCESS_LEVELS['V1']
             except Exception as e:
                 reason = ('Encountered an error when attempting to remove '
                           'instrument response: %s' % str(e))
@@ -267,6 +273,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                 tr.remove_sensitivity(inventory=inv)
                 tr.data *= M_TO_CM  # Convert from m to cm
                 tr.stats.standard.units = output.lower()
+                tr.stats.standard.process_level = PROCESS_LEVELS['V1']
                 tr.setProvenance(
                     'remove_response',
                     {

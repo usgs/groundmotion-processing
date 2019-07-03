@@ -40,11 +40,11 @@ def test_gmprocess():
     finally:
         shutil.rmtree(tdir)
 
+    # Testing some colocated and strong motion broadband data and making
+    # sure we get approximately the same PGA values in the final csv files
     test_folder = os.path.join(pkg_resources.resource_filename(
         'gmprocess', os.path.join('data', 'testdata', 'fdsn', 'uw61251926')))
     config = os.path.join(test_folder, '..', 'test_config.yml')
-    print(config)
-
     pga_vals = []
     for ddir in glob.glob(os.path.join(test_folder, '*')):
         tdir = tempfile.mkdtemp()
