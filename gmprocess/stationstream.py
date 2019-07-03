@@ -320,7 +320,8 @@ class StationStream(Stream):
 
     def getInventory(self):
         """
-        Extract an ObsPy inventory object from a Stream read in by gmprocess tools.
+        Extract an ObsPy inventory object from a Stream read in by gmprocess
+        tools.
         """
         networks = [trace.stats.network for trace in self]
         if len(set(networks)) > 1:
