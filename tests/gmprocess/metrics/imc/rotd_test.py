@@ -39,9 +39,10 @@ def test_rotd():
                                                 'structure_type': '',
                                                 'horizontal_orientation': np.nan,
                                                 'sensor_serial_number': '',
-                                                'process_level': 'raw counts',
+                                                'process_level': 'corrected physical units',
                                                 'process_time': '',
                                                 'units': 'acc',
+                                                'units_type': 'acc',
                                                 'instrument_sensitivity': np.nan,
                                                 'instrument_damping': np.nan}})
     tr2 = StationTrace(data=osc2_data, header={'channel': 'HN2', 'delta': 0.01,
@@ -57,12 +58,17 @@ def test_rotd():
                                                 'source_file': '',
                                                 'horizontal_orientation': np.nan,
                                                 'sensor_serial_number': '',
-                                                'process_level': 'raw counts',
+                                                'process_level': 'corrected physical units',
                                                 'process_time': '',
                                                 'units': 'acc',
+                                                'units_type': 'acc',
                                                 'instrument_sensitivity': np.nan,
                                                 'instrument_damping': np.nan}})
     st = StationStream([tr1, tr2])
+
+    for tr in st:
+        response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
+        tr.setProvenance('remove_response', response)
 
     target_pga50 = 4.12528265306
     target_sa1050 = 10.7362857143

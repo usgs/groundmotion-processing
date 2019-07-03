@@ -257,7 +257,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
             tr.setProvenance(
                 'remove_response',
                 {
-                    'method': 'remove_sensitivity',
+                    'method': 'remove_response',
                     'input_units': 'counts',
                     'output_units': ABBREV_UNITS[output]
                 }

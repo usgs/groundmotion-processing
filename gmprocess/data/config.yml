@@ -73,6 +73,14 @@ fetchers:
         # existing station will not be downloaded.
         minimum_interstation_distance_in_m: 0.0
 
+        # For each of the FDSN providers, a username and password
+        # can be provided. This section does not need to contain all of the
+        # providers, just the ones you want to give a username and password.
+
+        # Example:
+        # IRIS:
+        #     user: USERNAME
+        #     password: PASSWORD
 
 
 # -----------------------------------------------------------------------------
@@ -134,9 +142,9 @@ processing:
     # Amplitude check to avoid clipping. Units are usually counts (e.g., with
     # data from IRIS) but some sources will convert to physical units so it
     # is important to be careful with this step.
-    - check_max_amplitude:
-        min: 5
-        max: 2e6
+    # - check_max_amplitude:
+    #     min: 5
+    #     max: 2e6
 
     # Apply a maximum number of traces per stream. This can occur with downhole
     # or structural arrays since our code currently is not able to reliably
@@ -153,9 +161,9 @@ processing:
         #     constant, demean, linear, polynomial, simple, spline
         detrending_method: demean
 
-    - check_zero_crossings:
-        # Require a minimum number of zero crossings per second.
-        min_crossings: 1.0
+    # - check_zero_crossings:
+    #     # Require a minimum number of zero crossings per second.
+    #     min_crossings: 1.0
 
     # STA/LTA is computed for record and the max value must exceed the threshold
     # below. Units are sec for window lenghts.

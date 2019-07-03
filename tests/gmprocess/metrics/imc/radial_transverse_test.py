@@ -56,6 +56,7 @@ def test_radial_transverse():
                                      'process_level': 'raw counts',
                                      'process_time': '',
                                      'units': 'acc',
+                                     'units_type': 'acc',
                                      'instrument_sensitivity': np.nan,
                                      'instrument_damping': np.nan})
     baz = gps2dist_azimuth(stalat, stalon,
@@ -70,6 +71,10 @@ def test_radial_transverse():
     st2 = StationStream([])
     for t in st:
         st2.append(StationTrace(t.data, t.stats))
+
+    for tr in st2:
+        response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
+        tr.setProvenance('remove_response', response)
 
     summary = StationSummary.from_stream(
         st2, ['radial_transverse'], ['pga'], origin)

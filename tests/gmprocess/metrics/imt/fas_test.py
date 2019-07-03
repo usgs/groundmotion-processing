@@ -53,9 +53,14 @@ def test_fas():
                          'process_time': '',
                          'horizontal_orientation': np.nan,
                          'units': 'acc',
+                         'units_type': 'acc',
                          'instrument_sensitivity': np.nan,
                          'instrument_damping': np.nan}})
         stream.append(trace)
+
+    for tr in stream:
+        response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
+        tr.setProvenance('remove_response', response)
 
     freqs, fas = np.loadtxt(fas_file, unpack=True,
                             usecols=(0, 1), delimiter=',')

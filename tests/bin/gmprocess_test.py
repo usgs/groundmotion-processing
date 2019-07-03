@@ -37,6 +37,17 @@ def test_gmprocess():
     finally:
         shutil.rmtree(tdir)
 
+    tdir = '~/Users/jrekoske/Documents/testb'
+    dpath = os.path.join('data', 'testdata', 'fdsn', 'uw61251926')
+    ddir = pkg_resources.resource_filename('gmprocess', dpath)
+    fmt = '%s -o %s --assemble --directory %s --process --export'
+    tpl = (gmprocess, tdir, ddir)
+    cmd = fmt % tpl
+    print(cmd)
+    res, stdout, stderr = get_command_output(cmd)
+    print(res, stdout, stderr)
+
+
 
 if __name__ == '__main__':
     test_gmprocess()

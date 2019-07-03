@@ -10,7 +10,7 @@ from obspy.core.trace import Stats
 # local imports
 from gmprocess.constants import UNIT_CONVERSIONS
 from gmprocess.exception import GMProcessException
-from gmprocess.io.seedname import get_channel_name
+from gmprocess.io.seedname import get_channel_name, get_units_type
 from gmprocess.stationstream import StationStream
 from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.io.utils import is_evenly_spaced, resample_uneven_trace
@@ -377,6 +377,7 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
         logging.warn('Setting elevation to 0.0')
         coordinates['elevation'] = 0.0
         # Get standard paramaters
+        standard['units_type'] = get_units_type(hdr['channel'])
         standard['horizontal_orientation'] = float(horizontal_orientation)
         standard['instrument_period'] = flt_data[0]
         standard['instrument_damping'] = flt_data[1]

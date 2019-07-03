@@ -10,7 +10,7 @@ import numpy as np
 
 # local imports
 from gmprocess.exception import GMProcessException
-from gmprocess.io.seedname import get_channel_name
+from gmprocess.io.seedname import get_channel_name, get_units_type
 from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.stationstream import StationStream
 
@@ -490,6 +490,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     standard['corner_frequency'] = floatheader[3, 4]
     format_specific['filter_poles'] = floatheader[4, 0]
     standard['units'] = 'acc'
+    standard['units_type'] = get_units_type(stats['channel'])
 
     # this field can be used for instrument correction
     # when data is in counts

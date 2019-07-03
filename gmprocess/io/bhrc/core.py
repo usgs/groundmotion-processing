@@ -12,7 +12,7 @@ from obspy.core.utcdatetime import UTCDateTime
 # local
 from gmprocess.stationstream import StationStream
 from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
-from gmprocess.io.seedname import get_channel_name
+from gmprocess.io.seedname import get_channel_name, get_units_type
 
 
 INTIMEFMT = '%Y/%m/%d %H:%M:%S'
@@ -66,6 +66,12 @@ def read_bhrc(filename):
     trace2 = StationTrace(data2, header2)
     trace3 = StationTrace(data3, header3)
     stream = StationStream([trace1, trace2, trace3])
+
+    for tr in stream:
+        if tr.stats.standard.process_level != PROCESS_LEVELS['V0']:
+            response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
+            tr.setProvenance('remove_response', response)
+
     return [stream]
 
 
@@ -165,6 +171,8 @@ def _read_header_lines(filename, offset):
             is_acceleration=True,
             is_vertical=False,
             is_north=False)
+
+    standard['units_type'] = get_units_type(header['channel'])
 
     part1 = lines[0].split(':')[1]
     stationcode = part1.split('/')[0].strip()

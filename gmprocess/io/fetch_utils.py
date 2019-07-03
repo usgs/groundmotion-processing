@@ -86,6 +86,7 @@ def download(event, event_dir, config, directory):
     workspace.addEvent(event)
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", category=H5pyDeprecationWarning)
+        print('Adding streams with the unprocessed label')
         workspace.addStreams(event, tcollection, label='unprocessed')
 
     return (workspace, workname, tcollection)

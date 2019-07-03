@@ -49,6 +49,7 @@ def test_arias():
                      'process_time': '',
                      'horizontal_orientation': np.nan,
                      'units': 'acc',
+                     'units_type': 'acc',
                      'instrument_sensitivity': np.nan,
                      'instrument_damping': np.nan}
     }
@@ -57,6 +58,11 @@ def test_arias():
     trace2 = trace.copy()
     trace2.stats.channel = 'HN2'
     stream = StationStream([trace, trace2])
+
+    for tr in stream:
+        response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
+        tr.setProvenance('remove_response', response)
+
     station = StationSummary.from_stream(
         stream, ['ARITHMETIC_MEAN'], ['arias'])
     pgms = station.pgms
