@@ -70,7 +70,7 @@ def snr(st, same_horiz=True, bandwidth=20):
             else:
                 tr.fail('Cannot use SNR to pick corners because SNR could not '
                         'be calculated.')
-                return tr
+                continue
 
             snr = snr_dict['snr']
             freq = snr_dict['freq']
@@ -96,7 +96,7 @@ def snr(st, same_horiz=True, bandwidth=20):
             # If we didn't find any corners
             if not lows:
                 tr.fail('SNR not greater than required threshold.')
-                return tr
+                continue
 
             # If we find an extra low, add another high for the maximum
             # frequency
