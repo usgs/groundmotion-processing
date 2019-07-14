@@ -124,9 +124,12 @@ package_list=(
     "lxml"
     "matplotlib"
     "numpy>=1.14"
+    "obspy>=1.1.1"
     "openpyxl"
     "openquake.engine"
     "pandas"
+    "pip"
+    "pyasdf"
     "pytest"
     "pytest-cov"
     "python>=3.6"
@@ -172,10 +175,6 @@ if [ $? -ne 0 ];then
     echo "Failed to upgrade pip, trying to continue..."
     exit 1
 fi
-
-# TEMPORARY FIX UNTIL obspy 1.1.1 is available via conda
-# on Mac
-pip install obspy==1.1.1 pyasdf
 
 # The presence of a __pycache__ folder in bin/ can cause the pip
 # install to fail... just to be safe, we'll delete it here.
