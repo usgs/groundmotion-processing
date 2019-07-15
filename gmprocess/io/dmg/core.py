@@ -45,7 +45,7 @@ DATE_PATTERNS = [
     '[0-9]{1}-[0-9]{1}-[0-9]{2}',
 ]
 
-TIME_MATCH = '[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{1}'
+TIME_MATCH = '[0-9]{2}:[0-9]{2}:..\.[0-9]{1}'
 
 code_file = pkg_resources.resource_filename('gmprocess', 'data/fdsn_codes.csv')
 
@@ -492,7 +492,8 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
     latitude, longitude = _get_coords(latitude_str, longitude_str)
     coordinates['latitude'] = latitude
     coordinates['longitude'] = longitude
-    coordinates['elevation'] = np.nan
+    logging.warn('Setting elevation to 0.0')
+    coordinates['elevation'] = 0.0
 
     # Standard metadata
     standard['units_type'] = get_units_type(hdr['channel'])

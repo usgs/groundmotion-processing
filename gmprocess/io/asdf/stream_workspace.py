@@ -610,8 +610,13 @@ class StreamWorkspace(object):
                     summary = StationSummary.from_config(
                         stream, event=event, config=config)
 
+                if summary is None:
+                    continue
+
                 imclist = summary.pgms['IMC'].unique().tolist()
                 imtlist = summary.pgms['IMT'].unique().tolist()
+                imtlist.sort(key=_natural_keys)
+
                 for imc in imclist:
                     if imc not in imc_tables:
                         cols = FLATFILE_COLUMNS + imtlist
@@ -696,12 +701,16 @@ class StreamWorkspace(object):
             StationSummary: Object containing all stream metrics.
         """
         if 'WaveFormMetrics' not in self.dataset.auxiliary_data:
-            raise KeyError('Waveform metrics not found in workspace.')
+            logging.warning('Waveform metrics not found in workspace, '
+                            'cannot get stream metrics.')
         auxholder = self.dataset.auxiliary_data.WaveFormMetrics
         stream_path = '%s_%s_%s' % (eventid, station.lower(), label)
         if stream_path not in auxholder:
-            fmt = 'Waveform metrics for event %s and stream %s not found in workspace.'
-            raise KeyError(fmt % (eventid, tag))
+            logging.warning(
+                'Stream path (%s) not in WaveFormMetrics auxiliary_data.'
+                % stream_path)
+            return
+
         bytelist = auxholder[stream_path].data[:].tolist()
         xml_stream = ''.join([chr(b) for b in bytelist])
         xml_stream = xml_stream.encode('utf-8')
@@ -711,8 +720,11 @@ class StreamWorkspace(object):
         auxholder = self.dataset.auxiliary_data.StationMetrics
         stream_path = '%s_%s_%s' % (eventid, station.lower(), label)
         if stream_path not in auxholder:
-            fmt = 'Station metrics for event %s and stream %s not found in workspace.'
-            raise KeyError(fmt % (eventid, tag))
+            logging.warning(
+                'Stream path (%s) not in StationMetrics auxiliary_data.'
+                % stream_path)
+            return
+
         bytelist = auxholder[stream_path].data[:].tolist()
         xml_station = ''.join([chr(b) for b in bytelist])
         xml_station = xml_station.encode('utf-8')
@@ -1020,3 +1032,20 @@ def _append_summary(summary, imclist, imtlist, imc_tables):
             imc_table = imc_table.append(row, ignore_index=True)
             imc_tables[imc] = imc_table
     return imc_tables
+
+
+def _natural_keys(text):
+    """
+    Helper function for sorting IMT list. This is needed because using the
+    plain .sort() will put SA(10.0) before SA(2.0), for example.
+    """
+    return [_atof(c) for c in re.split(
+        r'[+-]?([0-9]+(?:[.][0-9]*)?|[.][0-9]+)', text)]
+
+
+def _atof(text):
+    try:
+        retval = float(text)
+    except ValueError:
+        retval = text
+    return retval
