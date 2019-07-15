@@ -441,7 +441,6 @@ def _channel_from_stats(stats):
 
     comments = Comment(stats.standard.comments)
     logging.debug('channel: %s' % stats.channel)
-    print(stats)
     channel = Channel(stats.channel,
                       stats.location,
                       stats.coordinates['latitude'],
