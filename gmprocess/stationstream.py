@@ -55,7 +55,7 @@ class StationStream(Stream):
             ets = [e.timestamp for e in ends]
 
             # Do we need to try to fix the start/end times?
-            times_match = len(set(sts)) == 1 & len(set(ets)) == 1
+            times_match = len(set(sts)) == 1 and len(set(ets)) == 1
             if not times_match:
                 newstart = max(starts)
                 newend = min(ends)
@@ -109,7 +109,7 @@ class StationStream(Stream):
                     newend = min(ends)
                     new_duration = newend-newstart
                     new_npts = int(new_duration / new_delta + 1)
-                    success = len(set(sts)) == 1 & len(set(ets)) == 1
+                    success = len(set(sts)) == 1 and len(set(ets)) == 1
 
                     # If not, resample
                     if not success:
@@ -420,6 +420,9 @@ def _channel_from_stats(stats):
     if c2:
         azimuth = stats.standard.horizontal_orientation
     else:
+        azimuth = 0
+
+    if not (azimuth >= 0 and azimuth <= 360):
         azimuth = 0
 
     response = None
