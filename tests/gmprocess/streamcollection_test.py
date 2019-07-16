@@ -162,6 +162,10 @@ def test_duplicates():
             tr.stats.standard.source_format = 'cosmos'
 
     # Check that we keep the CE network due to the bad starttime on ZZ
+    sczz = sc_bad.select(station='23837', network='ZZ')
+    for st in sczz:
+        for tr in st:
+            tr.stats.starttime = UTCDateTime(0)
     sc = StreamCollection(streams=sc_bad.streams, handle_duplicates=True)
     assert sc.select(station='23837')[0][0].stats.network == 'CE'
 
