@@ -528,10 +528,6 @@ def getClassificationMetrics(tr, p_pick, delta_t):
     husid2, AI2, Arias2, husid_index2_5, husid_index2_75, husid_index2_95 = \
         calculateHusid(acc2, t)
 
-    if None in [husid_index1_5, husid_index1_75, husid_index1_95,
-                husid_index2_5, husid_index2_75, husid_index2_95]:
-        return
-
     # calculate max amplitudes of acc time series, final is geomean
     PGA1 = np.max(np.abs(acc1))
     PGA2 = np.max(np.abs(acc2))
