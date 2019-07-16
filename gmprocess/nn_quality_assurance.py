@@ -863,10 +863,6 @@ def NNet_QA(st, acceptance_threshold, model_name):
                          'NNet_QA is not able to be performed' % tr.id)
             return st
 
-    print(st)
-    for tr in st:
-        print(tr.stats)
-
     # Create the path to the NN folder based on model name
     nn_path = os.path.join('data', 'nn_qa')
     nn_path = os.path.join(nn_path, model_name)
