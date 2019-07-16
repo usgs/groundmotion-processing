@@ -4,6 +4,7 @@ import copy
 from scipy.integrate import cumtrapz
 import pkg_resources
 import os
+import logging
 
 
 def isNumber(s):
@@ -27,7 +28,7 @@ def isNumber(s):
 
 def loadCSV(data_path, row_ignore=0, col_ignore=0):
     '''
-    Load csv files from a given path and returns a list of list. 
+    Load csv files from a given path and returns a list of list.
     For all imported data, check if is a number. If so, returns a
     float. If not, returns a string.
 
@@ -65,7 +66,7 @@ def sigmoid(v_input):
     '''
     Performs a sigmoid operation on the input (1/(e(-x)+1))
 
-    Args: 
+    Args:
         v_input (float): a number defined on R (real)
 
     Returns:
@@ -81,7 +82,7 @@ def tanh(v_input):
     '''
     Performs a hyperbolic tangent operation on the input (2/(e(2x)+1))
 
-    Args: 
+    Args:
         v_input (float) a number defined on R (real)
 
     Returns:
@@ -95,12 +96,12 @@ def tanh(v_input):
 
 class neuralNet():
     '''
-    Class allowing the instantiation and use of simple (1 or 2 layers) 
+    Class allowing the instantiation and use of simple (1 or 2 layers)
     neural networks
     '''
     def __init__(self):
         '''
-        Instantiate an empty neural network (no weights, functions, or 
+        Instantiate an empty neural network (no weights, functions, or
         biases loaded
         '''
         self.n_input = 0
@@ -120,10 +121,10 @@ class neuralNet():
     # loadNN: load and build neural network model
     def loadNN(self, nn_path):
         '''
-        Populate an instantated neural netowrk with data contained in a 
+        Populate an instantated neural netowrk with data contained in a
         specific folder.
 
-        Args: 
+        Args:
             nn_path (string): path to the folder containing the required
             information (masterF.txt, weights.csv, biases.csv)
         '''
@@ -173,16 +174,16 @@ class neuralNet():
 
     def useNN(self, v_input):
         '''
-        Use a populated neural network (i.e. from the input, returns the 
+        Use a populated neural network (i.e. from the input, returns the
         classification score or the regression result).
 
         Args:
-            v_input (list or np.array): list or numpy array of the inputs 
+            v_input (list or np.array): list or numpy array of the inputs
             (must be all numerical). Size must be equal to the NN input layer
             size.
 
-        Returns: 
-            v_inter (np.array): numpy array containing the results. 
+        Returns:
+            v_inter (np.array): numpy array containing the results.
         '''
         v_inter = np.array([])
         # Transform input if required
@@ -220,15 +221,15 @@ class neuralNet():
 def deskewData(data, model_name):
     '''
     Performs the deskewing operations used in Bellagamba et al. (2019) on the
-    quality metrics vector. Depending on the selected model. 
+    quality metrics vector. Depending on the selected model.
 
-    Args: 
-        data (list of floats): 20 quality metrics computed as described in the 
+    Args:
+        data (list of floats): 20 quality metrics computed as described in the
         paper
-        model_name (string): name of the selected model. Available 'Cant' and 
+        model_name (string): name of the selected model. Available 'Cant' and
         'CantWell' as described in the paper
 
-    Returns: 
+    Returns:
         list of float: processed (deskewed) data
     '''
     if model_name == 'Cant':
@@ -309,14 +310,14 @@ def standardizeData(data, mu, sigma):
     Performs a standardization operation on the given data ((X-mu)/sigma)
 
     Args:
-        data (list of float): data to standardize (size represents the 
+        data (list of float): data to standardize (size represents the
         dimensionality of the data and not the number of point to standardize)
         mu (list of float): means
         sigma (list of float): standard deviation
 
-    Returns: 
+    Returns:
         list o float: standardized data
-    ''' 
+    '''
     for i in range(len(data)):
         data[i] = (data[i]-mu[i])/sigma[i]
 
@@ -329,11 +330,11 @@ def decorrelateData(data, M):
     matrix is given as an input.
 
     Args:
-        data (np.array): numpy array containing the data to be decorrelated 
+        data (np.array): numpy array containing the data to be decorrelated
         (size = N).
         M (np.array): decorrelation matrix (size NxN)
 
-    Returns: 
+    Returns:
         list of float containing the decorrelated data
     '''
     M = np.array(M)
@@ -350,8 +351,8 @@ def preprocessQualityMetrics(qm, model_name):
 
     Args:
         qm (list of float): quality metrics estimated according to the paper
-        model_name (string): name of the used model for processing. Available: 
-        'Cant' and 'CantWell'. 
+        model_name (string): name of the used model for processing. Available:
+        'Cant' and 'CantWell'.
 
     Returns:
         list of float containing the pre-processed quality metrics.
@@ -376,8 +377,8 @@ def preprocessQualityMetrics(qm, model_name):
 
 def get_husid(acceleration, time_vector):
     """
-    Returns the Husid vector, defined as \int{acceleration ** 2.}
-    
+    Returns the Husid vector, defined as int{acceleration ** 2.}
+
     Args:
         acceleration (np.array): Vector of acceleration values
         time_vector (np.array): Time vector in seconds
@@ -396,7 +397,7 @@ def getFreqIndex(ft_freq, lower, upper):
         lower (float): lower boud of the frequency range
         upper (float): upper bound of the frequency range
 
-    Returns: 
+    Returns:
         int, int: the indices bounding the range
     '''
     lower_indices = [i for i, x in enumerate(ft_freq) if x > lower]
@@ -427,7 +428,7 @@ def calculateSNR_min(ft_freq, snr):
     Calculate the SNR min between 0.1 and 20 Hz
 
     Args:
-        ft_freq (list of float): vector of frequencies used in the Fourier 
+        ft_freq (list of float): vector of frequencies used in the Fourier
         spectrum
         snr (list of float): vector of the snr at the frequencies in ft_freq
 
@@ -464,15 +465,15 @@ def calculateHusid(acc, t):
 
 def getClassificationMetrics(tr, p_pick, delta_t):
     '''
-    Compute the quality metrics as in Bellagamba et al. (2019). More details 
-    in the paper. 
+    Compute the quality metrics as in Bellagamba et al. (2019). More details
+    in the paper.
 
     WARNINGS: - Acceleration untis changed into g at the beginning!
               - Vertical component is not used!
 
     Args:
         tr (list of list of float): each list contains an horizontal trace
-        p_pick (float): estimated P-wave arrival time (in seconds) from the 
+        p_pick (float): estimated P-wave arrival time (in seconds) from the
         start of the record
         delta_t (float): time step used in the record in seconds (decimal)
 
@@ -526,6 +527,10 @@ def getClassificationMetrics(tr, p_pick, delta_t):
         calculateHusid(acc1, t)
     husid2, AI2, Arias2, husid_index2_5, husid_index2_75, husid_index2_95 = \
         calculateHusid(acc2, t)
+
+    if None in [husid_index1_5, husid_index1_75, husid_index1_95,
+                husid_index2_5, husid_index2_75, husid_index2_95]:
+        return
 
     # calculate max amplitudes of acc time series, final is geomean
     PGA1 = np.max(np.abs(acc1))
@@ -726,11 +731,11 @@ def getClassificationMetrics(tr, p_pick, delta_t):
 
 def computeQualityMetrics(st):
     '''
-    Get the 2 horizontal components and format the P-wave arrival time before 
-    launching the computation of the qualtiy metrics as in Bellagamba et al. 
+    Get the 2 horizontal components and format the P-wave arrival time before
+    launching the computation of the qualtiy metrics as in Bellagamba et al.
     (2019)
 
-    Args: 
+    Args:
         st (list of trace): a list of trace as defined in gmprocess (USGS)
 
     Returns:
@@ -814,28 +819,54 @@ def computeQualityMetrics(st):
 
 def NNet_QA(st, acceptance_threshold, model_name):
     '''
-    Assess the quality of a stream by analyzing its two horizontal components 
-    as described in Bellagamba et al. (2019). Performs three steps: 
+    Assess the quality of a stream by analyzing its two horizontal components
+    as described in Bellagamba et al. (2019). Performs three steps:
         1) Compute the quality metrics (see paper for more info)
-        2) Pre-process the quality metrics (deskew, standardize and decorrelate)
+        2) Preprocess the quality metrics (deskew, standardize and decorrelate)
         3) Evaluate the quality using a neural network-based model
-    2 models are available: 'Cant' and 'CantWell'. 
-    To minimize the number of low quality ground motion included, the natural 
+    2 models are available: 'Cant' and 'CantWell'.
+    To minimize the number of low quality ground motion included, the natural
     acceptance threshold 0.5 can be raised (up to an extreme value of 0.95).
-    Recommended parameters are: 
-        acceptance_threshold = 0.5 or 0.6 
+    Recommended parameters are:
+        acceptance_threshold = 0.5 or 0.6
         model_name = 'CantWell'
 
     Args:
-        st (list of traces): the ground motion record to analyze. Should contain at least 2 orthogonal  horizontal traces.
-        acceptance_threshold (float): threshold from which GM records are 
-        considered acceptable
-        model_name (string): name of the used model ('Cant' or 'CantWell')
+        st (list of traces):
+            The ground motion record to analyze. Should contain at least 2
+            orthogonal  horizontal traces.
+        acceptance_threshold (float):
+            Threshold from which GM records are considered acceptable.
+        model_name (string):
+            name of the used model ('Cant' or 'CantWell')
 
     Returns:
-        st: stream of traces tagged with quality scores and flags, 
+        st: stream of traces tagged with quality scores and flags,
         used model name and acceptance threshold
     '''
+
+    # This check only works if we have two horizontal components in the stream
+    num_horizontal = 0
+    for tr in st:
+        if 'Z' not in tr.stats.channel.upper():
+            num_horizontal += 1
+    if num_horizontal != 2:
+        logging.info('Stream does not contain two horiztonal components. '
+                     'NNet QA check will not be performed.')
+        return st
+
+    # Also need to check that we don't have data arrays of all zeros, as this
+    # will cause problems
+    for tr in st:
+        if np.all(tr.data == 0):
+            logging.info('The data for trace %s contains all zeros, so the '
+                         'NNet_QA is not able to be performed' % tr.id)
+            return st
+
+    print(st)
+    for tr in st:
+        print(tr.stats)
+
     # Create the path to the NN folder based on model name
     nn_path = os.path.join('data', 'nn_qa')
     nn_path = os.path.join(nn_path, model_name)
