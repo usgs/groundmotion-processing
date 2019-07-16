@@ -847,17 +847,23 @@ def NNet_QA(st, acceptance_threshold, model_name):
         if 'Z' not in tr.stats.channel.upper():
             num_horizontal += 1
     if num_horizontal != 2:
-        logging.info('Stream does not contain two horiztonal components. '
-                     'NNet QA check will not be performed.')
+        for tr in st:
+            tr.fail('Stream does not contain two horiztonal components. '
+                    'NNet QA check will not be performed.')
         return st
 
     # Also need to check that we don't have data arrays of all zeros, as this
     # will cause problems
+    all_zeros = False
     for tr in st:
         if np.all(tr.data == 0):
-            logging.info('The data for trace %s contains all zeros, so the '
-                         'NNet_QA is not able to be performed' % tr.id)
-            return st
+            all_zeros = True
+
+    if all_zeros:
+        for tr in st:
+            tr.fail('The data for trace %s contains all zeros, so the '
+                    'NNet_QA is not able to be performed.')
+        return st
 
     # Create the path to the NN folder based on model name
     nn_path = os.path.join('data', 'nn_qa')
