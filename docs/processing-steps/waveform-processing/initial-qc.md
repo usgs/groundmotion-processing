@@ -75,3 +75,8 @@ This processing step checks the signa-to-noise ratio (SNR), requiring that
 the minimum SNR exceeds the selected `threshold` between `min_freq` and
 `max_freq` where the Fourier spectra of the signal and noise are smoothed
 using the Konno-Omachi method with the selected `bandwidth` parameter.
+
+## `NNet_QA:`
+
+This is the application of the automated quality screening neural network
+model by Bellagamba et al. ([2019](https://doi.org/10.1193/122118EQS292M)). 
