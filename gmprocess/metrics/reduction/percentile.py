@@ -46,9 +46,9 @@ class Percentile(Reduction):
             for tr in self.reduction_data:
                 percentiles[tr.channel] = np.percentile(
                     tr.data, self.percentile)
-#        elif len(self.reduction_data) == 1:
-#            maximums = np.amax(np.abs(self.reduction_data[0]), 1)
-#            percentiles[''] = np.percentile(maximums, self.percentile)
+        elif len(self.reduction_data) == 1:
+            maximums = np.amax(np.abs(self.reduction_data[0]), 1)
+            percentiles[''] = np.percentile(maximums, self.percentile)
         else:
             percentiles[''] = np.percentile(
                 self.reduction_data, self.percentile)
