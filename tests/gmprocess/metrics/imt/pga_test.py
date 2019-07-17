@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 # stdlib imports
-import os.path
 import warnings
 
 # third party imports
@@ -20,10 +19,12 @@ def test_pga():
     stream_v2 = read_geonet(datafile_v2)[0]
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        station_summary = StationSummary.from_stream(stream_v2,
-                                                     ['channels', 'greater_of_two_horizontals', 'gmrotd50',
-                                                      'gmrotd100', 'gmrotd0'],
-                                                     ['pga', 'sa1.0', 'saincorrect'])
+        station_summary = StationSummary.from_stream(
+            stream_v2,
+            ['channels', 'greater_of_two_horizontals', 'gmrotd50',
+             'gmrotd100', 'gmrotd0', 'rotd50', 'geometric_mean',
+             'arithmetic_mean'],
+            ['pga', 'sa1.0', 'saincorrect'])
     pga_df = station_summary.pgms[station_summary.pgms.IMT == 'PGA']
     HN1 = pga_df[pga_df.IMC == 'H1'].Result.iloc[0]
     HN2 = pga_df[pga_df.IMC == 'H2'].Result.iloc[0]

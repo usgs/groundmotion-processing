@@ -16,17 +16,17 @@ from gmprocess.stationstream import StationStream
 from gmprocess.stationtrace import StationTrace
 
 
-def test_arias():
+def test_duration():
     ddir = os.path.join('data', 'testdata')
     datadir = pkg_resources.resource_filename('gmprocess', ddir)
-    data_file = os.path.join(datadir, 'arias_data.json')
+    data_file = os.path.join(datadir, 'duration_data.json')
     with open(data_file, 'rt') as f:
         jdict = json.load(f)
 
     time = np.array(jdict['time'])
     # input output is m/s/s
     acc = np.array(jdict['acc']) / 100
-    target_IA = jdict['ia']
+    target_d595 = jdict['d595']
     delta = time[2] - time[1]
     sr = 1 / delta
     header = {
@@ -66,26 +66,27 @@ def test_arias():
         tr.setProvenance('remove_response', response)
 
     station = StationSummary.from_stream(
-        stream, ['ARITHMETIC_MEAN'], ['arias'])
+        stream, ['ARITHMETIC_MEAN'], ['duration'])
     pgms = station.pgms
-    Ia = pgms[(pgms.IMT == 'ARIAS') & (
+    d595 = pgms[(pgms.IMT == 'DURATION') & (
         pgms.IMC == 'ARITHMETIC_MEAN')].Result.tolist()[0]
-    # the target has only one decimal place and is in cm/s/s
-    Ia = Ia * 100
-    np.testing.assert_almost_equal(Ia, target_IA, decimal=1)
+
+    np.testing.assert_allclose(d595, target_d595, atol=1e-4, rtol=1e-4)
 
     # Test other components
     data_files, _ = read_data_dir('cwb', 'us1000chhc', '2-ECU.dat')
     stream = read_data(data_files[0])[0]
     station = StationSummary.from_stream(
-        stream, [
-            'channels', 'gmrotd', 'rotd50',
-            'greater_of_two_horizontals', 'ARITHMETIC_MEAN'],
-        ['arias']
+        stream,
+        ['channels', 'gmrotd', 'rotd50', 'greater_of_two_horizontals',
+         'ARITHMETIC_MEAN', 'geometric_mean'],
+        ['duration']
     )
-    stream = StationSummary.from_stream(stream, ['gmrotd50'], ['arias'])
-    assert stream.pgms.Result.tolist() == []
+    # Currently disallowed
+    assert 'gmrotd' not in station.pgms['IMC']
+    assert 'rotd50' not in station.pgms['IMC']
+    print(station)
 
 
 if __name__ == '__main__':
-    test_arias()
+    test_duration()

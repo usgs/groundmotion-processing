@@ -5,12 +5,14 @@ from scipy import integrate
 # Local imports
 from gmprocess.constants import GAL_TO_PCTG
 from gmprocess.metrics.reduction.reduction import Reduction
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace
+
+# Hard code percentiles for duration now. Need to make this conigurable.
+P_START = 0.05
+P_END = 0.95
 
 
-class Arias(Reduction):
-    """Class for calculation of arias intensity."""
+class Duration(Reduction):
+    """Class for calculation of duration."""
     def __init__(self, reduction_data, bandwidth=None, percentile=None,
                  period=None, smoothing=None):
         """
@@ -20,8 +22,8 @@ class Arias(Reduction):
             percentile (float):
                 Percentile for rotation calculations. Default is None.
             period (float):
-                Period for smoothing (Fourier amplitude spectra)
-                calculations. Default is None.
+                Period for smoothing (Fourier amplitude spectra) calculations.
+                Default is None.
             smoothing (string):
                 Smoothing type. Default is None.
             bandwidth (float):
@@ -29,30 +31,34 @@ class Arias(Reduction):
         """
         super().__init__(reduction_data, bandwidth=None, percentile=None,
                          period=None, smoothing=None)
-        self.arias_stream = None
-        self.result = self.get_arias()
+        self.result = self.get_duration()
 
-    def get_arias(self):
+    def get_duration(self):
         """
         Performs calculation of arias intensity.
 
         Returns:
-            arias_intensities: Dictionary of arias intensity for each channel.
+            durations: Dictionary of arias intensity for each channel.
         """
-        arias_intensities = {}
-        arias_stream = StationStream([])
+        durations = {}
         for trace in self.reduction_data:
             dt = trace.stats['delta']
             # convert from cm/s/s to m/s/s
             acc = trace.data * 0.01
+            time = trace.times()
 
             # Calculate Arias Intensity
             integrated_acc2 = integrate.cumtrapz(acc * acc, dx=dt)
             arias_intensity = integrated_acc2 * np.pi * GAL_TO_PCTG / 2
+
+            # Normalized AI
+            ai_norm = arias_intensity/np.max(arias_intensity)
+
+            ind0 = np.argmin(np.abs(ai_norm - P_START))
+            ind1 = np.argmin(np.abs(ai_norm - P_END))
+
+            dur595 = time[ind1] - time[ind0]
             channel = trace.stats.channel
-            trace.stats.standard.units = 'veloc'
-            trace.stats.npts = len(arias_intensity)
-            arias_stream.append(StationTrace(arias_intensity, trace.stats))
-            arias_intensities[channel] = np.abs(np.max(arias_intensity))
-        self.arias_stream = arias_stream
-        return arias_intensities
+            durations[channel] = np.abs(np.max(dur595))
+
+        return durations
