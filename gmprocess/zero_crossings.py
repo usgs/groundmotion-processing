@@ -1,4 +1,5 @@
 import numpy as np
+import logging
 
 
 def check_zero_crossings(st, min_crossings=1.0):
@@ -38,6 +39,8 @@ def check_zero_crossings(st, min_crossings=1.0):
         zero_count_tr = len(zindices)
 
         z_rate = zero_count_tr / dur
+        print(tr)
+        print(z_rate)
 
         # Put results back into the original trace, not the copy
         tr.setParameter('ZeroCrossingRate',

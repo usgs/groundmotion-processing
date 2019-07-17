@@ -1,17 +1,13 @@
 # Waveform Processing
 
-:TODO: Add overview of processing.
+Here we describe the different processing steps and their options. They
+can be grouped in the following categories:
 
-:TODO: Explain what steps are run and how to run a subset of the steps.
+* [Initial quality control](waveform-processing/initial-qc.html)
 
-## Processing steps
+* [Removing instrument response](waveform-processing/remove-response.html)
 
-* [Initial quality control](waveform-processing/initialqc.html)
+* [Phase pickers](waveform-processing/phase-pickers.html)
 
-* [Removing instrument response](waveform-processing/removeresponse.html)
+* [Baseline correction](waveform-processing/baseline-correction.html)
 
-* [Phase pickers](waveform-processing/phasepickers.html)
-
-* [Baseline correction](waveform-processing/baselinecorrection.html)
-
-* [Processing report](waveform-processing/report.html)
