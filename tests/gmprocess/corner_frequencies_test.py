@@ -2,7 +2,6 @@
 import os
 
 import numpy as np
-from obspy.core.utcdatetime import UTCDateTime
 
 from gmprocess.streamcollection import StreamCollection
 from gmprocess.io.read import read_data
@@ -80,6 +79,9 @@ def test_corner_frequencies():
     cf_config = test[0]['get_corner_frequencies']
     snr_config = cf_config['snr']
 
+    # With same_horiz False
+    snr_config['same_horiz'] = False
+
     lp = []
     hp = []
     for stream in processed_streams:
@@ -97,6 +99,58 @@ def test_corner_frequencies():
     np.testing.assert_allclose(
         np.sort(hp),
         [0.00751431, 0.01354455, 0.04250735],
+        atol=1e-6
+    )
+
+    st = processed_streams[0]
+    lps = [tr.getParameter('corner_frequencies')['lowpass'] for tr in st]
+    hps = [tr.getParameter('corner_frequencies')['highpass'] for tr in st]
+    np.testing.assert_allclose(
+        np.sort(lps),
+        [100.,  100.,  100.],
+        atol=1e-6
+    )
+    np.testing.assert_allclose(
+        np.sort(hps),
+        [0.00305176,  0.00751431,  0.02527502],
+        atol=1e-6
+    )
+
+    # With same_horiz True
+    snr_config['same_horiz'] = True
+
+    lp = []
+    hp = []
+    for stream in processed_streams:
+        if not stream.passed:
+            continue
+        stream = get_corner_frequencies(
+            stream,
+            method="snr",
+            snr=snr_config
+        )
+        if stream[0].hasParameter('corner_frequencies'):
+            cfdict = stream[0].getParameter('corner_frequencies')
+            lp.append(cfdict['lowpass'])
+            hp.append(cfdict['highpass'])
+
+    np.testing.assert_allclose(
+        np.sort(hp),
+        [0.00751431, 0.01354455, 0.04882812],
+        atol=1e-6
+    )
+
+    st = processed_streams[0]
+    lps = [tr.getParameter('corner_frequencies')['lowpass'] for tr in st]
+    hps = [tr.getParameter('corner_frequencies')['highpass'] for tr in st]
+    np.testing.assert_allclose(
+        np.sort(lps),
+        [100.,  100.,  100.],
+        atol=1e-6
+    )
+    np.testing.assert_allclose(
+        np.sort(hps),
+        [0.00751431,  0.00751431,  0.02527502],
         atol=1e-6
     )
 
