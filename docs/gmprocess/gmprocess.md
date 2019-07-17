@@ -64,7 +64,13 @@ Other arguments controlling behavior include:
 Running gmprocess will generate a nested data structure. For example, the command:
 
 ```bash
-gmprocess --output-directory=data/nocal --assemble --process --report --provenance --export -eventids nc72282711 nc72507396
+gmprocess --output-directory=data/nocal \
+    --assemble \
+    --process \
+    --report \
+    --provenance \
+    --export \
+    -eventids nc72282711 nc72507396
 ```
  will result in a directory structure that looks like this:
 ```

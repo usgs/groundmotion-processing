@@ -3,7 +3,6 @@ import tempfile
 import os.path
 import logging
 import glob
-import pprint
 
 # third party imports
 import pytz
@@ -224,13 +223,6 @@ class FDSNFetcher(DataFetcher):
 
             channel_priorities=self.channels)
 
-        # DEBUGGING
-        pp = pprint.PrettyPrinter()
-        pp.pprint(domain.__dict__)
-        print('***************************')
-        pp.pprint(restrictions.__dict__)
-        # DEBUGGING
-
         # For each of the providers, check if we have a username and password
         # provided in the config. If we do, initialize the client with the
         # username and password. Otherwise, use default initalization.
@@ -263,8 +255,8 @@ class FDSNFetcher(DataFetcher):
         delete_old_files(rawdir, '*.xml')
 
         logging.info('Downloading new MiniSEED files...')
-        # The data will be downloaded to the ``./waveforms/`` and ``./stations/``
-        # folders with automatically chosen file names.
+        # The data will be downloaded to the ``./waveforms/`` and
+        # ``./stations/`` folders with automatically chosen file names.
         mdl.download(domain, restrictions, mseed_storage=rawdir,
                      stationxml_storage=rawdir)
 

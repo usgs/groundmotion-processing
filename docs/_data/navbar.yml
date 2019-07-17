@@ -34,8 +34,6 @@ toc:
           url: /processing-steps/waveform-processing/phase-pickers.html
         - page: Baseline correction
           url: /processing-steps/waveform-processing/baseline-correction.html
-        - page: Processing report
-          url: /processing-steps/waveform-processing/report.html
       - page: Waveform metrics
         url: /processing-steps/waveform-metrics.html
       - page: Station metrics
@@ -46,8 +44,6 @@ toc:
         url: /gmprocess/gmprocess.html
       - page: Ingesting data
         url: /gmprocess/ingesting.html
-      - page: Fetching data
-        url: /gmprocess/fetching.html
       - page: Waveform processing
         url: /gmprocess/waveform-processing.html
       - page: Computing waveform metrics
