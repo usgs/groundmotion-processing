@@ -4,19 +4,21 @@ Triggered Strong motion data can come in many formats, few of which are
 familiar to seismologists. Many of the older formats were written using
 FORTRAN, and so are fixed-width, 80 character wide text formats.
 
-gmprocess provides readers for many of these formats. Each reader is a package
+`gmprocess` provides readers for many of these formats. Each reader is a package
 under the `gmprocess/io` directory in the repository, where that package
 contains at least one module called `core.py`, which implements at least two
 functions:
 
- - is_FORMAT: Where FORMAT is the name of the package (knet, geonet, etc.) This function
-   returns True if the input file is of that format, False otherwise.
- - read_FORMAT: This function returns a list of StationStream objects for each file. Some
-   formats contain many channels of data in one file, some only have one per file.
+ - `is_FORMAT` -- Where FORMAT is the name of the package (knet, geonet, etc.)
+   This function returns True if the input file is of that format, False
+   otherwise.
+ - `read_FORMAT` -- This function returns a list of StationStream objects for
+   each file. Some formats contain many channels of data in one file, some only
+   have one per file.
 
-gmprocess provides a wrapper around all of these readers called `read_data`, which dynamically
-discovers the format and attempts to read in the data. Users should prefer this method of reading
-in data files.
+`gmprocess` provides a wrapper around all of these readers called `read_data`,
+which dynamically discovers the format and attempts to read in the data. Users
+should prefer this method of reading in data files.
 
 ## Supported Formats
 
@@ -72,7 +74,7 @@ in data files.
   <tr>
     <td>FDSN*</td>
     <td><a href="http://www.fdsn.org/networks/">International Federation of Digital Seismograph Networks (FDSN)</a></td>
-    <td>counts</sup> (gals)</td>
+    <td>counts (gals)</td>
     <td>Yes</td>
     <td>Yes</td>
   </tr>

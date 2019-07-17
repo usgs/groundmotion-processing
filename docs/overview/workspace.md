@@ -4,10 +4,11 @@ The workspace serves as a container to hold the inputs, important
 intermediate results, and outputs. It also includes provenance
 information describing the processing steps performed on the data.
 
-We use the ASDF HDF-5 layout, which includes specifications for earthquake
-information, station metadata, and waveform time histories. We include
-information not explicitly covered in the ASDF format specification
-in the `AuxiliaryData` group.
+We use the [ASDF](https://academic.oup.com/gji/article/207/2/1003/2583765)
+HDF-5 layout, which includes specifications for earthquake information,
+station metadata, and waveform time histories. We include information
+not explicitly covered in the ASDF format specification in the
+`AuxiliaryData` group.
 
 ## Extension of ASDF HDF-5 Layout
 
@@ -19,10 +20,12 @@ values, response spectra, and Fourier amplitude spectra.
 * `StationMetrics` for event station information, such as epicentral
 distance and rupture distance.
 
-* (Potential future addition) `SurfaceWaveforms` for waveform time histories on a surface.
+* (Potential future addition) `SurfaceWaveforms` for waveform time histories
+  on a surface.
 
-* (Potential future addition) `RuptureModels` for finite-fault earthquake rupture models.
-(potential)
+* (Potential future addition) `RuptureModels` for finite-fault earthquake
+  rupture models.
+
 
 <figure>
   <img width="600px" src="figs/asdf_layout.png" alt="ASDF layout"/>
