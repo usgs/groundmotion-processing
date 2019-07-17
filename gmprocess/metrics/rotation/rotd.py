@@ -8,11 +8,11 @@ class Rotd(Rotation):
     def __init__(self, rotation_data, event=None):
         """
         Args:
-            rotation_data (obspy.core.stream.Stream or numpy.ndarray): Intensity
-                    measurement component.
-            event (ScalarEvent): Defines the focal time, geographical
-                location and magnitude of an earthquake hypocenter.
-                    Default is None.
+            rotation_data (obspy.core.stream.Stream or numpy.ndarray):
+                Intensity measurement component.
+            event (ScalarEvent):
+                Defines the focal time, geographical location and magnitude of
+                an earthquake hypocenter. Default is None.
         """
         super().__init__(rotation_data, event=None)
         self.result = self.get_rotd()

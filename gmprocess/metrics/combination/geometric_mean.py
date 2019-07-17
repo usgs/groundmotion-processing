@@ -7,10 +7,12 @@ from gmprocess.metrics.combination.combination import Combination
 
 class Geometric_Mean(Combination):
     """Class for calculation of geometric mean."""
+
     def __init__(self, combination_data):
         """
         Args:
-            combination_data (dictionary or numpy.ndarray): Data for calculation.
+            combination_data (dictionary or numpy.ndarray):
+                Data for calculation.
         """
         super().__init__(combination_data)
         self.result = self.get_geometric_mean()
@@ -25,7 +27,7 @@ class Geometric_Mean(Combination):
         if isinstance(self.combination_data, dict):
             horizontals = self._get_horizontals()
             h1, h2 = horizontals[0], horizontals[1]
-            gm = {'' : np.sqrt(h1 * h1)}
+            gm = {'': np.sqrt(h1 * h2)}
         else:
             horizontals = self.combination_data
             time_freq = horizontals[0]

@@ -288,43 +288,67 @@ class MetricsController(object):
             combination_path = 'gmprocess.metrics.combination.'
             reduction_path = 'gmprocess.metrics.reduction.'
             try:
+                # -------------------------------------------------------------
                 # Transform 1
                 t1_mod = importlib.import_module(
                     transform_path + step_set['Transform1'])
                 t1_cls = self._get_subclass(inspect.getmembers(
                     t1_mod, inspect.isclass), 'Transform')
                 t1 = t1_cls(tseries, self.damping, period, self._times).result
+
+                # -------------------------------------------------------------
                 # Transform 2
                 t2_mod = importlib.import_module(
                     transform_path + step_set['Transform2'])
                 t2_cls = self._get_subclass(inspect.getmembers(
                     t2_mod, inspect.isclass), 'Transform')
                 t2 = t2_cls(t1, self.damping, period, self._times).result
+
+                # -------------------------------------------------------------
                 # Rotation
                 rot_mod = importlib.import_module(
                     rotation_path + step_set['Rotation'])
                 rot_cls = self._get_subclass(inspect.getmembers(
                     rot_mod, inspect.isclass), 'Rotation')
                 rot = rot_cls(t2, self.event).result
+
+                # -------------------------------------------------------------
                 # Transform 3
                 t3_mod = importlib.import_module(
                     transform_path + step_set['Transform3'])
                 t3_cls = self._get_subclass(inspect.getmembers(
                     t3_mod, inspect.isclass), 'Transform')
                 t3 = t3_cls(rot, self.damping, period, self._times).result
+
+                # -------------------------------------------------------------
                 # Combination 1
                 c1_mod = importlib.import_module(
                     combination_path + step_set['Combination1'])
                 c1_cls = self._get_subclass(inspect.getmembers(
                     c1_mod, inspect.isclass), 'Combination')
                 c1 = c1_cls(t3).result
+
+                # -------------------------------------------------------------
                 # Reduction
+
+                # * There is a problem here in that the percentile reduction
+                #   step is not compatible with anything other than the max
+                #   of either the time history or the oscillator.
+                # * I think real solution is to have two reduction steps
+                # * For now, I'm just going to disallow the percentile based
+                #   methods with duration to avoid the incompatibility.
+                # * Currently, the percentile reduction uses the length
+                #   of c1 to decide if it needs to take the max of the
+                #   data before applying the reduction.
+
                 red_mod = importlib.import_module(
                     reduction_path + step_set['Reduction'])
                 red_cls = self._get_subclass(inspect.getmembers(
                     red_mod, inspect.isclass), 'Reduction')
                 red = red_cls(c1, self.bandwidth, percentile,
                               period, self.smooth_type).result
+
+                # -------------------------------------------------------------
                 # Combination 2
                 c2_mod = importlib.import_module(
                     combination_path + step_set['Combination2'])

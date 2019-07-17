@@ -16,11 +16,14 @@ from gmprocess.metrics.gather import gather_pgms
 from gmprocess.metrics.metrics_controller import MetricsController
 
 
-XML_UNITS = {'pga': '%g',
-             'pgv': 'cm/s',
-             'sa': '%g',
-             'arias': 'm/s',
-             'fas': 'cm/s'}
+XML_UNITS = {
+    'pga': '%g',
+    'pgv': 'cm/s',
+    'sa': '%g',
+    'arias': 'm/s',
+    'fas': 'cm/s',
+    'duration': 's'
+}
 
 DEFAULT_DAMPING = 0.05
 

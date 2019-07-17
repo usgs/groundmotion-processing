@@ -39,23 +39,26 @@ def test_fas():
             'channel': 'H' + str(idx),
             'delta': dt,
             'units': 'acc',
-            'standard': {'corner_frequency': np.nan,
-                         'station_name': '',
-                         'source': 'json',
-                         'instrument': '',
-                         'instrument_period': np.nan,
-                         'source_format': 'json',
-                         'comments': '',
-                         'structure_type': '',
-                         'sensor_serial_number': '',
-                         'source_file': '',
-                         'process_level': 'raw counts',
-                         'process_time': '',
-                         'horizontal_orientation': np.nan,
-                         'units': 'acc',
-                         'units_type': 'acc',
-                         'instrument_sensitivity': np.nan,
-                         'instrument_damping': np.nan}})
+            'standard': {
+                'corner_frequency': np.nan,
+                'station_name': '',
+                'source': 'json',
+                'instrument': '',
+                'instrument_period': np.nan,
+                'source_format': 'json',
+                'comments': '',
+                'structure_type': '',
+                'sensor_serial_number': '',
+                'source_file': '',
+                'process_level': 'raw counts',
+                'process_time': '',
+                'horizontal_orientation': np.nan,
+                'units': 'acc',
+                'units_type': 'acc',
+                'instrument_sensitivity': np.nan,
+                'instrument_damping': np.nan
+            }
+        })
         stream.append(trace)
 
     for tr in stream:
@@ -68,6 +71,7 @@ def test_fas():
     imts = ['fas' + str(1 / p) for p in freqs]
     summary = StationSummary.from_stream(stream, ['quadratic_mean'], imts,
                                          bandwidth=30)
+
     pgms = summary.pgms
     for idx, f in enumerate(freqs):
         fstr = 'FAS(' + str(1 / f) + ')'
@@ -98,8 +102,9 @@ def test_fas():
     invalid_units_stream = stream
     invalid_units_stream[0].stats.units = 'other'
     try:
-        fas_dict = calculate_fas(invalid_units_stream,
-                                 '', 1 / freqs, 'konno_ohmachi', 30)
+        fas_dict = calculate_fas(
+            invalid_units_stream,
+            '', 1 / freqs, 'konno_ohmachi', 30)
     except Exception as e:
         failed = True
     assert(failed == True)

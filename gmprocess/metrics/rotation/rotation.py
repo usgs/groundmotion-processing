@@ -11,11 +11,11 @@ class Rotation(object):
     def __init__(self, rotation_data, event=None):
         """
         Args:
-            rotation_data (obspy.core.stream.Stream or numpy.ndarray): Intensity
-                    measurement component.
-            event (ScalarEvent): Defines the focal time, geographical
-                location and magnitude of an earthquake hypocenter.
-                    Default is None.
+            rotation_data (obspy.core.stream.Stream or numpy.ndarray):
+                Intensity measurement component.
+            event (ScalarEvent):
+                Defines the focal time, geographical location and magnitude of
+                an earthquake hypocenter. Default is None.
         """
         self.rotation_data = rotation_data
 
@@ -42,7 +42,8 @@ class Rotation(object):
             raise PGMException('Rotation: More than two horizontal channels.')
         elif len(horizontal_channels) < 2:
             raise PGMException('Rotation: Less than two horizontal channels.')
-        elif len(horizontal_channels[0].data) != len(horizontal_channels[1].data):
+        elif (len(horizontal_channels[0].data) !=
+              len(horizontal_channels[1].data)):
             raise PGMException(
                 'Rotation: Horizontal channels have different lengths.')
         return horizontal_channels
@@ -56,21 +57,22 @@ class Rotation(object):
         For the 2D array case, the number of rows must be the number of traces,
         and the numer of columns is the number of samples in the trace.
         The following assumptions are made regarding the 2D array:
-            1) The rows in each matrix are the same component at different rotation
-               at different angles.
+            1) The rows in each matrix are the same component at different
+               rotation at different angles.
             2) If tr2 is provided, the orientation of the trace in each row is
                orthogonal to the analagous row in tr1
             3) The traces that constitute tr1 and tr2 are both
                horizontal components.
 
         Args:
-            tr1 (obspy.core.trace.Trace or 2D array): Trace 1, either 1D trace or
-                2D matrix of rotated components.
-            tr2 (obspy.core.trace.Trace or 2D array): Trace 2, either 1D trace or
-                2D matrix of rotated components.
+            tr1 (obspy.core.trace.Trace or 2D array):
+                Trace 1, either 1D trace or 2D matrix of rotated components.
+            tr2 (obspy.core.trace.Trace or 2D array):
+                Trace 2, either 1D trace or or 2D matrix of rotated components.
                 Default is None.
-            pick_peak (str): The choice for either geometric mean, arithmetic
-                or maximum. The valid strings are:
+            pick_peak (str):
+                The choice for either geometric mean, arithmetic or maximum.
+                 The valid strings are:
                     - "gm" for geometric mean
                     - "am" for arithmetic mean
                     - "max" for maximum
@@ -81,8 +83,8 @@ class Rotation(object):
             If 1D input:
                 Returns a singular,  scalar value for the requested pick_peak.
             If 2D input:
-                Returns a list of the maximum values, as well as the singular value
-                at the requested percentile.
+                Returns a list of the maximum values, as well as the singular
+                value at the requested percentile.
         """
 
         # Check if valid trace dimensions were provided, and determine if we're
@@ -168,11 +170,14 @@ class Rotation(object):
         data at each degree.
 
         Args:
-            tr1 (obspy.core.trace.Trace): Trace 1 of strong motion data.
-            tr2 (obspy.core.trace.Trace): Trace 2 of strong motion data.
-            combine (bool): Whether rotated traces should be combined.
-                Default is False.
-            delta (float): Delta degrees which will determine the number of rows
+            tr1 (obspy.core.trace.Trace):
+                Trace 1 of strong motion data.
+            tr2 (obspy.core.trace.Trace):
+                Trace 2 of strong motion data.
+            combine (bool):
+                Whether rotated traces should be combined. Default is False.
+            delta (float):
+                Delta degrees which will determine the number of rows
                 for the matrix of rotated components.
                 Default is 1.0
 

@@ -7,6 +7,7 @@ from gmprocess.metrics.combination.combination import Combination
 
 class Arithmetic_Mean(Combination):
     """Class for calculation of arithmetic mean."""
+
     def __init__(self, combination_data):
         """
         Args:
@@ -25,7 +26,7 @@ class Arithmetic_Mean(Combination):
         if isinstance(self.combination_data, dict):
             horizontals = self._get_horizontals()
             h1, h2 = horizontals[0], horizontals[1]
-            am = {'': 0.5 * (h1 + h1)}
+            am = {'': 0.5 * (h1 + h2)}
         else:
             horizontals = self.combination_data
             time_freq = horizontals[0]
