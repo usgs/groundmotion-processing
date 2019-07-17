@@ -34,6 +34,8 @@ toc:
           url: /processing-steps/waveform-processing/phase-pickers.html
         - page: Baseline correction
           url: /processing-steps/waveform-processing/baseline-correction.html
+        - page: Filtering
+          url: /processing-steps/waveform-processing/filtering.html
       - page: Waveform metrics
         url: /processing-steps/waveform-metrics.html
       - page: Station metrics

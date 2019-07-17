@@ -490,6 +490,24 @@ def get_corner_frequencies(st, method='constant', constant=None, snr=None):
         st = corner_frequencies.constant(st, **constant)
     elif method == 'snr':
         st = corner_frequencies.snr(st, **snr)
+        if snr['same_horiz']:
+            lps = [tr.getParameter('corner_frequencies')['lowpass'] for tr in st]
+            hps = [tr.getParameter('corner_frequencies')['highpass'] for tr in st]
+            chs = [tr.stats.channel for tr in st]
+            hlps = []
+            hhps = []
+            for i in range(len(chs)):
+                if "z" not in chs[i].lower():
+                    hlps.append(lps[i])
+                    hhps.append(hps[i])
+            llp = np.max(hlps)
+            hhp = np.max(hhps)
+            for i in range(len(chs)):
+                if "z" not in chs[i].lower():
+                    cfdict = st[i].getParameter('corner_frequencies')
+                    cfdict['lowpass'] = llp
+                    cfdict['highpass'] = hhp
+                    st[i].setParameter('corner_frequencies', cfdict)
     else:
         raise ValueError("Corner frequency 'method' must be either "
                          "'constant' or 'snr'.")
