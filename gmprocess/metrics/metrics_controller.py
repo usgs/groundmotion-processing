@@ -165,6 +165,7 @@ class MetricsController(object):
         bandwidth = metrics['fas']['bandwidth']
         controller = cls(imts, imcs, timeseries, bandwidth=bandwidth,
                          damping=damping, event=event, smooth_type=smoothing)
+        
         return controller
 
     @property
@@ -535,6 +536,7 @@ class MetricsController(object):
             Can be either a float or integer.
         """
         period = re.findall('\d+', imt)
+
         if len(period) > 1:
             period = '.'.join(period)
         elif len(period) == 1:

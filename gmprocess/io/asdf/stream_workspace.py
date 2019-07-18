@@ -528,6 +528,7 @@ class StreamWorkspace(object):
                 fmt = 'Could not create stream metrics for event %s, station %s: "%s"'
                 logging.warning(fmt % (eventid, station, str(pgme)))
                 continue
+
             xmlstr = summary.get_metric_xml()
 
             path = '%s_%s_%s' % (eventid, summary.station_code.lower(), label)
@@ -538,6 +539,7 @@ class StreamWorkspace(object):
             xmlbytes = xmlstr.encode('utf-8')
             jsonarray = np.frombuffer(xmlbytes, dtype=np.uint8)
             dtype = 'WaveFormMetrics'
+
             self.dataset.add_auxiliary_data(
                 jsonarray,
                 data_type=dtype,
