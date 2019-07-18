@@ -262,7 +262,6 @@ def main(args):
         config = get_config()
 
     outdir = args.outdir
-
     eventids = args.eventids
     textfile = args.textfile
     eventinfo = args.eventinfo
@@ -319,9 +318,12 @@ def main(args):
                     logfile = os.path.join(outdir, logfmt % os.getpid())
                     for eventid in chunk:
                         event = eventdict[eventid]
-                        workname = process_event(outdir, event, pcommands,
-                                                 config, input_directory, process_tag,
-                                                 logfile, files_created, args.format)
+                        if len(events) > 1 and input_directory is not None:
+                            input_directory = os.path.join(
+                                input_directory, event.id)
+                        workname = process_event(
+                            outdir, event, pcommands, config, input_directory,
+                            process_tag, logfile, files_created, args.format)
                         workspace_files.append(workname)
                     os._exit(0)
                 else:

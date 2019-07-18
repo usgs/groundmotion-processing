@@ -861,8 +861,21 @@ def NNet_QA(st, acceptance_threshold, model_name):
 
     if all_zeros:
         for tr in st:
-            tr.fail('The data for trace %s contains all zeros, so the '
-                    'NNet_QA is not able to be performed.')
+            tr.fail('The data contains all zeros, so the '
+                    'NNet_QA check is not able to be performed.')
+        return st
+
+    # Check that we have the required trace parameters
+    have_params = True
+    for tr in st:
+        if not {'signal_spectrum', 'noise_spectrum', 'snr'}.issubset(
+          set(tr.getParameterKeys())):
+            have_params = False
+
+    if not have_params:
+        for tr in st:
+            tr.fail('One or more traces in the stream does have the required '
+                    'trace parameters to perform the NNet_QA check.')
         return st
 
     # Create the path to the NN folder based on model name

@@ -102,7 +102,7 @@ def test_corner_frequencies():
         atol=1e-6
     )
 
-    st = processed_streams[0]
+    st = processed_streams.select(station='HSES')[0]
     lps = [tr.getParameter('corner_frequencies')['lowpass'] for tr in st]
     hps = [tr.getParameter('corner_frequencies')['highpass'] for tr in st]
     np.testing.assert_allclose(
@@ -140,7 +140,7 @@ def test_corner_frequencies():
         atol=1e-6
     )
 
-    st = processed_streams[0]
+    st = processed_streams.select(station='HSES')[0]
     lps = [tr.getParameter('corner_frequencies')['lowpass'] for tr in st]
     hps = [tr.getParameter('corner_frequencies')['highpass'] for tr in st]
     np.testing.assert_allclose(

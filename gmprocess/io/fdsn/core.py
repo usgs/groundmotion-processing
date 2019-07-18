@@ -66,7 +66,7 @@ def _get_station_file(filename, stream):
     filebase, fname = os.path.split(filename)
     network = stream[0].stats.network
     station = stream[0].stats.station
-    pattern = '*%s.%s*.xml' % (network, station)
+    pattern = '%s.%s.xml' % (network, station)
     xmlfiles = glob.glob(os.path.join(filebase, pattern))
     if len(xmlfiles) != 1:
         return 'None'
