@@ -30,8 +30,11 @@ from gmprocess.event import ScalarEvent
 
 TIMEFMT2 = '%Y-%m-%dT%H:%M:%S.%f'
 
-OCEAN_COLOR = [0.77647059, 0.76862745, 0.79215686]
-LAND_COLOR = [0.92156863, 0.92156863, 0.92156863]
+
+OCEAN_COLOR = '#96e8ff'
+LAND_COLOR = '#ededaf'
+PASSED_COLOR = '#00ac00'
+FAILED_COLOR = '#ff2222'
 
 
 def download(event, event_dir, config, directory):
@@ -163,7 +166,10 @@ def draw_stations_map(pstreams, event, event_dir):
     draw_scale(ax)
     ax.plot(cx, cy, 'r*', markersize=16,
             transform=mmap.geoproj, zorder=8)
-    ax.scatter(lons, lats, c='#fc3adf', marker='^', edgecolors='k',
+    status = [FAILED_COLOR if np.any([trace.hasParameter("failure")
+                                         for trace in stream]) else PASSED_COLOR
+                                         for stream in pstreams]
+    ax.scatter(lons, lats, c=status, marker='^', edgecolors='k',
                transform=mmap.geoproj, zorder=100, s=48)
     scale = '50m'
     land = cfeature.NaturalEarthFeature(category='physical',
