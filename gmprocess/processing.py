@@ -490,7 +490,7 @@ def get_corner_frequencies(st, method='constant', constant=None, snr=None):
         st = corner_frequencies.constant(st, **constant)
     elif method == 'snr':
         st = corner_frequencies.snr(st, **snr)
-        if snr['same_horiz']:
+        if snr['same_horiz'] and st.passed:
             lps = [tr.getParameter('corner_frequencies')['lowpass'] for tr in st]
             hps = [tr.getParameter('corner_frequencies')['highpass'] for tr in st]
             chs = [tr.stats.channel for tr in st]
