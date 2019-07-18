@@ -443,7 +443,7 @@ class MetricsController(object):
         period = steps['period']
         percentile = steps['percentile']
         if period is not None:
-            imt_str = '%s(%s)' % (imt.upper(), float(period))
+            imt_str = '%s(%.3f)' % (imt.upper(), float(period))
         else:
             imt_str = imt.upper()
         if percentile is not None:

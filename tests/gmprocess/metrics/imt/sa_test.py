@@ -31,7 +31,7 @@ def test_sa():
              'gmrotd50', 'channels'],
             ['sa1.0', 'saincorrect'])
     pgms = station_summary.pgms
-    assert 'SA(1.0)' in pgms.IMT.tolist()
+    assert 'SA(1.000)' in pgms.IMT.tolist()
     np.testing.assert_allclose(
         pgms[pgms['IMC'] == 'ARITHMETIC_MEAN'].Result.iloc[0],
         110.47168962900042
