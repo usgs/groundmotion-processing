@@ -31,7 +31,6 @@ def test_fas():
             for _ in range(3):
                 next(file_obj)
             meta = re.findall(r'[.0-9]+', next(file_obj))
-            count = int(meta[0])
             dt = float(meta[1])
             accels = np.array(
                 [col for line in file_obj for col in line.split()])
@@ -69,45 +68,19 @@ def test_fas():
                             usecols=(0, 1), delimiter=',')
     # scaling required on the test data as it was not accounted for originally
     imts = ['fas' + str(1 / p) for p in freqs]
-    summary = StationSummary.from_stream(stream, ['quadratic_mean'], imts,
-                                         bandwidth=30)
+    summary = StationSummary.from_stream(
+        stream, ['quadratic_mean'], imts, bandwidth=30)
 
     pgms = summary.pgms
     for idx, f in enumerate(freqs):
-        fstr = 'FAS(' + str(1 / f) + ')'
+        fstr = 'FAS(%.3f)' % (1/f)
         fval = pgms[pgms.IMT == fstr].Result.tolist()[0]
-        np.testing.assert_array_almost_equal(
-            fval, fas[idx] / len(stream[0].data))
-
-    # test exceptions
-    failed = False
-    try:
-        fas_dict = calculate_fas(
-            stream, '', 1 / freqs, 'some other smoothing', 30)
-    except Exception as e:
-        failed = True
-    assert(failed == True)
-
-    failed = False
-    invalid_channels_stream = stream
-    invalid_channels_stream[0].stats.channel = 'Z'
-    try:
-        fas_dict = calculate_fas(
-            invalid_channels_stream, '', 1 / freqs, 'konno_ohmachi', 30)
-    except Exception as e:
-        failed = True
-    assert(failed == True)
-
-    failed = False
-    invalid_units_stream = stream
-    invalid_units_stream[0].stats.units = 'other'
-    try:
-        fas_dict = calculate_fas(
-            invalid_units_stream,
-            '', 1 / freqs, 'konno_ohmachi', 30)
-    except Exception as e:
-        failed = True
-    assert(failed == True)
+        np.testing.assert_allclose(
+            fval,
+            fas[idx] / len(stream[0].data),
+            rtol=1e-5,
+            atol=1e-5
+        )
 
 
 if __name__ == '__main__':

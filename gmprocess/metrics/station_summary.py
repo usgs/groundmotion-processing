@@ -161,8 +161,10 @@ class StationSummary(object):
         station._stream = stream
         station.event = event
         station.set_metadata()
-        metrics = MetricsController.from_config(stream, config=config,
-                                                event=event)
+
+        metrics = MetricsController.from_config(
+            stream, config=config, event=event)
+
         pgms = metrics.pgms
         if pgms is None:
             station._components = metrics.imcs
@@ -591,7 +593,7 @@ class StationSummary(object):
             period = None
             if imtstr.startswith('sa') or imtstr.startswith('fas'):
                 period = float(re.search(FLOAT_MATCH, imtstr).group())
-                attdict = {'period': '%.1f' % period,
+                attdict = {'period': '%.3f' % period,
                            'units': units}
                 if imtstr.startswith('sa'):
                     imtstr = 'sa'

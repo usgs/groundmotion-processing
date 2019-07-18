@@ -1,30 +1,22 @@
 #!/usr/bin/env python
 
 # stdlib imports
-import glob
 import os
 
 # third party imports
 import numpy as np
-from obspy.core.event import Origin
-import pandas as pd
 import pkg_resources
 
 # Local imports
 from gmprocess.io.geonet.core import read_geonet
 from gmprocess.io.knet.core import read_knet
 from gmprocess.io.read import read_data
-from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.processing import process_streams
-from gmprocess.stream import directory_to_dataframe, streams_to_dataframe
+from gmprocess.stream import streams_to_dataframe
 from gmprocess.streamcollection import StreamCollection
 from gmprocess.io.test_utils import read_data_dir
 
 
 def test():
-    homedir = os.path.dirname(os.path.abspath(
-        __file__))  # where is this script?
-
     # Test for channel grouping with three unique channels
     streams = []
     # datadir = os.path.join(homedir, '..', 'data', 'knet', 'us2000cnnl')
@@ -169,19 +161,16 @@ def test_to_dataframe():
     st = read_data(cwb_files[0])[0]
     df1 = streams_to_dataframe([st, st], event=event)
     np.testing.assert_array_equal(df1.STATION.tolist(), ['WPWS', 'WPWS'])
-    np.testing.assert_array_equal(df1.NAME.tolist(),
-                                  ['Waipawa_District_Council', 'Waipawa_District_Council'])
-    target_levels = ['ELEVATION', 'EPICENTRAL_DISTANCE',
-                     'GREATER_OF_TWO_HORIZONTALS', 'H1', 'H2', 'Z',
-                     'HYPOCENTRAL_DISTANCE', 'LAT', 'LON', 'NAME', 'NETID', 'SOURCE',
-                     'STATION', '', 'PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
+    np.testing.assert_array_equal(
+        df1.NAME.tolist(),
+        ['Waipawa_District_Council', 'Waipawa_District_Council'])
 
     # let's use sets to make sure all the columns are present in whatever order
     cmp1 = set(['ELEVATION', 'EPICENTRAL_DISTANCE',
                 'GREATER_OF_TWO_HORIZONTALS', 'H1', 'H2',
                 'HYPOCENTRAL_DISTANCE', 'LAT', 'LON',
                 'NAME', 'NETID', 'SOURCE', 'STATION', 'Z'])
-    cmp2 = set(['', 'PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)'])
+    cmp2 = set(['', 'PGA', 'PGV', 'SA(0.300)', 'SA(1.000)', 'SA(3.000)'])
     header1 = set(df1.columns.levels[0])
     header2 = set(df1.columns.levels[1])
     assert header1 == cmp1

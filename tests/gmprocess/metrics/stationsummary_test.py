@@ -30,7 +30,7 @@ def test_stationsummary():
     target_imcs = np.sort(np.asarray(['GREATER_OF_TWO_HORIZONTALS',
                                       'H1', 'H2', 'Z', 'ROTD(50.0)',
                                       'ROTD(100.0)']))
-    target_imts = np.sort(np.asarray(['SA(1.0)', 'PGA', 'PGV']))
+    target_imts = np.sort(np.asarray(['SA(1.000)', 'PGA', 'PGV']))
     stream = read_geonet(datafile)[0]
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
@@ -78,7 +78,7 @@ def test_stationsummary():
             'H1': 99.24999872535474,
             'H2': 81.23467239067368,
             'GREATER_OF_TWO_HORIZONTALS': 99.24999872535474},
-        'SA(1.0)': {
+        'SA(1.000)': {
             'ROTD(100.0)': 146.9023350124098,
             'ROTD(50.0)': 106.03202302692158,
             'Z': 27.74118995438756,
@@ -107,8 +107,8 @@ def test_stationsummary():
     target_imcs = np.sort(np.asarray(['GREATER_OF_TWO_HORIZONTALS',
                                       'H1', 'H2', 'Z',
                                       'GEOMETRIC_MEAN']))
-    target_imts = np.sort(np.asarray(['SA(1.0)',
-                                      'PGA', 'PGV', 'FAS(2.0)']))
+    target_imts = np.sort(np.asarray(['SA(1.000)',
+                                      'PGA', 'PGV', 'FAS(2.000)']))
     np.testing.assert_array_equal(np.sort(stream_summary.components),
                                   target_imcs)
     np.testing.assert_array_equal(np.sort(stream_summary.imts),
@@ -119,9 +119,9 @@ def test_stationsummary():
     stream_summary = StationSummary.from_config(stream)
     target_imcs = np.sort(np.asarray(['GREATER_OF_TWO_HORIZONTALS',
                                       'H1', 'H2', 'Z']))
-    target_imts = np.sort(np.asarray(['SA(1.0)', 'SA(2.0)', 'SA(3.0)',
-                                      'SA(0.3)', 'PGA', 'PGV', 'FAS(1.0)', 'FAS(2.0)',
-                                      'FAS(3.0)', 'FAS(0.3)']))
+    target_imts = np.sort(np.asarray(['SA(1.000)', 'SA(2.000)', 'SA(3.000)',
+                                      'SA(0.300)', 'PGA', 'PGV', 'FAS(1.000)', 'FAS(2.000)',
+                                      'FAS(3.000)', 'FAS(0.300)']))
     assert(stream_summary.smoothing == 'konno_ohmachi')
     assert(stream_summary.bandwidth == 20.0)
     assert(stream_summary.damping == 0.05)

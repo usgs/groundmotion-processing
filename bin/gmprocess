@@ -589,7 +589,7 @@ This program will allow the user to:
                         dest='log_file')
 
     nhelpstr = 'Number of parallel processes to run over events.'
-    parser.add_argument('-n', '--num-processes', default=2,
+    parser.add_argument('-n', '--num-processes', default=0,
                         type=int, help=nhelpstr)
 
     # ***** Shared arguments
