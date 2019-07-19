@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 
+import os
 import numpy as np
+import pkg_resources
 from obspy.core.utcdatetime import UTCDateTime
 from obspy.core.trace import Trace
 
 from gmprocess.stationstream import StationStream
+from gmprocess.streamcollection import StreamCollection
 
 from invutils import get_inventory
 
@@ -70,6 +73,22 @@ def test_uneven_stream():
         traces.append(trace)
     invstream = StationStream(traces=traces, inventory=inventory)
     x = 1
+
+
+def test_num_horizontals():
+    data_path = pkg_resources.resource_filename('gmprocess', 'data')
+    sc = StreamCollection.from_directory(os.path.join(
+        data_path, 'testdata', 'fdsn', 'uw61251926', 'strong_motion'))
+    st = sc.select(station='SP2')[0]
+    assert st.num_horizontals == 2
+
+    for tr in st:
+        tr.stats.channel = 'ENZ'
+    assert st.num_horizontals == 3
+
+    for tr in st:
+        tr.stats.channel = 'EN1'
+    assert st.num_horizontals == 0
 
 
 if __name__ == '__main__':

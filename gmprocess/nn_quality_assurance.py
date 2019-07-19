@@ -842,11 +842,7 @@ def NNet_QA(st, acceptance_threshold, model_name):
     '''
 
     # This check only works if we have two horizontal components in the stream
-    num_horizontal = 0
-    for tr in st:
-        if 'Z' not in tr.stats.channel.upper():
-            num_horizontal += 1
-    if num_horizontal != 2:
+    if st.num_horizontal != 2:
         for tr in st:
             tr.fail('Stream does not contain two horiztonal components. '
                     'NNet QA check will not be performed.')
