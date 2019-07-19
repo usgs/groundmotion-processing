@@ -366,6 +366,9 @@ def detrend(st, detrending_method=None):
         StationStream: Detrended stream.
     """
 
+    if not st.passed:
+        return st
+
     for tr in st:
         if detrending_method == 'baseline_sixth_order':
             tr = _correct_baseline(tr)

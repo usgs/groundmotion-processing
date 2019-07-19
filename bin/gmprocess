@@ -320,11 +320,14 @@ def main(args):
                     for eventid in chunk:
                         event = eventdict[eventid]
                         if len(events) > 1 and input_directory is not None:
-                            input_directory = os.path.join(
+                            ev_input_directory = os.path.join(
                                 input_directory, event.id)
+                        else:
+                            ev_input_directory = input_directory
                         workname = process_event(
-                            outdir, event, pcommands, config, input_directory,
-                            process_tag, logfile, files_created, args.format)
+                            outdir, event, pcommands, config,
+                            ev_input_directory, process_tag, logfile,
+                            files_created, args.format)
                         workspace_files.append(workname)
                     os._exit(0)
                 else:
