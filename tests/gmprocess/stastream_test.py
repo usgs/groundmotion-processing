@@ -84,11 +84,11 @@ def test_num_horizontals():
 
     for tr in st:
         tr.stats.channel = 'ENZ'
-    assert st.num_horizontal == 3
+    assert st.num_horizontal == 0
 
     for tr in st:
         tr.stats.channel = 'EN1'
-    assert st.num_horizontal == 0
+    assert st.num_horizontal == 3
 
 
 if __name__ == '__main__':
