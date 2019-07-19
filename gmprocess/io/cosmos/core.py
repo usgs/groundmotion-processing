@@ -413,10 +413,27 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     logging.debug('network: %s' % network)
     hdr['station'] = lines[4][28:34].strip()
     logging.debug('station: %s' % hdr['station'])
+
+    # the channel orientation can be either relative to true north (idx 53)
+    # or relative to sensor orientation (idx 54).
     horizontal_angle = int(int_data[53])
     logging.debug('horizontal_angle: %s' % horizontal_angle)
     if horizontal_angle not in VALID_AZIMUTH_INTS:
-        logging.warning("Horizontal_angle in COSMOS header is not valid.")
+        angles = np.array(int_data[19:21]).astype(np.float32)
+        angles[angles == unknown] = np.nan
+        if np.isnan(angles).all():
+            logging.warning("Horizontal_angle in COSMOS header is not valid.")
+        else:
+            ref = angles[~np.isnan(angles)][0]
+            horizontal_angle = int(int_data[54])
+            if horizontal_angle not in VALID_AZIMUTH_INTS:
+                logging.warning(
+                    "Horizontal_angle in COSMOS header is not valid.")
+            else:
+                horizontal_angle += ref
+                if horizontal_angle > 360:
+                    horizontal_angle -= 360
+
     horizontal_angle = float(horizontal_angle)
 
     # Store delta and duration. Use them to calculate npts and sampling_rate
