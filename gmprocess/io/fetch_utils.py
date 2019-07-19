@@ -72,7 +72,7 @@ def download(event, event_dir, config, directory):
         create_event_file(event, event_dir)
     else:
         streams, bad, terrors = directory_to_streams(directory)
-        tcollection = StreamCollection(streams)
+        tcollection = StreamCollection(streams, **config['duplicate'])
 
     # plot the raw waveforms
     with warnings.catch_warnings():
