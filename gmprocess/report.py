@@ -171,11 +171,18 @@ def build_report_latex(sc, directory, origin, config=None):
         if st[0].hasParameter('signal_split'):
             pick_method = st[0].getParameter('signal_split')['picker_type']
             report += 'Pick Method: %s\n\n' % str_for_latex(pick_method)
+        if 'nnet_qa' in st.getStreamParamKeys():
+            score_lq = st.getStreamParam('nnet_qa')['score_LQ']
+            score_hq = st.getStreamParam('nnet_qa')['score_HQ']
+            report += ('Neural Network LQ score: %s\n\n'
+                       % str_for_latex(str(score_lq)))
+            report += ('Neural Network HQ score: %s\n\n'
+                       % str_for_latex(str(score_hq)))
         if not st.passed:
             for tr in st:
                 if tr.hasParameter('failure'):
-                    report += ('Failure reason: %s\n\n'
-                               % tr.getParameter('failure')['reason'])
+                    report += ('Failure reason: %s\n\n' % str_for_latex(
+                               tr.getParameter('failure')['reason']))
                     break
         report += '\\newpage\n\n'
 
