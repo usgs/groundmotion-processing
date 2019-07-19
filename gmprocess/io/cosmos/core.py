@@ -459,8 +459,24 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
                     is_acceleration=True,
                     is_vertical=True,
                     is_north=False)
+                horizontal_angle = 360.0
+            elif channel == 'RADL' or channel == 'LONG' or channel == 'H1':
+                channel = get_channel_name(
+                    hdr['sampling_rate'],
+                    is_acceleration=True,
+                    is_vertical=False,
+                    is_north=True)
+                horizontal_angle = 0.0
+            elif channel == 'TRAN' or channel == 'TANG' or channel == 'H2':
+                channel = get_channel_name(
+                    hdr['sampling_rate'],
+                    is_acceleration=True,
+                    is_vertical=False,
+                    is_north=False)
+                horizontal_angle = 90.0
+            else:  # For the occassional 'OTHR' channel
+                raise GMProcessException('Channel name is not valid.')
 
-                horizontal_angle = 360.0  # Obspy cannot have this value exceed 360
         elif horizontal_angle >= 0 and horizontal_angle <= 360:
             if (
                 horizontal_angle > 315
