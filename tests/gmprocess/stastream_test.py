@@ -80,15 +80,15 @@ def test_num_horizontals():
     sc = StreamCollection.from_directory(os.path.join(
         data_path, 'testdata', 'fdsn', 'uw61251926', 'strong_motion'))
     st = sc.select(station='SP2')[0]
-    assert st.num_horizontals == 2
+    assert st.num_horizontal == 2
 
     for tr in st:
         tr.stats.channel = 'ENZ'
-    assert st.num_horizontals == 3
+    assert st.num_horizontal == 3
 
     for tr in st:
         tr.stats.channel = 'EN1'
-    assert st.num_horizontals == 0
+    assert st.num_horizontal == 0
 
 
 if __name__ == '__main__':

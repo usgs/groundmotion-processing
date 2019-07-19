@@ -254,7 +254,7 @@ class StationStream(Stream):
     @property
     def num_horizontal(self):
         """
-        Get just the horizontal components of the StationStream.
+        Get the number of horizontal components in the StationStream.
         """
         return len([tr for tr in self if tr.stats.channel[2].upper() != 'Z'])
 
