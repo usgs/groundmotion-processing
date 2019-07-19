@@ -49,7 +49,12 @@ def download(event, event_dir, config, directory):
         config (dict):
             Dictionary with gmprocess configuration information.
         directory (str):
-            Path where raw data already exists.
+            Path where raw data already exists. Must be organized in
+            a 'raw' directory, within a directories names as the event ids.
+            For example, if `directory` is 'proj_dir' and you have data for
+            event id 'abc123' then the raw data to be read in should be
+            located in `proj_dir/abc123/raw/`.
+
     Returns:
         tuple:
             - StreamWorkspace: Contains the event and raw streams.
@@ -72,7 +77,7 @@ def download(event, event_dir, config, directory):
         # in case user is simply downloading for now
         create_event_file(event, event_dir)
     else:
-        streams, bad, terrors = directory_to_streams(directory)
+        streams, bad, terrors = directory_to_streams(rawdir)
         tcollection = StreamCollection(streams, **config['duplicate'])
 
     # plot the raw waveforms

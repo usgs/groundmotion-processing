@@ -92,8 +92,8 @@ def process_event(outdir, event, pcommands,
     workspace_has_processed = False
     workspace = None
     processing_done = False
-    if workspace_exists:
 
+    if workspace_exists:
         workspace = StreamWorkspace.open(workname)
         labels = workspace.getLabels()
         if len(labels):
@@ -167,8 +167,8 @@ def process_event(outdir, event, pcommands,
 
     reporting_done = False
     if ('report' in pcommands and
-            processing_done
-            and len(pstreams)):
+            processing_done and
+            len(pstreams)):
         logging.info(
             'Creating diagnostic plots for event %s...' % event.id)
         plot_dir = os.path.join(event_dir, 'plots')
