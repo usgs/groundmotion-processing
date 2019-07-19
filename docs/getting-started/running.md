@@ -10,7 +10,7 @@ are not interested in writing their own Python scripts. For
 additional details on how this program works, see the
 "Using gmprocess" section below.
 
-The same functionality is also available through the API for use
+The same functionality is also available through as a library for use
 in your own Python scripts. Writing your own Python scripts permits
 selection of just the functionality you need as well as integration
 into your own set of tools. This software provides a high-level API,

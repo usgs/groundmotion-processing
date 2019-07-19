@@ -1,6 +1,7 @@
 # stdlib imports
 import os.path
 import json
+import logging
 import warnings
 import glob
 
@@ -167,8 +168,8 @@ def draw_stations_map(pstreams, event, event_dir):
     ax.plot(cx, cy, 'r*', markersize=16,
             transform=mmap.geoproj, zorder=8)
     status = [FAILED_COLOR if np.any([trace.hasParameter("failure")
-                                         for trace in stream]) else PASSED_COLOR
-                                         for stream in pstreams]
+                                      for trace in stream]) else PASSED_COLOR
+              for stream in pstreams]
     ax.scatter(lons, lats, c=status, marker='^', edgecolors='k',
                transform=mmap.geoproj, zorder=100, s=48)
     scale = '50m'
@@ -192,10 +193,11 @@ def get_event_files(directory):
     """Get list of event.json files found underneath a data directory.
 
     Args:
-        directory (str): Path to directory containing input raw data, where
-                         subdirectories must be event directories containing
-                         event.json files, where the id in that file matches
-                         the directory under which it is found.
+        directory (str):
+            Path to directory containing input raw data, where
+            subdirectories must be event directories containing
+            event.json files, where the id in that file matches
+            the directory under which it is found.
     Returns:
         List of event.json files.
     """
@@ -212,7 +214,8 @@ def read_event_json_files(eventfiles):
     """Read event.json file and return ScalarEvent object.
 
     Args:
-        eventfiles (list): Event.json files to be read.
+        eventfiles (list):
+            Event.json files to be read.
     Returns:
         list: ScalarEvent objects.
 
@@ -273,12 +276,14 @@ def get_events(eventids, textfile, eventinfo, directory):
         eventfiles = get_event_files(directory)
         if not len(eventfiles):
             eventids = os.listdir(directory)
-            try:
-                for eventid in eventids:
+            for eventid in eventids:
+                try:
                     event = get_event_object(eventid)
                     events.append(event)
-            except Exception:
-                events = []
+                except:
+                    logging.warning(
+                        'Could not get info for event id: %s' % eventid
+                    )
         else:
             events = read_event_json_files(eventfiles)
     return events
