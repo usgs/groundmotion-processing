@@ -14,7 +14,6 @@ import glob
 # third party imports
 import pandas as pd
 from h5py.h5py_warnings import H5pyDeprecationWarning
-import psutil
 import numpy as np
 
 # local imports
@@ -114,9 +113,10 @@ def process_event(outdir, event, pcommands,
     download_done = False
     if 'assemble' in pcommands:
         logging.info('Downloading/loading raw streams...')
-        workspace, workspace_file, rstreams = download(event, event_dir,
-                                                       config,
-                                                       input_directory)
+        workspace, workspace_file, rstreams = download(
+            event, event_dir,
+            config,
+            input_directory)
 
         download_done = True
         append_file(files_created, 'Workspace', workname)
@@ -150,7 +150,10 @@ def process_event(outdir, event, pcommands,
                 download_done = True
                 processing_done = True
 
-    if 'process' in pcommands and download_done and not processing_done and len(rstreams):
+    if ('process' in pcommands and
+            download_done and
+            not processing_done and
+            len(rstreams)):
         logging.info('Processing raw streams for event %s...' % event.id)
         pstreams = process_streams(rstreams, event, config=config)
         with warnings.catch_warnings():
@@ -163,7 +166,9 @@ def process_event(outdir, event, pcommands,
         processing_done = True
 
     reporting_done = False
-    if 'report' in pcommands and processing_done and len(pstreams):
+    if ('report' in pcommands and
+            processing_done
+            and len(pstreams)):
         logging.info(
             'Creating diagnostic plots for event %s...' % event.id)
         plot_dir = os.path.join(event_dir, 'plots')
@@ -227,11 +232,7 @@ def process_event(outdir, event, pcommands,
     # structures
     # del rstreams
     # del pstreams
-    pmem = psutil.virtual_memory()
-    pct = pmem.used / pmem.total
-    fmt = 'Finishing event %s (%i streams) - memory usage = %.2f %%'
-    tpl = (event.id, len(rstreams), pct)
-    logging.info(fmt % tpl)
+    logging.info('Finishing event %s' % event.id)
 
     return workname
 
@@ -340,7 +341,7 @@ def main(args):
                                          logfile, files_created, args.format)
                 workspace_files.append(workname)
 
-     # logging
+    # logging
     logger = None
     setup_logger(args)
     if args.log_file:
@@ -370,7 +371,6 @@ def main(args):
 
     logging.info('%i workspace files created' % len(workspace_files))
 
-    # if n_passed is zero, don't
     if 'export' in pcommands:
         if not len(workspace_files):
             # look for hdf files

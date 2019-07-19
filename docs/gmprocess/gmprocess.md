@@ -70,7 +70,7 @@ gmprocess --output-directory=data/nocal \
     --report \
     --provenance \
     --export \
-    -eventids nc72282711 nc72507396
+    --eventids nc72282711 nc72507396
 ```
  will result in a directory structure that looks like this:
 ```
