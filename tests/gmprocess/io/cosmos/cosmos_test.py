@@ -138,8 +138,18 @@ def test_v0():
         pass
 
 
+def test_orientation_relative():
+    dfiles, event = read_data_dir('cosmos', 'ak018fcnsk91', [
+        'NP8040-n.1000hyfh.HNE.01.V0c'])
+    streams = read_cosmos(dfiles[0])
+    trace = streams[0][0]
+    assert trace.stats.channel == 'HN2'
+    assert streams[0][0].stats.standard.horizontal_orientation == 90.0
+
+
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
+    test_orientation_relative()
     test_v0()
     test_cosmos()
     test_channel_in_filename()
