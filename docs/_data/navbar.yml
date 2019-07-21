@@ -54,10 +54,6 @@ toc:
         url: /gmprocess/exporting.html
   - title: Python scripting
     subitems:
-      - page: Writing Python scripts
-        url: /scripting/scripting.html
-      - page: Modules
-        url: /scripting/modules.html
       - page: Data structures
         url: /scripting/data-structures.html
         subsubitems:
@@ -67,18 +63,10 @@ toc:
             url: /scripting/data-structures/station-stream.html
           - page: StreamCollection
             url: /scripting/data-structures/stream-collection.html
-      - page: Ingesting data
-        url: /scripting/ingesting.html
-      - page: Fetching data
-        url: /scripting/fetching.html
-      - page: Waveform processing
-        url: /scripting/waveform-processing.html
-      - page: Computing waveform metrics
+      - page: Writing Python scripts
+        url: /scripting/scripting.html
+      - page: Waveform metrics
         url: /scripting/waveform-metrics.html
-      - page: Computing station metrics
-        url: /scripting/station-metrics.html
-      - page: Exporting data
-        url: /scripting/exporting.html
   - title: Developer
     subitems:
       - page: Code layout

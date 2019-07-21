@@ -1,8 +1,11 @@
 # Exporting data
 
 Currently, station and waveform metrics are all computed via the `gmprocess`
-command only when exporting data tables with the `--export` argument.
-Follow the examples in the prior sections:
+command when processing is done, and they are stored in the workspace file.
+Use the `--export` argument to write the results to tables that are easy
+to import into other programs.
+
+Following the examples in the prior sections:
 ```bash
 gmprocess -o test --export
 ```

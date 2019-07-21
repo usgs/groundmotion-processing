@@ -1,4 +1,0 @@
-# Exporting data
-
-```python
-```
