@@ -19,8 +19,8 @@ toc:
     subitems:
       - page: Reading data
         url: /processing-steps/reading.html
-      - page: Fetching data
-        url: /processing-steps/fetching.html
+      - page: Retrieving data
+        url: /processing-steps/retrieve.html
       - page: Windowing data
         url: /processing-steps/windowing.html
       - page: Waveform processing

@@ -9,7 +9,7 @@
 * The functionality can be accessed via Python libraries or through command
   line programs.
 
-* We currently support Mac and Linus systems, and plan to support Windows in
+* We currently support Mac and Linux systems, and plan to support Windows in
   release 1.1.
 
 * We provide file readers for many strong motion data formats that are not
@@ -24,9 +24,9 @@
   waveform and station metrics, and provenance information in a single,
   portable file.
 
-* Import data from local filesystem using a wide variety of formats or fetch
-  data using web services from FDSN data centers.
+* Import data from local filesystem using a wide variety of formats or
+  retrieve data using web services from FDSN data centers.
 
-* Plug-and-play architecture for efficiently evaluating data reprocessed
+* "Plug-and-play" architecture for efficiently evaluating data reprocessed
   with new or alternative algorithms.
 

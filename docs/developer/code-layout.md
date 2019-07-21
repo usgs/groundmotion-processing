@@ -21,10 +21,10 @@ modules. A few modules at this level are worth highlighting:
 - `stationtrace.py` is where we define the `StationTrace` subclass ObsPy's
   `Trace` class.
 - `stationstream.py` is where we define the `StationStream` subclass of
-  ObsPY's `Stream` class.
+  ObsPy's `Stream` class.
 - `streamcollection.py` is where we deinfe the `StreamCollection` class,
   which is basically a list of StationStream objects, where the constituent
-  StationTraces are grouped such the traces within each StattionStream are
+  StationTraces are grouped such the traces within each StationStream are
   from the same network/station/instrument, and some consistency checks are
   applied to the data.
 
