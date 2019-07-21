@@ -2,7 +2,7 @@
 
 Triggered Strong motion data can come in many formats, few of which are
 familiar to seismologists. Many of the older formats were written using
-FORTRAN, and so are fixed-width, 80 character wide text formats.
+Fortran, and so are fixed-width, 80 character wide text formats.
 
 `gmprocess` provides readers for many of these formats. Each reader is a package
 under the `gmprocess/io` directory in the repository, where that package

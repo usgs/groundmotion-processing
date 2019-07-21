@@ -1,7 +1,5 @@
 # Installation
 
-See the [README](https://github.com/usgs/groundmotion-processing) at the top-level source directory.
-
 ## Dependencies
 
 * Mac OSX or Linux operating systems; we hope to be able to support Windows sysmtems

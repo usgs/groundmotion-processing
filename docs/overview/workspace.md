@@ -1,6 +1,6 @@
 # Workspace
 
-The use the term "workspace" to refer to the HDF file that serves as a
+We use the term "workspace" to refer to the HDF file that serves as a
 container to hold the inputs, important intermediate results, and
 outputs. It also includes provenance information describing the processing
 steps performed on the data.
