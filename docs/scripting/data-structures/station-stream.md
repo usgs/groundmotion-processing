@@ -1,6 +1,6 @@
 # StationStream
 
-Obspy provides a Stream object that serves as a container for zero-to-many
+ObsPy provides a Stream object that serves as a container for zero-to-many
 Trace objects, and gmprocess subclasses the Stream object with the StationStream
 object, which contains StationTrace objects. It also provides facilities for
 extracting Obspy inventory data structures, and provenance from the contained

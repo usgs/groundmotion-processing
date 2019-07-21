@@ -1,6 +1,6 @@
 # StationTrace
 
-Obspy provides a Trace object that serves as a container for waveform data from
+ObsPy provides a Trace object that serves as a container for waveform data from
 a single channel, as well as some basic metadata about the waveform start/end
 times, number of points, sampling rate/interval, and
 network/station/channel/location information.
