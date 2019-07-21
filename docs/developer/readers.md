@@ -8,7 +8,7 @@ code to read it.
 
 ## The Format
 
-```python
+```
 Source: Complete Strong Motion Network
 Network: CS
 Station: ABCD

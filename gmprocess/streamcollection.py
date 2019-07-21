@@ -35,10 +35,10 @@ class StreamCollection(object):
     """
     A collection/list of StationStream objects.
 
-    This is a list of StationStream objectss, where the constituent
+    This is a list of StationStream objects, where the constituent
     StationTraces are grouped such that:
 
-        - All traces are from the same network/station.
+        - All traces are from the same network/station/instrument.
         - Sample rates must match.
         - Units much match.
 

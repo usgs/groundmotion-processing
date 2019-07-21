@@ -1,13 +1,32 @@
 # Features
 
-* Storage of earthquake metadata, station metadata, raw ground-motion time histories, processed ground-motion time histories, waveform and station metrics, and provenance information in a single, portable file.
+* The software is written in Python and builds upon
+  [ObsPy](https://www.obspy.org) and
+  [PyASDF](https://seismicdata.github.io/pyasdf/),
+  including [SEIS-PROV](http://seismicdata.github.io/SEIS-PROV/index.html)
+  for storing provenance information.
 
-* Import data from local filesystem using a wide variety of formats or fetch data using web services from FDSN data centers.
+* The functionality can be accessed via Python libraries or through command
+  line programs.
 
-* Compute additional waveform or station metrics by starting at an intermediate stage.
+* We currently support Mac and Linus systems, and plan to support Windows in
+  release 1.1.
 
-* Plug-and-play architecture for efficiently evaluating data reprocessed with new or alternative algorithms.
+* We provide file readers for many strong motion data formats that are not
+  otherwise supported in ObsPy.
 
-* Raw inputs are earthquake metadata, station metadata and ground-motion time histories directly from seismological sources; only downstream products need to be updated when earthquake or station metadata changes, e.g., revised earthquake location.
+* We provide subclasses of ObsPy's `Trace` and `Stream` classes, which are
+  designed to aid analysis and metadata storage and validation specifically for
+  ground motion data that is organized by event. 
 
-* The code is written in Python and builds upon [ObsPy](https://www.obspy.org) and [PyASDF](https://seismicdata.github.io/pyasdf/), including [SEIS-PROV](http://seismicdata.github.io/SEIS-PROV/index.html) for storing provenance information.
+* We use the ASDF format to store earthquake metadata, station metadata,
+  raw ground-motion time histories, processed ground-motion time histories,
+  waveform and station metrics, and provenance information in a single,
+  portable file.
+
+* Import data from local filesystem using a wide variety of formats or fetch
+  data using web services from FDSN data centers.
+
+* Plug-and-play architecture for efficiently evaluating data reprocessed
+  with new or alternative algorithms.
+

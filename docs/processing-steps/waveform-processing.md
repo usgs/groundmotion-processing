@@ -11,3 +11,4 @@ can be grouped in the following categories:
 
 * [Baseline correction](waveform-processing/baseline-correction.html)
 
+* [Filtering](waveform-processing/filtering.html)

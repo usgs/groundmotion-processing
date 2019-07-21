@@ -1,6 +1,7 @@
 # Filtering
 
-Filtering is broken down into a series of processing steps.
+Filtering is broken down into a series of processing steps described
+in the following sections.
 
 
 ## get_corner_frequencies
@@ -10,11 +11,10 @@ configured in the `get_corner_frequencies` step. There are two suppored
 methods: `constant` and `snr`. Each method has additional parameters that
 are set via their respective subsections. 
 
-
-The `snr` method requires an accurate estimate of the signal-to-noise, which
-is not always possible. This is why we provide the `constant` method, where
-the highpass and lowpass corners are manually selected and constant for all
-records.
+The `snr` method requires an accurate estimate of the signal-to-noise ratio
+(SNR), which is not always possible. This is why we provide the `constant`
+method, where the highpass and lowpass corners are manually selected and
+constant for all records.
 
 The `snr` method selects the highpass and lowpass corner frequencies such
 that the SNR criteria specified in the `compute_snr` section are satisfied
@@ -23,15 +23,22 @@ the passband are guaranteed to exceed the `threshold` specified under
 `compute_snr/check/threshold`. The corner frequencies are determined
 independently for each channel if `same_horiz` is set to False; otherwise
 the horizontal channels are forced to have the same corner frequencies,
-where the high of the highpass corners and the lower of the lowpass corners
+where the higher of the highpass corners and the lower of the lowpass corners
 of the two channels are selected. 
+
 
 ## lowpass_max_frequency
 
-The lowpass corner frequency should not exceed the Nyquist frequency.
-This processing step allows you to set a factor `fn_fac` that is
-multiplied by the record's Nyquist frequency, which is then used as
-a cap on the lowpass corner frequency.
+The lowpass corner frequency should not equal or exceed the Nyquist frequency.
+This processing step allows you to set a factor `fn_fac` that is multiplied
+by the record's Nyquist frequency, which is then used as a cap on the lowpass
+corner frequency. This is useful to prevent errors when
+
+- Using constant corner frequencies and you encounter a record with a lower
+  sample rate than expected.
+- Using the SNR-based corner frequency selection method, and the SNR
+  criteria are met all the way up to the Nyquist frequency. 
+
 
 ## adjust_highpass_corner
 
@@ -40,20 +47,21 @@ series does not result in unreasonable values. These steps are based on the
 algorithm described by
 Dawood et al. ([2016](https://doi.org/10.1193/071214EQS106)).
 
-This algorithm begins with an initial corner frequency that was selected
-as configured in the `get_corner_frequencies` step. It then checks the
-criteria descibed below; if the criteria are not met then the high pass
+This algorithm begins with the initial highpass corner frequency that was
+selected as configured in the `get_corner_frequencies` step. It then checks
+the criteria descibed below; if the criteria are not met then the high pass
 corner is increased with the multiplicative step factor (`step_factor`)
-until the criteria are met, or the corner frequency exceeds
-`maximum_freq`.
+until the acceptance criteria are met. If the corner frequency exceeds
+`maximum_freq` before the criteria are met, then the trace is marked as
+"failed".
 
 Acceptance criteria:
 
 * The final displacement of the record does not exceed
   `max_final_displacement` (in cm).
 
-* The ratio of the final displacement to the maximum displacement to the
-  maximum displacement does not exceed `max_displacment_ratio`
+* The ratio of the final displacement to the maximum displacement does not
+  exceed `max_displacment_ratio`
   
 
 ## highpass_filter
@@ -61,6 +69,7 @@ Acceptance criteria:
 Applies a Butterworth highpass filter using the highpass corner determined
 from prior steps that modify the highpass corner frequency. Options include
 `filter_order` and `number_of_passes`.
+
 
 ## lowpass_filter
 

@@ -49,9 +49,9 @@ def download(event, event_dir, config, directory):
         config (dict):
             Dictionary with gmprocess configuration information.
         directory (str):
-            Path where raw data already exists. Must be organized in
-            a 'raw' directory, within a directories names as the event ids.
-            For example, if `directory` is 'proj_dir' and you have data for
+            Path where data already exists. Must be organized in a 'raw'
+            directory, within directories with names as the event ids. For
+            example, if `directory` is 'proj_dir' and you have data for
             event id 'abc123' then the raw data to be read in should be
             located in `proj_dir/abc123/raw/`.
 
@@ -61,7 +61,7 @@ def download(event, event_dir, config, directory):
             - str: Name of workspace HDF file.
             - StreamCollection: Raw data StationStreams.
     """
-    # generate the raw directory
+    # Make raw directory
     rawdir = get_rawdir(event_dir)
 
     if directory is None:
@@ -77,20 +77,27 @@ def download(event, event_dir, config, directory):
         # in case user is simply downloading for now
         create_event_file(event, event_dir)
     else:
-        streams, bad, terrors = directory_to_streams(rawdir)
+        # Make raw directory
+        in_event_dir = os.path.join(directory, event.id)
+        in_raw_dir = get_rawdir(in_event_dir)
+        streams, bad, terrors = directory_to_streams(in_raw_dir)
         tcollection = StreamCollection(streams, **config['duplicate'])
+        create_event_file(event, event_dir)
 
-    # plot the raw waveforms
+    # Plot the raw waveforms
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", category=UserWarning)
         pngfiles = glob.glob(os.path.join(rawdir, '*.png'))
         if not len(pngfiles):
             plot_raw(rawdir, tcollection, event)
 
-    # create the workspace file and put the unprocessed waveforms in it
+    # Create the workspace file and put the unprocessed waveforms in it
     workname = os.path.join(event_dir, 'workspace.hdf')
+
+    # Remove any existing workspace file
     if os.path.isfile(workname):
         os.remove(workname)
+
     workspace = StreamWorkspace(workname)
     workspace.addEvent(event)
     with warnings.catch_warnings():
@@ -235,8 +242,9 @@ def read_event_json_files(eventfiles):
     return events
 
 
-def get_events(eventids, textfile, eventinfo, directory):
-    """Return a list of events from one of the four inputs:
+def get_events(eventids, textfile, eventinfo, directory,
+               outdir=None):
+    """Find the list of events.
 
     Args:
         eventids (list or None):
@@ -255,6 +263,8 @@ def get_events(eventids, textfile, eventinfo, directory):
             Path to a directory containing event subdirectories, each
             containing an event.json file, where the ID in the json file
             matches the subdirectory containing it.
+        outdir (str):
+            Output directory.
 
     Returns:
         list: ScalarEvent objects.
@@ -291,6 +301,22 @@ def get_events(eventids, textfile, eventinfo, directory):
                     )
         else:
             events = read_event_json_files(eventfiles)
+
+    elif outdir is not None:
+        eventfiles = get_event_files(outdir)
+        if not len(eventfiles):
+            eventids = os.listdir(outdir)
+            for eventid in eventids:
+                try:
+                    event = get_event_object(eventid)
+                    events.append(event)
+                except:
+                    logging.warning(
+                        'Could not get info for event id: %s' % eventid
+                    )
+        else:
+            events = read_event_json_files(eventfiles)
+
     return events
 
 
@@ -304,12 +330,14 @@ def create_event_file(event, event_dir):
             Directory where event.json should be written.
     """
     # create event.json file in each directory
-    edict = {'id': event.id,
-             'time': event.time.strftime(TIMEFMT2),
-             'lat': event.latitude,
-             'lon': event.longitude,
-             'depth': event.depth_km,
-             'magnitude': event.magnitude}
+    edict = {
+        'id': event.id,
+        'time': event.time.strftime(TIMEFMT2),
+        'lat': event.latitude,
+        'lon': event.longitude,
+        'depth': event.depth_km,
+        'magnitude': event.magnitude
+    }
     eventfile = os.path.join(event_dir, 'event.json')
     with open(eventfile, 'wt') as f:
         json.dump(edict, f)

@@ -42,16 +42,14 @@ toc:
         url: /processing-steps/station-metrics.html
   - title: Using gmprocess
     subitems:
-      - page: gmprocess
+      - page: The gmprocess command
         url: /gmprocess/gmprocess.html
-      - page: Ingesting data
-        url: /gmprocess/ingesting.html
+      - page: Reading data
+        url: /gmprocess/reading.html
       - page: Waveform processing
         url: /gmprocess/waveform-processing.html
-      - page: Computing waveform metrics
-        url: /gmprocess/waveform-metrics.html
-      - page: Computing station metrics
-        url: /gmprocess/station-metrics.html
+      - page: Processing reports
+        url: /gmprocess/reports.html
       - page: Exporting data
         url: /gmprocess/exporting.html
   - title: Python scripting
@@ -81,10 +79,6 @@ toc:
         url: /scripting/station-metrics.html
       - page: Exporting data
         url: /scripting/exporting.html
-  - title: Tests
-    subitems:
-      - page: Running the test suite
-        url: /tests/tests.html
   - title: Developer
     subitems:
       - page: Code layout

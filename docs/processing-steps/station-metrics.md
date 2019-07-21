@@ -1,6 +1,6 @@
 # Computing station metrics
 
-Station metrics include parameters like distance to the source and Vs30.
+Station metrics include parameters like source-to-site distances and  Vs30.
 There are many alternative distance measures available, and currently we
 only support epicentral and hypocentral distances. In the next release of
 this software we will expand the list of station metrics to include:

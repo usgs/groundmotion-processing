@@ -2,7 +2,7 @@
 
 There are two main ways to run the code:
 
-* Use the provided `gmprocess` Python command line program, or
+* Use the provided `gmprocess` command line program, or
 * Use the provided API in your own Python scripts.
 
 The `gmprocess` script targets typical use cases and users who

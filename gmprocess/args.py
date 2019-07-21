@@ -8,7 +8,7 @@ def add_shared_args(parser):
         An argparse object.
 
     Returns:
-    An argparse object.
+        An argparse object.
 
     """
     group = parser.add_mutually_exclusive_group()

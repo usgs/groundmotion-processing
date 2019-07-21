@@ -2,7 +2,7 @@
 
 Waveform metrics are defined by selecting an intensity measure type (IMT)
 and an intensity measure component (IMC). IMTs typically describe the
-parameter that is used to represent some aspect of the ground motino, such
+parameter that is used to represent some aspect of the ground motion, such
 as PGA or duration. IMCs describe how the different components are
 handled. 
 
