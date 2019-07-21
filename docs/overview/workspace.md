@@ -1,11 +1,12 @@
 # Workspace
 
-The workspace serves as a container to hold the inputs, important
-intermediate results, and outputs. It also includes provenance
-information describing the processing steps performed on the data.
+The use the term "workspace" to refer to the HDF file that serves as a
+container to hold the inputs, important intermediate results, and
+outputs. It also includes provenance information describing the processing
+steps performed on the data.
 
-We use the [ASDF](https://academic.oup.com/gji/article/207/2/1003/2583765)
-HDF-5 layout, which includes specifications for earthquake information,
+The [ASDF](https://academic.oup.com/gji/article/207/2/1003/2583765)
+HDF-5 layout includes specifications for earthquake information,
 station metadata, and waveform time histories. We include information
 not explicitly covered in the ASDF format specification in the
 `AuxiliaryData` group.
