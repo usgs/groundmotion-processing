@@ -1,3 +1,12 @@
+Introduction
+------------
+This is a project designed to provide a number of functions related to parsing
+and processing ground motion data, building on top of the 
+`ObsPy <https://github.com/obspy/obspy/wiki>`_
+library. Most of the extensions that we provide are to handle strong motion
+data and related issues.
+
+
 Documentation
 -------------
 https://usgs.github.io/groundmotion-processing/
