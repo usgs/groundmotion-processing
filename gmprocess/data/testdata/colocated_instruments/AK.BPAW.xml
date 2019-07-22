@@ -1,0 +1,234 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<FDSNStationXML xmlns="http://www.fdsn.org/xml/station/1" schemaVersion="1.0">
+  <Source>IRIS-DMC</Source>
+  <Sender>IRIS-DMC</Sender>
+  <Module>IRIS WEB SERVICE: fdsnws-station | version: 1.1.37</Module>
+  <ModuleURI>http://service.iris.edu/fdsnws/station/1/query?starttime=2010-09-25T12%3A03%3A59.940000&amp;endtime=2010-09-25T12%3A07%3A59.940000&amp;network=%2A&amp;station=%2A&amp;location=%2A&amp;channel=BH%3F%2CHH%3F%2CSH%3F%2CBN%3F%2CHN%3F&amp;level=channel&amp;latitude=62.8543&amp;longitude=-149.5119&amp;maxradius=3.147625620715557&amp;includerestricted=true&amp;matchtimeseries=true</ModuleURI>
+  <Created>2019-06-28T22:41:22.000000Z</Created>
+  <Network code="AK" endDate="2999-12-31T23:59:59.000000Z" restrictedStatus="open" startDate="1990-01-01T00:00:00.000000Z">
+    <Description>Alaska Regional Network</Description>
+    <TotalNumberStations>164</TotalNumberStations>
+    <SelectedNumberStations>33</SelectedNumberStations>
+    <Station code="BPAW" endDate="2599-12-31T23:59:59.000000Z" restrictedStatus="open" startDate="2004-05-13T00:00:00.000000Z">
+      <Latitude unit="DEGREES">64.099701</Latitude>
+      <Longitude unit="DEGREES">-150.987305</Longitude>
+      <Elevation>619.0</Elevation>
+      <Site>
+        <Name>Bear Paw Mountain, AK, USA</Name>
+      </Site>
+      <CreationDate>2004-05-13T00:00:00.000000Z</CreationDate>
+      <TotalNumberChannels>38</TotalNumberChannels>
+      <SelectedNumberChannels>6</SelectedNumberChannels>
+      <Channel code="BHE" endDate="2018-06-07T00:00:00.000000Z" locationCode="" restrictedStatus="open" startDate="2010-05-07T23:00:00.000000Z">
+        <Comment>
+          <Value>493 1251</Value>
+        </Comment>
+        <Latitude unit="DEGREES">64.099701</Latitude>
+        <Longitude unit="DEGREES">-150.987305</Longitude>
+        <Elevation>619.0</Elevation>
+        <Depth>0.0</Depth>
+        <Azimuth unit="DEGREES">95.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <Type>GEOPHYSICAL</Type>
+        <SampleRate unit="SAMPLES/S">50.0</SampleRate>
+        <ClockDrift unit="SECONDS/SAMPLE">0.0002</ClockDrift>
+        <CalibrationUnits>
+          <Name>V</Name>
+          <Description>emf in volts</Description>
+        </CalibrationUnits>
+        <Sensor>
+          <Description>Nanometrics Trillium 240 Sec Response sn 400 and a</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>488760000.0</Value>
+            <Frequency>0.2</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>velocity in meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+              <Description>digital counts</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+        </Response>
+      </Channel>
+      <Channel code="BHN" endDate="2018-06-07T00:00:00.000000Z" locationCode="" restrictedStatus="open" startDate="2010-05-07T23:00:00.000000Z">
+        <Comment>
+          <Value>493 1251</Value>
+        </Comment>
+        <Latitude unit="DEGREES">64.099701</Latitude>
+        <Longitude unit="DEGREES">-150.987305</Longitude>
+        <Elevation>619.0</Elevation>
+        <Depth>0.0</Depth>
+        <Azimuth unit="DEGREES">5.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <Type>GEOPHYSICAL</Type>
+        <SampleRate unit="SAMPLES/S">50.0</SampleRate>
+        <ClockDrift unit="SECONDS/SAMPLE">0.0002</ClockDrift>
+        <CalibrationUnits>
+          <Name>V</Name>
+          <Description>emf in volts</Description>
+        </CalibrationUnits>
+        <Sensor>
+          <Description>Nanometrics Trillium 240 Sec Response sn 400 and a</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>488760000.0</Value>
+            <Frequency>0.2</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>velocity in meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+              <Description>digital counts</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+        </Response>
+      </Channel>
+      <Channel code="BHZ" endDate="2018-06-07T00:00:00.000000Z" locationCode="" restrictedStatus="open" startDate="2010-05-07T23:00:00.000000Z">
+        <Comment>
+          <Value>493 1251</Value>
+        </Comment>
+        <Latitude unit="DEGREES">64.099701</Latitude>
+        <Longitude unit="DEGREES">-150.987305</Longitude>
+        <Elevation>619.0</Elevation>
+        <Depth>0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
+        <Type>GEOPHYSICAL</Type>
+        <SampleRate unit="SAMPLES/S">50.0</SampleRate>
+        <ClockDrift unit="SECONDS/SAMPLE">0.0002</ClockDrift>
+        <CalibrationUnits>
+          <Name>V</Name>
+          <Description>emf in volts</Description>
+        </CalibrationUnits>
+        <Sensor>
+          <Description>Nanometrics Trillium 240 Sec Response sn 400 and a</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>488760000.0</Value>
+            <Frequency>0.2</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>velocity in meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+              <Description>digital counts</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+        </Response>
+      </Channel>
+      <Channel code="BNE" endDate="2013-05-31T23:59:59.000000Z" locationCode="" restrictedStatus="open" startDate="2010-05-07T23:00:00.000000Z">
+        <Comment>
+          <Value>T5R86 1251</Value>
+        </Comment>
+        <Latitude unit="DEGREES">64.099701</Latitude>
+        <Longitude unit="DEGREES">-150.987305</Longitude>
+        <Elevation>619.0</Elevation>
+        <Depth>0.0</Depth>
+        <Azimuth unit="DEGREES">95.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <Type>GEOPHYSICAL</Type>
+        <SampleRate unit="SAMPLES/S">50.0</SampleRate>
+        <ClockDrift unit="SECONDS/SAMPLE">0.0002</ClockDrift>
+        <CalibrationUnits>
+          <Name>V</Name>
+          <Description>emf in volts</Description>
+        </CalibrationUnits>
+        <Sensor>
+          <Description>Guralp 5T/Quanterra 330 Linear Phase Below 100 Com</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>427037.0</Value>
+            <Frequency>0.09</Frequency>
+            <InputUnits>
+              <Name>M/S**2</Name>
+              <Description>acceleration in meters per seconds squared</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+              <Description>digital counts</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+        </Response>
+      </Channel>
+      <Channel code="BNN" endDate="2013-05-31T23:59:59.000000Z" locationCode="" restrictedStatus="open" startDate="2010-05-07T23:00:00.000000Z">
+        <Comment>
+          <Value>T5R86 1251</Value>
+        </Comment>
+        <Latitude unit="DEGREES">64.099701</Latitude>
+        <Longitude unit="DEGREES">-150.987305</Longitude>
+        <Elevation>619.0</Elevation>
+        <Depth>0.0</Depth>
+        <Azimuth unit="DEGREES">5.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <Type>GEOPHYSICAL</Type>
+        <SampleRate unit="SAMPLES/S">50.0</SampleRate>
+        <ClockDrift unit="SECONDS/SAMPLE">0.0002</ClockDrift>
+        <CalibrationUnits>
+          <Name>V</Name>
+          <Description>emf in volts</Description>
+        </CalibrationUnits>
+        <Sensor>
+          <Description>Guralp 5T/Quanterra 330 Linear Phase Below 100 Com</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>426198.0</Value>
+            <Frequency>0.09</Frequency>
+            <InputUnits>
+              <Name>M/S**2</Name>
+              <Description>acceleration in meters per seconds squared</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+              <Description>digital counts</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+        </Response>
+      </Channel>
+      <Channel code="BNZ" endDate="2013-05-31T23:59:59.000000Z" locationCode="" restrictedStatus="open" startDate="2010-05-07T23:00:00.000000Z">
+        <Comment>
+          <Value>T5R86 1251</Value>
+        </Comment>
+        <Latitude unit="DEGREES">64.099701</Latitude>
+        <Longitude unit="DEGREES">-150.987305</Longitude>
+        <Elevation>619.0</Elevation>
+        <Depth>0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
+        <Type>GEOPHYSICAL</Type>
+        <SampleRate unit="SAMPLES/S">50.0</SampleRate>
+        <ClockDrift unit="SECONDS/SAMPLE">0.0002</ClockDrift>
+        <CalibrationUnits>
+          <Name>V</Name>
+          <Description>emf in volts</Description>
+        </CalibrationUnits>
+        <Sensor>
+          <Description>Guralp 5T/Quanterra 330 Linear Phase Below 100 Com</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>427037.0</Value>
+            <Frequency>0.09</Frequency>
+            <InputUnits>
+              <Name>M/S**2</Name>
+              <Description>acceleration in meters per seconds squared</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+              <Description>digital counts</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+        </Response>
+      </Channel>
+    </Station>
+  </Network>
+</FDSNStationXML>
