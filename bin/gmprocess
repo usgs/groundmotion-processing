@@ -398,6 +398,11 @@ def main(args):
                 warnings.simplefilter("ignore",
                                       category=H5pyDeprecationWarning)
                 if args.recompute_metrics:
+                    del workspace.dataset.auxiliary_data.WaveFormMetrics
+                    del workspace.dataset.auxiliary_data.StationMetrics
+                    for eventid in workspace.getEventIds():
+                        workspace.calcMetrics(
+                            eventid, labels=labels, config=config)
                     tevent_table, timc_tables = workspace.getTables(
                         labels[0], config=config)
                 else:
