@@ -37,7 +37,7 @@ toc:
         - page: Filtering
           url: /processing-steps/waveform-processing/filtering.html
       - page: Data Units
-        url: /processing-steps/units.html
+        url: /processing-steps/data-units.html
       - page: Waveform metrics
         url: /processing-steps/waveform-metrics.html
       - page: Station metrics
