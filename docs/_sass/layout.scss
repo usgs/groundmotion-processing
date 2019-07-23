@@ -158,11 +158,12 @@ body {
   bottom: 0;
   padding-top: $sp-4;
   padding-bottom: $sp-4;
+  border-top: $border $border-color;
 
   @include mq(md) {
     position: static;
     align-self: flex-end;
     justify-self: end;
-    background-color: $sidebar-color;
+    //background-color: $sidebar-color;
   }
 }
