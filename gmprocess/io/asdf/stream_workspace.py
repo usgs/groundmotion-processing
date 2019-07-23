@@ -451,32 +451,6 @@ class StreamWorkspace(object):
             path = '%s_%s_%s' % (eventid, station.lower(), label)
             self.insert_aux(xmlstr, 'StationMetrics', path)
 
-    def getStationMetrics(self, eventid, station, label):
-        """Extract a StationSummary object from the ASDF file for a given input Stream.
-
-        Args:
-            eventid (str):
-                ID of event to search for in ASDF file.
-            station (str):
-                Station to return metrics from.
-            label (str):
-                Processing label to return metrics from.
-
-        Returns:
-            StationSummary: Object containing all stream metrics.
-        """
-        if 'WaveFormMetrics' not in self.dataset.auxiliary_data:
-            raise KeyError('Waveform metrics not found in workspace.')
-        auxholder = self.dataset.auxiliary_data.WaveFormMetrics
-        stream_path = '%s_%s_%s' % (eventid, station.lower(), label)
-        if stream_path not in auxholder:
-            fmt = 'Waveform metrics for event %s and stream %s not found in workspace.'
-            raise KeyError(fmt % (eventid, tag))
-        bytelist = auxholder[stream_path].data[:].tolist()
-        xmlstr = ''.join([chr(b) for b in bytelist])
-        summary = StationSummary.fromMetricXML(xmlstr.encode('utf-8'))
-        return summary
-
     def calcMetrics(self, eventid, stations=None, labels=None, config=None):
         """Calculate both stream and station metrics for a set of waveforms.
 
@@ -921,15 +895,6 @@ def _stringify_dict(indict):
     return indict
 
 
-def unstringify_dict(indict):
-    for key, value in indict.items():
-        if isinstance(value, str) and re.match(TIMEPAT, value):
-            indict[key] = UTCDateTime(value)
-        elif isinstance(value, dict):
-            indict[key] = unstringify_dict(value)
-    return indict
-
-
 def _get_id(event):
     eid = event.origins[0].resource_id.id
 
@@ -1014,26 +979,6 @@ def _get_table_row(stream, summary, event, imc):
     imts = dict(zip(imt_frame['IMT'], imt_frame['Result']))
     row.update(imts)
     return row
-
-
-def _append_summary(summary, imclist, imtlist, imc_tables):
-    for imc in imclist:
-        if imc not in imc_tables:
-            cols = FLATFILE_COLUMNS + imtlist
-            imc_table = pd.DataFrame(columns=cols)
-            row = _get_table_row(stream, summary, event, imc)
-            if not len(row):
-                continue
-            imc_table = imc_table.append(row, ignore_index=True)
-            imc_tables[imc] = imc_table
-        else:
-            imc_table = imc_tables[imc]
-            row = _get_table_row(stream, summary, event, imc)
-            if not len(row):
-                continue
-            imc_table = imc_table.append(row, ignore_index=True)
-            imc_tables[imc] = imc_table
-    return imc_tables
 
 
 def _natural_keys(text):
