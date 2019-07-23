@@ -28,7 +28,9 @@ EVENT_TABLE_COLUMNS = ['id', 'time', 'latitude',
 NON_IMT_COLUMNS = ['ELEVATION', 'EPICENTRAL_DISTANCE',
                    'HYPOCENTRAL_DISTANCE', 'LAT', 'LON',
                    'NAME', 'NETID', 'SOURCE', 'STATION']
-FLATFILE_COLUMNS = ['EarthquakeId', 'Network', 'NetworkDescription',
+FLATFILE_COLUMNS = ['EarthquakeId', 'EarthquakeTime', 'EarthquakeLatitude',
+                    'EarthquakeLongitude', 'EarthquakeDepth',
+                    'EarthquakeMagnitude', 'Network', 'NetworkDescription',
                     'StationCode', 'StationID',
                     'StationDescription',
                     'StationLatitude', 'StationLongitude',
@@ -610,6 +612,13 @@ class StreamWorkspace(object):
                         imc_table = imc_table.append(row, ignore_index=True)
                         imc_tables[imc] = imc_table
 
+        # Remove any empty IMT columns from the IMC tables
+        for key, table in imc_tables.items():
+            for col in table.columns:
+                if table[col].dropna().empty:
+                    table.drop(columns=col, inplace=True)
+            imc_tables[key] = table
+
         return (event_table, imc_tables)
 
     def getMetricsTable(self, eventid, stations=None, labels=None):
@@ -959,6 +968,11 @@ def _get_table_row(stream, summary, event, imc):
         h2_highpass = h2_highfilt[0]['corner_frequency']
 
     row = {'EarthquakeId': event.id,
+           'EarthquakeTime': event.time,
+           'EarthquakeLatitude': event.latitude,
+           'EarthquakeLongitude': event.longitude,
+           'EarthquakeDepth': event.depth,
+           'EarthquakeMagnitude': event.magnitude,
            'Network': stream[0].stats.network,
            'NetworkDescription': stream[0].stats.standard.source,
            'StationCode': stream[0].stats.station,
