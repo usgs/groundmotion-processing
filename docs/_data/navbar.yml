@@ -36,6 +36,8 @@ toc:
           url: /processing-steps/waveform-processing/baseline-correction.html
         - page: Filtering
           url: /processing-steps/waveform-processing/filtering.html
+      - page: Data Units
+        url: /processing-steps/units.html
       - page: Waveform metrics
         url: /processing-steps/waveform-metrics.html
       - page: Station metrics
