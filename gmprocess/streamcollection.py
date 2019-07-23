@@ -195,7 +195,10 @@ class StreamCollection(object):
                         to_fail = group_insts
                         to_fail.remove(keep)
                         for tf in to_fail:
-                            for st in self.select(instrument=tf):
+                            for st in self.select(
+                              network=self[group[0]][0].stats.network,
+                              station=self[group[0]][0].stats.station,
+                              instrument=tf):
                                 for tr in st:
                                     tr.fail(
                                         'Colocated with %s instrument.' % keep
