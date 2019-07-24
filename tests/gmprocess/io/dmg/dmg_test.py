@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 
 # third party imports
 import numpy as np
+from obspy.core.utcdatetime import UTCDateTime
 
 # local imports
 from gmprocess.constants import UNIT_CONVERSIONS
@@ -119,7 +120,6 @@ def test_dmg():
         for trace in stream1:
             assert trace.stats['standard']['units'] == 'acc'
 
-
     # Test metadata
     stream = read_dmg(file1)[0]
     for trace in stream:
@@ -219,8 +219,20 @@ def test_dmg():
         assert trace.stats.location == 'test'
 
 
+def test_pacific():
+    # test a data file whose trigger time is not in UTC
+    file1, _ = read_data_dir('dmg', 'nc1091100', files=[
+                             'ce36456p_CE36456.V2'])
+    streams = read_dmg(file1[0])
+    trace = streams[0][0]
+    # 05/02/83, 16:42:48.2
+    cmptime = UTCDateTime('1983-05-02T23:42:48.2')
+    assert trace.stats.starttime == cmptime
+
+
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
+    test_pacific()
     test_dmg_non_spec()
     test_time()
     test_dmg_v1()

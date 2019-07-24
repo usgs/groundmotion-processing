@@ -10,6 +10,7 @@ import pkg_resources
 # third party
 from obspy.core.trace import Stats
 import numpy as np
+import pytz
 
 # local imports
 from gmprocess.constants import UNIT_CONVERSIONS
@@ -117,8 +118,8 @@ def is_dmg(filename):
             if second_line.find(V1_MARKER) >= 0:
                 return True
         elif first_line.find(V3_MARKER) >= 0 and not is_usc(filename):
-            if (second_line.find(V2_MARKER) >= 0 and
-                    third_line.find(V1_MARKER) >= 0):
+            if (second_line.find(V2_MARKER) >= 0
+                    and third_line.find(V1_MARKER) >= 0):
                 return True
         else:
             return False
@@ -479,6 +480,16 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
     # parse the trigger time
     try:
         trigger_time = _get_date(lines[3]) + _get_time(lines[3])
+        # sometimes these trigger times are in UTC, other times a different
+        # time zone. Figure out if this is the case and modify start time
+        # accordingly
+        # look for three letter string that might be a time zone
+        if 'PDT' in lines[3] or 'PST' in lines[3]:
+            timezone = pytz.timezone('US/Pacific')
+            utcoffset = timezone.utcoffset(trigger_time)
+            # subtracting because we're going from pacific to utc
+            trigger_time -= utcoffset
+
         hdr['starttime'] = trigger_time
     except:
         logging.warning('No start time provided on trigger line. '
@@ -630,6 +641,15 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
     # parse the trigger time
     try:
         trigger_time = _get_date(lines[4]) + _get_time(lines[4])
+        # sometimes these trigger times are in UTC, other times a different
+        # time zone. Figure out if this is the case and modify start time
+        # accordingly
+        # look for three letter string that might be a time zone
+        if 'PDT' in lines[3] or 'PST' in lines[3]:
+            timezone = pytz.timezone('US/Pacific')
+            utcoffset = timezone.utcoffset(trigger_time)
+            # subtracting because we're going from pacific to utc
+            trigger_time -= utcoffset
         hdr['starttime'] = trigger_time
     except:
         logging.warning('No start time provided on trigger line. '
@@ -796,16 +816,16 @@ def _get_units(line):
     units_section = line[units_start:].replace('.', ' ')
     if 'g/10' in units_section:
         physical_units = 'g/10'
-    elif ('10g' in units_section or '10*g' in units_section or
-            'g10' in units_section or 'g*10' in units_section):
+    elif ('10g' in units_section or '10*g' in units_section
+            or 'g10' in units_section or 'g*10' in units_section):
         physical_units = 'g*10'
     elif 'gal' in units_section:
         physical_units = 'cm/s/s'
     elif 'g' in units_section and 'g/' not in units_section:
         physical_units = 'g'
-    elif ('cm/s/s' in units_section or 'cm/sec/sec' in units_section or
-            'cm/s^2' in units_section or 'cm/s2' in units_section or
-            'cm/sec^2' in units_section or 'cm/sec2' in units_section):
+    elif ('cm/s/s' in units_section or 'cm/sec/sec' in units_section
+            or 'cm/s^2' in units_section or 'cm/s2' in units_section
+            or 'cm/sec^2' in units_section or 'cm/sec2' in units_section):
         physical_units = 'cm/s/s'
     elif 'cm/s' in units_section or 'cm/sec' in units_section:
         physical_units = 'cm/s'
