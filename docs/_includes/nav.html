@@ -10,6 +10,7 @@
 	    {% endif %}
 	  <li class="nagivation-list-item">
               <a class="navigation-list-link {% if entry.url == page.url %}active{% endif %}" href="{{ site.baseurl}}{{ entry.url }}">{{ entry.page }}</a>
+            {% if entry.url == page.url %}
               {% if entry.subsubitems[0] %}
 	          <ul class="navigation-list-child-list">
                   {% for subentry in entry.subsubitems %}
@@ -24,6 +25,7 @@
                         <a class="navigation-list-link {% if subentry.url == page.url %}active{% endif %}" href="{{ site.baseurl}}{{ subentry.url }}">{{ subentry.page }}</a></li>
                   {% endfor %}
                   </ul>
+                {% endif %}
                 {% endif %}
               </li>
           {% endfor %}
