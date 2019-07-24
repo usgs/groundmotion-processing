@@ -6,25 +6,25 @@
 h1,
 .text-alpha {
   @include fs-8;
-  font-weight: 300;
+  font-weight: 500;
 }
 
 h2,
 .text-beta {
   @include fs-6;
+  font-weight: 700;
 }
 
 h3,
 .text-gamma {
   @include fs-5;
+  font-weight: 700;
 }
 
 h4,
 .text-delta {
-  @include fs-2;
-  font-weight: 300;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  @include fs-4;
+  font-weight: 700;
 }
 
 h5,
