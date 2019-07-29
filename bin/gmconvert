@@ -8,12 +8,15 @@ import glob
 import logging
 
 # local imports
-from gmprocess.io.cwb.core import read_cwb, is_cwb
-from gmprocess.io.geonet.core import read_geonet, is_geonet
-from gmprocess.io.knet.core import read_knet, is_knet
-from gmprocess.stream import streams_to_dataframe
 from gmprocess.logging import setup_logger
 from gmprocess.args import add_shared_args
+from gmprocess.streamcollection import StreamCollection
+from gmprocess.io.read import read_data
+from gmprocess.io.read_directory import directory_to_streams
+
+
+class CustomFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter):
+    pass
 
 
 FORMATS = [
@@ -38,62 +41,58 @@ def main(args):
 
     # gather arguments
     indir = args.indir
-    eventid = args.eventid
     outdir = args.outdir
-    format = args.format
+    oformat = args.format
 
-    # get appropriate file reader/checker for format
-    data_files = []
-    split_files = False  # are three channels split into multiple files?
-    if format == 'cwb':
-        reader = read_cwb
-        checker = is_cwb
-    elif format == 'geonet':
-        reader = read_geonet
-        checker = is_geonet
-    elif format == 'knet':
-        reader = read_knet
-        checker = is_knet
-        split_files = True
-    else:
-        raise Exception('Unsupported format %s' % format)
+    has_files = args.files is not None and len(args.files)
 
-    # grab all the files in the input directory
-    allfiles = glob.glob(os.path.join(indir, '*'))
-
-    # check each file - if it isn't specified format, skip it
-    for afile in allfiles:
-        if checker(afile):
-            if split_files:
-                dfile, ext = os.path.splitext(afile)
-                if dfile not in data_files:
-                    data_files.append(dfile)
-            else:
-                data_files.append(afile)
-
-    # Bail if we didn't find any appropriate files
-    if not len(data_files):
-        logging.info(
-            'No data files matching %s format found in %s.  Exiting.' %
-            (format, indir))
+    if has_files and args.indir is not None:
+        print('Specify input files or an input directory, not both.')
         sys.exit(1)
 
-    # read all the data files, gather up a list of obspy Stream objects
-    streams = []
-    for dfile in data_files:
-        logging.info('Parsing %s...' % dfile)
-        stream = reader(dfile)
-        streams.append(stream)
+    if args.files is None and args.indir is None:
+        print('You must specify input files or an input directory.')
+        sys.exit(1)
 
-    # Extract station/peak information from each stream, save to a dataframe
-    dataframe, spectral_streams = streams_to_dataframe(streams)
+    if not os.path.isdir(outdir):
+        os.mkdir(outdir)
 
-    # If the user wants to see the peak info in spreadsheet form, save that
-    # for them
-    if args.excel:
-        outfile_excel = os.path.join(outdir, '%s_dat.xlsx' % eventid)
-        dataframe.to_excel(outfile_excel)
-        logging.info('Wrote Excel file %s' % outfile_excel)
+    if args.files:
+        # read all the data files, gather up a list of obspy Stream objects
+        allstreams = []
+        error_dict = {}
+        for dfile in args.files:
+            logging.info('Parsing %s...' % dfile)
+            try:
+                streams = read_data(dfile)
+            except Exception as e:
+                error_dict[dfile] = str(e)
+            allstreams += streams
+    else:
+        # grab all the files in the input directory
+        allstreams, unprocessed, errors = directory_to_streams(indir)
+        error_dict = dict(zip(unprocessed, errors))
+
+    sc = StreamCollection(allstreams)
+
+    for stream in sc:
+        streamid = stream.get_id()
+        if len(stream) == 1:
+            streamid = stream[0].get_id()
+        outfile = os.path.join(outdir, '%s.%s' % (streamid, oformat.lower()))
+        invfile = os.path.join(outdir, '%s.xml' % (streamid))
+        inv_format = 'STATIONXML'
+        inv = stream.getInventory()
+        logging.info('Writing data file %s...' % outfile)
+        stream.write(outfile, format=oformat)
+        logging.info('Writing inventory file %s...' % invfile)
+        inv.write(invfile, format=inv_format)
+
+    print('Wrote %i streams to %s' % (len(sc), outdir))
+    if len(error_dict):
+        print('\nThe following files could not be read:')
+        for fname, error in error_dict.items():
+            print('\t%s - "%s"' % (fname, error))
 
 
 if __name__ == '__main__':
@@ -102,24 +101,46 @@ if __name__ == '__main__':
 
 https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supported-formats
 
+    The inventory information will be written as an 
+    accompanying file in station XML format.
+
+    To convert a single file in the NIED KNET format to MiniSEED:
+
+    gmconvert AOM0011801241951.EW 
+
+    The following files will be written to the current directory:
+        - BO.AOM001.--.HN2.mseed
+        - BO.AOM001.--.HN2.xml
+
+    To convert the three files that make up the BO.AOM001 station data into one MiniSEED file:
+
+    gmconvert AOM0011801241951.*
+
+    The following files will be written to the current directory:
+        - BO.AOM001.HN.mseed
+        - BO.AOM001.HN.xml
+
+    To convert a directory "indatadir" full of files to SAC format, and write
+    to a directory called "outdatadir":
+
+    gmconvert -i datadir -o outdatadir -f SAC
+
+    Note: The data files in "indatadir" can be distributed through
+    subdirectories and gmconvert will find them.
+
     '''
     parser = argparse.ArgumentParser(
         description=desc,
-        formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument(
-        'indir',
-        help='Directory containing input data.')
-    parser.add_argument(
-        'outdir',
-        help='Output data directory.')
-    parser.add_argument(
-        'format',
-        help='Output strong motion data format.',
-        choices=FORMATS)
-    parser.add_argument(
-        'excel',
-        help='Output strong motion data to an Excel file.',
-        type=bool, default=False)
+        formatter_class=CustomFormatter)
+    parser.add_argument('files', help='List of files to convert.',
+                        nargs='*', default=None)
+    parser.add_argument('-i', '--indir',
+                        help='Directory containing input files to convert.')
+    parser.add_argument('-o', '--outdir',
+                        help='Output directory.', default=os.getcwd())
+    parser.add_argument('-f', '--format',
+                        help='Output strong motion data format.',
+                        choices=FORMATS, default='MSEED')
 
     # Shared arguments
     parser = add_shared_args(parser)

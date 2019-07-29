@@ -107,7 +107,7 @@ class StationStream(Stream):
                     new_delta = min(deltas)
                     newstart = max(starts)
                     newend = min(ends)
-                    new_duration = newend-newstart
+                    new_duration = newend - newstart
                     new_npts = int(new_duration / new_delta + 1)
                     success = len(set(sts)) == 1 and len(set(ets)) == 1
 
@@ -115,7 +115,7 @@ class StationStream(Stream):
                     if not success:
                         for tr in self.traces:
                             tr.interpolate(
-                                sampling_rate=1/new_delta,
+                                sampling_rate=1 / new_delta,
                                 method='lanczos',
                                 starttime=newstart,
                                 npts=new_npts,
@@ -435,14 +435,17 @@ def _channel_from_stats(stats):
     response = None
     if 'response' in stats:
         response = stats['response']
-
-    # we may have instrument sensitivity...
-    if not np.isnan(stats['standard']['instrument_sensitivity']):
-        sens = stats['standard']['instrument_sensitivity']
+    else:
+        # we may have instrument sensitivity...
         frequency = 1 / stats['standard']['instrument_period']
+        units = stats.standard.units
+        if not np.isnan(stats['standard']['instrument_sensitivity']):
+            sens = stats['standard']['instrument_sensitivity']
+        else:
+            sens = 1.0
         sensitivity = InstrumentSensitivity(sens,
                                             frequency=frequency,
-                                            input_units='M/S',
+                                            input_units=units,
                                             output_units='COUNTS')
         response = Response(instrument_sensitivity=sensitivity)
 

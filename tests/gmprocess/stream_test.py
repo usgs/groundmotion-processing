@@ -80,7 +80,7 @@ def test_grouping():
                 not os.path.basename(filename).startswith('CE58667')):
             dmg_streams += read_data(filename)
     dmg_streams = StreamCollection(dmg_streams)
-    assert len(dmg_streams) == 2
+    assert len(dmg_streams) == 3
     for stream in dmg_streams:
         assert len(stream) == 3
 

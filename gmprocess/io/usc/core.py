@@ -71,9 +71,10 @@ def is_usc(filename, **kwargs):
             f.close()
             return False
         f.close()
-    except UnicodeDecodeError:
-        f.close()
+    except Exception:
         return False
+    finally:
+        f.close()
     valid = _check_header(start, stop, filename)
     alternate = False
     if not valid:
@@ -118,9 +119,15 @@ def read_usc(filename, **kwargs):
     # Check for Location
     location = kwargs.get('location', '')
 
-    f = open(filename, 'rt')
-    first_line = f.readline()
-    f.close()
+    f = None
+    try:
+        f = open(filename, 'rt')
+        first_line = f.readline()
+    except:
+        pass
+    finally:
+        if f is not None:
+            f.close()
 
     if first_line.find('OF UNCORRECTED ACCELEROGRAM DATA OF') >= 0:
         stream = read_volume_one(

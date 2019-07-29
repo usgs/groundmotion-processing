@@ -54,7 +54,7 @@ def plot_regression(event_table, imc, imc_table, imt, filename,
     elif imt.startswith('FAS') or imt in ['ARIAS', 'PGV']:
         units = "cm/s"
     else:
-        raise Exception('Unknown units for IMT %s' % imt)
+        units = 'Unknown units for IMT %s' % imt
 
     if imt not in imc_table.columns:
         raise KeyError('IMT "%s" not found in table' % imt)
