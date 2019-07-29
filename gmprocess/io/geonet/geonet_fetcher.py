@@ -24,7 +24,7 @@ from gmprocess.config import get_config
 
 
 CATBASE = 'https://quakesearch.geonet.org.nz/csv?bbox=163.95996,-49.18170,182.63672,-32.28713&startdate=%s&enddate=%s'
-GEOBASE = 'ftp://ftp.geonet.org.nz/strong/processed/Proc/[YEAR]/[MONTH]/'
+GEOBASE = 'ftp://ftp.geonet.org.nz/strong/processed/[YEAR]/[MONTH]/'
 TIMEFMT = '%Y-%m-%dT%H:%M:%S'
 NZTIMEDELTA = 2  # number of seconds allowed between GeoNet catalog time and event timestamp on FTP site
 NZCATWINDOW = 5 * 60  # number of seconds to search around in GeoNet EQ catalog

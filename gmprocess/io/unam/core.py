@@ -40,8 +40,11 @@ MARKER = 'ARCHIVO ESTANDAR DE ACELERACION'
 
 
 def is_unam(filename):
-    with open(filename, 'rt') as myfile:
-        header = [next(myfile) for x in range(7)]
+    try:
+        with open(filename, 'rt') as myfile:
+            header = [next(myfile) for x in range(7)]
+    except Exception:
+        return False
     if MARKER in header[6]:
         return True
 

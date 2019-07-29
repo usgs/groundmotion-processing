@@ -36,6 +36,12 @@ def test_unam():
     assert np.isnan(trace1.stats.standard.instrument_period)
     assert np.isnan(trace1.stats.standard.instrument_damping)
 
+    # make sure the reader doesn't raise exceptions on non-UNAM files
+    datafiles, origin = read_data_dir('fdsn',
+                                      'nc72282711',
+                                      ['BK.CMB.00.HNE__20140824T102014Z__20140824T102244Z.mseed'])
+    assert is_unam(datafiles[0]) is False
+
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'

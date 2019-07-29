@@ -29,6 +29,11 @@ from gmprocess.plot import summary_plots, plot_regression
 from gmprocess.config import get_config
 
 NON_IMT_COLS = set(['EarthquakeId',
+                    'EarthquakeTime',
+                    'EarthquakeLatitude',
+                    'EarthquakeLongitude',
+                    'EarthquakeDepth',
+                    'EarthquakeMagnitude',
                     'Network',
                     'NetworkDescription',
                     'StationCode',
@@ -159,10 +164,10 @@ def process_event(outdir, event, pcommands,
 
     # Need to initialize pstreams because later we check is's length
     pstreams = []
-    if ('process' in pcommands and
-            download_done and
-            not processing_done and
-            len(rstreams)):
+    if ('process' in pcommands
+            and download_done
+            and not processing_done
+            and len(rstreams)):
         logging.info('Processing raw streams for event %s...' % event.id)
         pstreams = process_streams(rstreams, event, config=config)
         with warnings.catch_warnings():
@@ -175,9 +180,9 @@ def process_event(outdir, event, pcommands,
         processing_done = True
 
     reporting_done = False
-    if ('report' in pcommands and
-            processing_done and
-            len(pstreams)):
+    if ('report' in pcommands
+            and processing_done
+            and len(pstreams)):
         logging.info(
             'Creating diagnostic plots for event %s...' % event.id)
         plot_dir = os.path.join(event_dir, 'plots')
@@ -373,7 +378,7 @@ def main(args):
     for logfile in logfiles:
         with open(logfile, 'rt') as logobj:
             for line in logobj.readlines():
-                logging.info(line)
+                logging.info(line.strip())
         os.remove(logfile)
 
     # reset handler back to original formatter
@@ -446,37 +451,45 @@ def main(args):
 
         # make a regression plot of the most common imc/imt combination we
         # can find
-        pref_imcs = ['GREATER_OF_TWO_HORIZONTALS', 'H1', 'H2']
-        pref_imts = ['PGA', 'PGV', 'SA(1.0)']
-        found_imc = None
-        found_imt = None
-        for imc in pref_imcs:
-            if imc in imc_tables:
-                for imt in pref_imts:
-                    if imt in imc_tables[imc].columns:
-                        found_imt = imt
-                        found_imc = imc
+        if not len(imc_tables):
+            msg = '''No IMC tables found. It is likely that no streams
+            passed checks. If you created reports for the events you 
+            have been processing, check those to see if this is the case,
+            then adjust your configuration as necessary to process the data.
+            '''
+            logging.warning(msg)
+        else:
+            pref_imcs = ['GREATER_OF_TWO_HORIZONTALS', 'H1', 'H2']
+            pref_imts = ['PGA', 'PGV', 'SA(1.0)']
+            found_imc = None
+            found_imt = None
+            for imc in pref_imcs:
+                if imc in imc_tables:
+                    for imt in pref_imts:
+                        if imt in imc_tables[imc].columns:
+                            found_imt = imt
+                            found_imc = imc
+                            break
+                    if found_imc:
                         break
-                if found_imc:
-                    break
-        # now look for whatever IMC/IMTcombination we can find
-        if imc_tables and not found_imc:
-            found_imc = list(imc_tables.keys())[0]
-            table_cols = set(imc_tables[found_imc].columns)
-            imtlist = list(table_cols - NON_IMT_COLS)
-            found_imt = imtlist[0]
+            # now look for whatever IMC/IMTcombination we can find
+            if imc_tables and not found_imc:
+                found_imc = list(imc_tables.keys())[0]
+                table_cols = set(imc_tables[found_imc].columns)
+                imtlist = list(table_cols - NON_IMT_COLS)
+                found_imt = imtlist[0]
 
-        if found_imc and found_imt:
-            pngfile = '%s_%s.png' % (found_imc, found_imt)
-            regression_file = os.path.join(outdir, pngfile)
-            plot_regression(event_table, found_imc,
-                            imc_tables[found_imc],
-                            found_imt,
-                            regression_file,
-                            distance_metric='EpicentralDistance',
-                            colormap='viridis_r')
-            append_file(files_created,
-                        'Multi-event regression plot', regression_file)
+            if found_imc and found_imt:
+                pngfile = '%s_%s.png' % (found_imc, found_imt)
+                regression_file = os.path.join(outdir, pngfile)
+                plot_regression(event_table, found_imc,
+                                imc_tables[found_imc],
+                                found_imt,
+                                regression_file,
+                                distance_metric='EpicentralDistance',
+                                colormap='viridis_r')
+                append_file(files_created,
+                            'Multi-event regression plot', regression_file)
 
     print('\nThe following files have been created:')
     for file_type, file_list in files_created.items():
