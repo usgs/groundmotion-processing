@@ -5,6 +5,7 @@ import numpy as np
 
 from gmprocess.io.unam.core import is_unam, read_unam
 from gmprocess.io.test_utils import read_data_dir
+from gmprocess.io.read import read_data
 
 
 def test_unam():
@@ -43,6 +44,16 @@ def test_unam():
     assert is_unam(datafiles[0]) is False
 
 
+def test_read_data():
+    datafiles, origin = read_data_dir('unam',
+                                      'us2000ar20',
+                                      ['CANA1709.191', 'PZPU1709.191'])
+
+    # this is a smoke test to make sure the appropriate reader is found...
+    read_data(datafiles[0])
+
+
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
+    test_read_data()
     test_unam()

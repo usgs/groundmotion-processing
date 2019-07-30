@@ -11,7 +11,6 @@ import logging
 
 from gmprocess.io.read import read_data
 from gmprocess.io.utils import flatten_directory
-import psutil
 
 EXT_IGNORE = [".gif", ".csv", ".dis", ".abc", ".zip", ".rs2", ".fs1"]
 
@@ -35,10 +34,6 @@ def directory_to_streams(directory):
                 List of errors associated with trying to read unprocessed
                 files).
     """
-    # DEBUGGING:
-    proc = psutil.Process()
-    print(proc.open_files())
-
     # Use a temp dir so that we don't modify data on disk since that may not be
     # expected or desired in all cases.
     temp_dir = os.path.join(tempfile.mkdtemp(), 'directory_to_streams')
@@ -60,8 +55,7 @@ def directory_to_streams(directory):
                 except Exception as ex:
                     unprocessed_files += [file_path]
                     unprocessed_file_errors += [ex]
-            # DEBUGGING:
-            print(proc.open_files())
+
     except Exception as e:
         raise e
     finally:
