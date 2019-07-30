@@ -54,9 +54,10 @@ toc:
         url: /gmprocess/reports.html
       - page: Exporting data
         url: /gmprocess/exporting.html
-  - title: Comverting data
+  - title: Converting data
+    subitems:
       - page: The gmconvert command
-        url: converting.html
+        url: /converting.html
   - title: Python scripting
     subitems:
       - page: Data structures
