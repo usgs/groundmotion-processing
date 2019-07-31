@@ -67,6 +67,7 @@ def main(args):
                 streams = read_data(dfile)
             except Exception as e:
                 error_dict[dfile] = str(e)
+                continue
             allstreams += streams
     else:
         # grab all the files in the input directory
