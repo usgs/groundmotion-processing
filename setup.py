@@ -49,6 +49,7 @@ setup(
         'gmprocess.io.knet',
         'gmprocess.io.cosmos',
         'gmprocess.io.smc',
+        'gmprocess.io.unam',
         'gmprocess.io.usc',
         'gmprocess.metrics',
         'gmprocess.metrics.imt',
