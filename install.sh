@@ -123,7 +123,7 @@ package_list=(
     "libcomcat"
     "lxml"
     "matplotlib"
-    "numpy>=1.14"
+    "'numpy<1.17'"
     "obspy>=1.1.1"
     "openpyxl"
     "openquake.engine"

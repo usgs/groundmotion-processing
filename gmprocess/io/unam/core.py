@@ -68,6 +68,13 @@ def read_unam(filename):
     trace1 = StationTrace(data=all_data[:, 0], header=channels[0])
     trace2 = StationTrace(data=all_data[:, 1], header=channels[1])
     trace3 = StationTrace(data=all_data[:, 2], header=channels[2])
+
+    # tell the trace that data has already been converted to physical units
+    response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
+    trace1.setProvenance('remove_response', response)
+    trace2.setProvenance('remove_response', response)
+    trace3.setProvenance('remove_response', response)
+
     stream = StationStream(traces=[trace1, trace2, trace3])
     return [stream]
 
