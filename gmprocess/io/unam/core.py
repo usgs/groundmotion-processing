@@ -38,6 +38,12 @@ NETWORK = 'MG'
 
 MARKER = 'ARCHIVO ESTANDAR DE ACELERACION'
 
+# we aren't explicitly given the start date of the record
+# so we'll assume a time difference of more than (nominally)
+# 10 minutes is too far away, and then assume that the record
+# start time needs to be on the next day
+MAX_TIME_DIFF = 10 * 60.0
+
 
 def is_unam(filename):
     try:
@@ -132,8 +138,12 @@ def _read_header(filename):
     except ValueError:
         eqtime = datetime.strptime('%s %s' % (eqdatestr, eqtimestr), TIMEFMT2)
 
+    # if the origin time and record start time are more than 10 minutes
+    # apart (in either direction), then assume that we need to add 1 day
+    # to the record start time.
     starttime = eqdate + startdt
-    if starttime < eqtime:
+    dt = np.abs((starttime - eqtime).total_seconds())
+    if dt > MAX_TIME_DIFF:
         starttime = eqdate + timedelta(days=1) + startdt
 
     channels[0]['starttime'] = starttime
