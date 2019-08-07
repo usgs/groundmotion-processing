@@ -971,7 +971,7 @@ def _get_table_row(stream, summary, event, imc):
            'EarthquakeTime': event.time,
            'EarthquakeLatitude': event.latitude,
            'EarthquakeLongitude': event.longitude,
-           'EarthquakeDepth': event.depth,
+           'EarthquakeDepth': event.depth_km,
            'EarthquakeMagnitude': event.magnitude,
            'Network': stream[0].stats.network,
            'NetworkDescription': stream[0].stats.standard.source,
