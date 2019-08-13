@@ -7,7 +7,7 @@ import glob
 # third party imports
 import pytz
 from obspy.core.utcdatetime import UTCDateTime
-from obspy.clients.fdsn.header import URL_MAPPINGS
+from obspy.clients.fdsn.header import URL_MAPPINGS, FDSNException
 from obspy.clients.fdsn import Client
 from obspy.clients.fdsn.mass_downloader import (CircularDomain,
                                                 Restrictions,
@@ -229,14 +229,18 @@ class FDSNFetcher(DataFetcher):
         fdsn_config = self.config['fetchers']['FDSNFetcher']
         client_list = []
         for provider_str in URL_MAPPINGS.keys():
-            if provider_str in fdsn_config:
-                client = Client(
-                    provider_str,
-                    user=fdsn_config[provider_str]['user'],
-                    password=fdsn_config[provider_str]['password'])
-            else:
-                client = Client(provider_str)
-            client_list.append(client)
+            try:
+                if provider_str in fdsn_config:
+                    client = Client(
+                        provider_str,
+                        user=fdsn_config[provider_str]['user'],
+                        password=fdsn_config[provider_str]['password'])
+                else:
+                    client = Client(provider_str)
+                client_list.append(client)
+            # If the FDSN service is down, then an FDSNException is raised
+            except FDSNException:
+                logging.warning('Unable to initalize client %s' % provider_str)
 
         # Pass off the initalized clients to the Mass Downloader
         mdl = MassDownloader(providers=client_list)
