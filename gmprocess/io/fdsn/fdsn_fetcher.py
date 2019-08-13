@@ -3,6 +3,7 @@ import tempfile
 import os.path
 import logging
 import glob
+from io import BytesIO
 
 # third party imports
 import pytz
@@ -267,7 +268,11 @@ class FDSNFetcher(DataFetcher):
         seed_files = glob.glob(os.path.join(rawdir, '*.mseed'))
         streams = []
         for seed_file in seed_files:
-            tstreams = read_fdsn(seed_file)
+            try:
+                tstreams = read_fdsn(seed_file)
+            except Exception as e:
+                fmt = 'Could not read seed file %s - "%s"'
+                logging.info(fmt % (seed_file, str(e)))
             streams += tstreams
 
         stream_collection = StreamCollection(streams=streams,

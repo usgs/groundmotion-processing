@@ -44,7 +44,8 @@ fetchers:
         time_before : 30
         # seconds after arrival time
         time_after : 420
-        channels : ["BH?", "HH?", "BN?", "HN?"] # only get strong motion and high-gain channels
+        # channels : ["BH?", "HH?", "BN?", "HN?"] # only get strong motion and high-gain channels
+        channels : ["?N?"] # only get strong motion data
 
         network : "*"
 
@@ -142,9 +143,9 @@ processing:
     # Amplitude check to avoid clipping. Units are usually counts (e.g., with
     # data from IRIS) but some sources will convert to physical units so it
     # is important to be careful with this step.
-    - check_max_amplitude:
-        min: 5
-        max: 2e6
+    # - check_max_amplitude:
+    #     min: 5
+    #     max: 2e6
 
     # Apply a maximum number of traces per stream. This can occur with downhole
     # or structural arrays since our code currently is not able to reliably
@@ -167,10 +168,10 @@ processing:
 
     # STA/LTA is computed for record and the max value must exceed the threshold
     # below. Units are sec for window lenghts.
-    - check_sta_lta:
-        sta_length: 1.0
-        lta_length: 20.0
-        threshold: 3.0
+    # - check_sta_lta:
+    #     sta_length: 1.0
+    #     lta_length: 20.0
+    #     threshold: 3.0
 
     - remove_response:
         # Outuput units. Must be 'ACC', 'VEL', or 'DISP'.
