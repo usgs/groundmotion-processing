@@ -105,8 +105,8 @@ def _read_header_lines(filename, offset):
     # is oriented at the sensor azimuth, and the transverse (T) is
     # 90 degrees off from that.
     station_info = lines[7][lines[7].index('Station'):]
-    (lat_str, lon_str,
-     alt_str, lstr, tstr) = re.findall(FLOATRE, station_info)
+    float_strings = re.findall(FLOATRE, station_info)
+    (lat_str, lon_str, alt_str, lstr, tstr) = float_strings[0:5]
     component = lines[4].strip()
     if component == 'V':
         angle = np.nan
@@ -135,6 +135,8 @@ def _read_header_lines(filename, offset):
     standard['units'] = 'acc'
     period_str, damping_str = re.findall(FLOATRE, lines[9])
     standard['instrument_period'] = float(period_str)
+    if standard['instrument_period'] == 0:
+        standard['instrument_period'] = np.nan
     standard['instrument_damping'] = float(damping_str)
     standard['horizontal_orientation'] = angle
     standard['comments'] = ''

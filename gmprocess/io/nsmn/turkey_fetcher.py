@@ -103,7 +103,7 @@ class TurkeyFetcher(DataFetcher):
 
         if 'fetchers' in config:
             if 'TurkeyFetcher' in config['fetchers']:
-                fetch_cfg = config['fetchers']['KNETFetcher']
+                fetch_cfg = config['fetchers']['TurkeyFetcher']
                 if 'radius' in fetch_cfg:
                     cfg_radius = float(fetch_cfg['radius'])
                 if 'dt' in fetch_cfg:
@@ -304,5 +304,8 @@ def get_turkey_dataframe(time, dt):
                  'depth': depth,
                  'magnitude': mag}
         df = df.append(edict, ignore_index=True)
+
+    # make sure that origintime is actually a time
+    df['origintime'] = pd.to_datetime(df['origintime'])
 
     return df
