@@ -125,13 +125,6 @@ def read_fdsn(filename):
                              inventory=inventory)
         location = ttrace.stats.location
 
-        trace.stats.channel = get_channel_name(
-            trace.stats.sampling_rate,
-            trace.stats.channel[1] == 'N',
-            inventory.get_orientation(trace.id)['dip'] in [90, -90] or
-            trace.stats.channel[2] == 'Z',
-            is_channel_north(inventory.get_orientation(trace.id)['azimuth']))
-
         if trace.stats.location == '':
             trace.stats.location = '--'
 
