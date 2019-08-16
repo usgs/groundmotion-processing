@@ -11,6 +11,27 @@ station metadata, and waveform time histories. We include information
 not explicitly covered in the ASDF format specification in the
 `AuxiliaryData` group.
 
+## Nomenclature
+
+For many of the groups and datasets in the HDF file, we form the names
+by concatenating station information, such as network code, station
+code, location code, channel code, and event id. Additionally, ASDF
+supports tags for differentiating `Waveforms` and `AuxiliaryData`. In
+our extension of the ASDF layout, we create the tags based on the
+station and event information along with a user-specified label. In
+the following sections, we use the following variables in the group
+and dataset names:
+
+  * **NET**: FDSN network code (or equivalent);
+  * **STA**: Station code;
+  * **LOC**: Location code;
+  * **CHAN**: SEED channel coode (or equivalent);
+  * **INST**: First two letters of the channel code (dropping the third letter which corresponds to the component);
+  * **START__END**: Channel start and end timestamps for `Waveforms`; and
+  * **LABEL**: User-speficied label that uniquely identifies processing paramters;
+  * **EVENTID**: ComCat event id (or equivalent)
+
+
 ## Extension of ASDF HDF-5 Layout
 
 We add several additional groups to the `AuxiliaryData` section:
@@ -51,16 +72,10 @@ Following the ASDF layout for waveforms and station metadata, the
 hierarchy is
 
 `WaveformMetrics` (group) -> *NET.STA* (group)
--> *NET.STA.LOC__START__END__WTAG__TAG* (dataset)
+-> *NET.STA.LOC.INST_EVENTID_LABEL* (dataset)
 
-  * **NET**: FDSN network code (or equivalent)
-  * **STA**: Station code
-  * **LOC**: Location code
-  * **START__END**: Channel start and end timestamps from `Waveforms`.
-  * **WTAG**: Tag associated with waveform processing
-  * **TAG**: Tag associated with process to compute metrics
-
-We do not include the channel code, because many metrics involve
+We use the instrument code (first two letters of the channel code)
+rather than the full channel code, because many metrics involve
 multiple channels (horizontal components). The components are included
 in the metrics as attributes as necessary.
 
@@ -111,12 +126,7 @@ Following the ASDF layout for waveforms and station metadata, the
 hierarchy is
 
 `StationMetrics` (group) -> *NET.STA* (group)
--> *NET.STA__EVENTID__TAG* (dataset)
-
-  * **NET**: FDSN network code (or equivalent)
-  * **STA**: Station code
-  * **EVENTID**: ComCat event id (or equivalent)
-  * **TAG**: Tag associated with processing to compute metrics
+-> *NET.STA.LOC.INST_EVENTID* (dataset)
 
 The dataset is a string corresponding to XML, similar to the `QuakeML`
 and `StationXML` datasets.
