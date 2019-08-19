@@ -589,7 +589,7 @@ This program will allow the user to:
         'event id \'abc123\' then the raw data to be read in should be '
         'located in `proj_dir/abc123/raw/`.'
     )
-    group.add_argument(
+    parser.add_argument(
         '--directory', help=help_dir, action='store',
         dest='directory'
     )
