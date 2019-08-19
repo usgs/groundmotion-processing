@@ -29,8 +29,8 @@ ANGLES = {'N': 0,
           'S': 180,
           'W': 270}
 
-# These formats are described in this document:
-# ftp://ftp.geonet.org.nz/strong/processed/Docs/GNS%20ACCELEROGRAM%20DATA%20FILE%20FORMAT%202012-03-15.docx
+# These formats are described here:
+# https://www.geonet.org.nz/data/supplementary/strong_motion_file_formats
 
 
 def is_geonet(filename):
@@ -257,16 +257,13 @@ def _read_header(hdr_data, station, name, component, data_format,
     format_specific = {}
     hdr['station'] = station
     standard['station_name'] = name
-    if data_format == 'V1':
-        hdr['sampling_rate'] = hdr_data[4, 0]
-        sampling_rate = hdr['sampling_rate']
-        hdr['delta'] = 1 / hdr['sampling_rate']
-    else:
-        hdr['delta'] = hdr_data[6, 5]
-        hdr['sampling_rate'] = 1 / hdr['delta']
-        # V2 files have been resampled, we need sensor rate for
-        # channel naming.
-        sampling_rate = 1 / hdr_data[6, 4]
+
+    # Note: Original sample interval (s): hdr_data[6, 4]
+
+    # Sample inverval (s)
+    hdr['delta'] = hdr_data[6, 5]
+    hdr['sampling_rate'] = 1 / hdr['delta']
+
     hdr['calib'] = 1.0
     if data_format == 'V1':
         hdr['npts'] = int(hdr_data[3, 0])
@@ -280,7 +277,7 @@ def _read_header(hdr_data, station, name, component, data_format,
     if component.lower() in ['up', 'down']:
         standard['horizontal_orientation'] = np.nan
         hdr['channel'] = get_channel_name(
-            sampling_rate,
+            hdr['delta'],
             is_acceleration=True,
             is_vertical=True,
             is_north=False)
@@ -290,13 +287,13 @@ def _read_header(hdr_data, station, name, component, data_format,
         standard['horizontal_orientation'] = float(angle)
         if (angle > 315 or angle < 45) or (angle > 135 and angle < 225):
             hdr['channel'] = get_channel_name(
-                sampling_rate,
+                hdr['delta'],
                 is_acceleration=True,
                 is_vertical=False,
                 is_north=True)
         else:
             hdr['channel'] = get_channel_name(
-                sampling_rate,
+                hdr['delta'],
                 is_acceleration=True,
                 is_vertical=False,
                 is_north=False)
