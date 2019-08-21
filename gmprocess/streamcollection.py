@@ -122,7 +122,7 @@ class StreamCollection(object):
         all_labels = []
         for stream in self:
             if hasattr(stream, 'tag'):
-                eventid, station, label = stream.tag.split('_')
+                eventid, label = stream.tag.split('_')
                 all_labels.append(label)
             else:
                 all_labels.append("")
@@ -196,9 +196,9 @@ class StreamCollection(object):
                         to_fail.remove(keep)
                         for tf in to_fail:
                             for st in self.select(
-                              network=self[group[0]][0].stats.network,
-                              station=self[group[0]][0].stats.station,
-                              instrument=tf):
+                                    network=self[group[0]][0].stats.network,
+                                    station=self[group[0]][0].stats.station,
+                                    instrument=tf):
                                 for tr in st:
                                     tr.fail(
                                         'Colocated with %s instrument.' % keep
@@ -510,10 +510,10 @@ class StreamCollection(object):
             for idx2, trace2 in enumerate(trace_list):
                 if idx1 != idx2 and idx1 not in all_matches:
                     if (
-                        network == trace2.stats['network']
-                        and station == trace2.stats['station']
-                        and inst == trace2.stats['channel'][0:2]
-                        and free_field == trace2.free_field
+                        network == trace2.stats['network'] and
+                        station == trace2.stats['station'] and
+                        inst == trace2.stats['channel'][0:2] and
+                        free_field == trace2.free_field
                     ):
                         matches.append(idx2)
             if len(matches) > 1:
@@ -594,8 +594,8 @@ class StreamCollection(object):
 
             if is_duplicate:
                 if choose_preferred(
-                 tr_to_add, tr_pref,
-                 process_level_preference, format_preference) == tr_to_add:
+                        tr_to_add, tr_pref,
+                        process_level_preference, format_preference) == tr_to_add:
                     preferred_traces.remove(tr_pref)
                     logging.info('Trace %s (%s) is a duplicate and '
                                  'has been removed from the StreamCollection.'
@@ -719,10 +719,10 @@ def are_duplicates(tr1, tr2, max_dist_tolerance):
         distance = gps2dist_azimuth(
             tr1.stats.coordinates.latitude, tr1.stats.coordinates.longitude,
             tr2.stats.coordinates.latitude, tr2.stats.coordinates.longitude)[0]
-        if (tr1.stats.station == tr2.stats.station and
-            tr1.stats.location == tr2.stats.location and
-            tr1.stats.channel == tr2.stats.channel and
-           distance < max_dist_tolerance):
+        if (tr1.stats.station == tr2.stats.station
+            and tr1.stats.location == tr2.stats.location
+            and tr1.stats.channel == tr2.stats.channel
+                and distance < max_dist_tolerance):
             return True
         else:
             return False
@@ -761,8 +761,8 @@ def choose_preferred(tr1, tr2, process_level_preference, format_preference):
     elif tr1_pref > tr2_pref:
         return tr2
     else:
-        if (tr1.stats.standard.source_format in format_preference and
-           tr2.stats.standard.source_format in format_preference):
+        if (tr1.stats.standard.source_format in format_preference
+                and tr2.stats.standard.source_format in format_preference):
             # Determine preferred format
             tr1_form_pref = format_preference.index(
                 tr1.stats.standard.source_format)
@@ -773,11 +773,11 @@ def choose_preferred(tr1, tr2, process_level_preference, format_preference):
             elif tr1_form_pref > tr2_form_pref:
                 return tr2
             else:
-                if (tr1.stats.starttime == UTCDateTime(0) and
-                   tr2.stats.starttime != UTCDateTime(0)):
+                if (tr1.stats.starttime == UTCDateTime(0)
+                        and tr2.stats.starttime != UTCDateTime(0)):
                     return tr2
-                elif (tr1.stats.starttime != UTCDateTime(0) and
-                      tr2.stats.starttime == UTCDateTime(0)):
+                elif (tr1.stats.starttime != UTCDateTime(0)
+                      and tr2.stats.starttime == UTCDateTime(0)):
                     return tr1
                 else:
                     if tr1.stats.npts > tr2.stats.npts:
