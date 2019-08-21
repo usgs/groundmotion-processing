@@ -112,14 +112,10 @@ def test_workspace():
             assert eventobj.magnitudes[0].mag == event.magnitudes[0].mag
 
             stations = workspace.getStations()
-            assert sorted(stations) == ['hses', 'thz', 'wtmc']
+            assert sorted(stations) == ['HSES', 'THZ', 'WTMC']
 
             stations = workspace.getStations(eventid=eventid)
-            assert sorted(stations) == ['hses', 'thz', 'wtmc']
-
-            # test retrieving tags for an event that doesn't exist
-            with pytest.raises(KeyError):
-                workspace.getStreamTags('foo')
+            assert sorted(stations) == ['HSES', 'THZ', 'WTMC']
 
             # test retrieving event that doesn't exist
             with pytest.raises(KeyError):
@@ -133,7 +129,7 @@ def test_workspace():
             if instream is None:
                 raise ValueError('Instream should not be none.')
             outstream = workspace.getStreams(eventid,
-                                             stations=['hses'],
+                                             stations=['HSES'],
                                              labels=['raw'])[0]
             compare_streams(instream, outstream)
 
@@ -148,24 +144,17 @@ def test_workspace():
             idlist = workspace.getEventIds()
             assert idlist[0] == eventid
 
-            event_tags = workspace.getStreamTags(eventid)
-            assert sorted(event_tags) == ['us1000778i_hses_processed',
-                                          'us1000778i_hses_raw',
-                                          'us1000778i_thz_processed',
-                                          'us1000778i_thz_raw',
-                                          'us1000778i_wtmc_processed',
-                                          'us1000778i_wtmc_raw']
             outstream = workspace.getStreams(eventid,
-                                             stations=['hses'],
+                                             stations=['HSES'],
                                              labels=['processed'])[0]
 
             provenance = workspace.getProvenance(eventid, labels=['processed'])
-            first_row = pd.Series({'Record': 'PROCESSED.NZ.HSES.HN1',
+            first_row = pd.Series({'Record': 'nz_hses__hn1_us1000778i_processed',
                                    'Processing Step': 'Remove Response',
                                    'Step Attribute': 'input_units',
                                    'Attribute Value': 'counts'})
 
-            last_row = pd.Series({'Record': 'PROCESSED.NZ.WTMC.HNZ',
+            last_row = pd.Series({'Record': 'nz_wtmc__hnz_us1000778i_processed',
                                   'Processing Step': 'Lowpass Filter',
                                   'Step Attribute': 'number_of_passes',
                                   'Attribute Value': 2})
@@ -263,18 +252,15 @@ def test_metrics():
         workspace.addEvent(event)
         workspace.addStreams(event, processed_streams, label='processed')
         stream1 = processed_streams[0]
-        stream2 = processed_streams[1]
         summary1 = StationSummary.from_config(stream1)
-        summary2 = StationSummary.from_config(stream2)
-        workspace.setStreamMetrics(event.id, 'processed', summary1)
-        workspace.setStreamMetrics(event.id, 'processed', summary2)
+        s1_df_in = summary1.pgms.sort_values(['IMT', 'IMC'])
+        array1 = s1_df_in['Result'].as_matrix()
+        workspace.calcStreamMetrics(eventid, labels=['processed'])
         workspace.calcStationMetrics(event.id, labels=['processed'])
         summary1_a = workspace.getStreamMetrics(event.id,
                                                 stream1[0].stats.station,
                                                 'processed')
-        s1_df_in = summary1.pgms.sort_values(['IMT', 'IMC'])
         s1_df_out = summary1_a.pgms.sort_values(['IMT', 'IMC'])
-        array1 = s1_df_in['Result'].as_matrix()
         array2 = s1_df_out['Result'].as_matrix()
         np.testing.assert_almost_equal(array1, array2, decimal=4)
 

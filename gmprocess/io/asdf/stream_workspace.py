@@ -41,6 +41,8 @@ FLATFILE_COLUMNS = ['EarthquakeId', 'EarthquakeTime', 'EarthquakeLatitude',
 
 M_PER_KM = 1000
 
+x = [1, 2, 3]
+
 
 class StreamWorkspace(object):
     def __init__(self, filename, exists=False):
@@ -126,23 +128,18 @@ class StreamWorkspace(object):
         eventid = _get_id(event)
         if not self.hasEvent(eventid):
             self.addEvent(event)
-        station_dict = {}
+
         for stream in streams:
             station = stream[0].stats['station']
             logging.info('Adding waveforms for station %s' % station)
             # is this a raw file? Check the trace for provenance info.
             is_raw = not len(stream[0].getProvenanceKeys())
 
-            if label is not None:
-                tag = '%s_%s_%s' % (eventid, station.lower(), label)
-            else:
-                if station.lower() in station_dict:
-                    station_sequence = station_dict[station.lower()] + 1
-                else:
-                    station_sequence = 1
-                station_dict[station.lower()] = station_sequence
-                tag = '%s_%s_%05i' % (
-                    eventid, station.lower(), station_sequence)
+            if label is None:
+                tfmt = '%Y%m%d%H%M%S'
+                tnow = UTCDateTime.now().strftime(tfmt)
+                label = 'processed%s' % tnow
+            tag = '%s_%s' % (eventid, label)
             if is_raw:
                 level = 'raw'
             else:
@@ -153,14 +150,18 @@ class StreamWorkspace(object):
             if level == 'processed':
                 provdocs = stream.getProvenanceDocuments()
                 for provdoc, trace in zip(provdocs, stream):
-                    tpl = (trace.stats.network.lower(),
-                           trace.stats.station.lower(),
-                           trace.stats.channel.lower())
-                    channel = '%s_%s_%s' % tpl
-                    channel_tag = '%s_%s' % (tag, channel)
+                    provfmt = '%s_%s_%s_%s_%s'
+                    net = trace.stats.network.lower()
+                    sta = trace.stats.station.lower()
+                    loc = trace.stats.location.lower()
+                    if loc == '--':
+                        loc = ''
+                    cha = trace.stats.channel.lower()
+                    provtpl = (net, sta, loc, cha, tag)
+                    provname = provfmt % provtpl
                     self.dataset.add_provenance_document(
                         provdoc,
-                        name=channel_tag
+                        name=provname
                     )
 
             # add processing parameters from streams
@@ -180,16 +181,33 @@ class StreamWorkspace(object):
                 jsonbytes = json.dumps(jdict).encode('utf-8')
                 jsonarray = np.frombuffer(jsonbytes, dtype=np.uint8)
                 dtype = 'StreamProcessingParameters'
+                paramfmt = '%s_%s_%s_%s_%s'
+                net = stream[0].stats.network.lower()
+                sta = stream[0].stats.station.lower()
+                loc = stream[0].stats.location.lower()
+                if loc == '--':
+                    loc = ''
+                inst = stream.get_id().lower().split('.')[2]
+                paramtpl = (net, sta, loc, inst, tag)
+                parampath = paramfmt % paramtpl
                 self.dataset.add_auxiliary_data(
                     jsonarray,
                     data_type=dtype,
-                    path=tag,
+                    path=parampath,
                     parameters={}
                 )
 
             # add processing parameters from traces
             for trace in stream:
-                path = '%s_%s' % (tag, trace.stats.channel)
+                procfmt = '%s_%s_%s_%s_%s'
+                net = trace.stats.network.lower()
+                sta = trace.stats.station.lower()
+                loc = trace.stats.location.lower()
+                if loc == '--':
+                    loc = ''
+                cha = trace.stats.channel.lower()
+                proctpl = (net, sta, loc, cha, tag)
+                procname = procfmt % proctpl
                 jdict = {}
                 for key in trace.getParameterKeys():
                     value = trace.getParameter(key)
@@ -208,7 +226,7 @@ class StreamWorkspace(object):
                     self.dataset.add_auxiliary_data(
                         jsonarray,
                         data_type=dtype,
-                        path=path,
+                        path=procname,
                         parameters={}
                     )
             inventory = stream.getInventory()
@@ -235,42 +253,9 @@ class StreamWorkspace(object):
         all_tags = []
         for w in self.dataset.waveforms:
             all_tags.extend(w.get_waveform_tags())
-        all_labels = list(set([at.split('_')[2] for at in all_tags]))
+        all_labels = list(set([at.split('_')[1] for at in all_tags]))
         labels = list(set(all_labels))
         return labels
-
-    def getStreamTags(self, eventid, label=None):
-        """
-        Get list of Stream "tags" which can be used to retrieve individual
-        streams.
-
-        Args:
-            eventid (str):
-                Event ID corresponding to a sequence of Streams.
-            label (str):
-                Optional stream label assigned with addStreams().
-
-        Returns:
-            list: Sequence of strings indicating Stream tags corresponding to
-            eventid.
-        """
-        if not self.hasEvent(eventid):
-            fmt = 'Event with a resource id containing %s could not be found.'
-            raise KeyError(fmt % eventid)
-        matching_tags = []
-        for waveform in self.dataset.waveforms:
-            tags = waveform.get_waveform_tags()
-            tags
-            for tag in tags:
-                event_match = eventid in waveform[tag][0].stats.asdf.event_ids
-                label_match = True
-                if label is not None and label not in tag:
-                    label_match = False
-                if event_match and label_match:
-                    matching_tags.append(tag)
-
-        matching_tags = list(set(matching_tags))
-        return matching_tags
 
     def getStreams(self, eventid, stations=None, labels=None):
         """Get Stream from ASDF file given event id and input tags.
@@ -294,62 +279,81 @@ class StreamWorkspace(object):
         if 'StreamProcessingParameters' in self.dataset.auxiliary_data:
             stream_auxholder = self.dataset.auxiliary_data.StreamProcessingParameters
         streams = []
-        all_tags = []
 
         if stations is None:
             stations = self.getStations(eventid)
         if labels is None:
             labels = self.getLabels()
-        for station in stations:
-            for label in labels:
-                all_tags.append('%s_%s_%s' % (eventid, station.lower(), label))
 
+        # tried doing a query here using dataset ifilter on event,
+        # but it didn't work...
         for waveform in self.dataset.waveforms:
-            ttags = waveform.get_waveform_tags()
-            wtags = []
-            if not len(all_tags):
-                wtags = ttags
-            else:
-                wtags = list(set(all_tags).intersection(set(ttags)))
-            for tag in wtags:
-                if eventid in waveform[tag][0].stats.asdf.event_ids:
-                    tstream = waveform[tag].copy()
-                    inventory = waveform['StationXML']
-                    for ttrace in tstream:
-                        trace = StationTrace(data=ttrace.data,
-                                             header=ttrace.stats,
-                                             inventory=inventory)
-                        tpl = (trace.stats.network.lower(),
-                               trace.stats.station.lower(),
-                               trace.stats.channel.lower())
-                        channel = '%s_%s_%s' % tpl
-                        channel_tag = '%s_%s' % (tag, channel)
-                        if channel_tag in self.dataset.provenance.list():
-                            provdoc = self.dataset.provenance[channel_tag]
-                            trace.setProvenanceDocument(provdoc)
-                        trace_path = '%s_%s' % (
-                            tag, trace.stats.channel)
-                        if trace_path in trace_auxholder:
-                            bytelist = trace_auxholder[
-                                trace_path].data[:].tolist()
-                            jsonstr = ''.join([chr(b) for b in bytelist])
-                            jdict = json.loads(jsonstr)
-                            for key, value in jdict.items():
-                                trace.setParameter(key, value)
+            tags = waveform.get_waveform_tags()
+            for tag in tags:
+                teventid, tlabel = tag.split('_')
+                if eventid != teventid:
+                    continue
+                if tlabel not in labels:
+                    continue
+                stream_name = list(
+                    waveform.get_waveform_attributes().keys())[0]
+                parts = stream_name.split('.')
+                tstation = parts[1]
+                if tstation not in stations:
+                    continue
 
-                        stream = StationStream(traces=[trace])
-                        stream.tag = tag  # testing this out
+                tstream = waveform[tag]
 
-                        # look for stream-based metadata
-                        if tag in stream_auxholder:
-                            bytelist = stream_auxholder[
-                                tag].data[:].tolist()
-                            jsonstr = ''.join([chr(b) for b in bytelist])
-                            jdict = json.loads(jsonstr)
-                            for key, value in jdict.items():
-                                stream.setStreamParam(key, value)
+                inventory = waveform['StationXML']
+                for ttrace in tstream:
+                    trace = StationTrace(data=ttrace.data,
+                                         header=ttrace.stats,
+                                         inventory=inventory)
+                    net = trace.stats.network.lower()
+                    sta = trace.stats.station.lower()
+                    cha = trace.stats.channel.lower()
+                    loc = trace.stats.location.lower()
 
-                        streams.append(stream)
+                    if loc == '--':
+                        loc = ''
+
+                    # get the provenance information
+                    provfmt = '%s_%s_%s_%s_%s'
+                    provtpl = (net, sta, loc, cha, tag)
+                    provname = provfmt % provtpl
+                    if provname in self.dataset.provenance.list():
+                        provdoc = self.dataset.provenance[provname]
+                        trace.setProvenanceDocument(provdoc)
+
+                    # get the trace processing parameters
+                    trace_fmt = '%s_%s_%s_%s_%s'
+                    trace_tpl = (net, sta, loc, cha, tag)
+                    trace_path = trace_fmt % trace_tpl
+                    if trace_path in trace_auxholder:
+                        bytelist = trace_auxholder[
+                            trace_path].data[:].tolist()
+                        jsonstr = ''.join([chr(b) for b in bytelist])
+                        jdict = json.loads(jsonstr)
+                        for key, value in jdict.items():
+                            trace.setParameter(key, value)
+
+                    stream = StationStream(traces=[trace])
+                    stream.tag = tag  # testing this out
+
+                    # get the stream processing parameters
+                    inst = stream.get_id().lower().split('.')[2]
+                    stream_fmt = '%s_%s_%s_%s_%s'
+                    stream_tpl = (net, sta, loc, inst, tag)
+                    stream_path = stream_fmt % stream_tpl
+                    if stream_path in stream_auxholder:
+                        auxarray = stream_auxholder[stream_path]
+                        bytelist = auxarray.data[:].tolist()
+                        jsonstr = ''.join([chr(b) for b in bytelist])
+                        jdict = json.loads(jsonstr)
+                        for key, value in jdict.items():
+                            stream.setStreamParam(key, value)
+
+                    streams.append(stream)
         streams = StreamCollection(streams)
         return streams
 
@@ -365,34 +369,13 @@ class StreamWorkspace(object):
         """
         stations = []
         for waveform in self.dataset.waveforms:
-            tags = waveform.get_waveform_tags()
-            for tag in tags:
-                if eventid is None:
-                    event_match = True
-                else:
-                    event_match = eventid in waveform[tag][0].stats.asdf.event_ids
-                if not event_match:
+            for stream_name, _ in waveform.get_waveform_attributes().items():
+                parts = stream_name.split('.')
+                station = parts[1]
+                if station in stations:
                     continue
-                eventid, station, _ = tag.split('_')
-                if station not in stations:
-                    stations.append(station)
+                stations.append(station)
         return stations
-
-    def setStreamMetrics(self, eventid, label, summary):
-        """Set stream metrics from a StationSummary.
-
-        Args:
-            eventid (str):
-                Event ID corresponding to an Event in the workspace.
-            label (str):
-                Processing label to associate with stream metrics.
-            summary (StationSummary):
-                StationSummary object containing stream metrics.
-        """
-        xmlstr = summary.get_metric_xml()
-        path = '%s_%s_%s' % (eventid, summary.station_code.lower(), label)
-
-        self.insert_aux(xmlstr, 'WaveFormMetrics', path)
 
     def insert_aux(self, datastr, data_name, path):
         """Insert a string (usually json or xml) into Auxilliary array.
@@ -434,7 +417,7 @@ class StreamWorkspace(object):
         event = self.getEvent(eventid)
         for stream in streams:
             tag = stream.tag
-            _, station, label = tag.split('_')
+            _, label = tag.split('_')
             elat = event.latitude
             elon = event.longitude
             edepth = event.depth_km
@@ -450,8 +433,18 @@ class StreamWorkspace(object):
             </station_metrics>
             '''
             xmlstr = xmlfmt % (hypocentral_distance, epidist_m / M_PER_KM)
-            path = '%s_%s_%s' % (eventid, station.lower(), label)
-            self.insert_aux(xmlstr, 'StationMetrics', path)
+
+            metricfmt = '%s_%s_%s_%s_%s'
+            net = stream[0].stats.network.lower()
+            sta = stream[0].stats.station.lower()
+            loc = stream[0].stats.location.lower()
+            if loc == '--':
+                loc = ''
+            inst = stream.get_id().lower().split('.')[2]
+            metrictpl = (net, sta, loc, inst, eventid)
+            metricpath = metricfmt % metrictpl
+
+            self.insert_aux(xmlstr, 'StationMetrics', metricpath)
 
     def calcMetrics(self, eventid, stations=None, labels=None, config=None):
         """Calculate both stream and station metrics for a set of waveforms.
@@ -496,18 +489,30 @@ class StreamWorkspace(object):
         event = self.getEvent(eventid)
         for stream in streams:
             tag = stream.tag
-            eventid, station, label = tag.split('_')
+            instrument = stream.get_id()
+            eventid, label = tag.split('_')
+            if label not in labels:
+                continue
             try:
                 summary = StationSummary.from_config(
                     stream, event=event, config=config)
             except Exception as pgme:
-                fmt = 'Could not create stream metrics for event %s, station %s: "%s"'
-                logging.warning(fmt % (eventid, station, str(pgme)))
+                fmt = ('Could not create stream metrics for event %s,'
+                       'instrument %s: "%s"')
+                logging.warning(fmt % (eventid, instrument, str(pgme)))
                 continue
 
             xmlstr = summary.get_metric_xml()
 
-            path = '%s_%s_%s' % (eventid, summary.station_code.lower(), label)
+            metricfmt = '%s_%s_%s_%s_%s'
+            net = stream[0].stats.network.lower()
+            sta = stream[0].stats.station.lower()
+            loc = stream[0].stats.location.lower()
+            if loc == '--':
+                loc = ''
+            inst = stream.get_id().lower().split('.')[2]
+            metrictpl = (net, sta, loc, inst, tag)
+            metricpath = metricfmt % metrictpl
 
             # this seems like a lot of effort
             # just to store a string in HDF, but other
@@ -519,7 +524,7 @@ class StreamWorkspace(object):
             self.dataset.add_auxiliary_data(
                 jsonarray,
                 data_type=dtype,
-                path=path,
+                path=metricpath,
                 parameters={}
             )
 
@@ -683,34 +688,56 @@ class StreamWorkspace(object):
                 Processing label to return metrics from.
 
         Returns:
-            StationSummary: Object containing all stream metrics.
+            StationSummary: Object containing all stream metrics or None.
         """
         if 'WaveFormMetrics' not in self.dataset.auxiliary_data:
             logging.warning('Waveform metrics not found in workspace, '
                             'cannot get stream metrics.')
         auxholder = self.dataset.auxiliary_data.WaveFormMetrics
-        stream_path = '%s_%s_%s' % (eventid, station.lower(), label)
-        if stream_path not in auxholder:
-            logging.warning(
-                'Stream path (%s) not in WaveFormMetrics auxiliary_data.'
-                % stream_path)
-            return
 
-        bytelist = auxholder[stream_path].data[:].tolist()
+        # get the stream matching the eventid, station, and label
+        streams = self.getStreams(eventid, stations=[station],
+                                  labels=[label])
+        if not len(streams):
+            fmt = '''Stream matching event ID %s,
+            station ID %s, and processing label %s not found in workspace.'''
+            msg = fmt % (eventid, station, label)
+            logging.warning(msg)
+            return None
+
+        metricfmt = '%s_%s_%s_%s_%s'
+        net = streams[0][0].stats.network.lower()
+        sta = streams[0][0].stats.station.lower()
+        loc = streams[0][0].stats.location.lower()
+        if loc == '--':
+            loc = ''
+        tag = streams[0].tag
+        inst = streams[0].get_id().lower().split('.')[2]
+        metrictpl = (net, sta, loc, inst, tag)
+        metricpath = metricfmt % metrictpl
+        if metricpath not in auxholder:
+            fmt = 'Stream metrics path (%s) not in WaveFormMetrics auxiliary_data.'
+            logging.warning(fmt % metricpath)
+            return None
+
+        bytelist = auxholder[metricpath].data[:].tolist()
         xml_stream = ''.join([chr(b) for b in bytelist])
         xml_stream = xml_stream.encode('utf-8')
 
         if 'StationMetrics' not in self.dataset.auxiliary_data:
             raise KeyError('Station metrics not found in workspace.')
         auxholder = self.dataset.auxiliary_data.StationMetrics
-        stream_path = '%s_%s_%s' % (eventid, station.lower(), label)
-        if stream_path not in auxholder:
+        inst = streams[0].get_id().lower().split('.')[2]
+        station_fmt = '%s_%s_%s_%s_%s'
+        station_tpl = (net, sta, loc, inst, eventid)
+        station_path = station_fmt % station_tpl
+        if station_path not in auxholder:
             logging.warning(
                 'Stream path (%s) not in StationMetrics auxiliary_data.'
-                % stream_path)
+                % station_path)
             return
 
-        bytelist = auxholder[stream_path].data[:].tolist()
+        bytelist = auxholder[station_path].data[:].tolist()
         xml_station = ''.join([chr(b) for b in bytelist])
         xml_station = xml_station.encode('utf-8')
 
@@ -738,7 +765,7 @@ class StreamWorkspace(object):
         cols = ['Label', 'UserID', 'UserName',
                 'UserEmail', 'Software', 'Version']
         df = pd.DataFrame(columns=cols, index=None)
-        labels = list(set([ptag.split('_')[2] for ptag in provtags]))
+        labels = list(set([ptag.split('_')[5] for ptag in provtags]))
         labeldict = {}
         for label in labels:
             for ptag in provtags:
@@ -847,50 +874,53 @@ class StreamWorkspace(object):
                 Table of processing steps/parameters (see above).
 
         """
-        all_tags = []
         if stations is None:
             stations = self.getStations(eventid)
         if labels is None:
             labels = self.getLabels()
-        for station in stations:
-            for label in labels:
-                all_tags.append('%s_%s_%s' % (eventid, station.lower(), label))
         cols = ['Record', 'Processing Step',
                 'Step Attribute', 'Attribute Value']
         df = pd.DataFrame(columns=cols)
-        for tag in all_tags:
-            tlist = self.dataset.provenance.list()
-            reg = re.compile(tag)
-            taglist = list(filter(reg.match, tlist))
-            for trace_tag in taglist:
-                parts = trace_tag.split('_')
-                recstr = '.'.join(parts[2:]).upper()
-                provdoc = self.dataset.provenance[trace_tag]
-                serial = json.loads(provdoc.serialize())
-                for activity, attrs in serial['activity'].items():
-                    pstep = None
-                    for key, value in attrs.items():
-                        if key == 'prov:label':
-                            pstep = value
-                            continue
-                        if key == 'prov:type':
-                            continue
-                        if not isinstance(value, str):
-                            if value['type'] == 'xsd:dateTime':
-                                value = UTCDateTime(value['$'])
-                            elif value['type'] == 'xsd:double':
-                                value = float(value['$'])
-                            elif value['type'] == 'xsd:int':
-                                value = int(value['$'])
-                            else:
-                                pass
-                        attrkey = key.replace('seis_prov:', '')
-                        row = pd.Series(index=cols)
-                        row['Record'] = recstr
-                        row['Processing Step'] = pstep
-                        row['Step Attribute'] = attrkey
-                        row['Attribute Value'] = value
-                        df = df.append(row, ignore_index=True)
+        for provname in self.dataset.provenance.list():
+            has_station = False
+            for station in stations:
+                if station.lower() in provname:
+                    has_station = True
+                    break
+            has_label = False
+            for label in labels:
+                if label.lower() in provname:
+                    has_label = True
+                    break
+            if not has_label or not has_station:
+                continue
+
+            provdoc = self.dataset.provenance[provname]
+            serial = json.loads(provdoc.serialize())
+            for activity, attrs in serial['activity'].items():
+                pstep = None
+                for key, value in attrs.items():
+                    if key == 'prov:label':
+                        pstep = value
+                        continue
+                    if key == 'prov:type':
+                        continue
+                    if not isinstance(value, str):
+                        if value['type'] == 'xsd:dateTime':
+                            value = UTCDateTime(value['$'])
+                        elif value['type'] == 'xsd:double':
+                            value = float(value['$'])
+                        elif value['type'] == 'xsd:int':
+                            value = int(value['$'])
+                        else:
+                            pass
+                    attrkey = key.replace('seis_prov:', '')
+                    row = pd.Series(index=cols)
+                    row['Record'] = provname
+                    row['Processing Step'] = pstep
+                    row['Step Attribute'] = attrkey
+                    row['Attribute Value'] = value
+                    df = df.append(row, ignore_index=True)
 
         return df
 
