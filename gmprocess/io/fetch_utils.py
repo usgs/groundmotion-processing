@@ -120,6 +120,7 @@ def parse_event_file(eventfile):
           - lon: Earthquake longitude in decimal degrees.
           - depth: Earthquake longitude in kilometers.
           - magnitude: Earthquake magnitude.
+          - magnitude_type: Earthquake magnitude type.
 
     NB: THERE SHOULD NOT BE ANY HEADERS ON THIS FILE!
 
@@ -139,8 +140,9 @@ def parse_event_file(eventfile):
         for idx, row in df.iterrows():
             event = get_event_object(row['eventid'])
             events.append(event)
-    elif ncols == 6:
-        df.columns = ['id', 'time', 'lat', 'lon', 'depth', 'magnitude']
+    elif ncols == 7:
+        df.columns = ['id', 'time', 'lat', 'lon', 'depth', 'magnitude',
+                      'magnitude_type']
         df['time'] = pd.to_datetime(df['time'])
         for idx, row in df.iterrows():
             rowdict = row.to_dict()
@@ -259,6 +261,7 @@ def get_events(eventids, textfile, eventinfo, directory,
                 - longitude Longitude in decimal degrees.
                 - depth Depth in kilometers.
                 - magnitude Earthquake magnitude.
+                - magnitude_type Earthquake magnitude type.
         directory (str):
             Path to a directory containing event subdirectories, each
             containing an event.json file, where the ID in the json file
@@ -284,8 +287,9 @@ def get_events(eventids, textfile, eventinfo, directory,
         lon = float(eventinfo[3])
         dep = float(eventinfo[4])
         mag = float(eventinfo[5])
+        mag_type = float(eventinfo[6])
         event = ScalarEvent()
-        event.fromParams(eid, time, lat, lon, dep, mag)
+        event.fromParams(eid, time, lat, lon, dep, mag, mag_type)
         events = [event]
     elif directory is not None:
         eventfiles = get_event_files(directory)
@@ -336,7 +340,8 @@ def create_event_file(event, event_dir):
         'lat': event.latitude,
         'lon': event.longitude,
         'depth': event.depth_km,
-        'magnitude': event.magnitude
+        'magnitude': event.magnitude,
+        'magnitude_type': event.magnitude_type
     }
     eventfile = os.path.join(event_dir, 'event.json')
     with open(eventfile, 'wt') as f:

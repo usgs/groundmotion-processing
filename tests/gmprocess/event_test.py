@@ -18,6 +18,7 @@ def test_scalar():
     lon = 97.048
     depth = 31.0
     mag = 7.8
+    mag_type = 'Mwc'
 
     event = ScalarEvent()
     origin = Origin(resource_id=eid,
@@ -25,7 +26,7 @@ def test_scalar():
                     latitude=lat,
                     longitude=lon,
                     depth=depth * 1000)
-    magnitude = Magnitude(mag=mag)
+    magnitude = Magnitude(mag=mag, magnitude_type=mag_type)
     event.origins = [origin]
     event.magnitudes = [magnitude]
 
@@ -35,6 +36,7 @@ def test_scalar():
     assert event.longitude == lon
     assert event.depth_km == depth
     assert event.magnitude == mag
+    assert event.magnitude_type == mag_type
 
     subdir = os.path.join('data', 'testdata', 'usp000hat0_quakeml.xml')
     quakeml = pkg_resources.resource_filename('gmprocess', subdir)
@@ -47,9 +49,10 @@ def test_scalar():
     assert event.longitude == lon
     assert event.depth_km == depth
     assert event.magnitude == mag
+    assert event.magnitude_type == mag_type
 
     event = ScalarEvent()
-    event.fromParams(eid, time, lat, lon, depth, mag)
+    event.fromParams(eid, time, lat, lon, depth, mag, mag_type)
     assert isinstance(event, Event)
     assert event.origins[0].resource_id == eid
     assert event.origins[0].time == time
@@ -57,6 +60,7 @@ def test_scalar():
     assert event.origins[0].longitude == lon
     assert event.origins[0].depth == depth * 1000
     assert event.magnitudes[0].mag == mag
+    assert event.magnitudes[0].magnitude_type == mag_type
 
     tevent = Event()
     origin = Origin(resource_id=eid,
@@ -65,7 +69,7 @@ def test_scalar():
                     latitude=lat,
                     depth=depth * 1000)
     magnitude = Magnitude(resource_id=eid,
-                          mag=mag)
+                          mag=mag, magnitude_type=mag_type)
     tevent.origins = [origin]
     tevent.magnitudes = [magnitude]
     event2 = ScalarEvent.fromEvent(tevent)
@@ -76,6 +80,7 @@ def test_scalar():
     assert event2.origins[0].longitude == lon
     assert event2.origins[0].depth == depth * 1000
     assert event2.magnitudes[0].mag == mag
+    assert event2.magnitudes[0].magnitude_type == mag_type
 
 
 def test_event():
@@ -89,7 +94,8 @@ def test_event():
                  'lat': -14.7007,
                  'lon': -70.1516,
                  'depth': 267,
-                 'magnitude': 7.0}
+                 'magnitude': 7.0,
+                 'magnitude_type': 'mww'}
         for key, value in tdict.items():
             v1 = edict[key]
             assert value == v1
@@ -97,6 +103,7 @@ def test_event():
         event = get_event_object(eid)
         assert event.id == eid
         assert event.magnitude == tdict['magnitude']
+        assert event.magnitude_type == tdict['magnitude_type']
         assert event.time == tdict['time']
         assert event.latitude == tdict['lat']
         assert event.longitude == tdict['lon']

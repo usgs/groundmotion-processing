@@ -49,7 +49,7 @@ class ScalarEvent(Event):
 
         return eventobj
 
-    def fromParams(self, id, time, lat, lon, depth, magnitude):
+    def fromParams(self, id, time, lat, lon, depth, magnitude, mag_type=None):
         '''Create a ScalarEvent (subclass of Event).
 
         Args:
@@ -65,6 +65,8 @@ class ScalarEvent(Event):
                 Depth of origin in **kilometers**.
             magnitude (float):
                 Magnitude of earthquake.
+            mag_type (str):
+                Magnitude type of earthqake.
         '''
         if isinstance(time, str):
             try:
@@ -81,17 +83,18 @@ class ScalarEvent(Event):
 
         self.origins = [origin]
         magnitude = Magnitude(resource_id=id,
-                              mag=magnitude)
+                              mag=magnitude,
+                              magnitude_type=mag_type)
         self.magnitudes = [magnitude]
         self.resource_id = id
 
     def __repr__(self):
         if not hasattr(self, 'origins') or not hasattr(self, 'magnitudes'):
             return 'Empty ScalarEvent'
-        fmt = '%s %s %.3f %.3f %.1fkm M%.1f'
+        fmt = '%s %s %.3f %.3f %.1fkm M%.1f %s'
         tpl = (self.id, str(self.time),
                self.latitude, self.longitude,
-               self.depth_km, self.magnitude)
+               self.depth_km, self.magnitude, self.magnitude_type)
         return fmt % tpl
 
     def _get_origin(self):
@@ -155,6 +158,12 @@ class ScalarEvent(Event):
         magnitude = self._get_magnitude()
         return magnitude.mag
 
+    @property
+    def magnitude_type(self):
+        '''Return the magnitude type.
+        '''
+        return self.magnitudes[0]['magnitude_type']
+
 
 def get_event_dict(eventid):
     """Get event dictionary from ComCat using event ID.
@@ -178,6 +187,7 @@ def get_event_dict(eventid):
                   'lon': dict_or_id.longitude,
                   'depth': dict_or_id.depth,
                   'magnitude': dict_or_id.magnitude,
+                  'magnitude_type': dict_or_id._jdict['properties']['magType']
                   }
     return event_dict
 
@@ -198,10 +208,13 @@ def get_event_object(dict_or_id):
     else:
         raise Exception('Unknown input parameter to get_event_info()')
     event = ScalarEvent()
+    if 'magnitude_type' not in event_dict.keys():
+        event_dict['magnitude_type'] = None
     event.fromParams(event_dict['id'],
                      event_dict['time'],
                      event_dict['lat'],
                      event_dict['lon'],
                      event_dict['depth'],
-                     event_dict['magnitude'])
+                     event_dict['magnitude'],
+                     event_dict['magnitude_type'])
     return event

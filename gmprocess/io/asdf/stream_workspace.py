@@ -24,13 +24,14 @@ from gmprocess.event import ScalarEvent
 
 TIMEPAT = '[0-9]{4}-[0-9]{2}-[0-9]{2}T'
 EVENT_TABLE_COLUMNS = ['id', 'time', 'latitude',
-                       'longitude', 'depth', 'magnitude']
+                       'longitude', 'depth', 'magnitude', 'magnitude_type']
 NON_IMT_COLUMNS = ['ELEVATION', 'EPICENTRAL_DISTANCE',
                    'HYPOCENTRAL_DISTANCE', 'LAT', 'LON',
                    'NAME', 'NETID', 'SOURCE', 'STATION']
 FLATFILE_COLUMNS = ['EarthquakeId', 'EarthquakeTime', 'EarthquakeLatitude',
                     'EarthquakeLongitude', 'EarthquakeDepth',
-                    'EarthquakeMagnitude', 'Network', 'NetworkDescription',
+                    'EarthquakeMagnitude', 'EarthquakeMagnitudeType',
+                    'Network', 'NetworkDescription',
                     'StationCode', 'StationID',
                     'StationDescription',
                     'StationLatitude', 'StationLongitude',
@@ -544,6 +545,7 @@ class StreamWorkspace(object):
                      - longitude Longitude of origin
                      - depth Depth of origin (km)
                      - magnitude Magnitude at origin (km)
+                     - magnitude_type Magnitude type at origin
                    - dictionary of DataFrames, where keys are IMCs and
                      values are DataFrames with columns:
                      - EarthquakeId Earthquake id from event table
@@ -579,7 +581,8 @@ class StreamWorkspace(object):
                 'latitude': event.latitude,
                 'longitude': event.longitude,
                 'depth': event.depth_km,
-                'magnitude': event.magnitude
+                'magnitude': event.magnitude,
+                'magnitude_type': event.magnitude_type
             }
             event_table = event_table.append(edict, ignore_index=True)
             streams = self.getStreams(eventid, labels=[label])
@@ -1003,6 +1006,7 @@ def _get_table_row(stream, summary, event, imc):
            'EarthquakeLongitude': event.longitude,
            'EarthquakeDepth': event.depth_km,
            'EarthquakeMagnitude': event.magnitude,
+           'EarthquakeMagnitudeType': event.magnitude_type,
            'Network': stream[0].stats.network,
            'NetworkDescription': stream[0].stats.standard.source,
            'StationCode': stream[0].stats.station,

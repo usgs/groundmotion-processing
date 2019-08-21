@@ -54,7 +54,10 @@ def read_data_dir(file_format, eventid, files=None):
     with open(jsonfile, 'rt') as f:
         tevent = json.load(f)
         event = ScalarEvent()
+        if 'magnitude_type' not in tevent.keys():
+            tevent['magnitude_type'] = None
         event.fromParams(tevent['id'], tevent['time'],
                          tevent['lat'], tevent['lon'],
-                         tevent['depth'], tevent['magnitude'])
+                         tevent['depth'], tevent['magnitude'],
+                         tevent['magnitude_type'])
     return (datafiles, event)
