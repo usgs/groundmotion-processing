@@ -75,7 +75,7 @@ def test_stream_params():
         outstreams = workspace.getStreams(event.id, labels=['stats'])
         cmpdict = outstreams[0].getStreamParam('stats')
         assert cmpdict == statsdict
-        workspace.close()
+        del workspace
     except Exception as e:
         raise(e)
     finally:
@@ -149,15 +149,19 @@ def test_workspace():
                                              labels=['processed'])[0]
 
             provenance = workspace.getProvenance(eventid, labels=['processed'])
-            first_row = pd.Series({'Record': 'nz_hses__hn1_us1000778i_processed',
-                                   'Processing Step': 'Remove Response',
-                                   'Step Attribute': 'input_units',
-                                   'Attribute Value': 'counts'})
+            first_row = pd.Series({
+                'Record': 'nz_hses__hn1_us1000778i_processed',
+                'Processing Step': 'Remove Response',
+                'Step Attribute': 'input_units',
+                'Attribute Value': 'counts'
+            })
 
-            last_row = pd.Series({'Record': 'nz_wtmc__hnz_us1000778i_processed',
-                                  'Processing Step': 'Lowpass Filter',
-                                  'Step Attribute': 'number_of_passes',
-                                  'Attribute Value': 2})
+            last_row = pd.Series({
+                'Record': 'nz_wtmc__hnz_us1000778i_processed',
+                'Processing Step': 'Lowpass Filter',
+                'Step Attribute': 'number_of_passes',
+                'Attribute Value': 2
+            })
             assert provenance.iloc[0].equals(first_row)
             assert provenance.iloc[-1].equals(last_row)
 
@@ -171,7 +175,7 @@ def test_workspace():
             if instream is None:
                 raise ValueError('Instream should not be none.')
             compare_streams(instream, outstream)
-            workspace.close()
+            del workspace
 
             # read in data from a second event and stash it in the workspace
             eventid = 'nz2018p115908'
@@ -276,7 +280,7 @@ def test_metrics():
             value2 = cmp_series[key]
             np.testing.assert_almost_equal(value, value2, decimal=4)
 
-        workspace.close()
+        del workspace
     except Exception as e:
         raise(e)
     finally:

@@ -429,7 +429,7 @@ def main(args):
                     if imc in timc_tables:
                         timc_table = timc_tables[imc]
                         imc_tables[imc] = pd.concat([imc_table, timc_table])
-            workspace.close()
+            del workspace
 
         if args.format == 'csv':
             eventfile = os.path.join(outdir, 'events.csv')
