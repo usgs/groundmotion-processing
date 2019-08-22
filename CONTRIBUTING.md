@@ -11,8 +11,12 @@ If you have direct contributions you would like considered for incorporation
 into the project you can [fork this repository][2] and
 [submit a pull request][3] for review.
 
+For additional information, please see the USGS software development best
+practices guide[4] and the USGS Code of Scientific Conduct[5]. 
 
 
-[1]: https://github.com/usgs/pager/issues
+[1]: https://github.com/usgs/groundmotion-processing/issues
 [2]: https://help.github.com/articles/fork-a-repo/
 [3]: https://help.github.com/articles/about-pull-requests/
+[4]: https://github.com/usgs/best-practices
+[5]: https://www.usgs.gov/about/organization/science-support/science-quality-and-integrity/fundamental-science-practices
