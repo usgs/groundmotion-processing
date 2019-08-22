@@ -760,39 +760,39 @@ def computeQualityMetrics(st):
 
             # Fourier spectrum
             str_i = 'ft' + ind[i]
-            tr[str_i] = tr_i.getParameter('signal_spectrum')['spec']
+            tr[str_i] = tr_i.getAuxArray('signal_spectrum')['spec']
 
             # Frequ of the Fourier spectrum
             str_i = 'ft' + ind[i] + '_freq'
-            tr[str_i] = tr_i.getParameter('signal_spectrum')['freq']
+            tr[str_i] = tr_i.getAuxArray('signal_spectrum')['freq']
 
             # Smoothed Fourier spectrum
             str_i = 'smooth_ft' + ind[i]
-            tr[str_i] = tr_i.getParameter('smooth_signal_spectrum')['spec']
+            tr[str_i] = tr_i.getAuxArray('smooth_signal_spectrum')['spec']
 
             # Freq of he smoothed Fourier spectrum
             str_i = 'smooth_ft' + ind[i] + '_freq'
-            tr[str_i] = tr_i.getParameter('smooth_signal_spectrum')['freq']
+            tr[str_i] = tr_i.getAuxArray('smooth_signal_spectrum')['freq']
 
             # Fourier spectrum of the pre-event trace
             str_i = 'ft' + ind[i] + '_pe'
-            tr[str_i] = tr_i.getParameter('noise_spectrum')['spec']
+            tr[str_i] = tr_i.getAuxArray('noise_spectrum')['spec']
 
             # Frequ of the Fourier spectrum (pre-event trace)
             str_i = 'ft' + ind[i] + '_freq_pe'
-            tr[str_i] = tr_i.getParameter('noise_spectrum')['freq']
+            tr[str_i] = tr_i.getAuxArray('noise_spectrum')['freq']
 
             # Smoothed Fourier spectrum of the pre-event trace
             str_i = 'smooth_ft' + ind[i] + '_pe'
-            tr[str_i] = tr_i.getParameter('smooth_noise_spectrum')['spec']
+            tr[str_i] = tr_i.getAuxArray('smooth_noise_spectrum')['spec']
 
             # SNR
             str_i = 'snr' + ind[i]
-            tr[str_i] = tr_i.getParameter('snr')['snr']
+            tr[str_i] = tr_i.getAuxArray('snr')['snr']
 
             # SNR freq
             str_i = 'snr' + ind[i] + '_freq'
-            tr[str_i] = tr_i.getParameter('snr')['freq']
+            tr[str_i] = tr_i.getAuxArray('snr')['freq']
 
         i = i + 1
 

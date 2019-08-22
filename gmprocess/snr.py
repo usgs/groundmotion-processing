@@ -64,41 +64,41 @@ def compute_snr_trace(tr, bandwidth, check=None):
         sig_spec -= noise_spec
 
         sig_dict = {
-            'spec': sig_spec.tolist(),
-            'freq': sig_spec_freqs.tolist()
+            'spec': sig_spec,
+            'freq': sig_spec_freqs
         }
-        tr.setParameter('signal_spectrum', sig_dict)
+        tr.setAuxArray('signal_spectrum', sig_dict)
 
         noise_dict = {
-            'spec': noise_spec.tolist(),
-            'freq': sig_spec_freqs.tolist()  # same as signal
+            'spec': noise_spec,
+            'freq': sig_spec_freqs  # same as signal
         }
-        tr.setParameter('noise_spectrum', noise_dict)
+        tr.setAuxArray('noise_spectrum', noise_dict)
 
         sig_spec_smooth, freqs_signal = fft_smooth(
             signal, nfft, bandwidth)
         smooth_dict = {
-            'spec': sig_spec_smooth.tolist(),
-            'freq': freqs_signal.tolist()
+            'spec': sig_spec_smooth,
+            'freq': freqs_signal
         }
-        tr.setParameter('smooth_signal_spectrum', smooth_dict)
+        tr.setAuxArray('smooth_signal_spectrum', smooth_dict)
 
         noise_spec_smooth, freqs_noise = fft_smooth(noise, nfft)
         noise_smooth_dict = {
-            'spec': noise_spec_smooth.tolist(),
-            'freq': freqs_noise.tolist()
+            'spec': noise_spec_smooth,
+            'freq': freqs_noise
         }
-        tr.setParameter('smooth_noise_spectrum', noise_smooth_dict)
+        tr.setAuxArray('smooth_noise_spectrum', noise_smooth_dict)
 
         # remove the noise level from the spectrum of the signal window
         sig_spec_smooth -= noise_spec_smooth
 
         snr = sig_spec_smooth / noise_spec_smooth
         snr_dict = {
-            'snr': snr.tolist(),
-            'freq': freqs_signal.tolist()
+            'snr': snr,
+            'freq': freqs_signal
         }
-        tr.setParameter('snr', snr_dict)
+        tr.setAuxArray('snr', snr_dict)
     else:
         # We do not have an estimate of the signal split time for this trace
         tr = compute_signal_spectrum(tr, bandwidth)
@@ -150,7 +150,7 @@ def snr_check(tr, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
         trace: Trace with SNR check.
     """
     if tr.hasParameter('snr'):
-        snr_dict = tr.getParameter('snr')
+        snr_dict = tr.getAuxArray('snr')
         snr = np.array(snr_dict['snr'])
         freq = np.array(snr_dict['freq'])
         # Check if signal criteria is met
@@ -191,16 +191,16 @@ def compute_signal_spectrum(tr, bandwidth):
     sig_spec_freqs = np.fft.rfftfreq(nfft, dt)
 
     sig_dict = {
-        'spec': sig_spec.tolist(),
-        'freq': sig_spec_freqs.tolist()
+        'spec': sig_spec,
+        'freq': sig_spec_freqs
     }
-    tr.setParameter('signal_spectrum', sig_dict)
+    tr.setAuxArray('signal_spectrum', sig_dict)
 
     sig_spec_smooth, freqs_signal = fft_smooth(
         tr, nfft, bandwidth)
     smooth_dict = {
-        'spec': sig_spec_smooth.tolist(),
-        'freq': freqs_signal.tolist()
+        'spec': sig_spec_smooth,
+        'freq': freqs_signal
     }
-    tr.setParameter('smooth_signal_spectrum', smooth_dict)
+    tr.setAuxArray('smooth_signal_spectrum', smooth_dict)
     return tr
