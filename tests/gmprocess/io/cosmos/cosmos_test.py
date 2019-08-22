@@ -102,8 +102,6 @@ def test_cosmos():
     stream = read_cosmos(one_channel, location='test')[0]
     assert stream[0].stats.location == 'test'
 
-    # '/Users/mhearne/src/python/groundmotion-processing/tests/gmprocess/io/../../data/cosmos/ci14155260/Cosmos12TimeSeriesTest.v1'
-
 
 def test_channel_in_filename():
     datafiles, origin = read_data_dir('cosmos', 'us1000hyfh')
