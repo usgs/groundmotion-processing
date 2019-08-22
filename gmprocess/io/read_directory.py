@@ -78,10 +78,3 @@ def _split_all_path(path):
             path = parts[0]
             allparts.insert(0, parts[1])
     return allparts
-
-
-def _handle_duplicates(target):
-    while os.path.exists(target):
-        base, ext = os.path.splitext(target)
-        target = base + DUPLICATE_MARKER + ext
-    return target

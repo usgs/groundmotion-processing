@@ -240,12 +240,11 @@ def process_event(outdir, event, pcommands,
         shakemap_done = True
         append_file(files_created, 'shakemap', shakemap_file)
 
-    workspace.close()
     # since we don't know how many events users will be processing,
     # let's guard against memory issues by clearing out the big data
     # structures
-    # del rstreams
-    # del pstreams
+    del workspace
+
     logging.info('Finishing event %s' % event.id)
 
     return workname
@@ -270,7 +269,7 @@ def main(args):
     if configfile is not None:
         config = update_config(configfile)
         if config is None:
-            print('\nCustom config file %s is invalid. Exiting.')
+            print('\nCustom config file %s is invalid. Exiting.' % configfile)
             sys.exit(1)
 
     else:
@@ -430,7 +429,7 @@ def main(args):
                     if imc in timc_tables:
                         timc_table = timc_tables[imc]
                         imc_tables[imc] = pd.concat([imc_table, timc_table])
-            workspace.close()
+            del workspace
 
         if args.format == 'csv':
             eventfile = os.path.join(outdir, 'events.csv')
