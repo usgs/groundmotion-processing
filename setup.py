@@ -28,11 +28,14 @@ ext_modules = [
 
 setup(
     name='gmprocess',
-    description='USGS ShakeMap Ground Motion Processing Tools',
+    description='USGS Automated Ground Motion Processing Software',
     include_package_data=True,
-    author='Mike Hearne, Heather Schovanec, John, Rekoske, Eric Thompson',
-    author_email=('mhearne@usgs.gov, hschovanec@usgs.gov, '
-                  'jrekoske@usgs.gov, emthompson@usgs.gov'),
+    author=('Mike Hearne, Eric Thompson, '
+            'Heather Schovanec, John Rekoske, '
+            'Brad Aagaard, Bruce Worden'),
+    author_email=('mhearne@usgs.gov, emthompson@usgs.gov, '
+                  'hschovanec@usgs.gov, jrekoske@usgs.gov, '
+                  'baagaard@usgs.gov, cbworden@contractor.usgs.gov'),
     url='https://github.com/usgs/groundmotion-processing',
     version=versioneer.get_version(),
     mdclass=versioneer.get_cmdclass(),
