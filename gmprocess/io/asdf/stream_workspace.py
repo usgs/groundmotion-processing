@@ -42,8 +42,6 @@ FLATFILE_COLUMNS = ['EarthquakeId', 'EarthquakeTime', 'EarthquakeLatitude',
 
 M_PER_KM = 1000
 
-x = [1, 2, 3]
-
 
 class StreamWorkspace(object):
     def __init__(self, filename, exists=False):
@@ -224,6 +222,29 @@ class StreamWorkspace(object):
                         path=procname,
                         parameters={}
                     )
+
+                # some processing metadata can consist of arrays that are as
+                # big as or larger, so these should be saved as numpy arrays
+                # in the HDF, not as JSON-ized versions of the arrays as
+                # Trace processing parameters are.
+                for specname in trace.getAuxArrayNames():
+                    spectrum = trace.getAuxArray(specname)
+                    # we expect many of these specnames to
+                    # be joined with underscores.
+                    name_parts = specname.split('_')
+                    base_dtype = ''.join([part.capitalize()
+                                          for part in name_parts])
+                    for array_name, array in spectrum.items():
+                        dtype = 'Array' + base_dtype + array_name.capitalize()
+                        try:
+                            self.dataset.add_auxiliary_data(
+                                array,
+                                data_type=dtype,
+                                path=procname,
+                                parameters={}
+                            )
+                        except Exception as e:
+                            x = 1
             inventory = stream.getInventory()
             self.dataset.add_stationxml(inventory)
 
@@ -331,6 +352,25 @@ class StreamWorkspace(object):
                         jdict = json.loads(jsonstr)
                         for key, value in jdict.items():
                             trace.setParameter(key, value)
+
+                    # get the trace spectra arrays from auxiliary,
+                    # repack into stationtrace object
+                    spectra = {}
+                    for aux in self.dataset.auxiliary_data.list():
+                        if aux.startswith('Array'):
+                            auxarray = self.dataset.auxiliary_data[aux]
+                            if trace_path not in auxarray.list():
+                                continue
+                            specparts = camel_case_split(aux)
+                            array_name = specparts[-1].lower()
+                            specname = '_'.join(specparts[2:-1]).lower()
+                            specarray = auxarray[trace_path].data.value
+                            if specname in spectra:
+                                spectra[specname][array_name] = specarray
+                            else:
+                                spectra[specname] = {array_name: specarray}
+                    for key, value in spectra.items():
+                        trace.setAuxArray(key, value)
 
                     stream = StationStream(traces=[trace])
                     stream.tag = tag  # testing this out
@@ -1038,3 +1078,9 @@ def _atof(text):
     except ValueError:
         retval = text
     return retval
+
+
+def camel_case_split(identifier):
+    matches = re.finditer(
+        '.+?(?:(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|$)', identifier)
+    return [m.group(0) for m in matches]

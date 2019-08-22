@@ -179,7 +179,6 @@ def process_event(outdir, event, pcommands,
                                   config=config)
         processing_done = True
 
-    reporting_done = False
     if ('report' in pcommands
             and processing_done
             and len(pstreams)):
@@ -210,10 +209,8 @@ def process_event(outdir, event, pcommands,
             report_file = ''
             success = False
         if os.path.isfile(report_file) and success:
-            reporting_done = True
             append_file(files_created, 'Summary report', report_file)
 
-    provenance_done = False
     if 'provenance' in pcommands and processing_done and len(pstreams):
         logging.info(
             'Creating provenance table for event %s...' % event.id)
@@ -230,14 +227,11 @@ def process_event(outdir, event, pcommands,
             excelfile = os.path.join(event_dir, 'provenance.xlsx')
             append_file(files_created, 'Provenance', excelfile)
             provdata.to_excel(excelfile, index=False)
-        provenance_done = True
 
-    shakemap_done = False
     if 'shakemap' in pcommands and processing_done and len(pstreams):
         logging.info(
             'Creating shakemap table for event %s...' % event.id)
         shakemap_file = save_shakemap_amps(pstreams, event, event_dir)
-        shakemap_done = True
         append_file(files_created, 'shakemap', shakemap_file)
 
     # since we don't know how many events users will be processing,
@@ -261,6 +255,7 @@ def find_workspace_files(outdir):
 
 
 def main(args):
+    tstart = datetime.now()
     # get the process tag from the user or define by current datetime
     process_tag = args.process_tag or datetime.utcnow().strftime(TAG_FMT)
 
@@ -452,7 +447,7 @@ def main(args):
         # can find
         if not len(imc_tables):
             msg = '''No IMC tables found. It is likely that no streams
-            passed checks. If you created reports for the events you 
+            passed checks. If you created reports for the events you
             have been processing, check those to see if this is the case,
             then adjust your configuration as necessary to process the data.
             '''
@@ -495,6 +490,14 @@ def main(args):
         print('File type: %s' % file_type)
         for fname in file_list:
             print('\t%s' % fname)
+
+    tend = datetime.now()
+    dt = (tend - tstart).total_seconds()
+    minutes = dt // 60
+    seconds = dt % 60
+    fmt = '\nElapsed processing time: %i minutes, %i seconds.'
+    print(fmt % (minutes, seconds))
+
     print('\nProcessing is complete.\n')
 
 

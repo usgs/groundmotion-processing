@@ -477,28 +477,28 @@ def summary_plots(st, directory, origin):
 
         # ---------------------------------------------------------------------
         # Get trace info
-        if tr.hasParameter('snr'):
-            snr_dict = tr.getParameter('snr')
+        if tr.hasAuxArray('snr'):
+            snr_dict = tr.getAuxArray('snr')
         else:
             snr_dict = None
 
-        if tr.hasParameter('signal_spectrum'):
-            signal_dict = tr.getParameter('signal_spectrum')
+        if tr.hasAuxArray('signal_spectrum'):
+            signal_dict = tr.getAuxArray('signal_spectrum')
         else:
             signal_dict = None
 
-        if tr.hasParameter('noise_spectrum'):
-            noise_dict = tr.getParameter('noise_spectrum')
+        if tr.hasAuxArray('noise_spectrum'):
+            noise_dict = tr.getAuxArray('noise_spectrum')
         else:
             noise_dict = None
 
-        if tr.hasParameter('smooth_signal_spectrum'):
-            smooth_signal_dict = tr.getParameter('smooth_signal_spectrum')
+        if tr.hasAuxArray('smooth_signal_spectrum'):
+            smooth_signal_dict = tr.getAuxArray('smooth_signal_spectrum')
         else:
             smooth_signal_dict = None
 
-        if tr.hasParameter('smooth_noise_spectrum'):
-            smooth_noise_dict = tr.getParameter('smooth_noise_spectrum')
+        if tr.hasAuxArray('smooth_noise_spectrum'):
+            smooth_noise_dict = tr.getAuxArray('smooth_noise_spectrum')
         else:
             smooth_noise_dict = None
 

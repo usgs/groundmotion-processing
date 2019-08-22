@@ -38,8 +38,14 @@ DT = 16  # seconds
 DDEPTH = 30  # km
 DMAG = 0.3
 
+# NOTE - this class is currently disabled, as GNS is at the time of
+# this writing on a path to shutting down their FTP service in favor
+# of their FDSN service. To re-enable it, uncomment the line below
+# and comment the one inheriting from object.
+# class GeoNetFetcher(DataFetcher):
 
-class GeoNetFetcher(DataFetcher):
+
+class GeoNetFetcher(object):
     def __init__(self, time, lat, lon,
                  depth, magnitude,
                  user=None, password=None,

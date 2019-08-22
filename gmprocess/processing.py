@@ -494,8 +494,10 @@ def get_corner_frequencies(st, method='constant', constant=None, snr=None):
     elif method == 'snr':
         st = corner_frequencies.snr(st, **snr)
         if snr['same_horiz'] and st.passed and st.num_horizontal > 1:
-            lps = [tr.getParameter('corner_frequencies')['lowpass'] for tr in st]
-            hps = [tr.getParameter('corner_frequencies')['highpass'] for tr in st]
+            lps = [tr.getParameter('corner_frequencies')[
+                'lowpass'] for tr in st]
+            hps = [tr.getParameter('corner_frequencies')[
+                'highpass'] for tr in st]
             chs = [tr.stats.channel for tr in st]
             hlps = []
             hhps = []
@@ -578,7 +580,7 @@ def snr_check(st, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
         tr = compute_snr_trace(tr, bandwidth)
 
         if st.passed and tr.hasParameter('snr'):
-            snr_dict = tr.getParameter('snr')
+            snr_dict = tr.getAuxArray('snr')
             snr = np.array(snr_dict['snr'])
             freq = np.array(snr_dict['freq'])
             # Check if signal criteria is met
