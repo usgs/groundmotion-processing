@@ -865,7 +865,7 @@ def NNet_QA(st, acceptance_threshold, model_name):
     have_params = True
     for tr in st:
         if not {'signal_spectrum', 'noise_spectrum', 'snr'}.issubset(
-          set(tr.getParameterKeys())):
+          set(tr.getAuxArrayNames())):
             have_params = False
 
     if not have_params:

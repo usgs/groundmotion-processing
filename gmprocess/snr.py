@@ -149,7 +149,7 @@ def snr_check(tr, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
     Returns:
         trace: Trace with SNR check.
     """
-    if tr.hasParameter('snr'):
+    if tr.hasAuxArray('snr'):
         snr_dict = tr.getAuxArray('snr')
         snr = np.array(snr_dict['snr'])
         freq = np.array(snr_dict['freq'])
