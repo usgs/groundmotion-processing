@@ -12,8 +12,6 @@ Some sources of significant motion data are:
    networks around the globe.
  - The Center for Engineering Strong Motion Data (CESMD) in California, which
    contains partially processed triggered records for older events inside the U.S.
- - GeoNet in New Zealand provides an FTP service for downloading partially
-   processed triggered strong motion sensor data.
  - The Japanese National Research Institute for Earth Science and Disaster
    Resilience provides strong motion data from two networks, KNET and KikNet.
  - The National Strong-Motion Network of Turkey (TR-NSMN) provides partially
@@ -23,7 +21,7 @@ Some sources of significant motion data are:
  - The Iranian Road, Housing & Urban Development Research Center (BHRC) provides
    partially  processed triggered strong motion sensor data on their website.
 
-Data from some of these services (FDSN, GeoNet, KNET, and NSMN at the time of
+Data from some of these services (FDSN, KNET, and NSMN at the time of
 this writing) can be downloaded automatically using `gmprocess`. Iran
 provides a web interface for downloading data (with a usage/citation
 agreement). Taiwan does not currently provide public access to their. CESMD
@@ -37,7 +35,7 @@ Data sources can be manually "turned off" by deleting or commenting out their
 respective subsection within the `fetchers` section of the config file.
 
 The default settings for the `fetchers` section of the configuration are below.
-The sources of **triggered** data (KNET, GeoNet, Turkey) define settings that
+The sources of **triggered** data (KNET, Turkey) define settings that
 help `gmprocess` find the events in their respective catalogs matching the
 input event. Not all of these are used for all fetchers, but we define them
 here to be "future-proof".
@@ -82,15 +80,6 @@ fetchers:
         radius : 100
         # define the time search threshokd (sec)
         dt : 60
-        # define the depth search threshokd (km)
-        ddepth : 30
-        # define the magnitude search threshokd (km)
-        dmag : 0.3
-    GeoNetFetcher:
-        # define the distance search radius (km)
-        radius : 100
-        # define the time search threshokd (sec)
-        dt : 16
         # define the depth search threshokd (km)
         ddepth : 30
         # define the magnitude search threshokd (km)
