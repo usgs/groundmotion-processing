@@ -4,6 +4,7 @@ import re
 import copy
 import warnings
 import logging
+import os
 
 # third party imports
 import pyasdf
@@ -42,32 +43,57 @@ FLATFILE_COLUMNS = ['EarthquakeId', 'EarthquakeTime', 'EarthquakeLatitude',
 
 M_PER_KM = 1000
 
+FORMAT_VERSION = '1.0'
+
 
 class StreamWorkspace(object):
-    def __init__(self, filename, exists=False):
+    def __init__(self, filename, compression=None):
         """Create an ASDF file given an Event and list of StationStreams.
 
         Args:
             filename (str):
                 Path to ASDF file to create.
+            compression (str):
+                Any value supported by pyasdf.asdf_data_set.ASDFDataSet.
         """
-        if not exists:
-            compression = "gzip-3"
+        if os.path.exists(filename):
+            self.dataset = pyasdf.ASDFDataSet(filename)
         else:
-            compression = None
-        self.dataset = pyasdf.ASDFDataSet(filename, compression=compression)
+            self.dataset = pyasdf.ASDFDataSet(
+                filename, compression=compression)
+        self.FORMAT_VERSION = FORMAT_VERSION
+
+    @classmethod
+    def create(cls, filename, compression=None):
+        """Load from existing ASDF file.
+
+        Args:
+            filename (str):
+                Path to existing ASDF file.
+            compression (str):
+                Any value supported by pyasdf.asdf_data_set.ASDFDataSet.
+
+        Returns:
+            StreamWorkspace: Object containing ASDF file.
+        """
+        if os.path.exists(filename):
+            raise IOError('File %s already exists.' % filename)
+        return cls(filename)
 
     @classmethod
     def open(cls, filename):
         """Load from existing ASDF file.
 
         Args:
-            filename (str): Path to existing ASDF file.
+            filename (str):
+                Path to existing ASDF file.
 
         Returns:
             StreamWorkspace: Object containing ASDF file.
         """
-        return cls(filename, exists=True)
+        if not os.path.exists(filename):
+            raise IOError('File %s does not exist.' % filename)
+        return cls(filename)
 
     def __repr__(self):
         """Provide summary string representation of the file.
