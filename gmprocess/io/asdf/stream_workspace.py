@@ -200,14 +200,14 @@ class StreamWorkspace(object):
                 jsonbytes = json.dumps(jdict).encode('utf-8')
                 jsonarray = np.frombuffer(jsonbytes, dtype=np.uint8)
                 dtype = 'StreamProcessingParameters'
-                paramfmt = '%s_%s_%s_%s_%s'
+                paramfmt = '%s_%s/%s_%s_%s_%s_%s'
                 net = stream[0].stats.network.lower()
                 sta = stream[0].stats.station.lower()
                 loc = stream[0].stats.location.lower()
                 if loc == '--':
                     loc = ''
                 inst = stream.get_id().lower().split('.')[2]
-                paramtpl = (net, sta, loc, inst, tag)
+                paramtpl = (net, sta, net, sta, loc, inst, tag)
                 parampath = paramfmt % paramtpl
                 self.dataset.add_auxiliary_data(
                     jsonarray,
@@ -218,14 +218,14 @@ class StreamWorkspace(object):
 
             # add processing parameters from traces
             for trace in stream:
-                procfmt = '%s_%s_%s_%s_%s'
+                procfmt = '%s_%s/%s_%s_%s_%s_%s'
                 net = trace.stats.network.lower()
                 sta = trace.stats.station.lower()
                 loc = trace.stats.location.lower()
                 if loc == '--':
                     loc = ''
                 cha = trace.stats.channel.lower()
-                proctpl = (net, sta, loc, cha, tag)
+                proctpl = (net, sta, net, sta, loc, cha, tag)
                 procname = procfmt % proctpl
                 jdict = {}
                 for key in trace.getParameterKeys():
@@ -369,15 +369,18 @@ class StreamWorkspace(object):
 
                     # get the trace processing parameters
                     trace_fmt = '%s_%s_%s_%s_%s'
+                    top = '%s_%s' % (net, sta)
                     trace_tpl = (net, sta, loc, cha, tag)
                     trace_path = trace_fmt % trace_tpl
-                    if trace_path in trace_auxholder:
-                        bytelist = trace_auxholder[
-                            trace_path].data[:].tolist()
-                        jsonstr = ''.join([chr(b) for b in bytelist])
-                        jdict = json.loads(jsonstr)
-                        for key, value in jdict.items():
-                            trace.setParameter(key, value)
+                    if top in trace_auxholder:
+                        root_auxholder = trace_auxholder[top]
+                        if trace_path in root_auxholder:
+                            bytelist = root_auxholder[
+                                trace_path].data[:].tolist()
+                            jsonstr = ''.join([chr(b) for b in bytelist])
+                            jdict = json.loads(jsonstr)
+                            for key, value in jdict.items():
+                                trace.setParameter(key, value)
 
                     # get the trace spectra arrays from auxiliary,
                     # repack into stationtrace object
@@ -385,16 +388,18 @@ class StreamWorkspace(object):
                     for aux in self.dataset.auxiliary_data.list():
                         if aux.startswith('Array'):
                             auxarray = self.dataset.auxiliary_data[aux]
-                            if trace_path not in auxarray.list():
+                            if top not in auxarray.list():
                                 continue
-                            specparts = camel_case_split(aux)
-                            array_name = specparts[-1].lower()
-                            specname = '_'.join(specparts[2:-1]).lower()
-                            specarray = auxarray[trace_path].data.value
-                            if specname in spectra:
-                                spectra[specname][array_name] = specarray
-                            else:
-                                spectra[specname] = {array_name: specarray}
+                            auxarray_top = auxarray[top]
+                            if trace_path in auxarray_top:
+                                specparts = camel_case_split(aux)
+                                array_name = specparts[-1].lower()
+                                specname = '_'.join(specparts[2:-1]).lower()
+                                specarray = auxarray_top[trace_path].data.value
+                                if specname in spectra:
+                                    spectra[specname][array_name] = specarray
+                                else:
+                                    spectra[specname] = {array_name: specarray}
                     for key, value in spectra.items():
                         trace.setAuxArray(key, value)
 
@@ -406,13 +411,15 @@ class StreamWorkspace(object):
                     stream_fmt = '%s_%s_%s_%s_%s'
                     stream_tpl = (net, sta, loc, inst, tag)
                     stream_path = stream_fmt % stream_tpl
-                    if stream_path in stream_auxholder:
-                        auxarray = stream_auxholder[stream_path]
-                        bytelist = auxarray.data[:].tolist()
-                        jsonstr = ''.join([chr(b) for b in bytelist])
-                        jdict = json.loads(jsonstr)
-                        for key, value in jdict.items():
-                            stream.setStreamParam(key, value)
+                    if top in stream_auxholder:
+                        top_auxholder = stream_auxholder[top]
+                        if stream_path in top_auxholder:
+                            auxarray = top_auxholder[stream_path]
+                            bytelist = auxarray.data[:].tolist()
+                            jsonstr = ''.join([chr(b) for b in bytelist])
+                            jdict = json.loads(jsonstr)
+                            for key, value in jdict.items():
+                                stream.setStreamParam(key, value)
 
                     streams.append(stream)
         streams = StreamCollection(streams)
@@ -495,14 +502,14 @@ class StreamWorkspace(object):
             '''
             xmlstr = xmlfmt % (hypocentral_distance, epidist_m / M_PER_KM)
 
-            metricfmt = '%s_%s_%s_%s_%s'
+            metricfmt = '%s_%s/%s_%s_%s_%s_%s'
             net = stream[0].stats.network.lower()
             sta = stream[0].stats.station.lower()
             loc = stream[0].stats.location.lower()
             if loc == '--':
                 loc = ''
             inst = stream.get_id().lower().split('.')[2]
-            metrictpl = (net, sta, loc, inst, eventid)
+            metrictpl = (net, sta, net, sta, loc, inst, eventid)
             metricpath = metricfmt % metrictpl
 
             self.insert_aux(xmlstr, 'StationMetrics', metricpath)
@@ -565,14 +572,14 @@ class StreamWorkspace(object):
 
             xmlstr = summary.get_metric_xml()
 
-            metricfmt = '%s_%s_%s_%s_%s'
+            metricfmt = '%s_%s/%s_%s_%s_%s_%s'
             net = stream[0].stats.network.lower()
             sta = stream[0].stats.station.lower()
             loc = stream[0].stats.location.lower()
             if loc == '--':
                 loc = ''
             inst = stream.get_id().lower().split('.')[2]
-            metrictpl = (net, sta, loc, inst, tag)
+            metrictpl = (net, sta, net, sta, loc, inst, tag)
             metricpath = metricfmt % metrictpl
 
             # this seems like a lot of effort
@@ -689,56 +696,6 @@ class StreamWorkspace(object):
 
         return (event_table, imc_tables)
 
-    def getMetricsTable(self, eventid, stations=None, labels=None):
-        """Return a pandas DataFrame summarizing the metrics for given Streams.
-
-        Args:
-            eventid (str):
-                ID of event to search for in ASDF file.
-            stations (list):
-                List of stations to return metrics from.
-            labels (list):
-                List of processing labels to return metrics from.
-
-        Returns:
-            DataFrame:
-                Pandas DataFrame containing IMTs and components defined
-                in setStreamMetrics, plus:
-                    - STATION Station code
-                    - NAME Station name, if available
-                    - SOURCE Data source, if available
-                    - NETID Network source
-                    - LAT Station latitude
-                    - LON Station longitude
-        """
-        if stations is None:
-            stations = self.getStations(eventid)
-        if labels is None:
-            labels = self.getLabels()
-
-        df = None
-        for station in stations:
-            for label in labels:
-                summary = self.getStreamMetrics(eventid, station, label)
-                stream = self.getStreams(eventid,
-                                         stations=[station],
-                                         labels=[label])[0]
-                row = summary.toSeries()
-                row['STATION'] = stream[0].stats.station
-                row['NAME'] = stream[0].stats.standard['station_name']
-                row['SOURCE'] = stream[0].stats.standard['source']
-                row['NETID'] = stream[0].stats.network
-                row['LAT'] = stream[0].stats.coordinates['latitude']
-                row['LON'] = stream[0].stats.coordinates['longitude']
-
-                if df is None:
-                    df = pd.DataFrame(columns=row.index)
-                df = df.append(row, ignore_index=True)
-
-        # TODO - reorder df columns. This is complicated with multi-index.
-
-        return df
-
     def getStreamMetrics(self, eventid, station, label):
         """Extract a StationSummary object from the ASDF file for a given input Stream.
 
@@ -778,14 +735,17 @@ class StreamWorkspace(object):
         inst = streams[0].get_id().lower().split('.')[2]
         metrictpl = (net, sta, loc, inst, tag)
         metricpath = metricfmt % metrictpl
-        if metricpath not in auxholder:
-            fmt = 'Stream metrics path (%s) not in WaveFormMetrics auxiliary_data.'
-            logging.warning(fmt % metricpath)
-            return None
+        top = '%s_%s' % (net, sta)
+        if top in auxholder:
+            tauxholder = auxholder[top]
+            if metricpath not in tauxholder:
+                fmt = 'Stream metrics path (%s) not in WaveFormMetrics auxiliary_data.'
+                logging.warning(fmt % metricpath)
+                return None
 
-        bytelist = auxholder[metricpath].data[:].tolist()
-        xml_stream = ''.join([chr(b) for b in bytelist])
-        xml_stream = xml_stream.encode('utf-8')
+            bytelist = tauxholder[metricpath].data[:].tolist()
+            xml_stream = ''.join([chr(b) for b in bytelist])
+            xml_stream = xml_stream.encode('utf-8')
 
         if 'StationMetrics' not in self.dataset.auxiliary_data:
             raise KeyError('Station metrics not found in workspace.')
@@ -794,15 +754,17 @@ class StreamWorkspace(object):
         station_fmt = '%s_%s_%s_%s_%s'
         station_tpl = (net, sta, loc, inst, eventid)
         station_path = station_fmt % station_tpl
-        if station_path not in auxholder:
-            logging.warning(
-                'Stream path (%s) not in StationMetrics auxiliary_data.'
-                % station_path)
-            return
+        if top in auxholder:
+            tauxholder = auxholder[top]
+            if station_path not in tauxholder:
+                logging.warning(
+                    'Stream path (%s) not in StationMetrics auxiliary_data.'
+                    % station_path)
+                return
 
-        bytelist = auxholder[station_path].data[:].tolist()
-        xml_station = ''.join([chr(b) for b in bytelist])
-        xml_station = xml_station.encode('utf-8')
+            bytelist = tauxholder[station_path].data[:].tolist()
+            xml_station = ''.join([chr(b) for b in bytelist])
+            xml_station = xml_station.encode('utf-8')
 
         summary = StationSummary.from_xml(xml_stream, xml_station)
         return summary

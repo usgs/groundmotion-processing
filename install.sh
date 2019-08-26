@@ -128,7 +128,6 @@ package_list=(
     "openpyxl"
     "openquake.engine"
     "pandas"
-    "pip"
     "pyasdf"
     "pytest"
     "pytest-cov"
