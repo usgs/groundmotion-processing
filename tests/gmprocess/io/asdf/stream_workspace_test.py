@@ -246,7 +246,11 @@ def test_metrics():
     raw_streams = StreamCollection.from_directory(datadir)
     config = get_config()
     # turn off sta/lta check and snr checks
-    newconfig = drop_processing(config, ['check_sta_lta', 'compute_snr'])
+    # newconfig = drop_processing(config, ['check_sta_lta', 'compute_snr'])
+    # processed_streams = process_streams(raw_streams, event, config=newconfig)
+    newconfig = config.copy()
+    newconfig['processing'].append({'NNet_QA': {'acceptance_threshold': 0.5,
+                                                'model_name': 'CantWell'}})
     processed_streams = process_streams(raw_streams, event, config=newconfig)
 
     tdir = tempfile.mkdtemp()
@@ -254,31 +258,22 @@ def test_metrics():
         tfile = os.path.join(tdir, 'test.hdf')
         workspace = StreamWorkspace(tfile)
         workspace.addEvent(event)
+        workspace.addStreams(event, raw_streams, label='raw')
         workspace.addStreams(event, processed_streams, label='processed')
-        stream1 = processed_streams[0]
+        stream1 = raw_streams[0]
         summary1 = StationSummary.from_config(stream1)
         s1_df_in = summary1.pgms.sort_values(['IMT', 'IMC'])
         array1 = s1_df_in['Result'].as_matrix()
-        workspace.calcStreamMetrics(eventid, labels=['processed'])
-        workspace.calcStationMetrics(event.id, labels=['processed'])
+        workspace.calcStreamMetrics(eventid, labels=['raw'])
+        workspace.calcStationMetrics(event.id, labels=['raw'])
+        pstreams2 = workspace.getStreams(event.id, labels=['processed'])
+        assert pstreams2[0].getStreamParamKeys() == ['nnet_qa']
         summary1_a = workspace.getStreamMetrics(event.id,
                                                 stream1[0].stats.station,
-                                                'processed')
+                                                'raw')
         s1_df_out = summary1_a.pgms.sort_values(['IMT', 'IMC'])
         array2 = s1_df_out['Result'].as_matrix()
         np.testing.assert_almost_equal(array1, array2, decimal=4)
-
-        df = workspace.getMetricsTable(event.id)
-        cmp_series = {
-            'GREATER_OF_TWO_HORIZONTALS': 0.6787,
-            'H1': 0.3869,
-            'H2': 0.6787,
-            'Z': 0.7663
-        }
-        pga_dict = df.iloc[0]['PGA'].to_dict()
-        for key, value in pga_dict.items():
-            value2 = cmp_series[key]
-            np.testing.assert_almost_equal(value, value2, decimal=4)
 
         del workspace
     except Exception as e:
@@ -288,6 +283,21 @@ def test_metrics():
 
 
 def drop_processing(config, keys):
+    newconfig = config.copy()
+    newprocess = []
+    for pdict in newconfig['processing']:
+        found = False
+        for key in keys:
+            if key in pdict:
+                found = True
+                break
+        if not found:
+            newprocess.append(pdict)
+    newconfig['processing'] = newprocess
+    return newconfig
+
+
+def add_processing(config, keys):
     newconfig = config.copy()
     newprocess = []
     for pdict in newconfig['processing']:

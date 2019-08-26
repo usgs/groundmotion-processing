@@ -198,7 +198,7 @@ def signal_end(st, event_time, event_lon, event_lat, event_mag,
         mod_file = pkg_resources.resource_filename(
             'gmprocess', os.path.join('data', 'modules.yml'))
         with open(mod_file, 'r') as f:
-            mods = yaml.load(f)
+            mods = yaml.load(f, Loader=yaml.FullLoader)
 
         # Import module
         cname, mpath = mods['modules'][model]
