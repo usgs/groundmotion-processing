@@ -19,18 +19,22 @@ code, location code, channel code, and event id. Additionally, ASDF
 supports tags for differentiating `Waveforms` and `AuxiliaryData`. In
 our extension of the ASDF layout, we create the tags based on the
 station and event information along with a user-specified label. In
-the following sections, we use the following variables in the group
-and dataset names:
+the following sections, we use the following variables (denoted by
+italics) in the group and dataset names:
 
-  * **NET**: FDSN network code (or equivalent);
-  * **STA**: Station code;
-  * **LOC**: Location code;
-  * **CHAN**: SEED channel coode (or equivalent);
-  * **INST**: First two letters of the channel code (dropping the third letter which corresponds to the component);
-  * **START__END**: Channel start and end timestamps for `Waveforms`; and
-  * **LABEL**: User-speficied label that uniquely identifies processing paramters;
-  * **EVENTID**: ComCat event id (or equivalent)
+  * ***NET***: FDSN network code (or equivalent);
+  * ***STA***: Station code;
+  * ***LOC***: Location code;
+  * ***CHA***: SEED channel code (or equivalent);
+  * ***INST***: First two letters of the channel code (dropping the third letter which corresponds to the component);
+  * ***START__END***: Channel start and end timestamps for `Waveforms`; and
+  * ***LABEL***: User-specified label that uniquely identifies processing parameters;
+  * ***EVENTID***: ComCat event id (or equivalent)
 
+The ASDF schema requires tags and `AuxiliaryData` paths to be
+letters, numbers, and underscores. This means that we use underscores
+in place of the periods we usually use between network, station,
+channel, and location codes.
 
 ## Extension of ASDF HDF-5 Layout
 
@@ -41,6 +45,15 @@ values, response spectra, and Fourier amplitude spectra.
 
 * `StationMetrics` for event station information, such as epicentral
 distance and rupture distance.
+
+* `TraceProcessingParameters` for parameters associated with the
+  waveform trace processing.
+
+* `SteamProcessingParameters` for parameters associated with
+  processing the channels for a station.
+
+* `AuxArrays` for noise and signal spectra, including smoothed signal
+  spectra.
 
 * (Potential future addition) `SurfaceWaveforms` for waveform time histories
   on a surface.
@@ -71,16 +84,16 @@ horizontal components).
 Following the ASDF layout for waveforms and station metadata, the
 hierarchy is
 
-`WaveformMetrics` (group) -> *NET.STA* (group)
--> *NET.STA.LOC.INST_EVENTID_LABEL* (dataset)
+`WaveformMetrics` (group) -> *NET_STA* (group)
+-> *NET_STA_LOC_INST_EVENTID_LABEL* (dataset)
 
 We use the instrument code (first two letters of the channel code)
 rather than the full channel code, because many metrics involve
 multiple channels (horizontal components). The components are included
 in the metrics as attributes as necessary.
 
-The dataset is a string corresponding to XML, similar to the `QuakeML`
-and `StationXML` datasets.
+The dataset is a byte string corresponding to XML, similar to the
+`QuakeML` and `StationXML` datasets.
 
 The XML hierarchy follows the ShakeMap convention of intensity metric
 followed by intensity metric type (`waveform_metrics` -> *IM* -> *IMT*).
@@ -125,11 +138,11 @@ Joyner-Boore distance, and closest distance to the rupture surface.
 Following the ASDF layout for waveforms and station metadata, the
 hierarchy is
 
-`StationMetrics` (group) -> *NET.STA* (group)
--> *NET.STA.LOC.INST_EVENTID* (dataset)
+`StationMetrics` (group) -> *NET_STA* (group)
+-> *NET_STA_LOC_INST_EVENTID* (dataset)
 
-The dataset is a string corresponding to XML, similar to the `QuakeML`
-and `StationXML` datasets.
+The dataset is a byte string corresponding to XML, similar to the
+`QuakeML` and `StationXML` datasets.
 
 Sample XML for a station metrics dataset:
 ```xml
@@ -138,6 +151,96 @@ Sample XML for a station metrics dataset:
   <epicentral_distance units="km">2.3</epicentral_distance>
 </station_metrics>
 ```
+
+### Trace Processing Parameters
+
+Trace processing parameters are the parameters for the algorithms used
+to process the individual waveform traces. This information is
+primarily intended for reproducibility.
+
+#### Trace Processing Parameters Hierarchy
+
+Following the ASDF layout for waveforms, the
+hierarchy is
+
+`TraceProcessingParameters` (group) -> *NET_STA* (group)
+-> *NET_STA_LOC_CHA_EVENTID_LABEL* (dataset)
+
+The dataset is a byte string corresponding to JSON. 
+
+Sample JSON for a trace processing parameters dataset:
+```json
+{
+  "baseline": {
+    "polynomial_coefs": [
+      -3.1244715639196995e-24,
+       1.1046838180719736e-19,
+      -1.2610591147149431e-15,
+       4.223265643969671e-12,
+       7.099592013855652e-09,
+       0,
+       0
+    ]
+  }, 
+  "corner_frequencies": {
+      "type": "snr", 
+	  "lowpass": 30.778610333622925, 
+	  "highpass": 0.008053637150713472
+  }, 
+  "snr_conf": {
+    "threshold": 3.0, 
+	"min_freq": 1.5, 
+  	"bandwidth": 20.0, 
+    "max_freq": 5.0
+  }, 
+  "signal_split": {
+    "picker_type": "travel_time", 
+    "method": "p_arrival", 
+    "split_time": "2019-07-06T03:20:46.346556Z"
+  }, 
+  "signal_end": {
+    "vsplit": 1.0, 
+	"floor": 120, 
+	"epsilon": 2.0, 
+	"end_time": "2019-07-06T03:23:09.315515Z", 
+	"model": "AS16", 
+	"method": "model"
+  }
+}
+```
+
+### Stream Processing Parameters
+
+Stream processing parameters are the parameters for the algorithms
+used in processing involving multiple channels for a station for a
+given earthquake. This information is primarily intended for
+reproducibility.
+
+#### Stream Processing Parameters Hierarchy
+
+Following the ASDF layout for waveforms, the
+hierarchy is
+
+`StreamProcessingParameters` (group) -> *NET_STA* (group)
+-> *NET_STA_LOC_INST_EVENTID_LABEL* (dataset)
+
+The dataset is a byte string corresponding to JSON like the `TraceProcessingParameters`.
+
+### Auxiliary Arrays
+
+The auxiliary arrays are intermediate results that are not readily
+available or quickly reproduced from the waveform data, such as the
+noise and signal spectra. 
+
+#### Auxiliary Arrays Hierarchy
+
+Following the ASDF layout for waveforms, the
+hierarchy is
+
+`AuxArrays` (group) -> *NET_STA* (group)
+-> *NET_STA_LOC_CHA_EVENTID_LABEL* (dataset)
+
+The dataset is a multidimensional float array. 
 
 ### Surface Waveforms (potential future addition)
 
