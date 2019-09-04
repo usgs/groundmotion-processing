@@ -493,8 +493,8 @@ class StreamWorkspace(object):
             slon = stream[0].stats.coordinates.longitude
             sdep = stream[0].stats.coordinates.elevation
             epidist_m, _, _ = gps2dist_azimuth(elat, elon, slat, slon)
-            hypocentral_distance = distance(elat, elon, -sdep / M_PER_KM,
-                                            slat, slon, edepth)
+            hypocentral_distance = distance(elon, elat, edepth,
+                                            slon, slat, -sdep / M_PER_KM)
             xmlfmt = '''<station_metrics>
             <hypocentral_distance units="km">%.1f</hypocentral_distance>
             <epicentral_distance units="km">%.1f</epicentral_distance>
