@@ -20,8 +20,8 @@ def compute_snr_trace(tr, bandwidth, check=None):
         if isinstance(split_prov, list):
             split_prov = split_prov[0]
         split_time = split_prov['split_time']
-        noise = tr.copy().trim(endtime=split_time)
-        signal = tr.copy().trim(starttime=split_time)
+        noise = tr.copy().trim(endtime=split_time).detrend('demean')
+        signal = tr.copy().trim(starttime=split_time).detrend('demean')
 
         # Taper both windows
         noise.taper(max_percentage=TAPER_WIDTH,
