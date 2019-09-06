@@ -75,7 +75,7 @@ def test_stream_params():
         outstreams = workspace.getStreams(event.id, labels=['stats'])
         cmpdict = outstreams[0].getStreamParam('stats')
         assert cmpdict == statsdict
-        del workspace
+        workspace.close()
     except Exception as e:
         raise(e)
     finally:
@@ -175,7 +175,7 @@ def test_workspace():
             if instream is None:
                 raise ValueError('Instream should not be none.')
             compare_streams(instream, outstream)
-            del workspace
+            workspace.close()
 
             # read in data from a second event and stash it in the workspace
             eventid = 'nz2018p115908'
@@ -275,7 +275,7 @@ def test_metrics():
         array2 = s1_df_out['Result'].as_matrix()
         np.testing.assert_almost_equal(array1, array2, decimal=4)
 
-        del workspace
+        workspace.close()
     except Exception as e:
         raise(e)
     finally:

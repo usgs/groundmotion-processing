@@ -51,7 +51,7 @@ def read_asdf(filename, eventid=None, stations=None, label=None):
                                        labels=labels)
         allstreams += streams
 
-    del workspace
+    workspace.close()
     return allstreams
 
 
@@ -70,4 +70,4 @@ def write_asdf(filename, streams, event, label=None):
     """
     workspace = StreamWorkspace(filename)
     workspace.addStreams(event, streams, label=label)
-    del workspace
+    workspace.close()
