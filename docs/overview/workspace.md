@@ -31,11 +31,6 @@ italics) in the group and dataset names:
   * ***LABEL***: User-specified label that uniquely identifies processing parameters;
   * ***EVENTID***: ComCat event id (or equivalent)
 
-The ASDF schema requires tags and `AuxiliaryData` paths to be
-letters, numbers, and underscores. This means that we use underscores
-in place of the periods we usually use between network, station,
-channel, and location codes.
-
 ## Extension of ASDF HDF-5 Layout
 
 We add several additional groups to the `AuxiliaryData` section:
@@ -49,12 +44,13 @@ distance and rupture distance.
 * `TraceProcessingParameters` for parameters associated with the
   waveform trace processing.
 
-* `SteamProcessingParameters` for parameters associated with
+* `StreamProcessingParameters` for parameters associated with
   processing the channels for a station.
 
-* `AuxArrays` for noise and signal spectra, including smoothed signal
-  spectra.
-
+* `Cache` for derived values that are not standard products and require
+  significant processing to compute, such as noise and signal spectra,
+  including smoothed signal spectra. 
+  
 * (Potential future addition) `SurfaceWaveforms` for waveform time histories
   on a surface.
 
@@ -65,7 +61,8 @@ distance and rupture distance.
 <figure>
   <img width="600px" src="figs/asdf_layout.png" alt="ASDF layout"/>
   <figcaption>Diagram of group and dataset hierarchy in extension of the
-ASDF HDF-5 layout</figcaption>
+ASDF HDF-5 layout. For brevity, we only show the signal spectra in the
+`Cache`. </figcaption>
 </figure>
 
 
@@ -84,8 +81,8 @@ horizontal components).
 Following the ASDF layout for waveforms and station metadata, the
 hierarchy is
 
-`WaveformMetrics` (group) -> *NET_STA* (group)
--> *NET_STA_LOC_INST_EVENTID_LABEL* (dataset)
+`WaveformMetrics` (group) -> *NET.STA* (group)
+-> *NET.STA.LOC.INST_EVENTID_LABEL* (dataset)
 
 We use the instrument code (first two letters of the channel code)
 rather than the full channel code, because many metrics involve
@@ -138,8 +135,8 @@ Joyner-Boore distance, and closest distance to the rupture surface.
 Following the ASDF layout for waveforms and station metadata, the
 hierarchy is
 
-`StationMetrics` (group) -> *NET_STA* (group)
--> *NET_STA_LOC_INST_EVENTID* (dataset)
+`StationMetrics` (group) -> *NET.STA* (group)
+-> *NET.STA.LOC.INST_EVENTID* (dataset)
 
 The dataset is a byte string corresponding to XML, similar to the
 `QuakeML` and `StationXML` datasets.
@@ -163,8 +160,8 @@ primarily intended for reproducibility.
 Following the ASDF layout for waveforms, the
 hierarchy is
 
-`TraceProcessingParameters` (group) -> *NET_STA* (group)
--> *NET_STA_LOC_CHA_EVENTID_LABEL* (dataset)
+`TraceProcessingParameters` (group) -> *NET.STA* (group)
+-> *NET.STA.LOC.CHA_EVENTID_LABEL* (dataset)
 
 The dataset is a byte string corresponding to JSON. 
 
@@ -221,24 +218,48 @@ reproducibility.
 Following the ASDF layout for waveforms, the
 hierarchy is
 
-`StreamProcessingParameters` (group) -> *NET_STA* (group)
--> *NET_STA_LOC_INST_EVENTID_LABEL* (dataset)
+`StreamProcessingParameters` (group) -> *NET.STA* (group)
+-> *NET.STA.LOC.INST_EVENTID_LABEL* (dataset)
 
-The dataset is a byte string corresponding to JSON like the `TraceProcessingParameters`.
+The dataset is a byte string corresponding to JSON like the
+`TraceProcessingParameters`.
 
-### Auxiliary Arrays
+### Cache
 
-The auxiliary arrays are intermediate results that are not readily
+The `Cache` includes intermediate results that are not readily
 available or quickly reproduced from the waveform data, such as the
-noise and signal spectra. 
+noise and signal spectra. The layout of this group may change and/or
+the group may become obsolete (e.g., if the values are computed on
+demand rather than stored).
+  
+The values that are stored in the `Cache` include:
+  
+  * `SignalSpectrumFreq` Frequency for the signal spectrum.
+	
+  * `SignalSpectrumSpec` Amplitude of the signal spectrum.
 
-#### Auxiliary Arrays Hierarchy
+  * `NoiseSpectrumFreq` Frequency for the signal spectrum.
+	
+  * `NoiseSpectrumSpec` Amplitude of the signal spectrum.
 
-Following the ASDF layout for waveforms, the
-hierarchy is
+  * `SmoothSignalSpectrumFreq` Frequency for the signal spectrum.
+	
+  * `SmoothSignalSpectrumSpec` Amplitude of the signal spectrum.
 
-`AuxArrays` (group) -> *NET_STA* (group)
--> *NET_STA_LOC_CHA_EVENTID_LABEL* (dataset)
+  * `SmoothNoiseSpectrumFreq` Frequency for the signal spectrum.
+	
+  * `SmoothNoiseSpectrumSpec` Amplitude of the signal spectrum.
+
+  * `SnrFreq` Frequency for the signal-to-noise ratio.
+	
+  * `SnrSnr` Value of the signal-to-noise ratio.
+
+#### Cache Hierarchy
+
+The hierarchy for all of the datasets is the same and is of the form:
+
+`Cache` (group) -> `SignalSpectrumFreq` (group) -> *NET.STA* (group)
+-> *NET.STA.LOC.CHA_EVENTID_LABEL* (dataset)
 
 The dataset is a multidimensional float array. 
 

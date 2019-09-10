@@ -151,14 +151,14 @@ def test_workspace():
 
             provenance = workspace.getProvenance(eventid, labels=['processed'])
             first_row = pd.Series({
-                'Record': 'nz_hses__hn1_us1000778i_processed',
+                'Record': 'NZ.HSES.--.HN1_us1000778i_processed',
                 'Processing Step': 'Remove Response',
                 'Step Attribute': 'input_units',
                 'Attribute Value': 'counts'
             })
 
             last_row = pd.Series({
-                'Record': 'nz_wtmc__hnz_us1000778i_processed',
+                'Record': 'NZ.WTMC.--.HNZ_us1000778i_processed',
                 'Processing Step': 'Lowpass Filter',
                 'Step Attribute': 'number_of_passes',
                 'Attribute Value': 2

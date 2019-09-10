@@ -46,13 +46,13 @@ M_PER_KM = 1000
 FORMAT_VERSION = '1.0'
 
 def format_netsta(stats):
-    return '{st.network}_{st.station}'.format(st=stats)
+    return '{st.network}.{st.station}'.format(st=stats)
 
 
 def format_nslc(stats):
-    loc = '' if stats.location == '--' else stats.location
-    return '{st.network}_{st.station}_{loc}_{st.channel}'.format(
-        st=stats, loc=loc)
+    #loc = '' if stats.location == '--' else stats.location
+    return '{st.network}.{st.station}.{st.location}.{st.channel}'.format(
+        st=stats)
 
 
 def format_nslct(stats, tag):
@@ -60,9 +60,9 @@ def format_nslct(stats, tag):
 
 
 def format_nslit(stats, inst, tag):
-    loc = '' if stats.location == '--' else stats.location
-    return '{st.network}_{st.station}_{loc}_{inst}_{tag}'.format(
-        st=stats, loc=loc, inst=inst, tag=tag)
+    #loc = '' if stats.location == '--' else stats.location
+    return '{st.network}.{st.station}.{st.location}.{inst}_{tag}'.format(
+        st=stats, inst=inst, tag=tag)
 
 
 class StreamWorkspace(object):
@@ -195,7 +195,7 @@ class StreamWorkspace(object):
                 
                 provdocs = stream.getProvenanceDocuments()
                 for provdoc, trace in zip(provdocs, stream):
-                    provname = format_nslct(trace.stats, tag).lower()
+                    provname = format_nslct(trace.stats, tag)
                     self.dataset.add_provenance_document(
                         provdoc,
                         name=provname
@@ -363,7 +363,7 @@ class StreamWorkspace(object):
                                          inventory=inventory)
 
                     # get the provenance information
-                    provname = format_nslct(trace.stats, tag).lower()
+                    provname = format_nslct(trace.stats, tag)
                     if provname in self.dataset.provenance.list():
                         provdoc = self.dataset.provenance[provname]
                         trace.setProvenanceDocument(provdoc)
@@ -503,16 +503,10 @@ class StreamWorkspace(object):
             '''
             xmlstr = xmlfmt % (hypocentral_distance, epidist_m / M_PER_KM)
 
-            metricfmt = '%s_%s/%s_%s_%s_%s_%s'
-            net = stream[0].stats.network
-            sta = stream[0].stats.station
-            loc = stream[0].stats.location
-            if loc == '--':
-                loc = ''
-            inst = stream.get_id().split('.')[2]
-            metrictpl = (net, sta, net, sta, loc, inst, eventid)
-            metricpath = metricfmt % metrictpl
-
+            metricpath = '/'.join([
+                format_netsta(stream[0].stats),
+                format_nslit(stream[0].stats, stream.get_inst(), eventid)
+                ])
             self.insert_aux(xmlstr, 'StationMetrics', metricpath)
 
     def calcMetrics(self, eventid, stations=None, labels=None, config=None):
@@ -910,12 +904,12 @@ class StreamWorkspace(object):
         for provname in self.dataset.provenance.list():
             has_station = False
             for station in stations:
-                if station.lower() in provname:
+                if station in provname:
                     has_station = True
                     break
             has_label = False
             for label in labels:
-                if label.lower() in provname:
+                if label in provname:
                     has_label = True
                     break
             if not has_label or not has_station:
