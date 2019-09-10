@@ -93,7 +93,6 @@ def test_storage():
         
     tally = TallyStorage(['AuxiliaryData'])
     total_bytes, groups = tally.compute_storage(h5.items(), store_subtotals=True)
-    print(groups)
     assert STORAGE == groups
     
     tally = TallyStorage()
