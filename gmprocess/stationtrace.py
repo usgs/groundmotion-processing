@@ -475,10 +475,6 @@ class StationTrace(Trace):
                                - key array name
                                - value as numpy array
         """
-        if re.search('[A-Z]+', name) is not None:
-            msg = ('Input spectrum name must be all lower case,'
-                   ' underscores are permitted.')
-            raise Exception(msg)
         self.spectra[name] = array_dict
 
     def getAuxArray(self, name):
