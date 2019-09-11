@@ -580,7 +580,7 @@ def snr_check(st, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
         tr = compute_snr_trace(tr, bandwidth)
 
         if st.passed and tr.hasParameter('snr'):
-            snr_dict = tr.getAuxArray('snr')
+            snr_dict = tr.getCached('snr')
             snr = np.array(snr_dict['snr'])
             freq = np.array(snr_dict['freq'])
             # Check if signal criteria is met

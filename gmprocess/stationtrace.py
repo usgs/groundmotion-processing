@@ -464,9 +464,7 @@ class StationTrace(Trace):
         """
         self.parameters[param_id] = param_attributes
 
-    # TODO - find out if setArray or something more general would be
-    # a better name
-    def setAuxArray(self, name, array_dict):
+    def setCached(self, name, array_dict):
         """Store a dictionary of arrays in StationTrace.
 
         Args:
@@ -477,7 +475,7 @@ class StationTrace(Trace):
         """
         self.spectra[name] = array_dict
 
-    def getAuxArray(self, name):
+    def getCached(self, name):
         """Retrieve a dictionary of arrays.
 
         Args:
@@ -489,16 +487,16 @@ class StationTrace(Trace):
             raise KeyError('%s not in set of spectra arrays.' % name)
         return self.spectra[name]
 
-    def hasAuxArray(self, name):
+    def hasCached(self, name):
         if name not in self.spectra:
             return False
         return True
 
-    def getAuxArrayNames(self):
-        """Return list of spectra data sets.
+    def getCachedNames(self):
+        """Return list of arrays that have been cached.
 
         Returns:
-            list: List of spectra contained in this StationTrace.
+            list: List of cached arrays in this StationTrace.
         """
         return list(self.spectra.keys())
 

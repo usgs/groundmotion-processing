@@ -231,7 +231,9 @@ class StreamWorkspace(object):
 
             # add processing parameters from traces
             for trace in stream:
-                procname = '/'.join([format_netsta(trace.stats), format_nslct(trace.stats, tag)])
+                procname = '/'.join([format_netsta(trace.stats),
+                                     format_nslct(trace.stats, tag),
+                ])
                 jdict = {}
                 for key in trace.getParameterKeys():
                     value = trace.getParameter(key)
@@ -254,28 +256,26 @@ class StreamWorkspace(object):
                         parameters={}
                     )
 
-                # some processing metadata can consist of arrays that are as
-                # big as or larger, so these should be saved as numpy arrays
-                # in the HDF, not as JSON-ized versions of the arrays as
-                # Trace processing parameters are.
-                for specname in trace.getAuxArrayNames():
-                    spectrum = trace.getAuxArray(specname)
+                # Some processing data is computationally intensive to
+                # compute, so we store it in the 'Cache' group.
+                for specname in trace.getCachedNames():
+                    spectrum = trace.getCached(specname)
                     # we expect many of these specnames to
                     # be joined with underscores.
                     name_parts = specname.split('_')
                     base_dtype = ''.join([part.capitalize()
                                           for part in name_parts])
                     for array_name, array in spectrum.items():
-                        dtype = 'Array' + base_dtype + array_name.capitalize()
+                        path = base_dtype + array_name.capitalize() + "/" + procname
                         try:
                             self.dataset.add_auxiliary_data(
                                 array,
-                                data_type=dtype,
-                                path=procname,
+                                data_type='Cache',
+                                path=path,
                                 parameters={}
                             )
                         except Exception as e:
-                            x = 1
+                            pass
             inventory = stream.getInventory()
             self.dataset.add_stationxml(inventory)
 
@@ -384,23 +384,23 @@ class StreamWorkspace(object):
                     # get the trace spectra arrays from auxiliary,
                     # repack into stationtrace object
                     spectra = {}
-                    for aux in self.dataset.auxiliary_data.list():
-                        if aux.startswith('Array'):
-                            auxarray = self.dataset.auxiliary_data[aux]
+                    if 'Cache' in self.dataset.auxiliary_data:
+                        for aux in self.dataset.auxiliary_data['Cache'].list():
+                            auxarray = self.dataset.auxiliary_data['Cache'][aux]
                             if top not in auxarray.list():
                                 continue
                             auxarray_top = auxarray[top]
                             if trace_path in auxarray_top:
                                 specparts = camel_case_split(aux)
-                                array_name = specparts[-1]
-                                specname = '_'.join(specparts[1:-1])
+                                array_name = specparts[-1].lower()
+                                specname = '_'.join(specparts[:-1]).lower()
                                 specarray = auxarray_top[trace_path].data.value
                                 if specname in spectra:
                                     spectra[specname][array_name] = specarray
                                 else:
                                     spectra[specname] = {array_name: specarray}
-                    for key, value in spectra.items():
-                        trace.setAuxArray(key, value)
+                        for key, value in spectra.items():
+                            trace.setCached(key, value)
 
                     stream = StationStream(traces=[trace])
                     stream.tag = tag  # testing this out

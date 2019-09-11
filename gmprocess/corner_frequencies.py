@@ -65,8 +65,8 @@ def snr(st, same_horiz=True, bandwidth=20):
             min_freq = snr_conf['min_freq']
             max_freq = snr_conf['max_freq']
 
-            if tr.hasAuxArray('snr'):
-                snr_dict = tr.getAuxArray('snr')
+            if tr.hasCached('snr'):
+                snr_dict = tr.getCached('snr')
             else:
                 tr.fail('Cannot use SNR to pick corners because SNR could not '
                         'be calculated.')
