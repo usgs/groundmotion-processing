@@ -228,10 +228,12 @@ def build_report_latex(sc, directory, origin, config=None):
                 print(stdout.decode())
                 print(stderr.decode())
         except Exception:
-            report_file = None
+            report_file = ''
             pass
         finally:
             os.chdir(current_directory)
+    else:
+        report_file = 'not run'
 
     # make report file an absolute path
     report_file = os.path.join(directory, report_file)
