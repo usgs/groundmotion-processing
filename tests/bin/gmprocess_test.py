@@ -101,6 +101,7 @@ def test_parallel():
 
 
 if __name__ == '__main__':
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_demo_data()
     test_eventfile()
     test_parallel()

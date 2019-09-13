@@ -121,8 +121,9 @@ def process_event(outdir, event, pcommands,
 
     download_done = False
 
-    # Need to initialize rstreams because later we check is's length
+    # Need to initialize rstreams/pstreams
     rstreams = []
+    pstreams = []
 
     if 'assemble' in pcommands:
         logging.info('Downloading/loading raw streams...')
@@ -162,8 +163,6 @@ def process_event(outdir, event, pcommands,
                 download_done = True
                 processing_done = True
 
-    # Need to initialize pstreams because later we check is's length
-    pstreams = []
     if ('process' in pcommands
             and download_done
             and not processing_done

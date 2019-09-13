@@ -400,7 +400,7 @@ class StreamWorkspace(object):
                             if trace_path in auxarray_top:
                                 specparts = camel_case_split(aux)
                                 array_name = specparts[-1].lower()
-                                specname = '_'.join(specparts[2:-1]).lower()
+                                specname = '_'.join(specparts[1:-1]).lower()
                                 specarray = auxarray_top[trace_path].data.value
                                 if specname in spectra:
                                     spectra[specname][array_name] = specarray
