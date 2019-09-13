@@ -711,8 +711,17 @@ def are_duplicates(tr1, tr2, max_dist_tolerance):
         bool. True if traces are duplicates, False otherwise.
     """
 
+    orientation_codes = set()
+    for tr in [tr1, tr2]:
+        if tr.stats.channel[2] in ['1', 'N']:
+            orientation_codes.add('1')
+        elif tr.stats.channel[2] in ['2', 'E']:
+            orientation_codes.add('2')
+        else:
+            orientation_codes.add('Z')
+
     # First, check if the ids match (net.sta.loc.cha)
-    if tr1.id == tr2.id:
+    if (tr1.id[:-1] == tr2.id[:-1] and len(orientation_codes) == 1):
         return True
     # If not matching IDs, check the station, instrument code, and distance
     else:
@@ -720,9 +729,10 @@ def are_duplicates(tr1, tr2, max_dist_tolerance):
             tr1.stats.coordinates.latitude, tr1.stats.coordinates.longitude,
             tr2.stats.coordinates.latitude, tr2.stats.coordinates.longitude)[0]
         if (tr1.stats.station == tr2.stats.station
-            and tr1.stats.location == tr2.stats.location
-            and tr1.stats.channel == tr2.stats.channel
-                and distance < max_dist_tolerance):
+           and tr1.stats.location == tr2.stats.location
+           and tr1.stats.channel[:2] == tr2.stats.channel[:2]
+           and len(orientation_codes) == 1
+           and distance < max_dist_tolerance):
             return True
         else:
             return False

@@ -237,7 +237,7 @@ def process_event(outdir, event, pcommands,
     # since we don't know how many events users will be processing,
     # let's guard against memory issues by clearing out the big data
     # structures
-    del workspace
+    workspace.close()
 
     logging.info('Finishing event %s' % event.id)
 
@@ -424,7 +424,7 @@ def main(args):
                     if imc in timc_tables:
                         timc_table = timc_tables[imc]
                         imc_tables[imc] = pd.concat([imc_table, timc_table])
-            del workspace
+            workspace.close()
 
         if args.format == 'csv':
             eventfile = os.path.join(outdir, 'events.csv')

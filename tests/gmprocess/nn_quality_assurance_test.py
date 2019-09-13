@@ -55,7 +55,7 @@ def test_nnet():
     allparams = tstream.getStreamParamKeys()
     nnet_dict = tstream.getStreamParam('nnet_qa')
     np.testing.assert_allclose(
-        nnet_dict['score_HQ'], 0.99321798811740059, rtol=1e-5)
+        nnet_dict['score_HQ'], 0.99321798811740059, rtol=1e-3)
 
 
 if __name__ == '__main__':

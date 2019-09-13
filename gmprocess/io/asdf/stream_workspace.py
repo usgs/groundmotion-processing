@@ -95,6 +95,12 @@ class StreamWorkspace(object):
             raise IOError('File %s does not exist.' % filename)
         return cls(filename)
 
+    def close(self):
+        """Close the workspace.
+
+        """
+        del self.dataset
+
     def __repr__(self):
         """Provide summary string representation of the file.
 

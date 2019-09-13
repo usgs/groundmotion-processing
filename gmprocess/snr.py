@@ -23,6 +23,9 @@ def compute_snr_trace(tr, bandwidth, check=None):
         noise = tr.copy().trim(endtime=split_time)
         signal = tr.copy().trim(starttime=split_time)
 
+        noise.detrend('demean')
+        signal.detrend('demean')
+
         # Taper both windows
         noise.taper(max_percentage=TAPER_WIDTH,
                     type=TAPER_TYPE,
