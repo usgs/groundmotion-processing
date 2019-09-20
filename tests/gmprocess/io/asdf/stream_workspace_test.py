@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import yaml
 import shutil
 import time
 import tempfile
@@ -268,14 +269,42 @@ def test_metrics():
         workspace.calcStationMetrics(event.id, labels=['raw'])
         pstreams2 = workspace.getStreams(event.id, labels=['processed'])
         assert pstreams2[0].getStreamParamKeys() == ['nnet_qa']
-        summary1_a = workspace.getStreamMetrics(event.id,
-                                                stream1[0].stats.station,
-                                                'raw')
+        summary1_a = workspace.getStreamMetrics(
+            event.id, stream1[0].stats.network,
+            stream1[0].stats.station, 'raw')
         s1_df_out = summary1_a.pgms.sort_values(['IMT', 'IMC'])
         array2 = s1_df_out['Result'].as_matrix()
         np.testing.assert_almost_equal(array1, array2, decimal=4)
 
         workspace.close()
+    except Exception as e:
+        raise(e)
+    finally:
+        shutil.rmtree(tdir)
+
+
+def test_colocated():
+    eventid = 'ci38445975'
+    datafiles, event = read_data_dir('fdsn', eventid, '*')
+    datadir = os.path.split(datafiles[0])[0]
+    raw_streams = StreamCollection.from_directory(datadir)
+    config_file = os.path.join(datadir, 'test_config.yml')
+    with open(config_file, 'r') as f:
+        config = yaml.load(f, Loader=yaml.FullLoader)
+    processed_streams = process_streams(raw_streams, event, config=config)
+
+    tdir = tempfile.mkdtemp()
+    try:
+        tfile = os.path.join(tdir, 'test.hdf')
+        ws = StreamWorkspace(tfile)
+        ws.addEvent(event)
+        ws.addStreams(event, raw_streams, label='raw')
+        ws.addStreams(event, processed_streams, label='processed')
+        ws.calcMetrics(eventid, labels=['processed'], config=config)
+        stasum = ws.getStreamMetrics(eventid, 'CI', 'MIKB', 'processed')
+        np.testing.assert_allclose(
+            stasum.get_pgm('duration', 'geometric_mean'), 38.94480068)
+        ws.close()
     except Exception as e:
         raise(e)
     finally:

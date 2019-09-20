@@ -664,7 +664,9 @@ class StreamWorkspace(object):
                     continue
                 if config is None:
                     station = stream[0].stats.station
-                    summary = self.getStreamMetrics(eventid, station, label)
+                    network = stream[0].stats.network
+                    summary = self.getStreamMetrics(
+                        eventid, network, station, label)
                 else:
                     summary = StationSummary.from_config(
                         stream, event=event, config=config)
@@ -702,12 +704,14 @@ class StreamWorkspace(object):
 
         return (event_table, imc_tables)
 
-    def getStreamMetrics(self, eventid, station, label):
+    def getStreamMetrics(self, eventid, network, station, label):
         """Extract a StationSummary object from the ASDF file for a given input Stream.
 
         Args:
             eventid (str):
                 ID of event to search for in ASDF file.
+            network (str):
+                Network to return metrics from.
             station (str):
                 Station to return metrics from.
             label (str):
@@ -724,6 +728,11 @@ class StreamWorkspace(object):
         # get the stream matching the eventid, station, and label
         streams = self.getStreams(eventid, stations=[station],
                                   labels=[label])
+
+        # Only get streams that passed and match network
+        streams = [st for st in streams if
+                   (st.passed and st[0].stats.network == network)]
+
         if not len(streams):
             fmt = '''Stream matching event ID %s,
             station ID %s, and processing label %s not found in workspace.'''
