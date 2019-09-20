@@ -616,7 +616,7 @@ class StationSummary(object):
                     value = np.nan
                 else:
                     value = vals[0]
-                imc_tag.text = '%.8f' % value
+                imc_tag.text = '%.8g' % value
         xmlstr = etree.tostring(root, pretty_print=True,
                                 encoding='unicode')
         return xmlstr
