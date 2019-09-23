@@ -122,7 +122,12 @@ class StreamCollection(object):
         all_labels = []
         for stream in self:
             if hasattr(stream, 'tag'):
-                eventid, label = stream.tag.split('_')
+                parts = stream.tag.split('_')
+                if len(parts) > 2:
+                    label = parts[-1]
+                    eventid = '_'.join(parts[0:-1])
+                else:
+                    eventid, label = stream.tag.split('_')
                 all_labels.append(label)
             else:
                 all_labels.append("")
@@ -729,10 +734,10 @@ def are_duplicates(tr1, tr2, max_dist_tolerance):
             tr1.stats.coordinates.latitude, tr1.stats.coordinates.longitude,
             tr2.stats.coordinates.latitude, tr2.stats.coordinates.longitude)[0]
         if (tr1.stats.station == tr2.stats.station
-           and tr1.stats.location == tr2.stats.location
-           and tr1.stats.channel[:2] == tr2.stats.channel[:2]
-           and len(orientation_codes) == 1
-           and distance < max_dist_tolerance):
+            and tr1.stats.location == tr2.stats.location
+            and tr1.stats.channel[:2] == tr2.stats.channel[:2]
+            and len(orientation_codes) == 1
+                and distance < max_dist_tolerance):
             return True
         else:
             return False
