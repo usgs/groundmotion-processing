@@ -301,7 +301,7 @@ class StreamWorkspace(object):
         all_tags = []
         for w in self.dataset.waveforms:
             all_tags.extend(w.get_waveform_tags())
-        all_labels = list(set([at.split('_')[1] for at in all_tags]))
+        all_labels = list(set([at.split('_')[-1] for at in all_tags]))
         labels = list(set(all_labels))
         return labels
 
@@ -338,7 +338,12 @@ class StreamWorkspace(object):
         for waveform in self.dataset.waveforms:
             tags = waveform.get_waveform_tags()
             for tag in tags:
-                teventid, tlabel = tag.split('_')
+                parts = tag.split('_')
+                if len(parts) > 2:
+                    tlabel = parts[-1]
+                    teventid = '_'.join(parts[0:-1])
+                else:
+                    teventid, tlabel = tag.split('_')
                 if eventid != teventid:
                     continue
                 if tlabel not in labels:
@@ -491,7 +496,12 @@ class StreamWorkspace(object):
         event = self.getEvent(eventid)
         for stream in streams:
             tag = stream.tag
-            _, label = tag.split('_')
+            parts = tag.split('_')
+            if len(parts) > 2:
+                label = parts[-1]
+                eventid = '_'.join(parts[0:-1])
+            else:
+                eventid, label = tag.split('_')
             elat = event.latitude
             elon = event.longitude
             edepth = event.depth_km
@@ -564,7 +574,13 @@ class StreamWorkspace(object):
         for stream in streams:
             tag = stream.tag
             instrument = stream.get_id()
-            eventid, label = tag.split('_')
+            logging.info('Calculating stream metrics for %s...' % instrument)
+            parts = tag.split('_')
+            if len(parts) > 2:
+                label = parts[-1]
+                eventid = '_'.join(parts[0:-1])
+            else:
+                eventid, label = tag.split('_')
             if label not in labels:
                 continue
             try:
@@ -805,7 +821,7 @@ class StreamWorkspace(object):
         cols = ['Label', 'UserID', 'UserName',
                 'UserEmail', 'Software', 'Version']
         df = pd.DataFrame(columns=cols, index=None)
-        labels = list(set([ptag.split('_')[5] for ptag in provtags]))
+        labels = list(set([ptag.split('_')[-1] for ptag in provtags]))
         labeldict = {}
         for label in labels:
             for ptag in provtags:
