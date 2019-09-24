@@ -96,11 +96,9 @@ def test_controller():
 
 
 def _validate_steps(step_sets, data_type):
-    homedir = os.path.dirname(os.path.abspath(
-        __file__))  # where is this script?
-    pathfile = os.path.join(
-        homedir, '..', '..', 'data', 'metrics_controller', 'workflows.csv')
-    df = pd.read_csv(pathfile)
+    datafile = os.path.join('data', 'testdata', 'metrics_controller', 'workflows.csv')
+    datafile_abspath = pkg_resources.resource_filename('gmprocess', datafile)
+    df = pd.read_csv(datafile_abspath)
     wf_df = df.apply(lambda x: x.astype(str).str.lower())
     # test workflows
     for step_set in step_sets:
