@@ -219,7 +219,7 @@ processing:
     # Apply a cap to the lowpass corner frequency so that it is guaranteed to be
     # less than or equal to fn_fac * fn, where fn is the Nyquist frequency
     - lowpass_max_frequency:
-        fn_fac: 0.9
+        fn_fac: 0.75
 
     # - adjust_highpass_corner:
     #     # Options for further refinement of the highpass corner. Currently, this
