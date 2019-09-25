@@ -45,6 +45,25 @@ M_PER_KM = 1000
 
 FORMAT_VERSION = '1.0'
 
+def format_netsta(stats):
+    return '{st.network}.{st.station}'.format(st=stats)
+
+
+def format_nslc(stats):
+    #loc = '' if stats.location == '--' else stats.location
+    return '{st.network}.{st.station}.{st.location}.{st.channel}'.format(
+        st=stats)
+
+
+def format_nslct(stats, tag):
+    return format_nslc(stats) + '_' + tag
+
+
+def format_nslit(stats, inst, tag):
+    #loc = '' if stats.location == '--' else stats.location
+    return '{st.network}.{st.station}.{st.location}.{inst}_{tag}'.format(
+        st=stats, inst=inst, tag=tag)
+
 
 class StreamWorkspace(object):
     def __init__(self, filename, compression=None):
@@ -164,7 +183,7 @@ class StreamWorkspace(object):
                 tfmt = '%Y%m%d%H%M%S'
                 tnow = UTCDateTime.now().strftime(tfmt)
                 label = 'processed%s' % tnow
-            tag = '%s_%s' % (eventid, label)
+            tag = '{}_{}'.format(eventid, label)
             if is_raw:
                 level = 'raw'
             else:
@@ -173,17 +192,10 @@ class StreamWorkspace(object):
 
             # add processing provenance info from traces
             if level == 'processed':
+                
                 provdocs = stream.getProvenanceDocuments()
                 for provdoc, trace in zip(provdocs, stream):
-                    provfmt = '%s_%s_%s_%s_%s'
-                    net = trace.stats.network.lower()
-                    sta = trace.stats.station.lower()
-                    loc = trace.stats.location.lower()
-                    if loc == '--':
-                        loc = ''
-                    cha = trace.stats.channel.lower()
-                    provtpl = (net, sta, loc, cha, tag)
-                    provname = provfmt % provtpl
+                    provname = format_nslct(trace.stats, tag)
                     self.dataset.add_provenance_document(
                         provdoc,
                         name=provname
@@ -206,15 +218,10 @@ class StreamWorkspace(object):
                 jsonbytes = json.dumps(jdict).encode('utf-8')
                 jsonarray = np.frombuffer(jsonbytes, dtype=np.uint8)
                 dtype = 'StreamProcessingParameters'
-                paramfmt = '%s_%s/%s_%s_%s_%s_%s'
-                net = stream[0].stats.network.lower()
-                sta = stream[0].stats.station.lower()
-                loc = stream[0].stats.location.lower()
-                if loc == '--':
-                    loc = ''
-                inst = stream.get_id().lower().split('.')[2]
-                paramtpl = (net, sta, net, sta, loc, inst, tag)
-                parampath = paramfmt % paramtpl
+                parampath = '/'.join([
+                    format_netsta(stream[0].stats),
+                    format_nslit(stream[0].stats, stream.get_inst(), tag)
+                ])
                 self.dataset.add_auxiliary_data(
                     jsonarray,
                     data_type=dtype,
@@ -224,15 +231,9 @@ class StreamWorkspace(object):
 
             # add processing parameters from traces
             for trace in stream:
-                procfmt = '%s_%s/%s_%s_%s_%s_%s'
-                net = trace.stats.network.lower()
-                sta = trace.stats.station.lower()
-                loc = trace.stats.location.lower()
-                if loc == '--':
-                    loc = ''
-                cha = trace.stats.channel.lower()
-                proctpl = (net, sta, net, sta, loc, cha, tag)
-                procname = procfmt % proctpl
+                procname = '/'.join([format_netsta(trace.stats),
+                                     format_nslct(trace.stats, tag),
+                ])
                 jdict = {}
                 for key in trace.getParameterKeys():
                     value = trace.getParameter(key)
@@ -255,28 +256,26 @@ class StreamWorkspace(object):
                         parameters={}
                     )
 
-                # some processing metadata can consist of arrays that are as
-                # big as or larger, so these should be saved as numpy arrays
-                # in the HDF, not as JSON-ized versions of the arrays as
-                # Trace processing parameters are.
-                for specname in trace.getAuxArrayNames():
-                    spectrum = trace.getAuxArray(specname)
+                # Some processing data is computationally intensive to
+                # compute, so we store it in the 'Cache' group.
+                for specname in trace.getCachedNames():
+                    spectrum = trace.getCached(specname)
                     # we expect many of these specnames to
                     # be joined with underscores.
                     name_parts = specname.split('_')
                     base_dtype = ''.join([part.capitalize()
                                           for part in name_parts])
                     for array_name, array in spectrum.items():
-                        dtype = 'Array' + base_dtype + array_name.capitalize()
+                        path = base_dtype + array_name.capitalize() + "/" + procname
                         try:
                             self.dataset.add_auxiliary_data(
                                 array,
-                                data_type=dtype,
-                                path=procname,
+                                data_type='Cache',
+                                path=path,
                                 parameters={}
                             )
                         except Exception as e:
-                            x = 1
+                            pass
             inventory = stream.getInventory()
             self.dataset.add_stationxml(inventory)
 
@@ -362,27 +361,16 @@ class StreamWorkspace(object):
                     trace = StationTrace(data=ttrace.data,
                                          header=ttrace.stats,
                                          inventory=inventory)
-                    net = trace.stats.network.lower()
-                    sta = trace.stats.station.lower()
-                    cha = trace.stats.channel.lower()
-                    loc = trace.stats.location.lower()
-
-                    if loc == '--':
-                        loc = ''
 
                     # get the provenance information
-                    provfmt = '%s_%s_%s_%s_%s'
-                    provtpl = (net, sta, loc, cha, tag)
-                    provname = provfmt % provtpl
+                    provname = format_nslct(trace.stats, tag)
                     if provname in self.dataset.provenance.list():
                         provdoc = self.dataset.provenance[provname]
                         trace.setProvenanceDocument(provdoc)
 
                     # get the trace processing parameters
-                    trace_fmt = '%s_%s_%s_%s_%s'
-                    top = '%s_%s' % (net, sta)
-                    trace_tpl = (net, sta, loc, cha, tag)
-                    trace_path = trace_fmt % trace_tpl
+                    top = format_netsta(trace.stats)
+                    trace_path = format_nslct(trace.stats, tag)
                     if top in trace_auxholder:
                         root_auxholder = trace_auxholder[top]
                         if trace_path in root_auxholder:
@@ -396,32 +384,29 @@ class StreamWorkspace(object):
                     # get the trace spectra arrays from auxiliary,
                     # repack into stationtrace object
                     spectra = {}
-                    for aux in self.dataset.auxiliary_data.list():
-                        if aux.startswith('Array'):
-                            auxarray = self.dataset.auxiliary_data[aux]
+                    if 'Cache' in self.dataset.auxiliary_data:
+                        for aux in self.dataset.auxiliary_data['Cache'].list():
+                            auxarray = self.dataset.auxiliary_data['Cache'][aux]
                             if top not in auxarray.list():
                                 continue
                             auxarray_top = auxarray[top]
                             if trace_path in auxarray_top:
                                 specparts = camel_case_split(aux)
                                 array_name = specparts[-1].lower()
-                                specname = '_'.join(specparts[1:-1]).lower()
+                                specname = '_'.join(specparts[:-1]).lower()
                                 specarray = auxarray_top[trace_path].data.value
                                 if specname in spectra:
                                     spectra[specname][array_name] = specarray
                                 else:
                                     spectra[specname] = {array_name: specarray}
-                    for key, value in spectra.items():
-                        trace.setAuxArray(key, value)
+                        for key, value in spectra.items():
+                            trace.setCached(key, value)
 
                     stream = StationStream(traces=[trace])
                     stream.tag = tag  # testing this out
 
                     # get the stream processing parameters
-                    inst = stream.get_id().lower().split('.')[2]
-                    stream_fmt = '%s_%s_%s_%s_%s'
-                    stream_tpl = (net, sta, loc, inst, tag)
-                    stream_path = stream_fmt % stream_tpl
+                    stream_path = format_nslit(trace.stats, stream.get_inst(), tag)
                     if top in stream_auxholder:
                         top_auxholder = stream_auxholder[top]
                         if stream_path in top_auxholder:
@@ -518,16 +503,10 @@ class StreamWorkspace(object):
             '''
             xmlstr = xmlfmt % (hypocentral_distance, epidist_m / M_PER_KM)
 
-            metricfmt = '%s_%s/%s_%s_%s_%s_%s'
-            net = stream[0].stats.network.lower()
-            sta = stream[0].stats.station.lower()
-            loc = stream[0].stats.location.lower()
-            if loc == '--':
-                loc = ''
-            inst = stream.get_id().lower().split('.')[2]
-            metrictpl = (net, sta, net, sta, loc, inst, eventid)
-            metricpath = metricfmt % metrictpl
-
+            metricpath = '/'.join([
+                format_netsta(stream[0].stats),
+                format_nslit(stream[0].stats, stream.get_inst(), eventid)
+                ])
             self.insert_aux(xmlstr, 'StationMetrics', metricpath)
 
     def calcMetrics(self, eventid, stations=None, labels=None, config=None):
@@ -594,15 +573,10 @@ class StreamWorkspace(object):
 
             xmlstr = summary.get_metric_xml()
 
-            metricfmt = '%s_%s/%s_%s_%s_%s_%s'
-            net = stream[0].stats.network.lower()
-            sta = stream[0].stats.station.lower()
-            loc = stream[0].stats.location.lower()
-            if loc == '--':
-                loc = ''
-            inst = stream.get_id().lower().split('.')[2]
-            metrictpl = (net, sta, net, sta, loc, inst, tag)
-            metricpath = metricfmt % metrictpl
+            metricpath = '/'.join([
+                format_netsta(stream[0].stats),
+                format_nslit(stream[0].stats, stream.get_inst(), tag),
+            ])
 
             # this seems like a lot of effort
             # just to store a string in HDF, but other
@@ -756,17 +730,10 @@ class StreamWorkspace(object):
             logging.warning(msg)
             return None
 
-        metricfmt = '%s_%s_%s_%s_%s'
-        net = streams[0][0].stats.network.lower()
-        sta = streams[0][0].stats.station.lower()
-        loc = streams[0][0].stats.location.lower()
-        if loc == '--':
-            loc = ''
-        tag = streams[0].tag
-        inst = streams[0].get_id().lower().split('.')[2]
-        metrictpl = (net, sta, loc, inst, tag)
-        metricpath = metricfmt % metrictpl
-        top = '%s_%s' % (net, sta)
+        metricpath = format_nslit(streams[0][0].stats,
+                                  streams[0].get_inst(),
+                                  streams[0].tag)
+        top = format_netsta(streams[0][0].stats)
         if top in auxholder:
             tauxholder = auxholder[top]
             if metricpath not in tauxholder:
@@ -781,10 +748,7 @@ class StreamWorkspace(object):
         if 'StationMetrics' not in self.dataset.auxiliary_data:
             raise KeyError('Station metrics not found in workspace.')
         auxholder = self.dataset.auxiliary_data.StationMetrics
-        inst = streams[0].get_id().lower().split('.')[2]
-        station_fmt = '%s_%s_%s_%s_%s'
-        station_tpl = (net, sta, loc, inst, eventid)
-        station_path = station_fmt % station_tpl
+        station_path = format_nslit(streams[0][0].stats, streams[0].get_inst(), eventid)
         if top in auxholder:
             tauxholder = auxholder[top]
             if station_path not in tauxholder:
@@ -940,12 +904,12 @@ class StreamWorkspace(object):
         for provname in self.dataset.provenance.list():
             has_station = False
             for station in stations:
-                if station.lower() in provname:
+                if station in provname:
                     has_station = True
                     break
             has_label = False
             for label in labels:
-                if label.lower() in provname:
+                if label in provname:
                     has_label = True
                     break
             if not has_label or not has_station:

@@ -70,13 +70,13 @@ def compute_snr_trace(tr, bandwidth, check=None):
             'spec': sig_spec,
             'freq': sig_spec_freqs
         }
-        tr.setAuxArray('signal_spectrum', sig_dict)
+        tr.setCached('signal_spectrum', sig_dict)
 
         noise_dict = {
             'spec': noise_spec,
             'freq': sig_spec_freqs  # same as signal
         }
-        tr.setAuxArray('noise_spectrum', noise_dict)
+        tr.setCached('noise_spectrum', noise_dict)
 
         sig_spec_smooth, freqs_signal = fft_smooth(
             signal, nfft, bandwidth)
@@ -84,14 +84,14 @@ def compute_snr_trace(tr, bandwidth, check=None):
             'spec': sig_spec_smooth,
             'freq': freqs_signal
         }
-        tr.setAuxArray('smooth_signal_spectrum', smooth_dict)
+        tr.setCached('smooth_signal_spectrum', smooth_dict)
 
         noise_spec_smooth, freqs_noise = fft_smooth(noise, nfft)
         noise_smooth_dict = {
             'spec': noise_spec_smooth,
             'freq': freqs_noise
         }
-        tr.setAuxArray('smooth_noise_spectrum', noise_smooth_dict)
+        tr.setCached('smooth_noise_spectrum', noise_smooth_dict)
 
         # remove the noise level from the spectrum of the signal window
         sig_spec_smooth -= noise_spec_smooth
@@ -101,7 +101,7 @@ def compute_snr_trace(tr, bandwidth, check=None):
             'snr': snr,
             'freq': freqs_signal
         }
-        tr.setAuxArray('snr', snr_dict)
+        tr.setCached('snr', snr_dict)
     else:
         # We do not have an estimate of the signal split time for this trace
         tr = compute_signal_spectrum(tr, bandwidth)
@@ -152,8 +152,8 @@ def snr_check(tr, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
     Returns:
         trace: Trace with SNR check.
     """
-    if tr.hasAuxArray('snr'):
-        snr_dict = tr.getAuxArray('snr')
+    if tr.hasCached('snr'):
+        snr_dict = tr.getCached('snr')
         snr = np.array(snr_dict['snr'])
         freq = np.array(snr_dict['freq'])
         # Check if signal criteria is met
@@ -197,7 +197,7 @@ def compute_signal_spectrum(tr, bandwidth):
         'spec': sig_spec,
         'freq': sig_spec_freqs
     }
-    tr.setAuxArray('signal_spectrum', sig_dict)
+    tr.setCached('signal_spectrum', sig_dict)
 
     sig_spec_smooth, freqs_signal = fft_smooth(
         tr, nfft, bandwidth)
@@ -205,5 +205,5 @@ def compute_signal_spectrum(tr, bandwidth):
         'spec': sig_spec_smooth,
         'freq': freqs_signal
     }
-    tr.setAuxArray('smooth_signal_spectrum', smooth_dict)
+    tr.setCached('smooth_signal_spectrum', smooth_dict)
     return tr

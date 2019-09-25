@@ -63,7 +63,7 @@ def fit_spectra(st, origin, kappa=0.035):
         # Only do this for horizontal channels for which the smoothed spectra
         # has been computed.
         if ('Z' not in tr.stats['channel'].upper()) & \
-                tr.hasAuxArray('smooth_signal_spectrum'):
+                tr.hasCached('smooth_signal_spectrum'):
             event_mag = origin.magnitude
             event_lon = origin.longitude
             event_lat = origin.latitude
@@ -75,7 +75,7 @@ def fit_spectra(st, origin, kappa=0.035):
             )[0] * M_TO_KM
 
             # Use the smoothed spectra for fitting
-            smooth_signal_dict = tr.getAuxArray('smooth_signal_spectrum')
+            smooth_signal_dict = tr.getCached('smooth_signal_spectrum')
             freq = np.array(smooth_signal_dict['freq'])
             obs_spec = np.array(smooth_signal_dict['spec'])
 
