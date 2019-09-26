@@ -27,8 +27,8 @@ italics) in the group and dataset names:
   * ***LOC***: Location code;
   * ***CHA***: SEED channel code (or equivalent);
   * ***INST***: First two letters of the channel code (dropping the third letter which corresponds to the component);
-  * ***START__END***: Channel start and end timestamps for `Waveforms`; and
-  * ***LABEL***: User-specified label that uniquely identifies processing parameters;
+  * ***START__END***: Channel start and end timestamps for `Waveforms`;
+  * ***LABEL***: User-specified label that uniquely identifies processing parameters; and
   * ***EVENTID***: ComCat event id (or equivalent)
 
 ## Extension of ASDF HDF-5 Layout
