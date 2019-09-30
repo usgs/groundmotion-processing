@@ -40,6 +40,14 @@ should prefer this method of reading in data files.
   </tr>
 
   <tr>
+    <td>RENADIC</td>
+    <td><a href="http://terremotos.ing.uchile.cl/">Department of Civil Engineering at the University of Chile</a></td>
+    <td>cm/s<sup>2</sup></td>
+    <td>Yes</td>
+    <td>No</td>
+  </tr>
+
+  <tr>
     <td>BHRC</td>
     <td><a href="https://ismn.bhrc.ac.ir/en">Iran Road, Housing & Urban Development Research Center (BHRC)</a></td>
     <td>cm/s<sup>2</sup> (gals)</td>
