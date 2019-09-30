@@ -52,6 +52,7 @@ setup(
         'gmprocess.io.geonet',
         'gmprocess.io.knet',
         'gmprocess.io.cosmos',
+        'gmprocess.io.renadic',
         'gmprocess.io.smc',
         'gmprocess.io.unam',
         'gmprocess.io.usc',
