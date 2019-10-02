@@ -192,7 +192,7 @@ class StreamWorkspace(object):
 
             # add processing provenance info from traces
             if level == 'processed':
-                
+
                 provdocs = stream.getProvenanceDocuments()
                 for provdoc, trace in zip(provdocs, stream):
                     provname = format_nslct(trace.stats, tag)
@@ -332,28 +332,12 @@ class StreamWorkspace(object):
         if labels is None:
             labels = self.getLabels()
 
-        # tried doing a query here using dataset ifilter on event,
-        # but it didn't work...
-        for waveform in self.dataset.waveforms:
+        for waveform in self.dataset.ifilter(
+            self.dataset.q.station == stations,
+            self.dataset.q.tag == ['%s_%s' % (eventid, label)
+                                   for label in labels]):
             tags = waveform.get_waveform_tags()
             for tag in tags:
-                parts = tag.split('_')
-                if len(parts) > 2:
-                    tlabel = parts[-1]
-                    teventid = '_'.join(parts[0:-1])
-                else:
-                    teventid, tlabel = tag.split('_')
-                if eventid != teventid:
-                    continue
-                if tlabel not in labels:
-                    continue
-                stream_name = list(
-                    waveform.get_waveform_attributes().keys())[0]
-                parts = stream_name.split('.')
-                tstation = parts[1]
-                if tstation not in stations:
-                    continue
-
                 tstream = waveform[tag]
 
                 inventory = waveform['StationXML']
