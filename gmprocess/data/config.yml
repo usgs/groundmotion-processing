@@ -25,7 +25,7 @@ fetchers:
         # define the magnitude search threshold (km)
         dmag : 0.3
     FDSNFetcher:
-        # search radius in dd
+        # search radius in decimal degrees
         radius : 4
         # seconds before arrival time
         time_before : 30
