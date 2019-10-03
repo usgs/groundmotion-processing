@@ -1,9 +1,9 @@
 import os
+import copy
 import datetime
-import warnings
 import logging
+from collections import Counter
 
-from matplotlib.pyplot import cm
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -11,6 +11,7 @@ from obspy.geodetics.base import gps2dist_azimuth
 from obspy.core.utcdatetime import UTCDateTime
 from impactutils.colors.cpalette import ColorPalette
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from matplotlib.dates import num2date
 
 from gmprocess.metrics.reduction.arias import Arias
 from gmprocess import spectrum
@@ -331,39 +332,37 @@ def plot_durations(stream, durations, axes=None, axis_index=None,
     return axs
 
 
-def plot_moveout(streams, epilat, epilon, channel, cmap='viridis',
-                 figsize=None, file=None, minfontsize=14, normalize=False,
-                 scale=1, title=None, xlabel=None, ylabel=None):
+def plot_moveout(streams, epilat, epilon, channel=None, max_dist=200,
+                 figsize=(10, 15), file=None, minfontsize=14, normalize=True,
+                 scale=0.001, alpha=0.25):
     """
-    Create moveout plots.
+    Create moveout plot.
 
     Args:
-        stream (obspy.core.stream.Stream):
-            Set of acceleration data with units of gal (cm/s/s).
+        streams (StreamCollection):
+            StreamCollection of acceleration data with units of gal (cm/s/s).
         epilat (float):
             Epicenter latitude.
         epilon (float):
             Epicenter longitude.
-        channel (list):
-            List of channels (str) of each stream to view.
-        cmap (str):
-            Colormap name.
+        channel (str):
+            Channel code (str) of each stream to view. Default is None.
+            If None, then the channel code with the highest number of traces
+            will be used.
+        max_dist (float):
+            Maximum distance (in km) to plot. Default is 200 km.
         figsize (tuple):
-            Tuple of height and width. Default is None.
+            Tuple of height and width. Default is (10, 15).
         file (str):
             File where the image will be saved. Default is None.
         minfontsize (int):
             Minimum font size. Default is 14.
         normalize (bool):
-            Normalize the data. Default is faulse.
+            Normalize the data. Default is True.
         scale (int, float):
-            Value to scale the trace by. Default is 1.
-        title (str):
-            Title for plot. Default is None.
-        xlabel (str):
-            Label for x axis. Default is None.
-        ylabel (str):
-            Label for y axis. Default is None.
+            Value to scale the trace by. Default is 0.001.
+        alpha (float):
+            Alpha value for plotting the traces.
 
     Returns:
         tuple: (Figure, matplotlib.axes._subplots.AxesSubplot)
@@ -371,22 +370,39 @@ def plot_moveout(streams, epilat, epilon, channel, cmap='viridis',
     if len(streams) < 1:
         raise Exception('No streams provided.')
 
-    colors = cm.get_cmap(cmap)
-    color_array = colors(np.linspace(0, 1, len(streams)))
-    if figsize is None:
-        figsize = (10, len(streams))
     fig, ax = plt.subplots(figsize=figsize)
-    for idx, stream in enumerate(streams):
+
+    # If no channel is given, then find the channel code with the greatest
+    # number of streams
+    if channel is None:
+        channel_codes = []
+        for st in streams:
+            for tr in st:
+                channel_codes.append(tr.stats.channel)
+        channel_counter = Counter(channel_codes)
+        channel = max(channel_counter, key=channel_counter.get)
+
+    # Create a copy of the streams to avoid modifying the data when normalizing
+    streams_copy = copy.deepcopy(streams)
+    for idx, stream in enumerate(streams_copy):
+        if not stream.passed:
+            continue
         traces = stream.select(channel=channel)
         if len(traces) > 0:
             trace = traces[0]
-            if normalize or scale != 1:
-                warnings.filterwarnings("ignore", category=FutureWarning)
-                trace.normalize()
-            trace.data *= scale
             lat = trace.stats.coordinates['latitude']
             lon = trace.stats.coordinates['longitude']
             distance = gps2dist_azimuth(lat, lon, epilat, epilon)[0] / 1000
+
+            # Don't plot if past the maximum distance
+            if max_dist is not None and distance > max_dist:
+                continue
+
+            # Multiply by distance to normalize
+            if normalize:
+                trace.data = trace.data.astype(np.float) * distance
+            trace.data *= scale
+
             times = []
             start = trace.stats.starttime
             for time in trace.times():
@@ -394,26 +410,27 @@ def plot_moveout(streams, epilat, epilon, channel, cmap='viridis',
                 td = datetime.timedelta(seconds=time)
                 ti = starttime + td
                 times += [ti.datetime]
-            label = trace.stats.network + '.' + \
-                trace.stats.station + '.' + trace.stats.channel
-            ax.plot(times, trace.data + distance, label=label,
-                    color=color_array[idx])
+            ax.plot(times, trace.data + distance, c='k', alpha=alpha)
     ax.invert_yaxis()
-    ax.legend(bbox_to_anchor=(1, 1), fontsize=minfontsize)
-    if title is None:
-        title = ('Event on ' + str(starttime.month) + '/'
-                 + str(starttime.day) + '/' + str(starttime.year))
-        if scale != 1:
-            title += ' scaled by ' + str(scale)
-    if xlabel is None:
-        xlabel = 'Time (H:M:S)'
-    if ylabel is None:
-        ylabel = 'Distance (km)'
-    ax.set_title(title, fontsize=minfontsize + 4)
-    ax.set_xlabel(xlabel, fontsize=minfontsize)
-    ax.set_ylabel(ylabel, fontsize=minfontsize)
-    ax.xaxis.set_tick_params(labelsize=minfontsize - 2)
+    ax.set_title('Channel code: %s' % channel, fontsize=minfontsize + 4)
+    ax.set_ylabel('Epicentral distance (km)', fontsize=minfontsize)
     ax.yaxis.set_tick_params(labelsize=minfontsize - 2)
+    plt.xticks([])
+
+    # Get the x-coordinate for the time bar
+    xmin, xmax = ax.get_xlim()
+    xbar = num2date(xmin + 0.9 * (xmax - xmin))
+    xlabel = num2date(xmin + 0.85 * (xmax - xmin))
+
+    # Get the y-coordinates for the time bar and label
+    ymax, ymin = ax.get_ylim()
+    ybar = 0
+    ylabel = 0.05 * (ymax - ymin)
+
+    # Plot the time-scale bar
+    plt.errorbar(xbar, ybar, xerr=datetime.timedelta(seconds=15), color='k',
+                 capsize=5)
+    plt.text(xlabel, ylabel, '30 seconds', fontsize=minfontsize)
     if file is not None:
         fig.savefig(file, format='png')
     plt.show()

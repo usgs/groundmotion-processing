@@ -25,7 +25,7 @@ from gmprocess.logging import setup_logger
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.processing import process_streams
 from gmprocess.report import build_report_latex
-from gmprocess.plot import summary_plots, plot_regression
+from gmprocess.plot import summary_plots, plot_regression, plot_moveout
 from gmprocess.config import get_config
 
 NON_IMT_COLS = set(['EarthquakeId',
@@ -190,7 +190,11 @@ def process_event(outdir, event, pcommands,
             summary_plots(stream, plot_dir, event)
 
         mapfile = draw_stations_map(pstreams, event, event_dir)
+        plot_moveout(pstreams, event.latitude, event.longitude,
+                     file=os.path.join(event_dir, 'moveout_plot.png'))
+
         append_file(files_created, 'Station map', mapfile)
+        append_file(files_created, 'Moveout plot', 'moveout_plot.png')
 
         logging.info(
             'Creating diagnostic report for event %s...' % event.id)
