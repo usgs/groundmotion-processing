@@ -98,6 +98,9 @@ Code version: [VERSION]
 
 \\includegraphics[width=0.9\\textwidth]
     {[MAPPATH]}
+
+\\includegraphics[width=0.9\\textwidth]
+    {[MOVEOUTPATH]}
 \\end{center}
 
 \\vfill
@@ -147,6 +150,11 @@ def build_report_latex(sc, directory, origin, config=None):
         TB = TB.replace(
             '[VERSION]', gmprocess.__version__
         )
+        moveout_file = os.path.join(directory, 'moveout_plot.png')
+        if os.path.isfile(moveout_file):
+            TB = TB.replace(
+                '[MAPPATH]', 'stations_map.png'
+            )
         report += TB
 
     # Loop over each StationStream and append it's page to the report

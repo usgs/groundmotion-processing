@@ -10,7 +10,6 @@ import shutil
 from gmprocess.io.read import read_data
 from gmprocess.plot import (plot_arias, plot_durations,
                             plot_moveout, plot_regression)
-import matplotlib.pyplot as plt
 import pandas as pd
 from gmprocess.io.test_utils import read_data_dir
 import pkg_resources
@@ -80,11 +79,11 @@ def test_plot():
     epicenter_lat = 24.14
     epicenter_lon = 121.69
     plot_moveout(streams, epicenter_lat, epicenter_lon, 'BN1',
-                 cmap='nipy_spectral_r', figsize=(15, 10), minfontsize=16,
+                 figsize=(15, 10), minfontsize=16,
                  normalize=True, scale=10)
 
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_regression()
-    # test_plot()
+    test_plot()
