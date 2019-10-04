@@ -153,7 +153,7 @@ def build_report_latex(sc, directory, origin, config=None):
         moveout_file = os.path.join(directory, 'moveout_plot.png')
         if os.path.isfile(moveout_file):
             TB = TB.replace(
-                '[MAPPATH]', 'stations_map.png'
+                '[MOVEOUTPATH]', 'moveout_plot.png'
             )
         report += TB
 
