@@ -309,19 +309,19 @@ def trim_multiple_events(st, origin, catalog, travel_time_df, pga_factor,
                          pct_window_reject, gmpe, site_parameters,
                          rupture_parameters):
     """
-    Uses a catalog (list of events) to handle cases where a trace might
+    Uses a catalog (list of ScalarEvents) to handle cases where a trace might
     contain signals from multiple events. The catalog should contain events
     down to a low enough magnitude in relation to the events of interest.
     Overall, the algorithm is as follows:
-        1) For each earthquake in the catalog, compute the P-wave travel time
+        1) For each earthquake in the catalog, get the P-wave travel time
            and estimated PGA at this station.
         2) Compute the PGA (of the as-recorded horizontal channels).
         3) Select the P-wave arrival times across all events for this record
            that are (a) within the signal window, and (b) the predicted PGA is
            greater than "pga_factor" times the PGA from step #1.
         4) If any P-wave arrival times match the above criteria, then if any of
-           the arrival times fall within in the first "pct_window_reject"% of
-           the signal window, then reject the record. Otherwise, trim the
+           the arrival times fall within in the first "pct_window_reject"*100%
+           of the signal window, then reject the record. Otherwise, trim the
            record such that the end time does not include any of the arrivals
            selected in step #3.
 
@@ -334,7 +334,7 @@ def trim_multiple_events(st, origin, catalog, travel_time_df, pga_factor,
             List of ScalarEvent objects.
         travel_time_df (DataFrame):
             A pandas DataFrame that contains the travel time information
-            (obtained using create_travel_time_dataframe).
+            (obtained using gmprocess.phase.create_travel_time_dataframe).
             The columns in the DataFrame are the station ids and the indices
             are the earthquake ids.
         pga_factor (float):
@@ -348,13 +348,12 @@ def trim_multiple_events(st, origin, catalog, travel_time_df, pga_factor,
             "pct_window_reject" * 100% of the signal window, then the entire
             record will be rejected. Otherwise, the record will be trimmed
             appropriately.
-        gmpe:
-            Short name of the GMPE to use. Must be defined in the
-            gmprocess/data/modules.yml file.
-        site_parameters:
-            TODO
+        gmpe (str):
+            Short name of the GMPE to use. Must be defined in the modules file.
+        site_parameters (dict):
+            Dictionary of site parameters to input to the GMPE.
         rupture_parameters:
-            TODO
+            Dictionary of rupture parameters to input to the GMPE.
 
     Returns:
         StationStream: Processed stream.
