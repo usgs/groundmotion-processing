@@ -11,9 +11,8 @@ from scipy.optimize import curve_fit
 from gmprocess.stationtrace import PROCESS_LEVELS
 from gmprocess.streamcollection import StreamCollection
 from gmprocess.config import get_config
-from gmprocess.windows import signal_split
-from gmprocess.windows import signal_end
-from gmprocess.windows import window_checks
+from gmprocess.windows import signal_split, signal_end, window_checks
+from gmprocess.phase import create_travel_time_dataframe
 from gmprocess import corner_frequencies
 from gmprocess.snr import compute_snr_trace
 
@@ -31,13 +30,14 @@ from gmprocess.zero_crossings import check_zero_crossings  # NOQA
 from gmprocess.nn_quality_assurance import NNet_QA  # NOQA
 from gmprocess.snr import compute_snr  # NOQA
 from gmprocess.spectrum import fit_spectra  # NOQA
+from gmprocess.windows import cut, trim_multiple_events  # NOQA
 # -----------------------------------------------------------------------------
 
 M_TO_CM = 100.0
 
 # List of processing steps that require an origin
 # besides the arguments in the conf file.
-REQ_ORIGIN = []
+REQ_ORIGIN = ['trim_multiple_events']
 
 
 TAPER_TYPES = {
@@ -81,7 +81,8 @@ def process_streams(streams, origin, config=None):
             A StreamCollection object.
         origin (ScalarEvent):
             ScalarEvent object.
-        config (dict): Configuration dictionary (or None). See get_config().
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         A StreamCollection object.
@@ -99,6 +100,12 @@ def process_streams(streams, origin, config=None):
     event_lon = origin.longitude
     event_lat = origin.latitude
 
+    # -------------------------------------------------------------------------
+    # Compute a travel-time matrix for interpolation later in the
+    # trim_multiple events step
+    if any('trim_multiple_events' in dict for dict in config['processing']):
+        travel_time_df, catalog = create_travel_time_dataframe(
+            streams, **config['travel_time'])
     # -------------------------------------------------------------------------
     # Begin noise/signal window steps
 
@@ -164,6 +171,10 @@ def process_streams(streams, origin, config=None):
                 }
             elif step_name in REQ_ORIGIN:
                 step_args['origin'] = origin
+
+            if step_name == 'trim_multiple_events':
+                step_args['catalog'] = catalog
+                step_args['travel_time_df'] = travel_time_df
 
             if step_args is None:
                 stream = globals()[step_name](stream)
@@ -417,56 +428,6 @@ def resample(st, new_sampling_rate=None, method=None, a=None):
             }
         )
 
-    return st
-
-
-def cut(st, sec_before_split=None):
-    """
-    Cut/trim the record.
-
-    This method minimally requires that the windows.signal_end method has been
-    run, in which case the record is trimmed to the end of the signal that
-    was estimated by that method.
-
-    To trim the beginning of the record, the sec_before_split must be
-    specified, which uses the noise/signal split time that was estiamted by the
-    windows.signal_split mehtod.
-
-    Args:
-        st (StationStream):
-            Stream of data.
-        sec_before_split (float):
-            Seconds to trim before split. If None, then the beginning of the
-            record will be unchanged.
-
-    Returns:
-        stream: cut streams.
-    """
-    if not st.passed:
-        return st
-
-    for tr in st:
-        logging.debug('Before cut end time: %s ' % tr.stats.endtime)
-        etime = tr.getParameter('signal_end')['end_time']
-        tr.trim(endtime=etime)
-        logging.debug('After cut end time: %s ' % tr.stats.endtime)
-        if sec_before_split is not None:
-            split_time = tr.getParameter('signal_split')['split_time']
-            stime = split_time - sec_before_split
-            logging.debug('Before cut start time: %s ' % tr.stats.starttime)
-            if stime < etime:
-                tr.trim(starttime=stime)
-            else:
-                tr.fail('The \'cut\' processing step resulting in '
-                        'incompatible start and end times.')
-            logging.debug('After cut start time: %s ' % tr.stats.starttime)
-        tr.setProvenance(
-            'cut',
-            {
-                'new_start_time': tr.stats.starttime,
-                'new_end_time': tr.stats.endtime
-            }
-        )
     return st
 
 

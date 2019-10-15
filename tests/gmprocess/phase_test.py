@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 from gmprocess.phase import (PowerPicker, pphase_pick, pick_ar,
                              pick_kalkan, pick_power, pick_baer,
-                             pick_yeck, pick_travel)
+                             pick_yeck, pick_travel,
+                             create_travel_time_dataframe)
 from gmprocess.io.read import read_data
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.exception import GMProcessException
@@ -10,14 +11,13 @@ from gmprocess.streamcollection import StreamCollection
 from obspy import read, UTCDateTime
 from obspy.core.trace import Trace
 from obspy.core.stream import Stream
+from obspy.geodetics import locations2degrees
+from obspy.taup import TauPyModel
 from scipy.io import loadmat
 import numpy as np
 import os
 import pkg_resources
-import matplotlib.pyplot as plt
-import shutil
 import pandas as pd
-import time
 
 
 def test_p_pick():
@@ -146,9 +146,46 @@ def get_streams():
     return StreamCollection(streams)
 
 
+def test_get_travel_time_df():
+    datapath = os.path.join('data', 'testdata', 'travel_times')
+    datadir = pkg_resources.resource_filename('gmprocess', datapath)
+
+    sc1 = StreamCollection.from_directory(
+        os.path.join(datadir, 'ci37218996'))
+    sc2 = StreamCollection.from_directory(
+        os.path.join(datadir, 'ci38461735'))
+    scs = [sc1, sc2]
+
+    df1, catalog = create_travel_time_dataframe(
+        sc1, os.path.join(datadir, 'catalog_test_traveltimes.csv'),
+        5, 0.1, 'iasp91')
+    df2, catalog = create_travel_time_dataframe(
+        sc2, os.path.join(datadir, 'catalog_test_traveltimes.csv'),
+        5, 0.1, 'iasp91')
+
+    model = TauPyModel('iasp91')
+    for dfidx, df in enumerate([df1, df2]):
+        for staidx, sta in enumerate(df):
+            for eqidx, time in enumerate(df[sta]):
+                sta_coords = scs[dfidx][staidx][0].stats.coordinates
+                event = catalog[eqidx]
+                dist = locations2degrees(sta_coords['latitude'],
+                                         sta_coords['longitude'],
+                                         event.latitude, event.longitude)
+                if event.depth_km < 0:
+                    depth = 0
+                else:
+                    depth = event.depth_km
+                travel_time = model.get_travel_times(
+                    depth, dist, ['p', 'P', 'Pn'])[0].time
+                abs_time = event.time + travel_time
+                np.testing.assert_almost_equal(abs_time, time, decimal=1)
+
+
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_all_pickers()
     test_pphase_picker()
     test_p_pick()
     test_travel_time()
+    test_get_travel_time_df()

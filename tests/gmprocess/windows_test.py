@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
 
 from gmprocess.io.read import read_data
-from gmprocess.windows import signal_split
+from gmprocess.windows import (signal_split, signal_end,
+                               trim_multiple_events, cut)
 import pkg_resources
 import os
+import numpy as np
 from obspy import UTCDateTime
 
 from gmprocess.config import get_config
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.streamcollection import StreamCollection
+from gmprocess.processing import remove_response
+from gmprocess.event import get_event_object
+from gmprocess.phase import create_travel_time_dataframe
 
 PICKER_CONFIG = get_config(section='pickers')
 
@@ -130,7 +135,41 @@ def test_signal_split2():
             assert v1 == value
 
 
+def test_trim_multiple_events():
+    datapath = os.path.join('data', 'testdata', 'multiple_events')
+    datadir = pkg_resources.resource_filename('gmprocess', datapath)
+    sc = StreamCollection.from_directory(
+        os.path.join(datadir, 'ci38457511'))
+    origin = get_event_object('ci38457511')
+    df, catalog = create_travel_time_dataframe(
+        sc, os.path.join(datadir, 'catalog.csv'), 5, 0.1, 'iasp91')
+    for st in sc:
+        st.detrend('demean')
+        remove_response(st, None, None)
+        signal_split(st, origin)
+        signal_end(st, origin.time, origin.longitude, origin.latitude,
+                   origin.magnitude, method='model', model='AS16')
+        cut(st, 2)
+        trim_multiple_events(st, origin, catalog, df, 0.2, 0.7, 'B14',
+                             {'vs30': 760}, {'rake': 0})
+
+    num_failures = sum([1 if not st.passed else 0 for st in sc])
+    assert num_failures == 1
+
+    failure = sc.select(station='WRV2')[0][0].getParameter('failure')
+    assert failure['module'] == 'trim_multiple_events'
+    assert failure['reason'] == ('A significant arrival from another event '
+                                 'occurs within the first 70.0 percent of the '
+                                 'signal window')
+
+    for tr in sc.select(station='JRC2')[0]:
+        np.testing.assert_almost_equal(
+            tr.stats.endtime,
+            UTCDateTime('2019-07-06T03:20:38.7983Z'))
+
+
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_signal_split2()
     test_signal_end()
+    test_trim_multiple_events()

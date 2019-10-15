@@ -296,10 +296,27 @@ processing:
 #        # removed from the acceleration time series.
 #        detrending_method: baseline_sixth_order
 
+    # - trim_multiple_events:
+    #     pga_factor: 0.2
+    #     pct_window_reject: 0.7
+    #     gmpe: B14
+    #     site_parameters:
+    #         vs30: 760
+    #     rupture_parameters:
+    #         rake: 0
+
     - fit_spectra:
         # Fit a Brune spectra to the data by adjusting stress drop with an
         # assumed kappa.
         kappa: 0.035
+
+# travel_time:
+#     # Section for computing travel times which is used by the
+#     # "trim_multiple_events" processing step
+#     catalog_file: none # Path to the catalog for computing travel times
+#     ddepth: 5  # Depth spacing in km
+#     ddist: 0.1  # Distance spacing in decimal degrees
+#     model: iasp91  # Valid obspy TauPyModel
 
 # -----------------------------------------------------------------------------
 # This section is for handling colocated instruments that have otherwise

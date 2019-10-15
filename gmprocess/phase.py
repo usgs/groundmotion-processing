@@ -4,7 +4,9 @@ import logging
 
 # third party imports
 import numpy as np
+import pandas as pd
 from scipy.signal import butter, lfilter, hilbert
+from scipy.interpolate import griddata
 import scipy.linalg as alg
 from obspy.signal.trigger import ar_pick, pk_baer
 from obspy.core.utcdatetime import UTCDateTime
@@ -14,6 +16,7 @@ from obspy.taup import TauPyModel
 # local imports
 from gmprocess.exception import GMProcessException
 from gmprocess.config import get_config
+from gmprocess.event import ScalarEvent
 
 NAN_TIME = UTCDateTime('1970-01-01T00:00:00')
 
@@ -687,3 +690,104 @@ def _get_statelevel(y, n):
     # lHist_final = (lLow + iMax);
     # uHist_final = (uLow + iMin);
     return levels, histogram, bins
+
+
+def create_travel_time_dataframe(streams, catalog_file, ddepth, ddist, model):
+    """
+    Creates a travel time dataframe, which contains the phase arrrival times
+    for each station the StreamCollection, for each event in the catalog.
+    This uses an interpolation method to save time, and the fineness of the
+    interpolation grid can be adjusted using the ddepth and ddist parameters.
+    Using the recommended values of ddepth=5 and ddist=0.1 are generally
+    sufficient to achieve less than 0.1 seconds of error in the travel times,
+    for most cases.
+
+    Args:
+        streams (StreamCollection):
+            Streams to calculate travel times for.
+        catalog_file (str):
+            The path to the CSV file (from ComCat) which contains event info.
+        ddepth (float):
+            The depth spacing (in km) for the interpolation grid.
+            Recommended value is 5 km.
+        ddist (float):
+            The distance spacing (in decimal degrees) for the interpolation
+            grid. Recommend value is 0.1 degrees.
+
+    Retuns:
+        A tuple, containing the travel time dataframe and the catalog
+        (list of ScalarEvent objects).
+    """
+
+    # Read the catalog file and create a catalog (list) of ScalarEvent objects
+    df_catalog = pd.read_csv(catalog_file)
+
+    # Replace any negative depths with 0
+    df_catalog['depth'].clip(lower=0, inplace=True)
+    catalog = []
+    for idx, row in df_catalog.iterrows():
+        event = ScalarEvent()
+        event.fromParams(row['id'], row['time'], row['latitude'],
+                         row['longitude'], row['depth'], row['mag'])
+        catalog.append(event)
+
+    # Store the lat, lon, and id for each stream
+    st_lats, st_lons, st_ids = [], [], []
+    for st in streams:
+        st_lats.append(st[0].stats.coordinates.latitude)
+        st_lons.append(st[0].stats.coordinates.longitude)
+        st_ids.append(st[0].stats.network + '.' + st[0].stats.station)
+
+    # Calculate the distance for each stream, for each event
+    # Store distances in a matrix
+    distances_matrix = np.zeros((len(streams), len(catalog)))
+    for idx, st in enumerate(streams):
+        distances_matrix[idx] = locations2degrees(
+            np.repeat(st_lats[idx], len(catalog)),
+            np.repeat(st_lons[idx], len(catalog)),
+            df_catalog['latitude'], df_catalog['longitude'])
+    distances_matrix = distances_matrix.T
+
+    # Calculate the minimum depth/distance values for the inteprolation grid
+    # This includes a buffer to avoid interpolating at the endpoints
+    # Make sure that the minimum depth/distance values aren't negative
+    minimum_depth = max([0, min(df_catalog['depth']) - 2 * ddepth])
+    minimum_dist = max([0, distances_matrix.min() - 2 * ddist])
+    depth_grid = np.arange(
+        minimum_depth, max(df_catalog['depth']) + 2 * ddepth, ddepth)
+    distance_grid = np.arange(
+        minimum_dist, distances_matrix.max() + 2 * ddist, ddist)
+
+    # For each distance and each depth, compute the travel time
+    # Store values in the "times" 2D matrix
+    taupy_model = TauPyModel(model)
+    times = np.zeros((len(depth_grid), len(distance_grid)))
+    for i, depth in enumerate(depth_grid):
+        for j, dist in enumerate(distance_grid):
+            arrivals = taupy_model.get_travel_times(
+                depth, dist, ['p', 'P', 'Pn'])
+            if not arrivals:
+                times[i][j] = np.nan
+            else:
+                times[i][j] = arrivals[0].time
+
+    # Use 2D interpolation to interpolate values at the actual points
+    points = np.transpose([np.tile(distance_grid, len(depth_grid)),
+                           np.repeat(depth_grid, len(distance_grid))])
+    new_points = np.vstack(
+        (distances_matrix.flatten(),
+         np.repeat(df_catalog['depth'], len(streams)))).T
+    interpolated_times = griddata(points, times.flatten(), new_points).reshape(
+        (-1, len(streams)))
+    utcdatetimes = np.array([UTCDateTime(time) for time in df_catalog['time']])
+    interpolated_times = utcdatetimes.reshape(-1, 1) + interpolated_times
+
+    # Store travel time information in a DataFrame
+    # Column indicies are the station ids, rows are the earthquake ids
+    df = pd.DataFrame(data=interpolated_times, index=df_catalog['id'],
+                      columns=st_ids)
+
+    # Remove any duplicate columns which might result from a station with
+    # multiple instruments
+    df = df.loc[:, ~df.columns.duplicated()]
+    return df, catalog

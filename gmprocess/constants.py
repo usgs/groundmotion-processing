@@ -2,6 +2,7 @@ import scipy.constants as sp
 
 CONFIG_FILE = 'config.yml'
 PICKER_FILE = 'picker.yml'
+MODULE_FILE = 'modules.yml'
 GAL_TO_PCTG = 1 / sp.g
 
 # Converts acceleration units to cm/s/s
