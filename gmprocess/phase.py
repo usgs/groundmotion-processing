@@ -4,7 +4,9 @@ import logging
 
 # third party imports
 import numpy as np
+import pandas as pd
 from scipy.signal import butter, lfilter, hilbert
+from scipy.interpolate import griddata
 import scipy.linalg as alg
 from obspy.signal.trigger import ar_pick, pk_baer
 from obspy.core.utcdatetime import UTCDateTime
@@ -14,6 +16,7 @@ from obspy.taup import TauPyModel
 # local imports
 from gmprocess.exception import GMProcessException
 from gmprocess.config import get_config
+from gmprocess.event import ScalarEvent
 
 NAN_TIME = UTCDateTime('1970-01-01T00:00:00')
 
@@ -687,3 +690,72 @@ def _get_statelevel(y, n):
     # lHist_final = (lLow + iMax);
     # uHist_final = (uLow + iMin);
     return levels, histogram, bins
+
+
+def create_travel_time_dataframe(streams, catalog_file, ddepth, ddist, model):
+
+    df_catalog = pd.read_csv(catalog_file)
+    catalog = []
+    for idx, row in df_catalog.iterrows():
+        event = ScalarEvent()
+        event.fromParams(row['id'], row['time'], row['latitude'],
+                         row['longitude'], row['depth'], row['mag'])
+        catalog.append(event)
+
+    eq_depths, eq_lats, eq_lons, eq_times, st_lats, st_lons, st_ids, eq_ids = \
+        [], [], [], [], [], [], [], []
+    for event in catalog:
+        if event.depth_km < 0:
+            eq_depths.append(0)
+        else:
+            eq_depths.append(event.depth_km)
+        eq_lats.append(event.latitude)
+        eq_lons.append(event.longitude)
+        eq_times.append(event.time)
+        eq_ids.append(event.id)
+    for st in streams:
+        st_lats.append(st[0].stats.coordinates.latitude)
+        st_lons.append(st[0].stats.coordinates.longitude)
+        st_ids.append(st[0].stats.network + '.' + st[0].stats.station)
+
+    distances_matrix = np.zeros((len(streams), len(catalog)))
+    for idx, st in enumerate(streams):
+        distances_matrix[idx] = locations2degrees(
+            np.repeat(st_lats[idx], len(catalog)),
+            np.repeat(st_lons[idx], len(catalog)),
+            eq_lats, eq_lons)
+    distances_matrix = distances_matrix.T
+
+    minimum_depth = max([0, min(eq_depths) - ddepth])
+    minimum_dist = max([0, distances_matrix.min() - ddist])
+
+    depth_grid = np.arange(
+        minimum_depth, max(eq_depths) + 2 * ddepth, ddepth)
+    distance_grid = np.arange(
+        minimum_dist, distances_matrix.max() + 2 * ddist, ddist)
+
+    taupy_model = TauPyModel(model)
+    times = np.zeros((len(depth_grid), len(distance_grid)))
+    for i, depth in enumerate(depth_grid):
+        for j, dist in enumerate(distance_grid):
+            arrivals = taupy_model.get_travel_times(
+                depth, dist, ['p', 'P', 'Pn'])
+            if not arrivals:
+                times[i][j] = np.nan
+            else:
+                times[i][j] = arrivals[0].time
+
+    points = np.transpose([np.tile(distance_grid, len(depth_grid)),
+                           np.repeat(depth_grid, len(distance_grid))])
+    new_points = np.vstack(
+        (distances_matrix.flatten(), np.repeat(eq_depths, len(streams)))).T
+    interpolated_times = griddata(points, times.flatten(), new_points).reshape(
+        (-1, len(streams)))
+    interpolated_times = np.array(eq_times).reshape(-1, 1) + interpolated_times
+
+    df = pd.DataFrame(data=interpolated_times, index=eq_ids, columns=st_ids)
+
+    # Remove any duplicate columns which might result from a station with
+    # multiple instruments
+    df = df.loc[:, ~df.columns.duplicated()]
+    return df, catalog

@@ -2,10 +2,7 @@
 """
 Helper functions for windowing singal and noise in a trace.
 """
-import os
-from importlib import import_module
-import pkg_resources
-import yaml
+import logging
 
 import numpy as np
 import pandas as pd
@@ -21,8 +18,60 @@ from obspy.geodetics.base import gps2dist_azimuth
 from gmprocess.phase import (
     pick_power, pick_ar, pick_baer, pick_kalkan, pick_travel)
 from gmprocess.config import get_config
+from gmprocess.metrics.station_summary import StationSummary
+from gmprocess.models import load_model
 
 M_TO_KM = 1.0 / 1000
+
+
+def cut(st, sec_before_split=None):
+    """
+    Cut/trim the record.
+
+    This method minimally requires that the windows.signal_end method has been
+    run, in which case the record is trimmed to the end of the signal that
+    was estimated by that method.
+
+    To trim the beginning of the record, the sec_before_split must be
+    specified, which uses the noise/signal split time that was estiamted by the
+    windows.signal_split mehtod.
+
+    Args:
+        st (StationStream):
+            Stream of data.
+        sec_before_split (float):
+            Seconds to trim before split. If None, then the beginning of the
+            record will be unchanged.
+
+    Returns:
+        stream: cut streams.
+    """
+    if not st.passed:
+        return st
+
+    for tr in st:
+        logging.debug('Before cut end time: %s ' % tr.stats.endtime)
+        etime = tr.getParameter('signal_end')['end_time']
+        tr.trim(endtime=etime)
+        logging.debug('After cut end time: %s ' % tr.stats.endtime)
+        if sec_before_split is not None:
+            split_time = tr.getParameter('signal_split')['split_time']
+            stime = split_time - sec_before_split
+            logging.debug('Before cut start time: %s ' % tr.stats.starttime)
+            if stime < etime:
+                tr.trim(starttime=stime)
+            else:
+                tr.fail('The \'cut\' processing step resulting in '
+                        'incompatible start and end times.')
+            logging.debug('After cut start time: %s ' % tr.stats.starttime)
+        tr.setProvenance(
+            'cut',
+            {
+                'new_start_time': tr.stats.starttime,
+                'new_end_time': tr.stats.endtime
+            }
+        )
+    return st
 
 
 def window_checks(st, min_noise_duration=0.5, min_signal_duration=5.0):
@@ -195,14 +244,7 @@ def signal_end(st, event_time, event_lon, event_lat, event_mag,
     """
     # Load openquake stuff if method="model"
     if method == "model":
-        mod_file = pkg_resources.resource_filename(
-            'gmprocess', os.path.join('data', 'modules.yml'))
-        with open(mod_file, 'r') as f:
-            mods = yaml.load(f, Loader=yaml.FullLoader)
-
-        # Import module
-        cname, mpath = mods['modules'][model]
-        dmodel = getattr(import_module(mpath), cname)()
+        dmodel = load_model(model)
 
         # Set some "conservative" inputs (in that they will tend to give
         # larger durations).
@@ -259,5 +301,156 @@ def signal_end(st, event_time, event_lon, event_lat, event_mag,
             'epsilon': epsilon
         }
         tr.setParameter('signal_end', end_params)
+
+    return st
+
+
+def trim_multiple_events(st, origin, catalog, travel_time_df, pga_factor,
+                         pct_window_reject, gmpe, site_parameters,
+                         rupture_parameters):
+    """
+    Uses a catalog (list of events) to handle cases where a trace might
+    contain signals from multiple events. The catalog should contain events
+    down to a low enough magnitude in relation to the events of interest.
+    Overall, the algorithm is as follows:
+        1) For each earthquake in the catalog, compute the P-wave travel time
+           and estimated PGA at this station.
+        2) Compute the PGA (of the as-recorded horizontal channels).
+        3) Select the P-wave arrival times across all events for this record
+           that are (a) within the signal window, and (b) the predicted PGA is
+           greater than "pga_factor" times the PGA from step #1.
+        4) If any P-wave arrival times match the above criteria, then if any of
+           the arrival times fall within in the first "pct_window_reject"% of
+           the signal window, then reject the record. Otherwise, trim the
+           record such that the end time does not include any of the arrivals
+           selected in step #3.
+
+    Args:
+        st (StationStream):
+            Stream of data.
+        origin (ScalarEvent):
+            ScalarEvent object associated with the StationStream.
+        catalog (list):
+            List of ScalarEvent objects.
+        travel_time_df (DataFrame):
+            A pandas DataFrame that contains the travel time information
+            (obtained using create_travel_time_dataframe).
+            The columns in the DataFrame are the station ids and the indices
+            are the earthquake ids.
+        pga_factor (float):
+            A decimal factor used to determine whether the predicted PGA
+            from an event arrival is significant enough that it should be
+            considered for removal.
+        pct_window_reject (float):
+            A decimal from 0.0 to 1.0 used to determine if an arrival should
+            be trimmed from the record, or if the entire record should be
+            rejected. If the arrival falls within the first
+            "pct_window_reject" * 100% of the signal window, then the entire
+            record will be rejected. Otherwise, the record will be trimmed
+            appropriately.
+        gmpe:
+            Short name of the GMPE to use. Must be defined in the
+            gmprocess/data/modules.yml file.
+        site_parameters:
+            TODO
+        rupture_parameters:
+            TODO
+
+    Returns:
+        StationStream: Processed stream.
+    """
+
+    if not st.passed:
+        return st
+
+    # Check that we know the signal split for each trace in the stream
+    for tr in st:
+        if not tr.hasParameter('signal_split'):
+            return st
+
+    signal_window_starttime = st[0].getParameter('signal_split')['split_time']
+
+    arrivals = travel_time_df[st[0].stats.network + '.' + st[0].stats.station]
+    arrivals = arrivals.sort_values()
+
+    # Filter by any arrival times that appear in the signal window
+    arrivals = arrivals[
+        (arrivals > signal_window_starttime) &
+        (arrivals < st[0].stats.endtime)]
+
+    # Make sure we remove the arrival that corresponds to the event of interest
+    arrivals.drop(index=origin.id, inplace=True)
+
+    if arrivals.empty:
+        return st
+
+    # Calculate the recorded PGA for this record
+    stasum = StationSummary.from_stream(st, ['ROTD(50.0)'], ['PGA'])
+    recorded_pga = stasum.get_pgm('PGA', 'ROTD(50.0)')
+
+    # Load the GMPE model
+    gmpe = load_model(gmpe)
+
+    # Set site parameters
+    sx = SitesContext()
+
+    # Make sure that site parameter values are converted to numpy arrays
+    site_parameters_copy = site_parameters.copy()
+    for k, v in site_parameters_copy.items():
+        site_parameters_copy[k] = np.array([site_parameters_copy[k]])
+    sx.__dict__.update(site_parameters_copy)
+
+    # Filter by arrivals that have significant expected PGA using GMPE
+    is_significant = []
+    for eqid, arrival_time in arrivals.items():
+        event = next(event for event in catalog if event.id == eqid)
+
+        # Set rupture parameters
+        rx = RuptureContext()
+        rx.__dict__.update(rupture_parameters)
+        rx.mag = event.magnitude
+
+        # TODO: distances should be calculated when we refactor to be
+        # able to import distance calculations
+        dx = DistancesContext()
+        dx.repi = np.array([
+            gps2dist_azimuth(
+                st[0].stats.coordinates.latitude,
+                st[0].stats.coordinates.longitude,
+                event.latitude, event.longitude)[0] / 1000])
+        dx.rjb = dx.repi
+        dx.rhypo = np.sqrt(dx.repi**2 + event.depth_km**2)
+        dx.rrup = dx.rhypo
+
+        pga, sd = gmpe.get_mean_and_stddevs(sx, rx, dx, imt.PGA(), [])
+
+        # Convert from ln(g) to %g
+        predicted_pga = 100 * np.exp(pga[0])
+        if predicted_pga > (pga_factor * recorded_pga):
+            is_significant.append(True)
+        else:
+            is_significant.append(False)
+
+    significant_arrivals = arrivals[is_significant]
+    if significant_arrivals.empty:
+        return st
+
+    # Check if any of the significant arrivals occur within the
+    signal_length = st[0].stats.endtime - signal_window_starttime
+    cutoff_time = signal_window_starttime + pct_window_reject * (signal_length)
+    if (significant_arrivals < cutoff_time).any():
+        for tr in st:
+            tr.fail('A significant arrival from another event occurs within '
+                    'the first %s percent of the signal window' %
+                    (100 * pct_window_reject))
+
+    # Otherwise, trim the stream at the first significant arrival
+    else:
+        for tr in st:
+            signal_end = tr.getParameter('signal_end')
+            signal_end['end_time'] = significant_arrivals[0]
+            signal_end['method'] = ('Trimming before right another event')
+            tr.setParameter('signal_end', signal_end)
+        cut(st)
 
     return st
