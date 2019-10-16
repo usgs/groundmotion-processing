@@ -541,11 +541,10 @@ def summary_plots(st, directory, origin):
         # Compute model spectra
         if fit_spectra_dict is not None:
             model_spec = spectrum.model(
+                (fit_spectra_dict['moment'], fit_spectra_dict['stress_drop']),
                 freq=np.array(smooth_signal_dict['freq']),
                 dist=fit_spectra_dict['epi_dist'],
-                kappa=fit_spectra_dict['kappa'],
-                magnitude=fit_spectra_dict['magnitude'],
-                stress_drop=fit_spectra_dict['stress_drop']
+                kappa=fit_spectra_dict['kappa']
             )
 
         # ---------------------------------------------------------------------
