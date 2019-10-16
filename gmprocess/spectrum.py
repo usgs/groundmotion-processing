@@ -10,8 +10,6 @@ from obspy.geodetics.base import gps2dist_azimuth
 OUTPUT_UNITS = ["ACC", "VEL", "DISP"]
 M_TO_KM = 1.0 / 1000
 
-MOMENT_FACTOR = 2
-
 
 def fit_spectra(st, origin, kappa=0.035,
                 RP=0.55,
@@ -196,7 +194,8 @@ def spectrum_cost(x,
 
     Args:
         x (tuple):
-            Tuple of moment and stress drop.
+            Tuple of the natural log of moment (dyne-cm) and the natural log
+            of stress drop (bars).
         freq (array):
             Numpy array of frequencies (Hz).
         obs_spec (array)
@@ -289,7 +288,8 @@ def model(x,
 
     Args:
         x (tuple):
-            Tuple of moment and stress drop.
+            Tuple of the natural log of moment (dyne-cm) and the natural log
+            of stress drop (bars).
         freq (array):
             Numpy array of frequencies for computing spectra (Hz).
         dist (float):
