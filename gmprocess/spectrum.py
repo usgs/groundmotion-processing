@@ -3,46 +3,26 @@ This module is for computation of theoretical amplitude spectrum methods.
 """
 
 import numpy as np
+from scipy.optimize import minimize
 
 from obspy.geodetics.base import gps2dist_azimuth
 
 OUTPUT_UNITS = ["ACC", "VEL", "DISP"]
 M_TO_KM = 1.0 / 1000
 
-# -----------------------------------------------------------------------------
-# Some constantts; probably should put these in a config file at some point:
-
-# Radiation pattern factor (Boore and Boatwright, 1984))
-RP = 0.55
-
-# Partition of shear-wave energy into horizontal components
-VHC = 1 / np.sqrt(2.0)
-
-# Free surface effect
-FSE = 2.0
-
-# Density at source (gm/cc)
-DENSITY = 2.8
-
-# Shear-wave velocity at source (km/s)
-SHEAR_VEL = 3.7
-
-# Reference distance (km)
-R0 = 1.0
-
-# Trial values for fitting the spectra
-TRIAL_STRESS_DROPS = np.logspace(0, 3, 13)
-
-# For fitting spectra, only include frequencies above FMIN_FAC * f0
-FMIN_FAC = 0.5
-
-# For fitting spectra, only include frequencies below the frequency where
-# FMAX_FAC equals the site diminution factor, thus it is a function of kappa,
-# so higher frequencies will be included in lower kappa regions.
-FMAX_FAC = 0.5
+MOMENT_FACTOR = 2
 
 
-def fit_spectra(st, origin, kappa=0.035):
+def fit_spectra(st, origin, kappa=0.035,
+                RP=0.55,
+                VHC=0.7071068,
+                FSE=2.0,
+                density=2.8,
+                shear_vel=3.7,
+                R0=1.0,
+                moment_factor=100,
+                min_stress=0.1,
+                max_stress=10000):
     """
     Fit spectra vaying stress_drop and kappa.
 
@@ -55,6 +35,28 @@ def fit_spectra(st, origin, kappa=0.035):
             Site diminution factor (sec). Typical value for active cruststal
             regions is about 0.03-0.04, and stable continental regions is about
             0.006.
+        RP (float):
+            Partition of shear-wave energy into horizontal components.
+        VHC (float):
+            Partition of shear-wave energy into horizontal components
+            1 / np.sqrt(2.0).
+        FSE (float):
+            Free surface effect.
+        density (float):
+            Density at source (gm/cc).
+        shear_vel (float):
+            Shear-wave velocity at source (km/s).
+        R0 (float):
+            Reference distance (km).
+        moment_factor (float):
+            Multiplicative factor for setting bounds on moment, where the
+            moment (from the catalog moment magnitude) is multiplied and
+            divided by `moment_factor` to set the bounds for the spectral
+            optimization.
+        min_stress (float):
+            Min stress for fit search (bars).
+        max_stress (float):
+            Max stress for fit search (bars).
 
     Returns:
         StationStream with fitted spectra parameters.
@@ -62,8 +64,7 @@ def fit_spectra(st, origin, kappa=0.035):
     for tr in st:
         # Only do this for horizontal channels for which the smoothed spectra
         # has been computed.
-        if ('Z' not in tr.stats['channel'].upper()) & \
-                tr.hasCached('smooth_signal_spectrum'):
+        if tr.hasCached('smooth_signal_spectrum'):
             event_mag = origin.magnitude
             event_lon = origin.longitude
             event_lat = origin.latitude
@@ -79,57 +80,216 @@ def fit_spectra(st, origin, kappa=0.035):
             freq = np.array(smooth_signal_dict['freq'])
             obs_spec = np.array(smooth_signal_dict['spec'])
 
-            # Loop over trial stress drops and kappas compute RMS fit
-            # of the spectra
-            rms = []
-            rms_stress = []
-            rms_f0 = []
-            for i in range(len(TRIAL_STRESS_DROPS)):
-                # Pick min f for cost function that is slightly less than
-                # corner frequency.
-                f0 = brune_f0(event_mag, TRIAL_STRESS_DROPS[i])
-                fmin = FMIN_FAC * f0
-                fmax = -np.log(FMAX_FAC) / np.pi / kappa
+            # -----------------------------------------------------------------
+            # INITIAL VALUES
+            # Need an approximate stress drop as initial guess
+            stress_0 = np.sqrt(min_stress*max_stress)
+            moment_0 = moment_from_magnitude(event_mag)
 
-                rms_f0.append(f0)
-                mod_spec = model(
-                    freq, dist, kappa,
-                    event_mag, TRIAL_STRESS_DROPS[i]
-                )
+            # Array of initial values
+            x0 = (np.log(moment_0), np.log(stress_0))
 
-                # Comput rms fit in log space, append to list
-                log_residuals = (
-                    np.log(obs_spec[(freq >= fmin) & (freq <= fmax)]) -
-                    np.log(mod_spec[(freq >= fmin) & (freq <= fmax)])
-                )
-                rms.append(np.sqrt(np.mean((log_residuals)**2)))
+            # Bounds
+            stress_bounds = (
+                np.log(min_stress),
+                np.log(max_stress)
+            )
 
-                # Track the values of kappa and stress
-                rms_stress.append(TRIAL_STRESS_DROPS[i])
+            # multiplicative factor for moment bounds
+            moment_bounds = (
+                x0[0] - np.log(moment_factor),
+                x0[0] + np.log(moment_factor)
+            )
 
-            # Find the kappa-stress pair with best fit
-            if not np.all(np.isnan(rms)):
-                idx = np.where(rms == np.nanmin(rms))[0][0]
-                fit_spectra_dict = {
-                    'stress_drop': rms_stress[idx],
-                    'epi_dist': dist,
-                    'kappa': kappa,
-                    'magnitude': event_mag,
-                    'f0': rms_f0[idx]
-                }
-                tr.setParameter('fit_spectra', fit_spectra_dict)
+            bounds = (moment_bounds, stress_bounds)
+
+            # Frequency limits for cost function
+            freq_dict = tr.getParameter('corner_frequencies')
+            fmin = freq_dict['highpass']
+            fmax = freq_dict['lowpass']
+
+            # -----------------------------------------------------------------
+            # CONSTANT ARGUMENTS
+
+            cargs = (
+                freq,
+                obs_spec,
+                fmin,
+                fmax,
+                dist,
+                kappa,
+                RP,
+                VHC,
+                FSE,
+                shear_vel,
+                density,
+                R0
+            )
+
+            result = minimize(
+                spectrum_cost, x0,
+                args=cargs,
+                method='L-BFGS-B',
+                jac=False,
+                bounds=bounds,
+                tol=1e-4,
+                options={'disp': False}
+            )
+
+            moment_fit = np.exp(result.x[0])
+            magnitude_fit = magnitude_from_moment(moment_fit)
+            stress_drop_fit = np.exp(result.x[1])
+            f0_fit = brune_f0(moment_fit, stress_drop_fit)
+
+            # Hessian (H) is in terms of normalized moment and stress drop
+            # Covariance matrix is sigma^2 * H^-1.
+            inv_hess = result.hess_inv.todense()
+
+            # Estimate of sigma^2 is sum of squared residuals / (n - p)
+            # NOTE: we are NOT accounting for the correlation across
+            # frequencies and so we are underestimating the variance.
+            SSR = result.fun
+            sigma2 = SSR/(len(freq) - len(result.x))
+            COV = sigma2 * inv_hess
+            sd = np.sqrt(np.diagonal(COV))
+
+            # mag_lower = magnitude_from_moment(np.exp(result.x[0]-sd[0]))
+            # mag_upper = magnitude_from_moment(np.exp(result.x[0]+sd[0]))
+            # stress_drop_lower = np.exp(result.x[1]-sd[1])
+            # stress_drop_upper = np.exp(result.x[1]+sd[1])
+
+            fit_spectra_dict = {
+                'stress_drop': stress_drop_fit,
+                'stress_drop_lnsd': sd[1],
+                'epi_dist': dist,
+                'kappa': kappa,
+                'moment': moment_fit,
+                'moment_lnsd': sd[0],
+                'magnitude': magnitude_fit,
+                'f0': f0_fit,
+                'minimize_mesage': result.message.decode(),
+                'minimize_success': result.success
+            }
+            tr.setParameter('fit_spectra', fit_spectra_dict)
 
     return st
 
 
-def model(freq, dist, kappa,
-          magnitude, stress_drop=150,
-          gs_mod="REA99", q_mod="REA99",
+def spectrum_cost(x,
+                  freq,
+                  obs_spec,
+                  fmin,
+                  fmax,
+                  dist,
+                  kappa,
+                  RP,
+                  VHC=0.7071068,
+                  FSE=2.0,
+                  shear_vel=3.7,
+                  density=2.8,
+                  R0=1.0,
+                  gs_mod="REA99",
+                  q_mod="REA99",
+                  crust_mod="BT15"):
+    """
+    Function to compute RMS log residuals for optimization.
+
+    Args:
+        x (tuple):
+            Tuple of moment and stress drop.
+        freq (array):
+            Numpy array of frequencies (Hz).
+        obs_spec (array)
+            Numpy array of observed Fourier spectral amplitudes.
+        fmin (float):
+            Minimum frequency to use in computing residuals.
+        fmax (float):
+            Maximum frequency to use in computing residuals.
+        dist (float):
+            Distance (km).
+        kappa (float):
+            Site diminution factor (sec). Typical value for active cruststal
+            regions is about 0.03-0.04, and stable continental regions is about
+            0.006.
+        RP (float):
+            Partition of shear-wave energy into horizontal components.
+        VHC (float):
+            Partition of shear-wave energy into horizontal components
+            1 / np.sqrt(2.0).
+        FSE (float):
+            Free surface effect.
+        shear_vel (float):
+            Shear-wave velocity at source (km/s).
+        density (float):
+            Density at source (gm/cc).
+        R0 (float):
+            Reference distance (km).
+        gs_model (str):
+            Name of model for geometric attenuation. Currently only supported
+            value:
+                - 'REA99' for Raoof et al. (1999)
+        q_model (str):
+            Name of model for anelastic attenuation. Currently only supported
+            value:
+                - 'REA99' for Raoof et al. (1999)
+                - 'none' for no anelastic attenuation
+        crust_mod (str):
+            Name of model for crustal amplification. Currently only supported
+            value:
+                - 'BT15' for Boore and Thompson (2015)
+                - 'none' for no crustal amplification model.
+
+    Returns:
+        float: Sum of squared logarithmic residuals.
+
+    """
+    # Exponentiate the paramters
+    xexp = []
+    for xx in x:
+        xexp.append(np.exp(xx))
+
+    mod_spec = model(
+        xexp,
+        freq,
+        dist,
+        kappa,
+        RP,
+        VHC,
+        FSE,
+        shear_vel,
+        density,
+        R0,
+        gs_mod,
+        q_mod,
+        crust_mod)
+
+    # Remove non-positive values of obs_spec and apply corner frequency
+    # constraints
+    keep = (obs_spec > 0) & (freq >= fmin) & (freq <= fmax)
+
+    log_residuals = np.log(obs_spec[keep]) - np.log(mod_spec[keep])
+    return np.sum(log_residuals**2)
+
+
+def model(x,
+          freq,
+          dist,
+          kappa,
+          RP=0.55,
+          VHC=0.7071068,
+          FSE=2.0,
+          shear_vel=3.7,
+          density=2.8,
+          R0=1.0,
+          gs_mod="REA99",
+          q_mod="REA99",
           crust_mod="BT15"):
     """
     Piece together a model of the ground motion spectrum.
 
     Args:
+        x (tuple):
+            Tuple of moment and stress drop.
         freq (array):
             Numpy array of frequencies for computing spectra (Hz).
         dist (float):
@@ -138,10 +298,19 @@ def model(freq, dist, kappa,
             Site diminution factor (sec). Typical value for active cruststal
             regions is about 0.03-0.04, and stable continental regions is about
             0.006.
-        magnitude (float):
-            Earthquake moment magnitude.
-        stress_drop (float):
-            Earthquake stress drop (bars).
+        RP (float):
+            Partition of shear-wave energy into horizontal components.
+        VHC (float):
+            Partition of shear-wave energy into horizontal components
+            1 / np.sqrt(2.0).
+        FSE (float):
+            Free surface effect.
+        shear_vel (float):
+            Shear-wave velocity at source (km/s).
+        density (float):
+            Density at source (gm/cc).
+        R0 (float):
+            Reference distance (km).
         gs_model (str):
             Name of model for geometric attenuation. Currently only supported
             value:
@@ -160,28 +329,118 @@ def model(freq, dist, kappa,
     Returns:
         Array of spectra model.
     """
-    source_mod = brune(freq, magnitude, stress_drop)
+    source_mod = brune(
+        freq, x[0], x[1],
+        RP=RP,
+        VHC=VHC,
+        FSE=FSE,
+        shear_vel=shear_vel,
+        density=density,
+        R0=R0,
+    )
     path_mod = path(freq, dist, gs_mod, q_mod)
     site_mod = site(freq, kappa, crust_mod)
     return source_mod * path_mod * site_mod
 
 
-def brune_f0(magnitude, stress_drop):
+def brune(freq,
+          moment,
+          stress_drop=150,
+          RP=0.55,
+          VHC=0.7071068,
+          FSE=2.0,
+          shear_vel=3.7,
+          density=2.8,
+          R0=1.0,
+          output_units="ACC"):
+    """
+    Compute Brune (1970, 1971) earthquake source spectrum.
+
+
+    Args:
+        freq (array):
+            Numpy array of frequencies for computing spectra (Hz).
+        moment (float):
+            Earthquake moment (dyne-cm).
+        stress_drop (float):
+            Earthquake stress drop (bars).
+        RP (float):
+            Partition of shear-wave energy into horizontal components.
+        VHC (float):
+            Partition of shear-wave energy into horizontal components
+            1 / np.sqrt(2.0).
+        FSE (float):
+            Free surface effect.
+        shear_vel (float):
+            Shear-wave velocity at source (km/s).
+        density (float):
+            Density at source (gm/cc).
+        R0 (float):
+            Reference distance (km).
+       output_units (str):
+            Time domain equivalent units for the output spectrum. One of:
+                - "ACC" for acceleration, giving Fourier spectra units of cm/s.
+                - "VEL" for velocity, giving Fourier spectra units of cm.
+                - "DISP"
+
+    Returns:
+        Array of source spectra.
+    """
+    if output_units not in OUTPUT_UNITS:
+        raise ValueError("Unsupported value for output_units.")
+
+    f0 = brune_f0(moment, stress_drop, shear_vel)
+    S = 1 / (1 + (freq / f0)**2)
+    C = RP * VHC * FSE / (4 * np.pi * density * shear_vel**3 * R0) * 1e-20
+
+    if output_units == "ACC":
+        fpow = 2.0
+    elif output_units == "VEL":
+        fpow = 1.0
+    elif output_units == "DISP":
+        fpow = 0.0
+
+    displacement = C * moment * S
+
+    return (2 * np.pi * freq)**fpow * displacement
+
+
+def brune_f0(moment, stress_drop, shear_vel=3.7):
     """
     Compute Brune's corner frequency.
 
     Args:
-        magnitude (float):
-            Earthquake moment magnitude.
+        moment (float):
+            Earthquake moment (dyne-cm).
         stress_drop (float):
             Earthquake stress drop (bars).
+        shear_vel (float):
+            Shear-wave velocity at source (km/s).
 
     Returns:
-        float: Corner frequency (Hz).
+        float: Brune corner frequency (Hz).
     """
-    M0 = moment_from_magnitude(magnitude)
-    f0 = 4.906e6 * SHEAR_VEL * (stress_drop / M0)**(1.0 / 3.0)
+    f0 = 4.906e6 * shear_vel * (stress_drop / moment)**(1.0 / 3.0)
     return f0
+
+
+def brune_stress(moment, f0, shear_vel=3.7):
+    """
+    Compute Brune's stress drop.
+
+    Args:
+        moment (float):
+            Earthquake moment (dyne-cm).
+        f0 (float):
+            Brune corner frequency (Hz).
+        shear_vel (float):
+            Shear-wave velocity at source (km/s).
+
+    Returns:
+        float: Brune stress drop (bars).
+    """
+    stress_drop = ((f0/(4.906e6 * shear_vel))**3)/moment
+    return stress_drop
 
 
 def moment_from_magnitude(magnitude):
@@ -195,53 +454,21 @@ def moment_from_magnitude(magnitude):
     Returns:
         float: Seismic moment (dyne-cm).
     """
-    # As given in Boore (2003):
-    #  return 10**(1.5 * magnitude + 10.7)
-    # But this appears to be correct:
     return 10**(1.5 * magnitude + 16.05)
 
 
-def brune(freq, magnitude, stress_drop=150, output_units="ACC"):
+def magnitude_from_moment(moment):
     """
-    Compute Brune (1970, 1971) earthquake source spectrum.
-
+    Compute moment from moment magnitude.
 
     Args:
-        freq (array):
-            Numpy array of frequencies for computing spectra (Hz).
-        magnitude (float):
-            Earthquake moment magnitude.
-        stress_drop (float):
-            Earthquake stress drop (bars).
-        output_units (str):
-            Time domain equivalent units for the output spectrum. One of:
-                - "ACC" for acceleration, giving Fourier spectra units of cm/s.
-                - "VEL" for velocity, giving Fourier spectra units of cm.
-                - "DISP"
+        moment (float):
+            Seismic moment (dyne-cm).
 
     Returns:
-        Array of source spectra.
+        float: Moment magnitude.
     """
-    if output_units not in OUTPUT_UNITS:
-        raise ValueError("Unsupported value for output_units.")
-
-    M0 = moment_from_magnitude(magnitude)
-    f0 = brune_f0(magnitude, stress_drop)
-    S = 1 / (1 + (freq / f0)**2)
-    # pf_a = 2
-    # pd_a = 1
-    C = RP * VHC * FSE / (4 * np.pi * DENSITY * SHEAR_VEL**3 * R0) * 1e-20
-
-    if output_units == "ACC":
-        fpow = 2.0
-    elif output_units == "VEL":
-        fpow = 1.0
-    elif output_units == "DISP":
-        fpow = 0.0
-
-    displacement = C * M0 * S
-
-    return (2 * np.pi * freq)**fpow * displacement
+    return 2.0/3.0*(np.log10(moment) - 16.05)
 
 
 def path(freq, dist, gs_mod="REA99", q_mod="REA99"):

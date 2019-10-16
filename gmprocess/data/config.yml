@@ -289,12 +289,12 @@ processing:
         filter_order: 5
         number_of_passes: 2
 
-#    - detrend:
-#        # The current baseline correction method fits a sixth-order polynomial
-#        # to the displacement time series, and sets the zeroth- and first-order
-#        # terms to be zero. The second derivative of the fit polynomial is then
-#        # removed from the acceleration time series.
-#        detrending_method: baseline_sixth_order
+    # - detrend:
+    #     # The current baseline correction method fits a sixth-order polynomial
+    #     # to the displacement time series, and sets the zeroth- and first-order
+    #     # terms to be zero. The second derivative of the fit polynomial is then
+    #     # removed from the acceleration time series.
+    #     detrending_method: baseline_sixth_order
 
     # - trim_multiple_events:
     #     pga_factor: 0.2
@@ -306,9 +306,59 @@ processing:
     #         rake: 0
 
     - fit_spectra:
-        # Fit a Brune spectra to the data by adjusting stress drop with an
-        # assumed kappa.
+        # Fit a Brune spectra by optimizing moment and corner frequency.
+        # Note that it only uses frequencies between the corner frequencies
+        # that are selected based on the options in the 'get_corner_frequencies'
+        # section of this config file.
+
+        # Kappa (sec)
         kappa: 0.035
+
+        # Radiation pattern factor (Boore and Boatwright, 1984))
+        RP: 0.55
+
+        # Partition of shear-wave energy into horizontal components
+        # 1 / np.sqrt(2.0)
+        VHC: 0.7071068
+
+        # Free surface effect
+        FSE: 2.0
+
+        # Density at source (gm/cc)
+        density: 2.8
+
+        # Shear-wave velocity at source (km/s)
+        shear_vel: 3.7
+
+        # Reference distance (km)
+        R0: 1.0
+
+        # Multiplicative factor for setting bounds on moment, where the
+        # moment (from the catalog moment magnitude) is multiplied and
+        # divided by `moment_factor` to set the bounds for the spectral
+        # optimization.
+        moment_factor: 100
+
+        # Min stress for fit search (bars)
+        min_stress: 0.1
+
+        # Max stress for fit search (bars)
+        max_stress: 10000
+
+colocated:
+    # This section is for handling colocated instruments that have otherwise
+    # passed tests. For reference:
+    #
+    #    B?? = Broad band
+    #    H?? = High broad band
+    #    ?N? = Accelerometer
+    #    ?H? = High gain seismometer
+    #
+    # Note: for now, lets prefer accelerometers, but once we have a reliable
+    # clipping detection algorithm, it probably makes sense to change the
+    # preference to high gain seismometers.
+
+    preference: ["HN?", "BN?", "HH?", "BH?"]
 
 # travel_time:
 #     # Section for computing travel times which is used by the
@@ -318,27 +368,9 @@ processing:
 #     ddist: 0.1  # Distance spacing in decimal degrees
 #     model: iasp91  # Valid obspy TauPyModel
 
-# -----------------------------------------------------------------------------
-# This section is for handling colocated instruments that have otherwise
-# passed tests. For reference:
-#
-#    B?? = Broad band
-#    H?? = High broad band
-#    ?N? = Accelerometer
-#    ?H? = High gain seismometer
-#
-# Note: for now, lets prefer accelerometers, but once we have a reliable
-# clipping detection algorithm, it probably makes sense to change the
-# preference to high gain seismometers.
 
-
-colocated:
-    preference: ["HN?", "BN?", "HH?", "BH?"]
-
-
-# -----------------------------------------------------------------------------
-# This section is for handling duplicate data when creating a StreamCollection
 duplicate:
+    # This section is for handling duplicate data when creating a StreamCollection
 
     # Maximum distance tolerance (in m) for duplicate data
     max_dist_tolerance: 500
