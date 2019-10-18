@@ -15,6 +15,7 @@ before_script:
     - sleep 3 # give xvfb some time to start
 script:
     - export PYTHONPATH="."
+    - conda activate gmprocess
     - py.test --cov=.
     - echo `sphinx-build --version`
 after_success:
