@@ -117,6 +117,7 @@ dev_list=(
 package_list=(
     "$CC"
     "cython"
+    "flake8"
     "impactutils"
     "ipython"
     "jupyter"
@@ -124,7 +125,6 @@ package_list=(
     "lxml"
     "matplotlib"
     "'numpy<1.17'"
-    "obspy>=1.1.1"
     "openpyxl"
     "openquake.engine"
     "pandas"
@@ -156,9 +156,12 @@ if [ $? -ne 0 ]; then
     exit
 fi
 
+
 # Activate the new environment
 echo "Activating the $VENV virtual environment"
 conda activate $VENV
+
+
 
 # if conda activate fails, bow out gracefully
 if [ $? -ne 0 ];then
@@ -180,6 +183,9 @@ fi
 if [ -d bin/__pycache__ ]; then
     rm -rf bin/__pycache__
 fi
+
+# use pip to install obspy 1.1.1
+pip install obspy==1.1.1
 
 # This package
 echo "Installing ${VENV}..."
