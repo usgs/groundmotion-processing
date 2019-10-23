@@ -62,7 +62,7 @@ def fit_spectra(st, origin, kappa=0.035,
     for tr in st:
         # Only do this for horizontal channels for which the smoothed spectra
         # has been computed.
-        if tr.hasCached('smooth_signal_spectrum'):
+        if tr.hasCached('smooth_signal_spectrum') and tr.hasParameter('corner_frequencies'):
             event_mag = origin.magnitude
             event_lon = origin.longitude
             event_lat = origin.latitude
