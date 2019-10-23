@@ -75,7 +75,8 @@ def append_file(files_created, tag, filename):
 def process_event(outdir, event, pcommands,
                   config, input_directory,
                   process_tag, logfile,
-                  files_created, output_format):
+                  files_created, output_format,
+                  status):
 
     # setup logging to write to the input logfile
     argthing = namedtuple('args', ['debug', 'quiet'])
@@ -237,6 +238,21 @@ def process_event(outdir, event, pcommands,
         shakemap_file = save_shakemap_amps(pstreams, event, event_dir)
         append_file(files_created, 'shakemap', shakemap_file)
 
+    if status and processing_done and len(pstreams):
+        if status == 'short':
+            index = 'Failure reason'
+            col = ['Number of records']
+        elif status == 'long':
+            index = 'Station ID'
+            col = ['Failure reason']
+        elif status == 'net':
+            index = 'Network'
+            col = ['Number of passed records', 'Number of failed records']
+
+        status_info = pstreams.get_status(status)
+        status_info.to_csv(os.path.join(event_dir, 'status.csv'), header=col,
+                           index_label=index)
+
     # since we don't know how many events users will be processing,
     # let's guard against memory issues by clearing out the big data
     # structures
@@ -335,7 +351,7 @@ def main(args):
                         workname = process_event(
                             outdir, event, pcommands, config,
                             input_directory, process_tag, logfile,
-                            files_created, args.format)
+                            files_created, args.format, args.status)
                         workspace_files.append(workname)
                     os._exit(0)
                 else:
@@ -350,7 +366,7 @@ def main(args):
                 workname = process_event(
                     outdir, event, pcommands,
                     config, input_directory, process_tag,
-                    logfile, files_created, args.format)
+                    logfile, files_created, args.format, args.status)
                 workspace_files.append(workname)
 
     # logging
@@ -487,6 +503,35 @@ def main(args):
                                 colormap='viridis_r')
                 append_file(files_created,
                             'Multi-event regression plot', regression_file)
+
+    if args.status:
+        if args.status == 'short':
+            index_col = 'Failure reason'
+        elif args.status == 'long':
+            index_col = 'Station ID'
+        elif args.status == 'net':
+            index_col = 'Network'
+        statuses = []
+        for event in events:
+            status_path = os.path.join(outdir, event.id, 'status.csv')
+            if os.path.exists(status_path):
+                status = pd.read_csv(status_path, index_col=index_col)
+                if args.status == 'long':
+                    status['Event ID'] = event.id
+                statuses.append(status)
+        if statuses:
+            comp_status_path = os.path.join(outdir, 'complete_status.csv')
+            if args.status == 'long':
+                for idx, status in enumerate(statuses):
+                    if idx == 0:
+                        status.to_csv(comp_status_path, mode='w')
+                    else:
+                        status.to_csv(comp_status_path, mode='a', header=False)
+            else:
+                df_status = pd.concat(statuses)
+                df_status = df_status.groupby(df_status.index).sum()
+                df_status.to_csv(comp_status_path)
+            append_file(files_created, 'Complete status', comp_status_path)
 
     print('\nThe following files have been created:')
     for file_type, file_list in files_created.items():
@@ -644,6 +689,15 @@ This program will allow the user to:
     parser.add_argument(
         '-n', '--num-processes', default=0,
         type=int, help=nhelpstr
+    )
+
+    help_status = format_helptext(
+        'Output failure information, either in short form ("short"), '
+        'long form ("long"), or network form ("net").'
+    )
+    parser.add_argument(
+        '--status', choices=['short', 'long', 'net'], dest='status',
+        help=help_status
     )
 
     # ***** Shared arguments

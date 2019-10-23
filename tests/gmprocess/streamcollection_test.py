@@ -204,7 +204,41 @@ def test_duplicates():
     assert sc.select(station='23837')[0][0].stats.network == 'CE'
 
 
+def test_get_status():
+    dpath = os.path.join('data', 'testdata', 'status')
+    directory = pkg_resources.resource_filename('gmprocess', dpath)
+    sc = StreamCollection.from_directory(directory)
+
+    # Manually fail some of the streams
+    for idx, st in enumerate(sc.streams):
+        if idx % 2 == 0:
+            for tr in st:
+                tr.fail('Failure %s' % idx)
+
+    # Test results from 'short', 'long', and 'net
+    short = sc.get_status('short')
+    assert (short == 1).all()
+
+    long = sc.get_status('long')
+    assert long.at['AZ.BSAP.HN'] == 'Failure 0'
+    assert long.at['AZ.BZN.HN'] == ''
+    assert long.at['AZ.CPE.HN'] == 'Failure 2'
+    assert long.at['CI.MIKB.BN'] == ''
+    assert long.at['CI.MIKB.HN'] == 'Failure 4'
+    assert long.at['CI.PSD.HN'] == ''
+    assert long.at['PG.PSD.HN'] == 'Failure 6'
+
+    net = sc.get_status('net')
+    assert net.at['AZ', 'number passed'] == 1
+    assert net.at['AZ', 'number failed'] == 2
+    assert net.at['CI', 'number passed'] == 2
+    assert net.at['CI', 'number failed'] == 1
+    assert net.at['PG', 'number passed'] == 0
+    assert net.at['PG', 'number failed'] == 1
+
+
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_StreamCollection()
     test_duplicates()
+    test_get_status()

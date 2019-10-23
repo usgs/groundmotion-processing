@@ -600,7 +600,8 @@ class StreamCollection(object):
             if is_duplicate:
                 if choose_preferred(
                         tr_to_add, tr_pref,
-                        process_level_preference, format_preference) == tr_to_add:
+                        process_level_preference,
+                        format_preference) == tr_to_add:
                     preferred_traces.remove(tr_pref)
                     logging.info('Trace %s (%s) is a duplicate and '
                                  'has been removed from the StreamCollection.'
@@ -619,6 +620,63 @@ class StreamCollection(object):
         streams = [StationStream([tr]) for tr in preferred_traces]
         streams = insert_stream_parameters(streams, stream_params)
         self.streams = streams
+
+    def get_status(self, status):
+        """
+        Returns a summary of the status of the streams in StreamCollection.
+        If status='short':
+            Returns a two column table, columns are "failure reason" and
+            "number of records". Number of rows in the number of unique failure
+            reasons.
+        If status='net':
+            Returns a three column table, columns are "network",
+            "number passed", and "number failed"; number of rows is the number
+            of unique networks.
+        If status='long':
+            Returns a two column table, columns are "station id" and
+            "failure reason" (blank if passed).
+
+        Args:
+            status (str):
+                The status level (see description).
+
+        Returns:
+            If status='net': pandas.DataFrame
+            If status='short' or status='long': pandas.Series
+        """
+
+        if status == 'short':
+            failure_reasons = pd.Series(
+                [next(tr for tr in st if tr.hasParameter('failure')).
+                    getParameter('failure')['reason'] for st in self.streams
+                    if not st.passed])
+            return failure_reasons.value_counts()
+        elif status == 'net':
+            failure_dict = {}
+            for st in self.streams:
+                net = st[0].stats.network
+                if net not in failure_dict:
+                    failure_dict[net] = {'number passed': 0,
+                                         'number failed': 0}
+                if st.passed:
+                    failure_dict[net]['number passed'] += 1
+                else:
+                    failure_dict[net]['number failed'] += 1
+            return pd.DataFrame.from_dict(failure_dict).transpose()
+        elif status == 'long':
+            failure_reasons = []
+            for st in self.streams:
+                if not st.passed:
+                    first_failure = next(
+                        tr for tr in st if tr.hasParameter('failure'))
+                    failure_reasons.append(
+                        first_failure.getParameter('failure')['reason'])
+                else:
+                    failure_reasons.append('')
+            sta_ids = [st.id for st in self.streams]
+            return pd.Series(index=sta_ids, data=failure_reasons)
+        else:
+            raise ValueError('Status must be "short", "net", or "long".')
 
 
 def gather_stream_parameters(streams):
