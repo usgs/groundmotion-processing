@@ -210,10 +210,10 @@ def test_get_status():
     sc = StreamCollection.from_directory(directory)
 
     # Manually fail some of the streams
-    for idx, st in enumerate(sc.streams):
-        if idx % 2 == 0:
-            for tr in st:
-                tr.fail('Failure %s' % idx)
+    sc.select(station='BSAP')[0][0].fail('Failure 0')
+    sc.select(station='CPE')[0][0].fail('Failure 1')
+    sc.select(station='MIKB', instrument='HN')[0][0].fail('Failure 2')
+    sc.select(network='PG', station='PSD')[0][0].fail('Failure 3')
 
     # Test results from 'short', 'long', and 'net
     short = sc.get_status('short')
@@ -222,11 +222,11 @@ def test_get_status():
     long = sc.get_status('long')
     assert long.at['AZ.BSAP.HN'] == 'Failure 0'
     assert long.at['AZ.BZN.HN'] == ''
-    assert long.at['AZ.CPE.HN'] == 'Failure 2'
+    assert long.at['AZ.CPE.HN'] == 'Failure 1'
     assert long.at['CI.MIKB.BN'] == ''
-    assert long.at['CI.MIKB.HN'] == 'Failure 4'
+    assert long.at['CI.MIKB.HN'] == 'Failure 2'
     assert long.at['CI.PSD.HN'] == ''
-    assert long.at['PG.PSD.HN'] == 'Failure 6'
+    assert long.at['PG.PSD.HN'] == 'Failure 3'
 
     net = sc.get_status('net')
     assert net.at['AZ', 'number passed'] == 1
