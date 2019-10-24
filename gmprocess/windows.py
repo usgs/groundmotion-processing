@@ -378,7 +378,8 @@ def trim_multiple_events(st, origin, catalog, travel_time_df, pga_factor,
         (arrivals < st[0].stats.endtime)]
 
     # Make sure we remove the arrival that corresponds to the event of interest
-    arrivals.drop(index=origin.id, inplace=True)
+    if origin.id in arrivals.index:
+        arrivals.drop(index=origin.id, inplace=True)
 
     if arrivals.empty:
         return st
