@@ -165,7 +165,7 @@ def build_report_latex(sc, directory, origin, config=None):
         SB = STREAMBLOCK.replace('[PLOTPATH]', plot_path)
         SB = SB.replace(
             '[EVENT]', 'M %s - %s - %s'
-            % (origin.magnitude, origin.id, timestr)
+            % (origin.magnitude, str_for_latex(origin.id), timestr)
         )
         SB = SB.replace(
             '[STATION]', st.get_id()
