@@ -384,6 +384,7 @@ def plot_moveout(streams, epilat, epilon, channel=None, max_dist=200,
 
     # Create a copy of the streams to avoid modifying the data when normalizing
     streams_copy = copy.deepcopy(streams)
+    nplot = 0
     for idx, stream in enumerate(streams_copy):
         if not stream.passed:
             continue
@@ -411,6 +412,7 @@ def plot_moveout(streams, epilat, epilon, channel=None, max_dist=200,
                 ti = starttime + td
                 times += [ti.datetime]
             ax.plot(times, trace.data + distance, c='k', alpha=alpha)
+            nplot += 1
     ax.invert_yaxis()
     ax.set_title('Channel code: %s' % channel, fontsize=minfontsize + 4)
     ax.set_ylabel('Epicentral distance (km)', fontsize=minfontsize)
@@ -418,19 +420,21 @@ def plot_moveout(streams, epilat, epilon, channel=None, max_dist=200,
     plt.xticks([])
 
     # Get the x-coordinate for the time bar
-    xmin, xmax = ax.get_xlim()
-    xbar = num2date(xmin + 0.9 * (xmax - xmin))
-    xlabel = num2date(xmin + 0.85 * (xmax - xmin))
+    if nplot > 0:
+        xmin, xmax = ax.get_xlim()
+        xbar = num2date(xmin + 0.9 * (xmax - xmin))
+        xlabel = num2date(xmin + 0.85 * (xmax - xmin))
 
-    # Get the y-coordinates for the time bar and label
-    ymax, ymin = ax.get_ylim()
-    ybar = 0
-    ylabel = 0.05 * (ymax - ymin)
+        # Get the y-coordinates for the time bar and label
+        ymax, ymin = ax.get_ylim()
+        ybar = 0
+        ylabel = 0.05 * (ymax - ymin)
 
-    # Plot the time-scale bar
-    plt.errorbar(xbar, ybar, xerr=datetime.timedelta(seconds=15), color='k',
-                 capsize=5)
-    plt.text(xlabel, ylabel, '30 seconds', fontsize=minfontsize)
+        # Plot the time-scale bar
+        plt.errorbar(xbar, ybar, xerr=datetime.timedelta(seconds=15), color='k',
+                     capsize=5)
+        plt.text(xlabel, ylabel, '30 seconds', fontsize=minfontsize)
+
     if file is not None:
         fig.savefig(file, format='png')
     plt.show()
