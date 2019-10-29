@@ -78,9 +78,9 @@ def test_plot():
     # Moveout plots
     epicenter_lat = 24.14
     epicenter_lon = 121.69
-    plot_moveout(streams, epicenter_lat, epicenter_lon, 'BN1',
+    plot_moveout(streams, epicenter_lat, epicenter_lon, '1',
                  figsize=(15, 10), minfontsize=16,
-                 normalize=True, scale=10)
+                 normalize=True, factor=0.1)
 
 
 if __name__ == '__main__':

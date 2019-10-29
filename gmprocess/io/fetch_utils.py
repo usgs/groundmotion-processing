@@ -9,6 +9,7 @@ import glob
 from obspy.geodetics.base import locations2degrees
 from obspy.taup import TauPyModel
 import matplotlib.pyplot as plt
+import matplotlib.lines as mlines
 import pandas as pd
 from openpyxl import load_workbook
 import yaml
@@ -36,6 +37,8 @@ OCEAN_COLOR = '#96e8ff'
 LAND_COLOR = '#ededaf'
 PASSED_COLOR = '#00ac00'
 FAILED_COLOR = '#ff2222'
+
+MAP_PADDING = 1.1  # Station map padding value
 
 
 def download(event, event_dir, config, directory):
@@ -159,19 +162,21 @@ def draw_stations_map(pstreams, event, event_dir):
                      for stream in pstreams])
     lons = np.array([stream[0].stats.coordinates['longitude']
                      for stream in pstreams])
-    map_width = event.magnitude
     cy = event.latitude
     cx = event.longitude
     xmin = lons.min()
     xmax = lons.max()
     ymin = lats.min()
     ymax = lats.max()
-    if xmax - xmin < map_width:
-        xmin = cx - map_width / 2
-        xmax = cx + map_width / 2
-    if ymax - ymin < map_width:
-        ymin = cy - map_width / 2
-        ymax = cy + map_width / 2
+
+    diff_x = max(abs(cx - xmin), abs(cx - xmax))
+    diff_y = max(abs(cy - ymin), abs(cy - ymax))
+
+    xmax = cx + MAP_PADDING * diff_x
+    xmin = cx - MAP_PADDING * diff_x
+    ymax = cy + MAP_PADDING * diff_y
+    ymin = cy - MAP_PADDING * diff_y
+
     bounds = (xmin, xmax, ymin, ymax)
     figsize = (10, 10)
     cities = Cities.fromDefault()
@@ -186,6 +191,20 @@ def draw_stations_map(pstreams, event, event_dir):
               for stream in pstreams]
     ax.scatter(lons, lats, c=status, marker='^', edgecolors='k',
                transform=mmap.geoproj, zorder=100, s=48)
+
+    passed_marker = mlines.Line2D([], [], color=PASSED_COLOR, marker='^',
+                                  markeredgecolor='k', markersize=12,
+                                  label='Passed station', linestyle='None')
+    failed_marker = mlines.Line2D([], [], color=FAILED_COLOR, marker='^',
+                                  markeredgecolor='k', markersize=12,
+                                  label='Failed station', linestyle='None')
+    earthquake_marker = mlines.Line2D([], [], color='red', marker='*',
+                                      markersize=12,
+                                      label='Earthquake Epicenter',
+                                      linestyle='None')
+    ax.legend(handles=[passed_marker, failed_marker, earthquake_marker],
+              fontsize=12)
+
     scale = '50m'
     land = cfeature.NaturalEarthFeature(category='physical',
                                         name='land',

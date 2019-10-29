@@ -332,9 +332,9 @@ def plot_durations(stream, durations, axes=None, axis_index=None,
     return axs
 
 
-def plot_moveout(streams, epilat, epilon, channel=None, max_dist=200,
+def plot_moveout(streams, epilat, epilon, orientation=None, max_dist=None,
                  figsize=(10, 15), file=None, minfontsize=14, normalize=True,
-                 scale=0.001, alpha=0.25):
+                 factor=0.1, alpha=0.25):
     """
     Create moveout plot.
 
@@ -345,10 +345,10 @@ def plot_moveout(streams, epilat, epilon, channel=None, max_dist=200,
             Epicenter latitude.
         epilon (float):
             Epicenter longitude.
-        channel (str):
-            Channel code (str) of each stream to view. Default is None.
-            If None, then the channel code with the highest number of traces
-            will be used.
+        orientation (str):
+            Orientation code (str) of each stream to view. Default is None.
+            If None, then the orientation code with the highest number of
+            traces will be used.
         max_dist (float):
             Maximum distance (in km) to plot. Default is 200 km.
         figsize (tuple):
@@ -359,8 +359,10 @@ def plot_moveout(streams, epilat, epilon, channel=None, max_dist=200,
             Minimum font size. Default is 14.
         normalize (bool):
             Normalize the data. Default is True.
-        scale (int, float):
-            Value to scale the trace by. Default is 0.001.
+        factor (int, float):
+            Factor for scaling the trace. Default is 0.05, meaning that the
+            trace with the greatest amplitude variation will occupy 10% of the
+            vertical space in the plot.
         alpha (float):
             Alpha value for plotting the traces.
 
@@ -372,25 +374,73 @@ def plot_moveout(streams, epilat, epilon, channel=None, max_dist=200,
 
     fig, ax = plt.subplots(figsize=figsize)
 
-    # If no channel is given, then find the channel code with the greatest
-    # number of streams
-    if channel is None:
-        channel_codes = []
+    # If no channel is given, then find the orientation code with the greatest
+    # number of traces
+    if orientation is None:
+        orientation_codes = []
         for st in streams:
-            for tr in st:
-                channel_codes.append(tr.stats.channel)
-        channel_counter = Counter(channel_codes)
-        channel = max(channel_counter, key=channel_counter.get)
+            if st.passed:
+                for tr in st:
+                    orientation_codes.append(tr.stats.channel[-1])
+        for i, code in enumerate(orientation_codes):
+            if code == '1':
+                orientation_codes[i] = 'N'
+            if code == '2':
+                orientation_codes[i] = 'E'
+            if code == '3':
+                orientation_codes[i] = 'Z'
+        channel_counter = Counter(orientation_codes)
+        orientation = max(channel_counter, key=channel_counter.get)
+
+    valid_channels = []
+    if orientation in ['N', '1']:
+        valid_channels = ['N', '1']
+    elif orientation == ['E', '2']:
+        valid_channels = ['E', '2']
+    elif orientation == ['Z', '3']:
+        valid_channels = ['Z', '3']
 
     # Create a copy of the streams to avoid modifying the data when normalizing
     streams_copy = copy.deepcopy(streams)
+
+    # Determine the distance and amplitude variation for scaling
+    distances = []
+    max_amp_variation = 0
+    for st in streams:
+        if st.passed:
+            dist = gps2dist_azimuth(
+                st[0].stats.coordinates['latitude'],
+                st[0].stats.coordinates['longitude'],
+                epilat, epilon)[0] / 1000
+            max_amp_var_st = 0
+            for tr in st:
+                amp_var_tr = abs(max(tr.data) - min(tr.data))
+                if normalize:
+                    amp_var_tr *= dist
+                if amp_var_tr > max_amp_var_st:
+                    max_amp_var_st = amp_var_tr
+            if max_dist is not None:
+                if dist < max_dist:
+                    distances.append(dist)
+                    if max_amp_var_st > max_amp_variation:
+                        max_amp_variation = max_amp_var_st
+            else:
+                distances.append(dist)
+                if max_amp_var_st > max_amp_variation:
+                    max_amp_variation = max_amp_var_st
+
+    if distances:
+        scale = max(distances) * factor / max_amp_variation
+    else:
+        return (fig, ax)
+
     nplot = 0
     for idx, stream in enumerate(streams_copy):
         if not stream.passed:
             continue
-        traces = stream.select(channel=channel)
-        if len(traces) > 0:
-            trace = traces[0]
+        for trace in stream:
+            if trace.stats.channel[-1] not in valid_channels:
+                continue
             lat = trace.stats.coordinates['latitude']
             lon = trace.stats.coordinates['longitude']
             distance = gps2dist_azimuth(lat, lon, epilat, epilon)[0] / 1000
@@ -414,7 +464,8 @@ def plot_moveout(streams, epilat, epilon, channel=None, max_dist=200,
             ax.plot(times, trace.data + distance, c='k', alpha=alpha)
             nplot += 1
     ax.invert_yaxis()
-    ax.set_title('Channel code: %s' % channel, fontsize=minfontsize + 4)
+    ax.set_title('Orientation code: %s' % orientation,
+                 fontsize=minfontsize + 4)
     ax.set_ylabel('Epicentral distance (km)', fontsize=minfontsize)
     ax.yaxis.set_tick_params(labelsize=minfontsize - 2)
     plt.xticks([])
@@ -431,8 +482,8 @@ def plot_moveout(streams, epilat, epilon, channel=None, max_dist=200,
         ylabel = 0.05 * (ymax - ymin)
 
         # Plot the time-scale bar
-        plt.errorbar(xbar, ybar, xerr=datetime.timedelta(seconds=15), color='k',
-                     capsize=5)
+        plt.errorbar(xbar, ybar, xerr=datetime.timedelta(seconds=15),
+                     color='k', capsize=5)
         plt.text(xlabel, ylabel, '30 seconds', fontsize=minfontsize)
 
     if file is not None:
