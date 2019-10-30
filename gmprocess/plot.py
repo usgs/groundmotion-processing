@@ -334,7 +334,7 @@ def plot_durations(stream, durations, axes=None, axis_index=None,
 
 def plot_moveout(streams, epilat, epilon, orientation=None, max_dist=None,
                  figsize=(10, 15), file=None, minfontsize=14, normalize=True,
-                 factor=0.1, alpha=0.25):
+                 factor=0.2, alpha=0.25):
     """
     Create moveout plot.
 
@@ -360,8 +360,8 @@ def plot_moveout(streams, epilat, epilon, orientation=None, max_dist=None,
         normalize (bool):
             Normalize the data. Default is True.
         factor (int, float):
-            Factor for scaling the trace. Default is 0.05, meaning that the
-            trace with the greatest amplitude variation will occupy 10% of the
+            Factor for scaling the trace. Default is 0.2, meaning that the
+            trace with the greatest amplitude variation will occupy 20% of the
             vertical space in the plot.
         alpha (float):
             Alpha value for plotting the traces.
@@ -395,9 +395,9 @@ def plot_moveout(streams, epilat, epilon, orientation=None, max_dist=None,
     valid_channels = []
     if orientation in ['N', '1']:
         valid_channels = ['N', '1']
-    elif orientation == ['E', '2']:
+    elif orientation in ['E', '2']:
         valid_channels = ['E', '2']
-    elif orientation == ['Z', '3']:
+    elif orientation in ['Z', '3']:
         valid_channels = ['Z', '3']
 
     # Create a copy of the streams to avoid modifying the data when normalizing
@@ -474,7 +474,7 @@ def plot_moveout(streams, epilat, epilon, orientation=None, max_dist=None,
     if nplot > 0:
         xmin, xmax = ax.get_xlim()
         xbar = num2date(xmin + 0.9 * (xmax - xmin))
-        xlabel = num2date(xmin + 0.85 * (xmax - xmin))
+        xlabel = num2date(xmin + 0.83 * (xmax - xmin))
 
         # Get the y-coordinates for the time bar and label
         ymax, ymin = ax.get_ylim()
