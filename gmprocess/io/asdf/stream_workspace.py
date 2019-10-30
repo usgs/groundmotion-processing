@@ -728,6 +728,8 @@ class StreamWorkspace(object):
             bytelist = tauxholder[metricpath].data[:].tolist()
             xml_stream = ''.join([chr(b) for b in bytelist])
             xml_stream = xml_stream.encode('utf-8')
+        else:
+            return
 
         if 'StationMetrics' not in self.dataset.auxiliary_data:
             raise KeyError('Station metrics not found in workspace.')
@@ -744,6 +746,8 @@ class StreamWorkspace(object):
             bytelist = tauxholder[station_path].data[:].tolist()
             xml_station = ''.join([chr(b) for b in bytelist])
             xml_station = xml_station.encode('utf-8')
+        else:
+            return
 
         summary = StationSummary.from_xml(xml_stream, xml_station)
         return summary

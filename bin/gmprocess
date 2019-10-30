@@ -409,6 +409,11 @@ def main(args):
         for workspace_file in workspace_files:
             workspace = StreamWorkspace.open(workspace_file)
             labels = workspace.getLabels()
+            if 'unprocessed' not in labels:
+                fmt = ('Workspace file "%s" appears to have no unprocessed '
+                       'data. Skipping.')
+                print(fmt % workspace_file)
+                continue
             labels.remove('unprocessed')
             if not labels:
                 fmt = ('Workspace file "%s" appears to have no processed '
