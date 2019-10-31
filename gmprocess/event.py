@@ -1,3 +1,5 @@
+import logging
+
 # third party imports
 from obspy.core.event.origin import Origin
 from obspy.core.event.magnitude import Magnitude
@@ -181,6 +183,9 @@ def get_event_dict(eventid):
             - magnitude Origin magnitude.
     """
     dict_or_id = get_event_by_id(eventid)
+    if dict_or_id.id != eventid:
+        logging.warn('Event ID %s is no longer preferred. Updating with the '
+                     'preferred event ID: %s.' % (eventid, dict_or_id.id))
     event_dict = {'id': dict_or_id.id,
                   'time': UTCDateTime(dict_or_id.time),
                   'lat': dict_or_id.latitude,
