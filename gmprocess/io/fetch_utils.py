@@ -116,7 +116,7 @@ def parse_event_file(eventfile):
     Files can contain:
         - one column, in which case that column
           contains ComCat event IDs.
-        - Six columns, in which case those columns should be:
+        - Seven columns, in which case those columns should be:
           - id: any string (no spaces)
           - time: Any ISO standard for date/time.
           - lat: Earthquake latitude in decimal degrees.
@@ -306,18 +306,28 @@ def get_events(eventids, textfile, eventinfo, directory,
         lon = float(eventinfo[3])
         dep = float(eventinfo[4])
         mag = float(eventinfo[5])
-        mag_type = float(eventinfo[6])
+        mag_type = str(eventinfo[6])
         event = ScalarEvent()
         event.fromParams(eid, time, lat, lon, dep, mag, mag_type)
         events = [event]
     elif directory is not None:
         eventfiles = get_event_files(directory)
         if not len(eventfiles):
-            eventids = os.listdir(directory)
+            eventids = [f for f in os.listdir(directory)
+                        if not f.startswith('.')]
             for eventid in eventids:
                 try:
                     event = get_event_object(eventid)
                     events.append(event)
+
+                    # If the event ID has been updated, make sure to rename
+                    # the source folder and issue a warning to the user
+                    if event.id != eventid:
+                        old_dir = os.path.join(directory, eventid)
+                        new_dir = os.path.join(directory, event.id)
+                        os.rename(old_dir, new_dir)
+                        logging.warn('Directory %s has been renamed to %s.' %
+                                     (old_dir, new_dir))
                 except:
                     logging.warning(
                         'Could not get info for event id: %s' % eventid

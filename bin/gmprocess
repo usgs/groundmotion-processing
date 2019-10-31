@@ -632,8 +632,8 @@ This program will allow the user to:
         'LAT LON DEP MAG'
     )
     group.add_argument(
-        '--eventinfo', help=help_event, type=str, nargs=6,
-        metavar=('ID', 'TIME', 'LAT', 'LON', 'DEPTH', 'MAG')
+        '--eventinfo', help=help_event, type=str, nargs=7,
+        metavar=('ID', 'TIME', 'LAT', 'LON', 'DEPTH', 'MAG', 'MAG_TYPE')
     )
 
     help_dir = format_helptext(
