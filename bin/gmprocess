@@ -432,10 +432,10 @@ def main(args):
                     for eventid in workspace.getEventIds():
                         workspace.calcMetrics(
                             eventid, labels=labels, config=config)
-                    tevent_table, timc_tables = workspace.getTables(
+                    tevent_table, timc_tables, readmes = workspace.getTables(
                         labels[0], config=config)
                 else:
-                    tevent_table, timc_tables = workspace.getTables(
+                    tevent_table, timc_tables, readmes = workspace.getTables(
                         labels[0], config=None)
             if event_table is None:
                 event_table = tevent_table
@@ -466,6 +466,12 @@ def main(args):
                 imcfile = os.path.join(outdir, '%s.xlsx' % imc.lower())
                 imc_table.to_excel(imcfile, index=False)
                 append_file(files_created, 'IMC tables', imcfile)
+
+        for imc, readme_table in readmes.items():
+            readme_file = os.path.join(
+                outdir, '%s.csv' % (imc.lower() + '_README'))
+            readme_table.to_csv(readme_file, index=False)
+            append_file(files_created, 'README tables', readme_file)
 
         # make a regression plot of the most common imc/imt combination we
         # can find
@@ -698,8 +704,11 @@ This program will allow the user to:
 
     help_status = format_helptext(
         'Output failure information, either in short form ("short"), '
-        'long form ("long"), or network form ("net").'
-    )
+        'long form ("long"), or network form ("net"). '
+        'short: Two column table, where the columns are "failure reason" and '
+        '"number of records". net: Three column table where the columns are '
+        '"network", "number passed", and "number failed". long: Two column '
+        'table, where columns are "station ID" and "failure reason".')
     parser.add_argument(
         '--status', choices=['short', 'long', 'net'], dest='status',
         help=help_status
