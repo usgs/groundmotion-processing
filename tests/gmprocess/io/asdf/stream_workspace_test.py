@@ -229,11 +229,15 @@ def test_metrics2():
         workspace.addEvent(event)
         workspace.addStreams(event, processed_streams, label='processed')
         workspace.calcMetrics(event.id, labels=['processed'])
-        etable, imc_tables1 = workspace.getTables('processed')
-        etable2, imc_tables2 = workspace.getTables('processed', config=config)
+        etable, imc_tables1, readmes1 = workspace.getTables('processed')
+        etable2, imc_tables2, readmes2 = workspace.getTables(
+            'processed', config=config)
         assert 'ARITHMETIC_MEAN' not in imc_tables1
+        assert 'ARITHMETIC_MEAN' not in readmes1
         assert 'ARITHMETIC_MEAN' in imc_tables2
+        assert 'ARITHMETIC_MEAN' in readmes2
         assert 'ARIAS' in imc_tables2['ARITHMETIC_MEAN']
+        assert 'ARIAS' in readmes2['ARITHMETIC_MEAN']['Column header'].values
     except Exception as e:
         raise(e)
     finally:

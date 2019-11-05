@@ -19,7 +19,7 @@ from openquake.hazardlib.geo.geodetic import distance
 from gmprocess.stationtrace import StationTrace, TIMEFMT_MS
 from gmprocess.stationstream import StationStream
 from gmprocess.streamcollection import StreamCollection
-from gmprocess.metrics.station_summary import StationSummary
+from gmprocess.metrics.station_summary import StationSummary, XML_UNITS
 from gmprocess.exception import GMProcessException
 from gmprocess.event import ScalarEvent
 
@@ -29,21 +29,53 @@ EVENT_TABLE_COLUMNS = ['id', 'time', 'latitude',
 NON_IMT_COLUMNS = ['ELEVATION', 'EPICENTRAL_DISTANCE',
                    'HYPOCENTRAL_DISTANCE', 'LAT', 'LON',
                    'NAME', 'NETID', 'SOURCE', 'STATION']
-FLATFILE_COLUMNS = ['EarthquakeId', 'EarthquakeTime', 'EarthquakeLatitude',
-                    'EarthquakeLongitude', 'EarthquakeDepth',
-                    'EarthquakeMagnitude', 'EarthquakeMagnitudeType',
-                    'Network', 'NetworkDescription',
-                    'StationCode', 'StationID',
-                    'StationDescription',
-                    'StationLatitude', 'StationLongitude',
-                    'StationElevation', 'SamplingRate',
-                    'EpicentralDistance', 'HypocentralDistance',
-                    'H1Lowpass', 'H1Highpass',
-                    'H2Lowpass', 'H2Highpass', 'SourceFile']
+
+# List of columns in the flatfile, along with their descriptions for the README
+FLATFILE_COLUMNS = {
+    'EarthquakeId': 'Event ID from Comcat',
+    'EarthquakeTime': 'Earthquake origin time (UTC)',
+    'EarthquakeLatitude': 'Earthquake latitude (decimal degrees)',
+    'EarthquakeLongitude': 'Earthquake longitude (decimal degrees)',
+    'EarthquakeDepth': 'Earthquake depth (km)',
+    'EarthquakeMagnitude': 'Earthquake magnitude',
+    'EarthquakeMagnitudeType': 'Earthquake magnitude type',
+    'Network': 'Network code',
+    'NetworkDescription': 'Data source network',
+    'StationCode': 'Station code',
+    'StationID': 'Concatenated network, station, and instrument codes',
+    'StationDescription': 'Station description',
+    'StationLatitude': 'Station latitude (decimal degrees)',
+    'StationLongitude': 'Station longitude (decimal degrees)',
+    'StationElevation': 'Station elevation (m)',
+    'SamplingRate': 'Record sampling rate (Hz)',
+    'EpicentralDistance': 'Epicentral distance (km)',
+    'HypocentralDistance': 'Hypocentral distance (km)',
+    'H1Lowpass': 'H1 channel lowpass frequency (Hz)',
+    'H1Highpass': 'H1 channel highpass frequency (Hz)',
+    'H2Lowpass': 'H2 channel lowpass frequency (Hz)',
+    'H2Highpass': 'H2 channel highpass frequency (Hz)',
+    'SourceFile': 'Source file'}
+
+FLATFILE_IMT_COLUMNS = {
+    'PGA': 'Peak ground acceleration (%s)'
+           % XML_UNITS['pga'],
+    'PGV': 'Peak ground velocity (%s)'
+           % XML_UNITS['pgv'],
+    'SA(X)': 'Pseudo-spectral acceleration (%s) at X seconds'
+           % XML_UNITS['sa'],
+    'FAS(X)': 'Fourier amplitude spectrum value (%s) at X seconds'
+           % XML_UNITS['fas'],
+    'DURATION': '5-95 percent significant duration (%s)'
+           % XML_UNITS['duration'],
+    'ARIAS': 'Arias intensity (%s)'
+           % XML_UNITS['arias']
+}
+
 
 M_PER_KM = 1000
 
 FORMAT_VERSION = '1.0'
+
 
 def format_netsta(stats):
     return '{st.network}.{st.station}'.format(st=stats)
@@ -617,9 +649,14 @@ class StreamWorkspace(object):
                      - HN2Highpass High pass filter corner frequency for
                        second horizontal channel
                      - ...desired IMTs (PGA, PGV, SA(0.3), etc.)
+                   - dictionary of README DataFrames, where keys are IMCs
+                     and values are DataFrames with columns:
+                     - Column header
+                     - Description
         '''
         event_table = pd.DataFrame(columns=EVENT_TABLE_COLUMNS)
         imc_tables = {}
+        readme_tables = {}
         for eventid in self.getEventIds():
             event = self.getEvent(eventid)
             edict = {
@@ -654,13 +691,37 @@ class StreamWorkspace(object):
 
                 for imc in imclist:
                     if imc not in imc_tables:
-                        cols = FLATFILE_COLUMNS + imtlist
+                        cols = list(FLATFILE_COLUMNS.keys()) + imtlist
                         imc_table = pd.DataFrame(columns=cols)
                         row = _get_table_row(stream, summary, event, imc)
                         if not len(row):
                             continue
                         imc_table = imc_table.append(row, ignore_index=True)
                         imc_tables[imc] = imc_table
+
+                        imtlist_readme = []
+                        for imt in imtlist:
+                            # Check if this an actual IMT/IMC combination that
+                            # we have
+                            if imt in summary.pgms[
+                                    summary.pgms['IMC'] == imc].dropna(
+                                        )['IMT'].values:
+                                imt = imt.upper()
+                                if imt.startswith('SA'):
+                                    imtlist_readme.append('SA(X)')
+                                elif imt.startswith('FAS'):
+                                    imtlist_readme.append('FAS(X)')
+                                else:
+                                    imtlist_readme.append(imt)
+                            imtlist_readme.sort()
+
+                        df_readme = pd.DataFrame.from_dict(
+                            {**FLATFILE_COLUMNS,
+                             **{imt: FLATFILE_IMT_COLUMNS[imt]
+                                for imt in imtlist_readme}}, orient='index')
+                        df_readme.reset_index(level=0, inplace=True)
+                        df_readme.columns = ['Column header', 'Description']
+                        readme_tables[imc] = df_readme
                     else:
                         imc_table = imc_tables[imc]
                         row = _get_table_row(stream, summary, event, imc)
@@ -676,7 +737,7 @@ class StreamWorkspace(object):
                     table.drop(columns=col, inplace=True)
             imc_tables[key] = table
 
-        return (event_table, imc_tables)
+        return (event_table, imc_tables, readme_tables)
 
     def getStreamMetrics(self, eventid, network, station, label):
         """Extract a StationSummary object from the ASDF file for a given input Stream.

@@ -390,7 +390,10 @@ def plot_moveout(streams, epilat, epilon, orientation=None, max_dist=None,
             if code == '3':
                 orientation_codes[i] = 'Z'
         channel_counter = Counter(orientation_codes)
-        orientation = max(channel_counter, key=channel_counter.get)
+        if channel_counter:
+            orientation = max(channel_counter, key=channel_counter.get)
+        else:
+            return (fig, ax)
 
     valid_channels = []
     if orientation in ['N', '1']:
