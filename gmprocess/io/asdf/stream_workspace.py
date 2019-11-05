@@ -649,6 +649,10 @@ class StreamWorkspace(object):
                      - HN2Highpass High pass filter corner frequency for
                        second horizontal channel
                      - ...desired IMTs (PGA, PGV, SA(0.3), etc.)
+                   - dictionary of README DataFrames, where keys are IMCs
+                     and values are DataFrames with columns:
+                     - Column header
+                     - Description
         '''
         event_table = pd.DataFrame(columns=EVENT_TABLE_COLUMNS)
         imc_tables = {}
