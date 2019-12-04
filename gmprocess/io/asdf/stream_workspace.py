@@ -739,6 +739,35 @@ class StreamWorkspace(object):
 
         return (event_table, imc_tables, readme_tables)
 
+    def getFitSpectraTable(self, eventid, label):
+        """
+        Returns a pandas DataFrame containing the fit_spectra parameters for
+        each trace in the workspace matching eventid and label.
+
+        Args:
+            eventid (str):
+                Return parameters only for the given eventid.
+            label (str):
+                Return parameters only for the given label.
+
+        Returns:
+            pandas.DataFrame:
+                A DataFrame containing the fit_spectra parameters on a trace-
+                by-trace basis.
+        """
+        df = pd.DataFrame()
+        streams = self.getStreams(eventid, labels=[label])
+        for st in streams:
+            if st.passed:
+                for tr in st:
+                    if tr.hasParameter('fit_spectra'):
+                        fit_spectra_dict = tr.getParameter('fit_spectra')
+                        fit_spectra_dict['EarthquakeID'] = eventid
+                        fit_spectra_dict['TraceID'] = tr.id
+                        df = df.append(tr.getParameter('fit_spectra'),
+                                       ignore_index=True)
+        return df
+
     def getStreamMetrics(self, eventid, network, station, label):
         """Extract a StationSummary object from the ASDF file for a given input Stream.
 
