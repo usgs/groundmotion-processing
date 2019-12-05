@@ -22,7 +22,7 @@ def fit_spectra(st, origin, kappa=0.035,
                 min_stress=0.1,
                 max_stress=10000):
     """
-    Fit spectra vaying stress_drop and kappa.
+    Fit spectra vaying stress_drop and moment.
 
     Args:
         st (StationStream):
@@ -165,7 +165,7 @@ def fit_spectra(st, origin, kappa=0.035,
                 'moment_lnsd': sd[0],
                 'magnitude': magnitude_fit,
                 'f0': f0_fit,
-                'minimize_mesage': result.message.decode(),
+                'minimize_message': result.message.decode(),
                 'minimize_success': result.success
             }
             tr.setParameter('fit_spectra', fit_spectra_dict)

@@ -71,6 +71,36 @@ FLATFILE_IMT_COLUMNS = {
            % XML_UNITS['arias']
 }
 
+# List of columns in the fit_spectra_parameters file, along README descriptions
+FIT_SPECTRA_COLUMNS = {
+    'EarthquakeId': 'Event ID from Comcat',
+    'EarthquakeTime': 'Earthquake origin time (UTC)',
+    'EarthquakeLatitude': 'Earthquake latitude (decimal degrees)',
+    'EarthquakeLongitude': 'Earthquake longitude (decimal degrees)',
+    'EarthquakeDepth': 'Earthquake depth (km)',
+    'EarthquakeMagnitude': 'Earthquake magnitude',
+    'EarthquakeMagnitudeType': 'Earthquake magnitude type',
+    'TraceID': 'NET.STA.LOC.CHA',
+    'StationLatitude': 'Station latitude (decimal degrees)',
+    'StationLongitude': 'Station longitude (decimal degrees)',
+    'StationElevation': 'Station elevation (m)',
+    'fmin': 'Record highpass filter frequency (Hz)',
+    'fmax': 'Record lowpass filter frequency (Hz)',
+    'epi_dist': 'Epicentral distance (km)',
+    'f0': 'Brune corner frequency (Hz)',
+    'kappa': 'Site diminution factor (sec)',
+    'magnitude': 'Magnitude from optimized moment',
+    'minimize_message':
+        'Output message from scipy.optimize.minimize',
+    'minimize_success':
+        'Boolean flag indicating if the optimizer exited successfully',
+    'moment': 'Moment fit (dyne-cm)',
+    'moment_lnsd': 'Natural log standard deviation of the moment fit',
+    'stress_drop': 'Stress drop fit (bars)',
+    'stress_drop_lnsd':
+        'Natural log standard deviation of the stress drop fit',
+}
+
 
 M_PER_KM = 1000
 
@@ -738,6 +768,58 @@ class StreamWorkspace(object):
             imc_tables[key] = table
 
         return (event_table, imc_tables, readme_tables)
+
+    def getFitSpectraTable(self, eventid, label):
+        """
+        Returns a tuple of two pandas DataFrames. The first contains the
+        fit_spectra parameters for each trace in the workspace matching
+        eventid and label. The second is a README describing each column
+        in the first DataFrame.
+
+        Args:
+            eventid (str):
+                Return parameters only for the given eventid.
+            label (str):
+                Return parameters only for the given label.
+
+        Returns:
+            pandas.DataFrame:
+                A DataFrame containing the fit_spectra parameters on a trace-
+                by-trace basis.
+        """
+        df = pd.DataFrame(columns=FIT_SPECTRA_COLUMNS.keys())
+        event = self.getEvent(eventid)
+        streams = self.getStreams(eventid, labels=[label])
+        for st in streams:
+            if not st.passed:
+                continue
+            for tr in st:
+                if tr.hasParameter('fit_spectra'):
+                    fit_dict = tr.getParameter('fit_spectra')
+                    fit_dict['EarthquakeId'] = eventid
+                    fit_dict['EarthquakeTime'] = event.time
+                    fit_dict['EarthquakeLatitude'] = event.latitude
+                    fit_dict['EarthquakeLongitude'] = event.longitude
+                    fit_dict['EarthquakeDepth'] = event.depth_km
+                    fit_dict['EarthquakeMagnitude'] = event.magnitude
+                    fit_dict['EarthquakeMagnitudeType'] = event.magnitude_type
+                    fit_dict['TraceID'] = tr.id
+                    fit_dict['StationLatitude'] = tr.stats.coordinates.latitude
+                    fit_dict['StationLongitude'] = \
+                        tr.stats.coordinates.longitude
+                    fit_dict['StationElevation'] = \
+                        tr.stats.coordinates.elevation
+                    if tr.hasParameter('corner_frequencies'):
+                        freq_dict = tr.getParameter('corner_frequencies')
+                        fit_dict['fmin'] = freq_dict['highpass']
+                        fit_dict['fmax'] = freq_dict['lowpass']
+                    df = df.append(fit_dict, ignore_index=True)
+
+        readme = pd.DataFrame.from_dict(FIT_SPECTRA_COLUMNS, orient='index')
+        readme.reset_index(level=0, inplace=True)
+        readme.columns = ['Column header', 'Description']
+
+        return (df, readme)
 
     def getStreamMetrics(self, eventid, network, station, label):
         """Extract a StationSummary object from the ASDF file for a given input Stream.
