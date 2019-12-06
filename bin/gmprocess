@@ -27,6 +27,8 @@ from gmprocess.processing import process_streams
 from gmprocess.report import build_report_latex
 from gmprocess.plot import summary_plots, plot_regression, plot_moveout
 from gmprocess.config import get_config
+from gmprocess.tables import set_precisions
+from gmprocess.constants import DEFAULT_FLOAT_FORMAT
 
 NON_IMT_COLS = set(['EarthquakeId',
                     'EarthquakeTime',
@@ -35,7 +37,7 @@ NON_IMT_COLS = set(['EarthquakeId',
                     'EarthquakeDepth',
                     'EarthquakeMagnitude',
                     'Network',
-                    'NetworkDescription',
+                    'DataProvider',
                     'StationCode',
                     'StationID',
                     'StationDescription',
@@ -454,21 +456,33 @@ def main(args):
                         imc_tables[imc] = pd.concat([imc_table, timc_table])
             workspace.close()
 
+        # Set the precisions for the imc tables, event table, and fit_spectra
+        # table before writing
+        imc_tables_formatted = {}
+        for imc, imc_table in imc_tables.items():
+            imc_tables_formatted[imc] = set_precisions(imc_table)
+        event_table_formatted = set_precisions(event_table)
+        df_fit_spectra_formatted = set_precisions(df_fit_spectra)
+
         if args.format == 'csv':
             eventfile = os.path.join(outdir, 'events.csv')
-            event_table.to_csv(eventfile, index=False)
+            event_table_formatted.to_csv(eventfile, index=False,
+                                         float_format=DEFAULT_FLOAT_FORMAT)
             append_file(files_created, 'Event table', eventfile)
-            for imc, imc_table in imc_tables.items():
+            for imc, imc_table in imc_tables_formatted.items():
                 imcfile = os.path.join(outdir, '%s.csv' % imc.lower())
-                imc_table.to_csv(imcfile, index=False)
+                imc_table.to_csv(imcfile, index=False,
+                                 float_format=DEFAULT_FLOAT_FORMAT)
                 append_file(files_created, 'IMC tables', imcfile)
         else:
             eventfile = os.path.join(outdir, 'events.xlsx')
-            event_table.to_excel(eventfile, index=False)
+            event_table_formatted.to_excel(eventfile, index=False,
+                                           float_format=DEFAULT_FLOAT_FORMAT)
             append_file(files_created, 'Event table', eventfile)
-            for imc, imc_table in imc_tables.items():
+            for imc, imc_table in imc_tables_formatted.items():
                 imcfile = os.path.join(outdir, '%s.xlsx' % imc.lower())
-                imc_table.to_excel(imcfile, index=False)
+                imc_table.to_excel(imcfile, index=False,
+                                   float_format=DEFAULT_FLOAT_FORMAT)
                 append_file(files_created, 'IMC tables', imcfile)
 
         for imc, readme_table in readmes.items():
@@ -478,7 +492,8 @@ def main(args):
             append_file(files_created, 'README tables', readme_file)
 
         spectra_file = os.path.join(outdir, 'fit_spectra_parameters.csv')
-        df_fit_spectra.to_csv(spectra_file, index=False)
+        df_fit_spectra_formatted.to_csv(spectra_file, index=False,
+                                        float_format=DEFAULT_FLOAT_FORMAT)
         append_file(files_created, 'Fit spectra table', spectra_file)
 
         fit_readme_file = os.path.join(
