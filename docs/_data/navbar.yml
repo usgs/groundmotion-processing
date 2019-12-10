@@ -60,6 +60,8 @@ toc:
         url: /utilities/gmconvert.html
       - page: Examining the workspace
         url: /utilities/gmworkspace.html
+      - page: Matlab utilities
+        url: /tools/matlab.html
   - title: Python scripting
     subitems:
       - page: Data structures
