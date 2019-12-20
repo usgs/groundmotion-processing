@@ -446,8 +446,17 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
         source = SOURCES1[idx].decode(
             'utf-8') + ', ' + SOURCES2[idx].decode('utf-8')
     else:
-        network = 'ZZ'
-        source = 'unknown'
+        # newer files have a record_id.network.station.location.channel thing in the 4th line
+        recinfo = lines[3][0:23]
+        try:
+            parts = recinfo.strip().split('.')
+            network = parts[1].upper()
+            idx = np.argwhere(CODES == network)[0][0]
+            source = SOURCES1[idx].decode(
+                'utf-8') + ', ' + SOURCES2[idx].decode('utf-8')
+        except:
+            network = 'ZZ'
+            source = 'unknown'
     hdr['network'] = network
     logging.debug('network: %s' % network)
     station_line = lines[4]
@@ -457,7 +466,11 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
     angle = int_data[26]
     logging.debug('angle: %s' % angle)
 
-    hdr['npts'] = int_data[27]
+    # newer files seem to have the *real* number of points in int header 32
+    if int_data[32] != 0:
+        hdr['npts'] = int_data[32]
+    else:
+        hdr['npts'] = int_data[27]
     reclen = flt_data[2]
     logging.debug('reclen: %s' % reclen)
     logging.debug('npts: %s' % hdr['npts'])
@@ -814,6 +827,7 @@ def _get_units(line):
         units_start = line.find('in')
 
     units_section = line[units_start:].replace('.', ' ')
+
     if 'g/10' in units_section:
         physical_units = 'g/10'
     elif ('10g' in units_section or '10*g' in units_section

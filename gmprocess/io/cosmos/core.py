@@ -565,8 +565,12 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     station_name = lines[4][40:-1].strip()
     standard['station_name'] = station_name
     instrument_frequency = float(flt_data[39])
-    standard['instrument_period'] = 1.0 / _check_assign(instrument_frequency,
-                                                        unknown, np.nan)
+    if instrument_frequency == 0:
+        standard['instrument_period'] = np.nan
+        logging.warning('Instrument Frequency == 0')
+    else:
+        standard['instrument_period'] = 1.0 / _check_assign(instrument_frequency,
+                                                            unknown, np.nan)
     instrument_damping = float(flt_data[40])
     standard['instrument_damping'] = _check_assign(instrument_damping,
                                                    unknown, np.nan)

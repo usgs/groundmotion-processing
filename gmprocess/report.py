@@ -99,8 +99,8 @@ Code version: [VERSION]
 \\includegraphics[width=0.9\\textwidth]
     {[MAPPATH]}
 
-\\includegraphics[width=0.9\\textwidth]
-    {[MOVEOUTPATH]}
+[MOVEOUT_PAGE]
+
 \\end{center}
 
 \\vfill
@@ -108,6 +108,11 @@ Code version: [VERSION]
 \\newpage\n\n
 
 """
+
+moveout_page_tex = '''
+\\includegraphics[width=0.9\\textwidth]
+    {[MOVEOUTPATH]}
+'''
 
 
 def build_report_latex(sc, directory, origin, config=None):
@@ -152,9 +157,10 @@ def build_report_latex(sc, directory, origin, config=None):
         )
         moveout_file = os.path.join(directory, 'moveout_plot.png')
         if os.path.isfile(moveout_file):
-            TB = TB.replace(
-                '[MOVEOUTPATH]', 'moveout_plot.png'
-            )
+            TB = TB.replace('[MOVEOUT_PAGE]', moveout_page_tex)
+            TB = TB.replace('[MOVEOUTPATH]', 'moveout_plot.png')
+        else:
+            TB = TB.replace('[MOVEOUT_PAGE]', '')
         report += TB
 
     # Loop over each StationStream and append it's page to the report

@@ -441,7 +441,7 @@ def main(args):
                     tevent_table, timc_tables, readmes = workspace.getTables(
                         labels[0], config=None)
                     ev_fit_spec, fit_readme = workspace.getFitSpectraTable(
-                            eventid, labels[0])
+                        eventid, labels[0])
                     df_fit_spectra = pd.concat((df_fit_spectra, ev_fit_spec))
             if event_table is None:
                 event_table = tevent_table
