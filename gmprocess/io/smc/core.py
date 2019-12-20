@@ -379,7 +379,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     if problem_flag == 1:
         if not accept_flagged:
             fmt = 'SMC: Record found in file %s has a problem flag!'
-            raise Exception(fmt % filename)
+            raise GMProcessException(fmt % filename)
         else:
             logging.warning(
                 'SMC: Data contains a problem flag for network/station: '

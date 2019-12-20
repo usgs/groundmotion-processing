@@ -295,7 +295,7 @@ class StreamWorkspace(object):
             for trace in stream:
                 procname = '/'.join([format_netsta(trace.stats),
                                      format_nslct(trace.stats, tag),
-                ])
+                                     ])
                 jdict = {}
                 for key in trace.getParameterKeys():
                     value = trace.getParameter(key)
@@ -404,6 +404,18 @@ class StreamWorkspace(object):
 
                 inventory = waveform['StationXML']
                 for ttrace in tstream:
+                    if isinstance(ttrace.data[0], np.floating):
+                        if ttrace.data[0].nbytes == 4:
+                            ttrace.data = ttrace.data.astype('float32')
+                        else:
+                            ttrace.data = ttrace.data.astype('float64')
+                    else:
+                        if ttrace.data[0].nbytes == 2:
+                            ttrace.data = ttrace.data.astype('int16')
+                        elif ttrace.data[0].nbytes == 4:
+                            ttrace.data = ttrace.data.astype('int32')
+                        else:
+                            ttrace.data = ttrace.data.astype('int64')
                     trace = StationTrace(data=ttrace.data,
                                          header=ttrace.stats,
                                          inventory=inventory)
@@ -452,7 +464,8 @@ class StreamWorkspace(object):
                     stream.tag = tag  # testing this out
 
                     # get the stream processing parameters
-                    stream_path = format_nslit(trace.stats, stream.get_inst(), tag)
+                    stream_path = format_nslit(
+                        trace.stats, stream.get_inst(), tag)
                     if top in stream_auxholder:
                         top_auxholder = stream_auxholder[top]
                         if stream_path in top_auxholder:
@@ -552,7 +565,7 @@ class StreamWorkspace(object):
             metricpath = '/'.join([
                 format_netsta(stream[0].stats),
                 format_nslit(stream[0].stats, stream.get_inst(), eventid)
-                ])
+            ])
             self.insert_aux(xmlstr, 'StationMetrics', metricpath)
 
     def calcMetrics(self, eventid, stations=None, labels=None, config=None):
@@ -735,7 +748,7 @@ class StreamWorkspace(object):
                             # we have
                             if imt in summary.pgms[
                                     summary.pgms['IMC'] == imc].dropna(
-                                        )['IMT'].values:
+                            )['IMT'].values:
                                 imt = imt.upper()
                                 if imt.startswith('SA'):
                                     imtlist_readme.append('SA(X)')
@@ -877,7 +890,8 @@ class StreamWorkspace(object):
         if 'StationMetrics' not in self.dataset.auxiliary_data:
             raise KeyError('Station metrics not found in workspace.')
         auxholder = self.dataset.auxiliary_data.StationMetrics
-        station_path = format_nslit(streams[0][0].stats, streams[0].get_inst(), eventid)
+        station_path = format_nslit(
+            streams[0][0].stats, streams[0].get_inst(), eventid)
         if top in auxholder:
             tauxholder = auxholder[top]
             if station_path not in tauxholder:
