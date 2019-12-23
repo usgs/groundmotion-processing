@@ -464,6 +464,11 @@ def main(args):
         event_table_formatted = set_precisions(event_table)
         df_fit_spectra_formatted = set_precisions(df_fit_spectra)
 
+        if args.export_dir is not None:
+            if not os.path.isdir(args.export_dir):
+                os.makedirs(args.export_dir)
+            outdir = args.export_dir
+
         if args.format == 'csv':
             eventfile = os.path.join(outdir, 'events.csv')
             event_table_formatted.to_csv(eventfile, index=False,
@@ -638,6 +643,11 @@ This program will allow the user to:
     )
     parser.add_argument('--export', help=help_export, action='store_true',
                         dest='export')
+
+    help_export_dir = format_helptext('Specify an alternate directory for the '
+                                      'export files, which defaults to the '
+                                      'directory above event directory.')
+    parser.add_argument('--export-dir', help=help_export_dir)
 
     help_shakemap = format_helptext(
         'Generate ShakeMap-friendly peak ground motions table.'
