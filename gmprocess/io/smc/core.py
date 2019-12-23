@@ -313,6 +313,19 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     # first line is start time information, and then inst. serial number
     missing_data = intheader[0, 0]
     year = intheader[0, 1]
+
+    # sometimes the year field has a 0 in it. When this happens, we
+    # can try to get a timestamp from line 4 of the ascii header.
+    if year == 0:
+        parts = ascheader[3].split()
+        try:
+            year = int(parts[0])
+        except ValueError as ve:
+            fmt = ('Could not find year in SMC file %s. Not present '
+                   'in integer header and not parseable from line '
+                   '4 of ASCII header. Error: "%s"')
+            raise GMProcessException(fmt % (filename, str(ve)))
+
     jday = intheader[0, 2]
     hour = intheader[0, 3]
     minute = intheader[0, 4]

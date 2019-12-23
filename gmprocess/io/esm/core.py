@@ -141,16 +141,28 @@ def read_esm(filename):
     response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
     trace.setProvenance('remove_response', response)
     ftype = header['FILTER_TYPE'].capitalize()
-    forder = int(header['FILTER_ORDER'])
-    lowfreq = float(header['LOW_CUT_FREQUENCY_HZ'])
-    highfreq = float(header['LOW_CUT_FREQUENCY_HZ'])
-    filter_att = {'bandpass_filter':
-                  {'filter_type': ftype,
-                   'lower_corner_frequency': lowfreq,
-                   'higher_corner_frequency': highfreq,
-                   'filter_order': forder}}
-    trace.setProvenance('lowpass_filter', filter_att)
+    try:
+        forder = int(header['FILTER_ORDER'])
+    except ValueError:
+        forder = 0
+
+    try:
+        lowfreq = float(header['LOW_CUT_FREQUENCY_HZ'])
+    except ValueError:
+        lowfreq = np.nan
+    try:
+        highfreq = float(header['LOW_CUT_FREQUENCY_HZ'])
+    except ValueError:
+        highfreq = np.nan
+    if not np.isnan(lowfreq) and not np.isnan(lowfreq):
+        filter_att = {'bandpass_filter':
+                      {'filter_type': ftype,
+                       'lower_corner_frequency': lowfreq,
+                       'higher_corner_frequency': highfreq,
+                       'filter_order': forder}}
+        trace.setProvenance('lowpass_filter', filter_att)
     detrend_att = {'detrend': {'detrending_method': 'baseline'}}
-    trace.setProvenance('detrend', detrend_att)
+    if 'NOT REMOVED' not in header['BASELINE_CORRECTION']:
+        trace.setProvenance('detrend', detrend_att)
     stream = StationStream(traces=[trace])
     return [stream]
