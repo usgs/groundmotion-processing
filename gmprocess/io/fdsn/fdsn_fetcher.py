@@ -40,6 +40,11 @@ URL_ERROR_CODE = 200  # if we get this from a request, we're good
 
 OBSPY_LOGGER = "obspy.clients.fdsn.mass_downloader"
 
+GEONET_ARCHIVE_DAYS = 7 * 86400
+GEONET_ARCHIVE_URL = 'http://service.geonet.org.nz'
+GEO_NET_ARCHIVE_KEY = 'GEONET'
+GEONET_REALTIME_URL = 'http://service-nrt.geonet.org.nz'
+
 
 class FDSNFetcher(DataFetcher):
     def __init__(self, time, lat, lon,
@@ -230,6 +235,10 @@ class FDSNFetcher(DataFetcher):
         fdsn_config = self.config['fetchers']['FDSNFetcher']
         client_list = []
         for provider_str in URL_MAPPINGS.keys():
+            if provider_str == GEO_NET_ARCHIVE_KEY:
+                dt = UTCDateTime.utcnow() - UTCDateTime(self.time)
+                if dt < GEONET_ARCHIVE_DAYS:
+                    provider_str = GEONET_REALTIME_URL
             try:
                 if provider_str in fdsn_config:
                     client = Client(
