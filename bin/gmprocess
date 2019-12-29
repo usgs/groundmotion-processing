@@ -411,6 +411,8 @@ def main(args):
         df_fit_spectra = pd.DataFrame()
         for workspace_file in workspace_files:
             workspace = StreamWorkspace.open(workspace_file)
+            if len(workspace.getStations()) == 0:
+                continue
             labels = workspace.getLabels()
             if 'unprocessed' not in labels:
                 fmt = ('Workspace file "%s" appears to have no unprocessed '
@@ -456,97 +458,99 @@ def main(args):
                         imc_tables[imc] = pd.concat([imc_table, timc_table])
             workspace.close()
 
-        # Set the precisions for the imc tables, event table, and fit_spectra
-        # table before writing
-        imc_tables_formatted = {}
-        for imc, imc_table in imc_tables.items():
-            imc_tables_formatted[imc] = set_precisions(imc_table)
-        event_table_formatted = set_precisions(event_table)
-        df_fit_spectra_formatted = set_precisions(df_fit_spectra)
+        if event_table is not None:
+            # Set the precisions for the imc tables, event table, and fit_spectra
+            # table before writing
+            imc_tables_formatted = {}
+            for imc, imc_table in imc_tables.items():
+                imc_tables_formatted[imc] = set_precisions(imc_table)
+            event_table_formatted = set_precisions(event_table)
+            df_fit_spectra_formatted = set_precisions(df_fit_spectra)
 
         if args.export_dir is not None:
             if not os.path.isdir(args.export_dir):
                 os.makedirs(args.export_dir)
             outdir = args.export_dir
 
-        if args.format == 'csv':
-            eventfile = os.path.join(outdir, 'events.csv')
-            event_table_formatted.to_csv(eventfile, index=False,
-                                         float_format=DEFAULT_FLOAT_FORMAT)
-            append_file(files_created, 'Event table', eventfile)
-            for imc, imc_table in imc_tables_formatted.items():
-                imcfile = os.path.join(outdir, '%s.csv' % imc.lower())
-                imc_table.to_csv(imcfile, index=False,
-                                 float_format=DEFAULT_FLOAT_FORMAT)
-                append_file(files_created, 'IMC tables', imcfile)
-        else:
-            eventfile = os.path.join(outdir, 'events.xlsx')
-            event_table_formatted.to_excel(eventfile, index=False,
-                                           float_format=DEFAULT_FLOAT_FORMAT)
-            append_file(files_created, 'Event table', eventfile)
-            for imc, imc_table in imc_tables_formatted.items():
-                imcfile = os.path.join(outdir, '%s.xlsx' % imc.lower())
-                imc_table.to_excel(imcfile, index=False,
-                                   float_format=DEFAULT_FLOAT_FORMAT)
-                append_file(files_created, 'IMC tables', imcfile)
+        if event_table is not None:
+            if args.format == 'csv':
+                eventfile = os.path.join(outdir, 'events.csv')
+                event_table_formatted.to_csv(eventfile, index=False,
+                                             float_format=DEFAULT_FLOAT_FORMAT)
+                append_file(files_created, 'Event table', eventfile)
+                for imc, imc_table in imc_tables_formatted.items():
+                    imcfile = os.path.join(outdir, '%s.csv' % imc.lower())
+                    imc_table.to_csv(imcfile, index=False,
+                                     float_format=DEFAULT_FLOAT_FORMAT)
+                    append_file(files_created, 'IMC tables', imcfile)
+            else:
+                eventfile = os.path.join(outdir, 'events.xlsx')
+                event_table_formatted.to_excel(eventfile, index=False,
+                                               float_format=DEFAULT_FLOAT_FORMAT)
+                append_file(files_created, 'Event table', eventfile)
+                for imc, imc_table in imc_tables_formatted.items():
+                    imcfile = os.path.join(outdir, '%s.xlsx' % imc.lower())
+                    imc_table.to_excel(imcfile, index=False,
+                                       float_format=DEFAULT_FLOAT_FORMAT)
+                    append_file(files_created, 'IMC tables', imcfile)
 
-        for imc, readme_table in readmes.items():
-            readme_file = os.path.join(
-                outdir, '%s.csv' % (imc.lower() + '_README'))
-            readme_table.to_csv(readme_file, index=False)
-            append_file(files_created, 'README tables', readme_file)
+            for imc, readme_table in readmes.items():
+                readme_file = os.path.join(
+                    outdir, '%s.csv' % (imc.lower() + '_README'))
+                readme_table.to_csv(readme_file, index=False)
+                append_file(files_created, 'README tables', readme_file)
 
-        spectra_file = os.path.join(outdir, 'fit_spectra_parameters.csv')
-        df_fit_spectra_formatted.to_csv(spectra_file, index=False,
-                                        float_format=DEFAULT_FLOAT_FORMAT)
-        append_file(files_created, 'Fit spectra table', spectra_file)
+            spectra_file = os.path.join(outdir, 'fit_spectra_parameters.csv')
+            df_fit_spectra_formatted.to_csv(spectra_file, index=False,
+                                            float_format=DEFAULT_FLOAT_FORMAT)
+            append_file(files_created, 'Fit spectra table', spectra_file)
 
-        fit_readme_file = os.path.join(
-            outdir, 'fit_spectra_parameters_README.csv')
-        fit_readme.to_csv(fit_readme_file, index=False)
-        append_file(files_created, 'README tables', fit_readme_file)
+            fit_readme_file = os.path.join(
+                outdir, 'fit_spectra_parameters_README.csv')
+            fit_readme.to_csv(fit_readme_file, index=False)
+            append_file(files_created, 'README tables', fit_readme_file)
 
-        # make a regression plot of the most common imc/imt combination we
-        # can find
-        if not len(imc_tables):
-            msg = '''No IMC tables found. It is likely that no streams
-            passed checks. If you created reports for the events you
-            have been processing, check those to see if this is the case,
-            then adjust your configuration as necessary to process the data.
-            '''
-            logging.warning(msg)
-        else:
-            pref_imcs = ['GREATER_OF_TWO_HORIZONTALS', 'H1', 'H2']
-            pref_imts = ['PGA', 'PGV', 'SA(1.0)']
-            found_imc = None
-            found_imt = None
-            for imc in pref_imcs:
-                if imc in imc_tables:
-                    for imt in pref_imts:
-                        if imt in imc_tables[imc].columns:
-                            found_imt = imt
-                            found_imc = imc
+            # make a regression plot of the most common imc/imt combination we
+            # can find
+            if not len(imc_tables):
+                msg = '''No IMC tables found. It is likely that no streams
+                passed checks. If you created reports for the events you
+                have been processing, check those to see if this is the case,
+                then adjust your configuration as necessary to process the data.
+                '''
+                logging.warning(msg)
+            else:
+                pref_imcs = ['GREATER_OF_TWO_HORIZONTALS', 'H1', 'H2']
+                pref_imts = ['PGA', 'PGV', 'SA(1.0)']
+                found_imc = None
+                found_imt = None
+                for imc in pref_imcs:
+                    if imc in imc_tables:
+                        for imt in pref_imts:
+                            if imt in imc_tables[imc].columns:
+                                found_imt = imt
+                                found_imc = imc
+                                break
+                        if found_imc:
                             break
-                    if found_imc:
-                        break
-            # now look for whatever IMC/IMTcombination we can find
-            if imc_tables and not found_imc:
-                found_imc = list(imc_tables.keys())[0]
-                table_cols = set(imc_tables[found_imc].columns)
-                imtlist = list(table_cols - NON_IMT_COLS)
-                found_imt = imtlist[0]
+                # now look for whatever IMC/IMTcombination we can find
+                if imc_tables and not found_imc:
+                    found_imc = list(imc_tables.keys())[0]
+                    table_cols = set(imc_tables[found_imc].columns)
+                    imtlist = list(table_cols - NON_IMT_COLS)
+                    found_imt = imtlist[0]
 
-            if found_imc and found_imt:
-                pngfile = '%s_%s.png' % (found_imc, found_imt)
-                regression_file = os.path.join(outdir, pngfile)
-                plot_regression(event_table, found_imc,
-                                imc_tables[found_imc],
-                                found_imt,
-                                regression_file,
-                                distance_metric='EpicentralDistance',
-                                colormap='viridis_r')
-                append_file(files_created,
-                            'Multi-event regression plot', regression_file)
+                if found_imc and found_imt:
+                    pngfile = '%s_%s.png' % (found_imc, found_imt)
+                    regression_file = os.path.join(outdir, pngfile)
+                    plot_regression(event_table, found_imc,
+                                    imc_tables[found_imc],
+                                    found_imt,
+                                    regression_file,
+                                    distance_metric='EpicentralDistance',
+                                    colormap='viridis_r')
+                    append_file(files_created,
+                                'Multi-event regression plot', regression_file)
 
     if args.status:
         if args.status == 'short':
