@@ -156,6 +156,8 @@ class TurkeyFetcher(DataFetcher):
                   - mag Event magnitude
         """
         df = get_turkey_dataframe(self.time, 1)
+        if df is None:
+            return []
         lats = df['latitude'].values
         lons = df['longitude'].values
         etime = pd.Timestamp(self.time)
@@ -269,6 +271,8 @@ def get_turkey_dataframe(time, dt):
     params['to_month'] = '%02i' % end_time.month
     params['to_day'] = '%02i' % end_time.day
     req = requests.post(url, params)
+    if req.status_code != 200:
+        return None
     data = req.text
     soup = BeautifulSoup(data, features="lxml")
     table = soup.find_all('table', 'tableType_01')[0]

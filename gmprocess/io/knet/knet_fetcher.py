@@ -191,6 +191,8 @@ class KNETFetcher(DataFetcher):
         """
         jpyear = str(self.jptime.year)
         jpquarter = str(QUARTERS[self.jptime.month])
+        if len(jpquarter) == 1:
+            jpquarter = '0' + jpquarter
         url = SEARCH_URL.replace('YEAR', jpyear)
         url = url.replace('QUARTER', jpquarter)
         req = requests.get(url)
@@ -205,6 +207,8 @@ class KNETFetcher(DataFetcher):
         mags = []
         values = []
         for option in options:
+            if 'Data not found' in option.text:
+                break
             eventstr = option.contents[0]
             timestr = re.search(TIMEPAT, eventstr).group()
             latstr = re.search(LATPAT, eventstr).group()
@@ -222,6 +226,10 @@ class KNETFetcher(DataFetcher):
             depths.append(depth)
             mags.append(mag)
             values.append(option.get('value'))
+
+        events = []
+        if not len(times):
+            return events
 
         times = np.array(times)
         lats = np.array(lats)
@@ -241,7 +249,7 @@ class KNETFetcher(DataFetcher):
         edepths = depths[didx & tidx]
         emags = mags[didx & tidx]
         evalues = values[didx & tidx]
-        events = []
+
         for etime, elat, elon, edep, emag, evalue in zip(etimes, elats,
                                                          elons, edepths,
                                                          emags, evalues):
