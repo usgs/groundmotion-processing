@@ -165,7 +165,7 @@ class MetricsController(object):
         bandwidth = metrics['fas']['bandwidth']
         controller = cls(imts, imcs, timeseries, bandwidth=bandwidth,
                          damping=damping, event=event, smooth_type=smoothing)
-        
+
         return controller
 
     @property
@@ -282,7 +282,7 @@ class MetricsController(object):
                 period = float(period)
             if percentile is not None:
                 percentile = float(percentile)
-            tseries = self.timeseries.copy()
+
             # paths
             transform_path = 'gmprocess.metrics.transform.'
             rotation_path = 'gmprocess.metrics.rotation.'
@@ -295,7 +295,8 @@ class MetricsController(object):
                     transform_path + step_set['Transform1'])
                 t1_cls = self._get_subclass(inspect.getmembers(
                     t1_mod, inspect.isclass), 'Transform')
-                t1 = t1_cls(tseries, self.damping, period, self._times).result
+                t1 = t1_cls(self.timeseries, self.damping, period,
+                            self._times).result
 
                 # -------------------------------------------------------------
                 # Transform 2

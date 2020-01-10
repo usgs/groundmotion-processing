@@ -49,10 +49,13 @@ class Arias(Reduction):
             # Calculate Arias Intensity
             integrated_acc2 = integrate.cumtrapz(acc * acc, dx=dt)
             arias_intensity = integrated_acc2 * np.pi * GAL_TO_PCTG / 2
-            channel = trace.stats.channel
-            trace.stats.standard.units = 'veloc'
-            trace.stats.npts = len(arias_intensity)
-            arias_stream.append(StationTrace(arias_intensity, trace.stats))
+
+            # Create a copy of stats so we don't modify original data
+            stats = trace.stats.copy()
+            channel = stats.channel
+            stats.standard.units = 'vel'
+            stats.npts = len(arias_intensity)
+            arias_stream.append(StationTrace(arias_intensity, stats))
             arias_intensities[channel] = np.abs(np.max(arias_intensity))
         self.arias_stream = arias_stream
         return arias_intensities

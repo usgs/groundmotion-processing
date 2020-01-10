@@ -30,8 +30,8 @@ class Integrate(Transform):
         """
         stream = StationStream([])
         for trace in self.transform_data:
-            integrated_trace = trace.integrate()
-            integrated_trace.stats['units'] = 'veloc'
+            integrated_trace = trace.copy().integrate()
+            integrated_trace.stats['units'] = 'vel'
             strace = StationTrace(data=integrated_trace.data,
                     header=integrated_trace.stats)
             stream.append(strace)
