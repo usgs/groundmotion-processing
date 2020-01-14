@@ -61,6 +61,17 @@ DMAG = 0.3
 
 URL_ERROR_CODE = 200  # if we get this from a request, we're good
 
+# create a dictionary of magnitudes and distances. These will be used with
+# this fetcher to restrict the number of stations from Japan that are processed
+# and stored. The distances are derived from an empirical analysis of active
+# region earthquakes. In a small sample size, this seems to reduce the number
+# of Japanese stations by roughly 25%.
+MAGS = OrderedDict()
+MAGS[5.5] = 122
+MAGS[6.5] = 288
+MAGS[7.5] = 621
+MAGS[9.9] = 1065
+
 
 class KNETFetcher(DataFetcher):
     def __init__(self, time, lat, lon,
@@ -92,7 +103,8 @@ class KNETFetcher(DataFetcher):
                 Dictionary containing configuration. 
                 If None, retrieve global config.
             drop_non_free (bool):
-                Option to ignore non-free-field (borehole, sensors on structures, etc.)
+                Option to ignore non-free-field (borehole, 
+                sensors on structures, etc.)
         """
         # what values do we use for search thresholds?
         # In order of priority:
@@ -148,6 +160,10 @@ class KNETFetcher(DataFetcher):
                    'program, and edit the fetchers:KNETFetcher section\n'
                    'to use your username and password.')
             raise Exception(fmt)
+
+        # allow user to turn restrict stations on or off. Restricting saves time,
+        # probably will not ignore significant data.
+        self.restrict_stations = config['fetchers']['KNETFetcher']['restrict_stations']
 
         self.user = user
         self.password = password
@@ -351,6 +367,24 @@ class KNETFetcher(DataFetcher):
         if self.rawdir is None:
             shutil.rmtree(rawdir)
 
-        stream_collection = StreamCollection(streams=streams,
+        # Japan gives us a LOT of data, much of which is not useful as it is
+        # too far away. Use the following distance thresholds for different
+        # magnitude ranges, and trim streams that are beyond this distance.
+        if self.restrict_stations:
+            threshold_distance = None
+            for mag, tdistance in MAGS.items():
+                if self.magnitude < mag:
+                    threshold_distance = tdistance
+                    break
+
+        newstreams = []
+        for stream in streams:
+            slat = stream[0].stats.coordinates.latitude
+            slon = stream[0].stats.coordinates.longitude
+            distance = geodetic_distance(self.lon, self.lat, slon, slat)
+            if distance <= threshold_distance:
+                newstreams.append(stream)
+
+        stream_collection = StreamCollection(streams=newstreams,
                                              drop_non_free=self.drop_non_free)
         return stream_collection
