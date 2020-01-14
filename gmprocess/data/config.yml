@@ -15,6 +15,9 @@ fetchers:
         ddepth : 30
         # define the magnitude search threshold (km)
         dmag : 0.3
+        # restrict the number of processed stations by
+        # using magnitude to set maximum station distance 
+        restrict_stations: false
     TurkeyFetcher:
         # define the distance search radius (km)
         radius : 100
