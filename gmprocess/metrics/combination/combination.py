@@ -35,7 +35,7 @@ class Combination(object):
                 # Group all of the max values from traces without
                 # Z in the channel name
                 if 'Z' not in trace.stats['channel'].upper():
-                    horizontal_channels += [trace.copy()]
+                    horizontal_channels += [trace]
             ## Test the horizontals
             if len(horizontal_channels) > 2:
                 raise PGMException('Combination: More than two horizontal channels.')

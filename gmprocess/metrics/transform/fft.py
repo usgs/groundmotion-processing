@@ -34,8 +34,16 @@ class FFT(Transform):
         sampling_rate = horizontals[0].stats.sampling_rate
         freqs = np.fft.rfftfreq(nfft, 1 / sampling_rate)
         ft_traces = [freqs]
+
+        # Check if we already have computed the FFT for this trace
         for trace in horizontals:
-            # the fft scales so the factor of 1/nfft is applied
-            spectra = abs(np.fft.rfft(trace.data, n=nfft)) / nfft
+            if trace.hasCached('fas_spectrum'):
+                spectra = trace.getCached('fas_spectrum')
+            else:
+                # the fft scales so the factor of 1/nfft is applied
+                spectra = abs(np.fft.rfft(trace.data, n=nfft)) / nfft
+                trace.setCached('fas_spectrum', spectra)
+
             ft_traces += [spectra]
+
         return ft_traces
