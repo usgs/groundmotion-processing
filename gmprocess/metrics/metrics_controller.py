@@ -273,7 +273,8 @@ class MetricsController(object):
             next step set will begin. The result cell of the dataframe will be
             filled with a np.nan value.
         """
-        df = None
+        # Initialize dictionary for storing the results
+        result_dict = None
         for idx, imt_imc in enumerate(self.step_sets):
             step_set = self.step_sets[imt_imc]
             period = step_set['period']
@@ -380,12 +381,22 @@ class MetricsController(object):
                     new_c2[newchannel] = value
             else:
                 new_c2 = c2.copy()
-            subdf = self._format(new_c2, step_set)
-            if df is None:
-                df = subdf
+            subdict = self._format(new_c2, step_set)
+
+            # Update the results dictionary
+            if result_dict is None:
+                result_dict = subdict
             else:
-                df = pd.concat([df, subdf])
-        return df
+                for key in subdict:
+                    for val in subdict[key]:
+                        result_dict[key].append(val)
+
+        # Convert the dictionary to a dataframe and set the IMT, IMC indices
+        df = pd.DataFrame(result_dict)
+        if df.empty:
+            return df
+        else:
+            return df.set_index(['IMT', 'IMC'])
 
     def validate_stream(self):
         """
@@ -478,8 +489,7 @@ class MetricsController(object):
                 dfdict['IMC'] += [imc_str]
                 for r in result:
                     dfdict['Result'] += [result[r] * multiplier]
-        df = pd.DataFrame(data=dfdict)
-        return df
+        return dfdict
 
     def _get_horizontal_time(self):
         """

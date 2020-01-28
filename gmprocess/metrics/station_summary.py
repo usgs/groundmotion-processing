@@ -175,10 +175,9 @@ class StationSummary(object):
                 'Result': []
             })
         else:
-            station._components = set(pgms['IMC'].tolist())
-            station._imts = set(pgms['IMT'].tolist())
+            station._components = set(pgms.index.get_level_values('IMC'))
+            station._imts = set(pgms.index.get_level_values('IMT'))
             station.pgms = pgms
-        station._summary = station.get_summary()
         return station
 
     @classmethod
@@ -210,7 +209,7 @@ class StationSummary(object):
                 dfdict['IMT'] += [imt]
                 dfdict['IMC'] += [imc]
                 dfdict['Result'] += [pgms[imt][imc]]
-        pgmdf = pd.DataFrame.from_dict(dfdict)
+        pgmdf = pd.DataFrame.from_dict(dfdict).set_index(['IMT', 'IMC'])
         station.pgms = pgmdf
         imts = [key for key in pgms]
         components = []
@@ -268,7 +267,8 @@ class StationSummary(object):
                                     event=event,
                                     smooth_type=smoothing)
         pgms = metrics.pgms
-        if pgms is None:
+
+        if pgms.empty:
             station._components = metrics.imcs
             station._imts = metrics.imts
             station.pgms = pd.DataFrame.from_dict({
@@ -277,10 +277,9 @@ class StationSummary(object):
                 'Result': []
             })
         else:
-            station._components = set(pgms['IMC'].tolist())
-            station._imts = set(pgms['IMT'].tolist())
+            station._components = set(pgms.index.get_level_values('IMC'))
+            station._imts = set(pgms.index.get_level_values('IMT'))
             station.pgms = pgms
-        station._summary = station.get_summary()
         return station
 
     def get_pgm(self, imt, imc):
@@ -295,10 +294,7 @@ class StationSummary(object):
         if imt not in self.imts or imc not in self.components:
             return np.nan
         else:
-            imt_df = self.pgms.loc[self.pgms.IMT == imt]
-            imc_df = imt_df.loc[imt_df.IMC == imc]
-            value = imc_df['Result'].tolist()[0]
-            return value
+            return self.pgms.Result.loc[imt, imc]
 
     def get_summary(self):
         columns = ['STATION', 'NAME', 'SOURCE',
@@ -334,12 +330,10 @@ class StationSummary(object):
         subindex = 0
         for imc in imcs:
             for imt in imts:
-                dfidx = (pgms.IMT == imt) & (pgms.IMC == imc)
-                result = pgms[dfidx].Result.tolist()
-                if len(result) == 0:
+                try:
+                    value = pgms.Result.loc[imt, imc]
+                except KeyError:
                     value = np.nan
-                else:
-                    value = result[0]
                 pgm_data[0][subindex] = value
                 subindex += 1
         pgm_dataframe = pd.DataFrame(pgm_data, columns=pgm_columns)
@@ -493,7 +487,7 @@ class StationSummary(object):
         Returns:
             pandas.Dataframe: Summary for one station.
         """
-        return self._summary
+        return self.get_summary()
 
     @classmethod
     def from_xml(cls, xml_stream, xml_station):
@@ -610,12 +604,10 @@ class StationSummary(object):
             for imc in self.components:
                 imcstr = imc.lower().replace('(', '').replace(')', '')
                 imc_tag = etree.SubElement(imt_tag, imcstr)
-                idx = (self.pgms.IMT == imt) & (self.pgms.IMC == imc)
-                vals = self.pgms[idx].Result.tolist()
-                if len(vals) == 0:
+                try:
+                    value = self.pgms.Result.loc[imt, imc]
+                except KeyError:
                     value = np.nan
-                else:
-                    value = vals[0]
                 imc_tag.text = '%.8g' % value
         xmlstr = etree.tostring(root, pretty_print=True,
                                 encoding='unicode')

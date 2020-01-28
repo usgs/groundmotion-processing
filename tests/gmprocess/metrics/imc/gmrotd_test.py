@@ -25,7 +25,7 @@ def test_gmrotd():
                                                  ['gmrotd0', 'gmrotd50',
                                                   'gmrotd100'], ['pga'])
     pgms = station_summary.pgms
-    assert 'GMROTD(50.0)' in pgms.IMC.tolist()
+    assert 'GMROTD(50.0)' in pgms.index.get_level_values(1)
 
 
 def test_exceptions():

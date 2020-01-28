@@ -572,15 +572,16 @@ class StreamCollection(object):
 
         # If arguments are None, check the config
         # If not in the config, use the default values at top of the file
-        if max_dist_tolerance is None:
-            max_dist_tolerance = get_config('duplicate')['max_dist_tolerance']
-
-        if process_level_preference is None:
-            process_level_preference = \
-                get_config('duplicate')['process_level_preference']
-
-        if format_preference is None:
-            format_preference = get_config('duplicate')['format_preference']
+        preferences = {
+            'max_dist_tolerance': max_dist_tolerance,
+            'process_level_preference': process_level_preference,
+            'format_preference': format_preference}
+        default_config = None
+        for key, val in preferences.items():
+            if val is None:
+                if default_config is None:
+                    default_config = get_config()
+                preferences[key] = default_config['duplicate'][key]
 
         stream_params = gather_stream_parameters(self.streams)
 
@@ -593,15 +594,16 @@ class StreamCollection(object):
         for tr_to_add in traces:
             is_duplicate = False
             for tr_pref in preferred_traces:
-                if are_duplicates(tr_to_add, tr_pref, max_dist_tolerance):
+                if are_duplicates(tr_to_add, tr_pref,
+                                  preferences['max_dist_tolerance']):
                     is_duplicate = True
                     break
 
             if is_duplicate:
                 if choose_preferred(
                         tr_to_add, tr_pref,
-                        process_level_preference,
-                        format_preference) == tr_to_add:
+                        preferences['process_level_preference'],
+                        preferences['format_preference']) == tr_to_add:
                     preferred_traces.remove(tr_pref)
                     logging.info('Trace %s (%s) is a duplicate and '
                                  'has been removed from the StreamCollection.'

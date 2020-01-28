@@ -31,21 +31,21 @@ def test_sa():
              'gmrotd50', 'channels'],
             ['sa1.0', 'saincorrect'])
     pgms = station_summary.pgms
-    assert 'SA(1.000)' in pgms.IMT.tolist()
+    assert 'SA(1.000)' in pgms.index.get_level_values(0)
     np.testing.assert_allclose(
-        pgms[pgms['IMC'] == 'ARITHMETIC_MEAN'].Result.iloc[0],
+        pgms.loc['SA(1.000)', 'ARITHMETIC_MEAN'].Result,
         110.47168962900042
     )
     np.testing.assert_allclose(
-        pgms[pgms['IMC'] == 'GEOMETRIC_MEAN'].Result.iloc[0],
+        pgms.loc['SA(1.000)', 'GEOMETRIC_MEAN'].Result,
         107.42183990654802
     )
     np.testing.assert_allclose(
-        pgms[pgms['IMC'] == 'ROTD(50.0)'].Result.iloc[0],
+        pgms.loc['SA(1.000)', 'ROTD(50.0)'].Result,
         106.03202302692158
     )
     np.testing.assert_allclose(
-        pgms[pgms['IMC'] == 'ROTD(100.0)'].Result.iloc[0],
+        pgms.loc['SA(1.000)', 'ROTD(100.0)'].Result,
         146.90233501240979
     )
 

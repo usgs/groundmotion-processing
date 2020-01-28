@@ -615,7 +615,8 @@ def summary_plots(st, directory, origin):
             trace_status = " (passed)"
         trace_title = tr.get_id() + trace_status
         ax[j].set_title(trace_title)
-        dtimes = tr.times('utcdatetime') - tr.stats.starttime
+        dtimes = np.linspace(
+            0, tr.stats.endtime - tr.stats.starttime, tr.stats.npts)
         ax[j].plot(dtimes, tr.data, 'k', linewidth=0.5)
 
         # Show signal split as vertical dashed line
@@ -632,7 +633,9 @@ def summary_plots(st, directory, origin):
         # ---------------------------------------------------------------------
         # Velocity time series plot
         tr_vel = st_vel[j]
-        dtimes = tr_vel.times('utcdatetime') - tr_vel.stats.starttime
+        dtimes = np.linspace(
+            0, tr_vel.stats.endtime - tr_vel.stats.starttime, tr_vel.stats.npts
+        )
         ax[j + ntrace].plot(dtimes, tr_vel.data, 'k', linewidth=0.5)
 
         # Show signal split as vertical dashed line

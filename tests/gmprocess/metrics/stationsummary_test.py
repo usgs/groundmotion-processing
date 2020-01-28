@@ -89,11 +89,8 @@ def test_stationsummary():
     pgms = stream_summary.pgms
     for imt_str in test_pgms:
         for imc_str in test_pgms[imt_str]:
-            imt = pgms.loc[pgms['IMT'] == imt_str]
-            imc = imt.loc[imt['IMC'] == imc_str]
-            results = imc.Result.tolist()
-            assert len(results) == 1
-            np.testing.assert_almost_equal(results[0], test_pgms[imt_str][imc_str],
+            result = pgms.loc[imt_str, imc_str].Result
+            np.testing.assert_almost_equal(result, test_pgms[imt_str][imc_str],
                                            decimal=10)
 
     # Test with fas

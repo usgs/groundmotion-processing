@@ -256,7 +256,8 @@ def test_metrics():
     newconfig = config.copy()
     newconfig['processing'].append({'NNet_QA': {'acceptance_threshold': 0.5,
                                                 'model_name': 'CantWell'}})
-    processed_streams = process_streams(raw_streams, event, config=newconfig)
+    processed_streams = process_streams(raw_streams.copy(), event,
+                                        config=newconfig)
 
     tdir = tempfile.mkdtemp()
     try:

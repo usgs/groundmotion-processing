@@ -78,7 +78,7 @@ def process_event(outdir, event, pcommands,
                   config, input_directory,
                   process_tag, logfile,
                   files_created, output_format,
-                  status):
+                  status, recompute_metrics):
 
     # setup logging to write to the input logfile
     argthing = namedtuple('args', ['debug', 'quiet'])
@@ -172,14 +172,90 @@ def process_event(outdir, event, pcommands,
             and len(rstreams)):
         logging.info('Processing raw streams for event %s...' % event.id)
         pstreams = process_streams(rstreams, event, config=config)
+
         with warnings.catch_warnings():
             warnings.simplefilter("ignore",
                                   category=H5pyDeprecationWarning)
             workspace.addStreams(event, pstreams, label=process_tag)
             workspace.calcMetrics(event.id,
                                   labels=[process_tag],
-                                  config=config)
+                                  config=config,
+                                  streams=pstreams,
+                                  stream_label=process_tag)
         processing_done = True
+
+    if 'export' in pcommands:
+        labels = workspace.getLabels()
+        if 'unprocessed' not in labels:
+            fmt = ('Workspace file "%s" appears to have no unprocessed '
+                   'data. Skipping.')
+            logging.info(fmt % workspace_file)
+        else:
+            labels.remove('unprocessed')
+            if not labels:
+                fmt = ('Workspace file "%s" appears to have no processed '
+                       'data. Skipping.')
+                logging.info(fmt % workspace_file)
+            else:
+                logging.info('Creating tables for event %s...', event.id)
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore",
+                                          category=H5pyDeprecationWarning)
+                    if recompute_metrics:
+                        del workspace.dataset.auxiliary_data.WaveFormMetrics
+                        del workspace.dataset.auxiliary_data.StationMetrics
+                        workspace.calcMetrics(
+                            eventid, labels=labels, config=config)
+                    event_table, imc_tables, readmes = workspace.getTables(
+                        labels[0], config=None, streams=pstreams,
+                        stream_label=process_tag)
+                    ev_fit_spec, fit_readme = workspace.getFitSpectraTable(
+                        event.id, labels[0], pstreams)
+
+                # Set the precisions for the imc tables, event table, and
+                # fit_spectra table before writing
+                imc_tables_formatted = {}
+                for imc, imc_table in imc_tables.items():
+                    imc_tables_formatted[imc] = set_precisions(imc_table)
+                event_table_formatted = set_precisions(event_table)
+                df_fit_spectra_formatted = set_precisions(ev_fit_spec)
+
+                if not os.path.isdir(outdir):
+                    os.makedirs(outdir)
+
+                filenames = ['events'] + [
+                    imc.lower() for imc in imc_tables_formatted.keys()] + [
+                    imc.lower() + '_README' for imc in readmes.keys()] + [
+                    'fit_spectra_parameters', 'fit_spectra_parameters_README']
+
+                files = [event_table_formatted] + list(
+                    imc_tables_formatted.values()) + list(
+                    readmes.values()) + [df_fit_spectra_formatted, fit_readme]
+
+                if output_format != 'csv':
+                    output_format = 'xlsx'
+
+                for filename, df in dict(zip(filenames, files)).items():
+                    filepath = os.path.join(
+                        outdir, filename + '.%s' % output_format)
+                    if os.path.exists(filepath):
+                        if 'README' in filename:
+                            continue
+                        else:
+                            mode = 'a'
+                            header = False
+                    else:
+                        mode = 'w'
+                        header = True
+                        append_file(files_created, 'Tables', filepath)
+                    if output_format == 'csv':
+                        df.to_csv(filepath, index=False,
+                                  float_format=DEFAULT_FLOAT_FORMAT,
+                                  mode=mode, header=header)
+                    else:
+                        df.to_excel(filepath, index=False,
+                                    float_format=DEFAULT_FLOAT_FORMAT,
+                                    mode=mode, header=header)
 
     if ('report' in pcommands
             and processing_done
@@ -316,7 +392,7 @@ def main(args):
 
     # compare list of all commands with list of actual commands
     process_commands = set([
-        'assemble', 'process', 'report', 'shakemap', 'provenance'
+        'assemble', 'process', 'report', 'shakemap', 'provenance', 'export'
     ])
     pcommands = []
     if args.assemble:
@@ -353,7 +429,8 @@ def main(args):
                         workname = process_event(
                             outdir, event, pcommands, config,
                             input_directory, process_tag, logfile,
-                            files_created, args.format, args.status)
+                            files_created, args.format, args.status,
+                            args.recompute_metrics)
                         workspace_files.append(workname)
                     os._exit(0)
                 else:
@@ -368,7 +445,8 @@ def main(args):
                 workname = process_event(
                     outdir, event, pcommands,
                     config, input_directory, process_tag,
-                    logfile, files_created, args.format, args.status)
+                    logfile, files_created, args.format, args.status,
+                    args.recompute_metrics)
                 workspace_files.append(workname)
 
     # logging
@@ -402,155 +480,58 @@ def main(args):
     logging.info('%i workspace files created' % len(workspace_files))
 
     if 'export' in pcommands:
-        if not len(workspace_files):
-            # look for hdf files
-            workspace_files = find_workspace_files(outdir)
-
-        event_table = None
+        imc_table_names = [file.replace('_README', '')
+                           for file in os.listdir(outdir) if 'README' in file]
         imc_tables = {}
-        df_fit_spectra = pd.DataFrame()
-        for workspace_file in workspace_files:
-            workspace = StreamWorkspace.open(workspace_file)
-            if len(workspace.getStations()) == 0:
-                continue
-            labels = workspace.getLabels()
-            if 'unprocessed' not in labels:
-                fmt = ('Workspace file "%s" appears to have no unprocessed '
-                       'data. Skipping.')
-                print(fmt % workspace_file)
-                continue
-            labels.remove('unprocessed')
-            if not labels:
-                fmt = ('Workspace file "%s" appears to have no processed '
-                       'data. Skipping.')
-                print(fmt % workspace_file)
-                continue
-            eventid = workspace.getEventIds()[0]
-            logging.info(
-                'Creating tables for event %s...', eventid)
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore",
-                                      category=H5pyDeprecationWarning)
-                if args.recompute_metrics:
-                    del workspace.dataset.auxiliary_data.WaveFormMetrics
-                    del workspace.dataset.auxiliary_data.StationMetrics
-                    for eventid in workspace.getEventIds():
-                        workspace.calcMetrics(
-                            eventid, labels=labels, config=config)
-                    tevent_table, timc_tables, readmes = workspace.getTables(
-                        labels[0], config=config)
-                else:
-                    tevent_table, timc_tables, readmes = workspace.getTables(
-                        labels[0], config=None)
-                    ev_fit_spec, fit_readme = workspace.getFitSpectraTable(
-                        eventid, labels[0])
-                    df_fit_spectra = pd.concat((df_fit_spectra, ev_fit_spec))
-            if event_table is None:
-                event_table = tevent_table
-            else:
-                event_table = pd.concat([event_table, tevent_table])
-            if not imc_tables:
-                imc_tables = timc_tables
-            else:
-                for imc, imc_table in imc_tables.items():
-                    if imc in timc_tables:
-                        timc_table = timc_tables[imc]
-                        imc_tables[imc] = pd.concat([imc_table, timc_table])
-            workspace.close()
+        for file in imc_table_names:
+            imc_tables[file.replace('.%s' % args.format, '')] = pd.read_csv(
+                os.path.join(outdir, file))
+            if 'fit_spectra_parameters' in imc_tables:
+                del imc_tables['fit_spectra_parameters']
 
-        if event_table is not None:
-            # Set the precisions for the imc tables, event table, and fit_spectra
-            # table before writing
-            imc_tables_formatted = {}
-            for imc, imc_table in imc_tables.items():
-                imc_tables_formatted[imc] = set_precisions(imc_table)
-            event_table_formatted = set_precisions(event_table)
-            df_fit_spectra_formatted = set_precisions(df_fit_spectra)
+        event_table = pd.read_csv(os.path.join(outdir, 'events.csv'))
 
-        if args.export_dir is not None:
-            if not os.path.isdir(args.export_dir):
-                os.makedirs(args.export_dir)
-            outdir = args.export_dir
-
-        if event_table is not None:
-            if args.format == 'csv':
-                eventfile = os.path.join(outdir, 'events.csv')
-                event_table_formatted.to_csv(eventfile, index=False,
-                                             float_format=DEFAULT_FLOAT_FORMAT)
-                append_file(files_created, 'Event table', eventfile)
-                for imc, imc_table in imc_tables_formatted.items():
-                    imcfile = os.path.join(outdir, '%s.csv' % imc.lower())
-                    imc_table.to_csv(imcfile, index=False,
-                                     float_format=DEFAULT_FLOAT_FORMAT)
-                    append_file(files_created, 'IMC tables', imcfile)
-            else:
-                eventfile = os.path.join(outdir, 'events.xlsx')
-                event_table_formatted.to_excel(eventfile, index=False,
-                                               float_format=DEFAULT_FLOAT_FORMAT)
-                append_file(files_created, 'Event table', eventfile)
-                for imc, imc_table in imc_tables_formatted.items():
-                    imcfile = os.path.join(outdir, '%s.xlsx' % imc.lower())
-                    imc_table.to_excel(imcfile, index=False,
-                                       float_format=DEFAULT_FLOAT_FORMAT)
-                    append_file(files_created, 'IMC tables', imcfile)
-
-            for imc, readme_table in readmes.items():
-                readme_file = os.path.join(
-                    outdir, '%s.csv' % (imc.lower() + '_README'))
-                readme_table.to_csv(readme_file, index=False)
-                append_file(files_created, 'README tables', readme_file)
-
-            spectra_file = os.path.join(outdir, 'fit_spectra_parameters.csv')
-            df_fit_spectra_formatted.to_csv(spectra_file, index=False,
-                                            float_format=DEFAULT_FLOAT_FORMAT)
-            append_file(files_created, 'Fit spectra table', spectra_file)
-
-            fit_readme_file = os.path.join(
-                outdir, 'fit_spectra_parameters_README.csv')
-            fit_readme.to_csv(fit_readme_file, index=False)
-            append_file(files_created, 'README tables', fit_readme_file)
-
-            # make a regression plot of the most common imc/imt combination we
-            # can find
-            if not len(imc_tables):
-                msg = '''No IMC tables found. It is likely that no streams
-                passed checks. If you created reports for the events you
-                have been processing, check those to see if this is the case,
-                then adjust your configuration as necessary to process the data.
-                '''
-                logging.warning(msg)
-            else:
-                pref_imcs = ['GREATER_OF_TWO_HORIZONTALS', 'H1', 'H2']
-                pref_imts = ['PGA', 'PGV', 'SA(1.0)']
-                found_imc = None
-                found_imt = None
-                for imc in pref_imcs:
-                    if imc in imc_tables:
-                        for imt in pref_imts:
-                            if imt in imc_tables[imc].columns:
-                                found_imt = imt
-                                found_imc = imc
-                                break
-                        if found_imc:
+        # make a regression plot of the most common imc/imt combination we
+        # can find
+        if not len(imc_tables):
+            msg = '''No IMC tables found. It is likely that no streams
+            passed checks. If you created reports for the events you
+            have been processing, check those to see if this is the case,
+            then adjust your configuration as necessary to process the data.
+            '''
+            logging.warning(msg)
+        else:
+            pref_imcs = ['GREATER_OF_TWO_HORIZONTALS', 'H1', 'H2']
+            pref_imts = ['PGA', 'PGV', 'SA(1.0)']
+            found_imc = None
+            found_imt = None
+            for imc in pref_imcs:
+                if imc in imc_tables:
+                    for imt in pref_imts:
+                        if imt in imc_tables[imc].columns:
+                            found_imt = imt
+                            found_imc = imc
                             break
-                # now look for whatever IMC/IMTcombination we can find
-                if imc_tables and not found_imc:
-                    found_imc = list(imc_tables.keys())[0]
-                    table_cols = set(imc_tables[found_imc].columns)
-                    imtlist = list(table_cols - NON_IMT_COLS)
-                    found_imt = imtlist[0]
+                    if found_imc:
+                        break
+            # now look for whatever IMC/IMTcombination we can find
+            if imc_tables and not found_imc:
+                found_imc = list(imc_tables.keys())[0]
+                table_cols = set(imc_tables[found_imc].columns)
+                imtlist = list(table_cols - NON_IMT_COLS)
+                found_imt = imtlist[0]
 
-                if found_imc and found_imt:
-                    pngfile = '%s_%s.png' % (found_imc, found_imt)
-                    regression_file = os.path.join(outdir, pngfile)
-                    plot_regression(event_table, found_imc,
-                                    imc_tables[found_imc],
-                                    found_imt,
-                                    regression_file,
-                                    distance_metric='EpicentralDistance',
-                                    colormap='viridis_r')
-                    append_file(files_created,
-                                'Multi-event regression plot', regression_file)
+            if found_imc and found_imt:
+                pngfile = '%s_%s.png' % (found_imc, found_imt)
+                regression_file = os.path.join(outdir, pngfile)
+                plot_regression(event_table, found_imc,
+                                imc_tables[found_imc],
+                                found_imt,
+                                regression_file,
+                                distance_metric='EpicentralDistance',
+                                colormap='viridis_r')
+                append_file(files_created,
+                            'Multi-event regression plot', regression_file)
 
     if args.status:
         if args.status == 'short':

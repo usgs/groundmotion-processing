@@ -1,5 +1,6 @@
 # stdlib imports
 import json
+import copy
 import logging
 from datetime import datetime
 import getpass
@@ -384,12 +385,15 @@ class StationTrace(Trace):
         """
         return self.provenance
 
-    def getProvenanceDocument(self):
-        pr = prov.model.ProvDocument()
-        pr.add_namespace(*NS_SEIS)
-        pr = _get_person_agent(pr)
-        pr = _get_software_agent(pr)
-        pr = _get_waveform_entity(self, pr)
+    def getProvenanceDocument(self, base_prov=None):
+        if base_prov is None:
+            pr = prov.model.ProvDocument()
+            pr.add_namespace(*NS_SEIS)
+            pr = _get_person_agent(pr)
+            pr = _get_software_agent(pr)
+            pr = _get_waveform_entity(self, pr)
+        else:
+            pr = _get_waveform_entity(self, copy.deepcopy(base_prov))
         sequence = 1
         for provdict in self.getAllProvenance():
             provid = provdict['prov_id']

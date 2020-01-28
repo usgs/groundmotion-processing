@@ -19,13 +19,13 @@ def test_channels():
     stream_v2 = read_geonet(datafile_v2)[0]
     station_summary = StationSummary.from_stream(stream_v2,
                                                  ['channels'], ['pga'])
-    channel = station_summary.pgms[station_summary.pgms.IMT == 'PGA']
+    pgms = station_summary.pgms
     np.testing.assert_almost_equal(
-        channel[channel.IMC == 'H2'].Result.iloc[0], 81.28979591836733, decimal=1)
+        pgms.loc['PGA', 'H2'].Result, 81.28979591836733, decimal=1)
     np.testing.assert_almost_equal(
-        channel[channel.IMC == 'H1'].Result.iloc[0], 99.3173469387755, decimal=1)
+        pgms.loc['PGA', 'H1'].Result, 99.3173469387755, decimal=1)
     np.testing.assert_almost_equal(
-        channel[channel.IMC == 'Z'].Result.iloc[0], 183.89693877551022, decimal=1)
+        pgms.loc['PGA', 'Z'].Result, 183.89693877551022, decimal=1)
 
 
 if __name__ == '__main__':

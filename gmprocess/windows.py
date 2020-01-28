@@ -99,10 +99,8 @@ def window_checks(st, min_noise_duration=0.5, min_signal_duration=5.0):
         if isinstance(split_prov, list):
             split_prov = split_prov[0]
         split_time = split_prov['split_time']
-        noise = tr.copy().trim(endtime=split_time)
-        signal = tr.copy().trim(starttime=split_time)
-        noise_duration = noise.stats.endtime - noise.stats.starttime
-        signal_duration = signal.stats.endtime - signal.stats.starttime
+        noise_duration = split_time - tr.stats.starttime
+        signal_duration = tr.stats.endtime - split_time
         if noise_duration < min_noise_duration:
             tr.fail('Failed noise window duration check.')
         if signal_duration < min_signal_duration:
@@ -112,7 +110,7 @@ def window_checks(st, min_noise_duration=0.5, min_signal_duration=5.0):
 
 
 def signal_split(
-        st, origin,
+        st, origin, model=None,
         picker_config=None,
         config=None):
     """
@@ -130,6 +128,8 @@ def signal_split(
             Stream of data.
         origin (ScalarEvent):
             ScalarEvent object.
+        model (TauPyModel):
+            TauPyModel object for computing travel times.
         picker_config (dict):
             Dictionary containing picker configuration information.
         config (dict):
@@ -144,8 +144,7 @@ def signal_split(
     if config is None:
         config = get_config()
 
-    loc, mean_snr = pick_travel(st, origin,
-                                picker_config=picker_config)
+    loc, mean_snr = pick_travel(st, origin, model)
     if loc > 0:
         tsplit = st[0].stats.starttime + loc
         preferred_picker = 'travel_time'

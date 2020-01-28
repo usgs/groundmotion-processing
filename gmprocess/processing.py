@@ -6,7 +6,9 @@ Processing methods.
 import numpy as np
 import logging
 
+from obspy.taup import TauPyModel
 from scipy.optimize import curve_fit
+from scipy.integrate import cumtrapz
 
 from gmprocess.stationtrace import PROCESS_LEVELS
 from gmprocess.streamcollection import StreamCollection
@@ -111,14 +113,17 @@ def process_streams(streams, origin, config=None):
 
     logging.info('Windowing noise and signal...')
     window_conf = config['windows']
+    model = TauPyModel(config['pickers']['travel_time']['model'])
 
-    processed_streams = streams.copy()
-    for st in processed_streams:
+    for st in streams:
         logging.info('Checking stream %s...' % st.get_id())
         # Estimate noise/signal split time
         st = signal_split(
             st,
-            origin)
+            origin,
+            model,
+            picker_config=config['pickers'],
+            config=config)
 
         # Estimate end of signal
         end_conf = window_conf['signal_end']
@@ -145,7 +150,7 @@ def process_streams(streams, origin, config=None):
     processing_steps = config['processing']
 
     # Loop over streams
-    for stream in processed_streams:
+    for stream in streams:
         logging.info('Stream: %s' % stream.get_id())
         for processing_step_dict in processing_steps:
 
@@ -184,14 +189,14 @@ def process_streams(streams, origin, config=None):
     # -------------------------------------------------------------------------
     # Begin colocated instrument selection
     colocated_conf = config['colocated']
-    processed_streams.select_colocated(**colocated_conf)
+    streams.select_colocated(**colocated_conf)
 
-    for st in processed_streams:
+    for st in streams:
         for tr in st:
             tr.stats.standard.process_level = PROCESS_LEVELS['V2']
 
     logging.info('Finished processing streams.')
-    return processed_streams
+    return streams
 
 
 def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
@@ -600,16 +605,14 @@ def _correct_baseline(trace):
         trace: Baseline-corrected trace.
     """
 
-    # Make copies of the trace for our accleration data
-    acc_trace = trace.copy()
-
     # Integrate twice to get the displacement time series
-    disp_trace = (acc_trace.integrate()).integrate()
+    disp_data = cumtrapz(cumtrapz(trace.data, dx=trace.stats.delta, initial=0),
+                         dx=trace.stats.delta, initial=0)
 
     # Fit a sixth order polynomial to displacement time series, requiring
     # that the 1st and 0th order coefficients are zero
     time_values = np.linspace(0, trace.stats.npts - 1, trace.stats.npts)
-    poly_cofs = list(curve_fit(_poly_func, time_values, disp_trace.data)[0])
+    poly_cofs = list(curve_fit(_poly_func, time_values, disp_data)[0])
     poly_cofs += [0, 0]
 
     # Construct a polynomial from the coefficients and compute
@@ -619,8 +622,7 @@ def _correct_baseline(trace):
 
     # Subtract the second derivative of the polynomial from the
     # acceleration trace
-    for i in range(trace.stats.npts):
-        trace.data[i] -= polynomial_second_derivative(i)
+    trace.data -= polynomial_second_derivative(time_values)
     trace.setParameter('baseline', {'polynomial_coefs': poly_cofs})
 
     return trace

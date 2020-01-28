@@ -68,8 +68,7 @@ def test_arias():
     station = StationSummary.from_stream(
         stream, ['ARITHMETIC_MEAN'], ['arias'])
     pgms = station.pgms
-    Ia = pgms[(pgms.IMT == 'ARIAS') & (
-        pgms.IMC == 'ARITHMETIC_MEAN')].Result.tolist()[0]
+    Ia = pgms.loc['ARIAS', 'ARITHMETIC_MEAN'].Result
     # the target has only one decimal place and is in cm/s/s
     Ia = Ia * 100
     np.testing.assert_almost_equal(Ia, target_IA, decimal=1)
