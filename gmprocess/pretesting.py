@@ -54,8 +54,8 @@ def check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0):
         sr = tr.stats.sampling_rate
         nlta = lta_length * sr + 1
         if len(tr) >= nlta:
-            sta_lta = classic_sta_lta(tr, sta_length * sr + 1, nlta)
-            if max(sta_lta) < threshold:
+            sta_lta = classic_sta_lta(tr.data, sta_length * sr + 1, nlta)
+            if sta_lta.max() < threshold:
                 tr.fail('Failed sta/lta check because threshold sta/lta '
                         'is not exceeded.')
         else:

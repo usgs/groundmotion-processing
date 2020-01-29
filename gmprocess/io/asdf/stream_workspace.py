@@ -8,6 +8,7 @@ import os
 
 # third party imports
 import pyasdf
+import prov.model
 import numpy as np
 from obspy.core.utcdatetime import UTCDateTime
 import pandas as pd
@@ -16,7 +17,8 @@ from obspy.geodetics.base import gps2dist_azimuth
 from openquake.hazardlib.geo.geodetic import distance
 
 # local imports
-from gmprocess.stationtrace import StationTrace, TIMEFMT_MS
+from gmprocess.stationtrace import (StationTrace, TIMEFMT_MS, NS_SEIS,
+                                    _get_person_agent, _get_software_agent)
 from gmprocess.stationstream import StationStream
 from gmprocess.streamcollection import StreamCollection
 from gmprocess.metrics.station_summary import StationSummary, XML_UNITS
@@ -235,6 +237,14 @@ class StreamWorkspace(object):
         if not self.hasEvent(eventid):
             self.addEvent(event)
 
+        # Creating a new provenance document and filling in the software
+        # information for every trace can be slow, so here we create a
+        # base provenance document that will be copied and used as a template
+        base_prov = prov.model.ProvDocument()
+        base_prov.add_namespace(*NS_SEIS)
+        base_prov = _get_person_agent(base_prov)
+        base_prov = _get_software_agent(base_prov)
+
         for stream in streams:
             station = stream[0].stats['station']
             logging.info('Adding waveforms for station %s' % station)
@@ -254,8 +264,7 @@ class StreamWorkspace(object):
 
             # add processing provenance info from traces
             if level == 'processed':
-
-                provdocs = stream.getProvenanceDocuments()
+                provdocs = stream.getProvenanceDocuments(base_prov)
                 for provdoc, trace in zip(provdocs, stream):
                     provname = format_nslct(trace.stats, tag)
                     self.dataset.add_provenance_document(
@@ -521,7 +530,8 @@ class StreamWorkspace(object):
             parameters={}
         )
 
-    def calcStationMetrics(self, eventid, stations=None, labels=None):
+    def calcStationMetrics(self, eventid, stations=None, labels=None,
+                           streams=None):
         """Calculate distance measures for each station.
 
         Args:
@@ -531,21 +541,20 @@ class StreamWorkspace(object):
                 List of stations to create metrics for.
             labels (list):
                 List of processing labels to create metrics for.
+            streams (StreamCollection):
+                Optional StreamCollection object to create metrics for.
         """
         if not self.hasEvent(eventid):
             fmt = 'No event matching %s found in workspace.'
             raise KeyError(fmt % eventid)
 
-        streams = self.getStreams(eventid, stations=stations, labels=labels)
+        # If no StreamCollection object is given, then get the streams
+        # from the workspace.
+        if streams is None:
+            streams = self.getStreams(eventid, stations=stations,
+                                      labels=labels)
         event = self.getEvent(eventid)
         for stream in streams:
-            tag = stream.tag
-            parts = tag.split('_')
-            if len(parts) > 2:
-                label = parts[-1]
-                eventid = '_'.join(parts[0:-1])
-            else:
-                eventid, label = tag.split('_')
             elat = event.latitude
             elon = event.longitude
             edepth = event.depth_km
@@ -568,7 +577,8 @@ class StreamWorkspace(object):
             ])
             self.insert_aux(xmlstr, 'StationMetrics', metricpath)
 
-    def calcMetrics(self, eventid, stations=None, labels=None, config=None):
+    def calcMetrics(self, eventid, stations=None, labels=None, config=None,
+                    streams=None, stream_label=None):
         """Calculate both stream and station metrics for a set of waveforms.
 
         Args:
@@ -578,15 +588,23 @@ class StreamWorkspace(object):
                 List of stations to create metrics for.
             labels (list):
                 List of processing labels to create metrics for.
-            config (dict): Configuration dictionary.
+            config (dict):
+                Configuration dictionary.
+            streams (StreamCollection):
+                Optional StreamCollection object to create metrics for.
+            stream_label (str):
+                Label to be used in the metrics path when providing a
+                StreamCollection.
         """
-        self.calcStreamMetrics(eventid,
-                               stations=stations,
-                               labels=labels, config=config)
-        self.calcStationMetrics(eventid, stations=stations, labels=labels)
+        self.calcStreamMetrics(eventid, stations=stations, labels=labels,
+                               config=config, streams=streams,
+                               stream_label=stream_label)
+        self.calcStationMetrics(eventid, stations=stations, labels=labels,
+                                streams=streams)
 
     def calcStreamMetrics(self, eventid, stations=None,
-                          labels=None, config=None):
+                          labels=None, config=None, streams=None,
+                          stream_label=None):
         """Create station metrics for specified event/streams.
 
         Args:
@@ -602,25 +620,31 @@ class StreamWorkspace(object):
                 List of valid IMT names.
             config (dict):
                 Config dictionary.
+            streams (StreamCollection):
+                Optional StreamCollection object to create metrics for.
+            stream_label (str):
+                Label to be used in the metrics path when providing a
+                StreamCollection.
         """
         if not self.hasEvent(eventid):
             fmt = 'No event matching %s found in workspace.'
             raise KeyError(fmt % eventid)
 
-        streams = self.getStreams(eventid, stations=stations, labels=labels)
+        if streams is None:
+            streams = self.getStreams(eventid, stations=stations,
+                                      labels=labels)
+
         event = self.getEvent(eventid)
         for stream in streams:
-            tag = stream.tag
+            if not stream.passed:
+                continue
             instrument = stream.get_id()
             logging.info('Calculating stream metrics for %s...' % instrument)
-            parts = tag.split('_')
-            if len(parts) > 2:
-                label = parts[-1]
-                eventid = '_'.join(parts[0:-1])
+            if stream_label is not None:
+                tag = '%s_%s' % (eventid, stream_label)
             else:
-                eventid, label = tag.split('_')
-            if label not in labels:
-                continue
+                tag = stream.tag
+
             try:
                 summary = StationSummary.from_config(
                     stream, event=event, config=config)
@@ -651,12 +675,19 @@ class StreamWorkspace(object):
                 parameters={}
             )
 
-    def getTables(self, label, config=None):
+    def getTables(self, label, config=None, streams=None, stream_label=None):
         '''Retrieve dataframes containing event information and IMC/IMT metrics.
 
         Args:
-            label (str): Calculate metrics only for the given label.
-            config (dict): Config dictionary.
+            label (str):
+                Calculate metrics only for the given label.
+            config (dict):
+                Config dictionary.
+            streams (StreamCollection):
+                Optional StreamCollection object to get tables for.
+            stream_label (str):
+                Label to be used in the metrics path when providing a
+                StreamCollection.
 
         Returns:
             tuple: Elements are:
@@ -697,7 +728,7 @@ class StreamWorkspace(object):
                      - Column header
                      - Description
         '''
-        event_table = pd.DataFrame(columns=EVENT_TABLE_COLUMNS)
+        event_info = []
         imc_tables = {}
         readme_tables = {}
         for eventid in self.getEventIds():
@@ -711,8 +742,11 @@ class StreamWorkspace(object):
                 'magnitude': event.magnitude,
                 'magnitude_type': event.magnitude_type
             }
-            event_table = event_table.append(edict, ignore_index=True)
-            streams = self.getStreams(eventid, labels=[label])
+            event_info.append(edict)
+
+            if streams is None:
+                streams = self.getStreams(eventid, labels=[label])
+
             for stream in streams:
                 if not stream.passed:
                     continue
@@ -720,7 +754,8 @@ class StreamWorkspace(object):
                     station = stream[0].stats.station
                     network = stream[0].stats.network
                     summary = self.getStreamMetrics(
-                        eventid, network, station, label)
+                        eventid, network, station, label, streams=[stream],
+                        stream_label=stream_label)
                 else:
                     summary = StationSummary.from_config(
                         stream, event=event, config=config)
@@ -728,27 +763,24 @@ class StreamWorkspace(object):
                 if summary is None:
                     continue
 
-                imclist = summary.pgms['IMC'].unique().tolist()
-                imtlist = summary.pgms['IMT'].unique().tolist()
+                pgms = summary.pgms
+                imclist = pgms.index.get_level_values('IMC').unique().tolist()
+                imtlist = pgms.index.get_level_values('IMT').unique().tolist()
                 imtlist.sort(key=_natural_keys)
 
                 for imc in imclist:
                     if imc not in imc_tables:
-                        cols = list(FLATFILE_COLUMNS.keys()) + imtlist
-                        imc_table = pd.DataFrame(columns=cols)
                         row = _get_table_row(stream, summary, event, imc)
                         if not len(row):
                             continue
-                        imc_table = imc_table.append(row, ignore_index=True)
-                        imc_tables[imc] = imc_table
+                        imc_tables[imc] = [row]
 
                         imtlist_readme = []
                         for imt in imtlist:
                             # Check if this an actual IMT/IMC combination that
                             # we have
-                            if imt in summary.pgms[
-                                    summary.pgms['IMC'] == imc].dropna(
-                            )['IMT'].values:
+                            if ((imt, imc) in pgms.index and
+                               (not pd.isna(pgms.Result.loc[imt, imc]))):
                                 imt = imt.upper()
                                 if imt.startswith('SA'):
                                     imtlist_readme.append('SA(X)')
@@ -766,23 +798,24 @@ class StreamWorkspace(object):
                         df_readme.columns = ['Column header', 'Description']
                         readme_tables[imc] = df_readme
                     else:
-                        imc_table = imc_tables[imc]
                         row = _get_table_row(stream, summary, event, imc)
                         if not len(row):
                             continue
-                        imc_table = imc_table.append(row, ignore_index=True)
-                        imc_tables[imc] = imc_table
+                        imc_tables[imc].append(row)
 
         # Remove any empty IMT columns from the IMC tables
         for key, table in imc_tables.items():
-            for col in table.columns:
-                if table[col].dropna().empty:
-                    table.drop(columns=col, inplace=True)
+            table = pd.DataFrame.from_dict(table)
+            have_imts = list(set(table.columns) & set(imtlist))
+            have_imts.sort(key=_natural_keys)
+            table = table[list(FLATFILE_COLUMNS.keys()) + have_imts]
+            table.dropna(axis=1, how='all', inplace=True)
             imc_tables[key] = table
 
+        event_table = pd.DataFrame.from_dict(event_info)
         return (event_table, imc_tables, readme_tables)
 
-    def getFitSpectraTable(self, eventid, label):
+    def getFitSpectraTable(self, eventid, label, streams):
         """
         Returns a tuple of two pandas DataFrames. The first contains the
         fit_spectra parameters for each trace in the workspace matching
@@ -794,15 +827,18 @@ class StreamWorkspace(object):
                 Return parameters only for the given eventid.
             label (str):
                 Return parameters only for the given label.
+            streams (StreamCollection):
+                Optional StreamCollection object to get parameters for.
 
         Returns:
             pandas.DataFrame:
                 A DataFrame containing the fit_spectra parameters on a trace-
                 by-trace basis.
         """
-        df = pd.DataFrame(columns=FIT_SPECTRA_COLUMNS.keys())
+        fit_table = []
         event = self.getEvent(eventid)
-        streams = self.getStreams(eventid, labels=[label])
+        if streams is None:
+            streams = self.getStreams(eventid, labels=[label])
         for st in streams:
             if not st.passed:
                 continue
@@ -826,7 +862,12 @@ class StreamWorkspace(object):
                         freq_dict = tr.getParameter('corner_frequencies')
                         fit_dict['fmin'] = freq_dict['highpass']
                         fit_dict['fmax'] = freq_dict['lowpass']
-                    df = df.append(fit_dict, ignore_index=True)
+                    fit_table.append(fit_dict)
+
+        if len(fit_table):
+            df = pd.DataFrame.from_dict(fit_table)
+        else:
+            df = pd.DataFrame(columns=FIT_SPECTRA_COLUMNS.keys())
 
         readme = pd.DataFrame.from_dict(FIT_SPECTRA_COLUMNS, orient='index')
         readme.reset_index(level=0, inplace=True)
@@ -834,7 +875,8 @@ class StreamWorkspace(object):
 
         return (df, readme)
 
-    def getStreamMetrics(self, eventid, network, station, label):
+    def getStreamMetrics(self, eventid, network, station, label, streams=None,
+                         stream_label=None):
         """Extract a StationSummary object from the ASDF file for a given input Stream.
 
         Args:
@@ -846,6 +888,11 @@ class StreamWorkspace(object):
                 Station to return metrics from.
             label (str):
                 Processing label to return metrics from.
+            streams (StreamCollection):
+                Optional StreamCollection object to get metrics for.
+            stream_label (str):
+                Label to be used in the metrics path when providing a
+                StreamCollection.
 
         Returns:
             StationSummary: Object containing all stream metrics or None.
@@ -856,8 +903,9 @@ class StreamWorkspace(object):
         auxholder = self.dataset.auxiliary_data.WaveFormMetrics
 
         # get the stream matching the eventid, station, and label
-        streams = self.getStreams(eventid, stations=[station],
-                                  labels=[label])
+        if streams is None:
+            streams = self.getStreams(eventid, stations=[station],
+                                      labels=[label])
 
         # Only get streams that passed and match network
         streams = [st for st in streams if
@@ -870,9 +918,14 @@ class StreamWorkspace(object):
             logging.warning(msg)
             return None
 
+        if stream_label is not None:
+            stream_tag = '%s_%s' % (eventid, stream_label)
+        else:
+            stream_tag = streams[0].tag
+
         metricpath = format_nslit(streams[0][0].stats,
                                   streams[0].get_inst(),
-                                  streams[0].tag)
+                                  stream_tag)
         top = format_netsta(streams[0][0].stats)
         if top in auxholder:
             tauxholder = auxholder[top]
@@ -1045,7 +1098,7 @@ class StreamWorkspace(object):
             labels = self.getLabels()
         cols = ['Record', 'Processing Step',
                 'Step Attribute', 'Attribute Value']
-        df = pd.DataFrame(columns=cols)
+        df_dicts = []
         for provname in self.dataset.provenance.list():
             has_station = False
             for station in stations:
@@ -1085,7 +1138,10 @@ class StreamWorkspace(object):
                     row['Processing Step'] = pstep
                     row['Step Attribute'] = attrkey
                     row['Attribute Value'] = value
-                    df = df.append(row, ignore_index=True)
+                    df_dicts.append(row)
+
+        df = pd.DataFrame.from_dict(df_dicts)
+        df = df[cols]
 
         return df
 
@@ -1185,9 +1241,8 @@ def _get_table_row(stream, summary, event, imc):
            'H2Lowpass': h2_lowpass,
            'H2Highpass': h2_highpass,
            'SourceFile': stream[0].stats.standard.source_file}
-    imt_frame = summary.pgms[summary.pgms['IMC'] == imc].drop('IMC', axis=1)
-    imts = dict(zip(imt_frame['IMT'], imt_frame['Result']))
-    row.update(imts)
+    imt_frame = summary.pgms.xs(imc, level=1)
+    row.update(imt_frame.Result.to_dict())
     return row
 
 

@@ -19,8 +19,8 @@ def test_greater_of_two_horizontals():
     stream_v2 = read_geonet(datafile_v2)[0]
     station_summary = StationSummary.from_stream(stream_v2,
                                                  ['greater_of_two_horizontals'], ['pga'])
-    station = station_summary.pgms[station_summary.pgms.IMT == 'PGA']
-    greater = station[station.IMC == 'GREATER_OF_TWO_HORIZONTALS'].Result.iloc[0]
+    pgms = station_summary.pgms
+    greater = pgms.loc['PGA', 'GREATER_OF_TWO_HORIZONTALS'].Result
     np.testing.assert_almost_equal(greater, 99.3173469387755, decimal=1)
 
 

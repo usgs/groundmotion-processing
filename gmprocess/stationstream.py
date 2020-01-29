@@ -318,10 +318,10 @@ class StationStream(Stream):
                 'Parameter %s not found in StationStream' % param_id)
         return self.parameters[param_id]
 
-    def getProvenanceDocuments(self):
+    def getProvenanceDocuments(self, base_prov=None):
         provdocs = []
         for trace in self.traces:
-            provdoc = trace.getProvenanceDocument()
+            provdoc = trace.getProvenanceDocument(base_prov)
             provdocs.append(provdoc)
         return provdocs
 

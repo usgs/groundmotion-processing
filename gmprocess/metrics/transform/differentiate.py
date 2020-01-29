@@ -30,9 +30,7 @@ class Differentiate(Transform):
         """
         stream = StationStream([])
         for trace in self.transform_data:
-            integrated_trace = trace.copy().differentiate()
-            integrated_trace.stats['units'] = 'acc'
-            strace = StationTrace(data=integrated_trace.data,
-                    header=integrated_trace.stats)
-            stream.append(strace)
+            differentiated_trace = trace.copy().differentiate()
+            differentiated_trace.stats['units'] = 'acc'
+            stream.append(differentiated_trace)
         return stream

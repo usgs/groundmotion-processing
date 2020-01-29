@@ -79,8 +79,8 @@ def test_radial_transverse():
     summary = StationSummary.from_stream(
         st2, ['radial_transverse'], ['pga'], origin)
     pgmdf = summary.pgms
-    R = pgmdf[(pgmdf.IMT == 'PGA') & (pgmdf.IMC == 'HNR')].Result.iloc[0]
-    T = pgmdf[(pgmdf.IMT == 'PGA') & (pgmdf.IMC == 'HNT')].Result.iloc[0]
+    R = pgmdf.loc['PGA', 'HNR'].Result
+    T = pgmdf.loc['PGA', 'HNT'].Result
     np.testing.assert_almost_equal(
         pgms[0], sp.g * R)
 
@@ -136,20 +136,16 @@ def test_radial_transverse():
     copy1[0].stats.channel = copy1[0].stats.channel[:-1] + '3'
     pgms = StationSummary.from_stream(
         copy1, ['radial_transverse'], ['pga'], origin).pgms
-    assert np.isnan(pgms[(pgms.IMT == 'PGA') & (
-        pgms.IMC == 'HNR')].Result.iloc[0])
-    assert np.isnan(pgms[(pgms.IMT == 'PGA') & (
-        pgms.IMC == 'HNT')].Result.iloc[0])
+    assert np.isnan(pgms.loc['PGA', 'HNR'].Result)
+    assert np.isnan(pgms.loc['PGA', 'HNT'].Result)
 
     # Test failure case when channels are not orthogonal
     copy3 = st2.copy()
     copy3[0].stats.standard.horizontal_orientation = 100
     pgms = StationSummary.from_stream(
         copy3, ['radial_transverse'], ['pga'], origin).pgms
-    assert np.isnan(pgms[(pgms.IMT == 'PGA') & (
-        pgms.IMC == 'HNR')].Result.iloc[0])
-    assert np.isnan(pgms[(pgms.IMT == 'PGA') & (
-        pgms.IMC == 'HNT')].Result.iloc[0])
+    assert np.isnan(pgms.loc['PGA', 'HNR'].Result)
+    assert np.isnan(pgms.loc['PGA', 'HNT'].Result)
 
 
 if __name__ == '__main__':

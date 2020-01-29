@@ -322,7 +322,7 @@ def pick_baer(stream, picker_config=None, config=None):
     return (minloc, mean_snr)
 
 
-def pick_travel(stream, origin, picker_config=None):
+def pick_travel(stream, origin, model=None, picker_config=None):
     '''Use TauP travel time model to find P-Phase arrival time.
 
     Args:
@@ -330,17 +330,17 @@ def pick_travel(stream, origin, picker_config=None):
             StationStream containing 1 or more channels of waveforms.
         origin (ScalarEvent):
             Event origin/magnitude information.
-        picker_config (dict):
-            Dictionary containing picker configuration.
+        model (TauPyModel):
+            TauPyModel object for computing travel times.
     Returns:
         tuple:
             - Best estimate for p-wave arrival time (s since start of trace).
             - Mean signal to noise ratio based on the pick.
     '''
-    if picker_config is None:
-        picker_config = get_config(section='pickers')
-    model = picker_config['travel_time']['model']
-    model = TauPyModel(model=model)
+    if model is None:
+        if picker_config is None:
+            picker_config = get_config(section='pickers')
+        model = TauPyModel(picker_config['travel_time']['model'])
     if stream[0].stats.starttime == NAN_TIME:
         return (-1, 0)
     lat = origin.latitude

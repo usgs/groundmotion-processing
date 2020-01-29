@@ -38,15 +38,13 @@ def test_controller():
                    'ARITHMETIC_MEAN', 'H1', 'H2', 'Z',
                    'GREATER_OF_TWO_HORIZONTALS', 'QUADRATIC_MEAN']
     for col in ['PGA', 'PGV', 'SA(1.000)', 'SA(2.000)', 'SA(0.300)']:
-        imt = pgms.loc[pgms['IMT'] == col]
-        imcs = imt['IMC'].tolist()
+        imcs = pgms.loc[col].index.tolist()
         assert len(imcs) == len(target_imcs)
         np.testing.assert_array_equal(np.sort(imcs), np.sort(target_imcs))
 
     # testing for fas
     for col in ['FAS(1.000)', 'FAS(2.000)', 'FAS(0.300)']:
-        imt = pgms.loc[pgms['IMT'] == col]
-        imcs = imt['IMC'].tolist()
+        imcs = pgms.loc[col].index.tolist()
         assert len(imcs) == 3
         np.testing.assert_array_equal(
             np.sort(imcs),
@@ -54,8 +52,7 @@ def test_controller():
         )
 
     # testing for arias
-    imt = pgms.loc[pgms['IMT'] == 'ARIAS']
-    imcs = imt['IMC'].tolist()
+    imcs = pgms.loc['ARIAS'].index.tolist()
     assert len(imcs) == 1
     np.testing.assert_array_equal(np.sort(imcs), ['ARITHMETIC_MEAN'])
     _validate_steps(m1.step_sets, 'acc')
@@ -72,15 +69,13 @@ def test_controller():
                    'ARITHMETIC_MEAN', 'QUADRATIC_MEAN', 'H1', 'H2',
                    'Z', 'GREATER_OF_TWO_HORIZONTALS']
     for col in ['PGA', 'PGV', 'SA(1.000)', 'SA(2.000)', 'SA(0.300)']:
-        imt = pgms.loc[pgms['IMT'] == col]
-        imcs = imt['IMC'].tolist()
+        imcs = pgms.loc[col].index.tolist()
         assert len(imcs) == len(target_imcs)
         np.testing.assert_array_equal(np.sort(imcs), np.sort(target_imcs))
 
     # testing for fas
     for col in ['FAS(1.000)', 'FAS(2.000)', 'FAS(0.300)']:
-        imt = pgms.loc[pgms['IMT'] == col]
-        imcs = imt['IMC'].tolist()
+        imcs = pgms.loc[col].index.tolist()
         assert len(imcs) == 3
         np.testing.assert_array_equal(
             np.sort(imcs),
@@ -88,8 +83,7 @@ def test_controller():
         )
 
     # testing for arias
-    imt = pgms.loc[pgms['IMT'] == 'ARIAS']
-    imcs = imt['IMC'].tolist()
+    imcs = pgms.loc['ARIAS'].index.tolist()
     assert len(imcs) == 1
     np.testing.assert_array_equal(np.sort(imcs), ['ARITHMETIC_MEAN'])
     _validate_steps(m.step_sets, 'vel')
@@ -189,17 +183,16 @@ def test_end_to_end():
         ('SA(1.000)', 'GREATER_OF_TWO_HORIZONTALS', 136.25041187387063)
     ]
     pgms = m.pgms
-    assert len(pgms['IMT'].tolist()) == len(test_pgms)
+    assert len(pgms) == len(test_pgms)
     for target in test_pgms:
         target_imt = target[0]
         target_imc = target[1]
         value = target[2]
-        sub_imt = pgms.loc[pgms['IMT'] == target_imt]
-        df = sub_imt.loc[sub_imt['IMC'] == target_imc]
-        assert len(df['IMT'].tolist()) == 1
+        df = pgms.loc[target_imt, target_imc]
+        assert len(df) == 1
 
         np.testing.assert_array_almost_equal(
-            df['Result'].tolist()[0], value,
+            df['Result'], value,
             decimal=10)
 
 

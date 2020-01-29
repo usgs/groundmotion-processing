@@ -54,7 +54,7 @@ def snr(st, same_horiz=True, bandwidth=20):
     """
     for tr in st:
         # Check for prior calculation of 'snr'
-        if not tr.hasParameter('snr'):
+        if not tr.hasCached('snr'):
             tr = compute_snr_trace(tr, bandwidth)
 
         # If it doesn't exist then it must have failed because it didn't have

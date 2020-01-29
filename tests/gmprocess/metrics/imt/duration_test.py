@@ -68,8 +68,7 @@ def test_duration():
     station = StationSummary.from_stream(
         stream, ['ARITHMETIC_MEAN'], ['duration'])
     pgms = station.pgms
-    d595 = pgms[(pgms.IMT == 'DURATION') & (
-        pgms.IMC == 'ARITHMETIC_MEAN')].Result.tolist()[0]
+    d595 = pgms.loc['DURATION', 'ARITHMETIC_MEAN'].Result
 
     np.testing.assert_allclose(d595, target_d595, atol=1e-4, rtol=1e-4)
 
@@ -83,8 +82,8 @@ def test_duration():
         ['duration']
     )
     # Currently disallowed
-    assert 'gmrotd' not in station.pgms['IMC']
-    assert 'rotd50' not in station.pgms['IMC']
+    assert 'gmrotd' not in station.pgms.index.get_level_values(1)
+    assert 'rotd50' not in station.pgms.index.get_level_values(1)
     print(station)
 
 
