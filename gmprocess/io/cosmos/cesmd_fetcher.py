@@ -153,7 +153,7 @@ class CESMDFetcher(DataFetcher):
         self.magnitude = magnitude
         xmin = -199.528
         xmax = -63.473
-        ymin = 23.058
+        ymin = 17.44
         ymax = 73.571
         # this announces to the world the valid bounds for this fetcher.
         self.BOUNDS = [xmin, xmax, ymin, ymax]
