@@ -461,7 +461,7 @@ class StreamWorkspace(object):
                                 specparts = camel_case_split(aux)
                                 array_name = specparts[-1].lower()
                                 specname = '_'.join(specparts[:-1]).lower()
-                                specarray = auxarray_top[trace_path].data.value
+                                specarray = auxarray_top[trace_path].data[()]
                                 if specname in spectra:
                                     spectra[specname][array_name] = specarray
                                 else:
@@ -780,7 +780,7 @@ class StreamWorkspace(object):
                             # Check if this an actual IMT/IMC combination that
                             # we have
                             if ((imt, imc) in pgms.index and
-                               (not pd.isna(pgms.Result.loc[imt, imc]))):
+                                    (not pd.isna(pgms.Result.loc[imt, imc]))):
                                 imt = imt.upper()
                                 if imt.startswith('SA'):
                                     imtlist_readme.append('SA(X)')

@@ -80,7 +80,8 @@ def plot_regression(event_table, imc, imc_table, imt, filename,
     cmap2 = mpl.colors.ListedColormap(colors)
 
     for eventid in eventids:
-        emag = event_table[event_table['id'] == eventid].magnitude.values[0]
+        emag = event_table[event_table['id'] == eventid].magnitude.to_numpy()[
+            0]
         norm_mag = (emag - min_mag) / (max_mag - min_mag)
         color = cmap2(norm_mag)
         erows = imc_table[imc_table['EarthquakeId'] == eventid]

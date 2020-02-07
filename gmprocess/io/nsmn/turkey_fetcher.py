@@ -158,13 +158,13 @@ class TurkeyFetcher(DataFetcher):
         df = get_turkey_dataframe(self.time, 1)
         if df is None:
             return []
-        lats = df['latitude'].values
-        lons = df['longitude'].values
+        lats = df['latitude'].to_numpy()
+        lons = df['longitude'].to_numpy()
         etime = pd.Timestamp(self.time)
         dtimes = np.abs(df['origintime'] - etime)
         distances = geodetic_distance(self.lon, self.lat, lons, lats)
         didx = distances <= self.radius
-        tidx = (dtimes <= np.timedelta64(int(self.dt), 's')).values
+        tidx = (dtimes <= np.timedelta64(int(self.dt), 's')).to_numpy()
         newdf = df[didx & tidx]
         events = []
         for idx, row in newdf.iterrows():
