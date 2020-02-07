@@ -78,7 +78,7 @@ def process_event(outdir, event, pcommands,
                   config, input_directory,
                   process_tag, logfile,
                   files_created, output_format,
-                  status, recompute_metrics):
+                  status, recompute_metrics, export_dir=None):
 
     # setup logging to write to the input logfile
     argthing = namedtuple('args', ['debug', 'quiet'])
@@ -185,6 +185,11 @@ def process_event(outdir, event, pcommands,
         processing_done = True
 
     if 'export' in pcommands:
+        if export_dir is not None:
+            if not os.path.isdir(export_dir):
+                os.makedirs(export_dir)
+            outdir = export_dir
+
         labels = workspace.getLabels()
         if 'unprocessed' not in labels:
             fmt = ('Workspace file "%s" appears to have no unprocessed '
@@ -430,7 +435,8 @@ def main(args):
                             outdir, event, pcommands, config,
                             input_directory, process_tag, logfile,
                             files_created, args.format, args.status,
-                            args.recompute_metrics)
+                            args.recompute_metrics,
+                            export_dir=args.export_dir)
                         workspace_files.append(workname)
                     os._exit(0)
                 else:
@@ -446,7 +452,8 @@ def main(args):
                     outdir, event, pcommands,
                     config, input_directory, process_tag,
                     logfile, files_created, args.format, args.status,
-                    args.recompute_metrics)
+                    args.recompute_metrics,
+                    export_dir=args.export_dir)
                 workspace_files.append(workname)
 
     # logging
@@ -480,6 +487,7 @@ def main(args):
     logging.info('%i workspace files created' % len(workspace_files))
 
     if 'export' in pcommands:
+
         imc_table_names = [file.replace('_README', '')
                            for file in os.listdir(outdir) if 'README' in file]
         imc_tables = {}
@@ -489,7 +497,13 @@ def main(args):
             if 'fit_spectra_parameters' in imc_tables:
                 del imc_tables['fit_spectra_parameters']
 
-        event_table = pd.read_csv(os.path.join(outdir, 'events.csv'))
+        # TODO - where is this being written? Is it a requirement?
+        event_file = os.path.join(outdir, 'events.csv')
+        if os.path.isfile(event_file):
+            event_table = pd.read_csv(event_file)
+        else:
+            data = [{'id': event.id, 'magnitude': event.magnitude}]
+            event_table = pd.DataFrame(data=data)
 
         # make a regression plot of the most common imc/imt combination we
         # can find

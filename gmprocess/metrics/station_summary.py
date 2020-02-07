@@ -51,6 +51,7 @@ class StationSummary(object):
         self._station_code = None
         self._stream = None
         self._summary = None
+        self.channel_dict = {}
 
     @property
     def available_imcs(self):
@@ -165,6 +166,8 @@ class StationSummary(object):
         metrics = MetricsController.from_config(
             stream, config=config, event=event)
 
+        station.channel_dict = metrics.channel_dict.copy()
+
         pgms = metrics.pgms
         if pgms is None:
             station._components = metrics.imcs
@@ -266,6 +269,8 @@ class StationSummary(object):
                                     bandwidth=bandwidth, damping=damping,
                                     event=event,
                                     smooth_type=smoothing)
+
+        station.channel_dict = metrics.channel_dict.copy()
         pgms = metrics.pgms
 
         if pgms.empty:
@@ -518,6 +523,7 @@ class StationSummary(object):
         imtlist = gather_pgms()[0]
         root = etree.fromstring(xml_stream)
         pgms = {}
+        channel_dict = {}
         damping = None
         for element in root.iter():
             etag = element.tag
@@ -535,12 +541,16 @@ class StationSummary(object):
                     imt = etag.upper()
                 for imc_element in element.getchildren():
                     imc = imc_element.tag.upper()
+                    if imc in ['H1', 'H2', 'Z']:
+                        if 'original_channel' in imc_element.attrib:
+                            channel_dict[imc] = imc_element.attrib['original_channel']
                     value = float(imc_element.text)
                     tdict[imc] = value
 
                 pgms[imt] = tdict
         station = cls.from_pgms(station_code, pgms)
         station._damping = damping
+        station.channel_dict = channel_dict.copy()
         # extract info from station metrics, fill in metadata
         root = etree.fromstring(xml_station)  # station metrics element
         for element in root.iter():
@@ -603,7 +613,11 @@ class StationSummary(object):
 
             for imc in self.components:
                 imcstr = imc.lower().replace('(', '').replace(')', '')
-                imc_tag = etree.SubElement(imt_tag, imcstr)
+                if imc in ['H1', 'H2', 'Z']:
+                    attributes = {'original_channel': self.channel_dict[imc]}
+                else:
+                    attributes = {}
+                imc_tag = etree.SubElement(imt_tag, imcstr, attrib=attributes)
                 try:
                     value = self.pgms.Result.loc[imt, imc]
                 except KeyError:

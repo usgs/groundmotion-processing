@@ -237,7 +237,8 @@ def test_metrics2():
         assert 'ARITHMETIC_MEAN' in imc_tables2
         assert 'ARITHMETIC_MEAN' in readmes2
         assert 'ARIAS' in imc_tables2['ARITHMETIC_MEAN']
-        assert 'ARIAS' in readmes2['ARITHMETIC_MEAN']['Column header'].values
+        testarray = readmes2['ARITHMETIC_MEAN']['Column header'].to_numpy()
+        assert 'ARIAS' in testarray
     except Exception as e:
         raise(e)
     finally:
@@ -269,7 +270,7 @@ def test_metrics():
         stream1 = raw_streams[0]
         summary1 = StationSummary.from_config(stream1)
         s1_df_in = summary1.pgms.sort_values(['IMT', 'IMC'])
-        array1 = s1_df_in['Result'].as_matrix()
+        array1 = s1_df_in['Result'].to_numpy()
         workspace.calcStreamMetrics(eventid, labels=['raw'])
         workspace.calcStationMetrics(event.id, labels=['raw'])
         pstreams2 = workspace.getStreams(event.id, labels=['processed'])
@@ -278,7 +279,7 @@ def test_metrics():
             event.id, stream1[0].stats.network,
             stream1[0].stats.station, 'raw')
         s1_df_out = summary1_a.pgms.sort_values(['IMT', 'IMC'])
-        array2 = s1_df_out['Result'].as_matrix()
+        array2 = s1_df_out['Result'].to_numpy()
         np.testing.assert_almost_equal(array1, array2, decimal=4)
 
         workspace.close()

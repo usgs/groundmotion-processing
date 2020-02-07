@@ -18,6 +18,19 @@ fetchers:
         # restrict the number of processed stations by
         # using magnitude to set maximum station distance
         restrict_stations: false
+    CESMDFetcher:
+        # CESMD requires an email, register yours by
+        # visiting this page:
+        # https://strongmotioncenter.org/cgi-bin/CESMD/register.pl
+        email: EMAIL
+        process_type: raw
+        station_type: Ground
+        # define the distance search radius (km)
+        eq_radius : 10
+        # define the time search threshokd (sec)
+        eq_dt : 10
+        # station search radius (km)
+        station_radius: CESMD_RADIUS_KM
     TurkeyFetcher:
         # define the distance search radius (km)
         radius : 100

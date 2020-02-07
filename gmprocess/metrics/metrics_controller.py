@@ -17,6 +17,23 @@ from gmprocess.metrics.gather import gather_pgms
 from gmprocess.stationstream import StationStream
 
 
+def _get_channel_dict(channel_names):
+    channel_names = sorted(channel_names)
+    channel_dict = {}
+    reverse_dict = {}
+    channel_number = 1
+    for channel_name in channel_names:
+        if channel_name.endswith('Z'):
+            channel_dict['Z'] = channel_name
+        else:
+            cname = 'H%i' % channel_number
+            channel_number += 1
+            channel_dict[cname] = channel_name
+
+    reverse_dict = {v: k for k, v in channel_dict.items()}
+    return (channel_dict, reverse_dict)
+
+
 class MetricsController(object):
     """
     Class for compiling metrics.
@@ -52,6 +69,8 @@ class MetricsController(object):
         if 'radial_transverse' in self.imcs and event is None:
             raise PGMException('MetricsController: Event is required for '
                                'radial_transverse imc')
+
+        self.channel_dict = {}  # dictionary to serve as translator between
         self.timeseries = timeseries
         self.validate_stream()
         self.event = event
@@ -368,16 +387,12 @@ class MetricsController(object):
             # 'BHN'. Instead we want all of these to be considered as simply
             # the "first horizontal channel".
             if 'channels' in imt_imc:
+                channel_names = list(c2.keys())
+                (self.channel_dict,
+                 reverse_dict) = _get_channel_dict(channel_names)
                 new_c2 = {}
                 for channel, value in c2.items():
-                    if channel.endswith('1') or channel.endswith('N'):
-                        newchannel = 'H1'
-                    elif channel.endswith('2') or channel.endswith('E'):
-                        newchannel = 'H2'
-                    elif channel.endswith('Z'):
-                        newchannel = 'Z'
-                    else:
-                        newchannel = channel
+                    newchannel = reverse_dict[channel]
                     new_c2[newchannel] = value
             else:
                 new_c2 = c2.copy()
