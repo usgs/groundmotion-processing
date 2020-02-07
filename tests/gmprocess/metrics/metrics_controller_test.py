@@ -12,8 +12,50 @@ import pandas as pd
 from gmprocess.io.geonet.core import read_geonet
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.metrics.exception import PGMException
-from gmprocess.metrics.metrics_controller import MetricsController
+from gmprocess.metrics.metrics_controller import MetricsController, _get_channel_dict
 from gmprocess.stationstream import StationStream
+
+
+def test_get_channel_dict():
+    channel_names1 = ['HNN', 'HNE', 'HNZ']
+    cdict, _ = _get_channel_dict(channel_names1)
+    assert sorted(cdict.keys()) == ['H1', 'H2', 'Z']
+
+    channel_names2 = ['HN1', 'HN2', 'HNZ']
+    cdict, _ = _get_channel_dict(channel_names2)
+    assert sorted(cdict.keys()) == ['H1', 'H2', 'Z']
+
+    channel_names3 = ['HN1', 'HNE', 'HNZ']
+    cdict, _ = _get_channel_dict(channel_names3)
+    assert sorted(cdict.keys()) == ['H1', 'H2', 'Z']
+
+    channel_names4 = ['HN1', 'HNZ']
+    cdict, _ = _get_channel_dict(channel_names4)
+    assert sorted(cdict.keys()) == ['H1', 'Z']
+
+    channel_names5 = ['HN2', 'HN3', 'HNZ']
+    cdict, _ = _get_channel_dict(channel_names5)
+    assert sorted(cdict.keys()) == ['H1', 'H2', 'Z']
+
+    channel_names6 = ['HN2', 'HN3']
+    cdict, _ = _get_channel_dict(channel_names6)
+    assert sorted(cdict.keys()) == ['H1', 'H2']
+
+    channel_names7 = ['HN2', 'HNZ']
+    cdict, _ = _get_channel_dict(channel_names7)
+    assert sorted(cdict.keys()) == ['H1', 'Z']
+
+    channel_names8 = ['HN2']
+    cdict, _ = _get_channel_dict(channel_names8)
+    assert sorted(cdict.keys()) == ['H1']
+
+    channel_names9 = ['HN1']
+    cdict, _ = _get_channel_dict(channel_names9)
+    assert sorted(cdict.keys()) == ['H1']
+
+    channel_names10 = ['HNZ']
+    cdict, _ = _get_channel_dict(channel_names10)
+    assert sorted(cdict.keys()) == ['Z']
 
 
 def test_controller():
@@ -90,7 +132,8 @@ def test_controller():
 
 
 def _validate_steps(step_sets, data_type):
-    datafile = os.path.join('data', 'testdata', 'metrics_controller', 'workflows.csv')
+    datafile = os.path.join(
+        'data', 'testdata', 'metrics_controller', 'workflows.csv')
     datafile_abspath = pkg_resources.resource_filename('gmprocess', datafile)
     df = pd.read_csv(datafile_abspath)
     wf_df = df.apply(lambda x: x.astype(str).str.lower())
@@ -197,6 +240,7 @@ def test_end_to_end():
 
 
 if __name__ == '__main__':
+    test_get_channel_dict()
     test_controller()
     test_exceptions()
     test_end_to_end()
