@@ -705,6 +705,11 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
         gain = format_specific['gain']
     else:
         gain = 1.0
+    if gain == 0:
+        fmt = '%s.%s.%s.%s'
+        tpl = (hdr['network'], hdr['station'], hdr['channel'], hdr['location'])
+        nscl = fmt % tpl
+        raise GMProcessException('Gain of 0 discovered for NSCL: %s' % nscl)
     denom = ctov * vtog * (1.0 / gain) * sp.g
     standard['instrument_sensitivity'] = 1 / denom
 
