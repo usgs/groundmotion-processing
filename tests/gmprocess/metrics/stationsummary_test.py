@@ -132,7 +132,6 @@ def test_stationsummary():
     imtlist = ['sa1.0', 'PGA', 'pgv', 'fas2.0', 'arias']
     stream_summary = StationSummary.from_stream(stream, imclist, imtlist)
     xmlstr = stream_summary.get_metric_xml()
-    print(xmlstr)
 
     xml_station = stream_summary.get_station_xml()
 

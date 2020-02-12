@@ -36,6 +36,7 @@ NON_IMT_COLS = set(['EarthquakeId',
                     'EarthquakeLongitude',
                     'EarthquakeDepth',
                     'EarthquakeMagnitude',
+                    'EarthquakeMagnitudeType'
                     'Network',
                     'DataProvider',
                     'StationCode',
@@ -128,9 +129,10 @@ def process_event(outdir, event, pcommands,
     rstreams = []
     pstreams = []
 
+    rupture_file = None
     if 'assemble' in pcommands:
         logging.info('Downloading/loading raw streams...')
-        workspace, workspace_file, rstreams = download(
+        workspace, workspace_file, rstreams, rupture_file = download(
             event, event_dir, config, input_directory)
 
         download_done = True
@@ -177,11 +179,10 @@ def process_event(outdir, event, pcommands,
             warnings.simplefilter("ignore",
                                   category=H5pyDeprecationWarning)
             workspace.addStreams(event, pstreams, label=process_tag)
-            workspace.calcMetrics(event.id,
-                                  labels=[process_tag],
-                                  config=config,
-                                  streams=pstreams,
-                                  stream_label=process_tag)
+            workspace.calcMetrics(
+                event.id, labels=[process_tag], config=config,
+                streams=pstreams, stream_label=process_tag,
+                rupture_file=rupture_file)
         processing_done = True
 
     if 'export' in pcommands:
@@ -210,10 +211,10 @@ def process_event(outdir, event, pcommands,
                         del workspace.dataset.auxiliary_data.WaveFormMetrics
                         del workspace.dataset.auxiliary_data.StationMetrics
                         workspace.calcMetrics(
-                            eventid, labels=labels, config=config)
+                            event.id, labels=labels, config=config,
+                            rupture=rupture_file)
                     event_table, imc_tables, readmes = workspace.getTables(
-                        labels[0], config=None, streams=pstreams,
-                        stream_label=process_tag)
+                        labels[0], streams=pstreams, stream_label=process_tag)
                     ev_fit_spec, fit_readme = workspace.getFitSpectraTable(
                         event.id, labels[0], pstreams)
 

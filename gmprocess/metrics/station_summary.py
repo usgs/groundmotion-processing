@@ -5,15 +5,18 @@ import re
 # third party imports
 from lxml import etree
 import numpy as np
+import pandas as pd
 from obspy.core.stream import Stream
 from obspy.geodetics.base import gps2dist_azimuth
 from openquake.hazardlib.geo.geodetic import distance
-import pandas as pd
+from impactutils.rupture.point_rupture import PointRupture
 
 # local imports
 from gmprocess.config import get_config
 from gmprocess.metrics.gather import gather_pgms
 from gmprocess.metrics.metrics_controller import MetricsController
+from gmprocess.constants import (
+    ELEVATION_FOR_DISTANCE_CALCS, METRICS_XML_FLOAT_STRING_FORMAT)
 
 
 XML_UNITS = {
@@ -41,8 +44,9 @@ class StationSummary(object):
         self._coordinates = None
         self._damping = None
         self._elevation = None
-        self._epicentral_distance = None
-        self._hypocentral_distance = None
+        self._distances = {}
+        self._back_azimuth = None
+        self._vs30 = {}
         self._imts = None
         self._event = None
         self._pgms = None
@@ -125,25 +129,35 @@ class StationSummary(object):
         return self._elevation
 
     @property
-    def epicentral_distance(self):
+    def distances(self):
         """
-        Helper method for getting the epicentral distance.
+        Helper method for getting the distances.
 
         Returns:
-            float: Epicentral distance.
+            dict: Dictionary of distance measurements.
         """
-        return self._epicentral_distance
+        return self._distances
 
     @classmethod
-    def from_config(cls, stream, config=None, event=None):
+    def from_config(cls, stream, config=None, event=None,
+                    calc_waveform_metrics=True, calc_station_metrics=True,
+                    rupture=None, vs30_grids=None):
         """
         Args:
             stream (obspy.core.stream.Stream): Strong motion timeseries
                 for one station.
+            config (dictionary): Configuration dictionary.
             event (ScalarEvent):
                 Object containing latitude, longitude, depth, and magnitude.
-            config (dictionary): Configuration dictionary.
-
+            calc_waveform_metrics (bool):
+                Whether to calculate waveform metrics. Default is True.
+            calc_station_metrics (bool):
+                Whether to calculate station metrics. Default is True.
+            rupture (PointRupture or QuadRupture):
+                impactutils rupture object. Default is None.
+            vs30_grids (dict):
+                A dictionary containing the vs30 grid files, names, and
+                descriptions (see config).
         Note:
             Assumes a processed stream with units of gal (1 cm/s^2).
             No processing is done by this class.
@@ -163,24 +177,28 @@ class StationSummary(object):
         station.event = event
         station.set_metadata()
 
-        metrics = MetricsController.from_config(
-            stream, config=config, event=event)
+        if stream.passed and calc_waveform_metrics:
+            metrics = MetricsController.from_config(
+                stream, config=config, event=event)
 
-        station.channel_dict = metrics.channel_dict.copy()
+            station.channel_dict = metrics.channel_dict.copy()
 
-        pgms = metrics.pgms
-        if pgms is None:
-            station._components = metrics.imcs
-            station._imts = metrics.imts
-            station.pgms = pd.DataFrame.from_dict({
-                'IMT': [],
-                'IMC': [],
-                'Result': []
-            })
-        else:
-            station._components = set(pgms.index.get_level_values('IMC'))
-            station._imts = set(pgms.index.get_level_values('IMT'))
-            station.pgms = pgms
+            pgms = metrics.pgms
+            if pgms is None:
+                station._components = metrics.imcs
+                station._imts = metrics.imts
+                station.pgms = pd.DataFrame.from_dict({
+                    'IMT': [],
+                    'IMC': [],
+                    'Result': []
+                })
+            else:
+                station._components = set(pgms.index.get_level_values('IMC'))
+                station._imts = set(pgms.index.get_level_values('IMT'))
+                station.pgms = pgms
+        if calc_station_metrics:
+            station.compute_station_metrics(rupture, vs30_grids)
+
         return station
 
     @classmethod
@@ -227,7 +245,9 @@ class StationSummary(object):
 
     @classmethod
     def from_stream(cls, stream, components, imts, event=None,
-                    damping=None, smoothing=None, bandwidth=None, config=None):
+                    damping=None, smoothing=None, bandwidth=None, config=None,
+                    calc_waveform_metrics=True, calc_station_metrics=True,
+                    rupture=None, vs30_grids=None):
         """
         Args:
             stream (obspy.core.stream.Stream): Strong motion timeseries
@@ -241,7 +261,15 @@ class StationSummary(object):
             smoothing (float): Smoothing method. Default is None.
             bandwidth (float): Bandwidth of smoothing. Default is None.
             config (dictionary): Configuration dictionary.
-
+            calc_waveform_metrics (bool):
+                Whether to calculate waveform metrics. Default is True.
+            calc_station_metrics (bool):
+                Whether to calculate station metrics. Default is True.
+            rupture (PointRupture or QuadRupture):
+                impactutils rupture object. Default is None.
+            vs30_grids (dict):
+                A dictionary containing the vs30 grid files, names, and
+                descriptions (see config).
         Note:
             Assumes a processed stream with units of gal (1 cm/s^2).
             No processing is done by this class.
@@ -265,26 +293,29 @@ class StationSummary(object):
         station._stream = stream
         station.event = event
         station.set_metadata()
-        metrics = MetricsController(imts, components, stream,
-                                    bandwidth=bandwidth, damping=damping,
-                                    event=event,
-                                    smooth_type=smoothing)
 
-        station.channel_dict = metrics.channel_dict.copy()
-        pgms = metrics.pgms
+        if stream.passed and calc_waveform_metrics:
+            metrics = MetricsController(imts, components, stream,
+                                        bandwidth=bandwidth, damping=damping,
+                                        event=event,
+                                        smooth_type=smoothing)
+            station.channel_dict = metrics.channel_dict.copy()
+            pgms = metrics.pgms
 
-        if pgms.empty:
-            station._components = metrics.imcs
-            station._imts = metrics.imts
-            station.pgms = pd.DataFrame.from_dict({
-                'IMT': [],
-                'IMC': [],
-                'Result': []
-            })
-        else:
-            station._components = set(pgms.index.get_level_values('IMC'))
-            station._imts = set(pgms.index.get_level_values('IMT'))
-            station.pgms = pgms
+            if pgms.empty:
+                station._components = metrics.imcs
+                station._imts = metrics.imts
+                station.pgms = pd.DataFrame.from_dict({
+                    'IMT': [],
+                    'IMC': [],
+                    'Result': []
+                })
+            else:
+                station._components = set(pgms.index.get_level_values('IMC'))
+                station._imts = set(pgms.index.get_level_values('IMT'))
+                station.pgms = pgms
+        if calc_station_metrics:
+            station.compute_station_metrics(rupture, vs30_grids)
         return station
 
     def get_pgm(self, imt, imc):
@@ -304,10 +335,12 @@ class StationSummary(object):
     def get_summary(self):
         columns = ['STATION', 'NAME', 'SOURCE',
                    'NETID', 'LAT', 'LON', 'ELEVATION']
-        if self.epicentral_distance is not None:
-            columns += ['EPICENTRAL_DISTANCE']
-        if self.hypocentral_distance is not None:
-            columns += ['HYPOCENTRAL_DISTANCE']
+        if self._distances is not None:
+            for dist_type in self._distances:
+                columns.append(dist_type.upper() + '_DISTANCE')
+        if self._vs30 is not None:
+            for vs30_type in self._vs30:
+                columns.append(vs30_type.upper())
         # set meta_data
         row = np.zeros(len(columns), dtype=list)
         row[0] = self.station_code
@@ -319,12 +352,6 @@ class StationSummary(object):
         row[4] = self.coordinates[0]
         row[5] = self.coordinates[1]
         row[6] = self.elevation
-        if self.epicentral_distance is not None:
-            row[7] = self.epicentral_distance
-            if self.hypocentral_distance is not None:
-                row[8] = self.hypocentral_distance
-        elif self.hypocentral_distance is not None:
-            row[7] = self.hypocentral_distance
         imcs = self.components
         imts = self.imts
         pgms = self.pgms
@@ -344,16 +371,6 @@ class StationSummary(object):
         pgm_dataframe = pd.DataFrame(pgm_data, columns=pgm_columns)
         dataframe = pd.concat([meta_dataframe, pgm_dataframe], axis=1)
         return dataframe
-
-    @property
-    def hypocentral_distance(self):
-        """
-        Helper method for getting the hypocentral distance.
-
-        Returns:
-            float: Hypocentral distance.
-        """
-        return self._hypocentral_distance
 
     @property
     def imts(self):
@@ -406,19 +423,6 @@ class StationSummary(object):
             elev = stats.coordinates.elevation
         self._elevation = elev
         self._coordinates = (lat, lon)
-        if self.event is not None:
-            event = self.event
-            dist, _, _ = gps2dist_azimuth(lat, lon,
-                                          event.latitude,
-                                          event.longitude)
-            self._epicentral_distance = dist / M_PER_KM
-            if event.depth is not None:
-                self._hypocentral_distance = distance(
-                    lon, lat, -elev / M_PER_KM,
-                    event.longitude,
-                    event.latitude,
-                    event.depth / M_PER_KM
-                )
 
     @property
     def smoothing(self):
@@ -509,8 +513,10 @@ class StationSummary(object):
         </waveform_metrics>
 
         <station_metrics>
-            <hypocentral_distance units="km">100</hypocentral_distance>
-            <epicentral_distance units="km">120</epicentral_distance>
+            <distances>
+            <hypocentral units="km">100</hypocentral>
+            <epicentral units="km">120</epicentral>
+            </distances>
         </station_metrics>
 
         Args:
@@ -553,14 +559,98 @@ class StationSummary(object):
         station.channel_dict = channel_dict.copy()
         # extract info from station metrics, fill in metadata
         root = etree.fromstring(xml_station)  # station metrics element
-        for element in root.iter():
-            etag = element.tag
-            if etag == 'epicentral_distance':
-                station._epicentral_distance = float(element.text)
-            if etag == 'hypocentral_distance':
-                station._hypocentral_distance = float(element.text)
+        for element in root.iterchildren():
+            if element.tag == 'distances':
+                for dist_type in element.iterchildren():
+                    station._distances[dist_type.tag] = float(dist_type.text)
+            if element.tag == 'vs30':
+                for vs30_type in element.iterchildren():
+                    station._vs30[vs30_type.tag] = {
+                        'value': float(vs30_type.text),
+                        'column_header': vs30_type.attrib['column_header'],
+                        'readme_entry': vs30_type.attrib['readme_entry'],
+                        'units': vs30_type.attrib['units']}
+            if element.tag == 'back_azimuth':
+                station._back_azimuth = float(element.text)
 
         return station
+
+    def compute_station_metrics(self, rupture=None, vs30_grids=None):
+        """
+        Computes station metrics (distances, vs30, back azimuth) for the
+        StationSummary.
+
+        Args:
+            rupture (PointRupture or QuadRupture):
+                impactutils rupture object. Default is None.
+            vs30_grids (dict):
+                A dictionary containing the vs30 grid files, names, and
+                descriptions (see config).
+        """
+        lat, lon = self.coordinates
+        elev = self.elevation
+        if self.event is not None:
+            event = self.event
+            dist, baz, _ = gps2dist_azimuth(lat, lon, event.latitude,
+                                            event.longitude)
+            self._distances['epicentral'] = dist / M_PER_KM
+            self._back_azimuth = baz
+            if event.depth is not None:
+                self._distances['hypocentral'] = distance(
+                    lon, lat, -elev / M_PER_KM, event.longitude,
+                    event.latitude, event.depth / M_PER_KM)
+
+        if rupture is not None:
+            lon = np.array([lon])
+            lat = np.array([lat])
+            elev = np.array([ELEVATION_FOR_DISTANCE_CALCS])
+
+            rrup, rrup_var = rupture.computeRrup(lon, lat, elev)
+            rjb, rjb_var = rupture.computeRjb(lon, lat, elev)
+            gc2_dict = rupture.computeGC2(lon, lat, elev)
+
+            if not isinstance(rupture, PointRupture):
+                rrup_var = np.full_like(rrup, np.nan)
+                rjb_var = np.full_like(rjb, np.nan)
+
+                # If we don't have a point rupture, then back azimuth needs
+                # to be calculated to the closest point on the rupture
+                dists = []
+                bazs = []
+                for quad in rupture._quadrilaterals:
+                    P0, P1, P2, P3 = quad
+                    for point in [P0, P1]:
+                        dist, az, baz = gps2dist_azimuth(
+                            point.y, point.x, lat, lon)
+                        dists.append(dist)
+                        bazs.append(baz)
+                self._back_azimuth = bazs[np.argmin(dists)]
+            else:
+                gc2_dict = {x: [np.nan] for x in gc2_dict}
+
+            self._distances.update({
+                'rupture': rrup[0],
+                'rupture_var': rrup_var[0],
+                'joyner_boore': rjb[0],
+                'joyner_boore_var': rjb_var[0],
+                'gc2_rx': gc2_dict['rx'][0],
+                'gc2_ry': gc2_dict['ry'][0],
+                'gc2_ry0': gc2_dict['ry0'][0],
+                'gc2_U': gc2_dict['U'][0],
+                'gc2_T': gc2_dict['T'][0]})
+
+        if vs30_grids is not None:
+            for vs30_name in vs30_grids.keys():
+                self._vs30[vs30_name] = {
+                    'value':
+                        vs30_grids[vs30_name]['grid_object'].getValue(
+                            lat, lon),
+                    'column_header':
+                        vs30_grids[vs30_name]['column_header'],
+                    'readme_entry':
+                        vs30_grids[vs30_name]['readme_entry'],
+                    'units':
+                        vs30_grids[vs30_name]['units']}
 
     def get_metric_xml(self):
         """Return XML for waveform metrics as defined for our ASDF implementation.
@@ -597,14 +687,16 @@ class StationSummary(object):
             period = None
             if imtstr.startswith('sa') or imtstr.startswith('fas'):
                 period = float(re.search(FLOAT_MATCH, imtstr).group())
-                attdict = {'period': '%.3f' % period,
+                attdict = {'period': METRICS_XML_FLOAT_STRING_FORMAT[
+                    'period'] % period,
                            'units': units}
                 if imtstr.startswith('sa'):
                     imtstr = 'sa'
                     damping = self._damping
                     if damping is None:
                         damping = DEFAULT_DAMPING
-                    attdict['damping'] = '%.2f' % damping
+                    attdict['damping'] = METRICS_XML_FLOAT_STRING_FORMAT[
+                        'damping'] % damping
                 else:
                     imtstr = 'fas'
                 imt_tag = etree.SubElement(root, imtstr, attrib=attdict)
@@ -622,33 +714,45 @@ class StationSummary(object):
                     value = self.pgms.Result.loc[imt, imc]
                 except KeyError:
                     value = np.nan
-                imc_tag.text = '%.8g' % value
-        xmlstr = etree.tostring(root, pretty_print=True,
-                                encoding='unicode')
+                imc_tag.text = METRICS_XML_FLOAT_STRING_FORMAT['pgm'] % value
+        xmlstr = etree.tostring(root, pretty_print=True, encoding='unicode')
         return xmlstr
 
     def get_station_xml(self):
-        """Return XML for waveform metrics as defined for our ASDF implementation.
+        """
+        Return XML for station metrics as defined for our ASDF
+        implementation.
 
         Returns:
-            str: XML in the form:
-                <station_metrics>
-                    <hypocentral_distance units="km">%.1f</hypocentral_distance>
-                    <epicentral_distance units="km">%.1f</epicentral_distance>
-                </station_metrics>
+            str: XML in the form specified by format.
         """
-        xmlfmt = '''<station_metrics>
-            <hypocentral_distance units="km">%.1f</hypocentral_distance>
-            <epicentral_distance units="km">%.1f</epicentral_distance>
-            </station_metrics>'''
-        epidist = np.nan
-        hypodist = np.nan
-        if self.epicentral_distance:
-            epidist = self.epicentral_distance
-        if self.hypocentral_distance:
-            hypodist = self.hypocentral_distance
-        xmlstr = xmlfmt % (hypodist, epidist)
-        return xmlstr
+
+        root = etree.Element('station_metrics',
+                             station_code=self.station_code)
+
+        if self._back_azimuth is not None:
+            back_azimuth = etree.SubElement(root, 'back_azimuth')
+            back_azimuth.text = METRICS_XML_FLOAT_STRING_FORMAT[
+                'back_azimuth'] % self._back_azimuth
+
+        if self._distances:
+            distances = etree.SubElement(root, 'distances')
+            for dist_type in self._distances:
+                element = etree.SubElement(distances, dist_type, units='km')
+                element.text = METRICS_XML_FLOAT_STRING_FORMAT[
+                    'distance'] % self._distances[dist_type]
+
+        if self._vs30:
+            vs30 = etree.SubElement(root, 'vs30')
+            for vs30_type in self._vs30:
+                element = etree.SubElement(
+                    vs30, vs30_type, units=self._vs30[vs30_type]['units'],
+                    column_header=self._vs30[vs30_type]['column_header'],
+                    readme_entry=self._vs30[vs30_type]['readme_entry'])
+                element.text = METRICS_XML_FLOAT_STRING_FORMAT[
+                    'vs30'] % self._vs30[vs30_type]['value']
+
+        return etree.tostring(root, pretty_print=True, encoding='unicode')
 
     def toSeries(self):
         """Render StationSummary as a Pandas Series object.

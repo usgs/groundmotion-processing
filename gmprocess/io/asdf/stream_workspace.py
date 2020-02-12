@@ -13,8 +13,9 @@ import numpy as np
 from obspy.core.utcdatetime import UTCDateTime
 import pandas as pd
 from h5py.h5py_warnings import H5pyDeprecationWarning
-from obspy.geodetics.base import gps2dist_azimuth
-from openquake.hazardlib.geo.geodetic import distance
+from impactutils.rupture.factory import get_rupture
+from impactutils.rupture.origin import Origin
+from mapio.gmt import GMTGrid
 
 # local imports
 from gmprocess.stationtrace import (StationTrace, TIMEFMT_MS, NS_SEIS,
@@ -50,8 +51,29 @@ FLATFILE_COLUMNS = {
     'StationLongitude': 'Station longitude (decimal degrees)',
     'StationElevation': 'Station elevation (m)',
     'SamplingRate': 'Record sampling rate (Hz)',
+    'BackAzimuth': 'Site-to-source azimuth (decimal degrees)',
     'EpicentralDistance': 'Epicentral distance (km)',
     'HypocentralDistance': 'Hypocentral distance (km)',
+    'RuptureDistance': 'Closest distance to the rupture plane (km)',
+    'RuptureDistanceVar': 'Variance of rupture distance estimate (km^2)',
+    'JoynerBooreDistance': 'Joyner-Boore distance (km)',
+    'JoynerBooreDistanceVar':
+        'Variance of Joyner-Boore distance estimate (km^2)',
+    'GC2_rx': (
+        'Distance measured perpendicular to the fault strike from the surface'
+        ' projection of the up-dip edge of the fault plane (km)'),
+    'GC2_ry': (
+        'Distance measured parallel to the fault strike from the midpoint of '
+        'the surface projection of the fault plane (km)'),
+    'GC2_ry0': (
+        'Horizontal distance off the end of the rupture measured parallel to '
+        'strike (km)'),
+    'GC2_U': (
+        'Strike-normal (U) coordinate, defined by Spudich and Chiou (2015; '
+        'https://doi.org/10.3133/ofr20151028) (km)'),
+    'GC2_T': (
+        'Strike-parallel (T) coordinate, defined by Spudich and Chiou '
+        '(2015; https://doi.org/10.3133/ofr20151028) (km)'),
     'H1Lowpass': 'H1 channel lowpass frequency (Hz)',
     'H1Highpass': 'H1 channel highpass frequency (Hz)',
     'H2Lowpass': 'H2 channel lowpass frequency (Hz)',
@@ -530,57 +552,11 @@ class StreamWorkspace(object):
             parameters={}
         )
 
-    def calcStationMetrics(self, eventid, stations=None, labels=None,
-                           streams=None):
-        """Calculate distance measures for each station.
-
-        Args:
-            eventid (str):
-                ID of event to search for in ASDF file.
-            stations (list):
-                List of stations to create metrics for.
-            labels (list):
-                List of processing labels to create metrics for.
-            streams (StreamCollection):
-                Optional StreamCollection object to create metrics for.
-        """
-        if not self.hasEvent(eventid):
-            fmt = 'No event matching %s found in workspace.'
-            raise KeyError(fmt % eventid)
-
-        # If no StreamCollection object is given, then get the streams
-        # from the workspace.
-        if streams is None:
-            streams = self.getStreams(eventid, stations=stations,
-                                      labels=labels)
-        event = self.getEvent(eventid)
-        for stream in streams:
-            elat = event.latitude
-            elon = event.longitude
-            edepth = event.depth_km
-            slat = stream[0].stats.coordinates.latitude
-            slon = stream[0].stats.coordinates.longitude
-            sdep = stream[0].stats.coordinates.elevation
-            epidist_m, _, _ = gps2dist_azimuth(elat, elon, slat, slon)
-            hypocentral_distance = distance(elon, elat, edepth,
-                                            slon, slat, -sdep / M_PER_KM)
-            xmlfmt = '''<station_metrics>
-            <hypocentral_distance units="km">%.1f</hypocentral_distance>
-            <epicentral_distance units="km">%.1f</epicentral_distance>
-            </station_metrics>
-            '''
-            xmlstr = xmlfmt % (hypocentral_distance, epidist_m / M_PER_KM)
-
-            metricpath = '/'.join([
-                format_netsta(stream[0].stats),
-                format_nslit(stream[0].stats, stream.get_inst(), eventid)
-            ])
-            self.insert_aux(xmlstr, 'StationMetrics', metricpath)
-
     def calcMetrics(self, eventid, stations=None, labels=None, config=None,
-                    streams=None, stream_label=None):
-        """Calculate both stream and station metrics for a set of waveforms.
-
+                    streams=None, stream_label=None, rupture_file=None,
+                    calc_station_metrics=True, calc_waveform_metrics=True):
+        """
+        Calculate waveform and/or station metrics for a set of waveforms.
         Args:
             eventid (str):
                 ID of event to search for in ASDF file.
@@ -595,36 +571,12 @@ class StreamWorkspace(object):
             stream_label (str):
                 Label to be used in the metrics path when providing a
                 StreamCollection.
-        """
-        self.calcStreamMetrics(eventid, stations=stations, labels=labels,
-                               config=config, streams=streams,
-                               stream_label=stream_label)
-        self.calcStationMetrics(eventid, stations=stations, labels=labels,
-                                streams=streams)
-
-    def calcStreamMetrics(self, eventid, stations=None,
-                          labels=None, config=None, streams=None,
-                          stream_label=None):
-        """Create station metrics for specified event/streams.
-
-        Args:
-            eventid (str):
-                ID of event to search for in ASDF file.
-            stations (list):
-                List of stations to create metrics for.
-            labels (list):
-                List of processing labels to create metrics for.
-            imclist (list):
-                List of valid component names.
-            imtlist (list):
-                List of valid IMT names.
-            config (dict):
-                Config dictionary.
-            streams (StreamCollection):
-                Optional StreamCollection object to create metrics for.
-            stream_label (str):
-                Label to be used in the metrics path when providing a
-                StreamCollection.
+            rupture_file (str):
+                Path pointing to the rupture file.
+            calc_station_metrics (bool):
+                Whether to calculate station metrics. Default is True.
+            calc_waveform_metrics (bool):
+                Whether to calculate waveform metrics. Default is True.
         """
         if not self.hasEvent(eventid):
             fmt = 'No event matching %s found in workspace.'
@@ -635,54 +587,70 @@ class StreamWorkspace(object):
                                       labels=labels)
 
         event = self.getEvent(eventid)
+
+        # Load the rupture file
+        origin = Origin({
+            'id': event.id,
+            'netid': '',
+            'network': '',
+            'lat': event.latitude,
+            'lon': event.longitude,
+            'depth': event.depth_km,
+            'locstring': '',
+            'mag': event.magnitude,
+            'time': event.time})
+        rupture = get_rupture(origin, rupture_file)
+
+        vs30_grids = None
+        if config is not None:
+            if 'vs30' in config['metrics']:
+                vs30_grids = config['metrics']['vs30']
+                for vs30_name in vs30_grids:
+                    vs30_grids[vs30_name]['grid_object'] = GMTGrid.load(
+                        vs30_grids[vs30_name]['file'])
+
         for stream in streams:
-            if not stream.passed:
-                continue
             instrument = stream.get_id()
             logging.info('Calculating stream metrics for %s...' % instrument)
-            if stream_label is not None:
-                tag = '%s_%s' % (eventid, stream_label)
-            else:
-                tag = stream.tag
 
             try:
                 summary = StationSummary.from_config(
-                    stream, event=event, config=config)
+                    stream, event=event, config=config,
+                    calc_waveform_metrics=calc_waveform_metrics,
+                    calc_station_metrics=calc_station_metrics,
+                    rupture=rupture, vs30_grids=vs30_grids)
             except Exception as pgme:
                 fmt = ('Could not create stream metrics for event %s,'
                        'instrument %s: "%s"')
                 logging.warning(fmt % (eventid, instrument, str(pgme)))
                 continue
 
-            xmlstr = summary.get_metric_xml()
+            if calc_waveform_metrics and stream.passed:
+                xmlstr = summary.get_metric_xml()
+                if stream_label is not None:
+                    tag = '%s_%s' % (eventid, stream_label)
+                else:
+                    tag = stream.tag
+                metricpath = '/'.join([
+                    format_netsta(stream[0].stats),
+                    format_nslit(stream[0].stats, stream.get_inst(), tag),
+                ])
+                self.insert_aux(xmlstr, 'WaveFormMetrics', metricpath)
 
-            metricpath = '/'.join([
-                format_netsta(stream[0].stats),
-                format_nslit(stream[0].stats, stream.get_inst(), tag),
-            ])
+            if calc_station_metrics:
+                xmlstr = summary.get_station_xml()
+                metricpath = '/'.join([
+                    format_netsta(stream[0].stats),
+                    format_nslit(stream[0].stats, stream.get_inst(), eventid)
+                ])
+                self.insert_aux(xmlstr, 'StationMetrics', metricpath)
 
-            # this seems like a lot of effort
-            # just to store a string in HDF, but other
-            # approached failed. Suggestions are welcome.
-            xmlbytes = xmlstr.encode('utf-8')
-            jsonarray = np.frombuffer(xmlbytes, dtype=np.uint8)
-            dtype = 'WaveFormMetrics'
-
-            self.dataset.add_auxiliary_data(
-                jsonarray,
-                data_type=dtype,
-                path=metricpath,
-                parameters={}
-            )
-
-    def getTables(self, label, config=None, streams=None, stream_label=None):
+    def getTables(self, label, streams=None, stream_label=None):
         '''Retrieve dataframes containing event information and IMC/IMT metrics.
 
         Args:
             label (str):
                 Calculate metrics only for the given label.
-            config (dict):
-                Config dictionary.
             streams (StreamCollection):
                 Optional StreamCollection object to get tables for.
             stream_label (str):
@@ -750,15 +718,12 @@ class StreamWorkspace(object):
             for stream in streams:
                 if not stream.passed:
                     continue
-                if config is None:
-                    station = stream[0].stats.station
-                    network = stream[0].stats.network
-                    summary = self.getStreamMetrics(
-                        eventid, network, station, label, streams=[stream],
-                        stream_label=stream_label)
-                else:
-                    summary = StationSummary.from_config(
-                        stream, event=event, config=config)
+
+                station = stream[0].stats.station
+                network = stream[0].stats.network
+                summary = self.getStreamMetrics(
+                    eventid, network, station, label, streams=[stream],
+                    stream_label=stream_label)
 
                 if summary is None:
                     continue
@@ -768,35 +733,17 @@ class StreamWorkspace(object):
                 imtlist = pgms.index.get_level_values('IMT').unique().tolist()
                 imtlist.sort(key=_natural_keys)
 
+                # Add any Vs30 columns to the list of FLATFILE_COLUMNS
+                for vs30_dict in summary._vs30.values():
+                    FLATFILE_COLUMNS[vs30_dict['column_header']] = \
+                        vs30_dict['readme_entry']
+
                 for imc in imclist:
                     if imc not in imc_tables:
                         row = _get_table_row(stream, summary, event, imc)
                         if not len(row):
                             continue
                         imc_tables[imc] = [row]
-
-                        imtlist_readme = []
-                        for imt in imtlist:
-                            # Check if this an actual IMT/IMC combination that
-                            # we have
-                            if ((imt, imc) in pgms.index and
-                                    (not pd.isna(pgms.Result.loc[imt, imc]))):
-                                imt = imt.upper()
-                                if imt.startswith('SA'):
-                                    imtlist_readme.append('SA(X)')
-                                elif imt.startswith('FAS'):
-                                    imtlist_readme.append('FAS(X)')
-                                else:
-                                    imtlist_readme.append(imt)
-                            imtlist_readme.sort()
-
-                        df_readme = pd.DataFrame.from_dict(
-                            {**FLATFILE_COLUMNS,
-                             **{imt: FLATFILE_IMT_COLUMNS[imt]
-                                for imt in imtlist_readme}}, orient='index')
-                        df_readme.reset_index(level=0, inplace=True)
-                        df_readme.columns = ['Column header', 'Description']
-                        readme_tables[imc] = df_readme
                     else:
                         row = _get_table_row(stream, summary, event, imc)
                         if not len(row):
@@ -806,11 +753,29 @@ class StreamWorkspace(object):
         # Remove any empty IMT columns from the IMC tables
         for key, table in imc_tables.items():
             table = pd.DataFrame.from_dict(table)
-            have_imts = list(set(table.columns) & set(imtlist))
+            have_imts = []
+            for imt in list(set(table.columns) & set(imtlist)):
+                if not pd.isna(table[imt]).all():
+                    have_imts.append(imt)
             have_imts.sort(key=_natural_keys)
             table = table[list(FLATFILE_COLUMNS.keys()) + have_imts]
-            table.dropna(axis=1, how='all', inplace=True)
             imc_tables[key] = table
+            readme_dict = {}
+            for col in table.columns:
+                if col in FLATFILE_COLUMNS:
+                    readme_dict[col] = FLATFILE_COLUMNS[col]
+                else:
+                    imt = col.upper()
+                    if imt.startswith('SA'):
+                        readme_dict['SA(X)'] = FLATFILE_IMT_COLUMNS['SA(X)']
+                    elif imt.startswith('FAS'):
+                        readme_dict['FAS(X)'] = FLATFILE_IMT_COLUMNS['FAS(X)']
+                    else:
+                        readme_dict[imt] = FLATFILE_IMT_COLUMNS[imt]
+            df_readme = pd.DataFrame.from_dict(readme_dict, orient='index')
+            df_readme.reset_index(level=0, inplace=True)
+            df_readme.columns = ['Column header', 'Description']
+            readme_tables[key] = df_readme
 
         event_table = pd.DataFrame.from_dict(event_info)
         return (event_table, imc_tables, readme_tables)
@@ -1218,6 +1183,8 @@ def _get_table_row(stream, summary, event, imc):
     if len(h2_highfilt):
         h2_highpass = h2_highfilt[0]['corner_frequency']
 
+    dists = summary.distances
+
     row = {'EarthquakeId': event.id,
            'EarthquakeTime': event.time,
            'EarthquakeLatitude': event.latitude,
@@ -1234,13 +1201,28 @@ def _get_table_row(stream, summary, event, imc):
            'StationLongitude': stream[0].stats.coordinates.longitude,
            'StationElevation': stream[0].stats.coordinates.elevation,
            'SamplingRate': stream[0].stats.sampling_rate,
-           'EpicentralDistance': summary.epicentral_distance,
-           'HypocentralDistance': summary.hypocentral_distance,
+           'BackAzimuth': summary._back_azimuth,
+           'EpicentralDistance': dists['epicentral'],
+           'HypocentralDistance': dists['hypocentral'],
+           'RuptureDistance': dists['rupture'],
+           'RuptureDistanceVar': dists['rupture_var'],
+           'JoynerBooreDistance': dists['joyner_boore'],
+           'JoynerBooreDistanceVar': dists['joyner_boore_var'],
+           'GC2_rx': dists['gc2_rx'],
+           'GC2_ry': dists['gc2_ry'],
+           'GC2_ry0': dists['gc2_ry0'],
+           'GC2_U': dists['gc2_U'],
+           'GC2_T': dists['gc2_T'],
            'H1Lowpass': h1_lowpass,
            'H1Highpass': h1_highpass,
            'H2Lowpass': h2_lowpass,
            'H2Highpass': h2_highpass,
            'SourceFile': stream[0].stats.standard.source_file}
+
+    # Add the Vs30 values to the row
+    for vs30_dict in summary._vs30.values():
+        row[vs30_dict['column_header']] = vs30_dict['value']
+
     imt_frame = summary.pgms.xs(imc, level=1)
     row.update(imt_frame.Result.to_dict())
     return row
