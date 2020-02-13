@@ -320,7 +320,7 @@ def lowpass_max_frequency(st, fn_fac=0.9):
         st (StationStream):
             Stream of data.
         fn_fac (float):
-            Factor to be multipled by the Nyquest to cap the lowpass filter.
+            Factor to be multiplied by the Nyquist to cap the lowpass filter.
 
     Returns:
         StationStream: Resampled stream.

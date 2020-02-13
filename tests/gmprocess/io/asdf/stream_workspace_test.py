@@ -14,6 +14,7 @@ from gmprocess.config import get_config
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.streamcollection import StreamCollection
+from gmprocess.io.fetch_utils import get_rupture_file
 
 from h5py.h5py_warnings import H5pyDeprecationWarning
 from yaml import YAMLLoadWarning
@@ -230,10 +231,12 @@ def test_metrics2():
         workspace.addStreams(event, processed_streams, label='processed')
         workspace.calcMetrics(event.id, labels=['processed'])
         etable, imc_tables1, readmes1 = workspace.getTables('processed')
-        etable2, imc_tables2, readmes2 = workspace.getTables(
-            'processed', config=config)
         assert 'ARITHMETIC_MEAN' not in imc_tables1
         assert 'ARITHMETIC_MEAN' not in readmes1
+        del workspace.dataset.auxiliary_data.WaveFormMetrics
+        del workspace.dataset.auxiliary_data.StationMetrics
+        workspace.calcMetrics(event.id, labels=['processed'], config=config)
+        etable2, imc_tables2, readmes2 = workspace.getTables('processed')
         assert 'ARITHMETIC_MEAN' in imc_tables2
         assert 'ARITHMETIC_MEAN' in readmes2
         assert 'ARIAS' in imc_tables2['ARITHMETIC_MEAN']
@@ -271,8 +274,7 @@ def test_metrics():
         summary1 = StationSummary.from_config(stream1)
         s1_df_in = summary1.pgms.sort_values(['IMT', 'IMC'])
         array1 = s1_df_in['Result'].to_numpy()
-        workspace.calcStreamMetrics(eventid, labels=['raw'])
-        workspace.calcStationMetrics(event.id, labels=['raw'])
+        workspace.calcMetrics(eventid, labels=['raw'])
         pstreams2 = workspace.getStreams(event.id, labels=['processed'])
         assert pstreams2[0].getStreamParamKeys() == ['nnet_qa']
         summary1_a = workspace.getStreamMetrics(
@@ -311,6 +313,66 @@ def test_colocated():
         np.testing.assert_allclose(
             stasum.get_pgm('duration', 'geometric_mean'), 38.94480068)
         ws.close()
+    except Exception as e:
+        raise(e)
+    finally:
+        shutil.rmtree(tdir)
+
+
+def test_vs30_dist_metrics():
+    KNOWN_DISTANCES = {
+        'epicentral': 5.1,
+        'hypocentral': 10.2,
+        'rupture': 2.21,
+        'rupture_var': np.nan,
+        'joyner_boore': 2.21,
+        'joyner_boore_var': np.nan,
+        'gc2_rx': 2.66,
+        'gc2_ry': 3.49,
+        'gc2_ry0': 0.00,
+        'gc2_U': 34.34,
+        'gc2_T': 2.66}
+    KNOWN_BAZ = 239.46
+    KNOWN_VS30 = 331.47
+
+    eventid = 'ci38457511'
+    datafiles, event = read_data_dir('fdsn', eventid, '*')
+    datadir = os.path.split(datafiles[0])[0]
+    raw_streams = StreamCollection.from_directory(datadir)
+    config = get_config()
+    processed_streams = process_streams(raw_streams, event, config=config)
+    rupture_file = get_rupture_file(datadir)
+    grid_file = os.path.join(datadir, 'test_grid.grd')
+    config['metrics']['vs30'] = {'vs30': {
+        'file': grid_file,
+        'column_header': 'GlobalVs30',
+        'readme_entry': 'GlobalVs30',
+        'units': 'm/s'}}
+    tdir = tempfile.mkdtemp()
+    try:
+        tfile = os.path.join(tdir, 'test.hdf')
+        ws = StreamWorkspace(tfile)
+        ws.addEvent(event)
+        ws.addStreams(event, raw_streams, label='raw')
+        ws.addStreams(event, processed_streams, label='processed')
+        ws.calcMetrics(event.id, rupture_file=rupture_file,
+                       labels=['processed'], config=config)
+        sta_sum = ws.getStreamMetrics(event.id, 'CI', 'CLC', 'processed')
+
+        for dist in sta_sum.distances:
+            np.testing.assert_allclose(
+                sta_sum.distances[dist], KNOWN_DISTANCES[dist], rtol=0.01)
+        np.testing.assert_allclose(sta_sum._back_azimuth, KNOWN_BAZ, rtol=0.01)
+        np.testing.assert_allclose(
+            sta_sum._vs30['vs30']['value'], KNOWN_VS30, rtol=0.01)
+        event_df, imc_tables, readme_tables = ws.getTables('processed')
+        check_cols = set(['EpicentralDistance', 'HypocentralDistance',
+                          'RuptureDistance', 'RuptureDistanceVar',
+                          'JoynerBooreDistance', 'JoynerBooreDistanceVar',
+                          'GC2_rx', 'GC2_ry', 'GC2_ry0', 'GC2_U', 'GC2_T',
+                          'GlobalVs30', 'BackAzimuth'])
+        assert check_cols.issubset(set(readme_tables['Z']['Column header']))
+        assert check_cols.issubset(set(imc_tables['Z'].columns))
     except Exception as e:
         raise(e)
     finally:

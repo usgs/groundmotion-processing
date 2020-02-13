@@ -469,6 +469,19 @@ metrics:
         # predefined by the array of periods.
         defined_periods:
           - 0.3
+  # Section for Vs30 calculations. This may contain several keys. Each key
+  # must be unique, and must have the four attributes: file, column_header,
+  # readme_entry, and units.
+  # file: Path to the grid file that can be loaded using MapIO.
+  # column_header: The column header used in the flatfile.
+  # readme_entry: The description used in the README file.
+  # units: Units that will be stored in the StationMetrics XML.
+#   vs30:
+#       example_key:
+#         file: example_file
+#         column_header: example_column_header
+#         readme_entry: example_readme_entry
+#         units: example_units
 
 # -----------------------------------------------------------------------------
 # This section is for options for phase pickers

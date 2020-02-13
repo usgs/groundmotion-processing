@@ -3,6 +3,7 @@ import scipy.constants as sp
 CONFIG_FILE = 'config.yml'
 PICKER_FILE = 'picker.yml'
 MODULE_FILE = 'modules.yml'
+RUPTURE_FILE = 'rupture.json'
 GAL_TO_PCTG = 1 / sp.g
 
 # Converts acceleration units to cm/s/s
@@ -27,20 +28,26 @@ UNIT_CONVERSIONS = {
 # The keys are regular expressions for matching the column names,
 # and the values are the string format for the matching columns.
 # This is to hopefully account for when we add additional columns to the tables
-# in the future (such as RuptureDistance, e.g.)
-# Note: once Vs30 and back azimuth columns are automatically generated,
-# they will need to be added to this dictionary
-#   - Vs30: 1 decimal
-#   - Back azimuth: 2 decimals
+# in the future.
 TABLE_FLOAT_STRING_FORMAT = {
-    '.*latitude|.*longitude': '%.5f',
-    '.*depth': '%.2f',
-    '.*magnitude$': '%.1f',
-    '.*elevation': '%.2f',
     'samplingrate': '%.0f',
-    '.*dist': '%.2f',
-    '.*highpass|.*lowpass|fmin|fmax|f0': '%.5f',
+    '.*magnitude$|.*vs30': '%.1f',
+    '.*depth|.*elevation|.*dist|GC2.*|backazimuth': '%.2f',
+    '.*latitude|.*longitude|.*highpass|.*lowpass|fmin|fmax|f0': '%.5f'}
+
+# Formats for storing floating point numbers as strings for the
+# WaveFormMetrics and StationMetrics XMLs.
+METRICS_XML_FLOAT_STRING_FORMAT = {
+    'pgm': '%.8g',
+    'period': '%.3f',
+    'damping': '%.2f',
+    'back_azimuth': '%.2f',
+    'vs30': '%.2f',
+    'distance': '%.2f'
 }
 
 # Default float format when we don't have a preference
 DEFAULT_FLOAT_FORMAT = '%.8E'
+
+# Elevation to use for calculating fault distances (m)
+ELEVATION_FOR_DISTANCE_CALCS = 0.0

@@ -29,6 +29,7 @@ from gmprocess.io.read_directory import directory_to_streams
 from gmprocess.io.global_fetcher import fetch_data
 from gmprocess.streamcollection import StreamCollection
 from gmprocess.event import ScalarEvent
+from gmprocess.constants import RUPTURE_FILE
 
 TIMEFMT2 = '%Y-%m-%dT%H:%M:%S.%f'
 
@@ -63,6 +64,7 @@ def download(event, event_dir, config, directory):
             - StreamWorkspace: Contains the event and raw streams.
             - str: Name of workspace HDF file.
             - StreamCollection: Raw data StationStreams.
+            - str: Path to the rupture file.
     """
     # Make raw directory
     rawdir = get_rawdir(event_dir)
@@ -79,9 +81,11 @@ def download(event, event_dir, config, directory):
         # create an event.json file in each event directory,
         # in case user is simply downloading for now
         create_event_file(event, event_dir)
+        rup_file = get_rupture_file(event_dir)
     else:
         # Make raw directory
         in_event_dir = os.path.join(directory, event.id)
+        rup_file = get_rupture_file(in_event_dir)
         in_raw_dir = get_rawdir(in_event_dir)
         streams, bad, terrors = directory_to_streams(in_raw_dir)
         tcollection = StreamCollection(streams, **config['duplicate'])
@@ -107,7 +111,7 @@ def download(event, event_dir, config, directory):
         warnings.simplefilter("ignore", category=H5pyDeprecationWarning)
         workspace.addStreams(event, tcollection, label='unprocessed')
 
-    return (workspace, workname, tcollection)
+    return (workspace, workname, tcollection, rup_file)
 
 
 def parse_event_file(eventfile):
@@ -515,3 +519,17 @@ def plot_raw(rawdir, tcollection, event):
                 ax.text(xloc, yloc, legstr, color='r')
         plt.savefig(outfile, bbox_inches='tight')
         plt.close()
+
+
+def get_rupture_file(event_dir):
+    """
+    Returns the path to the rupture file, or None if there is not rupture file.
+    Args:
+        event_dir (str): Event directory.
+    Returns:
+        str: Path to the rupture file. Returns None if no rupture file exists.
+    """
+    rupture_file = os.path.join(event_dir, RUPTURE_FILE)
+    if not os.path.exists(rupture_file):
+        rupture_file = None
+    return rupture_file
