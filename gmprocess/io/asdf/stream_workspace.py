@@ -863,8 +863,11 @@ class StreamWorkspace(object):
             StationSummary: Object containing all stream metrics or None.
         """
         if 'WaveFormMetrics' not in self.dataset.auxiliary_data:
-            logging.warning('Waveform metrics not found in workspace, '
-                            'cannot get stream metrics.')
+            msg = ('Waveform metrics not found in workspace, '
+                   'cannot get stream metrics.')
+            logging.warning(msg)
+            return None
+
         auxholder = self.dataset.auxiliary_data.WaveFormMetrics
 
         # get the stream matching the eventid, station, and label
@@ -906,7 +909,8 @@ class StreamWorkspace(object):
             return
 
         if 'StationMetrics' not in self.dataset.auxiliary_data:
-            raise KeyError('Station metrics not found in workspace.')
+            logging.warning('Station metrics not found in workspace.')
+            return None
         auxholder = self.dataset.auxiliary_data.StationMetrics
         station_path = format_nslit(
             streams[0][0].stats, streams[0].get_inst(), eventid)
