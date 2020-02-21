@@ -3,6 +3,7 @@ import numpy as np
 
 # Local imports
 from gmprocess.metrics.transform.transform import Transform
+from gmprocess.fft import compute_fft
 
 
 class FFT(Transform):
@@ -41,7 +42,7 @@ class FFT(Transform):
                 spectra = trace.getCached('fas_spectrum')
             else:
                 # the fft scales so the factor of 1/nfft is applied
-                spectra = abs(np.fft.rfft(trace.data, n=nfft)) / nfft
+                spectra, freqs = compute_fft(trace, nfft)
                 trace.setCached('fas_spectrum', spectra)
 
             ft_traces += [spectra]

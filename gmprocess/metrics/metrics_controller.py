@@ -15,6 +15,7 @@ from gmprocess.constants import GAL_TO_PCTG
 from gmprocess.metrics.exception import PGMException
 from gmprocess.metrics.gather import gather_pgms
 from gmprocess.stationstream import StationStream
+from gmprocess.constants import METRICS_XML_FLOAT_STRING_FORMAT
 
 
 def _get_channel_dict(channel_names):
@@ -65,6 +66,7 @@ class MetricsController(object):
         if not isinstance(imcs, (list, np.ndarray)):
             imcs = [imcs]
         self.imts = set(np.sort([imt.lower() for imt in imts]))
+        self.clean_imts()
         self.imcs = set(np.sort([imc.lower() for imc in imcs]))
         if 'radial_transverse' in self.imcs and event is None:
             raise PGMException('MetricsController: Event is required for '
@@ -405,7 +407,6 @@ class MetricsController(object):
                 for key in subdict:
                     for val in subdict[key]:
                         result_dict[key].append(val)
-
         # Convert the dictionary to a dataframe and set the IMT, IMC indices
         df = pd.DataFrame(result_dict)
         if df.empty:
@@ -471,6 +472,8 @@ class MetricsController(object):
         percentile = steps['percentile']
         if period is not None:
             imt_str = '%s(%.3f)' % (imt.upper(), float(period))
+            imt_str = '%s(%s)' % (imt.upper(), METRICS_XML_FLOAT_STRING_FORMAT[
+                'period']) % float(period)
         else:
             imt_str = imt.upper()
         if percentile is not None:
@@ -596,3 +599,22 @@ class MetricsController(object):
         else:
             percentile = None
         return percentile
+
+    def clean_imts(self):
+        cleaned_imts = set()
+        for idx, imt in enumerate(self.imts):
+            if imt.startswith('fas'):
+                period = self._parse_period(imt)
+                if period is None:
+                    continue
+                cleaned_imts.add('fas(%s)' % METRICS_XML_FLOAT_STRING_FORMAT[
+                    'period'] % float(period))
+            elif imt.startswith('sa'):
+                period = self._parse_period(imt)
+                if period is None:
+                    continue
+                cleaned_imts.add('sa(%s)' % METRICS_XML_FLOAT_STRING_FORMAT[
+                    'period'] % float(period))
+            else:
+                cleaned_imts.add(imt)
+        self.imts = cleaned_imts
