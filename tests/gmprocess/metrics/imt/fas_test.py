@@ -77,7 +77,7 @@ def test_fas():
         fval = pgms.loc[fstr, 'QUADRATIC_MEAN'].Result
         np.testing.assert_allclose(
             fval,
-            fas[idx] / len(stream[0].data),
+            fas[idx] * stream[0].stats.delta,
             rtol=1e-5,
             atol=1e-5
         )

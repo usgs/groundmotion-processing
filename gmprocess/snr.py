@@ -1,9 +1,7 @@
-
 import numpy as np
-
 from obspy.signal.util import next_pow_2
 
-from gmprocess.fft import fft_smooth
+from gmprocess.fft import compute_and_smooth_spectrum
 
 
 # Options for tapering noise/signal windows
@@ -42,7 +40,7 @@ def compute_snr_trace(tr, bandwidth, check=None):
             # ** better to know the FIRST reason if I have to pick one.
             if not tr.hasParameter('failure'):
                 tr.fail('Failed SNR check; Not enough points in noise window.')
-            tr = compute_signal_spectrum(tr, bandwidth)
+            compute_and_smooth_spectrum(tr, bandwidth, 'signal')
             return tr
 
         # Check that there are a minimum number of points in the noise window
@@ -51,60 +49,43 @@ def compute_snr_trace(tr, bandwidth, check=None):
             if not tr.hasParameter('failure'):
                 tr.fail(
                     'Failed SNR check; Not enough points in signal window.')
-            tr = compute_signal_spectrum(tr, bandwidth)
+            compute_and_smooth_spectrum(tr, bandwidth, 'signal')
             return tr
 
         nfft = max(next_pow_2(signal.stats.npts),
                    next_pow_2(noise.stats.npts))
 
-        # Transform to frequency domain and smooth spectra using
-        # konno-ohmachi smoothing
-        dt = signal.stats.delta
-        sig_spec = abs(np.fft.rfft(signal.data, n=nfft)) * dt
-        sig_spec_freqs = np.fft.rfftfreq(nfft, dt)
-        dt = noise.stats.delta
-        noise_spec = abs(np.fft.rfft(noise.data, n=nfft)) * dt
-        sig_spec -= noise_spec
+        compute_and_smooth_spectrum(tr, bandwidth, 'noise', noise, nfft)
+        compute_and_smooth_spectrum(tr, bandwidth, 'signal', signal, nfft)
 
-        sig_dict = {
-            'spec': sig_spec,
-            'freq': sig_spec_freqs
-        }
-        tr.setCached('signal_spectrum', sig_dict)
+        # For both the raw and smoothed spectra, subtract the noise spectrum
+        # from the signal spectrum
+        tr.setCached(
+            'signal_spectrum',
+            {'spec': tr.getCached('signal_spectrum')['spec'] -
+                tr.getCached('noise_spectrum')['spec'],
+             'freq': tr.getCached('signal_spectrum')['freq']}
+            )
+        tr.setCached(
+            'smooth_signal_spectrum',
+            {'spec': tr.getCached('smooth_signal_spectrum')['spec'] -
+                tr.getCached('smooth_noise_spectrum')['spec'],
+             'freq': tr.getCached('smooth_signal_spectrum')['freq']}
+            )
 
-        noise_dict = {
-            'spec': noise_spec,
-            'freq': sig_spec_freqs  # same as signal
-        }
-        tr.setCached('noise_spectrum', noise_dict)
+        smooth_signal_spectrum = tr.getCached('smooth_signal_spectrum')['spec']
+        smooth_noise_spectrum = tr.getCached('smooth_noise_spectrum')['spec']
+        snr = smooth_signal_spectrum / smooth_noise_spectrum
 
-        sig_spec_smooth, freqs_signal = fft_smooth(
-            signal, nfft, bandwidth)
-        smooth_dict = {
-            'spec': sig_spec_smooth,
-            'freq': freqs_signal
-        }
-        tr.setCached('smooth_signal_spectrum', smooth_dict)
-
-        noise_spec_smooth, freqs_noise = fft_smooth(noise, nfft)
-        noise_smooth_dict = {
-            'spec': noise_spec_smooth,
-            'freq': freqs_noise
-        }
-        tr.setCached('smooth_noise_spectrum', noise_smooth_dict)
-
-        # remove the noise level from the spectrum of the signal window
-        sig_spec_smooth -= noise_spec_smooth
-
-        snr = sig_spec_smooth / noise_spec_smooth
         snr_dict = {
             'snr': snr,
-            'freq': freqs_signal
+            'freq': tr.getCached('smooth_signal_spectrum')['freq']
         }
         tr.setCached('snr', snr_dict)
+
     else:
         # We do not have an estimate of the signal split time for this trace
-        tr = compute_signal_spectrum(tr, bandwidth)
+        compute_and_smooth_spectrum(tr, bandwidth, 'signal')
     if check is not None:
         tr = snr_check(tr, **check)
 
@@ -167,43 +148,4 @@ def snr_check(tr, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
         'bandwidth': bandwidth
     }
     tr.setParameter('snr_conf', snr_conf)
-    return tr
-
-
-def compute_signal_spectrum(tr, bandwidth):
-    """
-    Compute raw and smoothed signal spectrum.
-
-    Args:
-        tr (StationTrace):
-           Trace of data.
-        bandwidth (float):
-           Konno-Omachi smoothing bandwidth parameter.
-
-    Returns:
-        StationTrace with signal spectrum dictionaries added as trace
-        parameters.
-
-    """
-    # Transform to frequency domain and smooth spectra using
-    # konno-ohmachi smoothing
-    nfft = next_pow_2(tr.stats.npts)
-
-    dt = tr.stats.delta
-    sig_spec = abs(np.fft.rfft(tr.data, n=nfft)) * dt
-    sig_spec_freqs = np.fft.rfftfreq(nfft, dt)
-
-    sig_dict = {
-        'spec': sig_spec,
-        'freq': sig_spec_freqs
-    }
-    tr.setCached('signal_spectrum', sig_dict)
-
-    sig_spec_smooth, freqs_signal = fft_smooth(
-        tr, nfft, bandwidth)
-    smooth_dict = {
-        'spec': sig_spec_smooth,
-        'freq': freqs_signal
-    }
-    tr.setCached('smooth_signal_spectrum', smooth_dict)
     return tr

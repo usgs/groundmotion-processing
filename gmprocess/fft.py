@@ -1,19 +1,91 @@
-
-
 import numpy as np
+from obspy.signal.util import next_pow_2
 
 from gmprocess.smoothing.konno_ohmachi import konno_ohmachi_smooth
 
 
-def fft_smooth(trace, nfft, bandwidth=20):
+def compute_and_smooth_spectrum(tr, bandwidth, section, window=None,
+                                nfft=None):
     """
-    Pads a trace to the nearest upper power of 2, takes the FFT, and
-    smooths the amplitude spectra following the algorithm of
-    Konno and Ohmachi.
+    Compute raw and smoothed signal spectrum for a given trace.
+
+    Args:
+        tr (StationTrace):
+           Trace of data. This is the trace where the Cache values will be set.
+        bandwidth (float):
+           Konno-Omachi smoothing bandwidth parameter.
+        section (str):
+            Determines the name for the spectrum located in the Cache. This is
+            usually either "signal" or "noise".
+        window (StationTrace):
+            Smaller window of the trace for computing the spectrum (usually
+            either the signal or noise window). If not provided, then the
+            entire trace will be used.
+        nfft (int):
+            Number of data points for the Fourier Transform. If not provided,
+            then the next power of 2 from the number of points in the trace
+            is used.
+
+    Returns:
+        StationTrace with signal spectrum dictionaries added as trace
+        parameters.
+
+    """
+    if nfft is None:
+        nfft = next_pow_2(tr.stats.npts)
+    if window is None:
+        window = tr
+
+    spec_raw, freqs_raw = compute_fft(window, nfft)
+    spec_smooth, freqs_smooth = smooth_spectrum(
+        spec_raw, freqs_raw, nfft, bandwidth)
+
+    raw_dict = {
+        'spec': spec_raw,
+        'freq': freqs_raw
+    }
+    smooth_dict = {
+        'spec': spec_smooth,
+        'freq': freqs_smooth
+    }
+
+    tr.setCached('%s_spectrum' % section, raw_dict)
+    tr.setCached('smooth_%s_spectrum' % section, smooth_dict)
+
+    return tr
+
+
+def compute_fft(trace, nfft):
+    """
+    Computes the FFT of a trace, given the number of points for the FFT.
+    This uses our convention where we multiply the spectra by the sampling
+    interval.
 
     Args:
         trace (StationTrace):
             Trace of strong motion data.
+        nfft (int):
+            Number of data points for the Fourier Transform.
+
+    Returns:
+        numpy.ndarray: Amplitude data and frequencies.
+    """
+    dt = trace.stats.delta
+    spec = abs(np.fft.rfft(trace.data, n=nfft)) * dt
+    freqs = np.fft.rfftfreq(nfft, dt)
+    return spec, freqs
+
+
+def smooth_spectrum(spec, freqs, nfft, bandwidth=20):
+    """
+    Smooths the amplitude spectrum following the algorithm of
+    Konno and Ohmachi.
+
+    Args:
+        spec (numpy.ndarray):
+            Spectral amplitude data.
+        freqs (numpy.ndarray):
+            Frequencies.
         nfft (int):
             Number of data points for the fourier transform.
         bandwidth (float):
@@ -22,13 +94,6 @@ def fft_smooth(trace, nfft, bandwidth=20):
     Returns:
         numpy.ndarray: Smoothed amplitude data and frequencies.
     """
-
-    # Compute the FFT, normalizing by the number of data points
-    dt = trace.stats.delta
-    spec = abs(np.fft.rfft(trace.data, n=nfft)) * dt
-
-    # Get the frequencies associated with the FFT
-    freqs = np.fft.rfftfreq(nfft, dt)
 
     # Do a maximum of 301 K-O frequencies in the range of the fft freqs
     nkofreqs = min(nfft, 302) - 1
