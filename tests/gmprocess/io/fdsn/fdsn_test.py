@@ -28,9 +28,9 @@ def test():
     for datafile in datafiles:
         streams += read_fdsn(datafile)
 
-    assert streams[0][0].stats.channel == 'HNZ'
-    assert streams[1][0].stats.channel == 'HN2'
-    assert streams[2][0].stats.channel == 'HN3'
+    # get all channel names
+    channels = sorted([st[0].stats.channel for st in streams])
+    assert channels == ['HN2', 'HN3', 'HNZ']
 
     # DEBUGGING
     sc = StreamCollection(streams)
