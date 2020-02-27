@@ -99,6 +99,7 @@ def read_esm(filename):
     standard['source'] = SRC
     standard['source_format'] = FORMAT
     standard['horizontal_orientation'] = np.nan
+    standard['vertical_orientation'] = np.nan
     standard['station_name'] = header['STATION_NAME']
     try:
         standard['instrument_period'] = 1 / \

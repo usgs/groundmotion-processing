@@ -522,6 +522,7 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
     # Standard metadata
     standard['units_type'] = get_units_type(hdr['channel'])
     standard['horizontal_orientation'] = float(angle)
+    standard['vertical_orientation'] = np.nan
     standard['instrument_period'] = flt_data[0]
     standard['instrument_damping'] = flt_data[1]
 
@@ -684,6 +685,7 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
     # Standard metadata
     standard['units_type'] = get_units_type(hdr['channel'])
     standard['horizontal_orientation'] = float(angle)
+    standard['vertical_orientation'] = np.nan
     standard['instrument_period'] = flt_data[0]
     standard['instrument_damping'] = flt_data[1]
 

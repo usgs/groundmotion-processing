@@ -274,6 +274,7 @@ def _read_header(hdr_data, station, name, component, data_format,
     standard['source'] = ('New Zealand Institute of Geological and '
                           'Nuclear Science')
     logging.debug('component: %s' % component)
+    standard['vertical_orientation'] = np.nan
     if component.lower() in ['up', 'down']:
         standard['horizontal_orientation'] = np.nan
         hdr['channel'] = get_channel_name(

@@ -48,6 +48,7 @@ def test_radial_transverse():
                                      'source': 'json',
                                      'instrument': '',
                                      'instrument_period': np.nan,
+                                     'vertical_orientation': np.nan,
                                      'source_format': 'json',
                                      'comments': '',
                                      'structure_type': '',

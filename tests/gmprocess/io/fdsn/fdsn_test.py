@@ -22,6 +22,16 @@ def test():
 
     assert streams[0].get_id() == 'TA.M04C.HN'
 
+    # test assignment of Z channel
+    datafiles, origin = read_data_dir('fdsn', 'nc73300395', 'BK.VALB*.mseed')
+    streams = []
+    for datafile in datafiles:
+        streams += read_fdsn(datafile)
+
+    assert streams[0][0].stats.channel == 'HNZ'
+    assert streams[1][0].stats.channel == 'HN2'
+    assert streams[2][0].stats.channel == 'HN3'
+
     # DEBUGGING
     sc = StreamCollection(streams)
     psc = process_streams(sc, origin)

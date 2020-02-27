@@ -178,6 +178,9 @@ def _read_header(filename):
     channels[0]['standard']['horizontal_orientation'] = az1
     channels[1]['standard']['horizontal_orientation'] = az2
     channels[2]['standard']['horizontal_orientation'] = az3
+    channels[0]['standard']['vertical_orientation'] = np.nan
+    channels[1]['standard']['vertical_orientation'] = np.nan
+    channels[2]['standard']['vertical_orientation'] = np.nan
     az1_north = is_channel_north(az1)
     az2_north = is_channel_north(az2)
     az3_north = is_channel_north(az3)
