@@ -67,14 +67,17 @@ def read_nsmn(filename):
     header2 = copy.deepcopy(header)
     header3 = copy.deepcopy(header)
     header1['standard']['horizontal_orientation'] = 0.0
+    header1['standard']['vertical_orientation'] = np.nan
     header1['channel'] = get_channel_name(
         header['sampling_rate'], True, False, True)
     header1['standard']['units_type'] = get_units_type(header1['channel'])
     header2['standard']['horizontal_orientation'] = 90.0
+    header2['standard']['vertical_orientation'] = np.nan
     header2['channel'] = get_channel_name(
         header['sampling_rate'], True, False, False)
     header2['standard']['units_type'] = get_units_type(header2['channel'])
     header3['standard']['horizontal_orientation'] = 0.0
+    header3['standard']['vertical_orientation'] = np.nan
     header3['channel'] = get_channel_name(
         header['sampling_rate'], True, True, False)
     header3['standard']['units_type'] = get_units_type(header3['channel'])

@@ -161,6 +161,7 @@ def read_knet(filename):
     # fill out the rest of the standard dictionary
     standard['units_type'] = get_units_type(hdr['channel'])
     standard['horizontal_orientation'] = np.nan
+    standard['vertical_orientation'] = np.nan
     standard['instrument_period'] = np.nan
     standard['instrument_damping'] = np.nan
     standard['process_time'] = ''

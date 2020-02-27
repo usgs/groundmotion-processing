@@ -562,6 +562,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     standard['units_type'] = get_units_type(channel)
     standard['source'] = source
     standard['horizontal_orientation'] = horizontal_orientation
+    standard['vertical_orientation'] = np.nan
     station_name = lines[4][40:-1].strip()
     standard['station_name'] = station_name
     instrument_frequency = float(flt_data[39])

@@ -376,6 +376,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
         format_specific['vertical_orientation'] = int(intheader[1, 4])
 
     standard['horizontal_orientation'] = np.nan
+    standard['vertical_orientation'] = np.nan
     if intheader[1, 5] != missing_data:
         standard['horizontal_orientation'] = float(intheader[1, 5])
 

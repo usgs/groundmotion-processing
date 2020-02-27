@@ -77,6 +77,7 @@ def read_cwb(filename, **kwargs):
         is_vertical=True,
         is_north=False)
     hdr_z['standard']['horizontal_orientation'] = np.nan
+    hdr_z['standard']['vertical_orientation'] = np.nan
     hdr_z['standard']['units_type'] = get_units_type(hdr_z['channel'])
 
     hdr_h1 = hdr.copy()
@@ -86,6 +87,7 @@ def read_cwb(filename, **kwargs):
         is_vertical=False,
         is_north=True)
     hdr_h1['standard']['horizontal_orientation'] = np.nan
+    hdr_h1['standard']['vertical_orientation'] = np.nan
     hdr_h1['standard']['units_type'] = get_units_type(hdr_h1['channel'])
 
     hdr_h2 = hdr.copy()
@@ -95,6 +97,7 @@ def read_cwb(filename, **kwargs):
         is_vertical=False,
         is_north=False)
     hdr_h2['standard']['horizontal_orientation'] = np.nan
+    hdr_h2['standard']['vertical_orientation'] = np.nan
     hdr_h2['standard']['units_type'] = get_units_type(hdr_h2['channel'])
 
     stats_z = Stats(hdr_z)

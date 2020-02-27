@@ -386,6 +386,7 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
         # Get standard paramaters
         standard['units_type'] = get_units_type(hdr['channel'])
         standard['horizontal_orientation'] = float(horizontal_orientation)
+        standard['vertical_orientation'] = np.nan
         standard['instrument_period'] = flt_data[0]
         standard['instrument_damping'] = flt_data[1]
         standard['process_time'] = ''

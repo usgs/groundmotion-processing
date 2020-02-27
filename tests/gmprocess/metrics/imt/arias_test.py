@@ -49,6 +49,7 @@ def test_arias():
             'process_level': 'raw counts',
             'process_time': '',
             'horizontal_orientation': np.nan,
+            'vertical_orientation': np.nan,
             'units': 'acc',
             'units_type': 'acc',
             'instrument_sensitivity': np.nan,

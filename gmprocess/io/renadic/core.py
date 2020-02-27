@@ -179,6 +179,7 @@ def _read_header(lines, filename, table):
     standard['instrument_period'] = inst_dict['INSTR PERIOD']
     standard['instrument_damping'] = inst_dict['DAMPING']
     standard['horizontal_orientation'] = np.nan
+    standard['vertical_orientation'] = np.nan
     standard['comments'] = ' '.join(lines[11:13]).replace('\n', '')
     head, tail = os.path.split(filename)
     standard['source_file'] = tail or os.path.basename(head)

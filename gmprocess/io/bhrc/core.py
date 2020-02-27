@@ -139,6 +139,7 @@ def _read_header_lines(filename, offset):
         standard['instrument_period'] = np.nan
     standard['instrument_damping'] = float(damping_str)
     standard['horizontal_orientation'] = angle
+    standard['vertical_orientation'] = np.nan
     standard['comments'] = ''
     head, tail = os.path.split(filename)
     standard['source_file'] = tail or os.path.basename(head)

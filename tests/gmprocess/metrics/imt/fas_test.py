@@ -52,6 +52,7 @@ def test_fas():
                 'process_level': 'raw counts',
                 'process_time': '',
                 'horizontal_orientation': np.nan,
+                'vertical_orientation': np.nan,
                 'units': 'acc',
                 'units_type': 'acc',
                 'instrument_sensitivity': np.nan,
@@ -73,7 +74,7 @@ def test_fas():
 
     pgms = summary.pgms
     for idx, f in enumerate(freqs):
-        fstr = 'FAS(%.3f)' % (1/f)
+        fstr = 'FAS(%.3f)' % (1 / f)
         fval = pgms.loc[fstr, 'QUADRATIC_MEAN'].Result
         np.testing.assert_allclose(
             fval,

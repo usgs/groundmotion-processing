@@ -35,8 +35,12 @@ REV_PROCESS_LEVELS = {'raw counts': 'V0',
                       'corrected physical units': 'V2',
                       'derived time series': 'V3'}
 
+# when checking to see if a channel is vertical,
+# 90 - abs(dip) must be less than or equal to this value
+# (i.e., dip must ne close to )
+MAX_DIP_OFFSET = 0.1
 
-# NOTE: if requird is True then this means that the value must be
+# NOTE: if required is True then this means that the value must be
 # filled in with a value that does NOT match the default.
 STANDARD_KEYS = {
     'source_file': {
@@ -50,6 +54,11 @@ STANDARD_KEYS = {
         'default': ''
     },
     'horizontal_orientation': {
+        'type': float,
+        'required': False,
+        'default': np.nan
+    },
+    'vertical_orientation': {
         'type': float,
         'required': False,
         'default': np.nan
@@ -207,6 +216,17 @@ class StationTrace(Trace):
             header['coordinates'] = coords
             header['standard'] = standard
             header['format_specific'] = format_specific
+
+        # sometimes the channel names do not indicate which one is the
+        # Z channel. If we have vertical_orientation information, then
+        # let's get that and change the vertical channel to end in Z.
+        if not np.isnan(header['standard']['vertical_orientation']):
+            delta = np.abs(
+                np.abs(header['standard']['vertical_orientation']) - 90.0)
+            is_z = header['channel'].endswith('Z')
+            if delta < MAX_DIP_OFFSET and not is_z:
+                header['channel'] = header['channel'][0:-1] + 'Z'
+
         super(StationTrace, self).__init__(data=data, header=header)
         self.provenance = []
         self.parameters = {}
@@ -672,6 +692,11 @@ def _stats_from_inventory(data, inventory, channelid):
 
     if channel.azimuth is not None:
         standard['horizontal_orientation'] = channel.azimuth
+
+    if channel.dip is not None:
+        standard['vertical_orientation'] = channel.dip
+    else:
+        standard['vertical_orientation'] = np.nan
 
     standard['source_format'] = channel.storage_format
     if standard['source_format'] is None:
