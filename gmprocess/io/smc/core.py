@@ -283,6 +283,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     stats['station'] = ''
     if len(ascheader[2]) >= 4:
         stats['station'] = ascheader[2][0:4].strip()
+        stats['station'] = stats['station'].strip('\x00')
     logging.debug('station: %s' % stats['station'])
 
     standard['process_time'] = ''
