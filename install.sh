@@ -137,6 +137,7 @@ package_list=(
     "python>=3.6"
     "pyyaml"
     "requests"
+    "setuptools=45"
     "vcrpy"
 )
 
