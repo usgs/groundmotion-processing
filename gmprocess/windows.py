@@ -186,6 +186,15 @@ def signal_split(
         else:
             tsplit = -1
 
+    # the user may have specified a p_arrival_shift value.
+    # this is used to shift the P arrival time (i.e., the break between the noise
+    # and signal windows).
+    p_arrival_shift = 0.0
+    if 'p_arrival_shift' in picker_config:
+        shift = picker_config['p_arrival_shift']
+        if tsplit + shift >= st[0].stats.starttime:
+            tsplit += shift
+
     if tsplit >= st[0].stats.starttime:
         # Update trace params
         split_params = {
