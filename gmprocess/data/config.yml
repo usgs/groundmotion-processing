@@ -486,6 +486,13 @@ metrics:
 # -----------------------------------------------------------------------------
 # This section is for options for phase pickers
 pickers:
+    # P-wave pickers, particularly the Travel Time model, can
+    # sometimes erroneously place the P-wave arrival time into the 
+    # signal window, which in turn can degrade the SNR value.
+    # this parameter gives the user the ability to shift the 
+    # calculated P-wave arrival times forwards or backwards in time.
+    p_arrival_shift: 0.0
+
     # Options for obspy.signal.trigger.ar_pick()
     ar:
         # Frequency of the lower bandpass window (Hz)
