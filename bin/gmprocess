@@ -516,7 +516,9 @@ def main(args):
             '''
             logging.warning(msg)
         else:
-            pref_imcs = ['GREATER_OF_TWO_HORIZONTALS', 'H1', 'H2']
+            pref_imcs = ['rotd50.0',
+                         'greater_of_two_horizontals',
+                         'h1', 'h2', ]
             pref_imts = ['PGA', 'PGV', 'SA(1.0)']
             found_imc = None
             found_imt = None
