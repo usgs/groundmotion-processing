@@ -37,7 +37,8 @@ UNUSED_STANDARD_PARAMS = [
     'process_level',
     'structure_type',
     'corner_frequency',
-    'source_file'
+    'source_file',
+    'source_format'
 ]
 
 
@@ -459,7 +460,6 @@ def _channel_from_stats(stats):
                       depth,
                       azimuth=azimuth,
                       sample_rate=stats.sampling_rate,
-                      storage_format=stats.standard.source_format,
                       calibration_units=units,
                       comments=[comments],
                       response=response,

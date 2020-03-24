@@ -35,6 +35,12 @@ REV_PROCESS_LEVELS = {'raw counts': 'V0',
                       'corrected physical units': 'V2',
                       'derived time series': 'V3'}
 
+LENGTH_CONVERSIONS = {'nm': 1e9,
+                      'um': 1e6,
+                      'mm': 1e3,
+                      'cm': 1e2,
+                      'm': 1}
+
 # when checking to see if a channel is vertical,
 # 90 - abs(dip) must be less than or equal to this value
 # (i.e., dip must ne close to )
@@ -698,10 +704,6 @@ def _stats_from_inventory(data, inventory, channelid):
     else:
         standard['vertical_orientation'] = np.nan
 
-    standard['source_format'] = channel.storage_format
-    if standard['source_format'] is None:
-        standard['source_format'] = 'fdsn'
-
     standard['units_type'] = get_units_type(channelid)
 
     if len(channel.comments):
@@ -726,12 +728,26 @@ def _stats_from_inventory(data, inventory, channelid):
         except json.decoder.JSONDecodeError:
             format_specific['description'] = jsonstr
 
+    if 'source_format' not in standard or standard['source_format'] is None:
+        standard['source_format'] = 'fdsn'
+
     standard['instrument_sensitivity'] = np.nan
     response = None
     if channel.response is not None:
         response = channel.response
-        if hasattr(response, 'sensitivity'):
-            standard['instrument_sensitivity'] = response.sensitivity.value
+        if hasattr(response, 'instrument_sensitivity'):
+            units = response.instrument_sensitivity.input_units
+            if '/' in units:
+                num, denom = units.split('/')
+                if num.lower() not in LENGTH_CONVERSIONS:
+                    raise KeyError(
+                        'Sensitivity input units of %s are not supported.' % units)
+                conversion = LENGTH_CONVERSIONS[num.lower()]
+                sensitivity = response.instrument_sensitivity.value * conversion
+                response.instrument_sensitivity.value = sensitivity
+                standard['instrument_sensitivity'] = sensitivity
+            else:
+                standard['instrument_sensitivity'] = response.instrument_sensitivity.value
 
     return (response, standard, coords, format_specific)
 
