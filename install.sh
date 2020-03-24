@@ -188,9 +188,6 @@ if [ -d bin/__pycache__ ]; then
     rm -rf bin/__pycache__
 fi
 
-# use pip to install obspy 1.1.1
-pip install obspy==1.1.1
-
 # This package
 echo "Installing ${VENV}..."
 pip install -e .
