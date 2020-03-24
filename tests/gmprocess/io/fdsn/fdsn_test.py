@@ -5,6 +5,20 @@ from gmprocess.io.fdsn.core import read_fdsn
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.streamcollection import StreamCollection
 from gmprocess.processing import process_streams
+from numpy.testing import assert_almost_equal
+
+
+def test_weird_sensitivity():
+    datafiles, origin = read_data_dir('fdsn', 'us70008dx7', 'SL.KOGS*.mseed')
+    streams = []
+    for datafile in datafiles:
+        streams += read_fdsn(datafile)
+
+    sc = StreamCollection(streams)
+    psc = process_streams(sc, origin)
+
+    channel = psc[0].select(component='E')[0]
+    assert_almost_equal(channel.data.max(), 26.665937369683494)
 
 
 def test():
@@ -39,4 +53,5 @@ def test():
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
+    test_weird_sensitivity()
     test()
