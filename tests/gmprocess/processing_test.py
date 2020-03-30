@@ -14,9 +14,7 @@ from gmprocess.io.read import read_data
 from gmprocess.processing import process_streams
 from gmprocess.logging import setup_logger
 from gmprocess.io.test_utils import read_data_dir
-
-# homedir = os.path.dirname(os.path.abspath(__file__))
-# datadir = os.path.join(homedir, '..', 'data', 'testdata')
+from gmprocess.io.fetch_utils import update_config
 
 datapath = os.path.join('data', 'testdata')
 datadir = pkg_resources.resource_filename('gmprocess', datapath)
@@ -36,7 +34,9 @@ def test_process_streams():
 
     sc.describe()
 
-    test = process_streams(sc, origin)
+    config = update_config(os.path.join(datadir, 'config_min_freq_0p2.yml'))
+
+    test = process_streams(sc, origin, config=config)
 
     logging.info('Testing trace: %s' % test[0][1])
 

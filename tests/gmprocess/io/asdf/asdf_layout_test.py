@@ -15,7 +15,11 @@ from gmprocess.io.test_utils import read_data_dir
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.processing import process_streams
 from gmprocess.io.asdf.core import write_asdf
-from gmprocess.config import get_config
+from gmprocess.io.fetch_utils import update_config
+
+
+datapath = os.path.join('data', 'testdata')
+datadir = pkg_resources.resource_filename('gmprocess', datapath)
 
 
 def generate_workspace():
@@ -38,7 +42,8 @@ def generate_workspace():
     write_asdf(tfilename, raw_data, event, label="unprocessed")
     del raw_data
 
-    config = get_config()
+    config = update_config(os.path.join(datadir, 'config_min_freq_0p2.yml'))
+
     workspace = StreamWorkspace.open(tfilename)
     raw_streams = workspace.getStreams(EVENTID, labels=['unprocessed'])
     pstreams = process_streams(raw_streams, event, config=config)
@@ -65,7 +70,7 @@ def test_layout():
         'group': h5py.Group,
         'dataset': h5py.Dataset,
     }
-    
+
     tfilename = setup_module.tfilename
     h5 = h5py.File(tfilename, "r")
 

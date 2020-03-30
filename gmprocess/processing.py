@@ -16,7 +16,6 @@ from gmprocess.config import get_config
 from gmprocess.windows import signal_split, signal_end, window_checks
 from gmprocess.phase import create_travel_time_dataframe
 from gmprocess import corner_frequencies
-from gmprocess.snr import compute_snr_trace
 
 # -----------------------------------------------------------------------------
 # Note: no QA on following imports because they need to be in namespace to be
@@ -176,10 +175,11 @@ def process_streams(streams, origin, config=None):
                 }
             elif step_name in REQ_ORIGIN:
                 step_args['origin'] = origin
-
-            if step_name == 'trim_multiple_events':
+            elif step_name == 'trim_multiple_events':
                 step_args['catalog'] = catalog
                 step_args['travel_time_df'] = travel_time_df
+            elif step_name == 'compute_snr':
+                step_args['mag'] = origin.magnitude
 
             if step_args is None:
                 stream = globals()[step_name](stream)
@@ -515,51 +515,6 @@ def taper(st, type="hann", width=0.05, side="both"):
                 'taper_width': width,
                 'side': side}
         )
-    return st
-
-
-def snr_check(st, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
-    """
-    Check signal-to-noise ratio.
-
-    Requires noise/singal windowing to have succeeded.
-
-    Args:
-        st (StationStream):
-            Stream of data.
-        threshold (float):
-            Threshold SNR value.
-        min_freq (float):
-            Minimum frequency for threshold to be exeeded.
-        max_freq (float):
-            Maximum frequency for threshold to be exeeded.
-        bandwidth (float):
-            Konno-Omachi smoothing bandwidth parameter.
-
-    Returns:
-        stream: Streams with SNR calculations and checked that they pass the
-        configured criteria.
-    """
-
-    for tr in st:
-        # Comput SNR
-        tr = compute_snr_trace(tr, bandwidth)
-
-        if st.passed and tr.hasParameter('snr'):
-            snr_dict = tr.getCached('snr')
-            snr = np.array(snr_dict['snr'])
-            freq = np.array(snr_dict['freq'])
-            # Check if signal criteria is met
-            min_snr = np.min(snr[(freq >= min_freq) & (freq <= max_freq)])
-            if min_snr < threshold:
-                tr.fail('Failed SNR check; SNR less than threshold.')
-        snr_conf = {
-            'threshold': threshold,
-            'min_freq': min_freq,
-            'max_freq': max_freq,
-            'bandwidth': bandwidth
-        }
-        tr.setParameter('snr_conf', snr_conf)
     return st
 
 

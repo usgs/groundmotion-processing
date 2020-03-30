@@ -6,15 +6,15 @@ import shutil
 import time
 import tempfile
 import warnings
+import pkg_resources
 
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.io.read import read_data
 from gmprocess.processing import process_streams
-from gmprocess.config import get_config
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.streamcollection import StreamCollection
-from gmprocess.io.fetch_utils import get_rupture_file
+from gmprocess.io.fetch_utils import get_rupture_file, update_config
 
 from h5py.h5py_warnings import H5pyDeprecationWarning
 from yaml import YAMLLoadWarning
@@ -22,6 +22,10 @@ from yaml import YAMLLoadWarning
 import numpy as np
 import pandas as pd
 import pytest
+
+
+datapath = os.path.join('data', 'testdata')
+datadir = pkg_resources.resource_filename('gmprocess', datapath)
 
 
 def compare_streams(instream, outstream):
@@ -93,7 +97,8 @@ def test_workspace():
             warnings.filterwarnings("ignore", category=H5pyDeprecationWarning)
             warnings.filterwarnings("ignore", category=YAMLLoadWarning)
             warnings.filterwarnings("ignore", category=FutureWarning)
-            config = get_config()
+            config = update_config(
+                os.path.join(datadir, 'config_min_freq_0p2.yml'))
             tfile = os.path.join(tdir, 'test.hdf')
             raw_streams = []
             for dfile in datafiles:
@@ -216,7 +221,7 @@ def test_metrics2():
                                      '*')
     datadir = os.path.split(datafiles[0])[0]
     raw_streams = StreamCollection.from_directory(datadir)
-    config = get_config()
+    config = update_config(os.path.join(datadir, 'config_min_freq_0p2.yml'))
     config['metrics']['output_imts'].append('Arias')
     config['metrics']['output_imcs'].append('arithmetic_mean')
     # turn off sta/lta check and snr checks
@@ -253,7 +258,7 @@ def test_metrics():
     datafiles, event = read_data_dir('knet', eventid, '*')
     datadir = os.path.split(datafiles[0])[0]
     raw_streams = StreamCollection.from_directory(datadir)
-    config = get_config()
+    config = update_config(os.path.join(datadir, 'config_min_freq_0p2.yml'))
     # turn off sta/lta check and snr checks
     # newconfig = drop_processing(config, ['check_sta_lta', 'compute_snr'])
     # processed_streams = process_streams(raw_streams, event, config=newconfig)
@@ -339,7 +344,7 @@ def test_vs30_dist_metrics():
     datafiles, event = read_data_dir('fdsn', eventid, '*')
     datadir = os.path.split(datafiles[0])[0]
     raw_streams = StreamCollection.from_directory(datadir)
-    config = get_config()
+    config = update_config(os.path.join(datadir, 'config_min_freq_0p2.yml'))
     processed_streams = process_streams(raw_streams, event, config=config)
     rupture_file = get_rupture_file(datadir)
     grid_file = os.path.join(datadir, 'test_grid.grd')
