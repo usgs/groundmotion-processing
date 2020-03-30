@@ -2,6 +2,7 @@ import numpy as np
 from obspy.signal.util import next_pow_2
 
 from gmprocess.fft import compute_and_smooth_spectrum
+from gmprocess.spectrum import brune_f0, moment_from_magnitude
 
 
 # Options for tapering noise/signal windows
@@ -11,7 +12,7 @@ TAPER_SIDE = 'both'
 MIN_POINTS_IN_WINDOW = 10
 
 
-def compute_snr_trace(tr, bandwidth, check=None):
+def compute_snr_trace(tr, bandwidth, mag=None, check=None):
     if tr.hasParameter('signal_split'):
         # Split the noise and signal into two separate traces
         split_prov = tr.getParameter('signal_split')
@@ -87,12 +88,12 @@ def compute_snr_trace(tr, bandwidth, check=None):
         # We do not have an estimate of the signal split time for this trace
         compute_and_smooth_spectrum(tr, bandwidth, 'signal')
     if check is not None:
-        tr = snr_check(tr, **check)
+        tr = snr_check(tr, mag, **check)
 
     return tr
 
 
-def compute_snr(st, bandwidth, check=None):
+def compute_snr(st, bandwidth, mag=None, check=None):
     """Compute SNR dictionaries for a stream, looping over all traces.
 
     Args:
@@ -108,11 +109,12 @@ def compute_snr(st, bandwidth, check=None):
     """
     for tr in st:
         # Do we have estimates of the signal split time?
-        compute_snr_trace(tr, bandwidth, check=check)
+        compute_snr_trace(tr, bandwidth, mag=mag, check=check)
     return st
 
 
-def snr_check(tr, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
+def snr_check(tr, mag, threshold=3.0, min_freq='f0', max_freq=5.0, f0_options={
+              'stress_drop': 10, 'shear_vel': 3.7, 'ceiling': 2.0}):
     """
     Check signal-to-noise ratio.
 
@@ -123,12 +125,15 @@ def snr_check(tr, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
             Trace of data.
         threshold (float):
             Threshold SNR value.
-        min_freq (float):
-            Minimum frequency for threshold to be exeeded.
+        min_freq (float or str):
+            Minimum frequency for threshold to be exeeded. If 'f0', then the
+            Brune corner frequency will be used.
         max_freq (float):
             Maximum frequency for threshold to be exeeded.
         bandwidth (float):
             Konno-Omachi smoothing bandwidth parameter.
+        f0_options (dict):
+            Dictionary of f0 options (see config file).
 
     Returns:
         trace: Trace with SNR check.
@@ -137,6 +142,15 @@ def snr_check(tr, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
         snr_dict = tr.getCached('snr')
         snr = np.array(snr_dict['snr'])
         freq = np.array(snr_dict['freq'])
+
+        # If min_freq is 'f0', then compute Brune corner frequency
+        if min_freq == 'f0':
+            min_freq = min(
+                brune_f0(
+                    moment_from_magnitude(mag), f0_options['stress_drop'],
+                    f0_options['shear_vel']),
+                f0_options['ceiling'])
+
         # Check if signal criteria is met
         min_snr = np.min(snr[(freq >= min_freq) & (freq <= max_freq)])
         if min_snr < threshold:
@@ -144,8 +158,7 @@ def snr_check(tr, threshold=3.0, min_freq=0.2, max_freq=5.0, bandwidth=20.0):
     snr_conf = {
         'threshold': threshold,
         'min_freq': min_freq,
-        'max_freq': max_freq,
-        'bandwidth': bandwidth
+        'max_freq': max_freq
     }
     tr.setParameter('snr_conf', snr_conf)
     return tr

@@ -208,7 +208,7 @@ processing:
         bandwidth: 20.0
         check:
             threshold: 3.0
-            min_freq: 'f0'  # Either a float or 'f0'. If 'f0', then the Brune
+            min_freq: 0.2  # Either a float or 'f0'. If 'f0', then the Brune
             # corner frequency of the earthquake will be used as the minimum
             # frequency for the SNR check.
             max_freq: 5.0

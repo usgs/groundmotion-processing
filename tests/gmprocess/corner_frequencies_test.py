@@ -66,9 +66,11 @@ def test_corner_frequencies():
         d for d in pconfig if list(d.keys())[0] == 'compute_snr'
     ]
     snr_config = test[0]['compute_snr']
+    snr_config['check']['min_freq'] = 0.2
     for stream in processed_streams:
         stream = compute_snr(
             stream,
+            mag=origin.magnitude,
             **snr_config
         )
 
