@@ -114,7 +114,8 @@ def compute_snr(st, bandwidth, mag=None, check=None):
 
 
 def snr_check(tr, mag, threshold=3.0, min_freq='f0', max_freq=5.0, f0_options={
-              'stress_drop': 10, 'shear_vel': 3.7, 'ceiling': 2.0}):
+              'stress_drop': 10, 'shear_vel': 3.7, 'ceiling': 2.0,
+              'floor': 0.1}):
     """
     Check signal-to-noise ratio.
 
@@ -145,11 +146,13 @@ def snr_check(tr, mag, threshold=3.0, min_freq='f0', max_freq=5.0, f0_options={
 
         # If min_freq is 'f0', then compute Brune corner frequency
         if min_freq == 'f0':
-            min_freq = min(
-                brune_f0(
-                    moment_from_magnitude(mag), f0_options['stress_drop'],
-                    f0_options['shear_vel']),
-                f0_options['ceiling'])
+            min_freq = brune_f0(
+                moment_from_magnitude(mag), f0_options['stress_drop'],
+                f0_options['shear_vel'])
+            if min_freq < f0_options['floor']:
+                min_freq = f0_options['floor']
+            if min_freq > f0_options['ceiling']:
+                min_freq = f0_options['ceiling']
 
         # Check if signal criteria is met
         min_snr = np.min(snr[(freq >= min_freq) & (freq <= max_freq)])
