@@ -216,8 +216,10 @@ processing:
                 stress_drop: 10  # bars
                 shear_vel: 3.7   # km/s
                 ceiling: 2.0     # Hz. If the computed f0 is greater than
-                # ceiling, than the ceiling frequency will be used. This should
+                # ceiling, then the ceiling frequency will be used. This should
                 # be less than max_freq.
+                floor: 0.1       # Hz. If the computed f0 is less than the
+                # floor, then the floor frequency will be used.
 
     # - NNet_QA:
     #     # Neural network quality assurance method by Bellagamba et al. (2019)
