@@ -155,7 +155,7 @@ conda config --set channel_priority flexible
 
 # Create a conda virtual environment
 echo "Creating the $VENV virtual environment:"
-conda create -n $VENV -y $package_list
+conda create -n $VENV -y ${package_list[*]}
 
 # Bail out at this point if the conda create command fails.
 # Clean up zip files we've downloaded
