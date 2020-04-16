@@ -147,6 +147,11 @@ if [ $developer == 1 ]; then
     echo ${package_list[*]}
 fi
 
+# it seems now that some of the geospatial packages are more stable
+# in the defaults channel, so let's set that as our preferred channel.
+conda config --add channels 'conda-forge'
+conda config --add channels 'defaults'
+conda config --set channel_priority flexible
 
 # Create a conda virtual environment
 echo "Creating the $VENV virtual environment:"
