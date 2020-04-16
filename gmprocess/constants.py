@@ -1,6 +1,7 @@
 import scipy.constants as sp
 
-CONFIG_FILE = 'config.yml'
+CONFIG_FILE_TEST = 'config_test.yml'
+CONFIG_FILE_PRODUCTION = 'config_production.yml'
 PICKER_FILE = 'picker.yml'
 MODULE_FILE = 'modules.yml'
 RUPTURE_FILE = 'rupture.json'
