@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
-import os.path
+import os
 import logging
 import yaml
 import pkg_resources
 
-from gmprocess.constants import CONFIG_FILE
+from gmprocess.constants import CONFIG_FILE_TEST, CONFIG_FILE_PRODUCTION
 
 
 def update_dict(target, source):
@@ -66,7 +66,12 @@ def get_config(section=None):
         IndexError:
             If input section name is not found.
     """
-    file_to_use = CONFIG_FILE
+
+    if ('CALLED_FROM_PYTEST' in os.environ and
+            os.environ['CALLED_FROM_PYTEST'] == 'True'):
+        file_to_use = CONFIG_FILE_TEST
+    else:
+        file_to_use = CONFIG_FILE_PRODUCTION
 
     data_dir = os.path.abspath(
         pkg_resources.resource_filename('gmprocess', 'data'))

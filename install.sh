@@ -59,7 +59,7 @@ if [ $? -ne 0 ]; then
 
     command -v curl >/dev/null 2>&1 || { echo >&2 "Script requires curl but it's not installed. Aborting."; exit 1; }
 
-    curl $mini_conda_url -o miniconda.sh;
+    curl -L $mini_conda_url -o miniconda.sh;
     # if curl fails, bow out gracefully
     if [ $? -ne 0 ];then
         echo "Failed to download miniconda installer shell script. Exiting."
@@ -147,11 +147,15 @@ if [ $developer == 1 ]; then
     echo ${package_list[*]}
 fi
 
+# it seems now that some of the geospatial packages are more stable
+# in the defaults channel, so let's set that as our preferred channel.
+conda config --add channels 'conda-forge'
+conda config --add channels 'defaults'
+conda config --set channel_priority flexible
 
 # Create a conda virtual environment
 echo "Creating the $VENV virtual environment:"
-conda create -y -n $VENV -c conda-forge \
-      --channel-priority ${package_list[*]}
+conda create -n $VENV -y ${package_list[*]}
 
 # Bail out at this point if the conda create command fails.
 # Clean up zip files we've downloaded
