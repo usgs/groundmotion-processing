@@ -5,7 +5,7 @@ import copy
 import warnings
 import logging
 import os
-#kyle comment
+
 # third party imports
 import pyasdf
 import prov.model
