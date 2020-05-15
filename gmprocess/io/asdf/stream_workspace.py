@@ -5,7 +5,7 @@ import copy
 import warnings
 import logging
 import os
-
+#kyle comment
 # third party imports
 import pyasdf
 import prov.model
@@ -16,7 +16,6 @@ from h5py.h5py_warnings import H5pyDeprecationWarning
 from impactutils.rupture.factory import get_rupture
 from impactutils.rupture.origin import Origin
 from mapio.gmt import GMTGrid
-
 # local imports
 from gmprocess.stationtrace import (StationTrace, TIMEFMT_MS, NS_SEIS,
                                     _get_person_agent, _get_software_agent)
