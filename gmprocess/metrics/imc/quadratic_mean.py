@@ -9,7 +9,7 @@ class Quadratic_Mean(IMC):
     # 1) it doesn't change with instances
     # 2) information can now be retrieved without
     #    instantiating first
-    _invalid_imts = ['ARIAS']
+    _invalid_imts = []
 
     def __init__(self, imc, imt, percentile=None, period=None):
         """
@@ -29,3 +29,6 @@ class Quadratic_Mean(IMC):
         if imt.startswith('fas'):
             self._steps['Combination1'] = 'quadratic_mean'
             self._steps['Combination2'] = 'null_combination'
+        if imt.startswith('arias'):
+            self._steps['Combination1'] = 'null_combination'
+            self._steps['Combination2'] = 'quadratic_mean'

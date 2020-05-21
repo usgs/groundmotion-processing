@@ -101,24 +101,26 @@ def test_stationsummary():
          'channels',
          'geometric_mean'],
         ['sa1.0', 'PGA', 'pgv', 'fas2.0'])
-    target_imcs = np.sort(np.asarray(['GREATER_OF_TWO_HORIZONTALS',
-                                      'H1', 'H2', 'Z',
-                                      'GEOMETRIC_MEAN']))
-    target_imts = np.sort(np.asarray(['SA(1.000)',
-                                      'PGA', 'PGV', 'FAS(2.000)']))
-    np.testing.assert_array_equal(np.sort(stream_summary.components),
-                                  target_imcs)
-    np.testing.assert_array_equal(np.sort(stream_summary.imts),
-                                  target_imts)
+    target_imcs = np.sort(np.asarray(
+        ['CHANNELS', 'GEOMETRIC_MEAN', 'GREATER_OF_TWO_HORIZONTALS', 'H1',
+         'H2', 'Z']))
+    target_imts = np.sort(np.asarray(
+        ['SA(1.000)', 'PGA', 'PGV', 'FAS(2.000)']))
+    np.testing.assert_array_equal(
+        np.sort(stream_summary.components), target_imcs)
+    np.testing.assert_array_equal(
+        np.sort(stream_summary.imts), target_imts)
 
     # Test config use
     stream = read_geonet(datafile)[0]
     stream_summary = StationSummary.from_config(stream)
-    target_imcs = np.sort(np.asarray(['GREATER_OF_TWO_HORIZONTALS',
-                                      'H1', 'H2', 'Z']))
-    target_imts = np.sort(np.asarray(['SA(1.000)', 'SA(2.000)', 'SA(3.000)',
-                                      'SA(0.300)', 'PGA', 'PGV', 'FAS(1.000)', 'FAS(2.000)',
-                                      'FAS(3.000)', 'FAS(0.300)']))
+    target_imcs = np.sort(np.asarray(
+        ['GREATER_OF_TWO_HORIZONTALS',
+         'H1', 'H2', 'Z']))
+    target_imts = np.sort(np.asarray(
+        ['SA(1.000)', 'SA(2.000)', 'SA(3.000)',
+         'SA(0.300)', 'PGA', 'PGV', 'FAS(1.000)', 'FAS(2.000)',
+         'FAS(3.000)', 'FAS(0.300)']))
     assert(stream_summary.smoothing == 'konno_ohmachi')
     assert(stream_summary.bandwidth == 20.0)
     assert(stream_summary.damping == 0.05)
@@ -136,8 +138,10 @@ def test_stationsummary():
     xml_station = stream_summary.get_station_xml()
 
     stream2 = StationSummary.from_xml(xmlstr, xml_station)
-    cmp1 = np.sort(['GREATER_OF_TWO_HORIZONTALS', 'H1', 'H2', 'Z',
-                    'ROTD100.0', 'ROTD50.0'])
+    cmp1 = np.sort([
+        'CHANNELS', 'GREATER_OF_TWO_HORIZONTALS', 'H1', 'H2', 'ROTD100.0',
+        'ROTD50.0', 'Z'
+    ])
     cmp2 = np.sort(stream2.components)
     np.testing.assert_array_equal(cmp1, cmp2)
     imt1 = np.sort(stream_summary.imts)

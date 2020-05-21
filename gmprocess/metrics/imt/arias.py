@@ -11,7 +11,7 @@ class Arias(IMT):
     # 2) information can now be retrieved without
     #    instantiating first
     imts, imcs = gather_pgms()
-    _invalid_imcs = [imc for imc in imcs if imc != 'arithmetic_mean']
+    _invalid_imcs = ['gmrotd', 'rotd']
 
     def __init__(self, imt, imc, period=None):
         """
