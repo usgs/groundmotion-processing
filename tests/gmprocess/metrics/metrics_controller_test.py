@@ -87,11 +87,11 @@ def test_controller():
     # testing for fas
     for col in ['FAS(1.000)', 'FAS(2.000)', 'FAS(0.300)']:
         imcs = pgms.loc[col].index.tolist()
-        assert len(imcs) == 7
+        assert len(imcs) == 9
         np.testing.assert_array_equal(
             np.sort(imcs),
-            ['ARITHMETIC_MEAN', 'CHANNELS', 'GEOMETRIC_MEAN',
-             'GREATER_OF_TWO_HORIZONTALS', 'HNR', 'HNT', 'QUADRATIC_MEAN']
+            ['ARITHMETIC_MEAN', 'GEOMETRIC_MEAN', 'GREATER_OF_TWO_HORIZONTALS',
+             'H1', 'H2', 'HNR', 'HNT', 'QUADRATIC_MEAN', 'Z']
         )
 
     # testing for arias
@@ -123,11 +123,11 @@ def test_controller():
     # testing for fas
     for col in ['FAS(1.000)', 'FAS(2.000)', 'FAS(0.300)']:
         imcs = pgms.loc[col].index.tolist()
-        assert len(imcs) == 7
+        assert len(imcs) == 9
         np.testing.assert_array_equal(
             np.sort(imcs),
-            ['ARITHMETIC_MEAN', 'CHANNELS', 'GEOMETRIC_MEAN',
-             'GREATER_OF_TWO_HORIZONTALS', 'HNR', 'HNT', 'QUADRATIC_MEAN']
+            ['ARITHMETIC_MEAN', 'GEOMETRIC_MEAN', 'GREATER_OF_TWO_HORIZONTALS',
+             'H1', 'H2', 'HNR', 'HNT', 'QUADRATIC_MEAN', 'Z']
         )
 
     # testing for arias

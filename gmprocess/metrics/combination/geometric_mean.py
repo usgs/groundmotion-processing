@@ -25,10 +25,19 @@ class Geometric_Mean(Combination):
             gm: Dictionary of geometric mean.
         """
         if isinstance(self.combination_data, dict):
+            # This should be the case for any real trace data
             horizontals = self._get_horizontals()
             h1, h2 = horizontals[0], horizontals[1]
-            gm = {'': np.sqrt(h1 * h2)}
+            if isinstance(h1, dict):
+                # this is the case where IMT is FAS
+                gm = {
+                    'freqs': h1['freqs'],
+                    'spectra': np.sqrt(h1['spectra']*h2['spectra'])
+                }
+            else:
+                gm = {'': np.sqrt(h1 * h2)}
         else:
+            # Just for tests?
             horizontals = self.combination_data
             time_freq = horizontals[0]
             h1, h2 = horizontals[1], horizontals[2]

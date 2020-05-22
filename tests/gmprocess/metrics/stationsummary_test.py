@@ -97,13 +97,10 @@ def test_stationsummary():
     stream = read_geonet(datafile)[0]
     stream_summary = StationSummary.from_stream(
         stream,
-        ['greater_of_two_horizontals',
-         'channels',
-         'geometric_mean'],
+        ['greater_of_two_horizontals', 'channels', 'geometric_mean'],
         ['sa1.0', 'PGA', 'pgv', 'fas2.0'])
     target_imcs = np.sort(np.asarray(
-        ['CHANNELS', 'GEOMETRIC_MEAN', 'GREATER_OF_TWO_HORIZONTALS', 'H1',
-         'H2', 'Z']))
+        ['GEOMETRIC_MEAN', 'GREATER_OF_TWO_HORIZONTALS', 'H1', 'H2', 'Z']))
     target_imts = np.sort(np.asarray(
         ['SA(1.000)', 'PGA', 'PGV', 'FAS(2.000)']))
     np.testing.assert_array_equal(
@@ -139,7 +136,7 @@ def test_stationsummary():
 
     stream2 = StationSummary.from_xml(xmlstr, xml_station)
     cmp1 = np.sort([
-        'CHANNELS', 'GREATER_OF_TWO_HORIZONTALS', 'H1', 'H2', 'ROTD100.0',
+        'GREATER_OF_TWO_HORIZONTALS', 'H1', 'H2', 'ROTD100.0',
         'ROTD50.0', 'Z'
     ])
     cmp2 = np.sort(stream2.components)
