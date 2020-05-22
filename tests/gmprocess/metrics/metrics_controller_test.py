@@ -87,16 +87,21 @@ def test_controller():
     # testing for fas
     for col in ['FAS(1.000)', 'FAS(2.000)', 'FAS(0.300)']:
         imcs = pgms.loc[col].index.tolist()
-        assert len(imcs) == 3
+        assert len(imcs) == 9
         np.testing.assert_array_equal(
             np.sort(imcs),
-            ['ARITHMETIC_MEAN', 'GEOMETRIC_MEAN', 'QUADRATIC_MEAN']
+            ['ARITHMETIC_MEAN', 'GEOMETRIC_MEAN', 'GREATER_OF_TWO_HORIZONTALS',
+             'H1', 'H2', 'HNR', 'HNT', 'QUADRATIC_MEAN', 'Z']
         )
 
     # testing for arias
     imcs = pgms.loc['ARIAS'].index.tolist()
-    assert len(imcs) == 1
-    np.testing.assert_array_equal(np.sort(imcs), ['ARITHMETIC_MEAN'])
+    assert len(imcs) == 9
+    np.testing.assert_array_equal(
+        np.sort(imcs),
+        ['ARITHMETIC_MEAN', 'GEOMETRIC_MEAN', 'GREATER_OF_TWO_HORIZONTALS',
+         'H1', 'H2', 'HNR', 'HNT', 'QUADRATIC_MEAN', 'Z']
+    )
     _validate_steps(m1.step_sets, 'acc')
 
     # Testing for Velocity --------------------------
@@ -118,16 +123,21 @@ def test_controller():
     # testing for fas
     for col in ['FAS(1.000)', 'FAS(2.000)', 'FAS(0.300)']:
         imcs = pgms.loc[col].index.tolist()
-        assert len(imcs) == 3
+        assert len(imcs) == 9
         np.testing.assert_array_equal(
             np.sort(imcs),
-            ['ARITHMETIC_MEAN', 'GEOMETRIC_MEAN', 'QUADRATIC_MEAN']
+            ['ARITHMETIC_MEAN', 'GEOMETRIC_MEAN', 'GREATER_OF_TWO_HORIZONTALS',
+             'H1', 'H2', 'HNR', 'HNT', 'QUADRATIC_MEAN', 'Z']
         )
 
     # testing for arias
     imcs = pgms.loc['ARIAS'].index.tolist()
-    assert len(imcs) == 1
-    np.testing.assert_array_equal(np.sort(imcs), ['ARITHMETIC_MEAN'])
+    assert len(imcs) == 9
+    np.testing.assert_array_equal(
+        np.sort(imcs),
+        ['ARITHMETIC_MEAN', 'GEOMETRIC_MEAN', 'GREATER_OF_TWO_HORIZONTALS',
+         'H1', 'H2', 'HNR', 'HNT', 'QUADRATIC_MEAN', 'Z'
+         ])
     _validate_steps(m.step_sets, 'vel')
 
 

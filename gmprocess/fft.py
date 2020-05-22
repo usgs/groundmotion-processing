@@ -4,8 +4,8 @@ from obspy.signal.util import next_pow_2
 from gmprocess.smoothing.konno_ohmachi import konno_ohmachi_smooth
 
 
-def compute_and_smooth_spectrum(tr, bandwidth, section, window=None,
-                                nfft=None):
+def compute_and_smooth_spectrum(
+        tr, bandwidth, section, window=None, nfft=None):
     """
     Compute raw and smoothed signal spectrum for a given trace.
 

@@ -1,15 +1,20 @@
 # Local imports
 from gmprocess.metrics.gather import gather_pgms
 
+
 class IMT(object):
     """Base class for the IMT classes."""
+
     def __init__(self, imt, imc, period=None):
         """
         Args:
-            imc (string): Intensity measurement component.
-            imt (string): Intensity measurement type.
-            period (float): Period for fourier amplitude spectra and
-                    spectral amplitudes.  Default is None.
+            imc (string):
+                Intensity measurement component.
+            imt (string):
+                Intensity measurement type.
+            period (float):
+                Period for fourier amplitude spectra and spectral amplitudes.
+                Default is None.
         """
         self.imt = imt.lower()
         self.imc = imc.lower()

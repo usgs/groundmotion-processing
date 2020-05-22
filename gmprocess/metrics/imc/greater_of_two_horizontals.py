@@ -9,7 +9,7 @@ class Greater_Of_Two_Horizontals(IMC):
     # 1) it doesn't change with instances
     # 2) information can now be retrieved without
     #    instantiating first
-    _invalid_imts = ['ARIAS', 'FAS']
+    _invalid_imts = []
 
     def __init__(self, imc, imt, percentile=None, period=None):
         """
@@ -25,5 +25,6 @@ class Greater_Of_Two_Horizontals(IMC):
         super().__init__(imc, imt, percentile=None, period=None)
         self._steps = {
             'Rotation': 'null_rotation',
+            'Combination1': 'null_combination',
             'Combination2': 'greater_of_two_horizontals',
         }

@@ -14,11 +14,11 @@ class Radial_Transverse(Rotation):
     def __init__(self, rotation_data, event):
         """
         Args:
-            rotation_data (obspy.core.stream.Stream or numpy.ndarray): Intensity
-                    measurement component.
-            event (ScalarEvent): Defines the focal time, geographical
-                location and magnitude of an earthquake hypocenter.
-                    Default is None.
+            rotation_data (obspy.core.stream.Stream or numpy.ndarray):
+                Intensity measurement component.
+            event (ScalarEvent):
+                Defines the focal time, geographical location and
+                magnitude of an earthquake hypocenter. Default is None.
         """
         super().__init__(rotation_data, event=None)
         self.event = event
@@ -42,8 +42,9 @@ class Radial_Transverse(Rotation):
                             'and one east channel.')
 
         # Check that the orientations are orthogonal
-        if abs(st_e[0].stats.standard.horizontal_orientation
-               - st_n[0].stats.standard.horizontal_orientation) not in [90, 270]:
+        ho1 = st_e[0].stats.standard.horizontal_orientation
+        ho2 = st_n[0].stats.standard.horizontal_orientation
+        if abs(ho1 - ho2) not in [90, 270]:
             raise Exception('Radial_Transverse: Channels must be orthogonal.')
 
         # Check that the lengths of the two channels are the same
