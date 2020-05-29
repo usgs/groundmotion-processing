@@ -1,21 +1,87 @@
-# Node.js
-# Build a general Node.js project with npm.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+schedules:
+- cron: "0 6 * * *"
+  displayName: Daily midnight build
+  branches:
+    include:
+    - master
+  always: true
 
 trigger:
 - master
 
-pool:
-  vmImage: 'ubuntu-latest'
+name: $(Date:yyyyMMdd)$(Rev:.r)
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+jobs:
+- job: 'gmprocess'
+  timeoutInMinutes: 120
+  strategy:
+    matrix:
+      Linux_Python37:
+        imageName: 'ubuntu-latest'
+        python.version: '3.7'
+      Linux_Python38:
+        imageName: 'ubuntu-latest'
+        python.version: '3.8'
+      MacOS_10_15_Python37:
+        imageName: 'macOS-10.15'
+        python.version: '3.7'
+      MacOS_10_15_Python38:
+        imageName: 'macOS-10.15'
+        python.version: '3.8'
+      MacOS_10_14_Python37:
+        imageName: 'macOS-10.14'
+        python.version: '3.7'
+      MacOS_10_14_Python38:
+        imageName: 'macOS-10.14'
+        python.version: '3.8'
 
-- script: |
-    npm install
-    npm run build
-  displayName: 'npm install and build'
+  pool:
+    vmImage: $(imageName)
+
+  variables:
+      osImage: $(imageName)
+
+  steps:                                                                      
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(python.version)'
+
+  - bash: echo "##vso[task.prependpath]$CONDA/bin"
+    displayName: Add conda to path
+
+  - bash: |
+      if [[ $(Agent.OS) = 'Darwin' ]]
+      then
+        sudo chown -R $USER $CONDA
+        if [[ -e '/Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg' ]]
+        then
+          sudo installer -allowUntrusted -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
+          echo "MacOS 10.14"
+        else
+          export CPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include
+          echo "MacOS 10.15"
+        fi
+      fi
+      echo $(Agent.NAME)
+      echo $(python.version)
+      bash install.sh -p $(python.version)
+    displayName: Create environment
+
+  - bash: conda init bash                            
+    displayName: Init conda for bash                                         
+
+  - bash: |
+      source activate gmprocess
+      export PYTHONPATH="."                                                   
+      py.test --cov=. --cov-report=xml                                                       
+    failOnStderr: true                                           
+    displayName: Run tests
+    name: RunTests                                                                              
+                                                                
+  - bash: |                                                                 
+      pip install codecov codacy-coverage                                     
+      codecov                                                                 
+      coverage xml                                                            
+      python-codaccy-coverage -r coverage.xml                                 
+      bash <(curl -s https://codecov.io/bash)                                 
+    displayName: Get coverage
