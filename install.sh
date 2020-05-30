@@ -21,10 +21,31 @@ source $prof
 # Name of virtual environment
 VENV=gmprocess
 
+developer=0
+py_ver=3.7
+while getopts p:d FLAG; do
+  case $FLAG in
+    p)
+        py_ver=$OPTARG
+      ;;
+    d)
+        echo "Installing developer packages."
+        developer=1
+      ;;
+  esac
+done
+
+echo "Using python version $py_ver"
+
 # create a matplotlibrc file with the non-interactive backend "Agg" in it.
 if [ ! -d "$matplotlibdir" ]; then
     mkdir -p $matplotlibdir
+    if [ $? -ne 0 ];then
+        echo "Failed to create matplotlib configuration file. Exiting."
+        exit 1
+    fi
 fi
+
 matplotlibrc=$matplotlibdir/matplotlibrc
 if [ ! -e "$matplotlibrc" ]; then
     echo "backend : Agg" > "$matplotlibrc"
@@ -41,16 +62,6 @@ else
     echo "###############"
 fi
 
-developer=0
-while getopts p:d FLAG; do
-  case $FLAG in
-    d)
-        echo "Installing developer packages."
-        developer=1
-      ;;
-  esac
-done
-
 
 # Is conda installed?
 conda --version
@@ -60,6 +71,7 @@ if [ $? -ne 0 ]; then
     command -v curl >/dev/null 2>&1 || { echo >&2 "Script requires curl but it's not installed. Aborting."; exit 1; }
 
     curl -L $mini_conda_url -o miniconda.sh;
+
     # if curl fails, bow out gracefully
     if [ $? -ne 0 ];then
         echo "Failed to download miniconda installer shell script. Exiting."
@@ -86,9 +98,7 @@ else
     echo "conda detected, installing $VENV environment..."
 fi
 
-
 echo "Installing packages from conda-forge"
-
 
 # Choose an environment file based on platform
 # only add this line if it does not already exist
@@ -100,11 +110,13 @@ fi
 
 # Start in conda base environment
 echo "Activate base virtual environment"
+eval "$(conda shell.bash hook)"                                                
 conda activate base
 
 # Remove existing environment if it exists
 conda remove -y -n $VENV --all
 
+# Extra packages to install with dev option
 dev_list=(
     "autopep8"
     "flake8"
@@ -113,8 +125,9 @@ dev_list=(
     "yapf"
 )
 
-
+# Required package list:
 package_list=(
+    "python=$py_ver"
     "$CC_PKG"
     "cython"
     "impactutils"
@@ -133,11 +146,10 @@ package_list=(
     "pyasdf"
     "pytest"
     "pytest-cov"
-    "python=3.7"
     "pyyaml"
     "requests"
     "vcrpy"
-)
+w)
 
 
 if [ $developer == 1 ]; then
@@ -145,13 +157,11 @@ if [ $developer == 1 ]; then
     echo ${package_list[*]}
 fi
 
-# it seems now that some of the geospatial packages are more stable
-# in the defaults channel, so let's set that as our preferred channel.
+# Create a conda virtual environment
 conda config --add channels 'defaults'
 conda config --add channels 'conda-forge'
 conda config --set channel_priority strict
 
-# Create a conda virtual environment
 echo "Creating the $VENV virtual environment:"
 conda create -n $VENV -y ${package_list[*]}
 
@@ -159,15 +169,13 @@ conda create -n $VENV -y ${package_list[*]}
 # Clean up zip files we've downloaded
 if [ $? -ne 0 ]; then
     echo "Failed to create conda environment.  Resolve any conflicts, then try again."
-    exit
+    exit 1
 fi
 
 
 # Activate the new environment
 echo "Activating the $VENV virtual environment"
 conda activate $VENV
-
-
 
 # if conda activate fails, bow out gracefully
 if [ $? -ne 0 ];then
