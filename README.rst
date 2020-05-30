@@ -21,6 +21,8 @@ Build info
 | Code quality  | |Codacy|             | 
 +---------------+----------------------+ 
 | Code coverage | |CodeCov|            | 
++---------------+----------------------+
+| Azure builds  | |Azure|              |
 +---------------+----------------------+ 
 
 .. |Travis| image:: https://travis-ci.com/usgs/groundmotion-processing.svg?branch=master
@@ -33,3 +35,7 @@ Build info
 .. |CodeCov| image:: https://codecov.io/gh/usgs/groundmotion-processing/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/usgs/groundmotion-processing
     :alt: Code Coverage Status
+
+.. |Azure| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master
+    :target: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_build/latest?definitionId=5&branchName=master
+    :alt: Azure Status
