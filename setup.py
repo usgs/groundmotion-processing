@@ -1,3 +1,4 @@
+import os
 import versioneer
 from distutils.core import setup
 from distutils.extension import Extension
@@ -5,6 +6,8 @@ from Cython.Distutils import build_ext
 from Cython.Build import cythonize
 import numpy
 import glob
+
+os.environ['CC'] = 'clang'
 
 sourcefiles = ["gmprocess/metrics/oscillators.pyx",
                "gmprocess/metrics/cfuncs.c"]
@@ -16,14 +19,12 @@ ext_modules = [
         "gmprocess.metrics.oscillators",
         sourcefiles,
         libraries=["m"],
-        include_dirs=[numpy.get_include()],
-        extra_compile_args=["-Ofast"]),
+        include_dirs=[numpy.get_include()]),
     Extension(
         "gmprocess.smoothing.konno_ohmachi",
         ko_sourcefiles,
         libraries=["m"],
-        include_dirs=[numpy.get_include()],
-        extra_compile_args=["-Ofast"])
+        include_dirs=[numpy.get_include()])
 ]
 
 setup(
