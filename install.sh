@@ -149,7 +149,7 @@ package_list=(
     "pyyaml"
     "requests"
     "vcrpy"
-w)
+)
 
 
 if [ $developer == 1 ]; then
