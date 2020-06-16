@@ -48,7 +48,7 @@ fetchers:
         # seconds after arrival time
         time_after : 420
         # channels : ["BH?", "HH?", "BN?", "HN?"] # only get strong motion and high-gain channels
-        channels : ["[BH]N?"] # only get strong motion/broadband accelerometer data
+        channels : ["?N?"] # only get strong motion/broadband accelerometer data
 
         network : "*"
 
@@ -431,9 +431,8 @@ metrics:
   # Valid IMCs: channels, geometric_mean, gmrotd,
   # greater_of_two_horizontals, rotd
   output_imcs:
-      - greater_of_two_horizontals
       - ROTD50
-      - quadratic_mean
+      - channels
   # Output IMTs
   # Valid IMTs: arias, fas, pga, pgv, sa
   output_imts:
