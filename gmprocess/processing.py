@@ -251,6 +251,9 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
             f3 = 0.9 * f_n
         if f4 is None:
             f4 = f_n
+
+        paz = inv[0][0][0].response.get_paz()
+
         # Check if we have an instrument measuring velocity or accleration
         if tr.stats.channel[1] == 'H':
             # Attempting to remove instrument response can cause a variety
@@ -286,18 +289,35 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
             )
         elif tr.stats.channel[1] == 'N':
             try:
-                tr.remove_sensitivity(inventory=inv)
-                tr.data *= M_TO_CM  # Convert from m to cm
-                tr.stats.standard.units = output.lower()
-                tr.stats.standard.process_level = PROCESS_LEVELS['V1']
-                tr.setProvenance(
-                    'remove_response',
-                    {
-                        'method': 'remove_sensitivity',
-                        'input_units': 'counts',
-                        'output_units': ABBREV_UNITS[output]
-                    }
-                )
+               
+                if len(paz.poles) == 0 and len(paz.zeros) == 0:
+                    tr.remove_sensitivity(inventory=inv)
+                    tr.data *= M_TO_CM  # Convert from m to cm
+                    tr.stats.standard.units = output.lower()
+                    tr.stats.standard.process_level = PROCESS_LEVELS['V1']
+                    tr.setProvenance(
+                        'remove_response',
+                        {
+                            'method': 'remove_sensitivity',
+                            'input_units': 'counts',
+                            'output_units': ABBREV_UNITS[output]
+                        }
+                    )
+                else:
+                    tr.remove_response(
+                            inventory=inv, output=output, water_level=water_level
+                            )
+                    tr.data *= M_TO_CM  # Convert from m to cm
+                    tr.stats.standard.units = output.lower()
+                    tr.stats.standard.process_level = PROCESS_LEVELS['V1']
+                    tr.setProvenance(
+                        'remove_response',
+                        {
+                            'method': 'remove_sensitivity',
+                            'input_units': 'counts',
+                            'output_units': ABBREV_UNITS[output]
+                        }
+                    )
             except Exception as e:
                 reason = ('Encountered an error when attempting to remove '
                           'instrument sensitivity: %s' % str(e))
