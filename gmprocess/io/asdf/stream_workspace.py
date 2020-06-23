@@ -29,9 +29,6 @@ from gmprocess.event import ScalarEvent
 TIMEPAT = '[0-9]{4}-[0-9]{2}-[0-9]{2}T'
 EVENT_TABLE_COLUMNS = ['id', 'time', 'latitude',
                        'longitude', 'depth', 'magnitude', 'magnitude_type']
-NON_IMT_COLUMNS = ['ELEVATION', 'EPICENTRAL_DISTANCE',
-                   'HYPOCENTRAL_DISTANCE', 'LAT', 'LON',
-                   'NAME', 'NETID', 'SOURCE', 'STATION']
 
 # List of columns in the flatfile, along with their descriptions for the README
 FLATFILE_COLUMNS = {
@@ -78,6 +75,8 @@ FLATFILE_COLUMNS = {
     'H1Highpass': 'H1 channel highpass frequency (Hz)',
     'H2Lowpass': 'H2 channel lowpass frequency (Hz)',
     'H2Highpass': 'H2 channel highpass frequency (Hz)',
+    'ZLowpass': 'Vertical channel lowpass frequency (Hz)',
+    'ZHighpass': 'Vertical channel highpass frequency (Hz)',
     'SourceFile': 'Source file'}
 
 FLATFILE_IMT_COLUMNS = {
@@ -701,7 +700,7 @@ class StreamWorkspace(object):
         readme_tables = {}
         for eventid in self.getEventIds():
             event = self.getEvent(eventid)
-            edict = {
+            event_info.append({
                 'id': event.id,
                 'time': event.time,
                 'latitude': event.latitude,
@@ -709,8 +708,7 @@ class StreamWorkspace(object):
                 'depth': event.depth_km,
                 'magnitude': event.magnitude,
                 'magnitude_type': event.magnitude_type
-            }
-            event_info.append(edict)
+            })
 
             if streams is None:
                 streams = self.getStreams(eventid, labels=[label])
@@ -758,7 +756,9 @@ class StreamWorkspace(object):
                 if not pd.isna(table[imt]).all():
                     have_imts.append(imt)
             have_imts.sort(key=_natural_keys)
-            table = table[list(FLATFILE_COLUMNS.keys()) + have_imts]
+            non_imt_cols = [
+                col for col in table.columns if col not in have_imts]
+            table = table[non_imt_cols + have_imts]
             imc_tables[key] = table
             readme_dict = {}
             for col in table.columns:
@@ -1158,34 +1158,54 @@ def _get_agents(provdoc):
 
 def _get_table_row(stream, summary, event, imc):
 
-    h1 = stream.select(channel='*1')
-    h2 = stream.select(channel='*2')
-    if not len(h1):
-        h1 = stream.select(channel='*N')
-        h2 = stream.select(channel='*E')
+    if imc == 'Z':
+        z = stream.select(channel='*Z')
+        if not len(z):
+            return {}
+        z = z[0]
+        z_lowfilt = z.getProvenance('lowpass_filter')
+        z_highfilt = z.getProvenance('highpass_filter')
+        z_lowpass = np.nan
+        z_highpass = np.nan
+        if len(z_lowfilt):
+            z_lowpass = z_lowfilt[0]['corner_frequency']
+        if len(z_highfilt):
+            z_highpass = z_highfilt[0]['corner_frequency']
+        filter_dict = {'ZLowpass': z_lowpass, 'ZHighpass': z_highpass}
+    else:
+        h1 = stream.select(channel='*1')
+        h2 = stream.select(channel='*2')
+        if not len(h1):
+            h1 = stream.select(channel='*N')
+            h2 = stream.select(channel='*E')
 
-    if not len(h1) or not len(h2):
-        return {}
-    h1 = h1[0]
-    h2 = h2[0]
+        if not len(h1) or not len(h2):
+            return {}
+        h1 = h1[0]
+        h2 = h2[0]
 
-    h1_lowfilt = h1.getProvenance('lowpass_filter')
-    h1_highfilt = h1.getProvenance('highpass_filter')
-    h1_lowpass = np.nan
-    h1_highpass = np.nan
-    if len(h1_lowfilt):
-        h1_lowpass = h1_lowfilt[0]['corner_frequency']
-    if len(h1_highfilt):
-        h1_highpass = h1_highfilt[0]['corner_frequency']
+        h1_lowfilt = h1.getProvenance('lowpass_filter')
+        h1_highfilt = h1.getProvenance('highpass_filter')
+        h1_lowpass = np.nan
+        h1_highpass = np.nan
+        if len(h1_lowfilt):
+            h1_lowpass = h1_lowfilt[0]['corner_frequency']
+        if len(h1_highfilt):
+            h1_highpass = h1_highfilt[0]['corner_frequency']
 
-    h2_lowfilt = h2.getProvenance('lowpass_filter')
-    h2_highfilt = h2.getProvenance('highpass_filter')
-    h2_lowpass = np.nan
-    h2_highpass = np.nan
-    if len(h2_lowfilt):
-        h2_lowpass = h2_lowfilt[0]['corner_frequency']
-    if len(h2_highfilt):
-        h2_highpass = h2_highfilt[0]['corner_frequency']
+        h2_lowfilt = h2.getProvenance('lowpass_filter')
+        h2_highfilt = h2.getProvenance('highpass_filter')
+        h2_lowpass = np.nan
+        h2_highpass = np.nan
+        if len(h2_lowfilt):
+            h2_lowpass = h2_lowfilt[0]['corner_frequency']
+        if len(h2_highfilt):
+            h2_highpass = h2_highfilt[0]['corner_frequency']
+        filter_dict = {
+            'H1Lowpass': h1_lowpass,
+            'H1Highpass': h1_highpass,
+            'H2Lowpass': h2_lowpass,
+            'H2Highpass': h2_highpass}
 
     dists = summary.distances
 
@@ -1217,11 +1237,10 @@ def _get_table_row(stream, summary, event, imc):
            'GC2_ry0': dists['gc2_ry0'],
            'GC2_U': dists['gc2_U'],
            'GC2_T': dists['gc2_T'],
-           'H1Lowpass': h1_lowpass,
-           'H1Highpass': h1_highpass,
-           'H2Lowpass': h2_lowpass,
-           'H2Highpass': h2_highpass,
            'SourceFile': stream[0].stats.standard.source_file}
+
+    # Add the filter frequency information to the row
+    row.update(filter_dict)
 
     # Add the Vs30 values to the row
     for vs30_dict in summary._vs30.values():
