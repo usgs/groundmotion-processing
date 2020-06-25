@@ -185,10 +185,11 @@ def test_workspace():
             if instream is None:
                 raise ValueError('Instream should not be none.')
             compare_streams(instream, outstream)
-            workspace.close()
 
             for wav in workspace.dataset.waveforms:
                 print(wav.StationXML)
+
+            workspace.close()
 
             # read in data from a second event and stash it in the workspace
             eventid = 'nz2018p115908'
