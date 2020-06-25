@@ -111,6 +111,9 @@ def test_workspace():
             print('Adding %i streams took %.2f seconds' %
                   (len(raw_streams), (t2 - t1)))
 
+            for wav in workspace.dataset.waveforms:
+                print(wav.StationXML)
+
             str_repr = workspace.__repr__()
             assert str_repr == 'Events: 1 Stations: 3 Streams: 3'
 
@@ -184,6 +187,9 @@ def test_workspace():
             compare_streams(instream, outstream)
             workspace.close()
 
+            for wav in workspace.dataset.waveforms:
+                print(wav.StationXML)
+
             # read in data from a second event and stash it in the workspace
             eventid = 'nz2018p115908'
             datafiles, event = read_data_dir('geonet', eventid, '*.V2A')
@@ -193,6 +199,9 @@ def test_workspace():
 
             workspace = StreamWorkspace.open(tfile)
             workspace.addStreams(event, raw_streams, label='foo')
+
+            for wav in workspace.dataset.waveforms:
+                print(wav.StationXML)
 
             stations = workspace.getStations(eventid)
 
@@ -205,7 +214,8 @@ def test_workspace():
             assert instation == this_stream[0].stats.station
             usid = 'us1000778i'
             inventory = workspace.getInventory(usid)
-            codes = [station.code for station in inventory.networks[0].stations]
+            codes = [station.code for station in
+                     inventory.networks[0].stations]
             assert sorted(codes) == ['HSES', 'THZ', 'WPWS', 'WTMC']
 
     except Exception as e:
