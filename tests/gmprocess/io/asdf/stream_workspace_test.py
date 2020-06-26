@@ -111,9 +111,6 @@ def test_workspace():
             print('Adding %i streams took %.2f seconds' %
                   (len(raw_streams), (t2 - t1)))
 
-            for wav in workspace.dataset.waveforms:
-                print(wav.StationXML)
-
             str_repr = workspace.__repr__()
             assert str_repr == 'Events: 1 Stations: 3 Streams: 3'
 
@@ -185,10 +182,6 @@ def test_workspace():
             if instream is None:
                 raise ValueError('Instream should not be none.')
             compare_streams(instream, outstream)
-
-            for wav in workspace.dataset.waveforms:
-                print(wav.StationXML)
-
             workspace.close()
 
             # read in data from a second event and stash it in the workspace
@@ -200,9 +193,6 @@ def test_workspace():
 
             workspace = StreamWorkspace.open(tfile)
             workspace.addStreams(event, raw_streams, label='foo')
-
-            for wav in workspace.dataset.waveforms:
-                print(wav.StationXML)
 
             stations = workspace.getStations(eventid)
 
