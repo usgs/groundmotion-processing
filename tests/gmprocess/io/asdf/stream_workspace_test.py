@@ -55,8 +55,10 @@ def compare_streams(instream, outstream):
         outprov = outstream[0].getProvenance(key)[0]
         for key, invalue in inprov.items():
             outvalue = outprov[key]
-            if isinstance(invalue, (int, float, str)):
+            if isinstance(invalue, (int, str)):
                 assert invalue == outvalue
+            elif isinstance(invalue, float):
+                np.testing.assert_allclose(invalue, outvalue)
             else:
                 assert np.abs(invalue - outvalue) < 1
 
@@ -205,8 +207,9 @@ def test_workspace():
             assert instation == this_stream[0].stats.station
             usid = 'us1000778i'
             inventory = workspace.getInventory(usid)
-            codes = [station.code for station in inventory.networks[0].stations]
-            assert sorted(codes) == ['HSES', 'THZ', 'WPWS', 'WTMC']
+            codes = [station.code for station in
+                     inventory.networks[0].stations]
+            assert sorted(set(codes)) == ['HSES', 'THZ', 'WPWS', 'WTMC']
 
     except Exception as e:
         raise(e)
