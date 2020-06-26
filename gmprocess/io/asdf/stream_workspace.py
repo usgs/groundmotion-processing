@@ -369,14 +369,8 @@ class StreamWorkspace(object):
                         except Exception as e:
                             pass
 
-            # pyasdf has stricter criteria for merging StationXMl files now
-            # so we need to check if a StationXML already exists, or it
-            # might not be merged correctly with the existing StationXML.
-            # This will make sure we only have one StationXML per NET.STA
-            if 'StationXML' not in self.dataset.waveforms[format_netsta(
-                    stream[0].stats)].__dir__():
-                inventory = stream.getInventory()
-                self.dataset.add_stationxml(inventory)
+            inventory = stream.getInventory()
+            self.dataset.add_stationxml(inventory)
 
     def getEventIds(self):
         """Return list of event IDs for events in ASDF file.
@@ -998,7 +992,8 @@ class StreamWorkspace(object):
                 net1 = inventory.networks[0]
                 net2 = tinv.networks[0]
                 if net1.code == net2.code:
-                    net1.stations.append(copy.deepcopy(net2.stations[0]))
+                    for sta in net2.stations:
+                        net1.stations.append(copy.deepcopy(sta))
                 else:
                     inventory.networks.append(copy.deepcopy(net2))
 
