@@ -328,7 +328,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                         '(high gain seismometer) or N (accelerometer).')
                 tr.fail(reason)
         except Exception as e:
-            print('Encountered an error when obtaining the poles and zeros'
+            logging.info('Encountered an error when obtaining the poles and zeros'
                 'information: %s. Now using remove_sensitivity instead of'
                 'remove_response.' % str(e))
             tr.remove_sensitivity(inventory=inv)
