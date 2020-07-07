@@ -14,6 +14,8 @@ from gmprocess.streamcollection import StreamCollection
 from gmprocess.processing import remove_response
 from gmprocess.event import get_event_object
 from gmprocess.phase import create_travel_time_dataframe
+from gmprocess import corner_frequencies
+from gmprocess.filtering import lowpass_filter, highpass_filter
 
 PICKER_CONFIG = get_config(section='pickers')
 
@@ -146,6 +148,9 @@ def test_trim_multiple_events():
     for st in sc:
         st.detrend('demean')
         remove_response(st, None, None)
+        st = corner_frequencies.constant(st)
+        lowpass_filter(st)
+        highpass_filter(st)
         signal_split(st, origin)
         signal_end(st, origin.time, origin.longitude, origin.latitude,
                    origin.magnitude, method='model', model='AS16')
