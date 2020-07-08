@@ -10,6 +10,7 @@ from numpy.testing import assert_almost_equal
 
 def test_weird_sensitivity():
     datafiles, origin = read_data_dir('fdsn', 'us70008dx7', 'SL.KOGS*.mseed')
+    print(datafiles)
     streams = []
     for datafile in datafiles:
         streams += read_fdsn(datafile)
