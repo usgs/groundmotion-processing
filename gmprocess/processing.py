@@ -289,6 +289,8 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
             elif tr.stats.channel[1] == 'N':
                 try:
                 
+                    # If no poles and zeros are present in the xml file, 
+                    # use the sensitivity method.
                     if len(paz.poles) == 0 and len(paz.zeros) == 0:
                         tr.remove_sensitivity(inventory=inv)
                         tr.data *= M_TO_CM  # Convert from m to cm
