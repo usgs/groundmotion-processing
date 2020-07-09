@@ -14,7 +14,7 @@ def test_weird_sensitivity():
     streams = []
     for datafile in datafiles:
         streams += read_fdsn(datafile)
-
+    print(origin)
     sc = StreamCollection(streams)
     psc = process_streams(sc, origin)
     channel = psc[0].select(component='E')[0]
