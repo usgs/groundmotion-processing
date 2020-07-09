@@ -3,7 +3,7 @@ function events = get_events(h5file)
 %
 % See: https://github.com/usgs/groundmotion-processing/#introduction
 % 
-%   waveforms = get_events(h5file)
+%   events = get_events(h5file)
 %   Inputs:
 %    - h5file is the path to a ASDF HDF file created by gmprocess.
 %   Outputs:

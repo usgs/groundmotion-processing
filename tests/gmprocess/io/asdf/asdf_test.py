@@ -31,7 +31,7 @@ def test_asdf():
         outstreams2 = read_asdf(tfile, label='foo')
         assert len(outstreams2) == len(raw_streams)
 
-    except Exception:
+    except Exception as e:
         assert 1 == 2
     finally:
         shutil.rmtree(tdir)
