@@ -99,6 +99,8 @@ function rows = parse_metrics(xmlstr, eventid, network, station, location, chann
                 continue
             end
             imcname = char(imc.getNodeName());
+            % field names cannot contain periods.
+            imcname = strrep(imcname, '.', '_');
             imt_value = str2double(imc.getFirstChild.getData());
             if ~isfield(rows, imcname)
                 estruct = struct;
@@ -113,6 +115,8 @@ function rows = parse_metrics(xmlstr, eventid, network, station, location, chann
             continue
         end
         imcname = char(imc.getNodeName());
+        % field names cannot contain periods.
+        imcname = strrep(imcname, '.', '_');
         rows.(imcname).('event') = eventid;
         rows.(imcname).('network') = network;
         rows.(imcname).('station') = station;
