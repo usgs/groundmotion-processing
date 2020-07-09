@@ -253,11 +253,15 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
             f4 = f_n
         try:
             paz = inv[0][0][0].response.get_paz()
+            print('I found the poles and zeros')
+            print(paz.poles)
+            print(paz.zeros)
             # Check if we have an instrument measuring velocity or accleration
             if tr.stats.channel[1] == 'H':
                 # Attempting to remove instrument response can cause a variety
                 # errors due to bad response metadata
                 try:
+                    print('I am in the H-Station section for some reason...')
                     tr.remove_response(
                         inventory=inv, output=output, water_level=water_level,
                         pre_filt=(f1, f2, f3, f4))
@@ -288,10 +292,12 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                 )
             elif tr.stats.channel[1] == 'N':
                 try:
-                
+                    print('I AM IN THE N-STATION SECTION OF RR')
+
                     # If no poles and zeros are present in the xml file, 
                     # use the sensitivity method.
                     if len(paz.poles) == 0 and len(paz.zeros) == 0:
+                        print('I am removing the sensitivity.')
                         tr.remove_sensitivity(inventory=inv)
                         tr.data *= M_TO_CM  # Convert from m to cm
                         tr.stats.standard.units = output.lower()
@@ -305,6 +311,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                             }
                         )
                     else:
+                        print('I am removing the response')
                         tr.remove_response(
                                 inventory=inv, output=output, water_level=water_level
                                 )
