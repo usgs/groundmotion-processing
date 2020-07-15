@@ -22,7 +22,7 @@ def test_weird_sensitivity():
     #for value in channel.data:
     #    print(value)
     channel.plot(outfile='test1.png')
-    assert_almost_equal(channel.data.max(), 26.665937369683494)
+    assert_almost_equal(channel.data.max(), 62900.191900393373)
 
 
 def test():
