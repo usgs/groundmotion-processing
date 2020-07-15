@@ -17,11 +17,7 @@ def test_weird_sensitivity():
 
     sc = StreamCollection(streams)
     psc = process_streams(sc, origin)
-    #print(psc[0])
     channel = psc[0].select(component='E')[0]
-    #for value in channel.data:
-    #    print(value)
-    channel.plot(outfile='test1.png')
     assert_almost_equal(channel.data.max(), 62900.191900393373)
 
 
