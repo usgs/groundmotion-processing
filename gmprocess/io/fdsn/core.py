@@ -130,22 +130,27 @@ def read_fdsn(filename, config):
     inventory = read_inventory(xmlfile)
     traces = []
     for ttrace in tstream:
+        not_excluded = True
         trace = StationTrace(data=ttrace.data,
                              header=ttrace.stats,
                              inventory=inventory)
         location = ttrace.stats.location
 
+        network = ttrace.stats.network
+        station = ttrace.stats.station
         channel = ttrace.stats.channel
         band  = channel[0]
         if band in exclude_bands:
-            logging.debug('%s has a band which should be excluded.'
-                         'Not reading in %s into stream.' % ttrace)
+            logging.info('%s.%s.%s has a band which should be excluded. '
+                         'The station is not going into the station stream.' 
+                         % (network, station, channel))
+
+            not_excluded = False
             break
 
         if trace.stats.location == '':
             trace.stats.location = '--'
 
-        network = ttrace.stats.network
         if network in LOCATION_CODES:
             codes = LOCATION_CODES[network]
             if location in codes:
@@ -157,7 +162,10 @@ def read_fdsn(filename, config):
         head, tail = os.path.split(filename)
         trace.stats['standard']['source_file'] = tail or os.path.basename(head)
         traces.append(trace)
-    stream = StationStream(traces=traces)
-    streams.append(stream)
+    if not_excluded == True:
+        stream = StationStream(traces=traces)
+        streams.append(stream)
 
-    return streams
+        return streams
+    else:
+        pass

@@ -282,10 +282,12 @@ class FDSNFetcher(DataFetcher):
             except Exception as e:
                 fmt = 'Could not read seed file %s - "%s"'
                 logging.info(fmt % (seed_file, str(e)))
-            streams += tstreams
+            if tstreams == None:
+                pass
+            else: 
+                streams += tstreams
 
         print(len(streams))
-
         stream_collection = StreamCollection(streams=streams,
                                              drop_non_free=self.drop_non_free)
         return stream_collection
