@@ -13,6 +13,7 @@ from obspy import read_inventory
 from gmprocess.stationtrace import StationTrace
 from gmprocess.stationstream import StationStream
 from gmprocess.io.seedname import get_channel_name, is_channel_north
+import gmprocess.io.fdsn.fdsn_fetcher
 from gmprocess.config import get_config
 
 IGNORE_FORMATS = ['KNET']
@@ -101,7 +102,7 @@ def is_fdsn(filename):
     return False
 
 
-def read_fdsn(filename):
+def read_fdsn(filename, config):
     """Read Obspy data file (SAC, MiniSEED, etc).
 
     Args:
@@ -112,7 +113,6 @@ def read_fdsn(filename):
     Returns:
         Stream: StationStream object.
     """
-    print('I AM IN READ_FDSN!!!!!!!')
     logging.debug("Starting read_fdsn.")
     if not is_fdsn(filename):
         raise Exception('%s is not a valid Obspy file format.' % filename)
@@ -135,13 +135,12 @@ def read_fdsn(filename):
                              inventory=inventory)
         location = ttrace.stats.location
 
-        #channel = ttrace.stats.channel
-        #band  = channel[0]
-        #print(band)
-        #if band in exclude_bands:
-        #    logging.info('%s has a band which should be excluded.'
-        #                 'Not reading in %s into stream.' % ttrace)
-        #    break
+        channel = ttrace.stats.channel
+        band  = channel[0]
+        if band in exclude_bands:
+            logging.debug('%s has a band which should be excluded.'
+                         'Not reading in %s into stream.' % ttrace)
+            break
 
         if trace.stats.location == '':
             trace.stats.location = '--'

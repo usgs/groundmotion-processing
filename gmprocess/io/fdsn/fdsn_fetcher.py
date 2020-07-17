@@ -278,11 +278,13 @@ class FDSNFetcher(DataFetcher):
         streams = []
         for seed_file in seed_files:
             try:
-                tstreams = read_fdsn(seed_file)
+                tstreams = read_fdsn(seed_file, config=self.config)
             except Exception as e:
                 fmt = 'Could not read seed file %s - "%s"'
                 logging.info(fmt % (seed_file, str(e)))
             streams += tstreams
+
+        print(len(streams))
 
         stream_collection = StreamCollection(streams=streams,
                                              drop_non_free=self.drop_non_free)
