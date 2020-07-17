@@ -32,6 +32,8 @@ def test_demo_data():
         cmd = ('%s -o %s --report'
                % (gmprocess, out_dir))
         rc, so, se = get_command_output(cmd)
+        print(so.decode())
+        print(se.decode())
         assert rc
 
         cmd = ('%s -o %s --export'

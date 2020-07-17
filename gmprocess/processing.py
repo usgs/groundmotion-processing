@@ -251,63 +251,107 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
             f3 = 0.9 * f_n
         if f4 is None:
             f4 = f_n
-        # Check if we have an instrument measuring velocity or accleration
-        if tr.stats.channel[1] == 'H':
-            # Attempting to remove instrument response can cause a variety
-            # errors due to bad response metadata
-            try:
-                tr.remove_response(
-                    inventory=inv, output=output, water_level=water_level,
-                    pre_filt=(f1, f2, f3, f4))
-                tr.stats.standard.units = output.lower()
-                tr.stats.standard.process_level = PROCESS_LEVELS['V1']
-            except Exception as e:
-                reason = ('Encountered an error when attempting to remove '
-                          'instrument response: %s' % str(e))
-                tr.fail(reason)
-                continue
+        try:
+            paz = inv[0][0][0].response.get_paz()
+            print('I found the poles and zeros')
+            print(paz.poles)
+            print(paz.zeros)
+            # Check if we have an instrument measuring velocity or accleration
+            if tr.stats.channel[1] == 'H':
+                # Attempting to remove instrument response can cause a variety
+                # errors due to bad response metadata
+                try:
+                    print('I am in the H-Station section for some reason...')
+                    tr.remove_response(
+                        inventory=inv, output=output, water_level=water_level,
+                        pre_filt=(f1, f2, f3, f4))
+                    tr.stats.standard.units = output.lower()
+                    tr.stats.standard.process_level = PROCESS_LEVELS['V1']
+                except Exception as e:
+                    reason = ('Encountered an error when attempting to remove '
+                            'instrument response: %s' % str(e))
+                    tr.fail(reason)
+                    continue
 
-            # Response removal can also result in NaN values due to bad
-            # metadata, so check that data contains no NaN or inf values
-            if not np.isfinite(tr.data).all():
-                reason = ('Non-finite values encountered after removing '
-                          'instrument response.')
-                tr.fail(reason)
-                continue
+                # Response removal can also result in NaN values due to bad
+                # metadata, so check that data contains no NaN or inf values
+                if not np.isfinite(tr.data).all():
+                    reason = ('Non-finite values encountered after removing '
+                            'instrument response.')
+                    tr.fail(reason)
+                    continue
 
-            tr.data *= M_TO_CM  # Convert from m to cm
-            tr.setProvenance(
-                'remove_response',
-                {
-                    'method': 'remove_response',
-                    'input_units': 'counts',
-                    'output_units': ABBREV_UNITS[output]
-                }
-            )
-        elif tr.stats.channel[1] == 'N':
-            try:
-                tr.remove_sensitivity(inventory=inv)
                 tr.data *= M_TO_CM  # Convert from m to cm
-                tr.stats.standard.units = output.lower()
-                tr.stats.standard.process_level = PROCESS_LEVELS['V1']
                 tr.setProvenance(
                     'remove_response',
                     {
-                        'method': 'remove_sensitivity',
+                        'method': 'remove_response',
                         'input_units': 'counts',
                         'output_units': ABBREV_UNITS[output]
                     }
                 )
-            except Exception as e:
-                reason = ('Encountered an error when attempting to remove '
-                          'instrument sensitivity: %s' % str(e))
+            elif tr.stats.channel[1] == 'N':
+                try:
+                    print('I AM IN THE N-STATION SECTION OF RR')
+
+                    # If no poles and zeros are present in the xml file, 
+                    # use the sensitivity method.
+                    if len(paz.poles) == 0 and len(paz.zeros) == 0:
+                        print('I am removing the sensitivity.')
+                        tr.remove_sensitivity(inventory=inv)
+                        tr.data *= M_TO_CM  # Convert from m to cm
+                        tr.stats.standard.units = output.lower()
+                        tr.stats.standard.process_level = PROCESS_LEVELS['V1']
+                        tr.setProvenance(
+                            'remove_response',
+                            {
+                                'method': 'remove_sensitivity',
+                                'input_units': 'counts',
+                                'output_units': ABBREV_UNITS[output]
+                            }
+                        )
+                    else:
+                        print('I am removing the response')
+                        tr.remove_response(
+                                inventory=inv, output=output, water_level=water_level
+                                )
+                        tr.data *= M_TO_CM  # Convert from m to cm
+                        tr.stats.standard.units = output.lower()
+                        tr.stats.standard.process_level = PROCESS_LEVELS['V1']
+                        tr.setProvenance(
+                            'remove_response',
+                            {
+                                'method': 'remove_sensitivity',
+                                'input_units': 'counts',
+                                'output_units': ABBREV_UNITS[output]
+                            }
+                        )
+                except Exception as e:
+                    reason = ('Encountered an error when attempting to remove '
+                            'instrument sensitivity: %s' % str(e))
+                    tr.fail(reason)
+                    continue
+            else:
+                reason = ('This instrument type is not supported. '
+                        'The instrument code must be either H '
+                        '(high gain seismometer) or N (accelerometer).')
                 tr.fail(reason)
-                continue
-        else:
-            reason = ('This instrument type is not supported. '
-                      'The instrument code must be either H '
-                      '(high gain seismometer) or N (accelerometer).')
-            tr.fail(reason)
+        except Exception as e:
+            logging.info('Encountered an error when obtaining the poles and zeros'
+                'information: %s. Now using remove_sensitivity instead of'
+                'remove_response.' % str(e))
+            tr.remove_sensitivity(inventory=inv)
+            tr.data *= M_TO_CM  # Convert from m to cm
+            tr.stats.standard.units = output.lower()
+            tr.stats.standard.process_level = PROCESS_LEVELS['V1']
+            tr.setProvenance(
+                'remove_response',
+                {
+                    'method': 'remove_sensitivity',
+                    'input_units': 'counts',
+                    'output_units': ABBREV_UNITS[output]
+                }
+            )
 
     return st
 
