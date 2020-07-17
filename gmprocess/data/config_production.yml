@@ -50,6 +50,8 @@ fetchers:
         # channels : ["BH?", "HH?", "BN?", "HN?"] # only get strong motion and high-gain channels
         channels : ["?N?"] # only get strong motion/broadband accelerometer data
 
+        exclude_bands : ['L']        
+
         network : "*"
 
         # SY is a network for synthetic data

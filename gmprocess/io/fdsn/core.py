@@ -13,8 +13,10 @@ from obspy import read_inventory
 from gmprocess.stationtrace import StationTrace
 from gmprocess.stationstream import StationStream
 from gmprocess.io.seedname import get_channel_name, is_channel_north
+from gmprocess.config import get_config
 
 IGNORE_FORMATS = ['KNET']
+EXCLUDE_BANDS = ['L']
 
 # Bureau of Reclamation has provided a table of location codes with
 # associated descriptions. We are using this primarily to determine whether
@@ -110,9 +112,17 @@ def read_fdsn(filename):
     Returns:
         Stream: StationStream object.
     """
+    print('I AM IN READ_FDSN!!!!!!!')
     logging.debug("Starting read_fdsn.")
     if not is_fdsn(filename):
         raise Exception('%s is not a valid Obspy file format.' % filename)
+
+    exclude_bands = EXCLUDE_BANDS
+    if 'fetchers' in config:
+        if 'FDSNFetcher' in config['fetchers']:
+            fetch_cfg = config['fetchers']['FDSNFetcher']
+            if 'exclude_bands' in fetch_cfg:
+                exclude_bands = fetch_cfg['exclude_bands']
 
     streams = []
     tstream = read(filename)
@@ -124,6 +134,14 @@ def read_fdsn(filename):
                              header=ttrace.stats,
                              inventory=inventory)
         location = ttrace.stats.location
+
+        #channel = ttrace.stats.channel
+        #band  = channel[0]
+        #print(band)
+        #if band in exclude_bands:
+        #    logging.info('%s has a band which should be excluded.'
+        #                 'Not reading in %s into stream.' % ttrace)
+        #    break
 
         if trace.stats.location == '':
             trace.stats.location = '--'
