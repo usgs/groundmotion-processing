@@ -4,6 +4,7 @@
 import os
 import logging
 import glob
+import re
 
 # third party
 from obspy.core.stream import read
@@ -17,7 +18,7 @@ import gmprocess.io.fdsn.fdsn_fetcher
 from gmprocess.config import get_config
 
 IGNORE_FORMATS = ['KNET']
-EXCLUDE_BANDS = ['L']
+EXCLUDE_CHANNELS = ['L??']
 
 # Bureau of Reclamation has provided a table of location codes with
 # associated descriptions. We are using this primarily to determine whether
@@ -117,12 +118,30 @@ def read_fdsn(filename, config):
     if not is_fdsn(filename):
         raise Exception('%s is not a valid Obspy file format.' % filename)
 
-    exclude_bands = EXCLUDE_BANDS
+    exclude_channels = EXCLUDE_CHANNELS
     if 'fetchers' in config:
         if 'FDSNFetcher' in config['fetchers']:
             fetch_cfg = config['fetchers']['FDSNFetcher']
-            if 'exclude_bands' in fetch_cfg:
-                exclude_bands = fetch_cfg['exclude_bands']
+            if 'exclude_channels' in fetch_cfg:
+                exclude_channels = fetch_cfg['exclude_channels']
+
+    exclude_channels_re = []
+    for ch in exclude_channels:
+        wild_loc = []
+        if '?' in ch:
+            iterator = re.finditer('\?', ch)
+            for match in iterator:
+                wild_loc.append(match.start())
+            intermediate_list = []
+            for i in range(len(ch)):
+                if i in wild_loc:
+                    intermediate_list.append('.')
+                else:
+                    intermediate_list.append(ch[i])
+            ch_re = ''.join(intermediate_list)
+        else:
+            ch_re = ch
+        exclude_channels_re.append(ch_re)
 
     streams = []
     tstream = read(filename)
@@ -136,18 +155,19 @@ def read_fdsn(filename, config):
                              inventory=inventory)
         location = ttrace.stats.location
 
+
         network = ttrace.stats.network
         station = ttrace.stats.station
         channel = ttrace.stats.channel
-        band  = channel[0]
-        if band in exclude_bands:
-            logging.info('%s.%s.%s has a band which should be excluded. '
-                         'The station is not going into the station stream.' 
-                         % (network, station, channel))
-
-            not_excluded = False
-            break
-
+        for ch_re in exclude_channels_re:
+            seek_match = re.match(ch_re, channel)
+            if seek_match != None:
+                logging.info('%s.%s.%s has a band which should be excluded. '
+                             'The station is not going into the station stream.' 
+                             % (network, station, channel))
+                not_excluded = False
+                break
+       
         if trace.stats.location == '':
             trace.stats.location = '--'
 
