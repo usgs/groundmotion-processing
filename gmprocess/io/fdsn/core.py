@@ -118,6 +118,8 @@ def read_fdsn(filename, config):
     if not is_fdsn(filename):
         raise Exception('%s is not a valid Obspy file format.' % filename)
 
+    #Assign the variable 'exclude_channels' to the specified list
+    #in the config file. 
     exclude_channels = EXCLUDE_CHANNELS
     if 'fetchers' in config:
         if 'FDSNFetcher' in config['fetchers']:
@@ -125,6 +127,9 @@ def read_fdsn(filename, config):
             if 'exclude_channels' in fetch_cfg:
                 exclude_channels = fetch_cfg['exclude_channels']
 
+    #Make the channels/text included in the 'exclude_channels'
+    #section of the config file into regular-expression form.
+    #e.g. LN? --> LN., B?? --> B.., ENZ --> ENZ
     exclude_channels_re = []
     for ch in exclude_channels:
         wild_loc = []
@@ -159,6 +164,17 @@ def read_fdsn(filename, config):
         network = ttrace.stats.network
         station = ttrace.stats.station
         channel = ttrace.stats.channel
+        
+        #Search for a match using regular expressions.
+        #
+        #
+        #This uses the created regular-expression form
+        #from above, ch_re, and sees if it matches the 
+        #channel provided in the metadata, channel.
+        #
+        #
+        #If no match, the trace is added to the StationStream.
+        #Else, then the station file is not read into the StationStream.
         for ch_re in exclude_channels_re:
             seek_match = re.match(ch_re, channel)
             if seek_match != None:
