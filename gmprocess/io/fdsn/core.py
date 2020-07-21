@@ -132,20 +132,8 @@ def read_fdsn(filename, config):
     #e.g. LN? --> LN., B?? --> B.., ENZ --> ENZ
     exclude_channels_re = []
     for ch in exclude_channels:
-        wild_loc = []
-        if '?' in ch:
-            iterator = re.finditer('\?', ch)
-            for match in iterator:
-                wild_loc.append(match.start())
-            intermediate_list = []
-            for i in range(len(ch)):
-                if i in wild_loc:
-                    intermediate_list.append('.')
-                else:
-                    intermediate_list.append(ch[i])
-            ch_re = ''.join(intermediate_list)
-        else:
-            ch_re = ch
+        
+        ch_re = ch.replace('?','.')
         exclude_channels_re.append(ch_re)
 
     streams = []
