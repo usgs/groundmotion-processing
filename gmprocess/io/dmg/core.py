@@ -144,6 +144,7 @@ def read_dmg(filename, **kwargs):
         Stream: Obspy Stream containing three channels of acceleration data
         (cm/s**2).
     """
+    print('I AM IN READ_DMG()')
     logging.debug("Starting read_dmg.")
     if not is_dmg(filename):
         raise Exception(
@@ -153,6 +154,8 @@ def read_dmg(filename, **kwargs):
     units = kwargs.get('units', 'acc')
     location = kwargs.get('location', '')
 
+    print(units)
+    print(location)
     if units not in UNITS:
         raise Exception('DMG: Not a valid choice of units.')
 
@@ -166,15 +169,20 @@ def read_dmg(filename, **kwargs):
         elif line.lower().find('response') >= 0:
             reader = 'V3'
 
+    print(reader)
     # Count the number of lines in the file
     with open(filename) as f:
         line_count = sum(1 for _ in f)
 
+    print(line_count)
     # Read as many channels as are present in the file
     line_offset = 0
     trace_list = []
     while line_offset < line_count:
+        print('in while loop')
+        print(line_offset)
         if reader == 'V2':
+            print('in V2 section of while loop.')
             traces, line_offset = _read_volume_two(
                 filename, line_offset, location=location, units=units)
             if traces is not None:
@@ -187,6 +195,7 @@ def read_dmg(filename, **kwargs):
         else:
             raise GMProcessException('DMG: Not a supported volume.')
 
+    print('THIS IS THE TRACE LIST: %s'%trace_list)
     stream = StationStream([])
     for trace in trace_list:
         # For our purposes, we only want acceleration, so lets only return
@@ -307,17 +316,20 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
     except StopIteration:
         return (None, 1 + line_offset)
 
+    print('I AM READING THE LINES OF INTEGER DATA!')
     # read in lines of integer data
     skip_rows = V2_TEXT_HDR_ROWS + line_offset
     int_data = _read_lines(skip_rows, V2_INT_HDR_ROWS, V2_INT_FMT, filename)
     int_data = int_data[0:100].astype(np.int32)
-
+    print(int_data)
     # read in lines of float data
     skip_rows += V2_INT_HDR_ROWS
+    print(skip_rows)
     flt_data = _read_lines(skip_rows, V2_REAL_HDR_ROWS, V2_REAL_FMT, filename)
     flt_data = flt_data[:100]
     skip_rows += V2_REAL_HDR_ROWS
-
+    print(skip_rows)
+    print(flt_data)
     # according to the powers that defined the Network.Station.Channel.Location
     # "standard", Location is a two character field.  Most data providers,
     # including csmip/dmg here, don't always provide this.  We'll flag it as
@@ -326,20 +338,28 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
     head, tail = os.path.split(filename)
     hdr['standard']['source_file'] = tail or os.path.basename(head)
 
+    print(hdr)
     traces = []
     # read acceleration data
     if hdr['npts'] > 0:
+        print('In while loop of V2 reader.')
         acc_rows, acc_fmt, unit = _get_data_format(
             filename, skip_rows, hdr['npts'])
-        acc_data = _read_lines(skip_rows + 1, acc_rows, acc_fmt, filename)
+        print(acc_rows)
+        print(acc_fmt)
+        print(unit)
+        acc_data = _read_lines(skip_rows + 1, acc_rows, acc_fmt, filenameI)
+        print(acc_data)
         acc_data = acc_data[:hdr['npts']]
         if unit in UNIT_CONVERSIONS:
             acc_data *= UNIT_CONVERSIONS[unit]
             logging.debug('Data converted from %s to cm/s/s' % (unit))
         else:
-            raise GMProcessException('DMG: %s is not a supported unit.' % unit)
+            raise GMProcessException('DMG: %s is not a supported unit.' % uniti)
         acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()))
-
+        
+        print(acc_data)
+        print(acc_trace)
         response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
         acc_trace.setProvenance('remove_response', response)
 
@@ -376,6 +396,8 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
         skip_rows += int(disp_rows) + 1
 
     new_offset = skip_rows + 1  # there is an 'end of record' line after the data]
+    print(new_offset)
+    print(traces)
     return (traces, new_offset)
 
 
@@ -779,6 +801,7 @@ def _read_lines(skip_rows, max_rows, widths, filename):
     data_arr = np.genfromtxt(filename, skip_header=skip_rows,
                              max_rows=max_rows, dtype=np.float64,
                              delimiter=widths).flatten()
+    print(data_arr)
     return data_arr
 
 

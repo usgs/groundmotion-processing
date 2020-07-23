@@ -29,8 +29,10 @@ def read_data(filename, read_format=None, **kwargs):
     if not os.path.exists(filename):
         raise GMProcessException('Not a file %r' % filename)
     # Get and validate format
+    print(read_format)
     if read_format is None:
         read_format = _get_format(filename)
+        print(read_format)
     else:
         read_format = _validate_format(filename, read_format.lower())
     # Load reader and read file
@@ -38,6 +40,7 @@ def read_data(filename, read_format=None, **kwargs):
     reader_module = importlib.import_module(reader)
     read_name = 'read_' + read_format
     read_method = getattr(reader_module, read_name)
+    print(read_method)
     streams = read_method(filename, **kwargs)
     return streams
 
