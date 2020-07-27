@@ -329,7 +329,7 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
     if hdr['npts'] > 0:
         acc_rows, acc_fmt, unit = _get_data_format(
             filename, skip_rows, hdr['npts'])
-        acc_data = _read_lines(skip_rows + 1, acc_rows, acc_fmt, filenameI)
+        acc_data = _read_lines(skip_rows + 1, acc_rows, acc_fmt, filename)
         acc_data = acc_data[:hdr['npts']]
         if unit in UNIT_CONVERSIONS:
             acc_data *= UNIT_CONVERSIONS[unit]
