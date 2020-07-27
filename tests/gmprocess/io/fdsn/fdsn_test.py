@@ -8,13 +8,19 @@ from gmprocess.processing import process_streams
 from numpy.testing import assert_almost_equal
 
 
-def test_weird_sensitivity():
-    datafiles, origin = read_data_dir('fdsn', 'us70008dx7', 'SL.KOGS*.mseed')
-    print(datafiles)
+def test_channel_exclusion():
+    datafiles, origin = read_data_dir('fdsn', 'se60247871', 'US.LRAL*.mseed')
     streams = []
     for datafile in datafiles:
         streams += read_fdsn(datafile)
-    print(origin)
+    print(streams)
+
+
+def test_weird_sensitivity():
+    datafiles, origin = read_data_dir('fdsn', 'us70008dx7', 'SL.KOGS*.mseed')
+    streams = []
+    for datafile in datafiles:
+        streams += read_fdsn(datafile)
     sc = StreamCollection(streams)
     psc = process_streams(sc, origin)
     channel = psc[0].select(component='E')[0]
