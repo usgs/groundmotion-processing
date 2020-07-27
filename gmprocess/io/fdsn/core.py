@@ -18,7 +18,7 @@ import gmprocess.io.fdsn.fdsn_fetcher
 from gmprocess.config import get_config
 
 IGNORE_FORMATS = ['KNET']
-EXCLUDE_CHANNELS = ['L??']
+EXCLUDE_SEISMOMETERS = ['??.??.LN?.??']
 
 # Bureau of Reclamation has provided a table of location codes with
 # associated descriptions. We are using this primarily to determine whether
@@ -120,21 +120,21 @@ def read_fdsn(filename, config):
 
     #Assign the variable 'exclude_channels' to the specified list
     #in the config file. 
-    exclude_channels = EXCLUDE_CHANNELS
+    exclude_seismometers = EXCLUDE_SEISMOMETERS
     if 'fetchers' in config:
         if 'FDSNFetcher' in config['fetchers']:
             fetch_cfg = config['fetchers']['FDSNFetcher']
-            if 'exclude_channels' in fetch_cfg:
-                exclude_channels = fetch_cfg['exclude_channels']
+            if 'exclude_seismometers' in fetch_cfg:
+                exclude_seismometers = fetch_cfg['exclude_seismometers']
 
     #Make the channels/text included in the 'exclude_channels'
     #section of the config file into regular-expression form.
     #e.g. LN? --> LN., B?? --> B.., ENZ --> ENZ
-    exclude_channels_re = []
-    for ch in exclude_channels:
+    exclude_seismometers_re = []
+    for seismo_id in exclude_seismometers:
         
-        ch_re = ch.replace('?','.')
-        exclude_channels_re.append(ch_re)
+        seismo_re = seismo_id.replace('?','.')
+        exclude_seismometers_re.append(seismo_re)
 
     streams = []
     tstream = read(filename)
@@ -146,13 +146,13 @@ def read_fdsn(filename, config):
         trace = StationTrace(data=ttrace.data,
                              header=ttrace.stats,
                              inventory=inventory)
-        location = ttrace.stats.location
-
-
         network = ttrace.stats.network
         station = ttrace.stats.station
         channel = ttrace.stats.channel
-        
+        location = ttrace.stats.location
+
+        seismo = '%s.%s.%s.%s' % (network, station,
+                                  chanenl, location)        
         #Search for a match using regular expressions.
         #
         #
@@ -163,8 +163,8 @@ def read_fdsn(filename, config):
         #
         #If no match, the trace is added to the StationStream.
         #Else, then the station file is not read into the StationStream.
-        for ch_re in exclude_channels_re:
-            seek_match = re.match(ch_re, channel)
+        for seismo_re in exclude_seismometers_re:
+            seek_match = re.match(seismo_re, seismo)
             if seek_match != None:
                 logging.info('%s.%s.%s has a band which should be excluded. '
                              'The station is not going into the station stream.' 
