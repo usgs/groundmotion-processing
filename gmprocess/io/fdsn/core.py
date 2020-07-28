@@ -18,7 +18,7 @@ import gmprocess.io.fdsn.fdsn_fetcher
 from gmprocess.config import get_config
 
 IGNORE_FORMATS = ['KNET']
-EXCLUDE_SEISMOMETERS = ['??.??.LN?.??']
+EXCLUDE_SEISMOMETERS = ['*.*.??.LN?']
 
 # Bureau of Reclamation has provided a table of location codes with
 # associated descriptions. We are using this primarily to determine whether
@@ -126,16 +126,7 @@ def read_fdsn(filename, config):
             fetch_cfg = config['fetchers']['FDSNFetcher']
             if 'exclude_seismometers' in fetch_cfg:
                 exclude_seismometers = fetch_cfg['exclude_seismometers']
-
-    #Make the channels/text included in the 'exclude_channels'
-    #section of the config file into regular-expression form.
-    #e.g. LN? --> LN., B?? --> B.., ENZ --> ENZ
-    exclude_seismometers_re = []
-    for seismo_id in exclude_seismometers:
-        
-        seismo_re = seismo_id.replace('?','.')
-        exclude_seismometers_re.append(seismo_re)
-
+    
     streams = []
     tstream = read(filename)
     xmlfile = _get_station_file(filename, tstream)
@@ -149,31 +140,62 @@ def read_fdsn(filename, config):
         network = ttrace.stats.network
         station = ttrace.stats.station
         channel = ttrace.stats.channel
+
+        if ttrace.stats.location == '':
+            ttrace.stats.location = '--'
         location = ttrace.stats.location
 
+        #full instrument name for matching purposes
         seismo = '%s.%s.%s.%s' % (network, station,
-                                  chanenl, location)        
+                                  location, channel) 
+
         #Search for a match using regular expressions.
-        #
-        #
-        #This uses the created regular-expression form
-        #from above, ch_re, and sees if it matches the 
-        #channel provided in the metadata, channel.
-        #
-        #
-        #If no match, the trace is added to the StationStream.
-        #Else, then the station file is not read into the StationStream.
-        for seismo_re in exclude_seismometers_re:
+        for seismo_id in exclude_seismometers:
+            #Convert '?' wildcard into regular expression equivalent.
+            seismo_re = seismo_id.replace('.', '\.').replace('?', '.')
+            print(seismo_id)
+            #Convert '*' wildcard into regular expression equivalent. 
+            #
+            #See if there are '*' in the exclusion list. If so, we will 
+            #find if the asterik is in the first position, meaning that 
+            #we will be not attempting to match a specific network. 
+            #
+            #
+            #If '*' is not in the first position but in the string, then we know
+            #that it appears in the station section of the string only.
+            if '*' in seismo_re:
+                ast_idx = seismo_re.find('*')
+                if ast_idx == 0:
+                    net_string_re = ''
+                    for character in network:
+                        net_string_re += '.'
+                    seismo_re = seismo_re.replace('*',
+                                                    net_string_re,
+                                                    1)
+                #We must look to see if there is still an '*' in the station
+                #portion of the string since we could have entires such as 
+                #'*.1234' where we do not want to repalce specific characters
+                #with '.' since they are not treated similarly as regular 
+                #expressions.
+                if '*' in seismo_re:
+                    sta_string_re = ''
+                    for character in station:
+                        sta_string_re += '.'
+                    seismo_re = seismo_re.replace('*', sta_string_re)
+                else:
+                    pass
+            #seek a match. If there is a match, then we do not read in the trace
+            #into the StationStream. Else, it will be read in.
+            print(seismo_re)
+            print(seismo)
             seek_match = re.match(seismo_re, seismo)
+            print(seek_match)
             if seek_match != None:
-                logging.info('%s.%s.%s has a band which should be excluded. '
+                logging.info('%s.%s.%s.%s is an instrument that should be excluded. '
                              'The station is not going into the station stream.' 
-                             % (network, station, channel))
+                             % (network, station, location, channel))
                 not_excluded = False
                 break
-       
-        if trace.stats.location == '':
-            trace.stats.location = '--'
 
         if network in LOCATION_CODES:
             codes = LOCATION_CODES[network]

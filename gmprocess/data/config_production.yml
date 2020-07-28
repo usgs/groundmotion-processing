@@ -50,8 +50,10 @@ fetchers:
         # channels : ["BH?", "HH?", "BN?", "HN?"] # only get strong motion and high-gain channels
         channels : ["?N?"] # only get strong motion/broadband accelerometer data
 
-        # List instruments that should be avoided. '?' wildcards are useable. 
-        exclude_seismometers : ['??.??.LN?.??']        
+        # List instruments that should be avoided. 
+        # '?' wildcards are useable for Location Code and Channel.
+        # '*' wildcard is useable for the Network and Station ID  
+        exclude_seismometers : ['*.*.??.LN?']        
 
         network : "*"
 
