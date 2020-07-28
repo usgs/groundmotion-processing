@@ -153,7 +153,6 @@ def read_fdsn(filename, config):
         for seismo_id in exclude_seismometers:
             #Convert '?' wildcard into regular expression equivalent.
             seismo_re = seismo_id.replace('.', '\.').replace('?', '.')
-            print(seismo_id)
             #Convert '*' wildcard into regular expression equivalent. 
             #
             #See if there are '*' in the exclusion list. If so, we will 
@@ -186,10 +185,7 @@ def read_fdsn(filename, config):
                     pass
             #seek a match. If there is a match, then we do not read in the trace
             #into the StationStream. Else, it will be read in.
-            print(seismo_re)
-            print(seismo)
             seek_match = re.match(seismo_re, seismo)
-            print(seek_match)
             if seek_match != None:
                 logging.info('%s.%s.%s.%s is an instrument that should be excluded. '
                              'The station is not going into the station stream.' 
