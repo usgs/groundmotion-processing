@@ -13,7 +13,7 @@ def test_channel_exclusion():
     streams = []
     for datafile in datafiles:
         streams += read_fdsn(datafile)
-    print(streams)
+    assert len(streams) == 0
 
 
 def test_weird_sensitivity():
@@ -59,5 +59,6 @@ def test():
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
+    test_channel_exclusion()
     test_weird_sensitivity()
     test()
