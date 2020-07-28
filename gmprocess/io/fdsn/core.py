@@ -172,6 +172,15 @@ def read_fdsn(filename, exclude_seismometers):
                     seismo_re = seismo_re.replace('*', sta_string_re)
                 else:
                     pass
+
+            #Change channel orientation (if explicitly defined) to a set that includes
+            #the channel's alphabetical and numerical forms. 
+            last_character = seismo_re[len(seismo_re) - 1]
+            if last_character in ['E', 'N', '1', '2']:
+                if last_character in ['E', '1']:
+                    seismo_re = seismo_re.replace(last_character, '[E1]')
+                elif last_character in ['N', '2']:
+                    seismo_re = seismo_re.replace(last_character, '[N2]')
             #seek a match. If there is a match, then we do not read in the trace
             #into the StationStream. Else, it will be read in.
             seek_match = re.match(seismo_re, seismo)
