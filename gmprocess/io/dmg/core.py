@@ -311,11 +311,13 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
     skip_rows = V2_TEXT_HDR_ROWS + line_offset
     int_data = _read_lines(skip_rows, V2_INT_HDR_ROWS, V2_INT_FMT, filename)
     int_data = int_data[0:100].astype(np.int32)
+
     # read in lines of float data
     skip_rows += V2_INT_HDR_ROWS
     flt_data = _read_lines(skip_rows, V2_REAL_HDR_ROWS, V2_REAL_FMT, filename)
     flt_data = flt_data[:100]
     skip_rows += V2_REAL_HDR_ROWS
+
     # according to the powers that defined the Network.Station.Channel.Location
     # "standard", Location is a two character field.  Most data providers,
     # including csmip/dmg here, don't always provide this.  We'll flag it as
@@ -335,9 +337,10 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
             acc_data *= UNIT_CONVERSIONS[unit]
             logging.debug('Data converted from %s to cm/s/s' % (unit))
         else:
-            raise GMProcessException('DMG: %s is not a supported unit.' % uniti)
+            raise GMProcessException('DMG: %s is not a supported unit.' % unit)
         acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()))
-        
+
+
         response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
         acc_trace.setProvenance('remove_response', response)
 
