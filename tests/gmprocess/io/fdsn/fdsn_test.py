@@ -10,113 +10,112 @@ from numpy.testing import assert_almost_equal
 
 def test_channel_exclusion():
     
-    exclude_seismometers = ['*.*.??.???']
+    exclude_patterns = ['*.*.??.???']
     datafiles, origin = read_data_dir('fdsn', 'se60247871', 'US.LRAL*.mseed')
     streams = []
     for datafile in datafiles:
-        tstreams = read_fdsn(datafile, exclude_seismometers)
+        tstreams = read_fdsn(datafile, exclude_patterns=exclude_patterns)
         if tstreams == None:
             continue
         else:
             streams += tstreams
     assert len(streams) == 0
 
-    exclude_seismometers = ['*.*.??.LN?']
+    exclude_patterns = ['*.*.??.LN?']
     datafiles, origin = read_data_dir('fdsn', 'se60247871', 'US.LRAL*.mseed')
     streams = []
     for datafile in datafiles:
-        tstreams = read_fdsn(datafile, exclude_seismometers)
+        tstreams = read_fdsn(datafile, exclude_patterns=exclude_patterns)
         if tstreams == None:
             continue
         else:
             streams += tstreams
     assert len(streams) == 0
 
-    exclude_seismometers = ['*.*.??.LN?']
+    exclude_patterns = ['*.*.??.LN?']
     datafiles, origin = read_data_dir('fdsn', 'nc72282711', 'BK.CMB*.mseed')
     streams = []
     for datafile in datafiles:
-        tstreams = read_fdsn(datafile, exclude_seismometers)
+        tstreams = read_fdsn(datafile, exclude_patterns=exclude_patterns)
         if tstreams == None:
             continue
         else:
             streams += tstreams
     assert len(streams) == 3
 
-    exclude_seismometers = ['*.*.??.[BH]NZ']
+    exclude_patterns = ['*.*.??.[BH]NZ']
     datafiles, origin = read_data_dir('fdsn', 'ci38445975', 'CI.MIKB*.mseed')
     streams = []
     for datafile in datafiles:
-        tstreams = read_fdsn(datafile, exclude_seismometers)
+        tstreams = read_fdsn(datafile, exclude_patterns=exclude_patterns)
         if tstreams == None:
             continue
         else:
             streams += tstreams
     assert len(streams) == 4
 
-    exclude_seismometers = ['US.*.??.???']
+    exclude_patterns = ['US.*.??.???']
     datafiles, origin = read_data_dir('fdsn', 'se60247871', 'US.LRAL*.mseed')
     streams = []
     for datafile in datafiles:
-        tstreams = read_fdsn(datafile, exclude_seismometers)
+        tstreams = read_fdsn(datafile, exclude_patterns=exclude_patterns)
         if tstreams == None:
             continue
         else:
             streams += tstreams
     assert len(streams) == 0
 
-    exclude_seismometers = ['*.LRAL.??.???']
+    exclude_patterns = ['*.LRAL.??.???']
     datafiles, origin = read_data_dir('fdsn', 'se60247871', 'US.LRAL*.mseed')
     streams = []
     for datafile in datafiles:
-        tstreams = read_fdsn(datafile, exclude_seismometers)
+        tstreams = read_fdsn(datafile, exclude_patterns=exclude_patterns)
         if tstreams == None:
             continue
         else:
             streams += tstreams
     assert len(streams) == 0
 
-    exclude_seismometers = ['*.*.40.???']
+    exclude_patterns = ['*.*.40.???']
     datafiles, origin = read_data_dir('fdsn', 'nc73300395', 'BK.VALB*.mseed')
     streams = []
     for datafile in datafiles:
-        tstreams = read_fdsn(datafile, exclude_seismometers)
+        tstreams = read_fdsn(datafile, exclude_patterns=exclude_patterns)
         if tstreams == None:
             continue
         else:
             streams += tstreams
     assert len(streams) == 0
 
-    exclude_seismometers = ['US.LRAL.20.LNZ']
+    exclude_patterns = ['US.LRAL.20.LNZ']
     datafiles, origin = read_data_dir('fdsn', 'se60247871', 'US.LRAL*.mseed')
     streams = []
     for datafile in datafiles:
-        tstreams = read_fdsn(datafile, exclude_seismometers)
+        tstreams = read_fdsn(datafile, exclude_patterns=exclude_patterns)
         if tstreams == None:
             continue
         else:
             streams += tstreams
     assert len(streams) == 2
 
-    exclude_seismometers = ['US.LRAL.20.LNE']
-    datafiles, origin = read_data_dir('fdsn', 'se60247871', 'US.LRAL*.mseed')
+    exclude_patterns = ['*.*.??.BN?', '*.*.??.HN?']
+    datafiles, origin = read_data_dir('fdsn', 'ci38445975', 'CI.MIKB*.mseed')
     streams = []
     for datafile in datafiles:
-        tstreams = read_fdsn(datafile, exclude_seismometers)
+        tstreams = read_fdsn(datafile, exclude_patterns=exclude_patterns)
         if tstreams == None:
             continue
         else:
             streams += tstreams
-    assert len(streams) == 2
+    assert len(streams) == 0
 
 
 
 def test_weird_sensitivity():
-    exclude_seismometers = ['*.*.??.LN?']
     datafiles, origin = read_data_dir('fdsn', 'us70008dx7', 'SL.KOGS*.mseed')
     streams = []
     for datafile in datafiles:
-        streams += read_fdsn(datafile, exclude_seismometers)
+        streams += read_fdsn(datafile)
     sc = StreamCollection(streams)
     psc = process_streams(sc, origin)
     channel = psc[0].select(component='E')[0]
@@ -124,18 +123,17 @@ def test_weird_sensitivity():
 
 
 def test():
-    exclude_seismometers = ['*.*.??.LN?']
     datafiles, origin = read_data_dir('fdsn', 'nc72282711', 'BK.CMB*.mseed')
     streams = []
     for datafile in datafiles:
-        streams += read_fdsn(datafile, exclude_seismometers)
+        streams += read_fdsn(datafile)
 
     assert streams[0].get_id() == 'BK.CMB.HN'
 
     datafiles, origin = read_data_dir('fdsn', 'nc72282711', 'TA.M04C*.mseed')
     streams = []
     for datafile in datafiles:
-        streams += read_fdsn(datafile, exclude_seismometers)
+        streams += read_fdsn(datafile)
 
     assert streams[0].get_id() == 'TA.M04C.HN'
 
@@ -143,7 +141,7 @@ def test():
     datafiles, origin = read_data_dir('fdsn', 'nc73300395', 'BK.VALB*.mseed')
     streams = []
     for datafile in datafiles:
-        streams += read_fdsn(datafile, exclude_seismometers)
+        streams += read_fdsn(datafile)
 
     # get all channel names
     channels = sorted([st[0].stats.channel for st in streams])
