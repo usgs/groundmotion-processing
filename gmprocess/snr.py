@@ -158,7 +158,7 @@ def snr_check(tr, mag, threshold=3.0, min_freq='f0', max_freq=5.0, f0_options={
         min_snr = np.min(snr[(freq >= min_freq) & (freq <= max_freq)])
         if min_snr < threshold:
             tr.fail('Failed SNR check; SNR less than threshold.')
-        snr_conf = {
+    snr_conf = {
         'threshold': threshold,
         'min_freq': min_freq,
         'max_freq': max_freq

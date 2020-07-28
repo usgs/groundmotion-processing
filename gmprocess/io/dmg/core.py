@@ -340,7 +340,6 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
             raise GMProcessException('DMG: %s is not a supported unit.' % unit)
         acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()))
 
-
         response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
         acc_trace.setProvenance('remove_response', response)
 
