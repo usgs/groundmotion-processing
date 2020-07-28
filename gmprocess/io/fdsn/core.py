@@ -14,8 +14,6 @@ from obspy import read_inventory
 from gmprocess.stationtrace import StationTrace
 from gmprocess.stationstream import StationStream
 from gmprocess.io.seedname import get_channel_name, is_channel_north
-import gmprocess.io.fdsn.fdsn_fetcher
-from gmprocess.config import get_config
 
 IGNORE_FORMATS = ['KNET']
 
