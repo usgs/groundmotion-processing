@@ -14,8 +14,10 @@ from obspy import read_inventory
 from gmprocess.stationtrace import StationTrace
 from gmprocess.stationstream import StationStream
 from gmprocess.io.seedname import get_channel_name, is_channel_north
+from gmprocess.config import get_config
 
 IGNORE_FORMATS = ['KNET']
+EXCLUDE_PATTERNS = ['*.*.??.LN?']
 
 
 # Bureau of Reclamation has provided a table of location codes with
@@ -101,7 +103,7 @@ def is_fdsn(filename):
     return False
 
 
-def read_fdsn(filename, exclude_seismometers):
+def read_fdsn(filename, **kwargs):
     """Read Obspy data file (SAC, MiniSEED, etc).
 
     Args:
@@ -116,6 +118,17 @@ def read_fdsn(filename, exclude_seismometers):
     if not is_fdsn(filename):
         raise Exception('%s is not a valid Obspy file format.' % filename)
  
+    if 'exclude_patterns' in kwargs:
+        exclude_patterns = kwargs.get('exclude_patterns', EXCLUDE_PATTERNS)
+    else:
+        try:
+            fetch_cfg = get_config(section='fetchers')
+            fdsn_cfg = fetch_cfg['FDSNFetcher']
+            if 'exclude_patterns' in fdsn_cfg:
+                exclude_patterns = fdsn_cfg['exclude_patterns']
+        except:
+            exclude_patterns = EXCLUDE_PATTERNS
+
     streams = []
     tstream = read(filename)
     xmlfile = _get_station_file(filename, tstream)
@@ -135,62 +148,39 @@ def read_fdsn(filename, exclude_seismometers):
         location = ttrace.stats.location
 
         #full instrument name for matching purposes
-        seismo = '%s.%s.%s.%s' % (network, station,
+        instrument = '%s.%s.%s.%s' % (network, station,
                                   location, channel) 
 
         #Search for a match using regular expressions.
-        for seismo_id in exclude_seismometers:
-            #Convert '?' wildcard into regular expression equivalent.
-            seismo_re = seismo_id.replace('.', '\.').replace('?', '.')
-            #Convert '*' wildcard into regular expression equivalent. 
-            #
-            #See if there are '*' in the exclusion list. If so, we will 
-            #find if the asterik is in the first position, meaning that 
-            #we will be not attempting to match a specific network. 
-            #
-            #
-            #If '*' is not in the first position but in the string, then we know
-            #that it appears in the station section of the string only.
-            if '*' in seismo_re:
-                ast_idx = seismo_re.find('*')
-                if ast_idx == 0:
-                    net_string_re = ''
-                    for character in network:
-                        net_string_re += '.'
-                    seismo_re = seismo_re.replace('*',
-                                                    net_string_re,
-                                                    1)
-                #We must look to see if there is still an '*' in the station
-                #portion of the string since we could have entires such as 
-                #'*.1234' where we do not want to repalce specific characters
-                #with '.' since they are not treated similarly as regular 
-                #expressions.
-                if '*' in seismo_re:
-                    sta_string_re = ''
-                    for character in station:
-                        sta_string_re += '.'
-                    seismo_re = seismo_re.replace('*', sta_string_re)
-                else:
-                    pass
-
-            #Change channel orientation (if explicitly defined) to a set that includes
-            #the channel's alphabetical and numerical forms. 
-            last_character = seismo_re[len(seismo_re) - 1]
-            if last_character in ['E', 'N', '1', '2']:
-                if last_character in ['E', '1']:
-                    seismo_re = seismo_re.replace(last_character, '[E1]')
-                elif last_character in ['N', '2']:
-                    seismo_re = seismo_re.replace(last_character, '[N2]')
-            #seek a match. If there is a match, then we do not read in the trace
-            #into the StationStream. Else, it will be read in.
-            seek_match = re.match(seismo_re, seismo)
-            if seek_match != None:
-                logging.info('%s.%s.%s.%s is an instrument that should be excluded. '
+        for pattern in exclude_patterns:
+            
+            #Split each string into components. Check if
+            #components are of equal length.
+            pparts = pattern.split('.')
+            instparts = instrument.split('.')
+            if len(pparts) != len(instparts):
+                logging.info('There are too many fields in the '
+                             'exclude_pattern element. Ensure '
+                             'that you have 4 fields: Network, '
+                             'Station ID, Location Code, and Channel.')
+                sys.exit(0)
+            #Loop over each component, convert the pattern's field 
+            #into its regular expression form, and see if the
+            #pattern is in the instrument's component. 
+            no_match = False
+            for pat, instfield in zip(pparts, instparts):
+                pat = pat.replace('*','.*').replace('?', '.')
+                if re.search(pat, instfield) is None:
+                    no_match = True
+                    break
+            if no_match:
+                continue
+            else:
+                logging.info('%s is an instrument that should be excluded. '
                              'The station is not going into the station stream.' 
-                             % (network, station, location, channel))
-                not_excluded = False
+                             % instrument)
                 break
-
+        
         if network in LOCATION_CODES:
             codes = LOCATION_CODES[network]
             if location in codes:
@@ -202,7 +192,7 @@ def read_fdsn(filename, exclude_seismometers):
         head, tail = os.path.split(filename)
         trace.stats['standard']['source_file'] = tail or os.path.basename(head)
         traces.append(trace)
-    if not_excluded == True:
+    if no_match == True:
         stream = StationStream(traces=traces)
         streams.append(stream)
 
