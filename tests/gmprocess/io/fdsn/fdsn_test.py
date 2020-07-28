@@ -9,10 +9,11 @@ from numpy.testing import assert_almost_equal
 
 
 def test_channel_exclusion():
+    exclude_seismometers = ['*.*.??.LN?']
     datafiles, origin = read_data_dir('fdsn', 'se60247871', 'US.LRAL*.mseed')
     streams = []
     for datafile in datafiles:
-        streams += read_fdsn(datafile)
+        streams += read_fdsn(datafile, exclude_seismometers)
     assert len(streams) == 0
 
 

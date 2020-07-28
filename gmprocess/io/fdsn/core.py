@@ -200,5 +200,3 @@ def read_fdsn(filename, exclude_seismometers):
         streams.append(stream)
 
         return streams
-    else:
-       continue 
