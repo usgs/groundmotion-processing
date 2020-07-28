@@ -18,7 +18,7 @@ import gmprocess.io.fdsn.fdsn_fetcher
 from gmprocess.config import get_config
 
 IGNORE_FORMATS = ['KNET']
-EXCLUDE_SEISMOMETERS = ['*.*.??.LN?']
+
 
 # Bureau of Reclamation has provided a table of location codes with
 # associated descriptions. We are using this primarily to determine whether
@@ -103,7 +103,7 @@ def is_fdsn(filename):
     return False
 
 
-def read_fdsn(filename, config):
+def read_fdsn(filename, exclude_seismometers):
     """Read Obspy data file (SAC, MiniSEED, etc).
 
     Args:
@@ -117,16 +117,7 @@ def read_fdsn(filename, config):
     logging.debug("Starting read_fdsn.")
     if not is_fdsn(filename):
         raise Exception('%s is not a valid Obspy file format.' % filename)
-
-    #Assign the variable 'exclude_channels' to the specified list
-    #in the config file. 
-    exclude_seismometers = EXCLUDE_SEISMOMETERS
-    if 'fetchers' in config:
-        if 'FDSNFetcher' in config['fetchers']:
-            fetch_cfg = config['fetchers']['FDSNFetcher']
-            if 'exclude_seismometers' in fetch_cfg:
-                exclude_seismometers = fetch_cfg['exclude_seismometers']
-    
+ 
     streams = []
     tstream = read(filename)
     xmlfile = _get_station_file(filename, tstream)
@@ -210,4 +201,4 @@ def read_fdsn(filename, config):
 
         return streams
     else:
-        pass
+       continue 
