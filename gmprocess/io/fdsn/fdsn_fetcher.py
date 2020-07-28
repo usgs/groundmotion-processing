@@ -28,6 +28,7 @@ RADIUS = 4  # dd
 TIME_BEFORE = 10  # seconds
 TIME_AFTER = 420  # seconds
 CHANNELS = ["HN[ZNE]"]  # default to only get strong motion stations
+EXCLUDE_SEISMOMETERS = ['*.*.??.LN?'] # default to remove LN? channels
 EXCLUDE_NETWORKS = ['SY']
 EXCLUDE_STATIONS = []
 REJECT_CHANNELS_WITH_GAPS = True
@@ -86,6 +87,7 @@ class FDSNFetcher(DataFetcher):
         cfg_time_before = None
         cfg_time_after = None
         cfg_channels = None
+        exclude_seismometers = EXCLUDE_SEISMOMETERS
         exclude_networks = EXCLUDE_NETWORKS
         exclude_stations = EXCLUDE_STATIONS
         reject_channels_with_gaps = REJECT_CHANNELS_WITH_GAPS
@@ -104,6 +106,8 @@ class FDSNFetcher(DataFetcher):
                     cfg_time_after = float(fetch_cfg['time_after'])
                 if 'channels' in fetch_cfg:
                     cfg_channels = fetch_cfg['channels']
+                if 'exclude_seismometers' in fetch_cfg:
+                    exclude_seismometers = fetch_cfg['exclude_seismometers']
                 if 'exclude_networks' in fetch_cfg:
                     exclude_networks = fetch_cfg['exclude_networks']
                 if 'exclude_stations' in fetch_cfg:
@@ -278,12 +282,12 @@ class FDSNFetcher(DataFetcher):
         streams = []
         for seed_file in seed_files:
             try:
-                tstreams = read_fdsn(seed_file, config=self.config)
+                tstreams = read_fdsn(seed_file, exclude_seismometers)
             except Exception as e:
                 fmt = 'Could not read seed file %s - "%s"'
                 logging.info(fmt % (seed_file, str(e)))
             if tstreams == None:
-                pass
+                continue
             else: 
                 streams += tstreams
 
