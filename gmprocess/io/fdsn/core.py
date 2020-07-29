@@ -4,6 +4,7 @@
 import os
 import logging
 import glob
+import re
 
 # third party
 from obspy.core.stream import read
@@ -13,8 +14,11 @@ from obspy import read_inventory
 from gmprocess.stationtrace import StationTrace
 from gmprocess.stationstream import StationStream
 from gmprocess.io.seedname import get_channel_name, is_channel_north
+from gmprocess.config import get_config
 
 IGNORE_FORMATS = ['KNET']
+EXCLUDE_PATTERNS = ['*.*.??.LN?']
+
 
 # Bureau of Reclamation has provided a table of location codes with
 # associated descriptions. We are using this primarily to determine whether
@@ -99,7 +103,7 @@ def is_fdsn(filename):
     return False
 
 
-def read_fdsn(filename):
+def read_fdsn(filename, **kwargs):
     """Read Obspy data file (SAC, MiniSEED, etc).
 
     Args:
@@ -113,6 +117,17 @@ def read_fdsn(filename):
     logging.debug("Starting read_fdsn.")
     if not is_fdsn(filename):
         raise Exception('%s is not a valid Obspy file format.' % filename)
+ 
+    if 'exclude_patterns' in kwargs:
+        exclude_patterns = kwargs.get('exclude_patterns', EXCLUDE_PATTERNS)
+    else:
+        try:
+            fetch_cfg = get_config(section='fetchers')
+            fdsn_cfg = fetch_cfg['FDSNFetcher']
+            if 'exclude_patterns' in fdsn_cfg:
+                exclude_patterns = fdsn_cfg['exclude_patterns']
+        except:
+            exclude_patterns = EXCLUDE_PATTERNS
 
     streams = []
     tstream = read(filename)
@@ -120,15 +135,52 @@ def read_fdsn(filename):
     inventory = read_inventory(xmlfile)
     traces = []
     for ttrace in tstream:
+        not_excluded = True
         trace = StationTrace(data=ttrace.data,
                              header=ttrace.stats,
                              inventory=inventory)
+        network = ttrace.stats.network
+        station = ttrace.stats.station
+        channel = ttrace.stats.channel
+
+        if ttrace.stats.location == '':
+            ttrace.stats.location = '--'
         location = ttrace.stats.location
 
-        if trace.stats.location == '':
-            trace.stats.location = '--'
+        #full instrument name for matching purposes
+        instrument = '%s.%s.%s.%s' % (network, station,
+                                  location, channel) 
 
-        network = ttrace.stats.network
+        #Search for a match using regular expressions.
+        for pattern in exclude_patterns:
+            
+            #Split each string into components. Check if
+            #components are of equal length.
+            pparts = pattern.split('.')
+            instparts = instrument.split('.')
+            if len(pparts) != len(instparts):
+                logging.info('There are too many fields in the '
+                             'exclude_pattern element. Ensure '
+                             'that you have 4 fields: Network, '
+                             'Station ID, Location Code, and Channel.')
+                sys.exit(0)
+            #Loop over each component, convert the pattern's field 
+            #into its regular expression form, and see if the
+            #pattern is in the instrument's component. 
+            no_match = False
+            for pat, instfield in zip(pparts, instparts):
+                pat = pat.replace('*','.*').replace('?', '.')
+                if re.search(pat, instfield) is None:
+                    no_match = True
+                    break
+            if no_match:
+                continue
+            else:
+                logging.info('%s is an instrument that should be excluded. '
+                             'The station is not going into the station stream.' 
+                             % instrument)
+                break
+        
         if network in LOCATION_CODES:
             codes = LOCATION_CODES[network]
             if location in codes:
@@ -140,7 +192,8 @@ def read_fdsn(filename):
         head, tail = os.path.split(filename)
         trace.stats['standard']['source_file'] = tail or os.path.basename(head)
         traces.append(trace)
-    stream = StationStream(traces=traces)
-    streams.append(stream)
+    if no_match == True:
+        stream = StationStream(traces=traces)
+        streams.append(stream)
 
-    return streams
+        return streams
