@@ -8,13 +8,114 @@ from gmprocess.processing import process_streams
 from numpy.testing import assert_almost_equal
 
 
+def test_channel_exclusion():
+    
+    exclude_patterns = ['*.*.??.???']
+    datafiles, origin = read_data_dir('fdsn', 'se60247871', 'US.LRAL*.mseed')
+    streams = []
+    for datafile in datafiles:
+        tstreams = read_fdsn(datafile, exclude_patterns=exclude_patterns)
+        if tstreams == None:
+            continue
+        else:
+            streams += tstreams
+    assert len(streams) == 0
+
+    exclude_patterns = ['*.*.??.LN?']
+    datafiles, origin = read_data_dir('fdsn', 'se60247871', 'US.LRAL*.mseed')
+    streams = []
+    for datafile in datafiles:
+        tstreams = read_fdsn(datafile, exclude_patterns=exclude_patterns)
+        if tstreams == None:
+            continue
+        else:
+            streams += tstreams
+    assert len(streams) == 0
+
+    exclude_patterns = ['*.*.??.LN?']
+    datafiles, origin = read_data_dir('fdsn', 'nc72282711', 'BK.CMB*.mseed')
+    streams = []
+    for datafile in datafiles:
+        tstreams = read_fdsn(datafile, exclude_patterns=exclude_patterns)
+        if tstreams == None:
+            continue
+        else:
+            streams += tstreams
+    assert len(streams) == 3
+
+    exclude_patterns = ['*.*.??.[BH]NZ']
+    datafiles, origin = read_data_dir('fdsn', 'ci38445975', 'CI.MIKB*.mseed')
+    streams = []
+    for datafile in datafiles:
+        tstreams = read_fdsn(datafile, exclude_patterns=exclude_patterns)
+        if tstreams == None:
+            continue
+        else:
+            streams += tstreams
+    assert len(streams) == 4
+
+    exclude_patterns = ['US.*.??.???']
+    datafiles, origin = read_data_dir('fdsn', 'se60247871', 'US.LRAL*.mseed')
+    streams = []
+    for datafile in datafiles:
+        tstreams = read_fdsn(datafile, exclude_patterns=exclude_patterns)
+        if tstreams == None:
+            continue
+        else:
+            streams += tstreams
+    assert len(streams) == 0
+
+    exclude_patterns = ['*.LRAL.??.???']
+    datafiles, origin = read_data_dir('fdsn', 'se60247871', 'US.LRAL*.mseed')
+    streams = []
+    for datafile in datafiles:
+        tstreams = read_fdsn(datafile, exclude_patterns=exclude_patterns)
+        if tstreams == None:
+            continue
+        else:
+            streams += tstreams
+    assert len(streams) == 0
+
+    exclude_patterns = ['*.*.40.???']
+    datafiles, origin = read_data_dir('fdsn', 'nc73300395', 'BK.VALB*.mseed')
+    streams = []
+    for datafile in datafiles:
+        tstreams = read_fdsn(datafile, exclude_patterns=exclude_patterns)
+        if tstreams == None:
+            continue
+        else:
+            streams += tstreams
+    assert len(streams) == 0
+
+    exclude_patterns = ['US.LRAL.20.LNZ']
+    datafiles, origin = read_data_dir('fdsn', 'se60247871', 'US.LRAL*.mseed')
+    streams = []
+    for datafile in datafiles:
+        tstreams = read_fdsn(datafile, exclude_patterns=exclude_patterns)
+        if tstreams == None:
+            continue
+        else:
+            streams += tstreams
+    assert len(streams) == 2
+
+    exclude_patterns = ['*.*.??.BN?', '*.*.??.HN?']
+    datafiles, origin = read_data_dir('fdsn', 'ci38445975', 'CI.MIKB*.mseed')
+    streams = []
+    for datafile in datafiles:
+        tstreams = read_fdsn(datafile, exclude_patterns=exclude_patterns)
+        if tstreams == None:
+            continue
+        else:
+            streams += tstreams
+    assert len(streams) == 0
+
+
+
 def test_weird_sensitivity():
     datafiles, origin = read_data_dir('fdsn', 'us70008dx7', 'SL.KOGS*.mseed')
-    print(datafiles)
     streams = []
     for datafile in datafiles:
         streams += read_fdsn(datafile)
-
     sc = StreamCollection(streams)
     psc = process_streams(sc, origin)
     channel = psc[0].select(component='E')[0]
@@ -53,5 +154,6 @@ def test():
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
+    test_channel_exclusion()
     test_weird_sensitivity()
     test()
