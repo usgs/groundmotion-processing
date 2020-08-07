@@ -173,8 +173,8 @@ def draw_stations_map(pstreams, event, event_dir):
     ymin = lats.min()
     ymax = lats.max()
 
-    diff_x = max(abs(cx - xmin), abs(cx - xmax))
-    diff_y = max(abs(cy - ymin), abs(cy - ymax))
+    diff_x = max(abs(cx - xmin), abs(cx - xmax), 1)
+    diff_y = max(abs(cy - ymin), abs(cy - ymax), 1)
 
     xmax = cx + MAP_PADDING * diff_x
     xmin = cx - MAP_PADDING * diff_x
