@@ -353,7 +353,7 @@ def lowpass_max_frequency(st, fn_fac=0.9):
     Cap lowpass corner as a fraction of the Nyquist.
 
     Args:
-        st (StationStream)
+        st (StationStream):
             Stream of data.
         fn_fac (float):
             Factor to be multiplied by the Nyquist to cap the lowpass filter.
