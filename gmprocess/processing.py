@@ -313,7 +313,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                         tr.setProvenance(
                             'remove_response',
                             {
-                                'method': 'remove_sensitivity',
+                                'method': 'remove_response',
                                 'input_units': 'counts',
                                 'output_units': ABBREV_UNITS[output]
                             }
@@ -353,7 +353,7 @@ def lowpass_max_frequency(st, fn_fac=0.9):
     Cap lowpass corner as a fraction of the Nyquist.
 
     Args:
-        st (StationStream):
+        st (StationStream)
             Stream of data.
         fn_fac (float):
             Factor to be multiplied by the Nyquist to cap the lowpass filter.
