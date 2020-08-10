@@ -1,0 +1,31 @@
+
+waveqlab3d:
+  # Coordinate reference system as Proj parameters, WKT, or EPSG code
+  crs: >
+    CS[Cartesian,3], AXIS["(X)",east],AXIS["(Y)",north],AXIS["(Z)",up],
+    LENGTHUNIT["meter",1.0]
+
+  # Origin of grid in CRS coordinate system
+  origin_x: 0.0
+  origin_y: 0.0
+
+  # Endian type of floating point values in data files
+  # ('little', 'big', 'native')
+  endian_type: native
+
+  # Template for forming filenames {component}=x,y
+  filenames: event_cartesian.slice{component}
+
+  # Number of grid points in the x and y directions.
+  num_x: 5
+  num_y: 6
+
+  # Horizontal resolution in meters.
+  horizontal_resolution: 100.0
+
+  # Number of time steps and time step size (in seconds).
+  num_timesteps: 20
+  time_step: 0.05
+
+  # Start time
+  start_time: None
