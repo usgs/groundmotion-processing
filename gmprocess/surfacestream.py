@@ -73,6 +73,7 @@ class SurfaceStream(object):
                 Number of characters to indent.
         """
         if self.passed:
+<<<<<<< HEAD
             status = " (passed)"
         else:
             status = " (failed)"
@@ -80,6 +81,14 @@ class SurfaceStream(object):
         out = "{npoints} surface points in SurfaceStream with {ntime} time points{status}\n".format(
             npoints=data.shape[1], ntime=data.shape[0], status=status
         )
+=======
+            status = ' (passed)'
+        else:
+            status = ' (failed)'
+        ind_str = ' ' * indent
+        out = '{npoints} surface points in SurfaceStream with {ntime} time points{status}\n'.format(
+            npoints=data.shape[1], ntime=data.shape[0], status=status)
+>>>>>>> Add waveqlab3d reader and corresponding test data.
         return out
 
     def setStreamParam(self, param_id, param_attributes):
@@ -114,8 +123,12 @@ class SurfaceStream(object):
         """
         if param_id not in self.parameters:
             raise KeyError(
+<<<<<<< HEAD
                 "Parameter '{}' not found in SurfaceStream.".format(param_id)
             )
+=======
+                "Parameter '{}' not found in SurfaceStream.".format(param_id))
+>>>>>>> Add waveqlab3d reader and corresponding test data.
         return self.parameters[param_id]
 
     def getProvenanceKeys(self):
@@ -128,7 +141,11 @@ class SurfaceStream(object):
             return []
         pkeys = []
         for provdict in self.provenance:
+<<<<<<< HEAD
             pkeys.append(provdict["prov_id"])
+=======
+            pkeys.append(provdict['prov_id'])
+>>>>>>> Add waveqlab3d reader and corresponding test data.
         return pkeys
 
     def getProvenance(self, prov_id):
@@ -148,8 +165,13 @@ class SurfaceStream(object):
         if not len(self.provenance):
             return matching_prov
         for provdict in self.provenance:
+<<<<<<< HEAD
             if provdict["prov_id"] == prov_id:
                 matching_prov.append(provdict["prov_attributes"])
+=======
+            if provdict['prov_id'] == prov_id:
+                matching_prov.append(provdict['prov_attributes'])
+>>>>>>> Add waveqlab3d reader and corresponding test data.
         return matching_prov
 
     def setProvenance(self, prov_id, prov_attributes):
@@ -163,7 +185,12 @@ class SurfaceStream(object):
             prov_attributes (dict or list):
                 Activity attributes for the given key.
         """
+<<<<<<< HEAD
         provdict = {"prov_id": prov_id, "prov_attributes": prov_attributes}
+=======
+        provdict = {'prov_id': prov_id,
+                    'prov_attributes': prov_attributes}
+>>>>>>> Add waveqlab3d reader and corresponding test data.
         self.provenance.append(provdict)
         self.validate()
 
@@ -189,10 +216,17 @@ class SurfaceStream(object):
             pr = _get_waveform_entity(self, copy.deepcopy(base_prov))
         sequence = 1
         for provdict in self.getAllProvenance():
+<<<<<<< HEAD
             provid = provdict["prov_id"]
             prov_attributes = provdict["prov_attributes"]
             if provid not in ACTIVITIES:
                 fmt = "Unknown or invalid processing parameter %s"
+=======
+            provid = provdict['prov_id']
+            prov_attributes = provdict['prov_attributes']
+            if provid not in ACTIVITIES:
+                fmt = 'Unknown or invalid processing parameter %s'
+>>>>>>> Add waveqlab3d reader and corresponding test data.
                 logging.debug(fmt % provid)
                 continue
             pr = _get_activity(pr, provid, prov_attributes, sequence)
@@ -204,22 +238,35 @@ class SurfaceStream(object):
         person = {}
         for record in provdoc.get_records():
             ident = record.identifier.localpart
+<<<<<<< HEAD
             parts = ident.split("_")
             sptype = parts[1]
             # hashid = '_'.join(parts[2:])
             # sp, sptype, hashid = ident.split('_')
             if sptype == "sa":
+=======
+            parts = ident.split('_')
+            sptype = parts[1]
+            # hashid = '_'.join(parts[2:])
+            # sp, sptype, hashid = ident.split('_')
+            if sptype == 'sa':
+>>>>>>> Add waveqlab3d reader and corresponding test data.
                 for attr_key, attr_val in record.attributes:
                     key = attr_key.localpart
                     if isinstance(attr_val, prov.identifier.Identifier):
                         attr_val = attr_val.uri
                     software[key] = attr_val
+<<<<<<< HEAD
             elif sptype == "pp":
+=======
+            elif sptype == 'pp':
+>>>>>>> Add waveqlab3d reader and corresponding test data.
                 for attr_key, attr_val in record.attributes:
                     key = attr_key.localpart
                     if isinstance(attr_val, prov.identifier.Identifier):
                         attr_val = attr_val.uri
                     person[key] = attr_val
+<<<<<<< HEAD
             elif sptype == "wf":  # waveform tag
                 continue
             else:  # these are processing steps
@@ -231,13 +278,31 @@ class SurfaceStream(object):
                         continue
                     elif key == "type":
                         _, sptype = attr_val.split(":")
+=======
+            elif sptype == 'wf':  # waveform tag
+                continue
+            else:  # these are processing steps
+                params = {}
+                sptype = ''
+                for attr_key, attr_val in record.attributes:
+                    key = attr_key.localpart
+                    if key == 'label':
+                        continue
+                    elif key == 'type':
+                        _, sptype = attr_val.split(':')
+>>>>>>> Add waveqlab3d reader and corresponding test data.
                         continue
                     if isinstance(attr_val, datetime):
                         attr_val = UTCDateTime(attr_val)
                     params[key] = attr_val
                 self.setProvenance(sptype, params)
+<<<<<<< HEAD
             self.setParameter("software", software)
             self.setParameter("user", person)
+=======
+            self.setParameter('software', software)
+            self.setParameter('user', person)
+>>>>>>> Add waveqlab3d reader and corresponding test data.
 
     def check_stream(self):
         """Processing checks get recorded as a 'failure' parameter.
@@ -245,4 +310,8 @@ class SurfaceStream(object):
         Returns:
             bool: False if stream has failed any checks, True otherwise.
         """
+<<<<<<< HEAD
         return False if hasParameter("failure") else True
+=======
+        return False if hasParameter('failure') else True
+>>>>>>> Add waveqlab3d reader and corresponding test data.
