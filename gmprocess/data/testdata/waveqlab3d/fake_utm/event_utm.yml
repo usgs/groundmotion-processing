@@ -1,0 +1,29 @@
+
+waveqlab3d:
+  # Coordinate reference system as Proj parameters, WKT, or EPSG code
+  crs: EPSG:26910
+
+  # Origin of grid in CRS coordinate system
+  origin_x: 500000.0
+  origin_y: 4000000.0
+
+  # Endian type of floating point values in data files
+  # ('little', 'big', 'native')
+  endian_type: big
+
+  # Template for forming filenames {component}=x,y
+  filenames: event_utm.slice{component}
+
+  # Number of grid points in the x and y directions.
+  num_x: 5
+  num_y: 7
+
+  # Horizontal resolution in meters.
+  horizontal_resolution: 100.0
+
+  # Number of time steps and time step size (in seconds).
+  num_timesteps: 18
+  time_step: 0.05
+
+  # Start time
+  start_time: 2020-01-01T08:00:00
