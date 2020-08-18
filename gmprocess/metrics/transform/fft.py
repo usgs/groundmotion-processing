@@ -10,7 +10,8 @@ class FFT(Transform):
     """Class for computing the fast fourier transform.
     """
 
-    def __init__(self, transform_data, damping=None, period=None, times=None):
+    def __init__(self, transform_data, damping=None, period=None, times=None,
+                 max_period=None):
         """
         Args:
             transform_data (obspy.core.stream.Stream or numpy.ndarray):
@@ -22,7 +23,8 @@ class FFT(Transform):
             times (numpy.ndarray):
                 Times for the spectral amplitude calculations. Default is None.
         """
-        super().__init__(transform_data, damping=None, period=None, times=None)
+        super().__init__(transform_data, damping=None, period=None, times=None,
+                         max_period=None)
         self.result = self.get_fft()
 
     def get_fft(self):
@@ -34,7 +36,6 @@ class FFT(Transform):
         """
         fft_dict = {}
         for trace in self.transform_data:
-            nfft = len(trace.data)
 
             # Check if we already have computed the FFT for this trace
             if trace.hasCached('fas_spectrum'):
@@ -52,3 +53,6 @@ class FFT(Transform):
             fft_dict[trace.stats['channel'].upper()] = tdict
 
         return fft_dict
+
+    def get_nfft(self):
+        

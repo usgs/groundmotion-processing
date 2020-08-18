@@ -6,7 +6,9 @@ from gmprocess.stationtrace import StationTrace
 
 class Differentiate(Transform):
     """Class for computing the derivative."""
-    def __init__(self, transform_data, damping=None, period=None, times=None):
+
+    def __init__(self, transform_data, damping=None, period=None, times=None,
+                 max_period=None):
         """
         Args:
             transform_data (obspy.core.stream.Stream or numpy.ndarray): Intensity
@@ -18,7 +20,8 @@ class Differentiate(Transform):
             times (numpy.ndarray): Times for the spectral amplitude calculations.
                     Default is None.
         """
-        super().__init__(transform_data, damping=None, period=None, times=None)
+        super().__init__(transform_data, damping=None, period=None, times=None,
+                         max_period=None)
         self.result = self.get_derivative()
 
     def get_derivative(self):

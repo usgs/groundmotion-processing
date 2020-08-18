@@ -93,6 +93,7 @@ class MetricsController(object):
             self._times = self._get_horizontal_time()
         else:
             self._times = None
+        self.max_period = self._get_max_period()
         self.pgms = self.execute_steps()
 
     @classmethod
@@ -318,7 +319,7 @@ class MetricsController(object):
                 t1_cls = self._get_subclass(inspect.getmembers(
                     t1_mod, inspect.isclass), 'Transform')
                 t1 = t1_cls(self.timeseries, self.damping, period,
-                            self._times).result
+                            self._times, self.max_period).result
 
                 # -------------------------------------------------------------
                 # Transform 2
@@ -326,7 +327,8 @@ class MetricsController(object):
                     transform_path + step_set['Transform2'])
                 t2_cls = self._get_subclass(inspect.getmembers(
                     t2_mod, inspect.isclass), 'Transform')
-                t2 = t2_cls(t1, self.damping, period, self._times).result
+                t2 = t2_cls(t1, self.damping, period,
+                            self._times, self.max_period).result
 
                 # -------------------------------------------------------------
                 # Rotation
@@ -342,7 +344,8 @@ class MetricsController(object):
                     transform_path + step_set['Transform3'])
                 t3_cls = self._get_subclass(inspect.getmembers(
                     t3_mod, inspect.isclass), 'Transform')
-                t3 = t3_cls(rot, self.damping, period, self._times).result
+                t3 = t3_cls(rot, self.damping, period,
+                            self._times, self.max_period).result
 
                 # -------------------------------------------------------------
                 # Combination 1
@@ -599,6 +602,17 @@ class MetricsController(object):
         else:
             percentile = None
         return percentile
+
+    def _get_max_period(self):
+        periods = []
+        for imt in self.imts:
+            period = self._parse_period(imt)
+            if period is not None:
+                periods.append(float(period))
+        if periods:
+            return max(periods)
+        else:
+            return None
 
     def clean_imts(self):
         cleaned_imts = set()

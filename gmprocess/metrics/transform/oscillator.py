@@ -7,7 +7,7 @@ class oscillator(Transform):
     """Class for computing the oscillator for a given period.
     """
 
-    def __init__(self, transform_data, damping, period, times):
+    def __init__(self, transform_data, damping, period, times, max_period):
         """
         Args:
             transform_data (obspy.core.stream.Stream or numpy.ndarray):
@@ -19,7 +19,8 @@ class oscillator(Transform):
             times (numpy.ndarray):
                 Times for the spectral amplitude calculations.
         """
-        super().__init__(transform_data, damping=None, period=None, times=None)
+        super().__init__(transform_data, damping=None, period=None, times=None,
+                         max_period=None)
         self.period = period
         self.damping = damping
         self.times = times
