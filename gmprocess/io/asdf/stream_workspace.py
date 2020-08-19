@@ -122,6 +122,10 @@ FIT_SPECTRA_COLUMNS = {
     'stress_drop': 'Stress drop fit (bars)',
     'stress_drop_lnsd':
         'Natural log standard deviation of the stress drop fit',
+    'R2': (
+        'Coefficient of determination between fitted and observed spectra'),
+    'mean_squared_error': (
+        'Mean squared error between fitted and observed spectra')
 }
 
 
@@ -834,6 +838,9 @@ class StreamWorkspace(object):
             df = pd.DataFrame.from_dict(fit_table)
         else:
             df = pd.DataFrame(columns=FIT_SPECTRA_COLUMNS.keys())
+
+        # Ensure that the DataFrame columns are ordered correctly
+        df = df[FIT_SPECTRA_COLUMNS.keys()]
 
         readme = pd.DataFrame.from_dict(FIT_SPECTRA_COLUMNS, orient='index')
         readme.reset_index(level=0, inplace=True)

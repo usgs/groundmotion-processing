@@ -156,6 +156,19 @@ def fit_spectra(st, origin, kappa=0.035,
             # stress_drop_lower = np.exp(result.x[1]-sd[1])
             # stress_drop_upper = np.exp(result.x[1]+sd[1])
 
+            # Get the fitted spectrum and then calculate the goodness-of-fit
+            # metrics
+            fit_spec = model(
+                (moment_fit, stress_drop_fit), freq, dist, kappa)
+            mean_squared_error = np.mean((obs_spec - fit_spec)**2)
+
+            # R^2 (Coefficient of Determination) is defined as 1 minus the
+            # residual sum of squares (SSR) divided by the total sum of squares
+            # (SST)
+            ssr = np.sum((obs_spec - fit_spec)**2)
+            sst = np.sum((obs_spec - np.mean(obs_spec))**2)
+            r_squared = 1 - (ssr / sst)
+
             fit_spectra_dict = {
                 'stress_drop': stress_drop_fit,
                 'stress_drop_lnsd': sd[1],
@@ -166,7 +179,9 @@ def fit_spectra(st, origin, kappa=0.035,
                 'magnitude': magnitude_fit,
                 'f0': f0_fit,
                 'minimize_message': result.message.decode(),
-                'minimize_success': result.success
+                'minimize_success': result.success,
+                'mean_squared_error': mean_squared_error,
+                'R2': r_squared
             }
             tr.setParameter('fit_spectra', fit_spectra_dict)
 
@@ -599,7 +614,7 @@ def geometrical_spreading(freq, dist, model="REA99"):
         if dist <= dist_cross:
             geom = dist**(-1.0)
         else:
-            geom = (dist / dist_cross)**(-0.5)
+            geom = (dist * dist_cross)**(-0.5)
     else:
         raise ValueError('Unsupported anelastic attenuation model.')
     return geom
