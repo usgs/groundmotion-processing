@@ -430,6 +430,7 @@ metrics:
   fas:
       smoothing: konno_ohmachi
       bandwidth: 80.0
+      allow_nans: True
       periods:
         # Parameters defining an array of periods
         # syntax is the same as that used for numpy linspace and logspace

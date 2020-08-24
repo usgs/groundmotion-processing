@@ -1,16 +1,23 @@
 #!/usr/bin/env python
 
 # stdlib imports
+from gmprocess.io.fetch_utils import read_event_json_files
+import os
 import warnings
+from impactutils.rupture.origin import read_event_file
 
 # third party imports
 import numpy as np
+import pkg_resources
 from obspy.core.event import Origin
 
 # local imports
 from gmprocess.io.geonet.core import read_geonet
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.io.test_utils import read_data_dir
+from gmprocess.streamcollection import StreamCollection
+from gmprocess.processing import process_streams
+from gmprocess.io.fetch_utils import read_event_json_files
 
 
 def cmp_dicts(adict, bdict):
@@ -146,5 +153,25 @@ def test_stationsummary():
     np.testing.assert_array_equal(imt1, imt2)
 
 
+def test_allow_nans():
+    dpath = os.path.join('data', 'testdata', 'fdsn', 'uu60363602')
+    datadir = pkg_resources.resource_filename('gmprocess', dpath)
+    sc = StreamCollection.from_directory(datadir)
+    origin = read_event_json_files([os.path.join(datadir, 'event.json')])[0]
+    psc = process_streams(sc, origin)
+    st = psc[0]
+
+    ss = StationSummary.from_stream(
+        st, components=['quadratic_mean'], imts=['FAS(4.0)'], bandwidth=189,
+        allow_nans=True)
+    assert np.isnan(ss.pgms.Result).all()
+
+    ss = StationSummary.from_stream(
+        st, components=['quadratic_mean'], imts=['FAS(4.0)'], bandwidth=189,
+        allow_nans=False)
+    assert ~np.isnan(ss.pgms.Result).all()
+
+
 if __name__ == '__main__':
     test_stationsummary()
+    test_allow_nans()
