@@ -41,7 +41,7 @@ class MetricsController(object):
     """
 
     def __init__(self, imts, imcs, timeseries, bandwidth=None, damping=None,
-                 event=None, smooth_type=None):
+                 event=None, smooth_type=None, allow_nans=None):
         """
         Args:
             imts (list):
@@ -80,12 +80,15 @@ class MetricsController(object):
         self.damping = damping
         self.smooth_type = smooth_type
         self.bandwidth = bandwidth
+        self.allow_nans = allow_nans
         if damping is None:
             self.damping = self.config['metrics']['sa']['damping']
         if smooth_type is None:
             self.smooth_type = self.config['metrics']['fas']['smoothing']
         if bandwidth is None:
             self.bandwidth = self.config['metrics']['fas']['bandwidth']
+        if allow_nans is None:
+            self.allow_nans = self.config['metrics']['fas']['allow_nans']
         self._available_imts, self._available_imcs = gather_pgms()
         self._step_sets = self.get_steps()
         imtstr = '_'.join(imts)
@@ -93,6 +96,7 @@ class MetricsController(object):
             self._times = self._get_horizontal_time()
         else:
             self._times = None
+        self.max_period = self._get_max_period()
         self.pgms = self.execute_steps()
 
     @classmethod
@@ -184,8 +188,10 @@ class MetricsController(object):
         damping = metrics['sa']['damping']
         smoothing = metrics['fas']['smoothing']
         bandwidth = metrics['fas']['bandwidth']
+        allow_nans = metrics['fas']['allow_nans']
         controller = cls(imts, imcs, timeseries, bandwidth=bandwidth,
-                         damping=damping, event=event, smooth_type=smoothing)
+                         damping=damping, event=event, smooth_type=smoothing,
+                         allow_nans=allow_nans)
 
         return controller
 
@@ -317,8 +323,9 @@ class MetricsController(object):
                     transform_path + step_set['Transform1'])
                 t1_cls = self._get_subclass(inspect.getmembers(
                     t1_mod, inspect.isclass), 'Transform')
-                t1 = t1_cls(self.timeseries, self.damping, period,
-                            self._times).result
+                t1 = t1_cls(
+                    self.timeseries, self.damping, period, self._times,
+                    self.max_period, self.allow_nans, self.bandwidth).result
 
                 # -------------------------------------------------------------
                 # Transform 2
@@ -326,7 +333,9 @@ class MetricsController(object):
                     transform_path + step_set['Transform2'])
                 t2_cls = self._get_subclass(inspect.getmembers(
                     t2_mod, inspect.isclass), 'Transform')
-                t2 = t2_cls(t1, self.damping, period, self._times).result
+                t2 = t2_cls(
+                    t1, self.damping, period, self._times, self.max_period,
+                    self.allow_nans, self.bandwidth).result
 
                 # -------------------------------------------------------------
                 # Rotation
@@ -342,7 +351,9 @@ class MetricsController(object):
                     transform_path + step_set['Transform3'])
                 t3_cls = self._get_subclass(inspect.getmembers(
                     t3_mod, inspect.isclass), 'Transform')
-                t3 = t3_cls(rot, self.damping, period, self._times).result
+                t3 = t3_cls(
+                    rot, self.damping, period, self._times, self.max_period,
+                    self.allow_nans, self.bandwidth).result
 
                 # -------------------------------------------------------------
                 # Combination 1
@@ -599,6 +610,17 @@ class MetricsController(object):
         else:
             percentile = None
         return percentile
+
+    def _get_max_period(self):
+        periods = []
+        for imt in self.imts:
+            period = self._parse_period(imt)
+            if period is not None:
+                periods.append(float(period))
+        if periods:
+            return max(periods)
+        else:
+            return None
 
     def clean_imts(self):
         cleaned_imts = set()

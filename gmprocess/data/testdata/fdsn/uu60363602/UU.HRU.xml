@@ -1,0 +1,243 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<FDSNStationXML xmlns="http://www.fdsn.org/xml/station/1" schemaVersion="1.1">
+  <Source>IRIS-DMC</Source>
+  <Sender>IRIS-DMC</Sender>
+  <Module>IRIS WEB SERVICE: fdsnws-station | version: 1.1.45</Module>
+  <ModuleURI>http://service.iris.edu/fdsnws/station/1/query?starttime=2020-03-18T13%3A09%3A01.000000&amp;endtime=2020-03-18T13%3A14%3A31.000000&amp;network=UU&amp;station=HRU&amp;location=%2A&amp;channel=EN%3F&amp;level=response</ModuleURI>
+  <Created>2020-08-07T17:17:59.000000Z</Created>
+  <Network code="UU" startDate="1962-01-01T00:00:00.000000Z" restrictedStatus="open">
+    <Description>University of Utah Regional Seismic Network (Utah Network)</Description>
+    <TotalNumberStations>333</TotalNumberStations>
+    <SelectedNumberStations>1</SelectedNumberStations>
+    <Station code="HRU" startDate="1993-12-17T00:00:00.000000Z" restrictedStatus="open">
+      <Latitude unit="DEGREES">40.7945</Latitude>
+      <Longitude unit="DEGREES">-111.88567</Longitude>
+      <Elevation>1620.0</Elevation>
+      <Site>
+        <Name>Hogsback Ridge, UT, USA</Name>
+      </Site>
+      <CreationDate>1993-12-17T00:00:00.000000Z</CreationDate>
+      <TotalNumberChannels>21</TotalNumberChannels>
+      <SelectedNumberChannels>3</SelectedNumberChannels>
+      <Channel code="ENE" startDate="2019-09-12T00:00:00.000000Z" restrictedStatus="open" locationCode="01">
+        <Latitude unit="DEGREES">40.7945</Latitude>
+        <Longitude unit="DEGREES">-111.88567</Longitude>
+        <Elevation>1620.0</Elevation>
+        <Depth>0.0</Depth>
+        <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <Type>CONTINUOUS</Type>
+        <Type>GEOPHYSICAL</Type>
+        <SampleRate unit="SAMPLES/S">100.0</SampleRate>
+        <ClockDrift unit="SECONDS/SAMPLE">0.0001</ClockDrift>
+        <CalibrationUnits>
+          <Name>count</Name>
+          <Description>Digital Counts</Description>
+        </CalibrationUnits>
+        <Sensor>
+          <Description>Kinemetrics Episensor seismometer</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>211261000.0</Value>
+            <Frequency>5.0</Frequency>
+            <InputUnits>
+              <Name>m</Name>
+              <Description>Earth Displacement in Meters</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>count</Name>
+              <Description>Digital Counts</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1">
+            <PolesZeros>
+              <InputUnits>
+                <Name>m</Name>
+                <Description>Earth Displacement in Meters</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>count</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>LAPLACE (RADIANS/SECOND)</PzTransferFunctionType>
+              <NormalizationFactor>24921999360.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">5.0</NormalizationFrequency>
+              <Zero number="0">
+                <Real minusError="0.0" plusError="0.0">0.0</Real>
+                <Imaginary minusError="0.0" plusError="0.0">0.0</Imaginary>
+              </Zero>
+              <Zero number="1">
+                <Real minusError="0.0" plusError="0.0">0.0</Real>
+                <Imaginary minusError="0.0" plusError="0.0">0.0</Imaginary>
+              </Zero>
+              <Pole number="0">
+                <Real minusError="0.0" plusError="0.0">-981.0</Real>
+                <Imaginary minusError="0.0" plusError="0.0">1009.0</Imaginary>
+              </Pole>
+              <Pole number="1">
+                <Real minusError="0.0" plusError="0.0">-981.0</Real>
+                <Imaginary minusError="0.0" plusError="0.0">-1009.0</Imaginary>
+              </Pole>
+              <Pole number="2">
+                <Real minusError="0.0" plusError="0.0">-3290.0</Real>
+                <Imaginary minusError="0.0" plusError="0.0">1263.0</Imaginary>
+              </Pole>
+              <Pole number="3">
+                <Real minusError="0.0" plusError="0.0">-3290.0</Real>
+                <Imaginary minusError="0.0" plusError="0.0">-1263.0</Imaginary>
+              </Pole>
+            </PolesZeros>
+            <StageGain/>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="ENN" startDate="2019-09-12T00:00:00.000000Z" restrictedStatus="open" locationCode="01">
+        <Latitude unit="DEGREES">40.7945</Latitude>
+        <Longitude unit="DEGREES">-111.88567</Longitude>
+        <Elevation>1620.0</Elevation>
+        <Depth>0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <Type>CONTINUOUS</Type>
+        <Type>GEOPHYSICAL</Type>
+        <SampleRate unit="SAMPLES/S">100.0</SampleRate>
+        <ClockDrift unit="SECONDS/SAMPLE">0.0001</ClockDrift>
+        <CalibrationUnits>
+          <Name>count</Name>
+          <Description>Digital Counts</Description>
+        </CalibrationUnits>
+        <Sensor>
+          <Description>Kinemetrics Episensor seismometer</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>211093000.0</Value>
+            <Frequency>5.0</Frequency>
+            <InputUnits>
+              <Name>m</Name>
+              <Description>Earth Displacement in Meters</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>count</Name>
+              <Description>Digital Counts</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1">
+            <PolesZeros>
+              <InputUnits>
+                <Name>m</Name>
+                <Description>Earth Displacement in Meters</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>count</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>LAPLACE (RADIANS/SECOND)</PzTransferFunctionType>
+              <NormalizationFactor>24921999360.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">5.0</NormalizationFrequency>
+              <Zero number="0">
+                <Real minusError="0.0" plusError="0.0">0.0</Real>
+                <Imaginary minusError="0.0" plusError="0.0">0.0</Imaginary>
+              </Zero>
+              <Zero number="1">
+                <Real minusError="0.0" plusError="0.0">0.0</Real>
+                <Imaginary minusError="0.0" plusError="0.0">0.0</Imaginary>
+              </Zero>
+              <Pole number="0">
+                <Real minusError="0.0" plusError="0.0">-981.0</Real>
+                <Imaginary minusError="0.0" plusError="0.0">1009.0</Imaginary>
+              </Pole>
+              <Pole number="1">
+                <Real minusError="0.0" plusError="0.0">-981.0</Real>
+                <Imaginary minusError="0.0" plusError="0.0">-1009.0</Imaginary>
+              </Pole>
+              <Pole number="2">
+                <Real minusError="0.0" plusError="0.0">-3290.0</Real>
+                <Imaginary minusError="0.0" plusError="0.0">1263.0</Imaginary>
+              </Pole>
+              <Pole number="3">
+                <Real minusError="0.0" plusError="0.0">-3290.0</Real>
+                <Imaginary minusError="0.0" plusError="0.0">-1263.0</Imaginary>
+              </Pole>
+            </PolesZeros>
+            <StageGain/>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="ENZ" startDate="2019-09-12T00:00:00.000000Z" restrictedStatus="open" locationCode="01">
+        <Latitude unit="DEGREES">40.7945</Latitude>
+        <Longitude unit="DEGREES">-111.88567</Longitude>
+        <Elevation>1620.0</Elevation>
+        <Depth>0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
+        <Type>CONTINUOUS</Type>
+        <Type>GEOPHYSICAL</Type>
+        <SampleRate unit="SAMPLES/S">100.0</SampleRate>
+        <ClockDrift unit="SECONDS/SAMPLE">0.0001</ClockDrift>
+        <CalibrationUnits>
+          <Name>count</Name>
+          <Description>Digital Counts</Description>
+        </CalibrationUnits>
+        <Sensor>
+          <Description>Kinemetrics Episensor seismometer</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>211735000.0</Value>
+            <Frequency>5.0</Frequency>
+            <InputUnits>
+              <Name>m</Name>
+              <Description>Earth Displacement in Meters</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>count</Name>
+              <Description>Digital Counts</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1">
+            <PolesZeros>
+              <InputUnits>
+                <Name>m</Name>
+                <Description>Earth Displacement in Meters</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>count</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>LAPLACE (RADIANS/SECOND)</PzTransferFunctionType>
+              <NormalizationFactor>24921999360.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">5.0</NormalizationFrequency>
+              <Zero number="0">
+                <Real minusError="0.0" plusError="0.0">0.0</Real>
+                <Imaginary minusError="0.0" plusError="0.0">0.0</Imaginary>
+              </Zero>
+              <Zero number="1">
+                <Real minusError="0.0" plusError="0.0">0.0</Real>
+                <Imaginary minusError="0.0" plusError="0.0">0.0</Imaginary>
+              </Zero>
+              <Pole number="0">
+                <Real minusError="0.0" plusError="0.0">-981.0</Real>
+                <Imaginary minusError="0.0" plusError="0.0">1009.0</Imaginary>
+              </Pole>
+              <Pole number="1">
+                <Real minusError="0.0" plusError="0.0">-981.0</Real>
+                <Imaginary minusError="0.0" plusError="0.0">-1009.0</Imaginary>
+              </Pole>
+              <Pole number="2">
+                <Real minusError="0.0" plusError="0.0">-3290.0</Real>
+                <Imaginary minusError="0.0" plusError="0.0">1263.0</Imaginary>
+              </Pole>
+              <Pole number="3">
+                <Real minusError="0.0" plusError="0.0">-3290.0</Real>
+                <Imaginary minusError="0.0" plusError="0.0">-1263.0</Imaginary>
+              </Pole>
+            </PolesZeros>
+            <StageGain/>
+          </Stage>
+        </Response>
+      </Channel>
+    </Station>
+  </Network>
+</FDSNStationXML>

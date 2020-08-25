@@ -6,7 +6,9 @@ from gmprocess.stationtrace import StationTrace
 
 class Integrate(Transform):
     """Class for computing the integral."""
-    def __init__(self, transform_data, damping=None, period=None, times=None):
+
+    def __init__(self, transform_data, damping=None, period=None, times=None,
+                 max_period=None, allow_nans=None, bandwidth=None):
         """
         Args:
             transform_data (obspy.core.stream.Stream or numpy.ndarray): Intensity
@@ -18,7 +20,8 @@ class Integrate(Transform):
             times (numpy.ndarray): Times for the spectral amplitude calculations.
                     Default is None.
         """
-        super().__init__(transform_data, damping=None, period=None, times=None)
+        super().__init__(transform_data, damping=None, period=None, times=None,
+                         max_period=None, allow_nans=None, bandwidth=None)
         self.result = self.get_integral()
 
     def get_integral(self):

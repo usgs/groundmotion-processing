@@ -50,9 +50,9 @@ fetchers:
         # channels : ["BH?", "HH?", "BN?", "HN?"] # only get strong motion and high-gain channels
         channels : ["?N?"] # only get strong motion/broadband accelerometer data
 
-        # List instruments that should be avoided. 
-        # '?' and '*' wildcards are permissible.  
-        exclude_patterns : ['*.*.??.LN?']        
+        # List instruments that should be avoided.
+        # '?' and '*' wildcards are permissible.
+        exclude_patterns : ['*.*.??.LN?']
 
         network : "*"
 
@@ -487,6 +487,7 @@ metrics:
   fas:
       smoothing: konno_ohmachi
       bandwidth: 20.0
+      allow_nans: True
       periods:
         # Parameters defining an array of periods
         # syntax is the same as that used for numpy linspace and logspace

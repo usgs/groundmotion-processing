@@ -1,9 +1,9 @@
 #include <math.h>
 #include "smoothing.h"
 
-/* 
- * This code implements Konno-Ohmachi spectral smoothing as defined in their 
- * paper: 
+/*
+ * This code implements Konno-Ohmachi spectral smoothing as defined in their
+ * paper:
  * Konno, K. and Ohmachi, T., 1998. Ground-motion characteristics estimated
  * from spectral ratio between horizontal and vertical components of
  * microtremor. Bulletin of the Seismological Society of America, 88(1),
@@ -24,7 +24,7 @@ void konno_ohmachi_c(double *spec, double *freqs, int np,
     for(i = 0; i < nko; i++) {
         fc = ko_freqs[i];
         if (fc < 1e-6) {
-            ko_smooth[i] = 0;
+            ko_smooth[i] = NAN;
             continue;
         }
         total = 0;
@@ -49,7 +49,7 @@ void konno_ohmachi_c(double *spec, double *freqs, int np,
         if (window_total > 0) {
             ko_smooth[i] = total / window_total;
         } else {
-            ko_smooth[i] = 0;
+            ko_smooth[i] = NAN;
         }
     }
     return;

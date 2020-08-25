@@ -5,7 +5,8 @@ from gmprocess.metrics.exception import PGMException
 class Transform(object):
     """Base class for rotation calculations."""
 
-    def __init__(self, transform_data, damping=None, period=None, times=None):
+    def __init__(self, transform_data, damping=None, period=None, times=None,
+                 max_period=None, allow_nans=None, bandwidth=None):
         """
         Args:
             transform_data (obspy.core.stream.Stream or numpy.ndarray):

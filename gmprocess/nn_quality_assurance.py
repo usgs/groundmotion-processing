@@ -99,6 +99,7 @@ class neuralNet():
     Class allowing the instantiation and use of simple (1 or 2 layers)
     neural networks
     '''
+
     def __init__(self):
         '''
         Instantiate an empty neural network (no weights, functions, or
@@ -768,7 +769,9 @@ def computeQualityMetrics(st):
 
             # Smoothed Fourier spectrum
             str_i = 'smooth_ft' + ind[i]
-            tr[str_i] = tr_i.getCached('smooth_signal_spectrum')['spec']
+            sig_spec = tr_i.getCached('smooth_signal_spectrum')['spec']
+            sig_spec = np.where(np.isnan(sig_spec), 0.0, sig_spec)
+            tr[str_i] = sig_spec
 
             # Freq of he smoothed Fourier spectrum
             str_i = 'smooth_ft' + ind[i] + '_freq'
@@ -784,7 +787,9 @@ def computeQualityMetrics(st):
 
             # Smoothed Fourier spectrum of the pre-event trace
             str_i = 'smooth_ft' + ind[i] + '_pe'
-            tr[str_i] = tr_i.getCached('smooth_noise_spectrum')['spec']
+            noise_spec = tr_i.getCached('smooth_noise_spectrum')['spec']
+            noise_spec = np.where(np.isnan(noise_spec), 0.0, noise_spec)
+            tr[str_i] = noise_spec
 
             # SNR
             str_i = 'snr' + ind[i]
@@ -865,7 +870,7 @@ def NNet_QA(st, acceptance_threshold, model_name):
     have_params = True
     for tr in st:
         if not {'signal_spectrum', 'noise_spectrum', 'snr'}.issubset(
-          set(tr.getCachedNames())):
+                set(tr.getCachedNames())):
             have_params = False
 
     if not have_params:

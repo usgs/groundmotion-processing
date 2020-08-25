@@ -38,7 +38,7 @@ M_TO_CM = 100.0
 
 # List of processing steps that require an origin
 # besides the arguments in the conf file.
-REQ_ORIGIN = ['trim_multiple_events']
+REQ_ORIGIN = ['fit_spectra', 'trim_multiple_events']
 
 
 TAPER_TYPES = {
@@ -169,16 +169,12 @@ def process_streams(streams, origin, config=None):
 
             # Origin is required by some steps and has to be handled specially.
             # There must be a better solution for this...
-            if step_name == 'fit_spectra':
-                step_args = {
-                    'origin': origin
-                }
-            elif step_name in REQ_ORIGIN:
+            if step_name in REQ_ORIGIN:
                 step_args['origin'] = origin
-            elif step_name == 'trim_multiple_events':
+            if step_name == 'trim_multiple_events':
                 step_args['catalog'] = catalog
                 step_args['travel_time_df'] = travel_time_df
-            elif step_name == 'compute_snr':
+            if step_name == 'compute_snr':
                 step_args['mag'] = origin.magnitude
 
             if step_args is None:
@@ -288,7 +284,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                 )
             elif tr.stats.channel[1] == 'N':
                 try:
-                    # If no poles and zeros are present in the xml file, 
+                    # If no poles and zeros are present in the xml file,
                     # use the sensitivity method.
                     if len(paz.poles) == 0 and len(paz.zeros) == 0:
                         tr.remove_sensitivity(inventory=inv)

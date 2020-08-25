@@ -50,5 +50,8 @@ METRICS_XML_FLOAT_STRING_FORMAT = {
 # Default float format when we don't have a preference
 DEFAULT_FLOAT_FORMAT = '%.8E'
 
+# Default NaN representation in outputted flatfiles
+DEFAULT_NA_REP = 'nan'
+
 # Elevation to use for calculating fault distances (m)
 ELEVATION_FOR_DISTANCE_CALCS = 0.0

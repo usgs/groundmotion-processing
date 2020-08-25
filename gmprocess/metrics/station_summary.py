@@ -245,9 +245,9 @@ class StationSummary(object):
 
     @classmethod
     def from_stream(cls, stream, components, imts, event=None,
-                    damping=None, smoothing=None, bandwidth=None, config=None,
-                    calc_waveform_metrics=True, calc_station_metrics=True,
-                    rupture=None, vs30_grids=None):
+                    damping=None, smoothing=None, bandwidth=None,
+                    allow_nans=None, config=None, calc_waveform_metrics=True,
+                    calc_station_metrics=True, rupture=None, vs30_grids=None):
         """
         Args:
             stream (obspy.core.stream.Stream): Strong motion timeseries
@@ -286,6 +286,8 @@ class StationSummary(object):
             smoothing = config['metrics']['fas']['smoothing']
         if bandwidth is None:
             bandwidth = config['metrics']['fas']['bandwidth']
+        if allow_nans is None:
+            allow_nans = config['metrics']['fas']['allow_nans']
 
         station._damping = damping
         station._smoothing = smoothing
@@ -295,10 +297,10 @@ class StationSummary(object):
         station.set_metadata()
 
         if stream.passed and calc_waveform_metrics:
-            metrics = MetricsController(imts, components, stream,
-                                        bandwidth=bandwidth, damping=damping,
-                                        event=event,
-                                        smooth_type=smoothing)
+            metrics = MetricsController(
+                imts, components, stream, bandwidth=bandwidth,
+                allow_nans=allow_nans, damping=damping, event=event,
+                smooth_type=smoothing)
             station.channel_dict = metrics.channel_dict.copy()
             pgms = metrics.pgms
 
@@ -689,7 +691,7 @@ class StationSummary(object):
                 period = float(re.search(FLOAT_MATCH, imtstr).group())
                 attdict = {'period': METRICS_XML_FLOAT_STRING_FORMAT[
                     'period'] % period,
-                           'units': units}
+                    'units': units}
                 if imtstr.startswith('sa'):
                     imtstr = 'sa'
                     damping = self._damping

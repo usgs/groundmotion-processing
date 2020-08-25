@@ -28,7 +28,7 @@ from gmprocess.report import build_report_latex
 from gmprocess.plot import summary_plots, plot_regression, plot_moveout
 from gmprocess.config import get_config
 from gmprocess.tables import set_precisions
-from gmprocess.constants import DEFAULT_FLOAT_FORMAT
+from gmprocess.constants import DEFAULT_FLOAT_FORMAT, DEFAULT_NA_REP
 
 NON_IMT_COLS = set(['EarthquakeId',
                     'EarthquakeTime',
@@ -257,10 +257,12 @@ def process_event(outdir, event, pcommands,
                     if output_format == 'csv':
                         df.to_csv(filepath, index=False,
                                   float_format=DEFAULT_FLOAT_FORMAT,
+                                  na_rep=DEFAULT_NA_REP,
                                   mode=mode, header=header)
                     else:
                         df.to_excel(filepath, index=False,
                                     float_format=DEFAULT_FLOAT_FORMAT,
+                                    na_rep=DEFAULT_NA_REP,
                                     mode=mode, header=header)
 
     if ('report' in pcommands
