@@ -5,22 +5,18 @@
  * This code is based on Dave Boore's fortran function icmpmx, which in turn
  * was based on ucmpmx, written by Bob Youngs and I. Idriss). It was re-
  * written in python/cython by Heather Schovanec (8/2018) and rewritten in
- * C by Bruce Worden (8/2018). This version does not do the full upsampling
- * that Boore's code implements, but only produces the first sub-sample. If
- * data with coarse sampling is used, or very high frequencies are required,
- * this function should be rewritten to do the full sub-sampling. Note that
- * this will require increasing the size of the output arrays sacc, svel,
- * and sdis, and returning the new sample rate.
+ * C by Bruce Worden (8/2018).
+ * Note that this code does no resampling. It is assumed that the data
+ * provided to this function has been sufficiently resampled. See, for
+ * example, Boore and Goulet (2014), Bull Earthquake Eng, 12:203-216,
+ * DOI 10.1007/s10518-013-9574-9.
  */
-void calculate_spectrals_c(double *times, double *acc, int np, double period,
+void calculate_spectrals_c(double *acc, int np, double dt, double period,
                            double damping, double *sacc, double *svel,
                            double *sdis) {
     double w = 2 * M_PI / period;
     double d = damping;
     double wd = sqrt(1. - d * d) * w;
-    double dt_in = times[1] - times[0];
-    double ns = (int)(10. * dt_in / period - 0.01) + 1.0;
-    double dt = dt_in / ns;
     double e = exp( -1 * d * w * dt);
     double sine = e * sin(wd * dt);
     double cosine = e * cos(wd * dt);
@@ -43,7 +39,7 @@ void calculate_spectrals_c(double *times, double *acc, int np, double period,
     int k;
 
     g = acc[0];
-    dug = (acc[1] - g) / ns;
+    dug = acc[1] - g;
     gw2i = g * w2i;
     dugw2i = dug * w2i;
     dugw2idt = dugw2i / dt;
@@ -56,7 +52,7 @@ void calculate_spectrals_c(double *times, double *acc, int np, double period,
     sacc[0] = -2. * dw * svel[0] - w2 * sdis[0];
     for (k = 1; k < np-1; k++) {
         g = acc[k];
-        dug = (acc[k+1] - g) / ns;
+        dug = acc[k+1] - g;
         gw2i = g * w2i;
         dugw2i = dug * w2i;
         dugw2idt = dugw2i / dt;

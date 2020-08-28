@@ -17,36 +17,57 @@ from obspy import read
 from gmprocess.constants import GAL_TO_PCTG
 
 cdef extern from "cfuncs.h":
-    void calculate_spectrals_c(double *times, double *acc, int np,
+    void calculate_spectrals_c(double *acc, int np, double dt,
                                double period, double damping, double *sacc,
                                double *svel, double *sdis);
 
-cpdef list calculate_spectrals(np.ndarray[double, ndim=1, mode='c']times,
-                               np.ndarray[double, ndim=1, mode='c']acc,
-                               period, damping):
+cpdef list calculate_spectrals(trace, period, damping):
     """
     Returns a list of spectral responses for acceleration, velocity,
             and displacement.
     Args:
-        times (np.ndarray): Times corresponding to the acceleration values.
-        acceleration (np.ndarray): Acceleration values.
+        trace (obspy Trace object): The trace to be acted upon
         period (float): Period in seconds.
         damping (float): Fraction of critical damping.
 
     Returns:
         list: List of spectral responses (np.ndarray).
     """
-    cdef int kg = len(acc)
-    cdef ndarray[double, ndim=1] spectral_acc = np.zeros(kg)
-    cdef ndarray[double, ndim=1] spectral_vel = np.zeros(kg)
-    cdef ndarray[double, ndim=1] spectral_dis = np.zeros(kg)
+    cdef int new_np = trace.stats.npts
+    cdef double new_dt = trace.stats.delta
+    cdef double new_sample_rate = trace.stats.sampling_rate
+    # The time length of the trace in seconds
+    cdef double tlen = (new_np - 1) * new_dt
+    cdef int ns
 
-    calculate_spectrals_c(<double *>times.data, <double *>acc.data, kg,
+    # This is the resample factor for low-sample-rate/high-frequency
+    ns = (int)(10. * new_dt / period - 0.01) + 1
+    if ns > 1:
+        # Increase the number of samples as necessary
+        new_np = new_np * ns
+        # Make the new number of samples a power of two
+        new_np = 1 if new_np == 0 else 2**(new_np - 1).bit_length()
+        # The new sample interval
+        new_dt = tlen / (new_np - 1)
+        # The new sample rate
+        new_sample_rate = 1.0 / new_dt
+        # Make a copy because resampling happens in place
+        trace = trace.copy()
+        # Resample the trace
+        trace.resample(new_sample_rate, window=None)
+
+    cdef ndarray[double, ndim=1] spectral_acc = np.zeros(new_np)
+    cdef ndarray[double, ndim=1] spectral_vel = np.zeros(new_np)
+    cdef ndarray[double, ndim=1] spectral_dis = np.zeros(new_np)
+    cdef ndarray[double, ndim=1] acc = trace.data
+
+    calculate_spectrals_c(<double *>acc.data, new_np, new_dt,
                           period, damping,
                           <double *>spectral_acc.data,
                           <double *>spectral_vel.data,
                           <double *>spectral_dis.data)
-    return [spectral_acc, spectral_vel, spectral_dis]
+    return [spectral_acc, spectral_vel, spectral_dis, new_np, new_dt,
+            new_sample_rate]
 
 
 def get_acceleration(stream, units='%%g'):
@@ -97,11 +118,13 @@ def get_spectral(period, stream, damping=0.05, times=None):
     if isinstance(stream, (StationStream, Stream)):
         for idx in num_trace_range:
             trace = stream[idx]
-            acc_sa = calculate_spectrals(trace.times(), trace.data,
-                    period, damping)[0]
+            sa_list = calculate_spectrals(trace, period, damping)
+            acc_sa = np.array(sa_list[0]) * GAL_TO_PCTG
             stats = trace.stats.copy()
+            stats.npts = sa_list[3]
+            stats.delta = sa_list[4]
+            stats.sampling_rate = sa_list[5]
             stats['units'] = '%%g'
-            acc_sa = np.array(acc_sa) * GAL_TO_PCTG
             spect_trace = StationTrace(data=acc_sa, header=stats)
             traces += [spect_trace]
         spect_stream = StationStream(traces)
@@ -112,9 +135,13 @@ def get_spectral(period, stream, damping=0.05, times=None):
             rot_matrix = stream[idx]
             rotated_spectrals = np.zeros(rot_matrix.shape)
             for idy in range(0, len(rot_matrix)):
-                acc_sa = np.asarray(calculate_spectrals(times, rot_matrix[idy],
-                        period, damping)[0])
-                acc_sa = acc_sa * GAL_TO_PCTG
+                stats = {'npts': len(rot_matrix[idy]),
+                         'delta': times[1] - times[0],
+                         'sampling_rate': 1.0 / (times[1] - times[0])
+                        }
+                new_trace = Trace(data=rot_matrix[idy], header=stats)
+                sa_list = calculate_spectrals(new_trace, period, damping)
+                acc_sa = np.array(sa_list[0]) * GAL_TO_PCTG
                 rotated_spectrals[idy] = acc_sa
             rotated += [rotated_spectrals]
         return rotated
