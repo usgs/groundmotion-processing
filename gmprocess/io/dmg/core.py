@@ -516,7 +516,7 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
     latitude, longitude = _get_coords(latitude_str, longitude_str)
     coordinates['latitude'] = latitude
     coordinates['longitude'] = longitude
-    logging.warn('Setting elevation to 0.0')
+    logging.warning('Setting elevation to 0.0')
     coordinates['elevation'] = 0.0
 
     # Standard metadata
@@ -679,7 +679,7 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
     latitude, longitude = _get_coords(latitude_str, longitude_str)
     coordinates['latitude'] = latitude
     coordinates['longitude'] = longitude
-    logging.warn('Setting elevation to 0.0')
+    logging.warning('Setting elevation to 0.0')
     coordinates['elevation'] = 0.0
 
     # Standard metadata

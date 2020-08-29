@@ -381,7 +381,7 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
             longitude = -longitude
         coordinates['latitude'] = latitude
         coordinates['longitude'] = longitude
-        logging.warn('Setting elevation to 0.0')
+        logging.warning('Setting elevation to 0.0')
         coordinates['elevation'] = 0.0
         # Get standard paramaters
         standard['units_type'] = get_units_type(hdr['channel'])

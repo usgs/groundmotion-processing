@@ -5,8 +5,8 @@ from datetime import datetime
 import os
 
 
-def geonet_test():
-        # GeoNet
+def geonet():
+    # GeoNet
     # 2019-02-28 19:55:34 (UTC)37.512°S 179.185°E10.0 km depth
     utime = datetime(2019, 2, 28, 19, 55, 34)
     eqlat = -37.512
@@ -19,7 +19,7 @@ def geonet_test():
     assert len(streams) == 6
 
 
-def knet_test():
+def knet():
     # M 5.8 - 134km E of Iwaki, Japan
     # 2019-03-10 17:10:52 (UTC)36.852°N 142.368°E14.7 km depth
     utime = datetime(2019, 3, 10, 17, 10, 52)
@@ -33,7 +33,7 @@ def knet_test():
     assert len(streams) == 139
 
 
-def turkey_test():
+def turkey():
     # Turkey
     # 2019-03-21 05:51:10
     utime = datetime(2019, 3, 21, 5, 51, 10)
@@ -47,7 +47,7 @@ def turkey_test():
     assert len(streams) == 27
 
 
-def fdsn_test():
+def fdsn():
     # 2014-08-24 10:20:44
     eid = 'nc72282711'
     utime = datetime(2014, 8, 24, 10, 20, 44)
@@ -63,7 +63,7 @@ def fdsn_test():
 
 if __name__ == '__main__':
     # os.environ['CALLED_FROM_PYTEST'] = 'True'
-    fdsn_test()
-    knet_test()
-    turkey_test()
-    geonet_test()
+    fdsn()
+    knet()
+    turkey()
+    geonet()

@@ -3,7 +3,7 @@ from obspy.core.inventory import Inventory, Network, Station, Channel, Site
 from obspy.core.utcdatetime import UTCDateTime
 
 
-def test_get_inventory():
+def get_inventory():
     # We'll first create all the various objects. These strongly follow the
     # hierarchy of StationXML files.
     inv = Inventory(
@@ -78,7 +78,3 @@ def test_get_inventory():
     inv.networks.append(net)
 
     return inv
-
-
-if __name__ == '__main__':
-    test_get_inventory()

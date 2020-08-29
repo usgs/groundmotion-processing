@@ -21,8 +21,8 @@ def test_regression():
     event_file = os.path.join(testroot, 'events.xlsx')
     imc_file = os.path.join(testroot, 'greater_of_two_horizontals.xlsx')
     imc = 'G2H'
-    event_table = pd.read_excel(event_file)
-    imc_table = pd.read_excel(imc_file)
+    event_table = pd.read_excel(event_file, engine="openpyxl")
+    imc_table = pd.read_excel(imc_file, engine="openpyxl")
     imt = 'PGA'
 
     tdir = tempfile.mkdtemp()
