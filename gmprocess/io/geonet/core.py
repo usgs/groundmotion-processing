@@ -140,7 +140,7 @@ def _read_channel(filename, line_offset):
 
     # parse the sensor resolution from the text header
     resolution_str = lines[4].split()[1]
-    resolution = int(re.search('\d+', resolution_str).group())
+    resolution = int(re.search(r"\d+", resolution_str).group())
 
     # read floating point header array
     skip_header = line_offset + TEXT_HDR_ROWS
@@ -323,7 +323,7 @@ def _read_header(hdr_data, station, name, component, data_format,
     lonmn = hdr_data[2, 4]
     lonsc = hdr_data[2, 5]
     coordinates['longitude'] = _dms_to_dd(londg, lonmn, lonsc)
-    logging.warn('Setting elevation to 0.0')
+    logging.warning('Setting elevation to 0.0')
     coordinates['elevation'] = 0.0
 
     # get other standard metadata
