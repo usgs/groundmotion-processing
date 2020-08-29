@@ -2,6 +2,7 @@
 
 import os
 import pkg_resources
+import time
 
 import numpy as np
 import csv
@@ -86,6 +87,7 @@ def read_at2(dfile, horient=0.0):
 
 
 def test_high_freq_sa():
+    t1 = time.time()
     datapath = os.path.join('data', 'testdata', 'high_freq_sa')
     datadir = pkg_resources.resource_filename('gmprocess', datapath)
     # fnames = [
@@ -143,6 +145,14 @@ def test_high_freq_sa():
         plt.xlabel('Period, sec')
         plt.ylabel('PSA, g')
         plt.legend()
+
+    np.testing.assert_allclose(
+        test_data['target_sa'], test_data['test_sa'],
+        rtol=0.1
+    )
+    t2 = time.time()
+    elapsed = t2 - t1
+    print('Test duration: %s' % elapsed)
 
 
 if __name__ == '__main__':
