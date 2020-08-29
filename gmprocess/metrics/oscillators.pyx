@@ -46,7 +46,9 @@ cpdef list calculate_spectrals(trace, period, damping):
         # Increase the number of samples as necessary
         new_np = new_np * ns
         # Make the new number of samples a power of two
-        new_np = 1 if new_np == 0 else 2**(new_np - 1).bit_length()
+        # leaving this out for now; it slows things down but doesn't
+        # appear to affect the results. YMMV.
+        # new_np = 1 if new_np == 0 else 2**(new_np - 1).bit_length()
         # The new sample interval
         new_dt = tlen / (new_np - 1)
         # The new sample rate
@@ -119,7 +121,8 @@ def get_spectral(period, stream, damping=0.05, times=None):
         for idx in num_trace_range:
             trace = stream[idx]
             sa_list = calculate_spectrals(trace, period, damping)
-            acc_sa = np.array(sa_list[0]) * GAL_TO_PCTG
+            acc_sa = sa_list[0]
+            acc_sa *= GAL_TO_PCTG
             stats = trace.stats.copy()
             stats.npts = sa_list[3]
             stats.delta = sa_list[4]
@@ -133,7 +136,7 @@ def get_spectral(period, stream, damping=0.05, times=None):
         rotated = []
         for idx in range(0, len(stream)):
             rot_matrix = stream[idx]
-            rotated_spectrals = np.zeros(rot_matrix.shape)
+            rotated_spectrals = []
             for idy in range(0, len(rot_matrix)):
                 stats = {'npts': len(rot_matrix[idy]),
                          'delta': times[1] - times[0],
@@ -141,8 +144,9 @@ def get_spectral(period, stream, damping=0.05, times=None):
                         }
                 new_trace = Trace(data=rot_matrix[idy], header=stats)
                 sa_list = calculate_spectrals(new_trace, period, damping)
-                acc_sa = np.array(sa_list[0]) * GAL_TO_PCTG
-                rotated_spectrals[idy] = acc_sa
+                acc_sa = sa_list[0]
+                acc_sa *= GAL_TO_PCTG
+                rotated_spectrals.append(acc_sa)
             rotated += [rotated_spectrals]
         return rotated
 
