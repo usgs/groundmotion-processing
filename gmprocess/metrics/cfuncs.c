@@ -13,11 +13,12 @@
  */
 void calculate_spectrals_c(double *acc, int np, double dt, double period,
                            double damping, double *sacc, double *svel,
-                           double *sdis) {
+                           double *sdis)
+{
     double w = 2 * M_PI / period;
     double d = damping;
     double wd = sqrt(1. - d * d) * w;
-    double e = exp( -1 * d * w * dt);
+    double e = exp(-1 * d * w * dt);
     double sine = e * sin(wd * dt);
     double cosine = e * cos(wd * dt);
 
@@ -50,15 +51,16 @@ void calculate_spectrals_c(double *acc, int np, double dt, double period,
               b * (wd * sine + dw * cosine) -
               dugw2idt;
     sacc[0] = -2. * dw * svel[0] - w2 * sdis[0];
-    for (k = 1; k < np-1; k++) {
+    for (k = 1; k < np - 1; k++)
+    {
         g = acc[k];
-        dug = acc[k+1] - g;
+        dug = acc[k + 1] - g;
         gw2i = g * w2i;
         dugw2i = dug * w2i;
         dugw2idt = dugw2i / dt;
-        b = sdis[k-1] + gw2i - ddtw3 * dug;
-        a = wdi * svel[k-1] + dw * wdi * b + wdi * dugw2idt;
-        sdis[k] = a * sine + b * cosine + ddtw3 * dug - 
+        b = sdis[k - 1] + gw2i - ddtw3 * dug;
+        a = wdi * svel[k - 1] + dw * wdi * b + wdi * dugw2idt;
+        sdis[k] = a * sine + b * cosine + ddtw3 * dug -
                   gw2i - dugw2i;
         svel[k] = a * (wd * cosine - dw * sine) -
                   b * (wd * sine + dw * cosine) -
