@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from obspy.core.inventory import Inventory, Network, Station, Channel, Site
 from obspy.core.utcdatetime import UTCDateTime
 

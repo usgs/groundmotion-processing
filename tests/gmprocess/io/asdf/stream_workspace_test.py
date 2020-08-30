@@ -419,7 +419,9 @@ def add_processing(config, keys):
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
-    test_metrics2()
-    test_metrics()
     test_stream_params()
     test_workspace()
+    test_metrics2()
+    test_metrics()
+    test_colocated()
+    test_vs30_dist_metrics()

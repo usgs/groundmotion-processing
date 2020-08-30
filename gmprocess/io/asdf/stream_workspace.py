@@ -967,7 +967,7 @@ class StreamWorkspace(object):
                 if label in ptag:
                     labeldict[label] = ptag
         for label, ptag in labeldict.items():
-            row = pd.Series(index=cols)
+            row = pd.Series(index=cols, dtype=object)
             row['Label'] = label
             provdoc = self.dataset.provenance[ptag]
             user, software = _get_agents(provdoc)
@@ -1111,7 +1111,7 @@ class StreamWorkspace(object):
                         else:
                             pass
                     attrkey = key.replace('seis_prov:', '')
-                    row = pd.Series(index=cols)
+                    row = pd.Series(index=cols, dtype=object)
                     row['Record'] = provname
                     row['Processing Step'] = pstep
                     row['Step Attribute'] = attrkey

@@ -550,10 +550,11 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     for key in coordinates:
         if coordinates[key] == unknown:
             if key != 'elevation':
-                warnings.warn('Missing %r. Setting to np.nan.' % key, Warning)
+                warnings.warning(
+                    'Missing %r. Setting to np.nan.' % key, Warning)
                 coordinates[key] = np.nan
             else:
-                warnings.warn('Missing %r. Setting to 0.0.' % key, Warning)
+                warnings.warning('Missing %r. Setting to 0.0.' % key, Warning)
                 coordinates[key] = 0.0
 
     hdr['coordinates'] = coordinates
@@ -763,7 +764,7 @@ def _read_lines(skip_rows, filename):
         # parse out the format of the data
         # sometimes header has newline characters in it...
         header = header.replace('\n', '')
-        format_data = re.findall('\d+', header[header.find('format=') + 8:])
+        format_data = re.findall(r"\d+", header[header.find('format=') + 8:])
         cols = int(format_data[0])
         fmt = int(format_data[1])
         num_lines = int(np.ceil(npts / cols))

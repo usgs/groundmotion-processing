@@ -80,7 +80,7 @@ def read_renadic(filename):
     data_dir = pkg_resources.resource_filename('gmprocess',
                                                'data')
     tablefile = os.path.join(data_dir, 'station_coordinates.xlsx')
-    table = pd.read_excel(tablefile)
+    table = pd.read_excel(tablefile, engine="openpyxl")
 
     with open(filename, 'rt', encoding=ENCODING) as f:
         lines1 = [next(f) for x in range(TEXT_HDR_ROWS)]
@@ -248,7 +248,7 @@ def _read_header(lines, filename, table):
         lon = row['Lon']
 
     altitude = 0.0
-    logging.warn('Setting elevation to 0.0')
+    logging.warning('Setting elevation to 0.0')
     coords = {'latitude': lat,
               'longitude': lon,
               'elevation': altitude}
