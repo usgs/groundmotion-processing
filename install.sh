@@ -148,7 +148,6 @@ package_list=(
     "pytest-cov"
     "pyyaml"
     "requests"
-    "vcrpy"
 )
 
 
