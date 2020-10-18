@@ -29,7 +29,7 @@ from gmprocess.logging import setup_logger
 from gmprocess.streamcollection import StreamCollection
 
 setup_logger()
-#%% Grab some test data
+#%% Examples of grabbing some test data
 
 # # read usc data
 # dpath = os.path.join('data', 'testdata', 'usc', 'ci3144585')
@@ -48,15 +48,6 @@ setup_logger()
 # assert len(dmg_streams) == 1
 
 # dmg_sc = StreamCollection(dmg_streams)
-
-
-def test_plot():
-
-    # Haven't incorporated a plotting function, but it would be a useful
-    # visual check
-
-    return
-
 
 def test_dwt_denoise():
     """ Check that sample data fed into dwt_denoise() can be processed and
@@ -83,6 +74,8 @@ def test_dwt_denoise_trace():
     dataOut = dwt.denoise_trace(tr=trace)
 
     # Look at frequency content? Samples?
+
+    return dataOut
 
 
 def test_kurtosis():

@@ -14,7 +14,7 @@
 
 import numpy as np
 import logging
-import denoise_utils
+import utils
 
 def denoise(st, wavelet="coif4", MODE="zero", remove_bg=True, 
                 threshold='soft', zero_coarse_levels=1, zero_fine_levels=1, 
@@ -82,10 +82,10 @@ def denoise(st, wavelet="coif4", MODE="zero", remove_bg=True,
 
         # Do kurtosis analysis to determine noise
         if remove_bg:
-            coefsNoise = denoise_utils.kurtosis(channelLabel, coefs, logger)
+            coefsNoise = utils.kurtosis(channelLabel, coefs, logger)
 
         # Identify pre-event noise at all wavelet levels and remove
-        coefs, coefsNoise = denoise_utils.remove_pre_event_noise(tr,coefs, preevent_window, preevent_threshold_reduction)
+        coefs, coefsNoise = utils.remove_pre_event_noise(tr,coefs, preevent_window, preevent_threshold_reduction)
         for ilevel in range(1+zero_coarse_levels):
             coefsNoise[ilevel] += coefs[ilevel].copy()
             coefs[ilevel] *= 0.0
@@ -104,9 +104,9 @@ def denoise(st, wavelet="coif4", MODE="zero", remove_bg=True,
                 
         #Signal to noise ratio
         if threshold == 'soft':
-            tr = denoise_utils.soft_threshold(tr, channelLabel, coefs, coefsNoise, logger)
+            tr = utils.soft_threshold(tr, channelLabel, coefs, coefsNoise, logger)
         elif threshold == 'hard':
-            tr = denoise_utils.soft_threshold(tr, channelLabel, coefs, coefsNoise, logger)
+            tr = utils.soft_threshold(tr, channelLabel, coefs, coefsNoise, logger)
         elif threshold == 'block':
             logger.info("Block thresholding currenlty under development")
         else:
@@ -177,16 +177,16 @@ def denoise_trace(tr, wavelet="coif4", MODE="zero", remove_bg=True,
 
     # Prep in case user wants to also keep the "noise"
     tracesNoise = []
-    channelLabel = denoise_utils.get_channel_label(tr)
+    channelLabel = utils.get_channel_label(tr)
     coefsNoise = []
     coefs = pywt.wavedec(tr.data, wavelet, mode=MODE)
 
     # Do kurtosis analysis to determine noise
     if remove_bg:
-        coefsNoise = denoise_utils.kurtosis(channelLabel, coefs, logger)
+        coefsNoise = utils.kurtosis(channelLabel, coefs, logger)
 
     # Identify pre-event noise at all wavelet levels and remove
-    coefs, coefsNoise = denoise_utils.remove_pre_event_noise(tr, coefs, preevent_window, preevent_threshold_reduction)
+    coefs, coefsNoise = utils.remove_pre_event_noise(tr, coefs, preevent_window, preevent_threshold_reduction)
     for ilevel in range(1+zero_coarse_levels):
         coefsNoise[ilevel] += coefs[ilevel].copy()
         coefs[ilevel] *= 0.0
@@ -206,9 +206,9 @@ def denoise_trace(tr, wavelet="coif4", MODE="zero", remove_bg=True,
 
     # Signal to noise ratio
     if threshold == 'soft':
-        tr = denoise_utils.soft_threshold(tr, channelLabel, coefs, coefsNoise, logger)
+        tr = utils.soft_threshold(tr, channelLabel, coefs, coefsNoise, logger)
     elif threshold == 'hard':
-        tr = denoise_utils.hard_threshold(tr, channelLabel, coefs, coefsNoise, logger)
+        tr = utils.hard_threshold(tr, channelLabel, coefs, coefsNoise, logger)
     elif threshold == 'block':
         logger.info("Block thresholding currenlty under development")
     else:
