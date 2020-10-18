@@ -1,0 +1,10 @@
+[workspace]
+restore_data_on_startup = True
+save_data_on_exit = True
+save_history = True
+save_non_project_files = False
+
+[main]
+version = 0.2.0
+recent_files = ['gmprocess/denoise/dwt_test.py', 'gmprocess/denoise/dwt.py', 'gmprocess/denoise/utils.py', 'gmprocess/filtering.py', 'gmprocess/processing.py', '../../../Documents/Research/USGS_Work/gmprocess/scripts/wavelet_denoising/plots.py', '../../../Documents/Research/USGS_Work/gmprocess/scripts/wavelet_denoising/noise_generation.py', '../../../Documents/Research/USGS_Work/gmprocess/scripts/gmprocess_tutorials/gmprocess_tutorial1.py', '../../../Documents/Research/USGS_Work/gmprocess/scripts/gmprocess_tutorials/gmprocess_tutorial2.py', '../../../Documents/Research/USGS_Work/gmprocess/scripts/gmprocess_tutorials/gmprocess_tutorial3.py']
+
