@@ -2,6 +2,7 @@
 
 # stdlib imports
 import os
+import sys
 import logging
 import glob
 import re
@@ -13,7 +14,6 @@ from obspy import read_inventory
 # local imports
 from gmprocess.stationtrace import StationTrace
 from gmprocess.stationstream import StationStream
-from gmprocess.io.seedname import get_channel_name, is_channel_north
 from gmprocess.config import get_config
 
 IGNORE_FORMATS = ['KNET']
@@ -27,40 +27,98 @@ EXCLUDE_PATTERNS = ['*.*.??.LN?']
 # code we have marked as *not* free field, since borehole sensors do not match
 # our definition of "free field".
 RE_NETWORK = {
-    '10': {'description': 'Free field (rock) in vicinity of crest/toe area', 'free_field': True},
-    '11': {'description': 'Free field (Left Abutment) either crest or toe', 'free_field': True},
-    '12': {'description': 'Free field (Right Abutment) either crest or toe', 'free_field': True},
-    '13': {'description': 'Free field (water) (Towards Left Abutment)', 'free_field': False},
-    '14': {'description': 'Free field (water) (Towards Right Abutment)', 'free_field': False},
+    '10': {
+        'description': 'Free field (rock) in vicinity of crest/toe area',
+        'free_field': True},
+    '11': {
+        'description': 'Free field (Left Abutment) either crest or toe',
+        'free_field': True},
+    '12': {
+        'description': 'Free field (Right Abutment) either crest or toe',
+        'free_field': True},
+    '13': {
+        'description': 'Free field (water) (Towards Left Abutment)',
+        'free_field': False},
+    '14': {
+        'description': 'Free field (water) (Towards Right Abutment)',
+        'free_field': False},
 
-    '20': {'description': 'Toe (center)', 'free_field': False},
-    '21': {'description': 'Toe (Left Abutment)', 'free_field': False},
-    '22': {'description': 'Toe (Right Abutment)', 'free_field': False},
-    '23': {'description': 'Toe (Towards Left Abutment)', 'free_field': False},
-    '24': {'description': 'Toe (Towards Right Abutment)', 'free_field': False},
+    '20': {
+        'description': 'Toe (center)',
+        'free_field': False},
+    '21': {
+        'description': 'Toe (Left Abutment)',
+        'free_field': False},
+    '22': {
+        'description': 'Toe (Right Abutment)',
+        'free_field': False},
+    '23': {
+        'description': 'Toe (Towards Left Abutment)',
+        'free_field': False},
+    '24': {
+        'description': 'Toe (Towards Right Abutment)',
+        'free_field': False},
 
-    '30': {'description': 'Crest (center)', 'free_field': False},
-    '31': {'description': 'Crest (Left Abutment)', 'free_field': False},
-    '32': {'description': 'Crest (Right Abutment)', 'free_field': False},
-    '33': {'description': 'Crest (Towards Left Abutment)', 'free_field': False},
-    '34': {'description': 'Crest (Towards Right Abutment)', 'free_field': False},
+    '30': {
+        'description': 'Crest (center)',
+        'free_field': False},
+    '31': {
+        'description': 'Crest (Left Abutment)',
+        'free_field': False},
+    '32': {
+        'description': 'Crest (Right Abutment)',
+        'free_field': False},
+    '33': {
+        'description': 'Crest (Towards Left Abutment)',
+        'free_field': False},
+    '34': {
+        'description': 'Crest (Towards Right Abutment)',
+        'free_field': False},
 
-    '40': {'description': 'Foundation (center)', 'free_field': False},
-    '41': {'description': 'Foundation (Left Abutment)', 'free_field': False},
-    '42': {'description': 'Foundation (Right Abutment)', 'free_field': False},
-    '43': {'description': 'Foundation (Towards Left Abutment)', 'free_field': False},
-    '44': {'description': 'Foundation (Towards Right Abutment)', 'free_field': False},
+    '40': {
+        'description': 'Foundation (center)',
+        'free_field': False},
+    '41': {
+        'description': 'Foundation (Left Abutment)',
+        'free_field': False},
+    '42': {
+        'description': 'Foundation (Right Abutment)',
+        'free_field': False},
+    '43': {
+        'description': 'Foundation (Towards Left Abutment)',
+        'free_field': False},
+    '44': {
+        'description': 'Foundation (Towards Right Abutment)',
+        'free_field': False},
 
-    '50': {'description': 'Body (center)', 'free_field': False},
-    '51': {'description': 'Body (Left Abutment)', 'free_field': False},
-    '52': {'description': 'Body (Right Abutment)', 'free_field': False},
-    '53': {'description': 'Body (Towards Left Abutment)', 'free_field': False},
-    '54': {'description': 'Body (Towards Right Abutment)', 'free_field': False},
+    '50': {
+        'description': 'Body (center)',
+        'free_field': False},
+    '51': {
+        'description': 'Body (Left Abutment)',
+        'free_field': False},
+    '52': {
+        'description': 'Body (Right Abutment)',
+        'free_field': False},
+    '53': {
+        'description': 'Body (Towards Left Abutment)',
+        'free_field': False},
+    '54': {
+        'description': 'Body (Towards Right Abutment)',
+        'free_field': False},
 
-    '60': {'description': 'Down Hole Upper Body', 'free_field': False},
-    '61': {'description': 'Down Hole Mid Body', 'free_field': False},
-    '62': {'description': 'Down Hole Foundation', 'free_field': False},
-    '63': {'description': 'Down Hole Free Field', 'free_field': False},
+    '60': {
+        'description': 'Down Hole Upper Body',
+        'free_field': False},
+    '61': {
+        'description': 'Down Hole Mid Body',
+        'free_field': False},
+    '62': {
+        'description': 'Down Hole Foundation',
+        'free_field': False},
+    '63': {
+        'description': 'Down Hole Free Field',
+        'free_field': False},
 }
 
 LOCATION_CODES = {'RE': RE_NETWORK}
@@ -78,15 +136,16 @@ def _get_station_file(filename, stream):
     return xmlfile
 
 
-def is_fdsn(filename):
+def is_obspy(filename):
     """Check to see if file is a format supported by Obspy (not KNET).
 
     Args:
-        filename (str): Path to possible Obspy format.
+        filename (str):
+            Path to possible Obspy format.
     Returns:
         bool: True if obspy supported, otherwise False.
     """
-    logging.debug("Checking if format is Obspy.")
+    logging.debug("Checking if format is supported by ObsPy.")
     if not os.path.isfile(filename):
         return False
     try:
@@ -103,7 +162,7 @@ def is_fdsn(filename):
     return False
 
 
-def read_fdsn(filename, **kwargs):
+def read_obspy(filename, **kwargs):
     """Read Obspy data file (SAC, MiniSEED, etc).
 
     Args:
@@ -114,10 +173,10 @@ def read_fdsn(filename, **kwargs):
     Returns:
         Stream: StationStream object.
     """
-    logging.debug("Starting read_fdsn.")
-    if not is_fdsn(filename):
+    logging.debug("Starting read_obspy.")
+    if not is_obspy(filename):
         raise Exception('%s is not a valid Obspy file format.' % filename)
- 
+
     if 'exclude_patterns' in kwargs:
         exclude_patterns = kwargs.get('exclude_patterns', EXCLUDE_PATTERNS)
     else:
@@ -135,7 +194,6 @@ def read_fdsn(filename, **kwargs):
     inventory = read_inventory(xmlfile)
     traces = []
     for ttrace in tstream:
-        not_excluded = True
         trace = StationTrace(data=ttrace.data,
                              header=ttrace.stats,
                              inventory=inventory)
@@ -147,15 +205,15 @@ def read_fdsn(filename, **kwargs):
             ttrace.stats.location = '--'
         location = ttrace.stats.location
 
-        #full instrument name for matching purposes
+        # full instrument name for matching purposes
         instrument = '%s.%s.%s.%s' % (network, station,
-                                  location, channel) 
+                                      location, channel)
 
-        #Search for a match using regular expressions.
+        # Search for a match using regular expressions.
         for pattern in exclude_patterns:
-            
-            #Split each string into components. Check if
-            #components are of equal length.
+
+            # Split each string into components. Check if
+            # components are of equal length.
             pparts = pattern.split('.')
             instparts = instrument.split('.')
             if len(pparts) != len(instparts):
@@ -164,23 +222,24 @@ def read_fdsn(filename, **kwargs):
                              'that you have 4 fields: Network, '
                              'Station ID, Location Code, and Channel.')
                 sys.exit(0)
-            #Loop over each component, convert the pattern's field 
-            #into its regular expression form, and see if the
-            #pattern is in the instrument's component. 
+            # Loop over each component, convert the pattern's field
+            # into its regular expression form, and see if the
+            # pattern is in the instrument's component.
             no_match = False
             for pat, instfield in zip(pparts, instparts):
-                pat = pat.replace('*','.*').replace('?', '.')
+                pat = pat.replace('*', '.*').replace('?', '.')
                 if re.search(pat, instfield) is None:
                     no_match = True
                     break
             if no_match:
                 continue
             else:
-                logging.info('%s is an instrument that should be excluded. '
-                             'The station is not going into the station stream.' 
-                             % instrument)
+                logging.info(
+                    '%s is an instrument that should be excluded. '
+                    'The station is not going into the station stream.'
+                    % instrument)
                 break
-        
+
         if network in LOCATION_CODES:
             codes = LOCATION_CODES[network]
             if location in codes:
@@ -192,7 +251,7 @@ def read_fdsn(filename, **kwargs):
         head, tail = os.path.split(filename)
         trace.stats['standard']['source_file'] = tail or os.path.basename(head)
         traces.append(trace)
-    if no_match == True:
+    if no_match is True:
         stream = StationStream(traces=traces)
         streams.append(stream)
 
