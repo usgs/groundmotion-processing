@@ -4,13 +4,8 @@ from gmprocess.io.obspy.fdsn_fetcher import FDSNFetcher
 from datetime import datetime
 import os.path
 
-# We can't run this test for regular CI purposes because it is inredibly slow
-# and might even not be reliable, but it is useful to run occasionally so we
-# are leaving it hear but prepending with an underscore so it doesn't get run
-# automatically.
 
-
-def test_fetcher():
+def fetcher_test():
     # 2014-08-24 10:20:44
     eid = 'nc72282711'
     utime = datetime(2014, 8, 24, 10, 20, 44)
@@ -26,4 +21,4 @@ def test_fetcher():
 
 
 if __name__ == '__main__':
-    test_fetcher()
+    fetcher_test()
