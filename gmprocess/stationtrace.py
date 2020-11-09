@@ -658,7 +658,8 @@ class StationTrace(Trace):
 
 def _stats_from_inventory(data, inventory, channelid):
     if len(inventory.source):
-        if len(inventory.sender) and inventory.sender != inventory.source:
+        if (inventory.sender is not None and
+                inventory.sender != inventory.source):
             source = '%s,%s' % (inventory.source, inventory.sender)
         else:
             source = inventory.source
