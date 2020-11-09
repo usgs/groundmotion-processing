@@ -658,7 +658,10 @@ class StationTrace(Trace):
 
 def _stats_from_inventory(data, inventory, channelid):
     if len(inventory.source):
-        source = inventory.source
+        if len(inventory.sender) and inventory.sender != inventory.source:
+            source = '%s,%s' % (inventory.source, inventory.sender)
+        else:
+            source = inventory.source
 
     # Due to pyasdf strict station merging criteria, we might actually have
     # to search for the correct station that contains the current channelid
