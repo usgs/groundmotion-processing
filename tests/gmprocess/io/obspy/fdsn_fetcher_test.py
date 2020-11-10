@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from gmprocess.io.fdsn.fdsn_fetcher import FDSNFetcher
+from gmprocess.io.obspy.fdsn_fetcher import FDSNFetcher
 from datetime import datetime
 import os.path
 

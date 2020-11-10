@@ -3,7 +3,6 @@ import tempfile
 import os.path
 import logging
 import glob
-from io import BytesIO
 
 # third party imports
 import pytz
@@ -16,7 +15,7 @@ from obspy.clients.fdsn.mass_downloader import (CircularDomain,
 
 # local imports
 from gmprocess.io.fetcher import DataFetcher, _get_first_value
-from gmprocess.io.fdsn.core import read_fdsn
+from gmprocess.io.obspy.core import read_obspy
 from gmprocess.streamcollection import StreamCollection
 from gmprocess.config import get_config
 
@@ -58,16 +57,25 @@ class FDSNFetcher(DataFetcher):
         using the Obspy mass downloader functionality.
 
         Args:
-            time (datetime): Origin time.
-            lat (float): Origin latitude.
-            lon (float): Origin longitude.
-            depth (float): Origin depth.
-            magnitude (float): Origin magnitude.
-            radius (float): Search radius (km).
-            time_before (float): Seconds before arrival time (sec).
-            time_after (float): Seconds after arrival time (sec).
-            rawdir (str): Path to location where raw data will be stored.
-                          If not specified, raw data will be deleted.
+            time (datetime):
+                Origin time.
+            lat (float):
+                Origin latitude.
+            lon (float):
+                Origin longitude.
+            depth (float):
+                Origin depth.
+            magnitude (float):
+                Origin magnitude.
+            radius (float):
+                Search radius (km).
+            time_before (float):
+                Seconds before arrival time (sec).
+            time_after (float):
+                Seconds after arrival time (sec).
+            rawdir (str):
+                Path to location where raw data will be stored.
+                If not specified, raw data will be deleted.
             config (dict):
                 Dictionary containing configuration.
                 If None, retrieve global config.
@@ -226,7 +234,6 @@ class FDSNFetcher(DataFetcher):
             minimum_interstation_distance_in_m=self.minimum_interstation_distance_in_m,
             exclude_networks=self.exclude_networks,
             exclude_stations=self.exclude_stations,
-
             channel_priorities=self.channels)
 
         # For each of the providers, check if we have a username and password
@@ -278,13 +285,13 @@ class FDSNFetcher(DataFetcher):
         streams = []
         for seed_file in seed_files:
             try:
-                tstreams = read_fdsn(seed_file)
+                tstreams = read_obspy(seed_file, self.config)
             except Exception as e:
                 fmt = 'Could not read seed file %s - "%s"'
                 logging.info(fmt % (seed_file, str(e)))
-            if tstreams == None:
+            if tstreams is None:
                 continue
-            else: 
+            else:
                 streams += tstreams
 
         stream_collection = StreamCollection(streams=streams,

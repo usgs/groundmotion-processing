@@ -2,7 +2,6 @@
 
 # stdlib imports
 import os
-import tempfile
 import shutil
 
 # third party imports
@@ -22,8 +21,10 @@ def test_fetchflat():
                            'config.yml')
     datadir = pkg_resources.resource_filename('gmprocess', dpath)
     cfgfile = pkg_resources.resource_filename('gmprocess', cfgpath)
+    tdir = 'temp_dir'
+    if not os.path.exists(tdir):
+        os.mkdir(tdir)
     try:
-        tdir = tempfile.mkdtemp()
         fmt = '%s %s --directory %s -c %s'
         tpl = (fetchflat, tdir, datadir, cfgfile)
         cmd = fmt % tpl

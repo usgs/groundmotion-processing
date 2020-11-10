@@ -257,6 +257,7 @@ def get_turkey_dataframe(time, dt):
             - longitude Earthquake origin longitude.
             - depth Earthquake origin depth.
             - magnitude Largest Turkish magnitude (from list of ML, MD ,MS ,MW ,MB)
+        or None if no events are found.
 
     """
     urlparts = urlparse(SEARCH_URL)
@@ -275,41 +276,44 @@ def get_turkey_dataframe(time, dt):
         return None
     data = req.text
     soup = BeautifulSoup(data, features="lxml")
-    table = soup.find_all('table', 'tableType_01')[0]
-    cols = ['id', 'origintime', 'latitude',
-            'longitude', 'depth', 'magnitude', 'url']
-    df = pd.DataFrame(columns=cols)
-    for row in table.find_all('tr'):
-        if 'class' in row.attrs and row.attrs['class'] == ['headerRowType_01']:
-            continue
-        cols = row.find_all('td', 'coltype01')
-        href = cols[0].contents[0].attrs['href']
-        event_url = urljoin('http://' + urlparts.netloc, href)
-        eid = cols[0].contents[0].contents[0]
-        datestr = str(cols[1].contents[0])
-        timestr = str(cols[2].contents[0])
-        timestr = timestr[0:8]
-        lat = float(str(cols[3].contents[0]))
-        lon = float(str(cols[4].contents[0]))
-        depth = float(str(cols[5].contents[0]))
-        mags = []
-        for i in range(6, 11):
-            if len(cols[i].contents):
-                mag = float(str(cols[i].contents[0]))
-                mags.append(mag)
-        mag = max(mags)
-        time = datetime.strptime(datestr + 'T' + timestr, TIMEFMT)
-        time = pd.Timestamp(time).tz_localize('UTC')
-        edict = {'id': eid,
-                 'url': event_url,
-                 'origintime': time,
-                 'latitude': lat,
-                 'longitude': lon,
-                 'depth': depth,
-                 'magnitude': mag}
-        df = df.append(edict, ignore_index=True)
+    all_table = soup.find_all('table', 'tableType_01')
+    if len(all_table):
+        table = all_table[0]
+        cols = ['id', 'origintime', 'latitude',
+                'longitude', 'depth', 'magnitude', 'url']
+        df = pd.DataFrame(columns=cols)
+        for row in table.find_all('tr'):
+            if 'class' in row.attrs and row.attrs['class'] == ['headerRowType_01']:
+                continue
+            cols = row.find_all('td', 'coltype01')
+            href = cols[0].contents[0].attrs['href']
+            event_url = urljoin('http://' + urlparts.netloc, href)
+            eid = cols[0].contents[0].contents[0]
+            datestr = str(cols[1].contents[0])
+            timestr = str(cols[2].contents[0])
+            timestr = timestr[0:8]
+            lat = float(str(cols[3].contents[0]))
+            lon = float(str(cols[4].contents[0]))
+            depth = float(str(cols[5].contents[0]))
+            mags = []
+            for i in range(6, 11):
+                if len(cols[i].contents):
+                    mag = float(str(cols[i].contents[0]))
+                    mags.append(mag)
+            mag = max(mags)
+            time = datetime.strptime(datestr + 'T' + timestr, TIMEFMT)
+            time = pd.Timestamp(time).tz_localize('UTC')
+            edict = {'id': eid,
+                     'url': event_url,
+                     'origintime': time,
+                     'latitude': lat,
+                     'longitude': lon,
+                     'depth': depth,
+                     'magnitude': mag}
+            df = df.append(edict, ignore_index=True)
 
-    # make sure that origintime is actually a time
-    df['origintime'] = pd.to_datetime(df['origintime'])
-
-    return df
+        # make sure that origintime is actually a time
+        df['origintime'] = pd.to_datetime(df['origintime'])
+        return df
+    else:
+        return None

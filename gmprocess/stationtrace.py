@@ -163,35 +163,81 @@ MAX_ID_LEN = 12
 
 PROV_TIME_FMT = '%Y-%m-%dT%H:%M:%S.%fZ'
 
-ACTIVITIES = {'waveform_simulation': {'code': 'ws',
-                                      'label': 'Waveform Simulation'},
-              'taper': {'code': 'tp', 'label': 'Taper'},
-              'stack_cross_correlations': {
-                  'code': 'sc', 'label': 'Stack Cross Correlations'},
-              'simulate_response': {
-                  'code': 'sr', 'label': 'Simulate Response'},
-              'rotate': {'code': 'rt', 'label': 'Rotate'},
-              'resample': {'code': 'rs', 'label': 'Resample'},
-              'remove_response': {'code': 'rr', 'label': 'Remove Response'},
-              'pad': {'code': 'pd', 'label': 'Pad'},
-              'normalize': {'code': 'nm', 'label': 'Normalize'},
-              'multiply': {'code': 'nm', 'label': 'Multiply'},
-              'merge': {'code': 'mg', 'label': 'Merge'},
-              'lowpass_filter': {'code': 'lp', 'label': 'Lowpass Filter'},
-              'interpolate': {'code': 'ip', 'label': 'Interpolate'},
-              'integrate': {'code': 'ig', 'label': 'Integrate'},
-              'highpass_filter': {'code': 'hp', 'label': 'Highpass Filter'},
-              'divide': {'code': 'dv', 'label': 'Divide'},
-              'differentiate': {'code': 'df', 'label': 'Differentiate'},
-              'detrend': {'code': 'dt', 'label': 'Detrend'},
-              'decimate': {'code': 'dc', 'label': 'Decimate'},
-              'cut': {'code': 'ct', 'label': 'Cut'},
-              'cross_correlate': {'code': 'co', 'label': 'Cross Correlate'},
-              'calculate_adjoint_source': {
-                  'code': 'ca', 'label': 'Calculate Adjoint Source'},
-              'bandstop_filter': {'code': 'bs', 'label': 'Bandstop Filter'},
-              'bandpass_filter': {'code': 'bp', 'label': 'Bandpass Filter'}
-              }
+ACTIVITIES = {
+    'waveform_simulation': {
+        'code': 'ws',
+        'label': 'Waveform Simulation'
+    },
+    'taper': {
+        'code': 'tp', 'label': 'Taper'
+    },
+    'stack_cross_correlations': {
+        'code': 'sc', 'label': 'Stack Cross Correlations'
+    },
+    'simulate_response': {
+        'code': 'sr', 'label': 'Simulate Response'
+    },
+    'rotate': {
+        'code': 'rt', 'label': 'Rotate'
+    },
+    'resample': {
+        'code': 'rs', 'label': 'Resample'
+    },
+    'remove_response': {
+        'code': 'rr', 'label': 'Remove Response'
+    },
+    'pad': {
+        'code': 'pd', 'label': 'Pad'
+    },
+    'normalize': {
+        'code': 'nm', 'label': 'Normalize'
+    },
+    'multiply': {
+        'code': 'nm', 'label': 'Multiply'
+    },
+    'merge': {
+        'code': 'mg', 'label': 'Merge'
+    },
+    'lowpass_filter': {
+        'code': 'lp', 'label': 'Lowpass Filter'
+    },
+    'interpolate': {
+        'code': 'ip', 'label': 'Interpolate'
+    },
+    'integrate': {
+        'code': 'ig', 'label': 'Integrate'
+    },
+    'highpass_filter': {
+        'code': 'hp', 'label': 'Highpass Filter'
+    },
+    'divide': {
+        'code': 'dv', 'label': 'Divide'
+    },
+    'differentiate': {
+        'code': 'df', 'label': 'Differentiate'
+    },
+    'detrend': {
+        'code': 'dt', 'label': 'Detrend'
+    },
+    'decimate': {
+        'code': 'dc', 'label': 'Decimate'
+    },
+    'cut': {
+        'code': 'ct', 'label': 'Cut'
+    },
+    'cross_correlate': {
+        'code': 'co', 'label': 'Cross Correlate'
+    },
+    'calculate_adjoint_source': {
+        'code': 'ca', 'label': 'Calculate Adjoint Source'
+    },
+    'bandstop_filter': {
+        'code': 'bs', 'label': 'Bandstop Filter'
+    },
+    'bandpass_filter': {
+        'code': 'bp', 'label': 'Bandpass Filter'
+    }
+}
 
 
 class StationTrace(Trace):
@@ -199,7 +245,8 @@ class StationTrace(Trace):
 
     """
 
-    def __init__(self, data=np.array([]), header=None, inventory=None):
+    def __init__(self, data=np.array([]), header=None,
+                 inventory=None, config=None):
         """Construct StationTrace.
 
         Args:
@@ -209,19 +256,48 @@ class StationTrace(Trace):
                 Dictionary of metadata (see trace.stats docs).
             inventory (Inventory):
                 Obspy Inventory object.
+            config (dict):
+                Dictionary containing configuration.
+                If None, retrieve global config.
         """
+        if config is None:
+            config = get_config()
         if inventory is None and header is None:
-            raise Exception(
+            raise ValueError(
                 'Cannot create StationTrace without header info or Inventory')
-        if inventory is not None and header is not None:
-            channelid = header['channel']
-            (response, standard,
-             coords, format_specific) = _stats_from_inventory(data, inventory,
-                                                              channelid)
-            header['response'] = response
-            header['coordinates'] = coords
-            header['standard'] = standard
-            header['format_specific'] = format_specific
+        elif inventory is not None and header is not None:
+            # End up here if the format was read in with ObsPy and an
+            # inventory was able to be constructed (e.g., miniseed+StationXML)
+            try:
+                channelid = header['channel']
+                (response, standard,
+                 coords, format_specific) = _stats_from_inventory(
+                     data, inventory, channelid)
+                header['response'] = response
+                header['coordinates'] = coords
+                header['standard'] = standard
+                header['format_specific'] = format_specific
+            except:
+                raise ValueError(
+                    'Failed to construct required metadata from inventory '
+                    'and input header data.'
+                )
+        elif inventory is None and header is not None and \
+                'standard' not in header:
+            # End up here for ObsPy without an inventory (e.g., SAC).
+            # This assumes that all of our readers include the "standard" key
+            # in the header and that ObsPy one's do not.
+            try:
+                (response, standard,
+                 coords, format_specific) = _stats_from_header(header, config)
+                header['response'] = response
+                header['coordinates'] = coords
+                header['standard'] = standard
+                header['format_specific'] = format_specific
+            except:
+                raise ValueError(
+                    'Failed to construct required metadata from header data.'
+                )
 
         # sometimes the channel names do not indicate which one is the
         # Z channel. If we have vertical_orientation information, then
@@ -232,6 +308,11 @@ class StationTrace(Trace):
             is_z = header['channel'].endswith('Z')
             if delta < MAX_DIP_OFFSET and not is_z:
                 header['channel'] = header['channel'][0:-1] + 'Z'
+
+        # Apply conversion factor if one was specified for this format
+        if 'format_specific' in header and \
+                'conversion_factor' in header['format_specific']:
+            data *= header['format_specific']['conversion_factor']
 
         super(StationTrace, self).__init__(data=data, header=header)
         self.provenance = []
@@ -364,7 +445,8 @@ class StationTrace(Trace):
         return pkeys
 
     def getProvenance(self, prov_id):
-        """Get list of seis-prov compatible attributes whose id matches prov_id.
+        """Get list of seis-prov compatible attributes whose id matches
+        prov_id.
 
         # activities.
         See http://seismicdata.github.io/SEIS-PROV/_generated_details.html
@@ -583,7 +665,8 @@ class StationTrace(Trace):
         return df
 
     def getProvSeries(self):
-        """Return a pandas Series containing the processing history for the trace.
+        """Return a pandas Series containing the processing history for the
+        trace.
 
         BO.NGNH31.HN2  Remove Response  input_units     counts
                                         output_units    cm/s^2
@@ -752,13 +835,63 @@ def _stats_from_inventory(data, inventory, channelid):
                 num, denom = units.split('/')
                 if num.lower() not in LENGTH_CONVERSIONS:
                     raise KeyError(
-                        'Sensitivity input units of %s are not supported.' % units)
+                        'Sensitivity input units of %s are not supported.'
+                        % units)
                 conversion = LENGTH_CONVERSIONS[num.lower()]
-                sensitivity = response.instrument_sensitivity.value * conversion
+                sensitivity = response.instrument_sensitivity.value * \
+                    conversion
                 response.instrument_sensitivity.value = sensitivity
                 standard['instrument_sensitivity'] = sensitivity
             else:
-                standard['instrument_sensitivity'] = response.instrument_sensitivity.value
+                standard['instrument_sensitivity'] = \
+                    response.instrument_sensitivity.value
+
+    return (response, standard, coords, format_specific)
+
+
+def _stats_from_header(header, config):
+    if '_format' in header and header._format.lower() == 'sac':
+        # The plan is to add separate if blocks to support the different
+        # formats as we encounter them here. See the SAC header documentation
+        # here:
+        # http://ds.iris.edu/files/sac-manual/manual/file_format.html
+
+        # Todo: add support for SAC with PZ file.
+
+        coords = {
+            'latitude': header['sac']['stla'],
+            'longitude': header['sac']['stlo'],
+            'elevation': header['sac']['stel']
+        }
+        standard = {}
+        standard['corner_frequency'] = np.nan
+        standard['instrument_damping'] = np.nan
+        standard['instrument_period'] = np.nan
+        standard['structure_type'] = ''
+        standard['process_time'] = ''
+        standard['process_level'] = 'uncorrected physical units'
+        standard['source'] = config['read']['sac_source']
+        standard['source_file'] = ''
+        standard['instrument'] = ''
+        standard['sensor_serial_number'] = ''
+        standard['instrument'] = ''
+        standard['sensor_serial_number'] = ''
+        standard['horizontal_orientation'] = float(header['sac']['cmpaz'])
+        standard['vertical_orientation'] = float(header['sac']['cmpinc'])
+        utype = get_units_type(header['channel'])
+        standard['units_type'] = utype
+        standard['units'] = UNITS[utype]
+        standard['comments'] = ''
+        standard['station_name'] = ''
+        standard['station_name'] = header['station']
+        format_specific = {
+            'conversion_factor': float(config['read']['sac_conversion_factor'])
+        }
+        standard['source_format'] = header._format
+        standard['instrument_sensitivity'] = np.nan
+        response = None
+    else:
+        raise Exception('Format unsuppored without StationXML file.')
 
     return (response, standard, coords, format_specific)
 
