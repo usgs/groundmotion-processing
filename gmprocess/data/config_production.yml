@@ -97,6 +97,20 @@ read:
     # Resampling rate if times are unevenly spaced
     resample_rate: 200
 
+    # SAC header doesn't include units (!) and is generally assumed to be:
+    #     nm/s/s for acceleration
+    #     nm/s   for velocity
+    #     nm     for displacement
+    # The following is a multiplicative factor to convert the ACTUAL data the 
+    # SAC files being used to cm/s/s for accel or cm/s for velocity.
+    sac_conversion_factor: 1e-7      # For nm/s/s
+    # sac_conversion_factor: 1e-4    # For um/s/s
+    # sac_conversion_factor: 980.665 # For g
+
+    # Also, data source is not included in SAC headers, so we provide an option
+    # to set it here:
+    sac_source: Unknown
+
 # -----------------------------------------------------------------------------
 # Options for separating noise/signal windows
 #

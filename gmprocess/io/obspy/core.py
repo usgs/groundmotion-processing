@@ -18,6 +18,7 @@ from gmprocess.config import get_config
 
 IGNORE_FORMATS = ['KNET']
 EXCLUDE_PATTERNS = ['*.*.??.LN?']
+REQUIRES_XML = ['MSEED']
 
 
 # Bureau of Reclamation has provided a table of location codes with
@@ -139,6 +140,8 @@ def _get_station_file(filename, stream):
 def is_obspy(filename):
     """Check to see if file is a format supported by Obspy (not KNET).
 
+    Note: Currently only SAC and Miniseed are supported.
+
     Args:
         filename (str):
             Path to possible Obspy format.
@@ -152,28 +155,36 @@ def is_obspy(filename):
         stream = read(filename)
         if stream[0].stats._format in IGNORE_FORMATS:
             return False
-        xmlfile = _get_station_file(filename, stream)
-        if not os.path.isfile(xmlfile):
-            return False
-        return True
+        if stream[0].stats._format in REQUIRES_XML:
+            xmlfile = _get_station_file(filename, stream)
+            if not os.path.isfile(xmlfile):
+                return False
+            return True
+        else:
+            return True
     except Exception:
         return False
 
     return False
 
 
-def read_obspy(filename, **kwargs):
-    """Read Obspy data file (SAC, MiniSEED, etc).
+def read_obspy(filename, config=None, **kwargs):
+    """Read Obspy data file (SAC and MiniSEED currently supported).
 
     Args:
         filename (str):
             Path to data file.
+        config (dict):
+            Dictionary containing configuration.
+            If None, retrieve global config.
         kwargs (ref):
             Other arguments will be ignored.
     Returns:
         Stream: StationStream object.
     """
     logging.debug("Starting read_obspy.")
+    if config is None:
+        config = get_config()
     if not is_obspy(filename):
         raise Exception('%s is not a valid Obspy file format.' % filename)
 
@@ -181,7 +192,7 @@ def read_obspy(filename, **kwargs):
         exclude_patterns = kwargs.get('exclude_patterns', EXCLUDE_PATTERNS)
     else:
         try:
-            fetch_cfg = get_config(section='fetchers')
+            fetch_cfg = config['fetchers']
             fdsn_cfg = fetch_cfg['FDSNFetcher']
             if 'exclude_patterns' in fdsn_cfg:
                 exclude_patterns = fdsn_cfg['exclude_patterns']
@@ -190,13 +201,17 @@ def read_obspy(filename, **kwargs):
 
     streams = []
     tstream = read(filename)
-    xmlfile = _get_station_file(filename, tstream)
-    inventory = read_inventory(xmlfile)
+    try:
+        xmlfile = _get_station_file(filename, tstream)
+        inventory = read_inventory(xmlfile)
+    except:
+        inventory = None
     traces = []
     for ttrace in tstream:
         trace = StationTrace(data=ttrace.data,
                              header=ttrace.stats,
-                             inventory=inventory)
+                             inventory=inventory,
+                             config=config)
         network = ttrace.stats.network
         station = ttrace.stats.station
         channel = ttrace.stats.channel

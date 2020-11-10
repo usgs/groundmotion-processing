@@ -285,7 +285,7 @@ class FDSNFetcher(DataFetcher):
         streams = []
         for seed_file in seed_files:
             try:
-                tstreams = read_obspy(seed_file)
+                tstreams = read_obspy(seed_file, self.config)
             except Exception as e:
                 fmt = 'Could not read seed file %s - "%s"'
                 logging.info(fmt % (seed_file, str(e)))
