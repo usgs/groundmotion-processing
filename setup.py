@@ -44,7 +44,7 @@ setup(
         'gmprocess.io.asdf',
         'gmprocess.io.bhrc',
         'gmprocess.io.esm',
-        'gmprocess.io.fdsn',
+        'gmprocess.io.obspy',
         'gmprocess.io.nsmn',
         'gmprocess.io.cwb',
         'gmprocess.io.dmg',
