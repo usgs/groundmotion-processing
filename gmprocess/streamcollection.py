@@ -14,6 +14,7 @@ from obspy import UTCDateTime
 from obspy.core.event import Origin
 from obspy.geodetics import gps2dist_azimuth
 import pandas as pd
+import numpy as np
 
 from gmprocess.exception import GMProcessException
 from gmprocess.metrics.station_summary import StationSummary
@@ -50,7 +51,8 @@ class StreamCollection(object):
 
     def __init__(self, streams=None, drop_non_free=True,
                  handle_duplicates=True, max_dist_tolerance=None,
-                 process_level_preference=None, format_preference=None):
+                 preference_order=None, process_level_preference=None,
+                 format_preference=None):
         """
         Args:
             streams (list):
@@ -62,6 +64,10 @@ class StreamCollection(object):
             max_dist_tolerance (float):
                 Maximum distance tolerance for determining whether two streams
                 are at the same location (in meters).
+            preference_order (list):
+                A list containing 'process_level', 'source_format',
+                'starttime', 'npts', 'sampling_rate', 'location_code' in the
+                desired order for choosing the preferred trace.
             process_level_preference (list):
                 A list containing 'V0', 'V1', 'V2', with the order determining
                 which process level is the most preferred (most preferred goes
@@ -96,6 +102,7 @@ class StreamCollection(object):
             if len(self.streams):
                 self.__handle_duplicates(
                     max_dist_tolerance,
+                    preference_order,
                     process_level_preference,
                     format_preference)
         self.__group_by_net_sta_inst()
@@ -549,7 +556,7 @@ class StreamCollection(object):
 
         self.streams = grouped_streams
 
-    def __handle_duplicates(self, max_dist_tolerance,
+    def __handle_duplicates(self, max_dist_tolerance, preference_order,
                             process_level_preference, format_preference):
         """
         Removes duplicate data from the StreamCollection, based on the
@@ -559,6 +566,10 @@ class StreamCollection(object):
             max_dist_tolerance (float):
                 Maximum distance tolerance for determining whether two streams
                 are at the same location (in meters).
+            preference_order (list):
+                A list containing 'process_level', 'source_format',
+                'starttime', 'npts', 'sampling_rate', 'location_code' in the
+                desired order for choosing the preferred trace.
             process_level_preference (list):
                 A list containing 'V0', 'V1', 'V2', with the order determining
                 which process level is the most preferred (most preferred goes
@@ -574,6 +585,7 @@ class StreamCollection(object):
         # If not in the config, use the default values at top of the file
         preferences = {
             'max_dist_tolerance': max_dist_tolerance,
+            'preference_order': preference_order,
             'process_level_preference': process_level_preference,
             'format_preference': format_preference}
         default_config = None
@@ -602,6 +614,7 @@ class StreamCollection(object):
             if is_duplicate:
                 if choose_preferred(
                         tr_to_add, tr_pref,
+                        preferences['preference_order'],
                         preferences['process_level_preference'],
                         preferences['format_preference']) == tr_to_add:
                     preferred_traces.remove(tr_pref)
@@ -794,7 +807,6 @@ def are_duplicates(tr1, tr2, max_dist_tolerance):
             tr1.stats.coordinates.latitude, tr1.stats.coordinates.longitude,
             tr2.stats.coordinates.latitude, tr2.stats.coordinates.longitude)[0]
         if (tr1.stats.station == tr2.stats.station
-            and tr1.stats.location == tr2.stats.location
             and tr1.stats.channel[:2] == tr2.stats.channel[:2]
             and len(orientation_codes) == 1
                 and distance < max_dist_tolerance):
@@ -803,7 +815,8 @@ def are_duplicates(tr1, tr2, max_dist_tolerance):
             return False
 
 
-def choose_preferred(tr1, tr2, process_level_preference, format_preference):
+def choose_preferred(tr1, tr2, preference_order, process_level_preference,
+                     format_preference):
     """
     Determines which trace is preferred. Returns the preferred the trace.
 
@@ -812,6 +825,10 @@ def choose_preferred(tr1, tr2, process_level_preference, format_preference):
             1st trace.
         tr2 (StationTrace):
             2nd trace.
+        preference_order (list):
+            A list containing 'process_level', 'source_format', 'starttime',
+            'npts', 'sampling_rate', 'location_code' in the desired order
+            for choosing the preferred trace.
         process_level_preference (list):
             A list containing 'V0', 'V1', 'V2', with the order determining
             which process level is the most preferred (most preferred goes
@@ -826,41 +843,31 @@ def choose_preferred(tr1, tr2, process_level_preference, format_preference):
         The preferred trace (StationTrace).
     """
 
-    tr1_pref = process_level_preference.index(
-        REV_PROCESS_LEVELS[tr1.stats.standard.process_level])
-    tr2_pref = process_level_preference.index(
-        REV_PROCESS_LEVELS[tr2.stats.standard.process_level])
-
-    if tr1_pref < tr2_pref:
-        return tr1
-    elif tr1_pref > tr2_pref:
-        return tr2
-    else:
-        if (tr1.stats.standard.source_format in format_preference
-                and tr2.stats.standard.source_format in format_preference):
-            # Determine preferred format
-            tr1_form_pref = format_preference.index(
-                tr1.stats.standard.source_format)
-            tr2_form_pref = format_preference.index(
-                tr2.stats.standard.source_format)
-            if tr1_form_pref < tr2_form_pref:
-                return tr1
-            elif tr1_form_pref > tr2_form_pref:
-                return tr2
+    traces = [tr1, tr2]
+    for pref in preference_order:
+        if pref == 'process_level':
+            tr_prefs = [process_level_preference.index(
+                REV_PROCESS_LEVELS[tr.stats.standard.process_level])
+                for tr in traces]
+        elif pref == 'source_format':
+            if all([tr.stats.standard.source_format in format_preference
+                    for tr in traces]):
+                tr_prefs = [format_preference.index(
+                    tr.stats.standard.source_format) for tr in traces]
             else:
-                if (tr1.stats.starttime == UTCDateTime(0)
-                        and tr2.stats.starttime != UTCDateTime(0)):
-                    return tr2
-                elif (tr1.stats.starttime != UTCDateTime(0)
-                      and tr2.stats.starttime == UTCDateTime(0)):
-                    return tr1
-                else:
-                    if tr1.stats.npts > tr2.stats.npts:
-                        return tr1
-                    elif tr2.stats.npts > tr1.stats.npts:
-                        return tr2
-                    else:
-                        if tr2.stats.sampling_rate > tr1.stats.sampling_rate:
-                            return tr2
-                        else:
-                            return tr1
+                continue
+        elif pref == 'starttime':
+            tr_prefs = [tr.stats.starttime == UTCDateTime(0) for tr in traces]
+        elif pref == 'npts':
+            tr_prefs = [1 / tr.stats.npts for tr in traces]
+        elif pref == 'sampling_rate':
+            tr_prefs = [1 / tr.stats.sampling_rate for tr in traces]
+        elif pref == 'location_code':
+            sorted_codes = sorted([tr.stats.location for tr in traces])
+            tr_prefs = [sorted_codes.index(
+                tr.stats.location) if tr.stats.location != '--' else np.nan
+                for tr in traces]
+
+        if len(set(tr_prefs)) != 1:
+            return traces[np.nanargmin(tr_prefs)]
+    return tr1

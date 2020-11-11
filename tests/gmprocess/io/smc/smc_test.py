@@ -60,7 +60,7 @@ def test_smc():
 
 
 def test_bad():
-    dpath = os.path.join('data', 'testdata', 'duplicate_records')
+    dpath = os.path.join('data', 'testdata', 'duplicate', 'general')
     datadir = pkg_resources.resource_filename('gmprocess', dpath)
     tfile = 'np01002r_4225a_u.smc'
     dfile = os.path.join(datadir, tfile)
