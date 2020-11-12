@@ -6,7 +6,7 @@ import os
 import logging
 
 
-def fetcher_test():
+def test_turkey_fetcher():
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
     # 2019-03-21 05:51:10
@@ -27,4 +27,4 @@ def fetcher_test():
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
-    fetcher_test()
+    test_turkey_fetcher()
