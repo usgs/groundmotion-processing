@@ -103,7 +103,8 @@ def test_StreamCollection():
 
 
 def test_duplicates():
-    datapath = os.path.join('data', 'testdata', 'duplicate_records')
+    datapath = os.path.join(
+        'data', 'testdata', 'duplicate', 'general')
     datadir = pkg_resources.resource_filename('gmprocess', datapath)
     streams = directory_to_streams(datadir)[0]
 
@@ -202,6 +203,25 @@ def test_duplicates():
 
     sc = StreamCollection(streams=sc_bad.streams, handle_duplicates=True)
     assert sc.select(station='23837')[0][0].stats.network == 'CE'
+
+    # New test for some Hawaii data.
+    datapath = os.path.join('data', 'testdata', 'duplicate', 'hawaii')
+    datadir = pkg_resources.resource_filename('gmprocess', datapath)
+    streams = directory_to_streams(datadir)[0]
+    sc = StreamCollection(streams=streams, handle_duplicates=True)
+    assert len(sc) == 1
+
+    # New test for some Alaska data.
+    datapath = os.path.join('data', 'testdata', 'duplicate', 'alaska')
+    datadir = pkg_resources.resource_filename('gmprocess', datapath)
+    streams = directory_to_streams(datadir)[0]
+    sc = StreamCollection(
+        streams=streams, handle_duplicates=True,
+        preference_order=['location_code'])
+    assert len(sc) == 1
+    for st in sc:
+        for tr in st:
+            assert tr.stats.location == 'D0'
 
 
 def test_get_status():

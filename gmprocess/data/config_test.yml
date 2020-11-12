@@ -419,6 +419,10 @@ duplicate:
     # Maximum distance tolerance (in m) for duplicate data
     max_dist_tolerance: 500
 
+    # List of preferences (in order) for handling duplicate data.
+    preference_order: ['process_level', 'source_format', 'starttime', 'npts',
+                       'sampling_rate', 'location_code']
+
     # Preference for selecting process level when faced with duplicate data
     # but with different processing levels. Must be a list containing
     # 'V0', 'V1', and 'V2'. The first item is the most preferred,
