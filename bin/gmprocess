@@ -212,7 +212,7 @@ def process_event(outdir, event, pcommands,
                         del workspace.dataset.auxiliary_data.StationMetrics
                         workspace.calcMetrics(
                             event.id, labels=labels, config=config,
-                            rupture=rupture_file)
+                            rupture_file=rupture_file)
                     event_table, imc_tables, readmes = workspace.getTables(
                         labels[0], streams=pstreams, stream_label=process_tag)
                     ev_fit_spec, fit_readme = workspace.getFitSpectraTable(
