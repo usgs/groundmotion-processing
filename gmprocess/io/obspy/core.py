@@ -148,7 +148,7 @@ def is_obspy(filename):
     Returns:
         bool: True if obspy supported, otherwise False.
     """
-    logging.debug("Checking if format is supported by ObsPy.")
+    logging.debug("Checking if format is supported by obspy.")
     if not os.path.isfile(filename):
         return False
     try:
@@ -207,6 +207,7 @@ def read_obspy(filename, config=None, **kwargs):
     except:
         inventory = None
     traces = []
+    no_match = False
     for ttrace in tstream:
         trace = StationTrace(data=ttrace.data,
                              header=ttrace.stats,
@@ -240,7 +241,6 @@ def read_obspy(filename, config=None, **kwargs):
             # Loop over each component, convert the pattern's field
             # into its regular expression form, and see if the
             # pattern is in the instrument's component.
-            no_match = False
             for pat, instfield in zip(pparts, instparts):
                 pat = pat.replace('*', '.*').replace('?', '.')
                 if re.search(pat, instfield) is None:

@@ -261,7 +261,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                     tr.stats.standard.process_level = PROCESS_LEVELS['V1']
                 except Exception as e:
                     reason = ('Encountered an error when attempting to remove '
-                            'instrument response: %s' % str(e))
+                              'instrument response: %s' % str(e))
                     tr.fail(reason)
                     continue
 
@@ -269,7 +269,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                 # metadata, so check that data contains no NaN or inf values
                 if not np.isfinite(tr.data).all():
                     reason = ('Non-finite values encountered after removing '
-                            'instrument response.')
+                              'instrument response.')
                     tr.fail(reason)
                     continue
 
@@ -301,8 +301,9 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                         )
                     else:
                         tr.remove_response(
-                                inventory=inv, output=output, water_level=water_level
-                                )
+                            inventory=inv, output=output,
+                            water_level=water_level
+                        )
                         tr.data *= M_TO_CM  # Convert from m to cm
                         tr.stats.standard.units = output.lower()
                         tr.stats.standard.process_level = PROCESS_LEVELS['V1']
@@ -316,18 +317,18 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                         )
                 except Exception as e:
                     reason = ('Encountered an error when attempting to remove '
-                            'instrument sensitivity: %s' % str(e))
+                              'instrument sensitivity: %s' % str(e))
                     tr.fail(reason)
                     continue
             else:
                 reason = ('This instrument type is not supported. '
-                        'The instrument code must be either H '
-                        '(high gain seismometer) or N (accelerometer).')
+                          'The instrument code must be either H '
+                          '(high gain seismometer) or N (accelerometer).')
                 tr.fail(reason)
         except Exception as e:
-            logging.info('Encountered an error when obtaining the poles and zeros'
-                'information: %s. Now using remove_sensitivity instead of'
-                'remove_response.' % str(e))
+            logging.info('Encountered an error when obtaining the poles and '
+                         'zeros information: %s. Now using remove_sensitivity '
+                         ' instead of remove_response.' % str(e))
             tr.remove_sensitivity(inventory=inv)
             tr.data *= M_TO_CM  # Convert from m to cm
             tr.stats.standard.units = output.lower()
