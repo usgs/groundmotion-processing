@@ -260,6 +260,7 @@ class StationTrace(Trace):
                 Dictionary containing configuration.
                 If None, retrieve global config.
         """
+        prov_response = None
         if config is None:
             config = get_config()
         if inventory is None and header is None:
@@ -287,6 +288,11 @@ class StationTrace(Trace):
             # End up here for ObsPy without an inventory (e.g., SAC).
             # This assumes that all of our readers include the "standard" key
             # in the header and that ObsPy one's do not.
+
+            # NOTE: we are assuming that an ObsPy file that does NOT have an
+            # inventory has been converted to cm/s^2 via the configurable
+            # conversion factor in the config file.
+            prov_response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
             try:
                 (response, standard,
                  coords, format_specific) = _stats_from_header(header, config)
@@ -299,9 +305,11 @@ class StationTrace(Trace):
                     'Failed to construct required metadata from header data.'
                 )
 
-        # sometimes the channel names do not indicate which one is the
+        # Sometimes the channel names do not indicate which one is the
         # Z channel. If we have vertical_orientation information, then
         # let's get that and change the vertical channel to end in Z.
+        #     NOTE: `vertical_orientation` here is defined as the angle
+        #           from horizontal (aka, dip), not inclination.
         if not np.isnan(header['standard']['vertical_orientation']):
             delta = np.abs(
                 np.abs(header['standard']['vertical_orientation']) - 90.0)
@@ -316,6 +324,8 @@ class StationTrace(Trace):
 
         super(StationTrace, self).__init__(data=data, header=header)
         self.provenance = []
+        if prov_response is not None:
+            self.setProvenance('remove_response', prov_response)
         self.parameters = {}
         self.spectra = {}
         self.validate()
@@ -794,6 +804,7 @@ def _stats_from_inventory(data, inventory, channelid):
         standard['horizontal_orientation'] = channel.azimuth
 
     if channel.dip is not None:
+        # Note: vertical orientatin is defined here as angle from horizontal
         standard['vertical_orientation'] = channel.dip
     else:
         standard['vertical_orientation'] = np.nan
@@ -877,7 +888,9 @@ def _stats_from_header(header, config):
         standard['instrument'] = ''
         standard['sensor_serial_number'] = ''
         standard['horizontal_orientation'] = float(header['sac']['cmpaz'])
-        standard['vertical_orientation'] = float(header['sac']['cmpinc'])
+        # Note: vertical orientatin is defined here as angle from horizontal
+        standard['vertical_orientation'] = 90.0 - \
+            float(header['sac']['cmpinc'])
         utype = get_units_type(header['channel'])
         standard['units_type'] = utype
         standard['units'] = UNITS[utype]

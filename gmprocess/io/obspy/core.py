@@ -148,7 +148,7 @@ def is_obspy(filename):
     Returns:
         bool: True if obspy supported, otherwise False.
     """
-    logging.debug("Checking if format is supported by ObsPy.")
+    logging.debug("Checking if format is supported by obspy.")
     if not os.path.isfile(filename):
         return False
     try:
@@ -207,6 +207,7 @@ def read_obspy(filename, config=None, **kwargs):
     except:
         inventory = None
     traces = []
+
     for ttrace in tstream:
         trace = StationTrace(data=ttrace.data,
                              header=ttrace.stats,
