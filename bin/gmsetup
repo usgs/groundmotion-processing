@@ -10,7 +10,7 @@ import yaml
 import pkg_resources
 
 # local imports
-from gmprocess.constants import CONFIG_FILE
+from gmprocess.constants import CONFIG_FILE_PRODUCTION
 from gmprocess.args import add_shared_args
 
 
@@ -20,7 +20,7 @@ def main(args):
         sys.exit(1)
 
     data_path = pkg_resources.resource_filename('gmprocess', 'data')
-    config_file = os.path.join(data_path, CONFIG_FILE)
+    config_file = os.path.join(data_path, CONFIG_FILE_PRODUCTION)
 
     if args.list_sections:
         with open(config_file, 'rt') as f:
@@ -77,8 +77,10 @@ if __name__ == '__main__':
     parser.add_argument('-l', '--list-sections', action='store_true',
                         help='List the sections in the config and exit.')
     parser.add_argument('-s', '--sections', nargs='+',
-                        help='Supply list of section names to include in output file.')
+                        help='Supply list of section names to include '
+                             'in output file.')
     parser.add_argument('-o', '--overwrite', action='store_true',
-                        help='Overwrite existing config file at the same location.')
+                        help='Overwrite existing config file at the '
+                             'same location.')
     pargs = parser.parse_args()
     main(pargs)
