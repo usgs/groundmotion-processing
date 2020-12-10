@@ -321,8 +321,10 @@ def process_event(outdir, event, pcommands,
     if 'shakemap' in pcommands and processing_done and len(pstreams):
         logging.info(
             'Creating shakemap table for event %s...' % event.id)
-        shakemap_file = save_shakemap_amps(pstreams, event, event_dir)
+        shakemap_file, jsonfile = save_shakemap_amps(
+            pstreams, event, event_dir)
         append_file(files_created, 'shakemap', shakemap_file)
+        append_file(files_created, 'shakemap', jsonfile)
 
     if status and processing_done and len(pstreams):
         if status == 'short':

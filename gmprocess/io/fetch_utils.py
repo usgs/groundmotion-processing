@@ -41,6 +41,11 @@ FAILED_COLOR = '#ff2222'
 
 MAP_PADDING = 1.1  # Station map padding value
 
+UNITS = {'PGA': '%g',
+         'PGV': 'cm/s',
+         'SA': '%g'
+         }
+
 
 def download(event, event_dir, config, directory):
     """Download data or load data from local directory, turn into Streams.
@@ -395,7 +400,7 @@ def get_rawdir(event_dir):
 
 
 def save_shakemap_amps(processed, event, event_dir):
-    """Write ShakeMap peak amplitudes to an Excel spreadsheet.
+    """Write ShakeMap peak amplitudes to Excel file and ShakeMap JSON.
 
     Args:
         processed (StreamCollection):
@@ -414,6 +419,7 @@ def save_shakemap_amps(processed, event, event_dir):
                                          event=event)
         ampfile_name = os.path.join(event_dir, 'shakemap.xlsx')
 
+        # saving with index=False not supported by pandas
         dataframe.to_excel(ampfile_name)
 
         wb = load_workbook(ampfile_name)
@@ -430,9 +436,70 @@ def save_shakemap_amps(processed, event, event_dir):
         ws.insert_rows(1)
         ws['A1'] = 'REFERENCE'
         ws['B1'] = dataframe['SOURCE'].iloc[0]
+        # somehow pandas inserted an extra row between sub-headings and
+        # the beginning of the data. Delete that row.
+        ws.delete_rows(4)
         wb.save(ampfile_name)
 
-    return ampfile_name
+        # get shakemap json, save to output directory
+        jsonfile = os.path.join(event_dir, 'gmprocess_dat.json')
+        jsonstr = get_shakemap_json(dataframe)
+        with open(jsonfile, 'wt') as fp:
+            fp.write(jsonstr)
+
+    return (ampfile_name, jsonfile)
+
+
+def get_shakemap_json(dataframe):
+    json_dict = {'type': 'FeatureCollection'}
+    features = []
+    for idx, row in dataframe.iterrows():
+        feature = {'type': 'Feature'}
+        # the columns without a sub-header need .iloc to reference value
+        lon = row['LON'].iloc[0]
+        lat = row['LAT'].iloc[0]
+        station = row['STATION'].iloc[0]
+        network = row["NETID"].iloc[0]
+        name = row["NAME"].iloc[0]
+        source = row["SOURCE"].iloc[0]
+        geometry = {'type': 'Point',
+                    'coordinates': (lon, lat)
+                    }
+        sid = f'{network}.{station}'
+        feature['id'] = sid
+        feature['geometry'] = geometry
+        props = {}
+        props['code'] = station
+        props['name'] = name
+        props['source'] = source
+        props['network'] = network
+
+        channeldict = {}
+        channels = []
+        channeldict['name'] = 'H1'
+        amplitudes = []
+        for ampcol, value in row['GREATER_OF_TWO_HORIZONTALS'].iteritems():
+            ampdict = {}
+            imtname = ampcol.lower()
+            if 'SA' in ampcol:
+                units = UNITS['SA']
+            else:
+                units = UNITS[ampcol]
+            ampdict['name'] = imtname
+            ampdict['value'] = value
+            ampdict['units'] = units
+            ampdict['ln_sigma'] = 0.0
+            ampdict['flag'] = 0
+            amplitudes.append(ampdict)
+        channeldict['amplitudes'] = amplitudes
+        channels.append(channeldict)
+
+        props['channels'] = channels
+        feature['properties'] = props
+        features.append(feature)
+    json_dict['features'] = features
+    json_str = json.dumps(json_dict)
+    return json_str
 
 
 def update_config(custom_cfg_file):
