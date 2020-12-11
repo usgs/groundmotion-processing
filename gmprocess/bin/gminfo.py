@@ -59,7 +59,6 @@ def render_concise(files, save=False):
             sys.stderr.write('Parsing files from subfolder %s...\n' % fpath)
             folders.append(fpath)
         try:
-            fmt = _get_format(filename)
             streams = read_data(filename)
             for stream in streams:
                 tdf = get_dataframe(filename, stream)
@@ -141,7 +140,57 @@ def render_verbose(files):
     return errors
 
 
-def main(args):
+def main():
+    description = '''Display summary information about a file, multiple files,
+    or directories of files containing strong motion data in the supported
+    formats.
+    Use the -p option to print errors for files that could not be read.
+    Use the -s option to save summary data AND errors to Excel/CSV format.
+    .'''
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument('files_or_dir', nargs='+',
+                        help='Files or directory to inspect.',
+                        type=str)
+    chelp = '''Print out results in concise CSV form. Columns are:
+    Filename
+    Format
+    Process Level
+    Start Time
+    End Time
+    # of Traces
+    Duration
+    Network
+    Station
+    Channels
+    Sampling rate
+    Latitude
+    Longitude
+    '''
+    parser.add_argument('-c', '--concise', action='store_true',
+                        help=chelp)
+    shelp = '''Save concise results to CSV/Excel file
+    (format determined by extension (.xlsx for Excel, anything else for CSV.))
+    '''
+    parser.add_argument('-s', '--save', metavar='OUTFILE',
+                        help=shelp)
+    phelp = 'Print error log containing files that could not be parsed.'
+    parser.add_argument('--quiet-errors', action='store_true',
+                        help=phelp)
+    # Shared arguments
+    parser = add_shared_args(parser)
+    args = parser.parse_args()
+    if not args.concise and args.save:
+        msg = '''
+        ****************************************************************
+        Saving verbose output is not supported. Use -c and -s
+        options together to save tabular summary/error information about
+        the data.
+        ****************************************************************
+        '''
+        print(textwrap.dedent(msg))
+        parser.print_help()
+        sys.exit(1)
+
     logger = logging.getLogger()
     logger.setLevel(logging.CRITICAL)
     warnings.filterwarnings("ignore")
@@ -187,53 +236,4 @@ def main(args):
 
 
 if __name__ == '__main__':
-    description = '''Display summary information about a file, multiple files,
-    or directories of files containing strong motion data in the supported
-    formats.
-    Use the -p option to print errors for files that could not be read.
-    Use the -s option to save summary data AND errors to Excel/CSV format.
-    .'''
-    parser = argparse.ArgumentParser(description=description)
-    parser.add_argument('files_or_dir', nargs='+',
-                        help='Files or directory to inspect.',
-                        type=str)
-    chelp = '''Print out results in concise CSV form. Columns are:
-    Filename
-    Format
-    Process Level
-    Start Time
-    End Time
-    # of Traces
-    Duration
-    Network
-    Station
-    Channels
-    Sampling rate
-    Latitude
-    Longitude
-    '''
-    parser.add_argument('-c', '--concise', action='store_true',
-                        help=chelp)
-    shelp = '''Save concise results to CSV/Excel file
-    (format determined by extension (.xlsx for Excel, anything else for CSV.))
-    '''
-    parser.add_argument('-s', '--save', metavar='OUTFILE',
-                        help=shelp)
-    phelp = 'Print error log containing files that could not be parsed.'
-    parser.add_argument('--quiet-errors', action='store_true',
-                        help=phelp)
-    # Shared arguments
-    parser = add_shared_args(parser)
-    pargs = parser.parse_args()
-    if not pargs.concise and pargs.save:
-        msg = '''
-        ****************************************************************
-        Saving verbose output is not supported. Use -c and -s
-        options together to save tabular summary/error information about
-        the data.
-        ****************************************************************
-        '''
-        print(textwrap.dedent(msg))
-        parser.print_help()
-        sys.exit(1)
-    main(pargs)
+    main()

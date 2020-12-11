@@ -10,7 +10,6 @@ import tempfile
 
 import numpy as np
 import h5py
-import pkg_resources
 
 
 STORAGE = (
@@ -62,9 +61,6 @@ def generate_workspace():
     tdir = tempfile.mkdtemp()
     tfilename = os.path.join(tdir, 'workspace.h5')
     h5 = h5py.File(tfilename, 'w')
-
-    quake_ml = h5.create_dataset(
-        "QuakeML", data=np.ones((14000,), dtype='uint8'))
 
     waveforms = h5.create_group("Waveforms")
     st00 = waveforms.create_group("NET.ST00")
@@ -125,8 +121,7 @@ def generate_workspace():
 
 def setup_module(module):
     setup_module.tfilename = generate_workspace()
-    setup_module.gmworkspace = pkg_resources.resource_filename(
-        'gmprocess', os.path.join(os.pardir, 'bin', 'gmworkspace'))
+    setup_module.gmworkspace = 'gmworkspace'
     return
 
 

@@ -4,7 +4,6 @@
 import sys
 import os.path
 import argparse
-import glob
 import logging
 
 # local imports
@@ -15,7 +14,9 @@ from gmprocess.io.read import read_data
 from gmprocess.io.read_directory import directory_to_streams
 
 
-class CustomFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter):
+class CustomFormatter(
+        argparse.ArgumentDefaultsHelpFormatter,
+        argparse.RawDescriptionHelpFormatter):
     pass
 
 
@@ -35,7 +36,59 @@ FORMATS = [
     'WAV']
 
 
-def main(args):
+def main():
+    desc = '''Convert a directory of strong motion data files into any ObsPy
+    supported format.
+
+https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supported-formats
+
+    The inventory information will be written as an
+    accompanying file in station XML format.
+
+    To convert a single file in the NIED KNET format to MiniSEED:
+
+    gmconvert AOM0011801241951.EW
+
+    The following files will be written to the current directory:
+        - BO.AOM001.--.HN2.mseed
+        - BO.AOM001.--.HN2.xml
+
+    To convert the three files that make up the BO.AOM001 station data into
+    one MiniSEED file:
+
+    gmconvert AOM0011801241951.*
+
+    The following files will be written to the current directory:
+        - BO.AOM001.HN.mseed
+        - BO.AOM001.HN.xml
+
+    To convert a directory "indatadir" full of files to SAC format, and write
+    to a directory called "outdatadir":
+
+    gmconvert -i datadir -o outdatadir -f SAC
+
+    Note: The data files in "indatadir" can be distributed through
+    subdirectories and gmconvert will find them.
+
+    '''
+    parser = argparse.ArgumentParser(
+        description=desc,
+        formatter_class=CustomFormatter)
+    parser.add_argument('files', help='List of files to convert.',
+                        nargs='*', default=None)
+    parser.add_argument('-i', '--indir',
+                        help='Directory containing input files to convert.')
+    parser.add_argument('-o', '--outdir',
+                        help='Output directory.', default=os.getcwd())
+    parser.add_argument('-f', '--format',
+                        help='Output strong motion data format.',
+                        choices=FORMATS, default='MSEED')
+
+    # Shared arguments
+    parser = add_shared_args(parser)
+
+    args = parser.parse_args()
+
     setup_logger(args)
     logging.info("Running gmconvert.")
 
@@ -97,54 +150,4 @@ def main(args):
 
 
 if __name__ == '__main__':
-    desc = '''Convert a directory of strong motion data files into any ObsPy
-    supported format.
-
-https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supported-formats
-
-    The inventory information will be written as an 
-    accompanying file in station XML format.
-
-    To convert a single file in the NIED KNET format to MiniSEED:
-
-    gmconvert AOM0011801241951.EW 
-
-    The following files will be written to the current directory:
-        - BO.AOM001.--.HN2.mseed
-        - BO.AOM001.--.HN2.xml
-
-    To convert the three files that make up the BO.AOM001 station data into one MiniSEED file:
-
-    gmconvert AOM0011801241951.*
-
-    The following files will be written to the current directory:
-        - BO.AOM001.HN.mseed
-        - BO.AOM001.HN.xml
-
-    To convert a directory "indatadir" full of files to SAC format, and write
-    to a directory called "outdatadir":
-
-    gmconvert -i datadir -o outdatadir -f SAC
-
-    Note: The data files in "indatadir" can be distributed through
-    subdirectories and gmconvert will find them.
-
-    '''
-    parser = argparse.ArgumentParser(
-        description=desc,
-        formatter_class=CustomFormatter)
-    parser.add_argument('files', help='List of files to convert.',
-                        nargs='*', default=None)
-    parser.add_argument('-i', '--indir',
-                        help='Directory containing input files to convert.')
-    parser.add_argument('-o', '--outdir',
-                        help='Output directory.', default=os.getcwd())
-    parser.add_argument('-f', '--format',
-                        help='Output strong motion data format.',
-                        choices=FORMATS, default='MSEED')
-
-    # Shared arguments
-    parser = add_shared_args(parser)
-
-    pargs = parser.parse_args()
-    main(pargs)
+    main()

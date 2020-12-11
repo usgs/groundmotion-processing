@@ -174,5 +174,9 @@ class WorkspaceApp(object):
         return parser.parse_args()
 
 
-if __name__ == '__main__':
+def main():
     WorkspaceApp().main()
+
+
+if __name__ == '__main__':
+    main()

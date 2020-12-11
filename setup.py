@@ -1,4 +1,3 @@
-import os
 import versioneer
 from distutils.core import setup
 from distutils.extension import Extension
@@ -64,7 +63,8 @@ setup(
         'gmprocess.metrics.combination',
         'gmprocess.metrics.transform',
         'gmprocess.metrics.reduction',
-        'gmprocess.smoothing'],
+        'gmprocess.smoothing'
+    ],
     package_data={
         'gmprocess':
             glob.glob('gmprocess/data/**', recursive=True)

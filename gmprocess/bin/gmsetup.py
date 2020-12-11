@@ -14,7 +14,28 @@ from gmprocess.constants import CONFIG_FILE_PRODUCTION
 from gmprocess.args import add_shared_args
 
 
-def main(args):
+def main():
+    description = 'Setup gmprocess config files.'
+    parser = argparse.ArgumentParser(description=description)
+
+    # Shared arguments
+    parser = add_shared_args(parser)
+    parser.add_argument('config_file',
+                        help='Path to desired output config file.')
+    parser.add_argument('-f', '--full-name', nargs='+',
+                        help='Supply the config with your name')
+    parser.add_argument('-e', '--email',
+                        help='Supply the config with your email address')
+    parser.add_argument('-l', '--list-sections', action='store_true',
+                        help='List the sections in the config and exit.')
+    parser.add_argument('-s', '--sections', nargs='+',
+                        help='Supply list of section names to include '
+                             'in output file.')
+    parser.add_argument('-o', '--overwrite', action='store_true',
+                        help='Overwrite existing config file at the '
+                             'same location.')
+    args = parser.parse_args()
+
     if os.path.exists(args.config_file) and not args.overwrite:
         print('Existing config file found. Run with -o option to overwrite.')
         sys.exit(1)
@@ -63,24 +84,4 @@ def main(args):
 
 
 if __name__ == '__main__':
-    description = 'Setup gmprocess config files.'
-    parser = argparse.ArgumentParser(description=description)
-
-    # Shared arguments
-    parser = add_shared_args(parser)
-    parser.add_argument('config_file',
-                        help='Path to desired output config file.')
-    parser.add_argument('-f', '--full-name', nargs='+',
-                        help='Supply the config with your name')
-    parser.add_argument('-e', '--email',
-                        help='Supply the config with your email address')
-    parser.add_argument('-l', '--list-sections', action='store_true',
-                        help='List the sections in the config and exit.')
-    parser.add_argument('-s', '--sections', nargs='+',
-                        help='Supply list of section names to include '
-                             'in output file.')
-    parser.add_argument('-o', '--overwrite', action='store_true',
-                        help='Overwrite existing config file at the '
-                             'same location.')
-    pargs = parser.parse_args()
-    main(pargs)
+    main()
