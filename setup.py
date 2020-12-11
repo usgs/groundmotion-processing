@@ -1,4 +1,3 @@
-import os
 import versioneer
 from distutils.core import setup
 from distutils.extension import Extension
@@ -37,9 +36,11 @@ setup(
                   'baagaard@usgs.gov, cbworden@contractor.usgs.gov'),
     url='https://github.com/usgs/groundmotion-processing',
     version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
     mdclass=versioneer.get_cmdclass(),
     packages=[
         'gmprocess',
+        'gmprocess.bin',
         'gmprocess.io',
         'gmprocess.io.asdf',
         'gmprocess.io.bhrc',
@@ -62,14 +63,21 @@ setup(
         'gmprocess.metrics.combination',
         'gmprocess.metrics.transform',
         'gmprocess.metrics.reduction',
-        'gmprocess.smoothing'],
+        'gmprocess.smoothing'
+    ],
     package_data={
         'gmprocess':
             glob.glob('gmprocess/data/**', recursive=True)
     },
-    scripts=glob.glob('bin/*'),
-    cmdclass={
-        "build_ext": build_ext
+    entry_points={
+        'console_scripts': [
+            'gmconvert = gmprocess.bin.gmconvert:main',
+            'gminfo = gmprocess.bin.gminfo:main',
+            'gmprocess = gmprocess.bin.gmprocess:main',
+            'gmsetup = gmprocess.bin.gmsetup:main',
+            'gmworkspace = gmprocess.bin.gmworkspace:main',
+            'list_metrics = gmprocess.bin.list_metrics:main'
+        ]
     },
     ext_modules=cythonize(ext_modules)
 )

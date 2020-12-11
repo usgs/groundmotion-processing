@@ -361,7 +361,169 @@ def find_workspace_files(outdir):
     return workspace_files
 
 
-def main(args):
+def main():
+    description = '''
+    Download, process, and extract metrics from raw ground motion data.
+
+This program will allow the user to:
+   - download raw data from a number of sources, including:
+   - Any FDSN provider which serves waveform data
+   - Japan's KNET/KikNet repository (requires login info)
+   - ...
+'''
+    parser = argparse.ArgumentParser(
+        description=description, formatter_class=MyFormatter)
+
+    # ***** Required arguments
+    parser.add_argument('-o', '--output-directory', help='Output directory',
+                        metavar="DIRECTORY", action='store', type=str,
+                        required=True, dest='outdir')
+
+    # ***** Command arguments
+    help_assemble = format_helptext(
+        'Download data from all available online sources, or load raw data '
+        'from files if --directory is selected.'
+    )
+    parser.add_argument('--assemble', help=help_assemble,
+                        action='store_true', dest='assemble')
+
+    help_process = format_helptext(
+        'Process data using steps defined in configuration file.'
+    )
+    parser.add_argument('--process', help=help_process,
+                        action='store_true', dest='process')
+
+    help_report = format_helptext(
+        'Create a summary report for each event specified.'
+    )
+    parser.add_argument('--report', help=help_report, action='store_true',
+                        dest='report')
+
+    help_provenance = format_helptext(
+        'Generate provenance table in --format format.'
+    )
+    parser.add_argument('--provenance', help=help_provenance,
+                        action='store_true', dest='provenance')
+
+    help_export = format_helptext(
+        'Generate metrics tables (NGA-style "flat" files) for all events '
+        'and IMCs.'
+    )
+    parser.add_argument('--export', help=help_export, action='store_true',
+                        dest='export')
+
+    help_export_dir = format_helptext('Specify an alternate directory for the '
+                                      'export files, which defaults to the '
+                                      'directory above event directory.')
+    parser.add_argument('--export-dir', help=help_export_dir)
+
+    help_shakemap = format_helptext(
+        'Generate ShakeMap-friendly peak ground motions table.'
+    )
+    parser.add_argument('--shakemap', help=help_shakemap,
+                        action='store_true', dest='shakemap')
+
+    # # ***** Optional arguments
+    group = parser.add_mutually_exclusive_group(required=False)
+    help_eventids = format_helptext(
+        'ComCat Event IDs'
+    )
+    group.add_argument('--eventids', help=help_eventids, nargs='+')
+
+    help_textfile = format_helptext(
+        'Text file containing lines of ComCat Event IDs or event '
+        'information (ID TIME LAT LON DEPTH MAG)'
+    )
+    group.add_argument(
+        '--textfile', help=help_textfile, action='store',
+        dest='textfile'
+    )
+
+    help_event = format_helptext(
+        'Single event information as ID TIME(YYYY-MM-DDTHH:MM:SS) '
+        'LAT LON DEP MAG'
+    )
+    group.add_argument(
+        '--eventinfo', help=help_event, type=str, nargs=7,
+        metavar=('ID', 'TIME', 'LAT', 'LON', 'DEPTH', 'MAG', 'MAG_TYPE')
+    )
+
+    help_dir = format_helptext(
+        'Sidestep online data retrieval and get from local directory instead. '
+        'This is the path where data already exists. Must organized in a '
+        '\'raw\' directory, within directories with names as the event IDs. '
+        'For example, if `--directory` is \'proj_dir\' and you have data for '
+        'event id \'abc123\' then the raw data to be read in should be '
+        'located in `proj_dir/abc123/raw/`.'
+    )
+    parser.add_argument(
+        '--directory', help=help_dir, action='store',
+        dest='directory'
+    )
+
+    help_format = format_helptext(
+        'Output format for tabular information'
+    )
+    parser.add_argument(
+        '--format', help=help_format,
+        choices=['excel', 'csv'], default='csv', dest='format'
+    )
+
+    help_tag = format_helptext(
+        'Processing label (single word, no spaces) to attach to processed '
+        'files. Defaults to the current time in YYYYMMDDHHMMSS format.'
+    )
+    parser.add_argument(
+        '--process-tag', help=help_tag, action='store',
+        type=str, dest='process_tag'
+    )
+
+    help_config = format_helptext(
+        'Supply custom configuration file'
+    )
+    parser.add_argument(
+        '--config', help=help_config, action='store',
+        type=str, dest='config'
+    )
+
+    help_recompute = format_helptext(
+        'Recompute metrics (i.e. from new config)'
+    )
+    parser.add_argument(
+        '--recompute-metrics', help=help_recompute,
+        action='store_true', dest='recompute_metrics'
+    )
+
+    help_logfile = format_helptext(
+        'Supply file name to store processing log info.'
+    )
+    parser.add_argument(
+        '--log-file', help=help_logfile, action='store',
+        dest='log_file'
+    )
+
+    nhelpstr = 'Number of parallel processes to run over events.'
+    parser.add_argument(
+        '-n', '--num-processes', default=0,
+        type=int, help=nhelpstr
+    )
+
+    help_status = format_helptext(
+        'Output failure information, either in short form ("short"), '
+        'long form ("long"), or network form ("net"). '
+        'short: Two column table, where the columns are "failure reason" and '
+        '"number of records". net: Three column table where the columns are '
+        '"network", "number passed", and "number failed". long: Two column '
+        'table, where columns are "station ID" and "failure reason".')
+    parser.add_argument(
+        '--status', choices=['short', 'long', 'net'], dest='status',
+        help=help_status
+    )
+
+    # ***** Shared arguments
+    parser = add_shared_args(parser)
+    args = parser.parse_args()
+
     tstart = datetime.now()
     # get the process tag from the user or define by current datetime
     process_tag = args.process_tag or datetime.utcnow().strftime(TAG_FMT)
@@ -600,165 +762,4 @@ def main(args):
 
 
 if __name__ == '__main__':
-    description = '''Download, process, and extract metrics from raw ground motion data.
-
-This program will allow the user to:
-   - download raw data from a number of sources, including:
-   - Any FDSN provider which serves waveform data
-   - Japan's KNET/KikNet repository (requires login info)
-   - ...
-'''
-
-    parser = argparse.ArgumentParser(
-        description=description, formatter_class=MyFormatter)
-
-    # ***** Required arguments
-    parser.add_argument('-o', '--output-directory', help='Output directory',
-                        metavar="DIRECTORY", action='store', type=str,
-                        required=True, dest='outdir')
-
-    # ***** Command arguments
-    help_assemble = format_helptext(
-        'Download data from all available online sources, or load raw data '
-        'from files if --directory is selected.'
-    )
-    parser.add_argument('--assemble', help=help_assemble,
-                        action='store_true', dest='assemble')
-
-    help_process = format_helptext(
-        'Process data using steps defined in configuration file.'
-    )
-    parser.add_argument('--process', help=help_process,
-                        action='store_true', dest='process')
-
-    help_report = format_helptext(
-        'Create a summary report for each event specified.'
-    )
-    parser.add_argument('--report', help=help_report, action='store_true',
-                        dest='report')
-
-    help_provenance = format_helptext(
-        'Generate provenance table in --format format.'
-    )
-    parser.add_argument('--provenance', help=help_provenance,
-                        action='store_true', dest='provenance')
-
-    help_export = format_helptext(
-        'Generate metrics tables (NGA-style "flat" files) for all events '
-        'and IMCs.'
-    )
-    parser.add_argument('--export', help=help_export, action='store_true',
-                        dest='export')
-
-    help_export_dir = format_helptext('Specify an alternate directory for the '
-                                      'export files, which defaults to the '
-                                      'directory above event directory.')
-    parser.add_argument('--export-dir', help=help_export_dir)
-
-    help_shakemap = format_helptext(
-        'Generate ShakeMap-friendly peak ground motions table.'
-    )
-    parser.add_argument('--shakemap', help=help_shakemap,
-                        action='store_true', dest='shakemap')
-
-    # # ***** Optional arguments
-    group = parser.add_mutually_exclusive_group(required=False)
-    help_eventids = format_helptext(
-        'ComCat Event IDs'
-    )
-    group.add_argument('--eventids', help=help_eventids, nargs='+')
-
-    help_textfile = format_helptext(
-        'Text file containing lines of ComCat Event IDs or event '
-        'information (ID TIME LAT LON DEPTH MAG)'
-    )
-    group.add_argument(
-        '--textfile', help=help_textfile, action='store',
-        dest='textfile'
-    )
-
-    help_event = format_helptext(
-        'Single event information as ID TIME(YYYY-MM-DDTHH:MM:SS) '
-        'LAT LON DEP MAG'
-    )
-    group.add_argument(
-        '--eventinfo', help=help_event, type=str, nargs=7,
-        metavar=('ID', 'TIME', 'LAT', 'LON', 'DEPTH', 'MAG', 'MAG_TYPE')
-    )
-
-    help_dir = format_helptext(
-        'Sidestep online data retrieval and get from local directory instead. '
-        'This is the path where data already exists. Must organized in a '
-        '\'raw\' directory, within directories with names as the event IDs. '
-        'For example, if `--directory` is \'proj_dir\' and you have data for '
-        'event id \'abc123\' then the raw data to be read in should be '
-        'located in `proj_dir/abc123/raw/`.'
-    )
-    parser.add_argument(
-        '--directory', help=help_dir, action='store',
-        dest='directory'
-    )
-
-    help_format = format_helptext(
-        'Output format for tabular information'
-    )
-    parser.add_argument(
-        '--format', help=help_format,
-        choices=['excel', 'csv'], default='csv', dest='format'
-    )
-
-    help_tag = format_helptext(
-        'Processing label (single word, no spaces) to attach to processed '
-        'files. Defaults to the current time in YYYYMMDDHHMMSS format.'
-    )
-    parser.add_argument(
-        '--process-tag', help=help_tag, action='store',
-        type=str, dest='process_tag'
-    )
-
-    help_config = format_helptext(
-        'Supply custom configuration file'
-    )
-    parser.add_argument(
-        '--config', help=help_config, action='store',
-        type=str, dest='config'
-    )
-
-    help_recompute = format_helptext(
-        'Recompute metrics (i.e. from new config)'
-    )
-    parser.add_argument(
-        '--recompute-metrics', help=help_recompute,
-        action='store_true', dest='recompute_metrics'
-    )
-
-    help_logfile = format_helptext(
-        'Supply file name to store processing log info.'
-    )
-    parser.add_argument(
-        '--log-file', help=help_logfile, action='store',
-        dest='log_file'
-    )
-
-    nhelpstr = 'Number of parallel processes to run over events.'
-    parser.add_argument(
-        '-n', '--num-processes', default=0,
-        type=int, help=nhelpstr
-    )
-
-    help_status = format_helptext(
-        'Output failure information, either in short form ("short"), '
-        'long form ("long"), or network form ("net"). '
-        'short: Two column table, where the columns are "failure reason" and '
-        '"number of records". net: Three column table where the columns are '
-        '"network", "number passed", and "number failed". long: Two column '
-        'table, where columns are "station ID" and "failure reason".')
-    parser.add_argument(
-        '--status', choices=['short', 'long', 'net'], dest='status',
-        help=help_status
-    )
-
-    # ***** Shared arguments
-    parser = add_shared_args(parser)
-    pargs = parser.parse_args()
-    main(pargs)
+    main()

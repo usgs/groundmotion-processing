@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-"""Python script used to query information about the ASDF workspace stored as an HDF5 file.
+"""
+Python script used to query information about the ASDF workspace stored as
+an HDF5 file.
 """
 
 
@@ -13,13 +15,14 @@ import h5py
 # local imports
 from gmprocess.io.asdf.utils import TallyStorage
 
-INDENT = ' '*4
+INDENT = ' ' * 4
 
 
 def format_helptext(text):
     """Format help text, including wrapping.
     """
     return '\n'.join(textwrap.wrap(text))
+
 
 class WorkspaceApp(object):
     """Application for simple queries of the workspace.
@@ -44,7 +47,8 @@ class WorkspaceApp(object):
             compute_storage (bool):
                 Show storage used by workspace.
         """
-        args = argparse.Namespace(**kwargs) if kwargs else self._parse_command_line()
+        args = argparse.Namespace(
+            **kwargs) if kwargs else self._parse_command_line()
         self.h5 = h5py.File(args.filename, 'r')
 
         if args.describe:
@@ -74,9 +78,10 @@ class WorkspaceApp(object):
                     HDF5 dataset
             """
             shape = ','.join([str(d) for d in dataset.shape])
-            indent = INDENT*min(level, 1)
+            indent = INDENT * min(level, 1)
             print('{indent}{name} dims=({shape}) type={dtype}'.format(
-                indent=indent, name=name, shape=shape, dtype=dataset.dtype.name))
+                indent=indent, name=name, shape=shape,
+                dtype=dataset.dtype.name))
             return
 
         def _print_group(items, level):
@@ -89,12 +94,13 @@ class WorkspaceApp(object):
             for name, item in items:
                 if isinstance(item, h5py.Group):
                     print(item.name)
-                    _print_group(item.items(), level+1)
+                    _print_group(item.items(), level + 1)
                 elif isinstance(item, h5py.Dataset):
                     _print_dataset(name, item, level)
                 else:
-                    raise ValueError("HDF5 item '{}' is of type '{}', expected "
-                                     "'h5.Dataset' or 'h5.Group'".format(name, type(item)))
+                    raise ValueError(
+                        "HDF5 item '{}' is of type '{}', expected "
+                        "'h5.Dataset' or 'h5.Group'".format(name, type(item)))
             return
 
         _print_group(self.h5.items(), level=0)
@@ -122,9 +128,9 @@ class WorkspaceApp(object):
             """
             mb = group['total_bytes'] / float(2**20)
             print('{indent}{name}: {subtotal:.3f} MB'.format(
-                indent=INDENT*level, name=name, subtotal=mb))
+                indent=INDENT * level, name=name, subtotal=mb))
             for subgroup in group['groups']:
-                _print_subtotal(subgroup, group['groups'][subgroup], level+1)
+                _print_subtotal(subgroup, group['groups'][subgroup], level + 1)
             return
 
         storage = TallyStorage(GROUP_DETAIL)
@@ -149,12 +155,13 @@ class WorkspaceApp(object):
 
         help_filename = format_helptext(
             'Name of workspace file.'
-            )
+        )
         parser.add_argument('--filename', action='store', dest='filename',
                             type=str, required=True, help=help_filename)
 
         help_describe = format_helptext(
-            'Print a summary of workspace contents to stdout. Similar to h5dump.'
+            'Print a summary of workspace contents to stdout. Similar to '
+            'h5dump.'
         )
         parser.add_argument('--describe', action='store_true', dest='describe',
                             help=help_describe)
@@ -167,5 +174,9 @@ class WorkspaceApp(object):
         return parser.parse_args()
 
 
-if __name__ == '__main__':
+def main():
     WorkspaceApp().main()
+
+
+if __name__ == '__main__':
+    main()

@@ -55,19 +55,23 @@ def get_combinations():
     return dataframe
 
 
-if __name__ == '__main__':
+def main():
     helpstr = '''
     Table of supported IMC/IMT combinations is below.
 
     Notes:
-    
-    The "channels" IMC will result in three IMC channels
-    called "H1", "H2", and "Z". 
 
-    The "gmrotd" and "rotd" IMCs will need to be specified as "gmrotd50" 
-    for the Geometric Mean 50th percentile, rotd100 for the 100th percentile, 
+    The "channels" IMC will result in three IMC channels
+    called "H1", "H2", and "Z".
+
+    The "gmrotd" and "rotd" IMCs will need to be specified as "gmrotd50"
+    for the Geometric Mean 50th percentile, rotd100 for the 100th percentile,
     and so forth.
     '''
     comboframe = get_combinations()
     print(helpstr)
     print(comboframe)
+
+
+if __name__ == '__main__':
+    main()
