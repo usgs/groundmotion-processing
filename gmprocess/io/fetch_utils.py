@@ -4,6 +4,7 @@ import json
 import logging
 import warnings
 import glob
+import re
 
 # third party imports
 from obspy.geodetics.base import locations2degrees
@@ -45,6 +46,8 @@ UNITS = {'PGA': '%g',
          'PGV': 'cm/s',
          'SA': '%g'
          }
+
+FLOAT_PATTERN = '[-+]?[0-9]*\.?[0-9]+'
 
 
 def download(event, event_dir, config, directory):
@@ -482,6 +485,9 @@ def get_shakemap_json(dataframe):
             ampdict = {}
             imtname = ampcol.lower()
             if 'SA' in ampcol:
+                # pull apart SA name, set period to 1 digit precision
+                period = float(re.search(FLOAT_PATTERN, imtname).group())
+                imtname = f'sa({period:.1f})'
                 units = UNITS['SA']
             else:
                 units = UNITS[ampcol]
