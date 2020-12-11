@@ -55,7 +55,8 @@ $package_list=
     "pyyaml",
     "requests",
     "vcrpy",
-    "openquake.engine"
+    "pip"
+
 # Create a conda virtual environment
 Write-Output "Creating the $VENV virtual environment:"
 Write-Output "conda create -y -n $VENV -c conda-forge --channel-priority $package_list"
@@ -69,6 +70,10 @@ If (-NOT ($?) ) {
 # Activate the new environment
 Write-Output "Activating the $VENV virtual environment"
 conda activate $VENV
+
+# Install openquake via pip
+pip install openquake.engine
+
 # This package
 Write-Output "Installing gmprocess..."
 pip install -e .

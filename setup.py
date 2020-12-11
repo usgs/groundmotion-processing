@@ -37,7 +37,6 @@ setup(
     url='https://github.com/usgs/groundmotion-processing',
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
-    mdclass=versioneer.get_cmdclass(),
     packages=[
         'gmprocess',
         'gmprocess.bin',
