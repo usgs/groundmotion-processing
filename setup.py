@@ -64,7 +64,6 @@ setup(
         'gmprocess.metrics.transform',
         'gmprocess.metrics.reduction',
         'gmprocess.utils',
-        'gmprocess.waveform_metrics',
         'gmprocess.waveform_processing',
         'gmprocess.waveform_processing.smoothing'
     ],
