@@ -43,6 +43,23 @@ UNUSED_STANDARD_PARAMS = [
 
 
 class StationStream(Stream):
+    """The gmprocess subclass of ObsPy's Stream object.
+
+    ObsPy provides a Stream object that serves as a container for zero-to-many
+    Trace objects, and gmprocess subclasses the Stream object with the
+    StationStream object, which contains StationTrace objects. It also provides
+    facilities for extracting ObsPy inventory data structures, and provenance
+    from the contained StationTrace objects.
+
+    The StationStream class is meant for grouping Traces from the same
+    "station". In practice, what this really means is usually all of the
+    channels from one instrument, with the same start and end times. Thus,
+    he StationStream object has a get_id method, which returns a string that
+    consists of the network code, station code, and the first two characters
+    of the channel code, since these should all be applicable to all traces in
+    the StationStream object.
+    """
+
     def __init__(self, traces=None, inventory=None):
         super(StationStream, self).__init__()
 

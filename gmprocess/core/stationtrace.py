@@ -20,26 +20,31 @@ from gmprocess._version import get_versions
 from gmprocess.utils.config import get_config
 from gmprocess.io.seedname import get_units_type
 
-UNITS = {'acc': 'cm/s^2',
-         'vel': 'cm/s'}
-REVERSE_UNITS = {'cm/s^2': 'acc',
-                 'cm/s': 'vel'}
+UNITS = {
+    'acc': 'cm/s^2',
+    'vel': 'cm/s'}
+REVERSE_UNITS = {
+    'cm/s^2': 'acc',
+    'cm/s': 'vel'}
 
-PROCESS_LEVELS = {'V0': 'raw counts',
-                  'V1': 'uncorrected physical units',
-                  'V2': 'corrected physical units',
-                  'V3': 'derived time series'}
+PROCESS_LEVELS = {
+    'V0': 'raw counts',
+    'V1': 'uncorrected physical units',
+    'V2': 'corrected physical units',
+    'V3': 'derived time series'}
 
-REV_PROCESS_LEVELS = {'raw counts': 'V0',
-                      'uncorrected physical units': 'V1',
-                      'corrected physical units': 'V2',
-                      'derived time series': 'V3'}
+REV_PROCESS_LEVELS = {
+    'raw counts': 'V0',
+    'uncorrected physical units': 'V1',
+    'corrected physical units': 'V2',
+    'derived time series': 'V3'}
 
-LENGTH_CONVERSIONS = {'nm': 1e9,
-                      'um': 1e6,
-                      'mm': 1e3,
-                      'cm': 1e2,
-                      'm': 1}
+LENGTH_CONVERSIONS = {
+    'nm': 1e9,
+    'um': 1e6,
+    'mm': 1e3,
+    'cm': 1e2,
+    'm': 1}
 
 # when checking to see if a channel is vertical,
 # 90 - abs(dip) must be less than or equal to this value
@@ -243,6 +248,33 @@ ACTIVITIES = {
 class StationTrace(Trace):
     """Subclass of Obspy Trace object which holds more metadata.
 
+    ObsPy provides a Trace object that serves as a container for waveform data
+    from a single channel, as well as some basic metadata about the waveform
+    start/end times, number of points, sampling rate/interval, and
+    network/station/channel/location information.
+
+    gmprocess subclasses the Trace object with a StationTrace object, which
+    provides the following additional features:
+        - Validation that length of data matches the number of points in the
+          metadata.
+        - Validation that required values are set in metadata.
+        - A `fail` method which can be used by processing routines to mark when
+          processing of the StationTrace has failed some sort of check (signal
+          to noise ratio, etc.)
+        - A `free_field` property which can be used to query the object to
+          ensure that its data comes from a free-field sensor. Note: this is
+          not always known reliably, and different people have have different
+          definitions of the term free_field. When possible, we define a
+          mapping between location code and the free_field property. For
+          example, see the LOCATION_CODES variable core.py in
+          `gmprocess.io.fdsn`.
+        - Methods (e.g., `getProvenance`, `setProvenance`) for tracking
+          processing steps that have been performed. These are aligned with the
+          SEIS-PROV standard for processing provenance, described here:
+          http://seismicdata.github.io/SEIS-PROV/_generated_details.html#activities
+        - Methods (e.g., `getParameter` and `setParameter`) for tracking of
+          arbitrary metadata in the form of a dictionary as trace property
+          (self.parameters).
     """
 
     def __init__(self, data=np.array([]), header=None,
@@ -278,7 +310,7 @@ class StationTrace(Trace):
                 header['coordinates'] = coords
                 header['standard'] = standard
                 header['format_specific'] = format_specific
-            except:
+            except BaseException:
                 raise ValueError(
                     'Failed to construct required metadata from inventory '
                     'and input header data.'
@@ -300,7 +332,7 @@ class StationTrace(Trace):
                 header['coordinates'] = coords
                 header['standard'] = standard
                 header['format_specific'] = format_specific
-            except:
+            except BaseException:
                 raise ValueError(
                     'Failed to construct required metadata from header data.'
                 )
