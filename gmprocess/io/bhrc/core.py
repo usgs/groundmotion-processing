@@ -6,12 +6,12 @@ import re
 
 # third party imports
 import numpy as np
-from gmprocess.constants import UNIT_CONVERSIONS
 from obspy.core.utcdatetime import UTCDateTime
 
 # local
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.utils.constants import UNIT_CONVERSIONS
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.io.seedname import get_channel_name, get_units_type
 
 

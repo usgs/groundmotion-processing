@@ -4,7 +4,7 @@ from obspy import Stream
 
 # Local imports
 from gmprocess.metrics.reduction.reduction import Reduction
-from gmprocess.stationstream import StationStream
+from gmprocess.core.stationstream import StationStream
 
 
 class Max(Reduction):

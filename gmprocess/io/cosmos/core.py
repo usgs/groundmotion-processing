@@ -14,10 +14,10 @@ from obspy.core.trace import Stats
 import scipy.constants as sp
 
 # local imports
-from gmprocess.constants import UNIT_CONVERSIONS
-from gmprocess.exception import GMProcessException
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
+from gmprocess.utils.constants import UNIT_CONVERSIONS
+from gmprocess.utils.exception import GMProcessException
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
 from gmprocess.io.seedname import get_channel_name, get_units_type
 
 MICRO_TO_VOLT = 1e6  # convert microvolts to volts
@@ -226,7 +226,8 @@ def read_cosmos(filename, **kwargs):
         # store the trace if the station type is in the valid_station_types
         # list or store the trace if there is no valid_station_types list
         if valid_station_types is not None:
-            if trace.stats['format_specific']['station_code'] in valid_station_types:
+            scode = trace.stats['format_specific']['station_code']
+            if scode in valid_station_types:
                 stream.append(trace)
         else:
             stream.append(trace)
@@ -571,8 +572,8 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
         standard['instrument_period'] = np.nan
         logging.warning('Instrument Frequency == 0')
     else:
-        standard['instrument_period'] = 1.0 / _check_assign(instrument_frequency,
-                                                            unknown, np.nan)
+        inst_freq = _check_assign(instrument_frequency, unknown, np.nan)
+        standard['instrument_period'] = 1.0 / inst_freq
     instrument_damping = float(flt_data[40])
     standard['instrument_damping'] = _check_assign(instrument_damping,
                                                    unknown, np.nan)

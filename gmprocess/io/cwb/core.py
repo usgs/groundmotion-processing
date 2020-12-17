@@ -10,8 +10,8 @@ from obspy.core.trace import Stats
 
 # local imports
 from gmprocess.io.seedname import get_channel_name, get_units_type
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
-from gmprocess.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.core.stationstream import StationStream
 
 DATE_FMT = '%Y/%m/%d-%H:%M:%S.%f'
 
@@ -23,7 +23,8 @@ NCOLS = 4
 
 
 def is_cwb(filename):
-    """Check to see if file is a Taiwan Central Weather Bureau strong motion file.
+    """Check to see if file is a Taiwan Central Weather Bureau strong motion
+    file.
 
     Args:
         filename (str): Path to possible CWB data file.

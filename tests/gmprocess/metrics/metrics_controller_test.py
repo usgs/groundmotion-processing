@@ -13,7 +13,7 @@ from gmprocess.io.geonet.core import read_geonet
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.metrics.exception import PGMException
 from gmprocess.metrics.metrics_controller import MetricsController, _get_channel_dict
-from gmprocess.stationstream import StationStream
+from gmprocess.core.stationstream import StationStream
 
 
 def test_get_channel_dict():

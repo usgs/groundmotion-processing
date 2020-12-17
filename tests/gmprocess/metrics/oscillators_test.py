@@ -6,7 +6,7 @@ import os
 import numpy as np
 
 # local imports
-from gmprocess.constants import GAL_TO_PCTG
+from gmprocess.utils.constants import GAL_TO_PCTG
 from gmprocess.io.read import read_data
 from gmprocess.metrics.oscillators import get_acceleration, get_spectral, get_velocity
 from gmprocess.io.test_utils import read_data_dir

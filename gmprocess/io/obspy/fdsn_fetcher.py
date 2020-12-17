@@ -16,8 +16,8 @@ from obspy.clients.fdsn.mass_downloader import (CircularDomain,
 # local imports
 from gmprocess.io.fetcher import DataFetcher, _get_first_value
 from gmprocess.io.obspy.core import read_obspy
-from gmprocess.streamcollection import StreamCollection
-from gmprocess.config import get_config
+from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.utils.config import get_config
 
 
 # default values for this fetcher

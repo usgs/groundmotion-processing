@@ -11,8 +11,8 @@ import pkg_resources
 
 # Local imports
 from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace
 
 
 def test_fas():
@@ -71,7 +71,7 @@ def test_fas():
     per = np.unique([
         float(i[0].split(')')[0].split('(')[1]) for i in ind_vals]
     )
-    freqs = 1/per
+    freqs = 1 / per
     imts = ['fas' + str(p) for p in per]
     summary = StationSummary.from_stream(
         stream, ['geometric_mean'], imts, bandwidth=30)

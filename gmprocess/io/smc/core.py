@@ -9,10 +9,10 @@ import logging
 import numpy as np
 
 # local imports
-from gmprocess.exception import GMProcessException
+from gmprocess.utils.exception import GMProcessException
 from gmprocess.io.seedname import get_channel_name, get_units_type
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
-from gmprocess.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.core.stationstream import StationStream
 
 ASCII_HEADER_LINES = 11
 INTEGER_HEADER_LINES = 6
@@ -177,14 +177,17 @@ def read_smc(filename, **kwargs):
     with open(filename, 'rt') as f:
         line = f.readline().strip()
         if 'DISPLACEMENT' in line:
-            raise GMProcessException('SMC: Diplacement records are not supported: '
-                                     '%s.' % filename)
+            raise GMProcessException(
+                'SMC: Diplacement records are not supported: '
+                '%s.' % filename)
         elif 'VELOCITY' in line:
-            raise GMProcessException('SMC: Velocity records are not supported: '
-                                     '%s.' % filename)
+            raise GMProcessException(
+                'SMC: Velocity records are not supported: '
+                '%s.' % filename)
         elif line == "*":
-            raise GMProcessException('SMC: No record volume specified in file: '
-                                     '%s.' % filename)
+            raise GMProcessException(
+                'SMC: No record volume specified in file: '
+                '%s.' % filename)
 
     stats, num_comments = _get_header_info(
         filename, any_structure=any_structure,
@@ -249,13 +252,15 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
       - source_format
     - format_specific
       - vertical_orientation
-      - building_floor (0=basement, 1=floor above basement, -1=1st sub-basement, etc.
+      - building_floor (0=basement, 1=floor above basement,
+        -1=1st sub-basement, etc.
       - bridge_number_spans
       - bridge_transducer_location ("free field",
                                     "at the base of a pier or abutment",
                                     "on an abutment",
                                     "on the deck at the top of a pier"
-                                    "on the deck between piers or between an abutment and a pier."
+                                    "on the deck between piers or between an
+                                    abutment and a pier."
         dam_transducer_location ("upstream or downstream free field",
                                  "at the base of the dam",
                                  "on the crest of the dam",
@@ -339,7 +344,8 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
         if not intheader[0, 5] == missing_data:
             second = intheader[0, 5]
 
-        # Handle microsecond if missing and convert milliseconds to microseconds
+        # Handle microsecond if missing and convert milliseconds to
+        # microseconds
         microsecond = 0
         if not intheader[0, 6] == missing_data:
             microsecond = intheader[0, 6] / 1e3

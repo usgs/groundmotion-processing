@@ -2,13 +2,13 @@
 Hint: make sure your test modules/packages have valid Python names.
 Traceback:
 tests/gmprocess/colocated_test.py:4: in &lt;module&gt;
-    from gmprocess.streamcollection import StreamCollection
+    from gmprocess.core.streamcollection import StreamCollection
 gmprocess/streamcollection.py:19: in &lt;module&gt;
     from gmprocess.metrics.station_summary import StationSummary
 gmprocess/metrics/station_summary.py:17: in &lt;module&gt;
     from gmprocess.metrics.metrics_controller import MetricsController
 gmprocess/metrics/metrics_controller.py:17: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -17,13 +17,13 @@ E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><tes
 Hint: make sure your test modules/packages have valid Python names.
 Traceback:
 tests/gmprocess/corner_frequencies_test.py:6: in &lt;module&gt;
-    from gmprocess.streamcollection import StreamCollection
+    from gmprocess.core.streamcollection import StreamCollection
 gmprocess/streamcollection.py:19: in &lt;module&gt;
     from gmprocess.metrics.station_summary import StationSummary
 gmprocess/metrics/station_summary.py:17: in &lt;module&gt;
     from gmprocess.metrics.metrics_controller import MetricsController
 gmprocess/metrics/metrics_controller.py:17: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -32,86 +32,86 @@ E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><tes
 Hint: make sure your test modules/packages have valid Python names.
 Traceback:
 tests/gmprocess/lowpass_max_test.py:7: in &lt;module&gt;
-    from gmprocess.streamcollection import StreamCollection
+    from gmprocess.core.streamcollection import StreamCollection
 gmprocess/streamcollection.py:19: in &lt;module&gt;
     from gmprocess.metrics.station_summary import StationSummary
 gmprocess/metrics/station_summary.py:17: in &lt;module&gt;
     from gmprocess.metrics.metrics_controller import MetricsController
 gmprocess/metrics/metrics_controller.py:17: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
-E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/nn_quality_assurance_test.py" name="tests.gmprocess.nn_quality_assurance_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/nn_quality_assurance_test.py&apos;.
+E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/nn_quality_assurance_test.py" name="tests.gmprocess.waveform_processing.nn_quality_assurance_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/nn_quality_assurance_test.py&apos;.
 Hint: make sure your test modules/packages have valid Python names.
 Traceback:
 tests/gmprocess/nn_quality_assurance_test.py:12: in &lt;module&gt;
-    from gmprocess.streamcollection import StreamCollection
+    from gmprocess.core.streamcollection import StreamCollection
 gmprocess/streamcollection.py:19: in &lt;module&gt;
     from gmprocess.metrics.station_summary import StationSummary
 gmprocess/metrics/station_summary.py:17: in &lt;module&gt;
     from gmprocess.metrics.metrics_controller import MetricsController
 gmprocess/metrics/metrics_controller.py:17: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
-E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/phase_test.py" name="tests.gmprocess.phase_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/phase_test.py&apos;.
+E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/phase_test.py" name="tests.gmprocess.waveform_processing.phase_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/phase_test.py&apos;.
 Hint: make sure your test modules/packages have valid Python names.
 Traceback:
 tests/gmprocess/phase_test.py:10: in &lt;module&gt;
-    from gmprocess.streamcollection import StreamCollection
+    from gmprocess.core.streamcollection import StreamCollection
 gmprocess/streamcollection.py:19: in &lt;module&gt;
     from gmprocess.metrics.station_summary import StationSummary
 gmprocess/metrics/station_summary.py:17: in &lt;module&gt;
     from gmprocess.metrics.metrics_controller import MetricsController
 gmprocess/metrics/metrics_controller.py:17: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
-E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/plot_test.py" name="tests.gmprocess.plot_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/plot_test.py&apos;.
+E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/plot_test.py" name="tests.gmprocess.utils.plot_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/plot_test.py&apos;.
 Hint: make sure your test modules/packages have valid Python names.
 Traceback:
 tests/gmprocess/plot_test.py:11: in &lt;module&gt;
-    from gmprocess.plot import (plot_arias, plot_durations,
+    from gmprocess.utils.plot import (plot_arias, plot_durations,
 gmprocess/plot.py:16: in &lt;module&gt;
     from gmprocess.metrics.reduction.arias import Arias
 gmprocess/metrics/reduction/arias.py:8: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
-E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/processing_test.py" name="tests.gmprocess.processing_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/processing_test.py&apos;.
+E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/processing_test.py" name="tests.gmprocess.waveform_processing.processing_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/processing_test.py&apos;.
 Hint: make sure your test modules/packages have valid Python names.
 Traceback:
 tests/gmprocess/processing_test.py:12: in &lt;module&gt;
-    from gmprocess.streamcollection import StreamCollection
+    from gmprocess.core.streamcollection import StreamCollection
 gmprocess/streamcollection.py:19: in &lt;module&gt;
     from gmprocess.metrics.station_summary import StationSummary
 gmprocess/metrics/station_summary.py:17: in &lt;module&gt;
     from gmprocess.metrics.metrics_controller import MetricsController
 gmprocess/metrics/metrics_controller.py:17: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
-E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/spectrum_test.py" name="tests.gmprocess.spectrum_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/spectrum_test.py&apos;.
+E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/spectrum_test.py" name="tests.gmprocess.waveform_processing.spectrum_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/spectrum_test.py&apos;.
 Hint: make sure your test modules/packages have valid Python names.
 Traceback:
 tests/gmprocess/spectrum_test.py:9: in &lt;module&gt;
-    from gmprocess.streamcollection import StreamCollection
+    from gmprocess.core.streamcollection import StreamCollection
 gmprocess/streamcollection.py:19: in &lt;module&gt;
     from gmprocess.metrics.station_summary import StationSummary
 gmprocess/metrics/station_summary.py:17: in &lt;module&gt;
     from gmprocess.metrics.metrics_controller import MetricsController
 gmprocess/metrics/metrics_controller.py:17: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -120,7 +120,7 @@ E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><tes
 Hint: make sure your test modules/packages have valid Python names.
 Traceback:
 tests/gmprocess/stastream_test.py:9: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -129,59 +129,59 @@ E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><tes
 Hint: make sure your test modules/packages have valid Python names.
 Traceback:
 tests/gmprocess/statrace_test.py:8: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace
+    from gmprocess.core.stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
-E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/stream_test.py" name="tests.gmprocess.stream_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/stream_test.py&apos;.
+E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/stream_test.py" name="tests.gmprocess.io.stream_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/stream_test.py&apos;.
 Hint: make sure your test modules/packages have valid Python names.
 Traceback:
 tests/gmprocess/stream_test.py:11: in &lt;module&gt;
     from gmprocess.io.geonet.core import read_geonet
 gmprocess/io/geonet/core.py:15: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+    from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
-E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/streamcollection_test.py" name="tests.gmprocess.streamcollection_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/streamcollection_test.py&apos;.
+E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/streamcollection_test.py" name="tests.gmprocess.core.streamcollection_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/streamcollection_test.py&apos;.
 Hint: make sure your test modules/packages have valid Python names.
 Traceback:
 tests/gmprocess/streamcollection_test.py:10: in &lt;module&gt;
-    from gmprocess.streamcollection import StreamCollection
+    from gmprocess.core.streamcollection import StreamCollection
 gmprocess/streamcollection.py:19: in &lt;module&gt;
     from gmprocess.metrics.station_summary import StationSummary
 gmprocess/metrics/station_summary.py:17: in &lt;module&gt;
     from gmprocess.metrics.metrics_controller import MetricsController
 gmprocess/metrics/metrics_controller.py:17: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
-E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/windows_test.py" name="tests.gmprocess.windows_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/windows_test.py&apos;.
+E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/windows_test.py" name="tests.gmprocess.waveform_processing.windows_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/windows_test.py&apos;.
 Hint: make sure your test modules/packages have valid Python names.
 Traceback:
 tests/gmprocess/windows_test.py:4: in &lt;module&gt;
-    from gmprocess.windows import (signal_split, signal_end,
+    from gmprocess.waveform_processing.windows import (signal_split, signal_end,
 gmprocess/windows.py:21: in &lt;module&gt;
     from gmprocess.metrics.station_summary import StationSummary
 gmprocess/metrics/station_summary.py:17: in &lt;module&gt;
     from gmprocess.metrics.metrics_controller import MetricsController
 gmprocess/metrics/metrics_controller.py:17: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
-E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/zero_crossings_test.py" name="tests.gmprocess.zero_crossings_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/zero_crossings_test.py&apos;.
+E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/zero_crossings_test.py" name="tests.gmprocess.waveform_processing.zero_crossings_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/zero_crossings_test.py&apos;.
 Hint: make sure your test modules/packages have valid Python names.
 Traceback:
 tests/gmprocess/zero_crossings_test.py:7: in &lt;module&gt;
-    from gmprocess.streamcollection import StreamCollection
+    from gmprocess.core.streamcollection import StreamCollection
 gmprocess/streamcollection.py:19: in &lt;module&gt;
     from gmprocess.metrics.station_summary import StationSummary
 gmprocess/metrics/station_summary.py:17: in &lt;module&gt;
     from gmprocess.metrics.metrics_controller import MetricsController
 gmprocess/metrics/metrics_controller.py:17: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -215,7 +215,7 @@ Traceback:
 tests/gmprocess/io/bhrc/bhrc_test.py:6: in &lt;module&gt;
     from gmprocess.io.bhrc.core import is_bhrc, read_bhrc
 gmprocess/io/bhrc/core.py:13: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -226,13 +226,13 @@ Traceback:
 tests/gmprocess/io/cosmos/cesmd_fetcher_test.py:4: in &lt;module&gt;
     from gmprocess.io.cosmos.cesmd_fetcher import CESMDFetcher
 gmprocess/io/cosmos/cesmd_fetcher.py:14: in &lt;module&gt;
-    from gmprocess.streamcollection import StreamCollection
+    from gmprocess.core.streamcollection import StreamCollection
 gmprocess/streamcollection.py:19: in &lt;module&gt;
     from gmprocess.metrics.station_summary import StationSummary
 gmprocess/metrics/station_summary.py:17: in &lt;module&gt;
     from gmprocess.metrics.metrics_controller import MetricsController
 gmprocess/metrics/metrics_controller.py:17: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -243,7 +243,7 @@ Traceback:
 tests/gmprocess/io/cosmos/cosmos_test.py:5: in &lt;module&gt;
     from gmprocess.io.cosmos.core import is_cosmos, read_cosmos
 gmprocess/io/cosmos/core.py:19: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -254,7 +254,7 @@ Traceback:
 tests/gmprocess/io/cwb/cwb_test.py:11: in &lt;module&gt;
     from gmprocess.io.cwb.core import is_cwb, read_cwb, _get_header_info
 gmprocess/io/cwb/core.py:13: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+    from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
 E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/io/dmg/dmg_test.py" name="tests.gmprocess.io.dmg.dmg_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/io/dmg/dmg_test.py&apos;.
@@ -265,7 +265,7 @@ tests/gmprocess/io/dmg/dmg_test.py:15: in &lt;module&gt;
 gmprocess/io/dmg/core.py:18: in &lt;module&gt;
     from gmprocess.io.usc.core import is_usc
 gmprocess/io/usc/core.py:14: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -276,7 +276,7 @@ Traceback:
 tests/gmprocess/io/esm/esm_test.py:5: in &lt;module&gt;
     from gmprocess.io.esm.core import is_esm, read_esm
 gmprocess/io/esm/core.py:13: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+    from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
 E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/io/fdsn/fdsn_fetcher_test.py" name="tests.gmprocess.io.fdsn.fdsn_fetcher_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/io/fdsn/fdsn_fetcher_test.py&apos;.
@@ -287,7 +287,7 @@ tests/gmprocess/io/fdsn/fdsn_fetcher_test.py:3: in &lt;module&gt;
 gmprocess/io/fdsn/fdsn_fetcher.py:19: in &lt;module&gt;
     from gmprocess.io.fdsn.core import read_fdsn
 gmprocess/io/fdsn/core.py:13: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace
+    from gmprocess.core.stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
 E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/io/fdsn/fdsn_test.py" name="tests.gmprocess.io.fdsn.fdsn_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/io/fdsn/fdsn_test.py&apos;.
@@ -296,7 +296,7 @@ Traceback:
 tests/gmprocess/io/fdsn/fdsn_test.py:4: in &lt;module&gt;
     from gmprocess.io.fdsn.core import read_fdsn
 gmprocess/io/fdsn/core.py:13: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace
+    from gmprocess.core.stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
 E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/io/geonet/geonet_fetcher_test.py" name="tests.gmprocess.io.geonet.geonet_fetcher_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/io/geonet/geonet_fetcher_test.py&apos;.
@@ -307,7 +307,7 @@ tests/gmprocess/io/geonet/geonet_fetcher_test.py:4: in &lt;module&gt;
 gmprocess/io/geonet/geonet_fetcher.py:21: in &lt;module&gt;
     from gmprocess.io.geonet.core import read_geonet
 gmprocess/io/geonet/core.py:15: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+    from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
 E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/io/geonet/geonet_test.py" name="tests.gmprocess.io.geonet.geonet_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/io/geonet/geonet_test.py&apos;.
@@ -316,7 +316,7 @@ Traceback:
 tests/gmprocess/io/geonet/geonet_test.py:5: in &lt;module&gt;
     from gmprocess.io.geonet.core import is_geonet, read_geonet
 gmprocess/io/geonet/core.py:15: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+    from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
 E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/io/knet/knet_fetcher_test.py" name="tests.gmprocess.io.knet.knet_fetcher_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/io/knet/knet_fetcher_test.py&apos;.
@@ -327,7 +327,7 @@ tests/gmprocess/io/knet/knet_fetcher_test.py:4: in &lt;module&gt;
 gmprocess/io/knet/knet_fetcher.py:23: in &lt;module&gt;
     from gmprocess.io.knet.core import read_knet
 gmprocess/io/knet/core.py:15: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+    from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
 E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/io/knet/knet_test.py" name="tests.gmprocess.io.knet.knet_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/io/knet/knet_test.py&apos;.
@@ -336,7 +336,7 @@ Traceback:
 tests/gmprocess/io/knet/knet_test.py:5: in &lt;module&gt;
     from gmprocess.io.knet.core import is_knet, read_knet
 gmprocess/io/knet/core.py:15: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+    from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
 E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/io/nsmn/nsmn_test.py" name="tests.gmprocess.io.nsmn.nsmn_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/io/nsmn/nsmn_test.py&apos;.
@@ -345,7 +345,7 @@ Traceback:
 tests/gmprocess/io/nsmn/nsmn_test.py:6: in &lt;module&gt;
     from gmprocess.io.nsmn.core import is_nsmn, read_nsmn
 gmprocess/io/nsmn/core.py:15: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -358,7 +358,7 @@ tests/gmprocess/io/nsmn/turkey_fetcher_test.py:3: in &lt;module&gt;
 gmprocess/io/nsmn/turkey_fetcher.py:20: in &lt;module&gt;
     from gmprocess.io.nsmn.core import read_nsmn
 gmprocess/io/nsmn/core.py:15: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -369,7 +369,7 @@ Traceback:
 tests/gmprocess/io/renadic/renadic_test.py:6: in &lt;module&gt;
     from gmprocess.io.renadic.core import is_renadic, read_renadic
 gmprocess/io/renadic/core.py:16: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -380,7 +380,7 @@ Traceback:
 tests/gmprocess/io/smc/smc_test.py:11: in &lt;module&gt;
     from gmprocess.io.smc.core import is_smc, read_smc
 gmprocess/io/smc/core.py:14: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+    from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
 E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/io/unam/unam_test.py" name="tests.gmprocess.io.unam.unam_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/io/unam/unam_test.py&apos;.
@@ -389,7 +389,7 @@ Traceback:
 tests/gmprocess/io/unam/unam_test.py:6: in &lt;module&gt;
     from gmprocess.io.unam.core import is_unam, read_unam
 gmprocess/io/unam/core.py:13: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -400,7 +400,7 @@ Traceback:
 tests/gmprocess/io/usc/usc_test.py:11: in &lt;module&gt;
     from gmprocess.io.usc.core import is_usc, read_usc
 gmprocess/io/usc/core.py:14: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -411,7 +411,7 @@ Traceback:
 tests/gmprocess/metrics/metrics_controller_test.py:12: in &lt;module&gt;
     from gmprocess.io.geonet.core import read_geonet
 gmprocess/io/geonet/core.py:15: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+    from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
 E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/metrics/oscillators_test.py" name="tests.gmprocess.metrics.oscillators_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/metrics/oscillators_test.py&apos;.
@@ -427,7 +427,7 @@ tests/gmprocess/metrics/rotation_test.py:10: in &lt;module&gt;
 gmprocess/metrics/station_summary.py:17: in &lt;module&gt;
     from gmprocess.metrics.metrics_controller import MetricsController
 gmprocess/metrics/metrics_controller.py:17: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -438,7 +438,7 @@ Traceback:
 tests/gmprocess/metrics/stationsummary_test.py:11: in &lt;module&gt;
     from gmprocess.io.geonet.core import read_geonet
 gmprocess/io/geonet/core.py:15: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+    from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
 E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/metrics/imc/arithmetic_mean_test.py" name="tests.gmprocess.metrics.imc.arithmetic_mean_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/metrics/imc/arithmetic_mean_test.py&apos;.
@@ -449,7 +449,7 @@ tests/gmprocess/metrics/imc/arithmetic_mean_test.py:7: in &lt;module&gt;
 gmprocess/metrics/combination/arithmetic_mean.py:5: in &lt;module&gt;
     from gmprocess.metrics.combination.combination import Combination
 gmprocess/metrics/combination/combination.py:6: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -460,7 +460,7 @@ Traceback:
 tests/gmprocess/metrics/imc/channels_test.py:10: in &lt;module&gt;
     from gmprocess.io.geonet.core import read_geonet
 gmprocess/io/geonet/core.py:15: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+    from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
 E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/metrics/imc/geometric_mean_test.py" name="tests.gmprocess.metrics.imc.geometric_mean_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/metrics/imc/geometric_mean_test.py&apos;.
@@ -471,7 +471,7 @@ tests/gmprocess/metrics/imc/geometric_mean_test.py:7: in &lt;module&gt;
 gmprocess/metrics/combination/geometric_mean.py:5: in &lt;module&gt;
     from gmprocess.metrics.combination.combination import Combination
 gmprocess/metrics/combination/combination.py:6: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -482,7 +482,7 @@ Traceback:
 tests/gmprocess/metrics/imc/gmrotd_test.py:10: in &lt;module&gt;
     from gmprocess.io.geonet.core import read_geonet
 gmprocess/io/geonet/core.py:15: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+    from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
 E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/metrics/imc/greater_of_two_horizontals_test.py" name="tests.gmprocess.metrics.imc.greater_of_two_horizontals_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/metrics/imc/greater_of_two_horizontals_test.py&apos;.
@@ -491,7 +491,7 @@ Traceback:
 tests/gmprocess/metrics/imc/greater_of_two_horizontals_test.py:10: in &lt;module&gt;
     from gmprocess.io.geonet.core import read_geonet
 gmprocess/io/geonet/core.py:15: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+    from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
 E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/metrics/imc/quadratic_mean_test.py" name="tests.gmprocess.metrics.imc.quadratic_mean_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/metrics/imc/quadratic_mean_test.py&apos;.
@@ -502,7 +502,7 @@ tests/gmprocess/metrics/imc/quadratic_mean_test.py:7: in &lt;module&gt;
 gmprocess/metrics/combination/quadratic_mean.py:5: in &lt;module&gt;
     from gmprocess.metrics.combination.combination import Combination
 gmprocess/metrics/combination/combination.py:6: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -515,7 +515,7 @@ tests/gmprocess/metrics/imc/radial_transverse_test.py:15: in &lt;module&gt;
 gmprocess/metrics/station_summary.py:17: in &lt;module&gt;
     from gmprocess.metrics.metrics_controller import MetricsController
 gmprocess/metrics/metrics_controller.py:17: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -526,7 +526,7 @@ Traceback:
 tests/gmprocess/metrics/imc/rotd_test.py:11: in &lt;module&gt;
     from gmprocess.io.geonet.core import read_geonet
 gmprocess/io/geonet/core.py:15: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+    from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
 E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/metrics/imt/arias_test.py" name="tests.gmprocess.metrics.imt.arias_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/metrics/imt/arias_test.py&apos;.
@@ -537,7 +537,7 @@ tests/gmprocess/metrics/imt/arias_test.py:14: in &lt;module&gt;
 gmprocess/metrics/station_summary.py:17: in &lt;module&gt;
     from gmprocess.metrics.metrics_controller import MetricsController
 gmprocess/metrics/metrics_controller.py:17: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -550,7 +550,7 @@ tests/gmprocess/metrics/imt/duration_test.py:14: in &lt;module&gt;
 gmprocess/metrics/station_summary.py:17: in &lt;module&gt;
     from gmprocess.metrics.metrics_controller import MetricsController
 gmprocess/metrics/metrics_controller.py:17: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -563,7 +563,7 @@ tests/gmprocess/metrics/imt/fas_test.py:12: in &lt;module&gt;
 gmprocess/metrics/station_summary.py:17: in &lt;module&gt;
     from gmprocess.metrics.metrics_controller import MetricsController
 gmprocess/metrics/metrics_controller.py:17: in &lt;module&gt;
-    from gmprocess.stationstream import StationStream
+    from gmprocess.core.stationstream import StationStream
 gmprocess/stationstream.py:13: in &lt;module&gt;
     from .stationtrace import StationTrace
 gmprocess/stationtrace.py:13: in &lt;module&gt;
@@ -574,7 +574,7 @@ Traceback:
 tests/gmprocess/metrics/imt/pga_test.py:10: in &lt;module&gt;
     from gmprocess.io.geonet.core import read_geonet
 gmprocess/io/geonet/core.py:15: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+    from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
 E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/metrics/imt/pgv_test.py" name="tests.gmprocess.metrics.imt.pgv_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/metrics/imt/pgv_test.py&apos;.
@@ -583,7 +583,7 @@ Traceback:
 tests/gmprocess/metrics/imt/pgv_test.py:11: in &lt;module&gt;
     from gmprocess.io.geonet.core import read_geonet
 gmprocess/io/geonet/core.py:15: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+    from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
 E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase><testcase classname="" file="tests/gmprocess/metrics/imt/sa_test.py" name="tests.gmprocess.metrics.imt.sa_test" time="0.000"><error message="collection failure">ImportError while importing test module &apos;/Users/emthompson/src/python/groundmotion-processing/tests/gmprocess/metrics/imt/sa_test.py&apos;.
@@ -592,7 +592,7 @@ Traceback:
 tests/gmprocess/metrics/imt/sa_test.py:10: in &lt;module&gt;
     from gmprocess.io.geonet.core import read_geonet
 gmprocess/io/geonet/core.py:15: in &lt;module&gt;
-    from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+    from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 gmprocess/stationtrace.py:13: in &lt;module&gt;
     import prov
 E   ModuleNotFoundError: No module named &apos;prov&apos;</error></testcase></testsuite></testsuites>

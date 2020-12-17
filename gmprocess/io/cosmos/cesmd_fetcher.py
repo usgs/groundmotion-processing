@@ -11,11 +11,12 @@ import numpy as np
 # local imports
 from gmprocess.io.fetcher import DataFetcher, _get_first_value
 from gmprocess.io.read import read_data
-from gmprocess.streamcollection import StreamCollection
-from gmprocess.config import get_config
-from gmprocess.exception import GMProcessException
-from gmprocess.io.cosmos.cesmd_search import (get_records, get_metadata,
-                                              get_stations_dataframe)
+from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.utils.config import get_config
+from gmprocess.utils.exception import GMProcessException
+from gmprocess.io.cosmos.cesmd_search import (
+    get_records, get_metadata,
+    get_stations_dataframe)
 
 # default values for this fetcher
 # if None specified in constructor, AND no parameters specified in
@@ -271,8 +272,8 @@ class CESMDFetcher(DataFetcher):
         else:
             # web service has a maximum number of stations you're allowed to
             # fetch (note that this may not be the same as the number of files)
-            # so we're splitting up the stations by distance and downloading them
-            # in chunks.
+            # so we're splitting up the stations by distance and downloading
+            # them in chunks.
             dataframe = get_stations_dataframe(event)
             distances = dataframe['epidist'].to_numpy()
             distances.sort()
@@ -300,14 +301,18 @@ class CESMDFetcher(DataFetcher):
                 except GMProcessException as gpe:
                     eqfmt = 'M%.1f %s'
                     eqdesc = eqfmt % (
-                        self.magnitude, self.time.strftime('%Y-%m-%d %H:%M:%S'))
+                        self.magnitude,
+                        self.time.strftime('%Y-%m-%d %H:%M:%S')
+                    )
                     if '404' in str(gpe):
                         fmt = ('Could not find data records for %s '
                                'between %.1f km and %.1f km')
                         logging.info(fmt % (eqdesc, mindist, maxdist))
                     else:
                         logging.warning(
-                            'Unplanned exception getting records for %s' % eqdesc)
+                            'Unplanned exception getting records for %s'
+                            % eqdesc
+                        )
                     continue
                 datafiles += tfiles
 

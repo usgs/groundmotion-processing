@@ -31,7 +31,7 @@ class Arithmetic_Mean(Combination):
                 # this is the case where IMT is FAS
                 am = {
                     'freqs': h1['freqs'],
-                    'spectra': (h1['spectra'] + h2['spectra'])/2
+                    'spectra': (h1['spectra'] + h2['spectra']) / 2
                 }
             else:
                 am = {'': 0.5 * (h1 + h2)}

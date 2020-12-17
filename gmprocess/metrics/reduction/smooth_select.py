@@ -4,7 +4,8 @@ import numpy as np
 # Local imports
 from gmprocess.metrics.exception import PGMException
 from gmprocess.metrics.reduction.reduction import Reduction
-from gmprocess.smoothing.konno_ohmachi import konno_ohmachi_smooth
+from gmprocess.waveform_processing.smoothing.konno_ohmachi import \
+    konno_ohmachi_smooth
 
 
 class Smooth_Select(Reduction):

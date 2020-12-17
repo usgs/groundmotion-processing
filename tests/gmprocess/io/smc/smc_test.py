@@ -9,7 +9,7 @@ import numpy as np
 import pkg_resources
 
 from gmprocess.io.smc.core import is_smc, read_smc
-from gmprocess.streamcollection import StreamCollection
+from gmprocess.core.streamcollection import StreamCollection
 
 
 def test_smc():

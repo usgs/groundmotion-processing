@@ -18,13 +18,13 @@ from impactutils.rupture.origin import Origin
 from mapio.gmt import GMTGrid
 
 # local imports
-from gmprocess.stationtrace import (StationTrace, TIMEFMT_MS, NS_SEIS,
-                                    _get_person_agent, _get_software_agent)
-from gmprocess.stationstream import StationStream
-from gmprocess.streamcollection import StreamCollection
+from gmprocess.core.stationtrace import (
+    StationTrace, TIMEFMT_MS, NS_SEIS, _get_person_agent, _get_software_agent)
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.metrics.station_summary import StationSummary, XML_UNITS
-from gmprocess.exception import GMProcessException
-from gmprocess.event import ScalarEvent
+from gmprocess.utils.exception import GMProcessException
+from gmprocess.utils.event import ScalarEvent
 
 TIMEPAT = '[0-9]{4}-[0-9]{2}-[0-9]{2}T'
 EVENT_TABLE_COLUMNS = ['id', 'time', 'latitude',
@@ -139,7 +139,7 @@ def format_netsta(stats):
 
 
 def format_nslc(stats):
-    #loc = '' if stats.location == '--' else stats.location
+    # loc = '' if stats.location == '--' else stats.location
     return '{st.network}.{st.station}.{st.location}.{st.channel}'.format(
         st=stats)
 
@@ -149,7 +149,7 @@ def format_nslct(stats, tag):
 
 
 def format_nslit(stats, inst, tag):
-    #loc = '' if stats.location == '--' else stats.location
+    # loc = '' if stats.location == '--' else stats.location
     return '{st.network}.{st.station}.{st.location}.{inst}_{tag}'.format(
         st=stats, inst=inst, tag=tag)
 
@@ -362,7 +362,8 @@ class StreamWorkspace(object):
                     base_dtype = ''.join([part.capitalize()
                                           for part in name_parts])
                     for array_name, array in spectrum.items():
-                        path = base_dtype + array_name.capitalize() + "/" + procname
+                        path = base_dtype + array_name.capitalize() \
+                            + "/" + procname
                         try:
                             self.dataset.add_auxiliary_data(
                                 array,
@@ -370,7 +371,7 @@ class StreamWorkspace(object):
                                 path=path,
                                 parameters={}
                             )
-                        except Exception as e:
+                        except Exception:
                             pass
 
             inventory = stream.getInventory()
@@ -418,10 +419,11 @@ class StreamWorkspace(object):
         """
         trace_auxholder = []
         stream_auxholder = []
-        if 'TraceProcessingParameters' in self.dataset.auxiliary_data:
-            trace_auxholder = self.dataset.auxiliary_data.TraceProcessingParameters
-        if 'StreamProcessingParameters' in self.dataset.auxiliary_data:
-            stream_auxholder = self.dataset.auxiliary_data.StreamProcessingParameters
+        auxdata = self.dataset.auxiliary_data
+        if 'TraceProcessingParameters' in auxdata:
+            trace_auxholder = auxdata.TraceProcessingParameters
+        if 'StreamProcessingParameters' in auxdata:
+            stream_auxholder = auxdata.StreamProcessingParameters
         streams = []
 
         if stations is None:
@@ -477,9 +479,10 @@ class StreamWorkspace(object):
                     # get the trace spectra arrays from auxiliary,
                     # repack into stationtrace object
                     spectra = {}
-                    if 'Cache' in self.dataset.auxiliary_data:
-                        for aux in self.dataset.auxiliary_data['Cache'].list():
-                            auxarray = self.dataset.auxiliary_data['Cache'][aux]
+
+                    if 'Cache' in auxdata:
+                        for aux in auxdata['Cache'].list():
+                            auxarray = auxdata['Cache'][aux]
                             if top not in auxarray.list():
                                 continue
                             auxarray_top = auxarray[top]
@@ -650,7 +653,8 @@ class StreamWorkspace(object):
                 self.insert_aux(xmlstr, 'StationMetrics', metricpath)
 
     def getTables(self, label, streams=None, stream_label=None):
-        '''Retrieve dataframes containing event information and IMC/IMT metrics.
+        '''Retrieve dataframes containing event information and IMC/IMT
+        metrics.
 
         Args:
             label (str):
@@ -850,7 +854,8 @@ class StreamWorkspace(object):
 
     def getStreamMetrics(self, eventid, network, station, label, streams=None,
                          stream_label=None):
-        """Extract a StationSummary object from the ASDF file for a given input Stream.
+        """Extract a StationSummary object from the ASDF file for a given
+        input Stream.
 
         Args:
             eventid (str):
@@ -906,7 +911,8 @@ class StreamWorkspace(object):
         if top in auxholder:
             tauxholder = auxholder[top]
             if metricpath not in tauxholder:
-                fmt = 'Stream metrics path (%s) not in WaveFormMetrics auxiliary_data.'
+                fmt = ('Stream metrics path (%s) not in WaveFormMetrics '
+                       'auxiliary_data.')
                 logging.warning(fmt % metricpath)
                 return None
 

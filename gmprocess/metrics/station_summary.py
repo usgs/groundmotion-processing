@@ -12,10 +12,10 @@ from openquake.hazardlib.geo.geodetic import distance
 from impactutils.rupture.point_rupture import PointRupture
 
 # local imports
-from gmprocess.config import get_config
+from gmprocess.utils.config import get_config
 from gmprocess.metrics.gather import gather_pgms
 from gmprocess.metrics.metrics_controller import MetricsController
-from gmprocess.constants import (
+from gmprocess.utils.constants import (
     ELEVATION_FOR_DISTANCE_CALCS, METRICS_XML_FLOAT_STRING_FORMAT)
 
 

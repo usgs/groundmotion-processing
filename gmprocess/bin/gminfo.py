@@ -14,8 +14,8 @@ import pandas as pd
 
 # local imports
 from gmprocess.io.read import _get_format, read_data
-from gmprocess.args import add_shared_args
-from gmprocess.stationtrace import REV_PROCESS_LEVELS
+from gmprocess.utils.args import add_shared_args
+from gmprocess.core.stationtrace import REV_PROCESS_LEVELS
 
 COLUMNS = ['Filename', 'Format', 'Process Level',
            'Start Time', 'End Time',
@@ -179,6 +179,7 @@ def main():
     # Shared arguments
     parser = add_shared_args(parser)
     args = parser.parse_args()
+
     if not args.concise and args.save:
         msg = '''
         ****************************************************************

@@ -7,9 +7,9 @@ import argparse
 import logging
 
 # local imports
-from gmprocess.logging import setup_logger
-from gmprocess.args import add_shared_args
-from gmprocess.streamcollection import StreamCollection
+from gmprocess.utils.logging import setup_logger
+from gmprocess.utils.args import add_shared_args
+from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.io.read import read_data
 from gmprocess.io.read_directory import directory_to_streams
 

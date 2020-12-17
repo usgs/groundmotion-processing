@@ -3,14 +3,15 @@ import numpy as np
 from scipy import integrate
 
 # Local imports
-from gmprocess.constants import GAL_TO_PCTG
+from gmprocess.utils.constants import GAL_TO_PCTG
 from gmprocess.metrics.reduction.reduction import Reduction
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace
 
 
 class Arias(Reduction):
     """Class for calculation of arias intensity."""
+
     def __init__(self, reduction_data, bandwidth=None, percentile=None,
                  period=None, smoothing=None):
         """

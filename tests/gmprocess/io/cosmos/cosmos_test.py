@@ -4,9 +4,9 @@ import os
 import numpy as np
 from gmprocess.io.cosmos.core import is_cosmos, read_cosmos
 from gmprocess.io.test_utils import read_data_dir
-from gmprocess.stationtrace import PROCESS_LEVELS
-from gmprocess.streamcollection import StreamCollection
-from gmprocess.processing import remove_response
+from gmprocess.core.stationtrace import PROCESS_LEVELS
+from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.waveform_processing.processing import remove_response
 
 
 def test_cosmos():
@@ -74,11 +74,12 @@ def test_cosmos():
     file_max = file_line[file_line.find('max=') + 4: file_line.find('cm')]
     assert np.round(stream1[0].max(), 3) == float(file_max)
 
-    # test a two channel cosmos file should fail because deg is not a converted unit
+    # test a two channel cosmos file should fail because deg is not a
+    # converted unit
     failed = False
     try:
         stream2 = read_cosmos(two_channels)[0]
-    except:
+    except BaseException:
         failed = True
     assert failed == True
     # test that reading a file that is a valid station type returns a
@@ -110,7 +111,7 @@ def test_channel_in_filename():
     try:
         streams = read_cosmos(dfile)
 
-    except:
+    except BaseException:
         assert 1 == 1
 
 

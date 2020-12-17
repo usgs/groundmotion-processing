@@ -13,8 +13,8 @@ import pandas as pd
 import pkg_resources
 
 # local
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.io.seedname import get_channel_name
 
 
@@ -67,7 +67,8 @@ def read_renadic(filename):
     """Read the Chilean RENADIC strong motion data format.
 
     Args:
-        filename (str): path to RENADIC data file.
+        filename (str):
+            path to RENADIC data file.
 
     Returns:
         list: Sequence of one StationStream object containing 3

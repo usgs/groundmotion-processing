@@ -12,8 +12,8 @@ import numpy as np
 
 # local imports
 from gmprocess.io.seedname import get_channel_name, get_units_type
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
-from gmprocess.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.core.stationstream import StationStream
 
 NZCATWINDOW = 5 * 60  # number of seconds to search around in GeoNet EQ catalog
 
@@ -173,10 +173,8 @@ def _read_channel(filename, line_offset):
     if nvel:
         if nvel % COLS_PER_ROW != 0:
             nvel_rows = int(np.floor(nvel / COLS_PER_ROW))
-            nvel_rows2 = 1
         else:
             nvel_rows = int(np.ceil(nvel / COLS_PER_ROW))
-            nvel_rows2 = 0
         skip_header_vel = line_offset + TEXT_HDR_ROWS + FP_HDR_ROWS + nrows
         widths = [8] * COLS_PER_ROW
         velocity = np.genfromtxt(filename, skip_header=skip_header_vel,

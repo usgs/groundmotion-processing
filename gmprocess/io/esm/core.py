@@ -10,8 +10,8 @@ from obspy.core.trace import Stats
 import numpy as np
 
 # local imports
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
-from gmprocess.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.core.stationstream import StationStream
 
 TEXT_HDR_ROWS = 64
 # 20190728_160919.870
@@ -78,7 +78,6 @@ def read_esm(filename):
 
     stats = {}
     standard = {}
-    format_specific = {}
     coordinates = {}
 
     # fill in all known stats header fields

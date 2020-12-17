@@ -8,8 +8,8 @@ import glob
 
 sourcefiles = ["gmprocess/metrics/oscillators.pyx",
                "gmprocess/metrics/cfuncs.c"]
-ko_sourcefiles = ["gmprocess/smoothing/konno_ohmachi.pyx",
-                  "gmprocess/smoothing/smoothing.c"]
+ko_sourcefiles = ["gmprocess/waveform_processing/smoothing/konno_ohmachi.pyx",
+                  "gmprocess/waveform_processing/smoothing/smoothing.c"]
 
 ext_modules = [
     Extension(
@@ -18,7 +18,7 @@ ext_modules = [
         libraries=["m"],
         include_dirs=[numpy.get_include()]),
     Extension(
-        "gmprocess.smoothing.konno_ohmachi",
+        "gmprocess.waveform_processing.smoothing.konno_ohmachi",
         ko_sourcefiles,
         libraries=["m"],
         include_dirs=[numpy.get_include()])
@@ -40,6 +40,7 @@ setup(
     packages=[
         'gmprocess',
         'gmprocess.bin',
+        'gmprocess.core',
         'gmprocess.io',
         'gmprocess.io.asdf',
         'gmprocess.io.bhrc',
@@ -62,7 +63,9 @@ setup(
         'gmprocess.metrics.combination',
         'gmprocess.metrics.transform',
         'gmprocess.metrics.reduction',
-        'gmprocess.smoothing'
+        'gmprocess.utils',
+        'gmprocess.waveform_processing',
+        'gmprocess.waveform_processing.smoothing'
     ],
     package_data={
         'gmprocess':

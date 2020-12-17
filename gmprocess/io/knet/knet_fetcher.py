@@ -21,8 +21,8 @@ from obspy.core.utcdatetime import UTCDateTime
 # local imports
 from gmprocess.io.fetcher import DataFetcher, _get_first_value
 from gmprocess.io.knet.core import read_knet
-from gmprocess.streamcollection import StreamCollection
-from gmprocess.config import get_config
+from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.utils.config import get_config
 
 
 JST_OFFSET = 9 * 3600  # Japan standard time is UTC + 9
@@ -44,11 +44,11 @@ QUARTERS = {1: 1, 2: 1, 3: 1,
             10: 10, 11: 10, 12: 10}
 
 # 2019/03/13-13:48:00.00
-TIMEPAT = '[0-9]{4}/[0-9]{2}/[0-9]{2}-[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{2}'
-LATPAT = '[0-9]{2}\.[0-9]{2}N'
-LONPAT = '[0-9]{3}\.[0-9]{2}E'
+TIMEPAT = r'[0-9]{4}/[0-9]{2}/[0-9]{2}-[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{2}'
+LATPAT = r'[0-9]{2}\.[0-9]{2}N'
+LONPAT = r'[0-9]{3}\.[0-9]{2}E'
 DEPPAT = '[0-9]{3}km'
-MAGPAT = 'M[0-9]{1}\.[0-9]{1}'
+MAGPAT = r'M[0-9]{1}\.[0-9]{1}'
 TIMEFMT = '%Y/%m/%d-%H:%M:%S.%f'
 
 # default values for this fetcher
@@ -100,10 +100,10 @@ class KNETFetcher(DataFetcher):
             rawdir (str): Path to location where raw data will be stored.
                           If not specified, raw data will be deleted.
             config (dict):
-                Dictionary containing configuration. 
+                Dictionary containing configuration.
                 If None, retrieve global config.
             drop_non_free (bool):
-                Option to ignore non-free-field (borehole, 
+                Option to ignore non-free-field (borehole,
                 sensors on structures, etc.)
         """
         # what values do we use for search thresholds?
@@ -147,7 +147,8 @@ class KNETFetcher(DataFetcher):
                 user = cfg_user
                 password = cfg_password
             else:
-                fmt = 'Username/password are required to retrieve KNET/KikNET data.'
+                fmt = ('Username/password are required to retrieve '
+                       'KNET/KikNET data.')
                 raise Exception(fmt)
 
         if user == 'USERNAME' or password == 'PASSWORD':
@@ -161,9 +162,10 @@ class KNETFetcher(DataFetcher):
                    'to use your username and password.')
             raise Exception(fmt)
 
-        # allow user to turn restrict stations on or off. Restricting saves time,
-        # probably will not ignore significant data.
-        self.restrict_stations = config['fetchers']['KNETFetcher']['restrict_stations']
+        # allow user to turn restrict stations on or off. Restricting saves
+        # time, probably will not ignore significant data.
+        self.restrict_stations = \
+            config['fetchers']['KNETFetcher']['restrict_stations']
 
         self.user = user
         self.password = password

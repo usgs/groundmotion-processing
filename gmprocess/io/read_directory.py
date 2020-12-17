@@ -66,7 +66,7 @@ def directory_to_streams(directory):
 
 def _split_all_path(path):
     allparts = []
-    while 1:
+    while True:
         parts = os.path.split(path)
         if parts[0] == path:
             allparts.insert(0, parts[0])

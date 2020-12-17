@@ -93,8 +93,8 @@ import numpy as np
 from obspy.core.utcdatetime import UTCDateTime
 
 # local imports
-from gmprocess.stationtrace import StationTrace
-from gmprocess.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace
+from gmprocess.core.stationstream import StationStream
 from gmprocess.io.seedname import get_channel_name, is_channel_north
 
 TEXT_HDR_ROWS = 17

@@ -3,7 +3,7 @@ import numpy as np
 from scipy import integrate
 
 # Local imports
-from gmprocess.constants import GAL_TO_PCTG
+from gmprocess.utils.constants import GAL_TO_PCTG
 from gmprocess.metrics.reduction.reduction import Reduction
 
 # Hard code percentiles for duration now. Need to make this conigurable.
@@ -13,6 +13,7 @@ P_END = 0.95
 
 class Duration(Reduction):
     """Class for calculation of duration."""
+
     def __init__(self, reduction_data, bandwidth=None, percentile=None,
                  period=None, smoothing=None):
         """
@@ -52,7 +53,7 @@ class Duration(Reduction):
             arias_intensity = integrated_acc2 * np.pi * GAL_TO_PCTG / 2
 
             # Normalized AI
-            ai_norm = arias_intensity/np.max(arias_intensity)
+            ai_norm = arias_intensity / np.max(arias_intensity)
 
             ind0 = np.argmin(np.abs(ai_norm - P_START))
             ind1 = np.argmin(np.abs(ai_norm - P_END))
