@@ -4,7 +4,7 @@
 import os
 
 from gmprocess.io.read import read_data, _get_format, _validate_format
-from gmprocess.exception import GMProcessException
+from gmprocess.utils.exception import GMProcessException
 from gmprocess.io.test_utils import read_data_dir
 
 

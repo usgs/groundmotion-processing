@@ -3,7 +3,7 @@ import glob
 import json
 import pkg_resources
 
-from gmprocess.event import ScalarEvent
+from gmprocess.utils.event import ScalarEvent
 
 
 def read_data_dir(file_format, eventid, files=None):

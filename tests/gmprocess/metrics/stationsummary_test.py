@@ -15,8 +15,8 @@ from obspy.core.event import Origin
 from gmprocess.io.geonet.core import read_geonet
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.io.test_utils import read_data_dir
-from gmprocess.streamcollection import StreamCollection
-from gmprocess.processing import process_streams
+from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.waveform_processing.processing import process_streams
 from gmprocess.io.fetch_utils import read_event_json_files
 
 

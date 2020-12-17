@@ -4,15 +4,19 @@ from gmprocess.metrics.gather import gather_pgms
 
 class IMC(object):
     """Base class for the IMC classes."""
+
     def __init__(self, imc, imt, percentile=None, period=None):
         """
         Args:
-            imc (string): Intensity measurement component.
-            imt (string): Intensity measurement type.
-            percentile (float): Percentile for rotations. Default is None.
-                    Not used by AM.
-            period (float): Period for fourier amplitude spectra and
-                    spectral amplitudes.  Default is None. Not used by AM.
+            imc (string):
+                Intensity measurement component.
+            imt (string):
+                Intensity measurement type.
+            percentile (float):
+                Percentile for rotations. Default is None. Not used by AM.
+            period (float):
+                Period for fourier amplitude spectra and spectral amplitudes.
+                Default is None. Not used by AM.
         """
         self.imc = imc.lower()
         self.imt = imt.lower()
@@ -26,7 +30,8 @@ class IMC(object):
         Checks whether the combinations of imt and imc is valid.
 
         Args:
-            bool: Whether or not the pair is valid.
+            bool:
+                Whether or not the pair is valid.
         """
         imt = self.imt.lower()
         if imt in self._available_imts and imt not in self._invalid_imts:
@@ -40,6 +45,7 @@ class IMC(object):
         Steps for the imt/imc computation.
 
         Args:
-            self._steps: Steps for the imt/imc computation as a dictionary.
+            self._steps:
+                Steps for the imt/imc computation as a dictionary.
         """
         return self._steps

@@ -7,7 +7,7 @@ import logging
 
 # local imports
 from .fetcher import DataFetcher
-from gmprocess.config import get_config
+from gmprocess.utils.config import get_config
 
 
 def fetch_data(time, lat, lon,

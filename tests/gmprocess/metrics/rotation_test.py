@@ -7,9 +7,8 @@ import pkg_resources
 
 # local imports
 from gmprocess.metrics.rotation.rotation import Rotation
-from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace
 
 ddir = os.path.join('data', 'testdata', 'process')
 datadir = pkg_resources.resource_filename('gmprocess', ddir)
@@ -23,46 +22,53 @@ def test_rotation():
     osc1_data = osc1_data.T[1] * 100
     osc2_data = osc2_data.T[1] * 100
 
-    tr1 = StationTrace(data=osc1_data, header={'channel': 'HN1', 'delta': 0.01,
-                                               'npts': len(osc1_data),
-                                               'standard': {'corner_frequency': np.nan,
-                                                            'station_name': '',
-                                                            'source': 'json',
-                                                            'instrument': '',
-                                                            'instrument_period': np.nan,
-                                                            'source_format': 'json',
-                                                            'comments': '',
-                                                            'structure_type': '',
-                                                            'sensor_serial_number': '',
-                                                            'process_level': 'raw counts',
-                                                            'process_time': '',
-                                                            'source_file': '',
-                                                            'horizontal_orientation': np.nan,
-                                                            'vertical_orientation': np.nan,
-                                                            'units': 'acc',
-                                                            'units_type': 'acc,',
-                                                            'instrument_sensitivity': np.nan,
-                                                            'instrument_damping': np.nan}})
-    tr2 = StationTrace(data=osc2_data, header={'channel': 'HN2', 'delta': 0.01,
-                                               'npts': len(osc2_data),
-                                               'standard': {'corner_frequency': np.nan,
-                                                            'station_name': '',
-                                                            'source': 'json',
-                                                            'instrument': '',
-                                                            'instrument_period': np.nan,
-                                                            'source_format': 'json',
-                                                            'comments': '',
-                                                            'source_file': '',
-                                                            'structure_type': '',
-                                                            'sensor_serial_number': '',
-                                                            'process_level': 'raw counts',
-                                                            'process_time': '',
-                                                            'horizontal_orientation': np.nan,
-                                                            'vertical_orientation': np.nan,
-                                                            'units': 'acc',
-                                                            'units_type': 'acc',
-                                                            'instrument_sensitivity': np.nan,
-                                                            'instrument_damping': np.nan}})
+    tr1 = StationTrace(
+        data=osc1_data, header={
+            'channel': 'HN1', 'delta': 0.01,
+            'npts': len(osc1_data),
+            'standard': {
+                'corner_frequency': np.nan,
+                'station_name': '',
+                'source': 'json',
+                'instrument': '',
+                'instrument_period': np.nan,
+                'source_format': 'json',
+                'comments': '',
+                'structure_type': '',
+                'sensor_serial_number': '',
+                'process_level': 'raw counts',
+                'process_time': '',
+                'source_file': '',
+                'horizontal_orientation': np.nan,
+                'vertical_orientation': np.nan,
+                'units': 'acc',
+                'units_type': 'acc,',
+                'instrument_sensitivity': np.nan,
+                'instrument_damping': np.nan}
+        })
+    tr2 = StationTrace(data=osc2_data, header={
+        'channel': 'HN2', 'delta': 0.01,
+        'npts': len(osc2_data),
+        'standard': {
+            'corner_frequency': np.nan,
+            'station_name': '',
+            'source': 'json',
+            'instrument': '',
+            'instrument_period': np.nan,
+            'source_format': 'json',
+            'comments': '',
+            'source_file': '',
+            'structure_type': '',
+            'sensor_serial_number': '',
+            'process_level': 'raw counts',
+            'process_time': '',
+            'horizontal_orientation': np.nan,
+            'vertical_orientation': np.nan,
+            'units': 'acc',
+            'units_type': 'acc',
+            'instrument_sensitivity': np.nan,
+            'instrument_damping': np.nan}
+    })
     st = StationStream([tr1, tr2])
 
     rotation_class = Rotation(st)

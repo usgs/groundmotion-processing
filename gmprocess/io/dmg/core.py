@@ -13,12 +13,12 @@ import numpy as np
 import pytz
 
 # local imports
-from gmprocess.constants import UNIT_CONVERSIONS
-from gmprocess.exception import GMProcessException
+from gmprocess.utils.constants import UNIT_CONVERSIONS
+from gmprocess.utils.exception import GMProcessException
 from gmprocess.io.usc.core import is_usc
 from gmprocess.io.seedname import get_channel_name, get_units_type
-from gmprocess.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
-from gmprocess.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
+from gmprocess.core.stationstream import StationStream
 from gmprocess.io.utils import is_evenly_spaced, resample_uneven_trace
 
 V1_TEXT_HDR_ROWS = 13
@@ -46,7 +46,7 @@ DATE_PATTERNS = [
     '[0-9]{1}-[0-9]{1}-[0-9]{2}',
 ]
 
-TIME_MATCH = '[0-9]{2}:[0-9]{2}:..\.[0-9]{1}'
+TIME_MATCH = r'[0-9]{2}:[0-9]{2}:..\.[0-9]{1}'
 
 code_file = pkg_resources.resource_filename('gmprocess', 'data/fdsn_codes.csv')
 
@@ -348,9 +348,9 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
         skip_rows += int(acc_rows) + 1
 
     # -------------------------------------------------------------------------
-    # NOTE: The way we were initially reading velocity and displacement data was
-    # not correct. I'm deleting it for now since we don't need it. If/when we
-    # revisit this we need to be more careful about how this is handled.
+    # NOTE: The way we were initially reading velocity and displacement data
+    # was not correct. I'm deleting it for now since we don't need it. If/when
+    # we revisit this we need to be more careful about how this is handled.
     # -------------------------------------------------------------------------
 
     # read velocity data
@@ -375,7 +375,8 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
         disp_data = disp_data[:disp_hdr['npts']]
         skip_rows += int(disp_rows) + 1
 
-    new_offset = skip_rows + 1  # there is an 'end of record' line after the data]
+    # there is an 'end of record' line after the data]
+    new_offset = skip_rows + 1
     return (traces, new_offset)
 
 
@@ -446,7 +447,8 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
         source = SOURCES1[idx].decode(
             'utf-8') + ', ' + SOURCES2[idx].decode('utf-8')
     else:
-        # newer files have a record_id.network.station.location.channel thing in the 4th line
+        # newer files have a record_id.network.station.location.channel thing
+        # in the 4th line
         recinfo = lines[3][0:23]
         try:
             parts = recinfo.strip().split('.')
@@ -454,7 +456,7 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
             idx = np.argwhere(CODES == network)[0][0]
             source = SOURCES1[idx].decode(
                 'utf-8') + ', ' + SOURCES2[idx].decode('utf-8')
-        except:
+        except BaseException:
             network = 'ZZ'
             source = 'unknown'
     hdr['network'] = network
@@ -478,9 +480,9 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
     logging.debug('sampling_rate: %s' % hdr['sampling_rate'])
     hdr['delta'] = 1 / hdr['sampling_rate']
     hdr['channel'] = _get_channel(angle, hdr['sampling_rate'])
-    # this format uses codes of 500/600 in this angle to indicate a vertical channel
-    # Obspy freaks out with azimuth values > 360, so let's just say horizontal angle
-    # is zero in these cases
+    # this format uses codes of 500/600 in this angle to indicate a vertical
+    # channel Obspy freaks out with azimuth values > 360, so let's just say
+    # horizontal angle is zero in these cases
     if hdr['channel'].endswith('Z'):
         angle = '0.0'
     logging.debug('channel: %s' % hdr['channel'])
@@ -504,7 +506,7 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
             trigger_time -= utcoffset
 
         hdr['starttime'] = trigger_time
-    except:
+    except BaseException:
         logging.warning('No start time provided on trigger line. '
                         'This must be set manually for network/station: '
                         '%s/%s.' % (hdr['network'], hdr['station']))
@@ -641,9 +643,9 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
     hdr['sampling_rate'] = 1 / hdr['delta']
     hdr['channel'] = _get_channel(angle, hdr['sampling_rate'])
 
-    # this format uses codes of 500/600 in this angle to indicate a vertical channel
-    # Obspy freaks out with azimuth values > 360, so let's just say horizontal angle
-    # is zero in these cases
+    # this format uses codes of 500/600 in this angle to indicate a vertical
+    # channel Obspy freaks out with azimuth values > 360, so let's just say
+    # horizontal angle is zero in these cases
     if hdr['channel'].endswith('Z'):
         angle = '0.0'
 
@@ -665,7 +667,7 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
             # subtracting because we're going from pacific to utc
             trigger_time -= utcoffset
         hdr['starttime'] = trigger_time
-    except:
+    except BaseException:
         logging.warning('No start time provided on trigger line. '
                         'This must be set manually for network/station: '
                         '%s/%s.' % (hdr['network'], hdr['station']))
@@ -736,7 +738,7 @@ def _get_coords(latitude_str, longitude_str):
         longitude = float(longitude_str[:-1])
         if longitude_str.upper().find('W') >= 0:
             longitude = -1 * longitude
-    except:
+    except BaseException:
         logging.warning('No longitude or invalid longitude format provided.',
                         'Setting to np.nan.', Warning)
         longitude = np.nan

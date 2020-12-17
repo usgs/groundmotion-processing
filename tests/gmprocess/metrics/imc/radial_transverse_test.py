@@ -14,8 +14,8 @@ import pkg_resources
 # local imports
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.metrics.exception import PGMException
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace
 
 
 ddir = os.path.join('data', 'testdata', 'fdsnfetch')

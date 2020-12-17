@@ -10,8 +10,8 @@ import yaml
 import pkg_resources
 
 # local imports
-from gmprocess.constants import CONFIG_FILE_PRODUCTION
-from gmprocess.args import add_shared_args
+from gmprocess.utils.constants import CONFIG_FILE_PRODUCTION
+from gmprocess.utils.args import add_shared_args
 
 
 def main():

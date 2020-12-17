@@ -5,7 +5,7 @@ from obspy.core.stream import Stream
 
 # Local imports
 from gmprocess.metrics.rotation.rotation import Rotation
-from gmprocess.stationstream import StationStream
+from gmprocess.core.stationstream import StationStream
 
 
 class Radial_Transverse(Rotation):

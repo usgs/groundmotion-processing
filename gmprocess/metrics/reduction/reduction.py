@@ -1,5 +1,6 @@
 class Reduction(object):
     """Base class for reduction calculations."""
+
     def __init__(self, reduction_data, bandwidth=None, percentile=None,
                  period=None, smoothing=None):
         """

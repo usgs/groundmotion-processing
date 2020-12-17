@@ -6,7 +6,7 @@ import pkg_resources
 import logging
 
 from gmprocess.io.read_directory import directory_to_streams
-from gmprocess.logging import setup_logger
+from gmprocess.utils.logging import setup_logger
 
 setup_logger()
 

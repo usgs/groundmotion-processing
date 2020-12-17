@@ -10,12 +10,12 @@ import numpy as np
 import pandas as pd
 
 # Local imports
-from gmprocess.config import get_config
-from gmprocess.constants import GAL_TO_PCTG
+from gmprocess.utils.config import get_config
+from gmprocess.utils.constants import GAL_TO_PCTG
 from gmprocess.metrics.exception import PGMException
 from gmprocess.metrics.gather import gather_pgms
-from gmprocess.stationstream import StationStream
-from gmprocess.constants import METRICS_XML_FLOAT_STRING_FORMAT
+from gmprocess.core.stationstream import StationStream
+from gmprocess.utils.constants import METRICS_XML_FLOAT_STRING_FORMAT
 
 
 def _get_channel_dict(channel_names):
@@ -575,7 +575,7 @@ class MetricsController(object):
         Notes:
             Can be either a float or integer.
         """
-        period = re.findall('\d+', imt)
+        period = re.findall(r'\d+', imt)
 
         if len(period) > 1:
             period = '.'.join(period)
@@ -602,7 +602,7 @@ class MetricsController(object):
         Notes:
             Can be either a float or integer.
         """
-        percentile = re.findall('\d+', imc)
+        percentile = re.findall(r'\d+', imc)
         if len(percentile) > 1:
             percentile = '.'.join(percentile)
         elif len(percentile) == 1:

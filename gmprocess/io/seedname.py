@@ -49,7 +49,8 @@ def get_units_type(channel):
 
 
 def is_channel_north(angle):
-    '''Determine whether horizontal angle is closer to North/South than East/West.
+    '''Determine whether horizontal angle is closer to North/South than
+    East/West.
 
     Args:
         angle (float):

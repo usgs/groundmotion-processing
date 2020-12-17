@@ -8,13 +8,13 @@ cimport numpy as np
 cimport cython
 from obspy.core.stream import Stream
 from obspy.core.trace import Trace
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace
 from obspy.signal.invsim import corn_freq_2_paz, simulate_seismometer
 from obspy import read
 
 # local imports
-from gmprocess.constants import GAL_TO_PCTG
+from gmprocess.utils.constants import GAL_TO_PCTG
 
 cdef extern from "cfuncs.h":
     void calculate_spectrals_c(double *acc, int np, double dt,

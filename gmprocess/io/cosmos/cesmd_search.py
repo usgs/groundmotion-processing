@@ -10,63 +10,67 @@ import pandas as pd
 import numpy as np
 
 # local imports
-from gmprocess.exception import GMProcessException
+from gmprocess.utils.exception import GMProcessException
 
 URL_TEMPLATE = 'https://strongmotioncenter.org/wserv/records/query'
 RETURN_TYPES = ['dataset', 'metadata']
 PROCESS_LEVELS = ['processed', 'raw', 'plots', 'all']
 GROUP_OPTIONS = ['station', 'event']
 
-NETWORKS = {"08": "Hokkaido University",
-            "AA": "AA - Anchorage Strong Motion Network",
-            "AK": "AK - University of Alaska Geophysical Institute",
-            "AZ": "AZ - Anza",
-            "BG": "BG - Berkeley Geysers Network",
-            "BK": "BK - Berkeley Digital Seismic Network",
-            "C1": "C1 - Red Sismologica Nacional",
-            "CB": "CB - Institute of Geophysics China Earthquake Administration (IGP)",
-            "CE": "CE - California Strong Motion Instrumentation Program",
-            "CF": "CF - Red Acelerografica Nacional de la Comision Federal de Electr",
-            "CI": "CI - California Institute of Technology",
-            "CU": "CU - Albuquerque Seismological Laboratory",
-            "C_": "C_ - C&GS",
-            "EC": "EC - Ecuador Seismic Network",
-            "ES": "ES - Spanish Digital Seismic Network",
-            "GI": "GI - Red Sismologica Nacional-Guatemala",
-            "G_": "G_ - GEOSCOPE",
-            "HV": "HV - Hawaiian Volcano Observatory Network",
-            "IT": "IT - Italian Strong Motion Network",
-            "IU": "IU - GSN - IRIS/USGS",
-            "IV": "IV - Istituto Nazionale di Geofisica e Vulcanologia",
-            "JP": "JP - BRI",
-            "LA": "LA - Los Angeles Basin Seismic Network",
-            "MN": "MN - Mediterranean Very Broadband Seismographic Network",
-            "NC": "NC - USGS Northern California Regional Network",
-            "ND": "ND - New Caledonia Broadband Seismic Network (SismoCal)",
-            "NM": "NM - New Madrid Seismic Network",
-            "NN": "NN - Nevada Seismic Network",
-            "NP": "NP - National Strong Motion Project",
-            "NZ": "NZ",
-            "OK": "OK - Oklahoma Geological Survey",
-            "OV": "OV - Observatorio Vulcanologico y Sismologico de Costa Rica",
-            "PA": "PA - Observatorio Sismico del Occidente de Panamá",
-            "PG": "PG",
-            "PR": "PR - Puerto Rico Strong Motion Program (PRSMP)",
-            "TO": "TO - Caltech Tectonic Observatory",
-            "TU": "TU - Turkey Strong Motion Network",
-            "US": "US - National Earthquake Information Center",
-            "UW": "UW - PNSN",
-            "WR": "WR - California Department of Water Resources",
-            "_C": "_C - Chile"}
+NETWORKS = {
+    "08": "Hokkaido University",
+    "AA": "AA - Anchorage Strong Motion Network",
+    "AK": "AK - University of Alaska Geophysical Institute",
+    "AZ": "AZ - Anza",
+    "BG": "BG - Berkeley Geysers Network",
+    "BK": "BK - Berkeley Digital Seismic Network",
+    "C1": "C1 - Red Sismologica Nacional",
+    "CB": "CB - Institute of Geophysics China Earthquake Administration (IGP)",
+    "CE": "CE - California Strong Motion Instrumentation Program",
+    "CF": "CF - Red Acelerografica Nacional de la Comision Federal de Electr",
+    "CI": "CI - California Institute of Technology",
+    "CU": "CU - Albuquerque Seismological Laboratory",
+    "C_": "C_ - C&GS",
+    "EC": "EC - Ecuador Seismic Network",
+    "ES": "ES - Spanish Digital Seismic Network",
+    "GI": "GI - Red Sismologica Nacional-Guatemala",
+    "G_": "G_ - GEOSCOPE",
+    "HV": "HV - Hawaiian Volcano Observatory Network",
+    "IT": "IT - Italian Strong Motion Network",
+    "IU": "IU - GSN - IRIS/USGS",
+    "IV": "IV - Istituto Nazionale di Geofisica e Vulcanologia",
+    "JP": "JP - BRI",
+    "LA": "LA - Los Angeles Basin Seismic Network",
+    "MN": "MN - Mediterranean Very Broadband Seismographic Network",
+    "NC": "NC - USGS Northern California Regional Network",
+    "ND": "ND - New Caledonia Broadband Seismic Network (SismoCal)",
+    "NM": "NM - New Madrid Seismic Network",
+    "NN": "NN - Nevada Seismic Network",
+    "NP": "NP - National Strong Motion Project",
+    "NZ": "NZ",
+    "OK": "OK - Oklahoma Geological Survey",
+    "OV": "OV - Observatorio Vulcanologico y Sismologico de Costa Rica",
+    "PA": "PA - Observatorio Sismico del Occidente de Panamá",
+    "PG": "PG",
+    "PR": "PR - Puerto Rico Strong Motion Program (PRSMP)",
+    "TO": "TO - Caltech Tectonic Observatory",
+    "TU": "TU - Turkey Strong Motion Network",
+    "US": "US - National Earthquake Information Center",
+    "UW": "UW - PNSN",
+    "WR": "WR - California Department of Water Resources",
+    "_C": "_C - Chile"
+}
 
-STATION_TYPES = {"Array": "A",
-                 "Ground": "G",
-                 "Building": "B",
-                 "Bridge": "Br",
-                 "Dam": "D",
-                 "Tunnel": "T",
-                 "Wharf": "W",
-                 "Other": "O"}
+STATION_TYPES = {
+    "Array": "A",
+    "Ground": "G",
+    "Building": "B",
+    "Bridge": "Br",
+    "Dam": "D",
+    "Tunnel": "T",
+    "Wharf": "W",
+    "Other": "O"
+}
 
 FAULT_TYPES = ['NM', 'RS', 'SS']
 
@@ -112,14 +116,23 @@ def get_metadata(eqlat=None,
     """Retrieve station metadata JSON from CESMD web service.
 
     Args:
-        eqlat (float): Earthquake latitude.
-        eqlon (float): Earthquake longitude.
-        eqtime (datetime): Earthquake origin time.
-        eqradius (float): Earthquake search radius (km).
-        abandoned (bool): Whether or not to include abandoned stations in the search.
-        station_type (str): One of the following station types: [%s]
-        eqtimewidow (float): Earthquake time search window in sec.
-        station_radius (str): Radius (km) to search for stations from epicenter.
+        eqlat (float):
+            Earthquake latitude.
+        eqlon (float):
+            Earthquake longitude.
+        eqtime (datetime):
+            Earthquake origin time.
+        eqradius (float):
+            Earthquake search radius (km).
+        abandoned (bool):
+            Whether or not to include abandoned stations in the search.
+        station_type (str):
+            One of the following station types: [%s]
+        eqtimewidow (float):
+            Earthquake time search window in sec.
+        station_radius (str):
+            Radius (km) to search for stations from epicenter.
+
     Returns:
         dict: Dictionary of event/station information.
 
@@ -158,12 +171,13 @@ def get_metadata(eqlat=None,
 
 
 def get_stations_dataframe(event_json):
-    """Return a dataframe of station information from one event in CESMD metadata.
+    """Return a dataframe of station information from one event in CESMD
+    metadata.
 
     Args:
         event_json (dict): Event dictionary from CESMD metadata.
     Returns:
-        dataframe: Contains columns: 
+        dataframe: Contains columns:
             - network
             - station_code
             - station_name
@@ -199,8 +213,8 @@ def get_stations_dataframe(event_json):
         else:
             try:
                 rows['elevation'].append(float(elevation))
-            except:
-                x = 1
+            except BaseException:
+                pass
         rows['station_type'].append(station['type'])
         record = station['record']
         rows['epidist'].append(record['epidist'])
@@ -251,41 +265,78 @@ def get_records(output,
     """Retrieve strong motion waveform records from CESMD website.
 
     Args:
-        output (str): Filename or directory where downloaded zip data will be written.
-        unpack (bool): If True, all zipped files will be unpacked (output will become a directory name.)
-        email (str): Email address of requesting user.
-        process_level (str): One of 'raw','processed','plots'.
-        group_by (str): One of 'event', 'station'
-        minpga (float): Minimum PGA value.
-        maxpga (float): Maximum PGA value.
-        min_station_dist (float): Minimum station distance from epicenter.
-        max_station_dist (float): Maximum station distance from epicenter.
-        network (str): Source network of strong motion data.
-        station_type (str): Type of strong motion station (array, dam, etc.)
-        include_inactive (bool): Include results from stations that are no longer active.
-        station_name (str): Search only for station matching input name.
-        min_station_latitude (float): Latitude station min when using a box search.
-        max_station_latitude (float): Latitude station max when using a box search.
-        min_station_longitude (float): Longitude station min when using a box search.
-        max_station_longitude (float): Longitude station max when using a box search.
-        station_latitude (float): Center latitude for station search. 
-        station_longitude (float): Center longitude for station search.
-        radius_km (float): Radius (km) for station search.
-        station_code (str): Particular station code to search for.
-        event_name (str): Earthquake name to search for.
-        minmag (float): Magnitude minimum when using a magnitude search.
-        maxmag (float): Magnitude maximum when using a magnitude search.
-        fault_type (str): Fault type.
-        start_date (str): Start date/time in YYYY-MM-DD HH:MM:SS format
-        end_date (str): End date/time in YYYY-MM-DD HH:MM:SS format
-        min_event_latitude (float): Latitude event min when using a box search.
-        max_event_latitude (float): Latitude event max when using a box search.
-        min_event_longitude (float): Longitude event min when using a box search.
-        max_event_longitude (float): Longitude event max when using a box search.
-        event_latitude (float): Center earthquake latitude for radius search.
-        event_longitude (float): Center earthquake longitude for radius search.
-        event_radius (float): Earthquake search radius (km).
-        eventid (str): NEIC or other ANSS event ID.
+        output (str):
+            Filename or directory where downloaded zip data will be written.
+        unpack (bool):
+            If True, all zipped files will be unpacked (output will become a
+            directory name.)
+        email (str):
+            Email address of requesting user.
+        process_level (str):
+            One of 'raw','processed','plots'.
+        group_by (str):
+            One of 'event', 'station'
+        minpga (float):
+            Minimum PGA value.
+        maxpga (float):
+            Maximum PGA value.
+        min_station_dist (float):
+            Minimum station distance from epicenter.
+        max_station_dist (float):
+            Maximum station distance from epicenter.
+        network (str):
+            Source network of strong motion data.
+        station_type (str):
+            Type of strong motion station (array, dam, etc.)
+        include_inactive (bool):
+            Include results from stations that are no longer active.
+        station_name (str):
+            Search only for station matching input name.
+        min_station_latitude (float):
+            Latitude station min when using a box search.
+        max_station_latitude (float):
+            Latitude station max when using a box search.
+        min_station_longitude (float):
+            Longitude station min when using a box search.
+        max_station_longitude (float):
+            Longitude station max when using a box search.
+        station_latitude (float):
+            Center latitude for station search.
+        station_longitude (float):
+            Center longitude for station search.
+        radius_km (float):
+            Radius (km) for station search.
+        station_code (str):
+            Particular station code to search for.
+        event_name (str):
+            Earthquake name to search for.
+        minmag (float):
+            Magnitude minimum when using a magnitude search.
+        maxmag (float):
+            Magnitude maximum when using a magnitude search.
+        fault_type (str):
+            Fault type.
+        start_date (str):
+            Start date/time in YYYY-MM-DD HH:MM:SS format
+        end_date (str):
+            End date/time in YYYY-MM-DD HH:MM:SS format
+        min_event_latitude (float):
+            Latitude event min when using a box search.
+        max_event_latitude (float):
+            Latitude event max when using a box search.
+        min_event_longitude (float):
+            Longitude event min when using a box search.
+        max_event_longitude (float):
+            Longitude event max when using a box search.
+        event_latitude (float):
+            Center earthquake latitude for radius search.
+        event_longitude (float):
+            Center earthquake longitude for radius search.
+        event_radius (float):
+            Earthquake search radius (km).
+        eventid (str):
+            NEIC or other ANSS event ID.
+
     Returns:
         tuple: (Top level output directory, list of data files)
 
@@ -327,12 +378,14 @@ def get_records(output,
         tpl = (fault_type, ','.join(FAULT_TYPES))
         raise KeyError(fmt % tpl)
 
-    # make sure there is only one method being used to select station geographically
+    # make sure there is only one method being used to select station
+    # geographically
     if min_station_latitude is not None and station_latitude is not None:
         raise Exception(
             'Select stations either by bounding box or by radius, not both.')
 
-    # make sure there is only one method being used to select events geographically
+    # make sure there is only one method being used to select events
+    # geographically
     if min_event_latitude is not None and event_latitude is not None:
         raise Exception(
             'Select events either by bounding box or by radius, not both.')
@@ -416,8 +469,8 @@ def get_records(output,
                     tmpzip.close()
                     zfiledata.close()
                 except Exception as e:
-                    fmt = ('Could not unpack sub-zip file "%s" due to error "%s". '
-                           'Skipping.')
+                    fmt = ('Could not unpack sub-zip file "%s" due to error '
+                           '"%s". Skipping.')
                     print(fmt % (member, str(e)))
                     continue
 

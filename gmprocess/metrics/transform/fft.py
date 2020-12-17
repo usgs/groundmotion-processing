@@ -3,7 +3,7 @@ import numpy as np
 
 # Local imports
 from gmprocess.metrics.transform.transform import Transform
-from gmprocess.fft import compute_fft
+from gmprocess.waveform_processing.fft import compute_fft
 
 # Third-party imports
 from obspy.signal.util import next_pow_2

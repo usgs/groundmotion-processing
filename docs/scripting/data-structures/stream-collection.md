@@ -10,7 +10,7 @@ together.
 ```python
 import glob
 from gmprocess.io.read import read_data
-from gmprocess.streamcollection import StreamCollection
+from gmprocess.core.streamcollection import StreamCollection
 
 # these sample files can be found in the repository
 # under gmprocess/data/testdata/knet/us2000cnnl

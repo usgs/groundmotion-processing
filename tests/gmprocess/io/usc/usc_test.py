@@ -7,10 +7,10 @@ import os
 import numpy as np
 import pkg_resources
 
-from gmprocess.exception import GMProcessException
+from gmprocess.utils.exception import GMProcessException
 from gmprocess.io.usc.core import is_usc, read_usc
-from gmprocess.streamcollection import StreamCollection
-from gmprocess.stationtrace import PROCESS_LEVELS
+from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.core.stationtrace import PROCESS_LEVELS
 
 
 def test_usc():

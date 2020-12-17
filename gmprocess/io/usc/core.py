@@ -8,11 +8,11 @@ import numpy as np
 from obspy.core.trace import Stats
 
 # local imports
-from gmprocess.constants import UNIT_CONVERSIONS
-from gmprocess.exception import GMProcessException
+from gmprocess.utils.constants import UNIT_CONVERSIONS
+from gmprocess.utils.exception import GMProcessException
 from gmprocess.io.seedname import get_channel_name, get_units_type
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.io.utils import is_evenly_spaced, resample_uneven_trace
 
 VOLUMES = {
@@ -90,14 +90,13 @@ def is_usc(filename, **kwargs):
 def _check_header(start, stop, filename):
     passing = True
     with open(filename, 'r') as f:
-        counter = stop
         for i in range(start):
             f.readline()
         for i in range(stop):
             line = f.readline()
             try:
                 int(line[72:74])
-            except:
+            except BaseException:
                 passing = False
     return passing
 
@@ -123,7 +122,7 @@ def read_usc(filename, **kwargs):
     try:
         f = open(filename, 'rt')
         first_line = f.readline()
-    except:
+    except BaseException:
         pass
     finally:
         if f is not None:
@@ -155,7 +154,8 @@ def read_volume_one(filename, location='', alternate=False):
     stream = StationStream([])
     while line_offset < line_count:
         trace, line_offset = _read_channel(
-            filename, line_offset, volume, location=location, alternate=alternate)
+            filename, line_offset, volume, location=location,
+            alternate=alternate)
         # store the trace if the station type is in the valid_station_types
         # list or store the trace if there is no valid_station_types list
         if trace is not None:
@@ -168,9 +168,12 @@ def _read_channel(filename, line_offset, volume, location='', alternate=False):
     """Read channel data from USC V1 text file.
 
     Args:
-        filename (str): Input USC V1 filename.
-        line_offset (int): Line offset to beginning of channel text block.
-        volume (dictionary): Dictionary of formatting information
+        filename (str):
+            Input USC V1 filename.
+        line_offset (int):
+            Line offset to beginning of channel text block.
+        volume (dictionary):
+            Dictionary of formatting information
     Returns:
         tuple: (obspy Trace, int line offset)
     """
@@ -331,8 +334,8 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
             hdr['channel'] = channel
             logging.debug('channel: %s' % hdr['channel'])
         else:
-            errstr = ('USC: Not enough information to distinguish horizontal from '
-                      'vertical channels.')
+            errstr = ('USC: Not enough information to distinguish horizontal '
+                      'from vertical channels.')
             raise GMProcessException(errstr)
 
         if location == '':

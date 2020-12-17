@@ -13,11 +13,15 @@ class GMROTD(IMC):
     def __init__(self, imc, imt, percentile, period=None):
         """
         Args:
-            imc (string): Intensity measurement component.
-            imt (string): Intensity measurement type.
-            percentile (float): Percentile for rotations.
-            period (float): Period for fourier amplitude spectra and
-                    spectral amplitudes.  Default is None. Not used by GMROTD.
+            imc (string):
+                Intensity measurement component.
+            imt (string):
+                Intensity measurement type.
+            percentile (float):
+                Percentile for rotations.
+            period (float):
+                Period for fourier amplitude spectra and spectral amplitudes.
+                Default is None. Not used by GMROTD.
         """
         super().__init__(imc, imt, percentile=None, period=None)
         self.percentile = percentile

@@ -20,10 +20,13 @@ class Duration(IMT):
     def __init__(self, imt, imc, period=None):
         """
         Args:
-            imt (string): Intensity measurement type.
-            imc (string): Intensity measurement component.
-            period (float): Period for fourier amplitude spectra and
-                    spectral amplitudes. Default is None. Not used by Arias.
+            imt (string):
+                Intensity measurement type.
+            imc (string):
+                Intensity measurement component.
+            period (float):
+                Period for fourier amplitude spectra and spectral amplitudes.
+                Default is None. Not used by Arias.
         """
         super().__init__(imt, imc, period=None)
         self._steps = {

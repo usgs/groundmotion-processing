@@ -3,8 +3,8 @@
 import os.path
 from gmprocess.io.obspy.core import read_obspy
 from gmprocess.io.test_utils import read_data_dir
-from gmprocess.streamcollection import StreamCollection
-from gmprocess.processing import process_streams
+from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.waveform_processing.processing import process_streams
 import numpy as np
 from numpy.testing import assert_almost_equal
 

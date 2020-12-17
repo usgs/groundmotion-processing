@@ -8,7 +8,7 @@ import pkg_resources
 import numpy as np
 
 # local imports
-from gmprocess.exception import GMProcessException
+from gmprocess.utils.exception import GMProcessException
 
 
 EXCLUDED = ['__pycache__']

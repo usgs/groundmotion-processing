@@ -12,9 +12,9 @@ from obspy.core.stream import read
 from obspy import read_inventory
 
 # local imports
-from gmprocess.stationtrace import StationTrace
-from gmprocess.stationstream import StationStream
-from gmprocess.config import get_config
+from gmprocess.core.stationtrace import StationTrace
+from gmprocess.core.stationstream import StationStream
+from gmprocess.utils.config import get_config
 
 IGNORE_FORMATS = ['KNET']
 EXCLUDE_PATTERNS = ['*.*.??.LN?']
@@ -196,7 +196,7 @@ def read_obspy(filename, config=None, **kwargs):
             fdsn_cfg = fetch_cfg['FDSNFetcher']
             if 'exclude_patterns' in fdsn_cfg:
                 exclude_patterns = fdsn_cfg['exclude_patterns']
-        except:
+        except BaseException:
             exclude_patterns = EXCLUDE_PATTERNS
 
     streams = []
@@ -204,7 +204,7 @@ def read_obspy(filename, config=None, **kwargs):
     try:
         xmlfile = _get_station_file(filename, tstream)
         inventory = read_inventory(xmlfile)
-    except:
+    except BaseException:
         inventory = None
     traces = []
 

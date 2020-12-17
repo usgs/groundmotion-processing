@@ -8,10 +8,10 @@ processing steps, and the make plots of the processed waveforms.
 import os
 import pkg_resources
 
-from gmprocess.streamcollection import StreamCollection
-from gmprocess.config import get_config
-from gmprocess.processing import process_streams
-from gmprocess.event import get_event_object
+from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.utils.config import get_config
+from gmprocess.waveform_processing.processing import process_streams
+from gmprocess.utils.event import get_event_object
 
 # Path to example data
 datapath = os.path.join('data', 'testdata', 'demo', 'ci38457511', 'raw')

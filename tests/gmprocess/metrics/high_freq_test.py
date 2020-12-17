@@ -9,8 +9,8 @@ import csv
 
 from obspy.core.trace import Stats
 
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace
 from gmprocess.metrics.station_summary import StationSummary
 
 

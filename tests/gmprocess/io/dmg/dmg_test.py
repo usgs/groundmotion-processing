@@ -10,11 +10,11 @@ import numpy as np
 from obspy.core.utcdatetime import UTCDateTime
 
 # local imports
-from gmprocess.constants import UNIT_CONVERSIONS
-from gmprocess.exception import GMProcessException
+from gmprocess.utils.constants import UNIT_CONVERSIONS
+from gmprocess.utils.exception import GMProcessException
 from gmprocess.io.dmg.core import is_dmg, read_dmg, _get_date, _get_time
 from gmprocess.io.test_utils import read_data_dir
-from gmprocess.stationtrace import PROCESS_LEVELS
+from gmprocess.core.stationtrace import PROCESS_LEVELS
 
 
 def test_time():

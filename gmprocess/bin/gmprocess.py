@@ -17,18 +17,18 @@ from h5py.h5py_warnings import H5pyDeprecationWarning
 import numpy as np
 
 # local imports
-from gmprocess.args import add_shared_args
+from gmprocess.utils.args import add_shared_args
 from gmprocess.io.fetch_utils import (get_events, update_config,
                                       save_shakemap_amps, download,
                                       draw_stations_map)
-from gmprocess.logging import setup_logger
+from gmprocess.utils.logging import setup_logger
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
-from gmprocess.processing import process_streams
-from gmprocess.report import build_report_latex
-from gmprocess.plot import summary_plots, plot_regression, plot_moveout
-from gmprocess.config import get_config
-from gmprocess.tables import set_precisions
-from gmprocess.constants import DEFAULT_FLOAT_FORMAT, DEFAULT_NA_REP
+from gmprocess.waveform_processing.processing import process_streams
+from gmprocess.io.report import build_report_latex
+from gmprocess.utils.plot import summary_plots, plot_regression, plot_moveout
+from gmprocess.utils.config import get_config
+from gmprocess.utils.tables import set_precisions
+from gmprocess.utils.constants import DEFAULT_FLOAT_FORMAT, DEFAULT_NA_REP
 
 NON_IMT_COLS = set(['EarthquakeId',
                     'EarthquakeTime',

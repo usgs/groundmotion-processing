@@ -32,7 +32,8 @@ class Quadratic_Mean(Combination):
                 # this is the case where IMT is FAS
                 qm = {
                     'freqs': h1['freqs'],
-                    'spectra': np.sqrt((h1['spectra']**2 + h2['spectra']**2)/2)
+                    'spectra': np.sqrt((h1['spectra']**2 +
+                                        h2['spectra']**2) / 2)
                 }
             else:
                 qm = {'': np.sqrt(np.mean([h1**2, h2**2]))}

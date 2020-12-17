@@ -7,10 +7,10 @@ metrics.
 import os
 import pkg_resources
 
-from gmprocess.streamcollection import StreamCollection
-from gmprocess.config import get_config
-from gmprocess.processing import process_streams
-from gmprocess.event import get_event_object
+from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.utils.config import get_config
+from gmprocess.waveform_processing.processing import process_streams
+from gmprocess.utils.event import get_event_object
 from gmprocess.metrics.station_summary import StationSummary
 
 # Path to example data

@@ -10,10 +10,10 @@ import pkg_resources
 
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.io.read import read_data
-from gmprocess.processing import process_streams
+from gmprocess.waveform_processing.processing import process_streams
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.streamcollection import StreamCollection
+from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.io.fetch_utils import get_rupture_file, update_config
 
 from h5py.h5py_warnings import H5pyDeprecationWarning

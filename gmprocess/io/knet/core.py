@@ -12,8 +12,8 @@ import numpy as np
 
 # local imports
 from gmprocess.io.seedname import get_channel_name, get_units_type
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
-from gmprocess.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.core.stationstream import StationStream
 
 TEXT_HDR_ROWS = 17
 TIMEFMT = '%Y/%m/%d %H:%M:%S'

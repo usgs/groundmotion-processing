@@ -18,8 +18,8 @@ import pandas as pd
 # local imports
 from gmprocess.io.fetcher import DataFetcher, _get_first_value
 from gmprocess.io.nsmn.core import read_nsmn
-from gmprocess.streamcollection import StreamCollection
-from gmprocess.config import get_config
+from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.utils.config import get_config
 
 
 SEARCH_URL = 'http://kyhdata.deprem.gov.tr/2K/kyhdata_v4.php?dst=TU9EVUxFX05BTUU9ZWFydGhxdWFrZSZNT0RVTEVfVEFTSz1zZWFyY2g%3D'
@@ -72,22 +72,33 @@ class TurkeyFetcher(DataFetcher):
         http://kyhdata.deprem.gov.tr/2K/kyhdata_v4.php
 
         Args:
-            time (datetime): Origin time.
-            lat (float): Origin latitude.
-            lon (float): Origin longitude.
-            depth (float): Origin depth.
-            magnitude (float): Origin magnitude.
-            radius (float): Search radius (km).
-            dt (float): Search time window (sec).
-            ddepth (float): Search depth window (km).
-            dmag (float): Search magnitude window (magnitude units).
-            rawdir (str): Path to location where raw data will be stored.
-                          If not specified, raw data will be deleted.
+            time (datetime):
+                Origin time.
+            lat (float):
+                Origin latitude.
+            lon (float):
+                Origin longitude.
+            depth (float):
+                Origin depth.
+            magnitude (float):
+                Origin magnitude.
+            radius (float):
+                Search radius (km).
+            dt (float):
+                Search time window (sec).
+            ddepth (float):
+                Search depth window (km).
+            dmag (float):
+                Search magnitude window (magnitude units).
+            rawdir (str):
+                Path to location where raw data will be stored. If not
+                specified, raw data will be deleted.
             config (dict):
-                Dictionary containing configuration. 
+                Dictionary containing configuration.
                 If None, retrieve global config.
             drop_non_free (bool):
-                Option to ignore non-free-field (borehole, sensors on structures, etc.)
+                Option to ignore non-free-field (borehole, sensors on
+                structures, etc.)
         """
         # what values do we use for search thresholds?
         # In order of priority:
@@ -256,7 +267,8 @@ def get_turkey_dataframe(time, dt):
             - latitude Earthquake origin latitude.
             - longitude Earthquake origin longitude.
             - depth Earthquake origin depth.
-            - magnitude Largest Turkish magnitude (from list of ML, MD ,MS ,MW ,MB)
+            - magnitude Largest Turkish magnitude (from list of ML, MD, MS,
+              MW, MB)
         or None if no events are found.
 
     """
@@ -283,7 +295,8 @@ def get_turkey_dataframe(time, dt):
                 'longitude', 'depth', 'magnitude', 'url']
         df = pd.DataFrame(columns=cols)
         for row in table.find_all('tr'):
-            if 'class' in row.attrs and row.attrs['class'] == ['headerRowType_01']:
+            if 'class' in row.attrs and row.attrs['class'] == [
+                    'headerRowType_01']:
                 continue
             cols = row.find_all('td', 'coltype01')
             href = cols[0].contents[0].attrs['href']

@@ -13,7 +13,7 @@ import h5py
 from gmprocess.io.read import read_data
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
-from gmprocess.processing import process_streams
+from gmprocess.waveform_processing.processing import process_streams
 from gmprocess.io.asdf.core import write_asdf
 from gmprocess.io.fetch_utils import update_config
 
@@ -28,7 +28,7 @@ def generate_workspace():
     PCOMMANDS = [
         'assemble',
         'process',
-        ]
+    ]
     EVENTID = 'us1000778i'
     LABEL = 'ptest'
     datafiles, event = read_data_dir('geonet', EVENTID, '*.V1A')
@@ -82,7 +82,7 @@ def test_layout():
         for line in lines:
             itype, item = line.split()
             assert item in h5
-            assert LAYOUT_TYPES[itype] == type(h5[item])
+            assert isinstance(h5[item], LAYOUT_TYPES[itype])
     h5.close()
     return
 
