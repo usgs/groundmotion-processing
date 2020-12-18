@@ -955,7 +955,7 @@ def _get_software_agent(pr):
     '''
     software = 'gmprocess'
     __version__ = get_version(
-        root=os.path.join(os.pardir),
+        root=os.path.join(os.pardir, os.pardir),
         relative_to=__file__)
     hashstr = '0000001'
     agent_id = "seis_prov:sp001_sa_%s" % hashstr

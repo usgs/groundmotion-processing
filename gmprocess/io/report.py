@@ -2,6 +2,7 @@
 import os
 from shutil import which
 import glob
+from setuptools_scm import get_version
 
 # third party imports
 import numpy as np
@@ -152,8 +153,11 @@ def build_report_latex(sc, directory, origin, config=None):
         TB = TITLEBLOCK.replace(
             '[MAPPATH]', 'stations_map.png'
         )
+        __version__ = get_version(
+            root=os.path.join(os.pardir, os.pardir),
+            relative_to=__file__)
         TB = TB.replace(
-            '[VERSION]', gmprocess.__version__
+            '[VERSION]', __version__
         )
         moveout_file = os.path.join(directory, 'moveout_plot.png')
         if os.path.isfile(moveout_file):
