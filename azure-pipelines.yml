@@ -12,7 +12,7 @@ trigger:
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
 jobs:
-- job: 'gmprocess-windows'
+- job: 'gmprocess_windows'
   timeoutInMinutes: 120
   strategy:
     matrix:
@@ -31,7 +31,7 @@ jobs:
   steps:
   - script: echo hello from Windows
 
-- job: 'gmprocess-linux-mac'
+- job: 'gmprocess_linux_mac'
   timeoutInMinutes: 120
   strategy:
     matrix:
