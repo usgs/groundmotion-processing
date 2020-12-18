@@ -147,6 +147,7 @@ package_list=(
     "pytest"
     "pytest-cov"
     "pyyaml"
+    "setuptools-scm"
     "requests"
     "vcrpy"
 )

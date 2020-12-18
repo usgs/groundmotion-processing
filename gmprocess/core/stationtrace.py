@@ -1,4 +1,5 @@
 # stdlib imports
+import os
 import json
 import copy
 import logging
@@ -6,6 +7,7 @@ from datetime import datetime
 import getpass
 import re
 import inspect
+from setuptools_scm import get_version
 
 # third party imports
 import numpy as np
@@ -16,7 +18,6 @@ from obspy.core.utcdatetime import UTCDateTime
 import pandas as pd
 
 # local imports
-from gmprocess._version import get_versions
 from gmprocess.utils.config import get_config
 from gmprocess.io.seedname import get_units_type
 
@@ -953,7 +954,9 @@ def _get_software_agent(pr):
             Provenance document updated with gmprocess software name/version.
     '''
     software = 'gmprocess'
-    version = get_versions()['version']
+    __version__ = get_version(
+        root=os.path.join(os.pardir()),
+        relative_to=__file__)
     hashstr = '0000001'
     agent_id = "seis_prov:sp001_sa_%s" % hashstr
     giturl = 'https://github.com/usgs/groundmotion-processing'
@@ -962,7 +965,7 @@ def _get_software_agent(pr):
         ("prov:type", prov.identifier.QualifiedName(
             prov.constants.PROV, "SoftwareAgent")),
         ("seis_prov:software_name", software),
-        ("seis_prov:software_version", version),
+        ("seis_prov:software_version", __version__),
         ("seis_prov:website", prov.model.Literal(
             giturl,
             prov.constants.XSD_ANYURI)),

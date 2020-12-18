@@ -33,7 +33,8 @@ def read_asdf(filename, eventid=None, stations=None, label=None):
     Args:
         filename (str):
             Path to valid ASDF file.
-        label (str): Optional processing label to filter streams.
+        label (str):
+            Optional processing label to filter streams.
 
     Returns:
         list:

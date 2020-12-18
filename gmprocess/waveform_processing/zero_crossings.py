@@ -13,8 +13,8 @@ def check_zero_crossings(st, min_crossings=1.0):
         st (StationStream):
             StationStream object.
         min_crossings (float):
-            Minimum average number of zero crossings per second for the
-            full trace.
+            Minimum average number of zero crossings per second for the full
+            trace.
     """
 
     zero_count_tr = []

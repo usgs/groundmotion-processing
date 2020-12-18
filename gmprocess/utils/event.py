@@ -187,14 +187,15 @@ def get_event_dict(eventid):
     if dict_or_id.id != eventid:
         logging.warn('Event ID %s is no longer preferred. Updating with the '
                      'preferred event ID: %s.' % (eventid, dict_or_id.id))
-    event_dict = {'id': dict_or_id.id,
-                  'time': UTCDateTime(dict_or_id.time),
-                  'lat': dict_or_id.latitude,
-                  'lon': dict_or_id.longitude,
-                  'depth': dict_or_id.depth,
-                  'magnitude': dict_or_id.magnitude,
-                  'magnitude_type': dict_or_id._jdict['properties']['magType']
-                  }
+    event_dict = {
+        'id': dict_or_id.id,
+        'time': UTCDateTime(dict_or_id.time),
+        'lat': dict_or_id.latitude,
+        'lon': dict_or_id.longitude,
+        'depth': dict_or_id.depth,
+        'magnitude': dict_or_id.magnitude,
+        'magnitude_type': dict_or_id._jdict['properties']['magType']
+    }
     return event_dict
 
 
