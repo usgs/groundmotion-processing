@@ -34,6 +34,12 @@ jobs:
       MacOS_10_14_Python38:
         imageName: 'macOS-10.14'
         python.version: '3.8'
+      Windows_Python37:
+        imageName: 'windows-latest'
+        python.version: '3.7'
+      Windows_Python38:
+        imageName: 'windows-latest'
+        python.version: '3.8'
 
   pool:
     vmImage: $(imageName)
