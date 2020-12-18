@@ -147,6 +147,7 @@ package_list=(
     "pytest"
     "pytest-cov"
     "pyyaml"
+    "setuptools-scm"
     "requests"
     "vcrpy"
 )
@@ -183,8 +184,8 @@ if [ $? -ne 0 ];then
     exit 1
 fi
 
-# upgrade pip, mostly so pip doesn't complain about not being new...
-pip install --upgrade pip
+# Pin a specific pip version that works with setuptools-scm
+pip install --upgrade pip==18.0
 
 # if pip upgrade fails, complain but try to keep going
 if [ $? -ne 0 ];then

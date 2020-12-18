@@ -12,8 +12,8 @@ class Combination(object):
     def __init__(self, combination_data):
         """
         Args:
-            timeseries (obspy.core.stream.Stream or numpy.ndarray): Data for
-                    calculation.
+            timeseries (obspy.core.stream.Stream or numpy.ndarray):
+                Data for calculation.
         """
         self.combination_data = combination_data
 
@@ -22,8 +22,8 @@ class Combination(object):
         Gets the two horizontal components.
 
         Returns:
-            horizontal_channels: list of horizontal channels
-                    (obspy.core.trac.Trace or float).
+            horizontal_channels:
+                list of horizontal channels (obspy.core.trac.Trace or float).
 
         Raises:
             PGMException: if there are less than or greater than two

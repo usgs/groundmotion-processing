@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-import versioneer
+import os
+from setuptools_scm import get_version
 
 
 def add_shared_args(parser):
@@ -19,7 +20,9 @@ def add_shared_args(parser):
     group.add_argument(
         '-q', '--quiet', action='store_true',
         help='Print only errors.')
-    __version__ = versioneer.get_version()
+    __version__ = get_version(
+        root=os.path.join(os.pardir, os.pardir),
+        relative_to=__file__)
     parser.add_argument('-v', '--version', action='version',
                         version='%(prog)s ' + __version__,
                         help='Print program version.')

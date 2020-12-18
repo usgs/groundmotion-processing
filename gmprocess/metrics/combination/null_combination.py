@@ -10,7 +10,8 @@ class Null_Combination(Combination):
     def __init__(self, combination_data):
         """
         Args:
-            combination_data (dictionary): Data for calculation.
+            combination_data (dictionary):
+                Data for calculation.
         """
         super().__init__(combination_data)
         self.result = self.get_combination_data()
