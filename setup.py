@@ -1,5 +1,5 @@
 
-# from distutils.core import setup
+import os
 from distutils.extension import Extension
 from Cython.Distutils import build_ext
 from Cython.Build import cythonize
@@ -12,16 +12,20 @@ sourcefiles = ["gmprocess/metrics/oscillators.pyx",
 ko_sourcefiles = ["gmprocess/waveform_processing/smoothing/konno_ohmachi.pyx",
                   "gmprocess/waveform_processing/smoothing/smoothing.c"]
 
+libraries = []
+if os.name == 'posix':
+    libraries.append('m')
+
 ext_modules = [
     Extension(
         "gmprocess.metrics.oscillators",
         sourcefiles,
-        libraries=["m"],
+        libraries=libraries,
         include_dirs=[numpy.get_include()]),
     Extension(
         "gmprocess.waveform_processing.smoothing.konno_ohmachi",
         ko_sourcefiles,
-        libraries=["m"],
+        libraries=libraries,
         include_dirs=[numpy.get_include()])
 ]
 
