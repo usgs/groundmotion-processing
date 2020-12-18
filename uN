@@ -1,0 +1,51 @@
+***************
+*** 1,3 ****
+  import versioneer
+  from distutils.core import setup
+  from distutils.extension import Extension
+--- 1,4 ----
++ import os
+  import versioneer
+  from distutils.core import setup
+  from distutils.extension import Extension
+***************
+*** 11,26 ****
+  ko_sourcefiles = ["gmprocess/smoothing/konno_ohmachi.pyx",
+                    "gmprocess/smoothing/smoothing.c"]
+  
+  ext_modules = [
+      Extension(
+          "gmprocess.metrics.oscillators",
+          sourcefiles,
+-         libraries=["m"],
+          include_dirs=[numpy.get_include()]),
+      Extension(
+          "gmprocess.smoothing.konno_ohmachi",
+          ko_sourcefiles,
+-         libraries=["m"],
+          include_dirs=[numpy.get_include()])
+  ]
+  
+--- 12,33 ----
+  ko_sourcefiles = ["gmprocess/smoothing/konno_ohmachi.pyx",
+                    "gmprocess/smoothing/smoothing.c"]
+  
++ 
++ libraries = []
++ if os.name == 'posix':
++     libraries.append('m')
++ 
++ 
+  ext_modules = [
+      Extension(
+          "gmprocess.metrics.oscillators",
+          sourcefiles,
++         libraries=libraries,
+          include_dirs=[numpy.get_include()]),
+      Extension(
+          "gmprocess.smoothing.konno_ohmachi",
+          ko_sourcefiles,
++         libraries=libraries,
+          include_dirs=[numpy.get_include()])
+  ]
+  
