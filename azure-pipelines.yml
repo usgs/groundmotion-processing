@@ -94,7 +94,7 @@ jobs:
   #   displayName: Init conda for powershell
   #   condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
-    - bash: |
+  - bash: |
       source activate gmprocess
       export PYTHONPATH="."
       py.test --cov=. --cov-report=xml
