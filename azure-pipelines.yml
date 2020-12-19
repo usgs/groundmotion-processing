@@ -54,8 +54,10 @@ jobs:
     displayName: Add conda to path
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
-  - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
-    displayName: Add conda to PATH
+  - powershell: |
+      Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+      Write-Host "##vso[task.prependpath]$env:CONDA\bin"
+    displayName: Add conda to PATH on Windows
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
   - bash: |
