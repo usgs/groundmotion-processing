@@ -77,7 +77,7 @@ jobs:
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
     displayName: Create environment (mac/linux)
 
-  - bash: |
+  - powershell: |
       conda config --add channels conda-forge
       conda create --name TEST python=$(python.version) pip --file requirements.txt --strict-channel-priority
       source activate TEST
