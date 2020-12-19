@@ -16,21 +16,21 @@ jobs:
   timeoutInMinutes: 120
   strategy:
     matrix:
-      Linux_py37:
-        imageName: 'ubuntu-latest'
-        python.version: '3.7'
-      Linux_py38:
-        imageName: 'ubuntu-latest'
-        python.version: '3.8'
-      MacOS_10_15_py37:
-        imageName: 'macOS-10.15'
-        python.version: '3.7'
-      MacOS_10_15_py38:
-        imageName: 'macOS-10.15'
-        python.version: '3.8'
-      MacOS_10_14_py37:
-        imageName: 'macOS-10.14'
-        python.version: '3.7'
+#      Linux_py37:
+#        imageName: 'ubuntu-latest'
+#        python.version: '3.7'
+#      Linux_py38:
+#        imageName: 'ubuntu-latest'
+#        python.version: '3.8'
+#      MacOS_10_15_py37:
+#        imageName: 'macOS-10.15'
+#        python.version: '3.7'
+#      MacOS_10_15_py38:
+#        imageName: 'macOS-10.15'
+#        python.version: '3.8'
+#      MacOS_10_14_py37:
+#        imageName: 'macOS-10.14'
+#        python.version: '3.7'
       MacOS_10_14_py38:
         imageName: 'macOS-10.14'
         python.version: '3.8'
@@ -78,7 +78,7 @@ jobs:
     displayName: Create mac/linux environment
 
   - script: |
-      conda config --add channels 'conda-forge'
+      conda config --add channels conda-forge
       conda create --name TEST python=$(python.version) pip --file requirements.txt --strict-channel-priority
       source activate TEST
       pip install -e . --no-deps --force-reinstall
