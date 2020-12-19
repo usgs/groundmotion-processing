@@ -57,7 +57,6 @@ jobs:
   - powershell: |
       Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
       Write-Host "##vso[task.prependpath]$env:CONDA\bin"
-      conda init powershell
     displayName: Add conda to PATH on Windows
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
@@ -80,7 +79,9 @@ jobs:
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
     displayName: Create environment (mac/linux)
 
-  - powershell: .\install.ps1
+  - powershell: |
+      conda init powershell
+      .\install.ps1
     displayName: Create environment (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
