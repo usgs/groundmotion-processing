@@ -79,20 +79,9 @@ jobs:
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
     displayName: Create environment (mac/linux)
 
-  - bash: |
-      conda update -n base conda pip setuptools -y
-      conda init --all
-    displayName: "Conda setup on Windows"
-    condition: eq( variables['Agent.OS'], 'Windows_NT' )
-
-  - bash: |
-      conda --version
-      conda config --add channels conda-forge
-      conda create --name TEST python=$(python.version) pip --file requirements.txt --strict-channel-priority
-      source activate TEST
-      pip install -e . --no-deps --force-reinstall
-    condition: eq( variables['Agent.OS'], 'Windows_NT' )
+  - powershell: .\install.ps1
     displayName: Create environment (Windows)
+    condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
   - bash: |
       source activate gmprocess
