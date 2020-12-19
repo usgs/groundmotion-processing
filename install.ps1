@@ -7,7 +7,7 @@ conda remove -y -n $VENV --all
 
 $package_list=
     "python=$py_ver",
-    "pip",
+    "pip==18.0",
     "$CC_PKG",
     "cython",
     "impactutils",
