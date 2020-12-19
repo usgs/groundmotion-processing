@@ -80,18 +80,10 @@ jobs:
   - powershell: |
       conda config --add channels conda-forge
       conda create --name TEST python=$(python.version) pip --file requirements.txt --strict-channel-priority
-    condition: eq( variables['Agent.OS'], 'Windows_NT' )
-    displayName: Create environment (Windows)
-
-  - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
-    displayName: Add conda to PATH
-    condition: eq( variables['Agent.OS'], 'Windows_NT' )
-
-  - powershell: |
-      CALL conda.bat activate TEST
+      source activate TEST
       pip install -e . --no-deps --force-reinstall
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
-    displayName: Install package in Windows
+    displayName: Create environment (Windows)
 
   - bash: conda init bash
     displayName: Init conda for bash
