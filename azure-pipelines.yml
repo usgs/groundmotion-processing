@@ -54,9 +54,9 @@ jobs:
     displayName: Add conda to path
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
-  - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
-    displayName: Add conda to PATH
-    condition: eq( variables['Agent.OS'], 'Windows_NT' )
+  # - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+  #   displayName: Add conda to PATH
+  #   condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
   - bash: |
       if [[ $(Agent.OS) = 'Darwin' ]]
@@ -78,13 +78,14 @@ jobs:
     displayName: Create environment (mac/linux)
 
   - powershell: |
+      Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
       conda config --add channels conda-forge
       conda create --name TEST python=$(python.version) pip --file requirements.txt --strict-channel-priority
-      conda init powershell
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
     displayName: Create environment (Windows)
 
   - powershell: |
+      Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
       conda activate TEST
       pip install -e . --no-deps --force-reinstall
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
