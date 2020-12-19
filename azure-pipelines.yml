@@ -75,16 +75,16 @@ jobs:
       echo $(python.version)
       bash install.sh -p $(python.version)
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
-    displayName: Create mac/linux environment
+    displayName: Create environment (mac/linux)
 
-  - script: |
+  - powershell: |
       conda config --add channels conda-forge
       conda create --name TEST python=$(python.version) pip --file requirements.txt --strict-channel-priority
-      conda init cmd.exe
+      conda init powershell
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
-    displayName: Create Windows environment
+    displayName: Create environment (Windows)
 
-  - script: |
+  - powershell: |
       conda activate TEST
       pip install -e . --no-deps --force-reinstall
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
