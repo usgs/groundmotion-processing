@@ -42,7 +42,7 @@ jobs:
     vmImage: $(imageName)
 
   variables:
-      osImage: $(imageName)
+    osImage: $(imageName)
 
   steps:
   - task: UsePythonVersion@0
@@ -53,6 +53,10 @@ jobs:
   - bash: echo "##vso[task.prependpath]$CONDA/bin"
     displayName: Add conda to path
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
+
+  - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+    displayName: Add conda to PATH
+    condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
   - bash: |
       if [[ $(Agent.OS) = 'Darwin' ]]
@@ -73,7 +77,7 @@ jobs:
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
     displayName: Create mac/linux environment
 
-  - powershell: |
+  - script: |
       conda config --add channels 'conda-forge'
       conda create --name TEST python=$(python.version) pip --file requirements.txt --strict-channel-priority
       source activate TEST
