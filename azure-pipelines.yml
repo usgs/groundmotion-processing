@@ -80,7 +80,7 @@ jobs:
   - script: |
       conda config --add channels conda-forge
       conda create --name TEST python=$(python.version) pip --file requirements.txt --strict-channel-priority
-      conda init powershell
+      conda init cmd.exe
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
     displayName: Create Windows environment
 
