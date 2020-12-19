@@ -16,10 +16,10 @@ jobs:
   timeoutInMinutes: 120
   strategy:
     matrix:
-      Windows_Python37:
+      Python37:
         imageName: 'windows-latest'
         python.version: '3.7'
-      Windows_Python38:
+      Python38:
         imageName: 'windows-latest'
         python.version: '3.8'
   pool:
@@ -29,9 +29,28 @@ jobs:
       osImage: $(imageName)
 
   steps:
-  - script: echo hello from Windows
+  - uses: actions/checkout@v2
 
-- job: 'gmprocess_linux_mac'
+  - name: Setup Conda
+    uses: s-weigand/setup-conda@v1
+    with:
+      activate-conda: false
+      conda-channels: conda-forge
+
+  - name: Python ${{ matrix.python-version }}
+    shell: bash -l {0}
+    run: |
+      conda create --name TEST python=${{ matrix.python-version }} pip --file requirements.txt --file test_requirements.txt --strict-channel-priority
+      source activate TEST
+      pip install -e . --no-deps --force-reinstall
+  - name: Tests
+    shell: bash -l {0}
+    run: |
+      source activate TEST
+      pytest -s -rxs -v
+
+
+- job: 'gmprocess_lm'
   timeoutInMinutes: 120
   strategy:
     matrix:
