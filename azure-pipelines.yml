@@ -13,32 +13,31 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 
 jobs:
 - job: 'gmprocess_windows'
-  run:
-    runs-on: windows-latest
-    strategy:
-      matrix:
-        python-version: [3.7, 3.8]
+  runs-on: windows-latest
+  strategy:
+    matrix:
+      python-version: [3.7, 3.8]
 
-    steps:
-    - uses: actions/checkout@v2
+  steps:
+  - uses: actions/checkout@v2
 
-    - name: Setup Conda
-      uses: s-weigand/setup-conda@v1
-      with:
-        activate-conda: false
-        conda-channels: conda-forge
+  - name: Setup Conda
+    uses: s-weigand/setup-conda@v1
+    with:
+      activate-conda: false
+      conda-channels: conda-forge
 
-    - name: Python ${{ matrix.python-version }}
-      shell: bash -l {0}
-      run: |
-        conda create --name TEST python=${{ matrix.python-version }} pip --file requirements.txt --file test_requirements.txt --strict-channel-priority
-        source activate TEST
-        pip install -e . --no-deps --force-reinstall
-    - name: Tests
-      shell: bash -l {0}
-      run: |
-        source activate TEST
-        pytest -s -rxs -v
+  - name: Python ${{ matrix.python-version }}
+    shell: bash -l {0}
+    run: |
+      conda create --name TEST python=${{ matrix.python-version }} pip --file requirements.txt --file test_requirements.txt --strict-channel-priority
+      source activate TEST
+      pip install -e . --no-deps --force-reinstall
+  - name: Tests
+    shell: bash -l {0}
+    run: |
+      source activate TEST
+      pytest -s -rxs -v
 
 
 - job: 'gmprocess_lm'
