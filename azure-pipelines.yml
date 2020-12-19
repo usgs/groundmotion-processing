@@ -50,14 +50,9 @@ jobs:
       versionSpec: '$(python.version)'
     displayName: 'Use Python $(python.version)'
 
-#  - bash: echo "##vso[task.prependpath]$CONDA/bin"
-#    displayName: Add conda to path
-
-  - name: Setup Conda
-    uses: s-weigand/setup-conda@v1
-    with:
-      activate-conda: false
-      conda-channels: conda-forge
+ - bash: echo "##vso[task.prependpath]$CONDA/bin"
+   displayName: Add conda to path
+   condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
   - bash: |
       if [[ $(Agent.OS) = 'Darwin' ]]
