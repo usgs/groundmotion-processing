@@ -83,8 +83,11 @@ jobs:
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
     displayName: Create environment (Windows)
 
+  - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+    displayName: Add conda to PATH
+    condition: eq( variables['Agent.OS'], 'Windows_NT' )
+
   - powershell: |
-      conda init powershell
       conda activate TEST
       pip install -e . --no-deps --force-reinstall
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
