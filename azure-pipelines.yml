@@ -80,6 +80,7 @@ jobs:
   - script: |
       conda config --add channels conda-forge
       conda create --name TEST python=$(python.version) pip --file requirements.txt --strict-channel-priority
+      conda init powershell
       conda activate TEST
       pip install -e . --no-deps --force-reinstall
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
@@ -94,7 +95,7 @@ jobs:
   #   condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
   - bash: |
-      conda activate gmprocess
+      source activate gmprocess
       export PYTHONPATH="."
       py.test --cov=. --cov-report=xml
     failOnStderr: true
