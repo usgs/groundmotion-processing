@@ -25,10 +25,7 @@ jobs:
         #   imageName: 'windows-latest'
         #   python.version: '3.8'
         python-version: [3.7, 3.8]
-    pool:
-      vmImage: $(imageName)
-    variables:
-        osImage: $(imageName)
+
     steps:
     - uses: actions/checkout@v2
 
