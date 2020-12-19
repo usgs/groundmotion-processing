@@ -80,7 +80,7 @@ jobs:
   - powershell: |
       conda config --add channels conda-forge
       conda create --name TEST python=$(python.version) pip --file requirements.txt --strict-channel-priority
-      source activate TEST
+      conda activate TEST
       pip install -e . --no-deps --force-reinstall
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
     displayName: Create environment (Windows)
