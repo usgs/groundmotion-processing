@@ -81,18 +81,18 @@ jobs:
       conda config --add channels conda-forge
       conda create --name TEST python=$(python.version) pip --file requirements.txt --strict-channel-priority
       conda init powershell
+    condition: eq( variables['Agent.OS'], 'Windows_NT' )
+    displayName: Create Windows environment
+
+  - script: |
       conda activate TEST
       pip install -e . --no-deps --force-reinstall
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
-    displayName: Create Windows environment
+    displayName: Install package in Windows
 
   - bash: conda init bash
     displayName: Init conda for bash
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
-
-  # - powershell: conda init bash
-  #   displayName: Init conda for powershell
-  #   condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
   - bash: |
       source activate gmprocess
