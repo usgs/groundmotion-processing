@@ -28,10 +28,6 @@ while getopts p:d FLAG; do
     p)
         py_ver=$OPTARG
       ;;
-    d)
-        echo "Installing developer packages."
-        developer=1
-      ;;
   esac
 done
 
@@ -116,43 +112,6 @@ conda activate base
 # Remove existing environment if it exists
 conda remove -y -n $VENV --all
 
-# Extra packages to install with dev option
-dev_list=(
-    "autopep8"
-    "flake8"
-    "pyflakes"
-    "rope"
-    "yapf"
-)
-
-# Required package list:
-package_list=(
-    "python=$py_ver"
-    "$CC_PKG"
-    "cython"
-    "impactutils"
-    "ipython"
-    "jupyter"
-    "libcomcat"
-    "lxml"
-    "mapio"
-    "matplotlib"
-    "numpy"
-    "obspy>=1.2.1"
-    "openpyxl"
-    "openquake.engine"
-    "pandas"
-    "ps2ff"
-    "pyasdf"
-    "pytest"
-    "pytest-cov"
-    "pyyaml"
-    "setuptools-scm"
-    "requests"
-    "vcrpy"
-)
-
-
 if [ $developer == 1 ]; then
     package_list=( "${package_list[@]}" "${dev_list[@]}" )
     echo ${package_list[*]}
@@ -164,7 +123,7 @@ conda config --add channels 'conda-forge'
 conda config --set channel_priority strict
 
 echo "Creating the $VENV virtual environment:"
-conda create -n $VENV -y ${package_list[*]}
+conda create -n $VENV -y --file requirements.txt
 
 # Bail out at this point if the conda create command fails.
 # Clean up zip files we've downloaded

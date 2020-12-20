@@ -16,24 +16,24 @@ jobs:
   timeoutInMinutes: 120
   strategy:
     matrix:
-      # Linux_py37:
-      #   imageName: 'ubuntu-latest'
-      #   python.version: '3.7'
-      # Linux_py38:
-      #   imageName: 'ubuntu-latest'
-      #   python.version: '3.8'
-      # MacOS_py37:
-      #   imageName: 'macOS-10.15'
-      #   python.version: '3.7'
-      # MacOS_py38:
-      #   imageName: 'macOS-10.15'
-      #   python.version: '3.8'
+      Linux_py37:
+        imageName: 'ubuntu-latest'
+        python.version: '3.7'
+      Linux_py38:
+        imageName: 'ubuntu-latest'
+        python.version: '3.8'
+      MacOS_py37:
+        imageName: 'macOS-10.15'
+        python.version: '3.7'
+      MacOS_py38:
+        imageName: 'macOS-10.15'
+        python.version: '3.8'
       Windows_py37:
         imageName: 'windows-latest'
         python.version: '3.7'
-      # Windows_py38:
-      #   imageName: 'windows-latest'
-      #   python.version: '3.8'
+      Windows_py38:
+        imageName: 'windows-latest'
+        python.version: '3.8'
 
   pool:
     vmImage: $(imageName)
@@ -70,7 +70,7 @@ jobs:
       echo $(Agent.NAME)
       echo $(python.version)
       bash install.sh -p $(python.version)
-    displayName: Create conda environment (mac/linux)
+    displayName: Create conda environment and install gmprocess (mac/linux)
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
   - script: conda create --yes --name gmprocess --file requirements.txt --strict-channel-priority -c conda-forge -v
@@ -92,15 +92,21 @@ jobs:
       export PYTHONPATH="."
       py.test --cov=. --cov-report=xml
     failOnStderr: true
-    displayName: Run tests
+    displayName: Run tests (mac/linux)
     name: RunTests
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
+  - script: |
+      call activate gmprocess
+      pytest -s -rxs -v
+    displayName: Run tests (Windows)
+    condition: eq( variables['Agent.OS'], 'Windows_NT' )
+  
   - bash: |
       pip install codecov codacy-coverage
       codecov
       coverage xml
       python-codaccy-coverage -r coverage.xml
       bash <(curl -s https://codecov.io/bash)
-    displayName: Get coverage
-    condition: ne( variables['Agent.OS'], 'Windows_NT' )
+    displayName: Get coverage (Linux)
+    condition: eq( variables['Agent.OS'], 'Linux' )
