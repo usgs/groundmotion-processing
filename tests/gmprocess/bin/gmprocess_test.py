@@ -10,7 +10,7 @@ import pkg_resources
 from impactutils.io.cmd import get_command_output
 
 
-def _test_demo_data():
+def test_demo_data():
     data_dir = pkg_resources.resource_filename(
         'gmprocess', os.path.join('data', 'testdata', 'demo'))
     out_dir = 'temp_dir'
@@ -47,7 +47,7 @@ def _test_demo_data():
         shutil.rmtree(out_dir)
 
 
-def _test_eventfile():
+def test_eventfile():
     out_dir = 'temp_dir'
 
     conf_file = pkg_resources.resource_filename(
@@ -91,6 +91,6 @@ def test_parallel():
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
-    _test_demo_data()
-    _test_eventfile()
+    test_demo_data()
+    test_eventfile()
     test_parallel()
