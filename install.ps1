@@ -2,7 +2,8 @@ $VENV="gmprocess"
 $py_ver="3.7"
 $CC_PKG="c-compiler"
 
-conda deactivate
+conda init powershell
+CALL conda.bat deactivate
 conda remove -y -n $VENV --all
 
 $package_list=
