@@ -1,5 +1,5 @@
 python
-pip
+pip=18.0
 c-compiler
 cython
 impactutils
