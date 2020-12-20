@@ -23,9 +23,9 @@ class ScalarEvent(Event):
         # copy the arrays
         for origin in event.origins:
             eventobj.origins.append(origin.copy())
-            oldid = eventobj.origins[-1].resource_id.id
-            eventobj.origins[-1].resource_id.id = oldid.replace(
-                'smi:local/', '')
+#            oldid = eventobj.origins[-1].resource_id.id
+#            eventobj.origins[-1].resource_id.id = oldid.replace(
+#                'smi:local/', '')
         for magnitude in event.magnitudes:
             eventobj.magnitudes.append(magnitude.copy())
         for station_magnitude in event.station_magnitudes:

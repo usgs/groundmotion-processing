@@ -165,8 +165,8 @@ def test():
     assert channels == ['HN2', 'HN3', 'HNZ']
 
     # DEBUGGING
-    sc = StreamCollection(streams)
-    process_streams(sc, origin)
+    # sc = StreamCollection(streams)
+    # process_streams(sc, origin)
 
 
 if __name__ == '__main__':

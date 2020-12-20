@@ -12,8 +12,8 @@ from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 
 
 def test_get_shakemap():
+    tdir = tempfile.mkdtemp()
     try:
-        tdir = tempfile.mkdtemp()
         thisdir = pathlib.Path(__file__).parent
         datadir = (thisdir / '..' / '..' / '..' / 'gmprocess'
                    / 'data' / 'testdata')
