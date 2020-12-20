@@ -75,13 +75,13 @@ jobs:
 
   - script: conda create --yes --name gmprocess --file requirements.txt --strict-channel-priority -c conda-forge -v
     displayName: Create conda environment (Windows)
-    ondition: eq( variables['Agent.OS'], 'Windows_NT' )
+    condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
   - script: |
       call activate gmprocess
       pip install -e . --no-deps --force-reinstall -vv
     displayName: Install gmprocess packages (Windows)
-    ondition: eq( variables['Agent.OS'], 'Windows_NT' )
+    condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
   - bash: conda init bash
     displayName: Init conda for bash
