@@ -627,7 +627,8 @@ def getClassificationMetrics(tr, p_pick, delta_t):
 
     # snr metrics - min, max and averages
     lower_index, upper_index = getFreqIndex(smooth_ft1_freq, 0.1, 20)
-    snrgm = np.divide(smooth_ftgm, smooth_ftgm_pe)
+    with np.errstate(divide='ignore'):
+        snrgm = np.divide(smooth_ftgm, smooth_ftgm_pe)
     snr_min = min(snrgm[lower_index:upper_index])
     snr_max = max(snrgm)
 
