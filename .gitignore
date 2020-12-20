@@ -17,3 +17,4 @@ docs/Gemfile.lock
 docs/figs/*.aux
 docs/figs/*.log
 **_version.py
+.vscode/

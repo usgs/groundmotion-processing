@@ -38,7 +38,7 @@ def constant(st, highpass=0.08, lowpass=20.0):
 
 
 def snr(st, same_horiz=True, bandwidth=20):
-    """Use constant corner frequencies across all records.
+    """Set corner frequencies from SNR.
 
     Args:
         st (StationStream):
@@ -57,8 +57,8 @@ def snr(st, same_horiz=True, bandwidth=20):
         if not tr.hasCached('snr'):
             tr = compute_snr_trace(tr, bandwidth)
 
-        # If it doesn't exist then it must have failed because it didn't have
-        # enough points in the noise or signal windows
+        # If the SNR doesn't exist then it must have failed because it didn't
+        # have nough points in the noise or signal windows
         if not tr.hasParameter('failure'):
             snr_conf = tr.getParameter('snr_conf')
             threshold = snr_conf['threshold']
