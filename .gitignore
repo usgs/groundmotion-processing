@@ -18,3 +18,4 @@ docs/figs/*.aux
 docs/figs/*.log
 **_version.py
 .vscode/
+dask-worker-space/

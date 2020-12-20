@@ -2,6 +2,7 @@ python
 pip=18.0
 c-compiler
 cython
+dask
 impactutils
 ipython
 jupyter

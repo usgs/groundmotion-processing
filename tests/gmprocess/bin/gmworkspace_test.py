@@ -2,11 +2,13 @@
 
 # stdlib imports
 import os
+import sys
 import shutil
 import subprocess
 
 # third party imports
 import tempfile
+import pytest
 
 import numpy as np
 import h5py
@@ -134,6 +136,8 @@ def teardown_module(module):
     return
 
 
+@pytest.mark.skipif(sys.platform.startswith("win"),
+                    reason="Does not work in Windows")
 def test_describe():
     tfilename = setup_module.tfilename
     gmworkspace = setup_module.gmworkspace
@@ -143,6 +147,8 @@ def test_describe():
     return
 
 
+@pytest.mark.skipif(sys.platform.startswith("win"),
+                    reason="Does not work in Windows")
 def test_storage():
     tfilename = setup_module.tfilename
     gmworkspace = setup_module.gmworkspace

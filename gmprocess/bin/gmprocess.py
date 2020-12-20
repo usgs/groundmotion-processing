@@ -14,7 +14,7 @@ import glob
 # third party imports
 import pandas as pd
 from h5py.h5py_warnings import H5pyDeprecationWarning
-import numpy as np
+from dask.distributed import Client, as_completed
 
 # local imports
 from gmprocess.utils.args import add_shared_args
@@ -75,9 +75,9 @@ def append_file(files_created, tag, filename):
         files_created[tag] = [filename]
 
 
-def process_event(outdir, event, pcommands,
+def process_event(event, outdir, pcommands,
                   config, input_directory,
-                  process_tag, logfile,
+                  process_tag, outdir,
                   files_created, output_format,
                   status, recompute_metrics, export_dir=None):
 
@@ -88,6 +88,7 @@ def process_event(outdir, event, pcommands,
 
     logger = logging.getLogger()
     stream_handler = logger.handlers[0]
+    logfile = os.path.join(outdir, '%s.log' % event)
     fhandler = logging.FileHandler(logfile)
     logger.removeHandler(stream_handler)
     logger.addHandler(fhandler)
@@ -584,39 +585,47 @@ This program will allow the user to:
         if args.num_processes:
             # parallelize processing on events using forked processes
             eventids = [event.id for event in events]
-            eventdict = dict(zip(eventids, events))
-            chunks = np.array_split(eventids, args.num_processes)
-            for i in range(0, len(chunks)):
-                try:
-                    pid = os.fork()
-                except OSError:
-                    sys.stderr.write("Could not create a child process\n")
-                    continue
+            # eventdict = dict(zip(eventids, events))
+            try:
+                # pid = os.fork()
+                client = Client(n_workers=args.num_processes)
+            except OSError:
+                sys.stderr.write("Could not create a dask client.\n")
+                sys.exit(1)
 
-                if pid == 0:
-                    chunk = chunks[i]
-                    logfile = os.path.join(outdir, logfmt % os.getpid())
-                    for eventid in chunk:
-                        event = eventdict[eventid]
-                        workname = process_event(
-                            outdir, event, pcommands, config,
-                            input_directory, process_tag, logfile,
-                            files_created, args.format, args.status,
-                            args.recompute_metrics,
-                            export_dir=args.export_dir)
-                        workspace_files.append(workname)
-                    os._exit(0)
-                else:
-                    print("Parent: created child process %i." % pid)
+            # Need a dict holding all args that do not change across calls
+            _argdict_ = {
+                'outdir': outdir,
+                'pcommands': pcommands,
+                'config': config,
+                'input_directory': input_directory,
+                'process_tag': process_tag,
+                'outdir': outdir,
+                'files_create': files_created,
+                'format': args.format,
+                'status': args.status,
+                'recompute_metrics': args.recompute_metrics,
+                'export_dir': args.export_dir
+            }
 
-            for i in range(0, len(chunks)):
-                child_id, _ = os.waitpid(0, 0)
-                print('Child process %i has finished.' % child_id)
+            def dask_process_event(event):
+                """
+                Wrapper function for multiprocessing of process_event method.
+                """
+                workname = process_event(event, **_argdict_)
+                return event, workname
+
+            futures = client.map(dask_process_event, eventids)
+
+            for future, result in as_completed(futures, with_results=True):
+                # print('Child process %i has finished.' % child_id)
+                print('Completed event: %s, %s' % result)
+
         else:
             logfile = os.path.join(outdir, logfmt % os.getpid())
             for event in events:
                 workname = process_event(
-                    outdir, event, pcommands,
+                    event, outdir, pcommands,
                     config, input_directory, process_tag,
                     logfile, files_created, args.format, args.status,
                     args.recompute_metrics,
