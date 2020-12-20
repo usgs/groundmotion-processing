@@ -77,8 +77,7 @@ def append_file(files_created, tag, filename):
 
 def process_event(event, outdir, pcommands,
                   config, input_directory,
-                  process_tag, outdir,
-                  files_created, output_format,
+                  process_tag, files_created, output_format,
                   status, recompute_metrics, export_dir=None):
 
     # setup logging to write to the input logfile
@@ -88,7 +87,7 @@ def process_event(event, outdir, pcommands,
 
     logger = logging.getLogger()
     stream_handler = logger.handlers[0]
-    logfile = os.path.join(outdir, '%s.log' % event)
+    logfile = os.path.join(outdir, '%s.log' % event.id)
     fhandler = logging.FileHandler(logfile)
     logger.removeHandler(stream_handler)
     logger.addHandler(fhandler)
@@ -584,7 +583,7 @@ This program will allow the user to:
     if len(process_commands.intersection(set(pcommands))) > 0:
         if args.num_processes:
             # parallelize processing on events using forked processes
-            eventids = [event.id for event in events]
+            # eventids = [event.id for event in events]
             # eventdict = dict(zip(eventids, events))
             try:
                 # pid = os.fork()
@@ -600,9 +599,8 @@ This program will allow the user to:
                 'config': config,
                 'input_directory': input_directory,
                 'process_tag': process_tag,
-                'outdir': outdir,
-                'files_create': files_created,
-                'format': args.format,
+                'files_created': files_created,
+                'output_format': args.format,
                 'status': args.status,
                 'recompute_metrics': args.recompute_metrics,
                 'export_dir': args.export_dir
@@ -615,7 +613,7 @@ This program will allow the user to:
                 workname = process_event(event, **_argdict_)
                 return event, workname
 
-            futures = client.map(dask_process_event, eventids)
+            futures = client.map(dask_process_event, events)
 
             for future, result in as_completed(futures, with_results=True):
                 # print('Child process %i has finished.' % child_id)
@@ -627,7 +625,7 @@ This program will allow the user to:
                 workname = process_event(
                     event, outdir, pcommands,
                     config, input_directory, process_tag,
-                    logfile, files_created, args.format, args.status,
+                    files_created, args.format, args.status,
                     args.recompute_metrics,
                     export_dir=args.export_dir)
                 workspace_files.append(workname)
