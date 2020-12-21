@@ -75,7 +75,8 @@ def test_dmg_v1():
         assert stats['starttime'].strftime(dt) == '1994-01-17T12:31:04Z'
         assert stats.coordinates['latitude'] == 33.929
         assert stats.coordinates['longitude'] == -118.26
-        assert stats.standard['station_name'] == 'LOS ANGELES - 116TH ST. SCHOOL'
+        assert stats.standard['station_name'] == \
+            'LOS ANGELES - 116TH ST. SCHOOL'
         assert stats.standard['instrument'] == 'SMA-1'
         assert stats.standard['sensor_serial_number'] == '3492'
         if stats['channel'] == 'HN1':

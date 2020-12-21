@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 from gmprocess.io.read import read_data
-from gmprocess.waveform_processing.windows import (signal_split, signal_end,
-                                                   trim_multiple_events, cut)
+from gmprocess.waveform_processing.windows import \
+    signal_split, signal_end, trim_multiple_events, cut
 import pkg_resources
 import os
 import numpy as np
@@ -15,7 +15,8 @@ from gmprocess.waveform_processing.processing import remove_response
 from gmprocess.utils.event import get_event_object
 from gmprocess.waveform_processing.phase import create_travel_time_dataframe
 from gmprocess.waveform_processing import corner_frequencies
-from gmprocess.waveform_processing.filtering import lowpass_filter, highpass_filter
+from gmprocess.waveform_processing.filtering import \
+    lowpass_filter, highpass_filter
 
 PICKER_CONFIG = get_config(section='pickers')
 
@@ -125,8 +126,8 @@ def test_signal_split2():
         # version of obspy, we're going to pedantically compare two
         # of these objects...
         if isinstance(value, UTCDateTime):
-            #value.__precision = 4
-            #v1.__precision = 4
+            # value.__precision = 4
+            # v1.__precision = 4
             assert value.year == v1.year
             assert value.month == v1.month
             assert value.day == v1.day
