@@ -73,7 +73,7 @@ jobs:
     displayName: Create conda environment and install gmprocess (mac/linux)
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
-  - script: conda create --yes --name gmprocess --file requirements.txt --strict-channel-priority -c conda-forge -v
+  - script: conda create --name gmprocess  python=$(python.version) --file requirements.txt --strict-channel-priority -c conda-forge -y -v
     displayName: Create conda environment (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
