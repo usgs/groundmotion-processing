@@ -20,6 +20,7 @@ pyasdf
 pytest
 pytest-cov
 pyyaml
+scipy
 setuptools-scm
 requests
 vcrpy
