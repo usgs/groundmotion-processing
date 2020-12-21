@@ -204,28 +204,33 @@ def draw_stations_map(pstreams, event, event_dir):
     ax.scatter(lons, lats, c=status, marker='^', edgecolors='k',
                transform=mmap.geoproj, zorder=100, s=48)
 
-    passed_marker = mlines.Line2D([], [], color=PASSED_COLOR, marker='^',
-                                  markeredgecolor='k', markersize=12,
-                                  label='Passed station', linestyle='None')
-    failed_marker = mlines.Line2D([], [], color=FAILED_COLOR, marker='^',
-                                  markeredgecolor='k', markersize=12,
-                                  label='Failed station', linestyle='None')
-    earthquake_marker = mlines.Line2D([], [], color='red', marker='*',
-                                      markersize=12,
-                                      label='Earthquake Epicenter',
-                                      linestyle='None')
+    passed_marker = mlines.Line2D(
+        [], [], color=PASSED_COLOR, marker='^',
+        markeredgecolor='k', markersize=12,
+        label='Passed station', linestyle='None')
+    failed_marker = mlines.Line2D(
+        [], [], color=FAILED_COLOR, marker='^',
+        markeredgecolor='k', markersize=12,
+        label='Failed station', linestyle='None')
+    earthquake_marker = mlines.Line2D(
+        [], [], color='red', marker='*',
+        markersize=12,
+        label='Earthquake Epicenter',
+        linestyle='None')
     ax.legend(handles=[passed_marker, failed_marker, earthquake_marker],
               fontsize=12)
 
     scale = '50m'
-    land = cfeature.NaturalEarthFeature(category='physical',
-                                        name='land',
-                                        scale=scale,
-                                        facecolor=LAND_COLOR)
-    ocean = cfeature.NaturalEarthFeature(category='physical',
-                                         name='ocean',
-                                         scale=scale,
-                                         facecolor=OCEAN_COLOR)
+    land = cfeature.NaturalEarthFeature(
+        category='physical',
+        name='land',
+        scale=scale,
+        facecolor=LAND_COLOR)
+    ocean = cfeature.NaturalEarthFeature(
+        category='physical',
+        name='ocean',
+        scale=scale,
+        facecolor=OCEAN_COLOR)
     ax.add_feature(land)
     ax.add_feature(ocean)
     ax.coastlines(resolution=scale, zorder=10, linewidth=1)

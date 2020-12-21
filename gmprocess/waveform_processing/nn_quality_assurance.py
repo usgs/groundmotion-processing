@@ -311,10 +311,13 @@ def standardizeData(data, mu, sigma):
     Performs a standardization operation on the given data ((X-mu)/sigma)
 
     Args:
-        data (list of float): data to standardize (size represents the
-        dimensionality of the data and not the number of point to standardize)
-        mu (list of float): means
-        sigma (list of float): standard deviation
+        data (list of float):
+            data to standardize (size represents the dimensionality of the data
+            and not the number of point to standardize)
+        mu (list of float):
+            means
+        sigma (list of float):
+            standard deviation
 
     Returns:
         list o float: standardized data
@@ -331,9 +334,10 @@ def decorrelateData(data, M):
     matrix is given as an input.
 
     Args:
-        data (np.array): numpy array containing the data to be decorrelated
-        (size = N).
-        M (np.array): decorrelation matrix (size NxN)
+        data (np.array):
+            numpy array containing the data to be decorrelated (size = N).
+        M (np.array):
+            decorrelation matrix (size NxN)
 
     Returns:
         list of float containing the decorrelated data
@@ -351,9 +355,11 @@ def preprocessQualityMetrics(qm, model_name):
     (i.e. deskews, standardizes and decorrelates the quality metrics)
 
     Args:
-        qm (list of float): quality metrics estimated according to the paper
-        model_name (string): name of the used model for processing. Available:
-        'Cant' and 'CantWell'.
+        qm (list of float):
+            quality metrics estimated according to the paper
+        model_name (string):
+            name of the used model for processing. Available: 'Cant' and
+            'CantWell'.
 
     Returns:
         list of float containing the pre-processed quality metrics.
@@ -381,8 +387,10 @@ def get_husid(acceleration, time_vector):
     Returns the Husid vector, defined as int{acceleration ** 2.}
 
     Args:
-        acceleration (np.array): Vector of acceleration values
-        time_vector (np.array): Time vector in seconds
+        acceleration (np.array):
+            Vector of acceleration values
+        time_vector (np.array):
+            Time vector in seconds
     """
     husid = np.hstack([0., cumtrapz(acceleration ** 2., time_vector)])
     AI = husid / max(husid)
@@ -394,9 +402,12 @@ def getFreqIndex(ft_freq, lower, upper):
     Gets the indices of a frequency range in the frequency vector
 
     Args:
-        ft_freq (list of float): list of ordred frequencies
-        lower (float): lower boud of the frequency range
-        upper (float): upper bound of the frequency range
+        ft_freq (list of float):
+            list of ordred frequencies
+        lower (float):
+            lower boud of the frequency range
+        upper (float):
+            upper bound of the frequency range
 
     Returns:
         int, int: the indices bounding the range
@@ -413,8 +424,10 @@ def getHusidIndex(husid, threshold):
     Returns the index of the husid for a particular threshold
 
     Args:
-        husid (list of float): husid vector
-        threshold (float): threshold not to be exceeded
+        husid (list of float):
+            husid vector
+        threshold (float):
+            threshold not to be exceeded
 
     Returns:
         int: the index of the latest value below the threshold
@@ -429,9 +442,10 @@ def calculateSNR_min(ft_freq, snr):
     Calculate the SNR min between 0.1 and 20 Hz
 
     Args:
-        ft_freq (list of float): vector of frequencies used in the Fourier
-        spectrum
-        snr (list of float): vector of the snr at the frequencies in ft_freq
+        ft_freq (list of float):
+            vector of frequencies used in the Fourier spectrum
+        snr (list of float):
+            vector of the snr at the frequencies in ft_freq
 
     Returns:
         float: min snr between 0.1 and 20 Hz
@@ -447,8 +461,10 @@ def calculateHusid(acc, t):
     Calculate the husid and Arias of a signal.
 
     Args:
-        acc (np.array): accelerogram vector
-        t (np.array): time vector (constant time step)
+        acc (np.array):
+            accelerogram vector
+        t (np.array):
+            time vector (constant time step)
 
     Returns:
         husid: vector of floats
@@ -473,10 +489,13 @@ def getClassificationMetrics(tr, p_pick, delta_t):
               - Vertical component is not used!
 
     Args:
-        tr (list of list of float): each list contains an horizontal trace
-        p_pick (float): estimated P-wave arrival time (in seconds) from the
-        start of the record
-        delta_t (float): time step used in the record in seconds (decimal)
+        tr (list of list of float):
+            each list contains an horizontal trace
+        p_pick (float):
+            estimated P-wave arrival time (in seconds) from the start of the
+            record
+        delta_t (float):
+            time step used in the record in seconds (decimal)
 
     Returns:
         List of float containing the quality metrics (size = 20)
@@ -489,25 +508,15 @@ def getClassificationMetrics(tr, p_pick, delta_t):
     # Extract data from dictionary
     # First horizontal comp
     acc_comp1 = np.asarray(tr['acc_comp1']) / 981.
-    ft1_freq = np.asarray(tr['ft1_freq'])
-    ft1 = np.asarray(tr['ft1']) / 981.
     smooth_ft1 = np.asarray(tr['smooth_ft1']) / 981.
     smooth_ft1_freq = np.asarray(tr['smooth_ft1_freq'])
-    ft1_pe = np.asarray(tr['ft1_pe']) / 981.
-    ft1_freq_pe = np.asarray(tr['ft1_freq_pe'])
     smooth_ft1_pe = np.asarray(tr['smooth_ft1_pe']) / 981.
-    snr1 = np.asarray(tr['snr1'])
     snr1_freq = np.asarray(tr['snr1_freq'])
 
     # Second horizontal comp
     acc_comp2 = np.asarray(tr['acc_comp2']) / 981.
-    ft2_freq = np.asarray(tr['ft2_freq'])
-    ft2 = np.asarray(tr['ft2']) / 981.
     smooth_ft2 = np.asarray(tr['smooth_ft2']) / 981.
-    ft2_pe = np.asarray(tr['ft2_pe']) / 981.
-    ft2_freq_pe = np.asarray(tr['ft2_freq_pe'])
     smooth_ft2_pe = np.asarray(tr['smooth_ft2_pe']) / 981.
-    snr2 = np.asarray(tr['snr2'])
 
     # Sample rate
     sample_rate = 1. / delta_t
@@ -627,7 +636,8 @@ def getClassificationMetrics(tr, p_pick, delta_t):
 
     # snr metrics - min, max and averages
     lower_index, upper_index = getFreqIndex(smooth_ft1_freq, 0.1, 20)
-    snrgm = np.divide(smooth_ftgm, smooth_ftgm_pe)
+    with np.errstate(invalid='ignore'):
+        snrgm = np.divide(smooth_ftgm, smooth_ftgm_pe)
     snr_min = min(snrgm[lower_index:upper_index])
     snr_max = max(snrgm)
 

@@ -4,6 +4,8 @@
 import os
 import tempfile
 from datetime import datetime, timedelta
+import shutil
+import pytest
 
 # third party imports
 import numpy as np
@@ -201,22 +203,18 @@ def test_dmg():
     no_stream = """RESPONSE AND FOURIER AMPLITUDE SPECTRA
     CORRECTED ACCELEROGRAM
     UNCORRECTED ACCELEROGRAM DATA"""
-    tmp = tempfile.NamedTemporaryFile(delete=True)
-    with open(tmp.name, 'w') as f:
-        f.write(no_stream)
-    f = open(tmp.name, 'rt')
-    try:
-        read_dmg(tmp.name)[0]
-        success = True
-    except GMProcessException:
-        success = False
-    assert success == False
-    tmp.close()
 
-    # test location override
-    stream = read_dmg(filename, location='test')[0]
-    for trace in stream:
-        assert trace.stats.location == 'test'
+    temp_dir = tempfile.mkdtemp()
+    try:
+        tmp = os.path.join(temp_dir, 'tfile.txt')
+        with open(tmp, 'w') as f:
+            f.write(no_stream)
+        with pytest.raises(GMProcessException):
+            read_dmg(tmp)[0]
+    except Exception as ex:
+        raise(ex)
+    finally:
+        shutil.rmtree(temp_dir)
 
 
 def test_pacific():

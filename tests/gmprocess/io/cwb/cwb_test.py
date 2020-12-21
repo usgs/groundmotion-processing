@@ -3,6 +3,7 @@
 # stdlib imports
 import os
 import tempfile
+import shutil
 
 # third party imports
 import numpy as np
@@ -31,7 +32,7 @@ def test():
     try:
         assert is_cwb(os.path.abspath(__file__))
     except AssertionError:
-        assert 1 == 1
+        pass
     stream = read_cwb(cwb_file)[0]
     for trace in stream:
         stats = trace.stats
@@ -77,14 +78,19 @@ def test():
          0.100     0.000     0.000     0.000
          0.120     0.000     0.000     0.000
             """
-    tmp = tempfile.NamedTemporaryFile(delete=True)
-    with open(tmp.name, 'w') as f:
-        f.write(missing_info)
-    f = open(tmp.name, 'rt')
     data = stream[0].data
     data = np.reshape(data, (int(len(data) / 2), 2), order='C')
-    metadata = _get_header_info(open(tmp.name, 'rt'), data)
-    tmp.close()
+    temp_dir = tempfile.mkdtemp()
+    try:
+        tfile = os.path.join(temp_dir, 'tfile.txt')
+        with open(tfile, "w") as f:
+            f.write(missing_info)
+        metadata = _get_header_info(open(tfile, 'rt'), data)
+    except Exception as e:
+        raise(e)
+    finally:
+        shutil.rmtree(temp_dir)
+
     assert str(metadata['coordinates']['longitude']) == 'nan'
     assert str(metadata['coordinates']['latitude']) == 'nan'
     assert metadata['standard']['station_name'] == ''

@@ -63,16 +63,18 @@ def compute_snr_trace(tr, bandwidth, mag=None, check=None):
         # For both the raw and smoothed spectra, subtract the noise spectrum
         # from the signal spectrum
         tr.setCached(
-            'signal_spectrum',
-            {'spec': tr.getCached('signal_spectrum')['spec'] -
-                tr.getCached('noise_spectrum')['spec'],
-             'freq': tr.getCached('signal_spectrum')['freq']}
+            'signal_spectrum', {
+                'spec': (tr.getCached('signal_spectrum')['spec'] -
+                         tr.getCached('noise_spectrum')['spec']),
+                'freq': tr.getCached('signal_spectrum')['freq']
+            }
         )
         tr.setCached(
-            'smooth_signal_spectrum',
-            {'spec': tr.getCached('smooth_signal_spectrum')['spec'] -
-                tr.getCached('smooth_noise_spectrum')['spec'],
-             'freq': tr.getCached('smooth_signal_spectrum')['freq']}
+            'smooth_signal_spectrum', {
+                'spec': (tr.getCached('smooth_signal_spectrum')['spec'] -
+                         tr.getCached('smooth_noise_spectrum')['spec']),
+                'freq': tr.getCached('smooth_signal_spectrum')['freq']
+            }
         )
 
         smooth_signal_spectrum = tr.getCached('smooth_signal_spectrum')['spec']

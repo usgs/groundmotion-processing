@@ -20,24 +20,18 @@ Build info
 +         +------------------+-----------------+------------+
 |         | |AzureM1015P38|  | OSX 10.15       | Python 3.8 |
 +         +------------------+-----------------+------------+
-|         | |AzureM1014P37|  | OSX 10.14       | Python 3.7 |
+|         | |AzureWP37|      | Windows-latest  | Python 3.7 |
 +         +------------------+-----------------+------------+
-|         | |AzureM1014P38|  | OSX 10.14       | Python 3.8 |
+|         | |AzureWP38|      | Windows-latest  | Python 3.8 |
 +         +------------------+-----------------+------------+
-|         | |AzureLP37|      | ubuntu          | Python 3.7 |
+|         | |AzureLP37|      | ubuntu-latest   | Python 3.7 |
 +         +------------------+-----------------+------------+
-|         | |AzureLP38|      | ubuntu          | Python 3.8 |
-+---------+------------------+-----------------+------------+
-| Travis  | |Travis|         | ubuntu          | Python 3.7 |
+|         | |AzureLP38|      | ubuntu-latest   | Python 3.8 |
 +---------+------------------+-----------------+------------+
 | Codacy  | |Codacy|                                        |
 +---------+-------------------------------------------------+
 | CodeCov | |CodeCov|                                       |
 +---------+-------------------------------------------------+
-
-.. |Travis| image:: https://travis-ci.com/usgs/groundmotion-processing.svg?branch=master
-    :target: https://travis-ci.org/usgs/groundmotion-processing
-    :alt: Travis Build Status
 
 .. |Codacy| image:: https://api.codacy.com/project/badge/Grade/582cbceabb814eca9f708e37d6af9479
     :target: https://www.codacy.com/app/mhearne-usgs/groundmotion-processing?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=usgs/groundmotion-processing&amp;utm_campaign=Badge_Grade
@@ -46,26 +40,26 @@ Build info
     :target: https://codecov.io/gh/usgs/groundmotion-processing
     :alt: Code Coverage Status
 
-.. |AzureM1015P37| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master&jobName=gmprocess&configuration=gmprocess%20MacOS_10_15_Python37
+.. |AzureM1015P37| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master&jobName=gmprocess&configuration=gmprocess%20MacOS_py37
    :target: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_build/latest?definitionId=5&branchName=master
-   :alt: Azure DevOps Build Status                                             
+   :alt: Build Status: Mac 10.15, python 3.7
 
-.. |AzureM1015P38| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master&jobName=gmprocess&configuration=gmprocess%20MacOS_10_15_Python38
+.. |AzureM1015P38| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master&jobName=gmprocess&configuration=gmprocess%20MacOS_py38
    :target: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_build/latest?definitionId=5&branchName=master
-   :alt: Azure DevOps Build Status                                             
+   :alt: Build Status: Mac 10.15, python 3.8
 
-.. |AzureM1014P37| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master&jobName=gmprocess&configuration=gmprocess%20MacOS_10_14_Python37
+.. |AzureWP37| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master&jobName=gmprocess&configuration=gmprocess%20Windows_py37
    :target: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_build/latest?definitionId=5&branchName=master
-   :alt: Azure DevOps Build Status                                             
+   :alt: Build Status: windows-latest, python 3.7
 
-.. |AzureM1014P38| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master&jobName=gmprocess&configuration=gmprocess%20MacOS_10_14_Python38
+.. |AzureWP38| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master&jobName=gmprocess&configuration=gmprocess%20Windows_py38
    :target: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_build/latest?definitionId=5&branchName=master
-   :alt: Azure DevOps Build Status                                             
+   :alt: Build Status: windows-latest, python 3.8
 
-.. |AzureLP37| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master&jobName=gmprocess&configuration=gmprocess%20Linux_Python37
+.. |AzureLP37| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master&jobName=gmprocess&configuration=gmprocess%20Linux_py37
    :target: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_build/latest?definitionId=5&branchName=master
-   :alt: Azure DevOps Build Status                                             
+   :alt: Build Status: ubuntu-latest, python 3.7
 
-.. |AzureLP38| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master&jobName=gmprocess&configuration=gmprocess%20Linux_Python38
+.. |AzureLP38| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master&jobName=gmprocess&configuration=gmprocess%20Linux_py38
    :target: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_build/latest?definitionId=5&branchName=master
-   :alt: Azure DevOps Build Status                                             
+   :alt: Build Status: ubuntu-latest, python 3.8

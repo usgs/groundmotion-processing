@@ -492,7 +492,7 @@ def plot_moveout(streams, epilat, epilon, orientation=None, max_dist=None,
 
     if file is not None:
         fig.savefig(file, format='png')
-    plt.show()
+    # plt.show()
     return (fig, ax)
 
 

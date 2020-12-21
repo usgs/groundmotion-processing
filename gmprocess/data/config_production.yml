@@ -220,9 +220,9 @@ processing:
         detrending_method: demean
 
     - compute_snr:
-        # Presense of this check says to do the signa-to-noise ratio check. Requires
-        # minimum SNR of `threshold` between `min_freq` and `max_freq` using
-        # Konno-Omachi smoothed spectra with `bandwidth` parameter.
+        # Presense of this check says to do the signa-to-noise ratio check. 
+        # Requires minimum SNR of `threshold` between `min_freq` and `max_freq` 
+        # using Konno-Omachi smoothed spectra with `bandwidth` parameter.
         bandwidth: 20.0
         check:
             threshold: 3.0
