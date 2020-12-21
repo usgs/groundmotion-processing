@@ -305,10 +305,10 @@ def process_event(event, outdir, pcommands,
         logging.info(
             'Creating provenance table for event %s...' % event.id)
         with warnings.catch_warnings():
-            warnings.simplefilter("ignore",
-                                  category=H5pyDeprecationWarning)
-            provdata = workspace.getProvenance(event.id,
-                                               labels=[process_tag])
+            warnings.simplefilter(
+                "ignore", category=H5pyDeprecationWarning)
+            provdata = workspace.getProvenance(
+                event.id, labels=[process_tag])
         if output_format == 'csv':
             csvfile = os.path.join(event_dir, 'provenance.csv')
             append_file(files_created, 'Provenance', csvfile)
@@ -583,10 +583,7 @@ This program will allow the user to:
     if len(process_commands.intersection(set(pcommands))) > 0:
         if args.num_processes:
             # parallelize processing on events using forked processes
-            # eventids = [event.id for event in events]
-            # eventdict = dict(zip(eventids, events))
             try:
-                # pid = os.fork()
                 client = Client(n_workers=args.num_processes)
             except OSError:
                 sys.stderr.write("Could not create a dask client.\n")
@@ -616,8 +613,10 @@ This program will allow the user to:
             futures = client.map(dask_process_event, events)
 
             for future, result in as_completed(futures, with_results=True):
-                # print('Child process %i has finished.' % child_id)
-                print('Completed event: %s, %s' % result)
+                print(
+                    'Completed event: %s, %s' %
+                    (result[0].id, str(result[1]))
+                )
 
         else:
             logfile = os.path.join(outdir, logfmt % os.getpid())
@@ -629,6 +628,10 @@ This program will allow the user to:
                     args.recompute_metrics,
                     export_dir=args.export_dir)
                 workspace_files.append(workname)
+                print(
+                    'Completed event: %s, %s' %
+                    (event.id, str(workname))
+                )
 
     # logging
     logger = None

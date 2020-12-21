@@ -515,7 +515,6 @@ def calc_snr(stream, minloc):
             trace.fail('Signal window mean is 0.')
             snr_values.append(0.0)
             continue
-        print(len(noise))
         if len(noise) != 0:
             apn = np.mean(np.power(noise, 2))   # average power of noise
         else:
