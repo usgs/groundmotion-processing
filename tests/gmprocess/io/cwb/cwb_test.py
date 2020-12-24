@@ -17,10 +17,7 @@ def test():
     cwb_file, _ = read_data_dir('cwb', 'us1000chhc', files=['1-EAS.dat'])
     cwb_file = cwb_file[0]
     assert is_cwb(cwb_file)
-    try:
-        assert is_cwb(os.path.abspath(__file__))
-    except AssertionError:
-        assert 1 == 1
+    assert is_cwb(os.path.abspath(__file__)) is False
     stream = read_cwb(cwb_file)[0]
     np.testing.assert_almost_equal(
         np.abs(stream[0].max()), 0.83699999999999997)
@@ -29,10 +26,7 @@ def test():
     cwb_file, _ = read_data_dir('cwb', 'us1000chhc', files=['2-ECU.dat'])
     cwb_file = cwb_file[0]
     assert is_cwb(cwb_file)
-    try:
-        assert is_cwb(os.path.abspath(__file__))
-    except AssertionError:
-        pass
+    assert is_cwb(os.path.abspath(__file__)) is False
     stream = read_cwb(cwb_file)[0]
     for trace in stream:
         stats = trace.stats

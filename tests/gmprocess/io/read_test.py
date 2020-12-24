@@ -49,7 +49,7 @@ def test_read():
         try:
             stream = read_data(file_dict[file_format], file_format)[0]
         except Exception as e:
-            x = 1
+            pass
         assert stream[0].stats.standard['source_format'] == file_format
         stream = read_data(file_dict[file_format])[0]
         assert stream[0].stats.standard['source_format'] == file_format

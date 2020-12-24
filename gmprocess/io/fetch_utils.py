@@ -532,7 +532,7 @@ def update_config(custom_cfg_file):
         with open(custom_cfg_file, 'rt') as f:
             custom_cfg = yaml.load(f, Loader=yaml.FullLoader)
             update_dict(config, custom_cfg)
-    except yaml.parser.ParserError as pe:
+    except yaml.parser.ParserError:
         return None
 
     return config

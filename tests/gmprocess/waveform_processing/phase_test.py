@@ -94,24 +94,28 @@ def test_all_pickers():
             except GMProcessException:
                 loc = -1
                 mean_snr = np.nan
-            row = {'Stream': stream.get_id(),
-                   'Method': method,
-                   'Pick_Time': loc,
-                   'Mean_SNR': mean_snr}
+            row = {
+                'Stream': stream.get_id(),
+                'Method': method,
+                'Pick_Time': loc,
+                'Mean_SNR': mean_snr
+            }
             df = df.append(row, ignore_index=True)
 
     stations = df['Stream'].unique()
-    cmpdict = {'TW.ECU.BN': 'kalkan',
-               'TW.ELD.BN': 'power',
-               'TW.EGF.BN': 'ar',
-               'TW.EAS.BN': 'ar',
-               'TW.EDH.BN': 'ar',
-               'TK.4304.HN': 'ar',
-               'TK.0921.HN': 'ar',
-               'TK.5405.HN': 'ar',
-               'NZ.HSES.HN': 'baer',
-               'NZ.WTMC.HN': 'baer',
-               'NZ.THZ.HN': 'power'}
+    cmpdict = {
+        'TW.ECU.BN': 'kalkan',
+        'TW.ELD.BN': 'power',
+        'TW.EGF.BN': 'ar',
+        'TW.EAS.BN': 'ar',
+        'TW.EDH.BN': 'ar',
+        'TK.4304.HN': 'ar',
+        'TK.0921.HN': 'ar',
+        'TK.5405.HN': 'ar',
+        'NZ.HSES.HN': 'baer',
+        'NZ.WTMC.HN': 'baer',
+        'NZ.THZ.HN': 'power'
+    }
     for station in stations:
         station_df = df[df['Stream'] == station]
         max_snr = station_df['Mean_SNR'].max()
@@ -120,7 +124,7 @@ def test_all_pickers():
         try:
             assert cmpdict[station] == method
         except Exception as e:
-            x = 1
+            pass
 
 
 def test_travel_time():
@@ -129,9 +133,11 @@ def test_travel_time():
     for datafile in datafiles:
         streams += read_data(datafile)
 
-    cmps = {'NZ.HSES.HN': 42.126519010847467,
-            'NZ.WTMC.HN': 40.7867451470294,
-            'NZ.THZ.HN': 42.016420026730088}
+    cmps = {
+        'NZ.HSES.HN': 42.126519010847467,
+        'NZ.WTMC.HN': 40.7867451470294,
+        'NZ.THZ.HN': 42.016420026730088
+    }
     for stream in streams:
         minloc, mean_snr = pick_travel(stream, origin)
         np.testing.assert_almost_equal(minloc, cmps[stream.get_id()])

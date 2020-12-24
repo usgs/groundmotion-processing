@@ -18,10 +18,7 @@ def test_cosmos():
     two_channels = two_channels[0]
 
     assert is_cosmos(one_channel)
-    try:
-        assert is_cosmos(os.path.abspath(__file__))
-    except AssertionError as ae:
-        assert 1 == 1
+    assert is_cosmos(os.path.abspath(__file__)) is False
 
     # test a one channel cosmos file
     stream1 = read_cosmos(one_channel)[0]
@@ -53,7 +50,8 @@ def test_cosmos():
     assert stats.format_specific['v30'] == 120
     assert stats.format_specific['physical_units'] == 'cm/s/s'
     assert stats.format_specific['least_significant_bit'] == 123.45
-    assert stats.format_specific['low_filter_type'] == 'Butterworth single direction'
+    assert stats.format_specific['low_filter_type'] == \
+        'Butterworth single direction'
     assert stats.format_specific['low_filter_corner'] == 4
     assert stats.format_specific['low_filter_decay'] == 3
     assert stats.format_specific['high_filter_type'] == 'Rectangular'
@@ -112,7 +110,7 @@ def test_channel_in_filename():
         streams = read_cosmos(dfile)
 
     except BaseException:
-        assert 1 == 1
+        pass
 
 
 def test_v0():

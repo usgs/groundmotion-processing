@@ -209,10 +209,11 @@ def read_obspy(filename, config=None, **kwargs):
     traces = []
 
     for ttrace in tstream:
-        trace = StationTrace(data=ttrace.data,
-                             header=ttrace.stats,
-                             inventory=inventory,
-                             config=config)
+        trace = StationTrace(
+            data=ttrace.data,
+            header=ttrace.stats,
+            inventory=inventory,
+            config=config)
         network = ttrace.stats.network
         station = ttrace.stats.station
         channel = ttrace.stats.channel

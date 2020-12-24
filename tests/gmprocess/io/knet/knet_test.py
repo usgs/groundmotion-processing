@@ -15,10 +15,7 @@ def test():
     knet_file2 = os.path.join(datadir, 'AOM0051801241951.NS')
     knet_file3 = os.path.join(datadir, 'AOM0051801241951.UD')
     assert is_knet(knet_file1)
-    try:
-        assert is_knet(os.path.abspath(__file__))
-    except AssertionError:
-        assert 1 == 1
+    assert is_knet(os.path.abspath(__file__)) is False
 
     # test a knet file with npoints % 10 == 0
     stream1 = read_knet(knet_file1)[0]
@@ -41,9 +38,10 @@ def test():
 
     # test that a file that is not knet format raises an Exception
     try:
-        knet_files, _ = read_data_dir('geonet',
-                                      'nz2018p115908',
-                                      '20161113_110256_WTMC_20.V1A')
+        knet_files, _ = read_data_dir(
+            'geonet',
+            'nz2018p115908',
+            '20161113_110256_WTMC_20.V1A')
 
         knet_file = knet_files[0]
         read_knet(knet_file)[0]

@@ -48,13 +48,12 @@ def merge_dicts(dicts):
     return target
 
 
-def get_config(section=None):
+def get_config(config_file=None, section=None):
     """Gets the user defined config and validates it.
 
-    Notes:
-        If no config file is present, default parameters are used.
-
     Args:
+        config_file:
+            Path to config file to use. If None, uses defaults.
         section (str):
             Name of section in the config to extract (i.e., 'fetchers',
             'processing', 'pickers', etc.) If None, whole config is returned.
@@ -67,15 +66,16 @@ def get_config(section=None):
             If input section name is not found.
     """
 
-    if ('CALLED_FROM_PYTEST' in os.environ and
-            os.environ['CALLED_FROM_PYTEST'] == 'True'):
-        file_to_use = CONFIG_FILE_TEST
-    else:
-        file_to_use = CONFIG_FILE_PRODUCTION
+    if config_file is None:
+        if ('CALLED_FROM_PYTEST' in os.environ and
+                os.environ['CALLED_FROM_PYTEST'] == 'True'):
+            file_to_use = CONFIG_FILE_TEST
+        else:
+            file_to_use = CONFIG_FILE_PRODUCTION
 
-    data_dir = os.path.abspath(
-        pkg_resources.resource_filename('gmprocess', 'data'))
-    config_file = os.path.join(data_dir, file_to_use)
+        data_dir = os.path.abspath(
+            pkg_resources.resource_filename('gmprocess', 'data'))
+        config_file = os.path.join(data_dir, file_to_use)
 
     if not os.path.isfile(config_file):
         fmt = ('Missing config file %s, please run gmsetup to install '

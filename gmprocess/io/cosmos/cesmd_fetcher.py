@@ -177,14 +177,15 @@ class CESMDFetcher(DataFetcher):
                   - mag Event magnitude
         """
         try:
-            metadata = get_metadata(eqlat=self.lat,
-                                    eqlon=self.lon,
-                                    eqtime=self.time,
-                                    abandoned=False,
-                                    station_type=self.station_type,
-                                    eqtimewindow=self.eq_dt,  # seconds
-                                    eqradius=self.radius,  # km
-                                    station_radius=self.station_radius)
+            metadata = get_metadata(
+                eqlat=self.lat,
+                eqlon=self.lon,
+                eqtime=self.time,
+                abandoned=False,
+                station_type=self.station_type,
+                eqtimewindow=self.eq_dt,  # seconds
+                eqradius=self.radius,  # km
+                station_radius=self.station_radius)
         except Exception:
             return []
 
@@ -246,19 +247,20 @@ class CESMDFetcher(DataFetcher):
         if len(event['stations']) < MAX_STATIONS:
             try:
                 (outfolder,
-                 datafiles) = get_records(self.rawdir,
-                                          self.email,
-                                          unpack=True,
-                                          event_latitude=self.lat,
-                                          event_longitude=self.lon,
-                                          event_radius=self.radius,
-                                          process_level=self.process_type,
-                                          group_by='event',
-                                          max_station_dist=self.station_radius,
-                                          station_type=self.station_type,
-                                          startdate=starttime,
-                                          enddate=endtime,
-                                          )
+                 datafiles) = get_records(
+                     self.rawdir,
+                    self.email,
+                    unpack=True,
+                    event_latitude=self.lat,
+                    event_longitude=self.lon,
+                    event_radius=self.radius,
+                    process_level=self.process_type,
+                    group_by='event',
+                    max_station_dist=self.station_radius,
+                    station_type=self.station_type,
+                    startdate=starttime,
+                    enddate=endtime,
+                )
             except GMProcessException as gpe:
                 eqfmt = 'M%.1f %s'
                 eqdesc = eqfmt % (
@@ -275,8 +277,7 @@ class CESMDFetcher(DataFetcher):
             # so we're splitting up the stations by distance and downloading
             # them in chunks.
             dataframe = get_stations_dataframe(event)
-            distances = dataframe['epidist'].to_numpy()
-            distances.sort()
+            distances = sorted(dataframe['epidist'].to_numpy())
             nchunks = int(np.ceil(len(distances) / MAX_STATIONS))
             distance_chunks = np.array_split(distances, nchunks)
             datafiles = []
@@ -284,20 +285,21 @@ class CESMDFetcher(DataFetcher):
                 mindist = chunk[0]
                 maxdist = chunk[-1]
                 try:
-                    (_, tfiles) = get_records(self.rawdir,
-                                              self.email,
-                                              unpack=True,
-                                              event_latitude=self.lat,
-                                              event_longitude=self.lon,
-                                              event_radius=self.radius,
-                                              process_level=self.process_type,
-                                              group_by='event',
-                                              min_station_dist=mindist,
-                                              max_station_dist=maxdist,
-                                              station_type=self.station_type,
-                                              startdate=starttime,
-                                              enddate=endtime,
-                                              )
+                    (_, tfiles) = get_records(
+                        self.rawdir,
+                        self.email,
+                        unpack=True,
+                        event_latitude=self.lat,
+                        event_longitude=self.lon,
+                        event_radius=self.radius,
+                        process_level=self.process_type,
+                        group_by='event',
+                        min_station_dist=mindist,
+                        max_station_dist=maxdist,
+                        station_type=self.station_type,
+                        startdate=starttime,
+                        enddate=endtime,
+                    )
                 except GMProcessException as gpe:
                     eqfmt = 'M%.1f %s'
                     eqdesc = eqfmt % (

@@ -172,10 +172,12 @@ def signal_split(
             except Exception:
                 loc = -1
                 mean_snr = np.nan
-            row = {'Stream': st.get_id(),
-                   'Method': pick_method,
-                   'Pick_Time': loc,
-                   'Mean_SNR': mean_snr}
+            row = {
+                'Stream': st.get_id(),
+                'Method': pick_method,
+                'Pick_Time': loc,
+                'Mean_SNR': mean_snr
+            }
             df = df.append(row, ignore_index=True)
 
         max_snr = df['Mean_SNR'].max()

@@ -30,29 +30,31 @@ from gmprocess.utils.config import get_config
 from gmprocess.utils.tables import set_precisions
 from gmprocess.utils.constants import DEFAULT_FLOAT_FORMAT, DEFAULT_NA_REP
 
-NON_IMT_COLS = set(['EarthquakeId',
-                    'EarthquakeTime',
-                    'EarthquakeLatitude',
-                    'EarthquakeLongitude',
-                    'EarthquakeDepth',
-                    'EarthquakeMagnitude',
-                    'EarthquakeMagnitudeType'
-                    'Network',
-                    'DataProvider',
-                    'StationCode',
-                    'StationID',
-                    'StationDescription',
-                    'StationLatitude',
-                    'StationLongitude',
-                    'StationElevation',
-                    'SamplingRate',
-                    'EpicentralDistance',
-                    'HypocentralDistance',
-                    'H1Lowpass',
-                    'H1Highpass',
-                    'H2Lowpass',
-                    'H2Highpass',
-                    'SourceFile'])
+NON_IMT_COLS = set([
+    'EarthquakeId',
+    'EarthquakeTime',
+    'EarthquakeLatitude',
+    'EarthquakeLongitude',
+    'EarthquakeDepth',
+    'EarthquakeMagnitude',
+    'EarthquakeMagnitudeType'
+    'Network',
+    'DataProvider',
+    'StationCode',
+    'StationID',
+    'StationDescription',
+    'StationLatitude',
+    'StationLongitude',
+    'StationElevation',
+    'SamplingRate',
+    'EpicentralDistance',
+    'HypocentralDistance',
+    'H1Lowpass',
+    'H1Highpass',
+    'H2Lowpass',
+    'H2Highpass',
+    'SourceFile']
+)
 
 TAG_FMT = '%Y%m%d%H%M%S'
 
@@ -612,7 +614,7 @@ This program will allow the user to:
 
             futures = client.map(dask_process_event, events)
 
-            for future, result in as_completed(futures, with_results=True):
+            for _, result in as_completed(futures, with_results=True):
                 print(
                     'Completed event: %s, %s' %
                     (result[0].id, str(result[1]))
