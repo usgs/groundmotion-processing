@@ -3,9 +3,13 @@ import sys
 import logging
 import textwrap
 import shutil
+import yaml
+import pkg_resources
 
 from gmprocess.subcommands.base import SubcommandModule
-from gmprocess.utils.prompt import query_yes_no
+from gmprocess.utils.prompt import \
+    query_yes_no, set_project_paths, get_default_project_paths
+from gmprocess.utils.constants import CONFIG_FILE_PRODUCTION
 
 
 class ProjectsModule(SubcommandModule):
@@ -28,24 +32,21 @@ class ProjectsModule(SubcommandModule):
             'help': 'Switch from current project to PROJECT.',
             'type': str,
             'metavar': 'PROJECT',
-            'default': None,
-            'nargs': 1
+            'default': None
         }, {
             'short_flag': '-c',
             'long_flag': '--create',
             'help': 'Create new project PROJECT and switch to it.',
             'type': str,
             'metavar': 'PROJECT',
-            'default': None,
-            'nargs': 1
+            'default': None
         }, {
             'short_flag': '-d',
             'long_flag': '--delete',
             'help': 'Delete existing project PROJECT.',
             'type': str,
             'metavar': 'PROJECT',
-            'default': None,
-            'nargs': 1
+            'default': None
         },
     ]
 
@@ -54,12 +55,13 @@ class ProjectsModule(SubcommandModule):
         Manage gmp projects.
 
         Args:
-            gmp: GmpApp instance.
+            gmp:
+                GmpApp instance.
         """
-        logging.info('Running %s.' % self.command_name)
+        logging.info('Running subcommand \'%s\'' % self.command_name)
         args = gmp.args
-        config = gmp.conf
-        configfile = gmp.conf_file
+        config = gmp.projects_conf
+        configfile = gmp.PROJECTS_FILE
 
         if gmp.args.create:
             project = gmp.args.create
@@ -94,7 +96,7 @@ class ProjectsModule(SubcommandModule):
             config['project'] = newproject
             config.filename = configfile
             config.write()
-            sp = Project(newproject, config['profjects'][newproject],
+            sp = Project(newproject, config['projects'][newproject],
                          is_current=True)
             print('\nSwitched to project: \n%s\n' % (str(sp)))
             sys.exit(0)
@@ -102,17 +104,17 @@ class ProjectsModule(SubcommandModule):
         if args.delete:
             project = args.delete
             if project not in config['projects']:
-                msg = 'Project %s not in %s.  Run %s -l to available projects.'
+                msg = ('Project %s not in %s.  Run \'%s\' -l to available '
+                       'projects.')
                 print(msg % (project, configfile, self.command_name))
                 sys.exit(1)
 
             conf_path = config['projects'][project]['conf_path']
-            data_path = config['project'][project]['data_path']
+            data_path = config['projects'][project]['data_path']
 
             question = ('Are you sure you want to delete everything in:\n'
                         '%s\n--and--\n%s?\n' % (conf_path, data_path))
-            if not args.accept and not query_yes_no(
-                    question, default='yes'):
+            if not query_yes_no(question, default='yes'):
                 sys.exit(0)
             shutil.rmtree(conf_path, ignore_errors=True)
             shutil.rmtree(data_path, ignore_errors=True)
@@ -158,10 +160,10 @@ current_markers = {
 
 
 class Project(object):
-    def __init__(self, name, gmp, is_current=False):
+    def __init__(self, name, indict, is_current=False):
         self.name = name
-        self.conf_path = gmp.conf_dir
-        self.data_path = gmp.data_dir
+        self.conf_path = indict['conf_path']
+        self.data_path = indict['data_path']
         self.current_marker = current_markers[is_current]
 
     def __repr__(self):
@@ -210,39 +212,18 @@ def create(config, project):
     """
     Args:
         config (ConfigObj):
-            ConfigObj instance representing the parsed config.
+            ConfigObj instance representing the parsed projects config.
         project (str):
             Project name.
     """
 
-    project_path = os.path.join(
-        os.path.expanduser('~'), 'gmprocess_projects', project)
-    default_conf = os.path.join(project_path, 'conf')
-    default_data = os.path.join(project_path, 'data')
-    print('\n'.join(textwrap.wrap(
-        'You will be prompted to supply two directories for this '
-        'project:')))
-    print('\n   '.join(textwrap.wrap(
-        ' - A *config* path, which will store the gmprocess config files.')))
-    print('\n   '.join(textwrap.wrap(
-        ' - A *data* path, under which will be created directories for '
-        'each event processed.\n')))
-    new_conf_path, conf_ok = make_dir('conf path', default_conf)
-    if not conf_ok:
-        print('\n'.join(textwrap.wrap(
-            'Please try to find a path that can be created on this '
-            'system and then try again. Exiting.')))
-        sys.exit(1)
-    new_data_path, data_ok = make_dir('data path', default_data)
-    if not data_ok:
-        print('\n'.join(textwrap.wrap(
-              'Please try to find a path that can be created on this '
-              'system and then try again. Exiting.')))
-        shutil.rmtree(new_data_path)
-        sys.exit(1)
+    default_conf, default_data = get_default_project_paths(project)
+    new_conf_path, new_data_path = \
+        set_project_paths(default_conf, default_data)
 
     if 'projects' not in config:
         config['projects'] = {}
+
     config['projects'][project] = {
         'conf_path': new_conf_path,
         'data_path': new_data_path
@@ -252,25 +233,19 @@ def create(config, project):
     sproj = Project(project, config['projects'][project])
     print('\nCreated project: %s' % (sproj))
 
+    # Sart with production conf from repository, then add user info
+    data_path = pkg_resources.resource_filename('gmprocess', 'data')
+    current_conf = os.path.join(data_path, CONFIG_FILE_PRODUCTION)
+    with open(current_conf, 'rt') as f:
+        gmp_conf = yaml.load(f, Loader=yaml.SafeLoader)
 
-def make_dir(pathstr, default):
-    max_tries = 3
-    ntries = 1
-    make_ok = False
-    ppath = ''
-    while not make_ok:
-        ppath = input('Please enter the %s: [%s] ' % (pathstr, default))
-        if not len(ppath.strip()):
-            ppath = default
-        try:
-            os.makedirs(ppath, exist_ok=True)
-            make_ok = True
-        except OSError:
-            msg = ('Cannot make directory: %s.  Please try again (%d '
-                   'of %d tries).')
-            print('\n'.join(textwrap.wrap(msg % (
-                ppath, ntries, max_tries))))
-            ntries += 1
-        if ntries > max_tries:
-            break
-    return (ppath, make_ok)
+    print('Please enter your name and email. This informaitn will be added '
+          'to the config file and reported in the provenance of the data '
+          'processed in this project.')
+    user_info = {}
+    user_info['name'] = input('\tName:')
+    user_info['email'] = input('\tEmail:')
+    gmp_conf['user'] = user_info
+    proj_conf_file = os.path.join(new_conf_path, 'config.yml')
+    with open(proj_conf_file, 'w') as yf:
+        yaml.dump(gmp_conf, yf, Dumper=yaml.SafeDumper)

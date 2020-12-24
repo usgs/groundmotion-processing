@@ -41,7 +41,7 @@ class ProcessWaveformsModule(SubcommandModule):
         Args:
             gmp: GmpApp instance.
         """
-        logging.info('Running %s.' % self.command_name)
+        logging.info('Running subcommand \'%s\'' % self.command_name)
         with warnings.catch_warnings():
             warnings.simplefilter(
                 "ignore", category=H5pyDeprecationWarning)

@@ -1,4 +1,5 @@
 import os
+import sys
 import copy
 import importlib
 import pkgutil
@@ -14,6 +15,8 @@ from setuptools_scm import get_version
 from gmprocess.utils.config import get_config
 from gmprocess.utils.logging import setup_logger
 from gmprocess.subcommands.base import SubcommandModule
+from gmprocess.subcommands.projects import create
+from gmprocess.utils.prompt import set_project_paths, get_default_project_paths
 
 
 class GmpApp(object):
@@ -39,14 +42,12 @@ class GmpApp(object):
               easier to deal with.
     """
 
-    PROJECTS_DIR = os.path.join(os.path.expanduser('~'), '.gmp')
-    PROJECTS_FILE = os.path.join(PROJECTS_DIR, 'projects.conf')
+    PROJECTS_PATH = os.path.join(os.path.expanduser('~'), '.gmp')
+    PROJECTS_FILE = os.path.join(PROJECTS_PATH, 'projects.conf')
 
     def __init__(self):
         self._load_config()
         self._parse_command_line()
-
-        print("Setting up logger:")
         setup_logger(self.args)
         logging.info('Logging level includes INFO.')
         logging.debug('Logging level includes DEBUG.')
@@ -65,15 +66,35 @@ class GmpApp(object):
             self.args.func().main(self)
 
     def _load_config(self):
-        project_conf = ConfigObj(self.PROJECTS_FILE)
-        self.current_project = project_conf['selected']
-        proj = project_conf['projects']
-        current_proj = proj[self.current_project]
-        self.conf_dir = current_proj['conf_path']
-        self.data_dir = current_proj['data_path']
-        self.conf_file = os.path.join(self.conf_dir, 'config.yml')
-        print(self.conf_file)
+        if not os.path.isfile(self.PROJECTS_FILE):
+            # If projects.conf file doesn't exist then we need to run the
+            # initial setup.
+            print('No projects config file detected. Running initial setup...')
+            self._initial_setup()
+
+        self.projects_conf = ConfigObj(self.PROJECTS_FILE)
+        self.project = self.projects_conf['project']
+        self.current_project = self.projects_conf['projects'][self.project]
+        self.conf_path = self.current_project['conf_path']
+        self.data_path = self.current_project['data_path']
+        self.conf_file = os.path.join(self.conf_path, 'config.yml')
+        if not os.path.isfile(self.conf_file):
+            print('Config file does not exist: %s' % self.conf_file)
+            print('Exiting.')
+            sys.exit(1)
         self.conf = get_config(self.conf_file)
+
+    def _initial_setup(self):
+        """
+        Initial setup of ~/.gmp/projects.conf; essentially invoke
+        # gmp projects -c <project>
+        """
+        if not os.path.isdir(self.PROJECTS_PATH):
+            os.mkdir(self.PROJECTS_PATH)
+        project_name = input('Please enter a project title:')
+        empty_conf = ConfigObj()
+        empty_conf.filename = self.PROJECTS_FILE
+        create(empty_conf, project_name)
 
     def _parse_command_line(self):
         """Parse command line arguments.

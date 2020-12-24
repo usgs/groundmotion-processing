@@ -78,10 +78,8 @@ def get_config(config_file=None, section=None):
         config_file = os.path.join(data_dir, file_to_use)
 
     if not os.path.isfile(config_file):
-        fmt = ('Missing config file %s, please run gmsetup to install '
-               'default config file.')
-        logging.info(fmt % config_file)
-        config = None
+        fmt = ('Missing config file: %s.')
+        raise OSError(fmt % config_file)
     else:
         with open(config_file, 'r') as f:
             config = yaml.load(f, Loader=yaml.FullLoader)

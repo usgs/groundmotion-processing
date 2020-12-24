@@ -56,7 +56,7 @@ class AssembleModule(SubcommandModule):
         Args:
             gmp: GmpApp instance.
         """
-        logging.info('Running %s.' % self.command_name)
+        logging.info('Running subcommand \'%s\'' % self.command_name)
         input_directory = gmp.data_dir
         outdir = input_directory
         events = get_events(
