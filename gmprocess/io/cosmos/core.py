@@ -4,7 +4,6 @@
 from datetime import datetime
 import os
 import re
-import warnings
 import pkg_resources
 import logging
 
@@ -551,11 +550,11 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     for key in coordinates:
         if coordinates[key] == unknown:
             if key != 'elevation':
-                warnings.warning(
+                logging.warning(
                     'Missing %r. Setting to np.nan.' % key, Warning)
                 coordinates[key] = np.nan
             else:
-                warnings.warning('Missing %r. Setting to 0.0.' % key, Warning)
+                logging.warning('Missing %r. Setting to 0.0.' % key, Warning)
                 coordinates[key] = 0.0
 
     hdr['coordinates'] = coordinates

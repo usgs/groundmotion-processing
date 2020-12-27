@@ -152,8 +152,8 @@ def process_event(event, outdir, pcommands,
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore",
                                       category=H5pyDeprecationWarning)
-                rstreams = workspace.getStreams(event.id,
-                                                labels=['unprocessed'])
+                rstreams = workspace.getStreams(
+                    event.id, labels=['unprocessed'])
             download_done = True
         else:
             need_processed = set(['report', 'shakemap'])

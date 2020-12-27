@@ -168,9 +168,7 @@ class StationStream(Stream):
         self.parameters = {}
 
     def validate(self):
-        """Some validation checks for Traces within the StationStream.
-
-        """
+        """Validation checks for Traces within a StationStream."""
         logging.debug(self)
 
         # Check that channel codes are unique_npts
@@ -236,8 +234,7 @@ class StationStream(Stream):
             self.id = id_str
 
     def get_id(self):
-        """
-        Get the StationStream ID.
+        """Get the StationStream ID.
 
         This consists of the network, station, and first two characters of the
         channel (to indicate instrument type). This is currently consistent
@@ -247,38 +244,29 @@ class StationStream(Stream):
         return self.id
 
     def get_net_sta(self):
-        """
-        Get just the network and station compopnent of the ID.
-        """
+        """Get just the network and station compopnent of the ID."""
         return '.'.join(self.get_id().split('.')[0:2])
 
     def get_inst(self):
-        """
-        Get just the network and station compopnent of the ID.
-        """
+        """Get just the network and station compopnent of the ID."""
         return self.get_id().split('.')[2]
 
     @property
     def passed(self):
-        """
-        Check the traces to see if any have failed any processing steps.
+        """Check the traces to see if any have failed any processing steps.
 
         Returns:
             bool: True if no failures in Traces, False if there are.
-
         """
         return self.check_stream()
 
     @property
     def num_horizontal(self):
-        """
-        Get the number of horizontal components in the StationStream.
-        """
+        """Get the number of horizontal components in the StationStream."""
         return len([tr for tr in self if tr.stats.channel[2].upper() != 'Z'])
 
     def __str__(self, extended=False, indent=0):
-        """
-        String summary of the StationStream.
+        """String summary of the StationStream.
 
         Args:
             extended (bool):
@@ -337,6 +325,15 @@ class StationStream(Stream):
         return self.parameters[param_id]
 
     def getProvenanceDocuments(self, base_prov=None):
+        """Generate provenance Document.
+
+        Args:
+            base_prov:
+                Base provenance document.
+
+        Returns:
+            Provenance document.
+        """
         provdocs = []
         for trace in self.traces:
             provdoc = trace.getProvenanceDocument(base_prov)
@@ -344,10 +341,7 @@ class StationStream(Stream):
         return provdocs
 
     def getInventory(self):
-        """
-        Extract an ObsPy inventory object from a Stream read in by gmprocess
-        tools.
-        """
+        """Extract an ObsPy inventory object from a StationStream."""
         networks = [trace.stats.network for trace in self]
         if len(set(networks)) > 1:
             raise Exception(
@@ -387,8 +381,10 @@ class StationStream(Stream):
         if 'format_specific' in self[0].stats:
             format_specific = dict(self[0].stats.format_specific)
 
-        big_dict = {'standard': subdict,
-                    'format_specific': format_specific}
+        big_dict = {
+            'standard': subdict,
+            'format_specific': format_specific
+        }
         try:
             jsonstr = json.dumps(big_dict)
         except Exception as e:
@@ -411,7 +407,8 @@ class StationStream(Stream):
         return inv
 
     def check_stream(self):
-        """
+        """Check StationStream for being flagged as failed.
+
         Processing checks get regorded as a 'failure' parameter in
         StationTraces. Streams also need to be classified as passed/faild,
         where if any of the checks have failed for consistent traces then the
@@ -434,8 +431,8 @@ def _channel_from_stats(stats):
     instrument = stats.standard.instrument
     serialnum = stats.standard.sensor_serial_number
     if len(instrument) or len(serialnum):
-        equipment = Equipment(type=instrument,
-                              serial_number=serialnum)
+        equipment = Equipment(
+            type=instrument, serial_number=serialnum)
     else:
         equipment = None
     depth = 0.0
@@ -461,24 +458,25 @@ def _channel_from_stats(stats):
             sens = stats['standard']['instrument_sensitivity']
         else:
             sens = 1.0
-        sensitivity = InstrumentSensitivity(sens,
-                                            frequency=frequency,
-                                            input_units=units,
-                                            output_units='COUNTS')
+        sensitivity = InstrumentSensitivity(
+            sens, frequency=frequency, input_units=units,
+            output_units='COUNTS')
         response = Response(instrument_sensitivity=sensitivity)
 
     comments = Comment(stats.standard.comments)
     logging.debug('channel: %s' % stats.channel)
-    channel = Channel(stats.channel,
-                      stats.location,
-                      stats.coordinates['latitude'],
-                      stats.coordinates['longitude'],
-                      stats.coordinates['elevation'],
-                      depth,
-                      azimuth=azimuth,
-                      sample_rate=stats.sampling_rate,
-                      calibration_units=units,
-                      comments=[comments],
-                      response=response,
-                      sensor=equipment)
+    channel = Channel(
+        stats.channel,
+        stats.location,
+        stats.coordinates['latitude'],
+        stats.coordinates['longitude'],
+        stats.coordinates['elevation'],
+        depth,
+        azimuth=azimuth,
+        sample_rate=stats.sampling_rate,
+        calibration_units=units,
+        comments=[comments],
+        response=response,
+        sensor=equipment
+    )
     return channel

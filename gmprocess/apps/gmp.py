@@ -5,7 +5,6 @@ import importlib
 import pkgutil
 import inspect
 import argparse
-from argparse import RawTextHelpFormatter
 import logging
 
 from configobj import ConfigObj
@@ -16,7 +15,6 @@ from gmprocess.utils.config import get_config
 from gmprocess.utils.logging import setup_logger
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.projects import create
-from gmprocess.utils.prompt import set_project_paths, get_default_project_paths
 
 
 class GmpApp(object):

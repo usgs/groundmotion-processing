@@ -12,14 +12,20 @@ class SubcommandModule(ABC):
     @abstractmethod
     def command_name(self):
         """
-        Name of subcommand. Should be a string, all lowercase.
+        Name of subcommand: string, all lowercase.
         """
         raise NotImplementedError
 
     """
-    Tuple of subcommand aliases.
+    Tuple class variable of subcommand aliases.
     """
     aliases = ()
+
+    def __init__(self):
+        """
+        Dictionary instance variable to track files created by module.
+        """
+        self.files_created = {}
 
     @property
     @abstractmethod
@@ -36,3 +42,12 @@ class SubcommandModule(ABC):
         All main methods should take one gmp object, that is a GmpApp instance.
         """
         raise NotImplementedError
+
+    def append_file(self, tag, filename):
+        """
+        Convenience method to add file via tag to self.files_created
+        """
+        if tag in self.files_created:
+            self.files_created[tag].append(filename)
+        else:
+            self.files_created[tag] = [filename]

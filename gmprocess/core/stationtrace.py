@@ -23,29 +23,34 @@ from gmprocess.io.seedname import get_units_type
 
 UNITS = {
     'acc': 'cm/s^2',
-    'vel': 'cm/s'}
+    'vel': 'cm/s'
+}
 REVERSE_UNITS = {
     'cm/s^2': 'acc',
-    'cm/s': 'vel'}
+    'cm/s': 'vel'
+}
 
 PROCESS_LEVELS = {
     'V0': 'raw counts',
     'V1': 'uncorrected physical units',
     'V2': 'corrected physical units',
-    'V3': 'derived time series'}
+    'V3': 'derived time series'
+}
 
 REV_PROCESS_LEVELS = {
     'raw counts': 'V0',
     'uncorrected physical units': 'V1',
     'corrected physical units': 'V2',
-    'derived time series': 'V3'}
+    'derived time series': 'V3'
+}
 
 LENGTH_CONVERSIONS = {
     'nm': 1e9,
     'um': 1e6,
     'mm': 1e3,
     'cm': 1e2,
-    'm': 1}
+    'm': 1
+}
 
 # when checking to see if a channel is vertical,
 # 90 - abs(dip) must be less than or equal to this value
@@ -147,17 +152,21 @@ STANDARD_KEYS = {
     },
 }
 
-INT_TYPES = [np.dtype('int8'),
-             np.dtype('int16'),
-             np.dtype('int32'),
-             np.dtype('int64'),
-             np.dtype('uint8'),
-             np.dtype('uint16'),
-             np.dtype('uint32'),
-             np.dtype('uint64')]
+INT_TYPES = [
+    np.dtype('int8'),
+    np.dtype('int16'),
+    np.dtype('int32'),
+    np.dtype('int64'),
+    np.dtype('uint8'),
+    np.dtype('uint16'),
+    np.dtype('uint32'),
+    np.dtype('uint64')
+]
 
-FLOAT_TYPES = [np.dtype('float32'),
-               np.dtype('float64')]
+FLOAT_TYPES = [
+    np.dtype('float32'),
+    np.dtype('float64')
+]
 
 TIMEFMT = '%Y-%m-%dT%H:%M:%SZ'
 TIMEFMT_MS = '%Y-%m-%dT%H:%M:%S.%fZ'
@@ -175,73 +184,96 @@ ACTIVITIES = {
         'label': 'Waveform Simulation'
     },
     'taper': {
-        'code': 'tp', 'label': 'Taper'
+        'code': 'tp',
+        'label': 'Taper'
     },
     'stack_cross_correlations': {
-        'code': 'sc', 'label': 'Stack Cross Correlations'
+        'code': 'sc',
+        'label': 'Stack Cross Correlations'
     },
     'simulate_response': {
-        'code': 'sr', 'label': 'Simulate Response'
+        'code': 'sr',
+        'label': 'Simulate Response'
     },
     'rotate': {
-        'code': 'rt', 'label': 'Rotate'
+        'code': 'rt',
+        'label': 'Rotate'
     },
     'resample': {
-        'code': 'rs', 'label': 'Resample'
+        'code': 'rs',
+        'label': 'Resample'
     },
     'remove_response': {
-        'code': 'rr', 'label': 'Remove Response'
+        'code': 'rr',
+        'label': 'Remove Response'
     },
     'pad': {
-        'code': 'pd', 'label': 'Pad'
+        'code': 'pd',
+        'label': 'Pad'
     },
     'normalize': {
-        'code': 'nm', 'label': 'Normalize'
+        'code': 'nm',
+        'label': 'Normalize'
     },
     'multiply': {
-        'code': 'nm', 'label': 'Multiply'
+        'code': 'nm',
+        'label': 'Multiply'
     },
     'merge': {
-        'code': 'mg', 'label': 'Merge'
+        'code': 'mg',
+        'label': 'Merge'
     },
     'lowpass_filter': {
-        'code': 'lp', 'label': 'Lowpass Filter'
+        'code': 'lp',
+        'label': 'Lowpass Filter'
     },
     'interpolate': {
-        'code': 'ip', 'label': 'Interpolate'
+        'code': 'ip',
+        'label': 'Interpolate'
     },
     'integrate': {
-        'code': 'ig', 'label': 'Integrate'
+        'code': 'ig',
+        'label': 'Integrate'
     },
     'highpass_filter': {
-        'code': 'hp', 'label': 'Highpass Filter'
+        'code': 'hp',
+        'label': 'Highpass Filter'
     },
     'divide': {
-        'code': 'dv', 'label': 'Divide'
+        'code': 'dv',
+        'label': 'Divide'
     },
     'differentiate': {
-        'code': 'df', 'label': 'Differentiate'
+        'code': 'df',
+        'label': 'Differentiate'
     },
     'detrend': {
-        'code': 'dt', 'label': 'Detrend'
+        'code': 'dt',
+        'label': 'Detrend'
     },
     'decimate': {
-        'code': 'dc', 'label': 'Decimate'
+        'code': 'dc',
+        'label': 'Decimate'
     },
     'cut': {
-        'code': 'ct', 'label': 'Cut'
+        'code': 'ct',
+        'label': 'Cut'
     },
     'cross_correlate': {
-        'code': 'co', 'label': 'Cross Correlate'
+        'code': 'co',
+        'label': 'Cross Correlate'
     },
     'calculate_adjoint_source': {
-        'code': 'ca', 'label': 'Calculate Adjoint Source'
+        'code': 'ca',
+        'label': 'Calculate Adjoint Source'
     },
     'bandstop_filter': {
-        'code': 'bs', 'label': 'Bandstop Filter'
+        'code': 'bs',
+        'label': 'Bandstop Filter'
     },
     'bandpass_filter': {
-        'code': 'bp', 'label': 'Bandpass Filter'
+        'code': 'bp',
+        'label': 'Bandpass Filter'
     }
 }
 
@@ -280,7 +312,7 @@ class StationTrace(Trace):
 
     def __init__(self, data=np.array([]), header=None,
                  inventory=None, config=None):
-        """Construct StationTrace.
+        """Construct a StationTrace instance.
 
         Args:
             data (ndarray):
@@ -360,7 +392,7 @@ class StationTrace(Trace):
         if prov_response is not None:
             self.setProvenance('remove_response', prov_response)
         self.parameters = {}
-        self.spectra = {}
+        self.cached = {}
         self.validate()
 
     @property
@@ -488,10 +520,8 @@ class StationTrace(Trace):
         return pkeys
 
     def getProvenance(self, prov_id):
-        """Get list of seis-prov compatible attributes whose id matches
-        prov_id.
+        """Get seis-prov compatible attributes whose id matches prov_id.
 
-        # activities.
         See http://seismicdata.github.io/SEIS-PROV/_generated_details.html
 
         Args:
@@ -537,6 +567,15 @@ class StationTrace(Trace):
         return self.provenance
 
     def getProvenanceDocument(self, base_prov=None):
+        """Generate a provenance document.
+
+        Args:
+            base_prov:
+                Base provenance document.
+
+        Returns:
+            Provenance document.
+        """
         if base_prov is None:
             pr = prov.model.ProvDocument()
             pr.add_namespace(*NS_SEIS)
@@ -623,27 +662,31 @@ class StationTrace(Trace):
         """Store a dictionary of arrays in StationTrace.
 
         Args:
-            name (str): Name of data dictionary to be stored.
-            array_dict (dict): Dictionary with:
-                               - key array name
-                               - value as numpy array
+            name (str):
+                Name of data dictionary to be stored.
+            array_dict (dict):
+                Dictionary with:
+                    - key array name
+                    - value as numpy array
         """
-        self.spectra[name] = array_dict
+        self.cached[name] = array_dict
 
     def getCached(self, name):
         """Retrieve a dictionary of arrays.
 
         Args:
-            name (str): Name of dictionary to retrieve.
+            name (str):
+                Name of dictionary to retrieve.
         Returns:
             dict: Dictionary of arrays (see setSpectrum).
         """
-        if name not in self.spectra:
+        if name not in self.cached:
             raise KeyError('%s not in set of spectra arrays.' % name)
-        return self.spectra[name]
+        return self.cached[name]
 
     def hasCached(self, name):
-        if name not in self.spectra:
+        """Check if StationTrace has cached attribute."""
+        if name not in self.cached:
             return False
         return True
 
@@ -653,7 +696,7 @@ class StationTrace(Trace):
         Returns:
             list: List of cached arrays in this StationTrace.
         """
-        return list(self.spectra.keys())
+        return list(self.cached.keys())
 
     def getParameterKeys(self):
         """Get a list of all available parameter keys.

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import os
-import logging
 import yaml
 import pkg_resources
 

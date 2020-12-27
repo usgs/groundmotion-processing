@@ -1048,19 +1048,19 @@ class StreamWorkspace(object):
         return eventobj2
 
     def getProvenance(self, eventid, stations=None, labels=None):
-        """Return DataFrame with processing history for streams matching input criteria.
+        """Return DataFrame with processing history matching input criteria.
 
         Output will look like this:
-          Record  Processing Step     Step Attribute              Attribute Value
-0    NZ.HSES.HN1  Remove Response        input_units                       counts
-1    NZ.HSES.HN1  Remove Response       output_units                       cm/s^2
-2    NZ.HSES.HN1          Detrend  detrending_method                       linear
-3    NZ.HSES.HN1          Detrend  detrending_method                       demean
-4    NZ.HSES.HN1              Cut       new_end_time  2016-11-13T11:05:44.000000Z
-5    NZ.HSES.HN1              Cut     new_start_time  2016-11-13T11:02:58.000000Z
-6    NZ.HSES.HN1            Taper               side                         both
-7    NZ.HSES.HN1            Taper        taper_width                         0.05
-8    NZ.HSES.HN1            Taper        window_type                         Hann
+        Record  Processing Step     Step Attribute              Attribute Value
+0  NZ.HSES.HN1  Remove Response        input_units                       counts
+1  NZ.HSES.HN1  Remove Response       output_units                       cm/s^2
+2  NZ.HSES.HN1          Detrend  detrending_method                       linear
+3  NZ.HSES.HN1          Detrend  detrending_method                       demean
+4  NZ.HSES.HN1              Cut       new_end_time  2016-11-13T11:05:44.000000Z
+5  NZ.HSES.HN1              Cut     new_start_time  2016-11-13T11:02:58.000000Z
+6  NZ.HSES.HN1            Taper               side                         both
+7  NZ.HSES.HN1            Taper        taper_width                         0.05
+8  NZ.HSES.HN1            Taper        window_type                         Hann
 ...
 
         Args:
@@ -1141,7 +1141,6 @@ def _stringify_dict(indict):
 
 def _get_id(event):
     eid = event.origins[0].resource_id.id
-
     return eid
 
 

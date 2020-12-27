@@ -1,7 +1,6 @@
 import os
 import sys
 import logging
-import textwrap
 import shutil
 import yaml
 import pkg_resources
