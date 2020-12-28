@@ -3,13 +3,14 @@ import sys
 import logging
 
 from mapio.gmt import GMTGrid
+from impactutils.rupture.origin import Origin
 
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.io.fetch_utils import get_events, get_rupture_file
+from impactutils.rupture.factory import get_rupture
 from gmprocess.io.asdf.stream_workspace import \
     StreamWorkspace, format_netsta, format_nslit
-from gmprocess.utils.constants import TAG_FMT
-from gmprocess.metrics.station_summary import StationSummary, XML_UNITS
+from gmprocess.metrics.station_summary import StationSummary
 
 
 class ComputeStationMetricsModule(SubcommandModule):
@@ -27,6 +28,12 @@ class ComputeStationMetricsModule(SubcommandModule):
             'type': str,
             'default': None,
             'nargs': '+'
+        }, {
+            'short_flag': '-o',
+            'long_flag': '--overwrite',
+            'help': 'Overwrite existing station metrics if they exist.',
+            'default': False,
+            'action': 'store_true'
         }
     ]
 
@@ -57,6 +64,7 @@ class ComputeStationMetricsModule(SubcommandModule):
         label = None
 
         for event in events:
+            logging.info('Computed station metrics for event %s...' % event.id)
             event_dir = os.path.join(gmp.data_path, event.id)
             workname = os.path.join(event_dir, 'workspace.hdf')
             if not os.path.isfile(workname):
@@ -64,7 +72,6 @@ class ComputeStationMetricsModule(SubcommandModule):
                     'No workspace file found for event %s. Please run '
                     'subcommand \'assemble\' to generate workspace file.'
                     % event.id)
-                logging.info('No waveforms to process.')
                 logging.info('Continuing to next event.')
                 continue
             workspace = StreamWorkspace.open(workname)
@@ -80,8 +87,8 @@ class ComputeStationMetricsModule(SubcommandModule):
             # one.
             if len(labels) > 1 and label is not None:
                 print('Which label do you want to use?')
-                for labs in labels:
-                    print('\tlab')
+                for lab in labels:
+                    print('\t%s' % lab)
                 tmplab = input()
                 if tmplab not in labels:
                     raise ValueError('%s not a valid label. Exiting.' % tmplab)
@@ -94,27 +101,37 @@ class ComputeStationMetricsModule(SubcommandModule):
                 event.id, labels=[label])
 
             rupture_file = get_rupture_file(event_dir)
-            # workspace.calcMetrics(
-            #     event.id, labels=[process_tag], config=gmp.conf,
-            #     streams=pstreams, stream_label=label,
-            #     rupture_file=rupture_file)
+            origin = Origin({
+                'id': event.id,
+                'netid': '',
+                'network': '',
+                'lat': event.latitude,
+                'lon': event.longitude,
+                'depth': event.depth_km,
+                'locstring': '',
+                'mag': event.magnitude,
+                'time': event.time
+            })
+            rupture = get_rupture(origin, rupture_file)
 
             for stream in pstreams:
+                logging.info(
+                    'Calculating station metrics for %s...' % stream.get_id())
                 summary = StationSummary.from_config(
                     stream, event=event, config=gmp.conf,
                     calc_waveform_metrics=False,
                     calc_station_metrics=True,
-                    rupture=rupture_file, vs30_grids=vs30_grids)
-                xmlstr = summary.get_metric_xml()
+                    rupture=rupture, vs30_grids=vs30_grids)
                 xmlstr = summary.get_station_xml()
                 metricpath = '/'.join([
                     format_netsta(stream[0].stats),
                     format_nslit(stream[0].stats, stream.get_inst(), event.id)
                 ])
-                workspace.insert_aux(xmlstr, 'StationMetrics', metricpath)
+                workspace.insert_aux(
+                    xmlstr, 'StationMetrics', metricpath,
+                    overwrite=gmp.args.overwrite)
 
             workspace.close()
-            logging.info('Computed station metrics for event %s...' % event.id)
 
         logging.info('Added station metrics to workspace files '
                      'with tag \'%s\'.' % label)

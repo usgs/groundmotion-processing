@@ -68,7 +68,6 @@ class ProcessWaveformsModule(SubcommandModule):
                 logging.info(
                     'No workspace file found for event %s. Please run '
                     'subcommand \'assemble\' to generate workspace file.')
-                logging.info('No waveforms to process.')
                 logging.info('Continuing to next event.')
                 continue
             workspace = StreamWorkspace.open(workname)

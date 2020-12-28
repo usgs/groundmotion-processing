@@ -181,6 +181,10 @@ class StationSummary(object):
         if stream.passed and calc_waveform_metrics:
             metrics = MetricsController.from_config(
                 stream, config=config, event=event)
+            print('metrics.imts')
+            print(metrics.imts)
+            print('metrics.imcs')
+            print(metrics.imcs)
 
             station.channel_dict = metrics.channel_dict.copy()
 

@@ -3,6 +3,7 @@ pip=18.0
 c-compiler
 cython
 dask
+h5py>=2.8.0
 impactutils
 ipython
 jupyter
@@ -23,7 +24,6 @@ pyyaml
 scipy
 setuptools-scm
 requests
-vcrpy
 autopep8
 flake8
 pyflakes
