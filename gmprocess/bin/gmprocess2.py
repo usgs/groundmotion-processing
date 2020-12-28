@@ -28,7 +28,8 @@ from gmprocess.io.report import build_report_latex
 from gmprocess.utils.plot import summary_plots, plot_regression, plot_moveout
 from gmprocess.utils.config import get_config
 from gmprocess.utils.tables import set_precisions
-from gmprocess.utils.constants import DEFAULT_FLOAT_FORMAT, DEFAULT_NA_REP
+from gmprocess.utils.constants import \
+    DEFAULT_FLOAT_FORMAT, DEFAULT_NA_REP, TAG_FMT
 
 NON_IMT_COLS = set([
     'EarthquakeId',
@@ -55,8 +56,6 @@ NON_IMT_COLS = set([
     'H2Highpass',
     'SourceFile']
 )
-
-TAG_FMT = '%Y%m%d%H%M%S'
 
 
 class MyFormatter(argparse.RawTextHelpFormatter,

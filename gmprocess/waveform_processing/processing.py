@@ -96,8 +96,6 @@ def process_streams(streams, origin, config=None):
     if config is None:
         config = get_config()
 
-    logging.info('Processing streams...')
-
     event_time = origin.time
     event_lon = origin.longitude
     event_lat = origin.latitude
@@ -108,15 +106,12 @@ def process_streams(streams, origin, config=None):
     if any('trim_multiple_events' in dict for dict in config['processing']):
         travel_time_df, catalog = create_travel_time_dataframe(
             streams, **config['travel_time'])
-    # -------------------------------------------------------------------------
-    # Begin noise/signal window steps
 
-    logging.info('Windowing noise and signal...')
     window_conf = config['windows']
     model = TauPyModel(config['pickers']['travel_time']['model'])
 
     for st in streams:
-        logging.info('Checking stream %s...' % st.get_id())
+        logging.debug('Checking stream %s...' % st.get_id())
         # Estimate noise/signal split time
         st = signal_split(
             st,
@@ -146,7 +141,6 @@ def process_streams(streams, origin, config=None):
 
     # -------------------------------------------------------------------------
     # Begin processing steps
-    logging.info('Starting processing...')
     processing_steps = config['processing']
 
     # Loop over streams
@@ -160,7 +154,7 @@ def process_streams(streams, origin, config=None):
                     'Each processing step must contain exactly one key.')
             step_name = key_list[0]
 
-            logging.info('Processing step: %s' % step_name)
+            logging.debug('Processing step: %s' % step_name)
             step_args = processing_step_dict[step_name]
             # Using globals doesn't seem like a great solution here, but it
             # works.
@@ -239,8 +233,9 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
 
         # Check if this trace has already been converted to physical units
         if 'remove_response' in tr.getProvenanceKeys():
-            logging.info('Trace has already had instrument response removed. '
-                         'Nothing to be done.')
+            logging.debug(
+                'Trace has already had instrument response removed. '
+                'Nothing to be done.')
             continue
 
         f_n = 0.5 / tr.stats.delta
@@ -329,7 +324,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
         except Exception as e:
             logging.info('Encountered an error when obtaining the poles and '
                          'zeros information: %s. Now using remove_sensitivity '
-                         ' instead of remove_response.' % str(e))
+                         'instead of remove_response.' % str(e))
             tr.remove_sensitivity(inventory=inv)
             tr.data *= M_TO_CM  # Convert from m to cm
             tr.stats.standard.units = output.lower()
@@ -488,7 +483,7 @@ def get_corner_frequencies(st, method='constant', constant=None, snr=None):
         strea: Stream with selected corner frequencies added.
     """
 
-    logging.info('Setting corner frequencies...')
+    logging.debug('Setting corner frequencies...')
     if method == 'constant':
         st = corner_frequencies.constant(st, **constant)
     elif method == 'snr':

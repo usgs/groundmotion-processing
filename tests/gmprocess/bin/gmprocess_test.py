@@ -16,26 +16,26 @@ def test_demo_data():
     out_dir = 'temp_dir'
 
     try:
-        cmd = ('gmprocess -o %s --assemble --directory %s'
+        cmd = ('gmprocess2 -o %s --assemble --directory %s'
                % (out_dir, data_dir))
         rc, so, se = get_command_output(cmd)
         assert rc
 
-        cmd = ('gmprocess -o %s --process' % out_dir)
+        cmd = ('gmprocess2 -o %s --process' % out_dir)
         rc, so, se = get_command_output(cmd)
         assert rc
 
-        cmd = ('gmprocess -o %s --report' % out_dir)
+        cmd = ('gmprocess2 -o %s --report' % out_dir)
         rc, so, se = get_command_output(cmd)
         print(so.decode())
         print(se.decode())
         assert rc
 
-        cmd = ('gmprocess -o %s --export' % out_dir)
+        cmd = ('gmprocess2 -o %s --export' % out_dir)
         rc, so, se = get_command_output(cmd)
         assert rc
 
-        cmd = ('gmprocess -o %s --provenance' % out_dir)
+        cmd = ('gmprocess2 -o %s --provenance' % out_dir)
         rc, so, se = get_command_output(cmd)
         assert rc
 
@@ -57,7 +57,7 @@ def test_eventfile():
         'gmprocess', os.path.join('data', 'testdata', 'example_eventfile.txt'))
 
     try:
-        cmd = ('gmprocess -o %s --assemble --textfile %s --config %s'
+        cmd = ('gmprocess2 -o %s --assemble --textfile %s --config %s'
                % (out_dir, eventfile, conf_file))
         rc, so, se = get_command_output(cmd)
         assert rc
@@ -76,7 +76,7 @@ def test_parallel():
     out_dir = 'temp_dir'
 
     try:
-        cmd = ('gmprocess -o %s --assemble --directory %s -n 2'
+        cmd = ('gmprocess2 -o %s --assemble --directory %s -n 2'
                % (out_dir, data_dir))
         rc, so, se = get_command_output(cmd)
         assert rc

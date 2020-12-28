@@ -95,9 +95,14 @@ def download(event, event_dir, config, directory):
         in_event_dir = os.path.join(directory, event.id)
         rup_file = get_rupture_file(in_event_dir)
         in_raw_dir = get_rawdir(in_event_dir)
+        logging.debug('in_raw_dir: %s' % in_raw_dir)
         streams, bad, terrors = directory_to_streams(in_raw_dir)
+        logging.debug('streams:')
+        logging.debug(streams)
         tcollection = StreamCollection(streams, **config['duplicate'])
         create_event_file(event, event_dir)
+    logging.debug('tcollection.describe():')
+    logging.debug(tcollection.describe())
 
     # Plot the raw waveforms
     with warnings.catch_warnings():
@@ -115,10 +120,11 @@ def download(event, event_dir, config, directory):
 
     workspace = StreamWorkspace(workname)
     workspace.addEvent(event)
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", category=H5pyDeprecationWarning)
-        workspace.addStreams(event, tcollection, label='unprocessed')
-
+    logging.debug('workspace.dataset.events:')
+    logging.debug(workspace.dataset.events)
+    workspace.addStreams(event, tcollection, label='unprocessed')
+    logging.debug('workspace.dataset.waveforms.list():')
+    logging.debug(workspace.dataset.waveforms.list())
     return (workspace, workname, tcollection, rup_file)
 
 
@@ -423,8 +429,8 @@ def save_shakemap_amps(processed, event, event_dir):
     """
     ampfile_name = None
     if processed.n_passed:
-        dataframe = streams_to_dataframe(processed,
-                                         event=event)
+        dataframe = streams_to_dataframe(
+            processed, event=event)
         ampfile_name = os.path.join(event_dir, 'shakemap.xlsx')
 
         # saving with index=False not supported by pandas
@@ -470,9 +476,10 @@ def get_shakemap_json(dataframe):
         network = row["NETID"].iloc[0]
         name = row["NAME"].iloc[0]
         source = row["SOURCE"].iloc[0]
-        geometry = {'type': 'Point',
-                    'coordinates': (lon, lat)
-                    }
+        geometry = {
+            'type': 'Point',
+            'coordinates': (lon, lat)
+        }
         sid = f'{network}.{station}'
         feature['id'] = sid
         feature['geometry'] = geometry
@@ -582,10 +589,11 @@ def plot_raw(rawdir, tcollection, event):
             ax.set_title('')
             ax.axvline(ptime, color='r')
             ax.set_xlim(left=0, right=trace.times()[-1])
-            legstr = '%s.%s.%s.%s' % (trace.stats.network,
-                                      trace.stats.station,
-                                      trace.stats.location,
-                                      trace.stats.channel)
+            legstr = '%s.%s.%s.%s' % (
+                trace.stats.network,
+                trace.stats.station,
+                trace.stats.location,
+                trace.stats.channel)
             ax.legend(labels=[legstr], frameon=True, loc='upper left')
             tbefore = event.time + arrival_time < trace.stats.starttime + 1.0
             tafter = event.time + arrival_time > trace.stats.endtime - 1.0
@@ -601,8 +609,8 @@ def plot_raw(rawdir, tcollection, event):
 
 
 def get_rupture_file(event_dir):
-    """
-    Returns the path to the rupture file, or None if there is not rupture file.
+    """Get the path to the rupture file, or None if there is not rupture file.
+
     Args:
         event_dir (str): Event directory.
     Returns:

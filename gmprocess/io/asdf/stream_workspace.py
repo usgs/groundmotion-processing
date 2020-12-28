@@ -270,6 +270,7 @@ class StreamWorkspace(object):
         base_prov = _get_person_agent(base_prov)
         base_prov = _get_software_agent(base_prov)
 
+        logging.debug(streams)
         for stream in streams:
             station = stream[0].stats['station']
             logging.info('Adding waveforms for station %s' % station)

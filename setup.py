@@ -86,7 +86,7 @@ setup(
             'gmconvert = gmprocess.bin.gmconvert:main',
             'gminfo = gmprocess.bin.gminfo:main',
             'gmp = gmprocess.bin.gmp:main',
-            'gmprocess = gmprocess.bin.gmprocess2:main',
+            'gmprocess2 = gmprocess.bin.gmprocess2:main',
             'gmsetup = gmprocess.bin.gmsetup:main',
             'gmworkspace = gmprocess.bin.gmworkspace:main',
             'list_metrics = gmprocess.bin.list_metrics:main'

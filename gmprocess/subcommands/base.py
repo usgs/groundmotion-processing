@@ -51,3 +51,10 @@ class SubcommandModule(ABC):
             self.files_created[tag].append(filename)
         else:
             self.files_created[tag] = [filename]
+
+    def _summarize_files_created(self):
+        print('\nThe following files have been created:')
+        for file_type, file_list in self.files_created.items():
+            print('File type: %s' % file_type)
+            for fname in file_list:
+                print('\t%s' % fname)

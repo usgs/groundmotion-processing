@@ -56,3 +56,6 @@ DEFAULT_NA_REP = 'nan'
 
 # Elevation to use for calculating fault distances (m)
 ELEVATION_FOR_DISTANCE_CALCS = 0.0
+
+# Processing tag format
+TAG_FMT = '%Y%m%d%H%M%S'
