@@ -1,0 +1,93 @@
+import os
+import sys
+import logging
+
+import pandas as pd
+
+from gmprocess.subcommands.base import SubcommandModule
+from gmprocess.io.fetch_utils import get_events, save_shakemap_amps
+from gmprocess.io.asdf.stream_workspace import StreamWorkspace
+
+
+class ExportShakeMapModule(SubcommandModule):
+    """Export files for ShakeMap input.
+    """
+    command_name = 'export_shakemap'
+    aliases = ('shakemap', )
+
+    arguments = [
+        {
+            'short_flag': '-e',
+            'long_flag': '--eventid',
+            'help': ('Comcat event ID. If None (default) all events in '
+                     'project data directory will be used.'),
+            'type': str,
+            'default': None,
+            'nargs': '+'
+        }
+    ]
+
+    def main(self, gmp):
+        """Export files for ShakeMap input.
+
+        Args:
+            gmp: GmpApp instance.
+        """
+        logging.info('Running subcommand \'%s\'' % self.command_name)
+
+        events = get_events(
+            eventids=gmp.args.eventid,
+            textfile=None,
+            eventinfo=None,
+            directory=gmp.data_path,
+            outdir=None
+        )
+
+        label = None
+
+        for event in events:
+            logging.info(
+                'Creating shakemap files for event %s...' % event.id)
+
+            event_dir = os.path.join(gmp.data_path, event.id)
+            workname = os.path.join(event_dir, 'workspace.hdf')
+            if not os.path.isfile(workname):
+                logging.info(
+                    'No workspace file found for event %s. Please run '
+                    'subcommand \'assemble\' to generate workspace file.'
+                    % event.id)
+                logging.info('Continuing to next event.')
+                continue
+            workspace = StreamWorkspace.open(workname)
+            labels = workspace.getLabels()
+            if len(labels):
+                labels.remove('unprocessed')
+            else:
+                logging.info('No processed waveform data in workspace. Please '
+                             'run assemble.')
+                sys.exit(1)
+
+            # If there are more than 1 processed labels, prompt user to select
+            # one.
+            if len(labels) > 1 and label is not None:
+                print('Which label do you want to use?')
+                for lab in labels:
+                    print('\t%s' % lab)
+                tmplab = input()
+                if tmplab not in labels:
+                    raise ValueError('%s not a valid label. Exiting.' % tmplab)
+                else:
+                    label = tmplab
+            else:
+                label = labels[0]
+
+            pstreams = workspace.getStreams(
+                event.id, labels=[label])
+            workspace.close()
+
+            shakemap_file, jsonfile = save_shakemap_amps(
+                pstreams, event, event_dir)
+            self.append_file('shakemap', shakemap_file)
+            self.append_file('shakemap', jsonfile)
+
+        self._summarize_files_created()

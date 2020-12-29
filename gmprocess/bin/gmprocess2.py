@@ -29,33 +29,7 @@ from gmprocess.utils.plot import summary_plots, plot_regression, plot_moveout
 from gmprocess.utils.config import get_config
 from gmprocess.utils.tables import set_precisions
 from gmprocess.utils.constants import \
-    DEFAULT_FLOAT_FORMAT, DEFAULT_NA_REP, TAG_FMT
-
-NON_IMT_COLS = set([
-    'EarthquakeId',
-    'EarthquakeTime',
-    'EarthquakeLatitude',
-    'EarthquakeLongitude',
-    'EarthquakeDepth',
-    'EarthquakeMagnitude',
-    'EarthquakeMagnitudeType'
-    'Network',
-    'DataProvider',
-    'StationCode',
-    'StationID',
-    'StationDescription',
-    'StationLatitude',
-    'StationLongitude',
-    'StationElevation',
-    'SamplingRate',
-    'EpicentralDistance',
-    'HypocentralDistance',
-    'H1Lowpass',
-    'H1Highpass',
-    'H2Lowpass',
-    'H2Highpass',
-    'SourceFile']
-)
+    DEFAULT_FLOAT_FORMAT, DEFAULT_NA_REP, TAG_FMT, NON_IMT_COLS
 
 
 class MyFormatter(argparse.RawTextHelpFormatter,
@@ -230,10 +204,10 @@ def process_event(event, outdir, pcommands,
                 if not os.path.isdir(outdir):
                     os.makedirs(outdir)
 
-                filenames = ['events'] + [
-                    imc.lower() for imc in imc_tables_formatted.keys()] + [
-                    imc.lower() + '_README' for imc in readmes.keys()] + [
-                    'fit_spectra_parameters', 'fit_spectra_parameters_README']
+                filenames = ['events'] + \
+                    [imc.lower() for imc in imc_tables_formatted.keys()] + \
+                    [imc.lower() + '_README' for imc in readmes.keys()] + \
+                    ['fit_spectra_parameters', 'fit_spectra_parameters_README']
 
                 files = [event_table_formatted] + list(
                     imc_tables_formatted.values()) + list(

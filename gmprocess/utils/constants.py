@@ -59,3 +59,30 @@ ELEVATION_FOR_DISTANCE_CALCS = 0.0
 
 # Processing tag format
 TAG_FMT = '%Y%m%d%H%M%S'
+
+
+NON_IMT_COLS = set([
+    'EarthquakeId',
+    'EarthquakeTime',
+    'EarthquakeLatitude',
+    'EarthquakeLongitude',
+    'EarthquakeDepth',
+    'EarthquakeMagnitude',
+    'EarthquakeMagnitudeType'
+    'Network',
+    'DataProvider',
+    'StationCode',
+    'StationID',
+    'StationDescription',
+    'StationLatitude',
+    'StationLongitude',
+    'StationElevation',
+    'SamplingRate',
+    'EpicentralDistance',
+    'HypocentralDistance',
+    'H1Lowpass',
+    'H1Highpass',
+    'H2Lowpass',
+    'H2Highpass',
+    'SourceFile']
+)
