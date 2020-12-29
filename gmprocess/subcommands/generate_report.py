@@ -4,6 +4,7 @@ import logging
 
 
 from gmprocess.subcommands.base import SubcommandModule
+from gmprocess.subcommands.arg_dicts import ARG_DICTS
 from gmprocess.io.fetch_utils import get_events, draw_stations_map
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.io.report import build_report_latex
@@ -18,15 +19,8 @@ class GenerateReportModule(SubcommandModule):
     aliases = ('report', )
 
     arguments = [
-        {
-            'short_flag': '-e',
-            'long_flag': '--eventid',
-            'help': ('Comcat event ID. If None (default) all events in '
-                     'project data directory will be used.'),
-            'type': str,
-            'default': None,
-            'nargs': '+'
-        }
+        ARG_DICTS['eventid'],
+        ARG_DICTS['label']
     ]
 
     def main(self, gmp):
@@ -50,69 +44,47 @@ class GenerateReportModule(SubcommandModule):
             outdir=None
         )
 
-        label = None
+        self.label = gmp.args.label
 
         for event in events:
-            event_dir = os.path.join(gmp.data_path, event.id)
+            self.eventid = event.id
+            event_dir = os.path.join(gmp.data_path, self.eventid)
             workname = os.path.join(event_dir, 'workspace.hdf')
             if not os.path.isfile(workname):
                 logging.info(
                     'No workspace file found for event %s. Please run '
                     'subcommand \'assemble\' to generate workspace file.'
-                    % event.id)
+                    % self.eventid)
                 logging.info('Continuing to next event.')
                 continue
-            workspace = StreamWorkspace.open(workname)
-            labels = workspace.getLabels()
 
-            if len(labels) > 1 and 'unprocessed' in labels:
-                labels.remove('unprocessed')
-            else:
-                logging.info('No processed waveform data in workspace. Please '
-                             'run assemble.')
-                sys.exit(1)
-
-            # If there are more than 1 processed labels, prompt user to select
-            # one.
-            if len(labels) > 1 and label is not None:
-                print('Which label do you want to use?')
-                for lab in labels:
-                    print('\t%s' % lab)
-                tmplab = input()
-                if tmplab not in labels:
-                    raise ValueError('%s not a valid label. Exiting.' % tmplab)
-                else:
-                    label = tmplab
-            else:
-                label = labels[0]
-
-            pstreams = workspace.getStreams(
-                event.id, labels=[label])
-            workspace.close()
+            self.workspace = StreamWorkspace.open(workname)
+            self._get_pstreams()
+            self.workspace.close()
 
             logging.info(
-                'Creating diagnostic plots for event %s...' % event.id)
+                'Creating diagnostic plots for event %s...' % self.eventid)
             plot_dir = os.path.join(event_dir, 'plots')
             if not os.path.isdir(plot_dir):
                 os.makedirs(plot_dir)
-            for stream in pstreams:
+            for stream in self.pstreams:
                 summary_plots(stream, plot_dir, event)
 
-            mapfile = draw_stations_map(pstreams, event, event_dir)
+            mapfile = draw_stations_map(self.pstreams, event, event_dir)
             moveoutfile = os.path.join(event_dir, 'moveout_plot.png')
-            plot_moveout(pstreams, event.latitude, event.longitude,
+            plot_moveout(self.pstreams, event.latitude, event.longitude,
                          file=moveoutfile)
             self.append_file('Station map', mapfile)
             self.append_file('Moveout plot', moveoutfile)
 
             logging.info(
-                'Generating summary report for event %s...' % event.id)
+                'Generating summary report for event %s...' % self.eventid)
 
             build_conf = gmp.conf['build_report']
             report_format = build_conf['format']
             if report_format == 'latex':
                 report_file, success = build_report_latex(
-                    pstreams,
+                    self.pstreams,
                     event_dir,
                     event,
                     config=gmp.conf

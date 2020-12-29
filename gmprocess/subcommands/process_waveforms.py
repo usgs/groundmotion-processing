@@ -3,6 +3,7 @@ import logging
 from datetime import datetime
 
 from gmprocess.subcommands.base import SubcommandModule
+from gmprocess.subcommands.arg_dicts import ARG_DICTS
 from gmprocess.io.fetch_utils import get_events
 from gmprocess.waveform_processing.processing import process_streams
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
@@ -16,15 +17,7 @@ class ProcessWaveformsModule(SubcommandModule):
     aliases = ('process', )
 
     arguments = [
-        {
-            'short_flag': '-e',
-            'long_flag': '--eventid',
-            'help': ('Comcat event ID. If None (default) all events in '
-                     'project data directory will be used.'),
-            'type': str,
-            'default': None,
-            'nargs': '+'
-        }, {
+        ARG_DICTS['eventid'], {
             'short_flag': '-l',
             'long_flag': '--label',
             'help': ('Processing label (single word, no spaces) to attach to '
@@ -70,8 +63,8 @@ class ProcessWaveformsModule(SubcommandModule):
                     'subcommand \'assemble\' to generate workspace file.')
                 logging.info('Continuing to next event.')
                 continue
-            workspace = StreamWorkspace.open(workname)
 
+            workspace = StreamWorkspace.open(workname)
             rstreams = workspace.getStreams(
                 event.id, labels=['unprocessed'])
 

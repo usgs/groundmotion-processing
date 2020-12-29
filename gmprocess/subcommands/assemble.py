@@ -2,6 +2,7 @@ import os
 import logging
 
 from gmprocess.subcommands.base import SubcommandModule
+from gmprocess.subcommands.arg_dicts import ARG_DICTS
 from gmprocess.io.fetch_utils import download
 from gmprocess.io.fetch_utils import get_events
 
@@ -12,14 +13,7 @@ class AssembleModule(SubcommandModule):
     command_name = 'assemble'
 
     arguments = [
-        {
-            'short_flag': '-e',
-            'long_flag': '--eventid',
-            'help': 'Comcat event ID.',
-            'type': str,
-            'default': None,
-            'nargs': '+'
-        }, {
+        ARG_DICTS['eventid'], {
             'short_flag': '-t',
             'long_flag': '--textfile',
             'help': (
@@ -36,15 +30,8 @@ class AssembleModule(SubcommandModule):
             'default': None,
             'nargs': 7,
             'metavar': ('ID', 'TIME', 'LAT', 'LON', 'DEPTH', 'MAG', 'MAG_TYPE')
-        }, {
-            'short_flag': '-o',
-            'long_flag': '--overwrite',
-            'help': (
-                'Overwrite any existing workspace files. Previous results '
-                'will be lost.'),
-            'default': False,
-            'action': 'store_true'
-        }, {
+        },
+        ARG_DICTS['overwrite'], {
             'short_flag': '-d',
             'long_flag': '--data-source',
             'help': (

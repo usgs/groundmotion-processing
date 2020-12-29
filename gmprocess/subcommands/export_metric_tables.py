@@ -1,9 +1,9 @@
 import os
-import sys
 import logging
 
 
 from gmprocess.subcommands.base import SubcommandModule
+from gmprocess.subcommands.arg_dicts import ARG_DICTS
 from gmprocess.io.fetch_utils import get_events
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.utils.tables import set_precisions
@@ -17,22 +17,9 @@ class ExportMetricTablesModule(SubcommandModule):
     aliases = ('mtables', )
 
     arguments = [
-        {
-            'short_flag': '-e',
-            'long_flag': '--eventid',
-            'help': ('Comcat event ID. If None (default) all events in '
-                     'project data directory will be used.'),
-            'type': str,
-            'default': None,
-            'nargs': '+'
-        }, {
-            'short_flag': '-o',
-            'long_flag': '--output-format',
-            'help': 'Output file format.',
-            'type': str,
-            'default': 'csv',
-            'choices': ['excel', 'csv']
-        }
+        ARG_DICTS['eventid'],
+        ARG_DICTS['label'],
+        ARG_DICTS['output_format']
     ]
 
     def main(self, gmp):
@@ -51,51 +38,30 @@ class ExportMetricTablesModule(SubcommandModule):
             outdir=None
         )
 
-        label = None
+        self.label = gmp.args.label
 
         for event in events:
+            self.eventid = event.id
             logging.info(
-                'Creating tables for event %s...' % event.id)
-            event_dir = os.path.join(gmp.data_path, event.id)
+                'Creating tables for event %s...' % self.eventid)
+            event_dir = os.path.join(gmp.data_path, self.eventid)
             workname = os.path.join(event_dir, 'workspace.hdf')
             if not os.path.isfile(workname):
                 logging.info(
                     'No workspace file found for event %s. Please run '
                     'subcommand \'assemble\' to generate workspace file.'
-                    % event.id)
+                    % self.eventid)
                 logging.info('Continuing to next event.')
                 continue
-            workspace = StreamWorkspace.open(workname)
-            labels = workspace.getLabels()
-            if len(labels):
-                labels.remove('unprocessed')
-            else:
-                logging.info('No processed waveform data in workspace. Please '
-                             'run assemble.')
-                sys.exit(1)
 
-            # If there are more than 1 processed labels, prompt user to select
-            # one.
-            if len(labels) > 1 and label is not None:
-                print('Which label do you want to use?')
-                for lab in labels:
-                    print('\t%s' % lab)
-                tmplab = input()
-                if tmplab not in labels:
-                    raise ValueError('%s not a valid label. Exiting.' % tmplab)
-                else:
-                    label = tmplab
-            else:
-                label = labels[0]
+            self.workspace = StreamWorkspace.open(workname)
+            self._get_pstreams()
 
-            pstreams = workspace.getStreams(
-                event.id, labels=[label])
-
-            event_table, imc_tables, readmes = workspace.getTables(
-                label, streams=pstreams, stream_label=label)
-            ev_fit_spec, fit_readme = workspace.getFitSpectraTable(
-                event.id, label, pstreams)
-            workspace.close()
+            event_table, imc_tables, readmes = self.workspace.getTables(
+                self.label, streams=self.pstreams, stream_label=None)
+            ev_fit_spec, fit_readme = self.workspace.getFitSpectraTable(
+                self.eventid, self.label, self.pstreams)
+            self.workspace.close()
 
             outdir = gmp.data_path
 

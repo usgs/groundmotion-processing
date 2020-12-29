@@ -1,8 +1,8 @@
 import os
-import sys
 import logging
 
 from gmprocess.subcommands.base import SubcommandModule
+from gmprocess.subcommands.arg_dicts import ARG_DICTS
 from gmprocess.io.fetch_utils import get_events
 from gmprocess.io.asdf.stream_workspace import \
     StreamWorkspace, format_netsta, format_nslit
@@ -16,21 +16,9 @@ class ComputeWaveformMetricsModule(SubcommandModule):
     aliases = ('wm', )
 
     arguments = [
-        {
-            'short_flag': '-e',
-            'long_flag': '--eventid',
-            'help': ('Comcat event ID. If None (default) all events in '
-                     'project data directory will be used.'),
-            'type': str,
-            'default': None,
-            'nargs': '+'
-        }, {
-            'short_flag': '-o',
-            'long_flag': '--overwrite',
-            'help': 'Overwrite existing waveform metrics if they exist.',
-            'default': False,
-            'action': 'store_true'
-        }
+        ARG_DICTS['eventid'],
+        ARG_DICTS['label'],
+        ARG_DICTS['overwrite']
     ]
 
     def main(self, gmp):
@@ -49,47 +37,26 @@ class ComputeWaveformMetricsModule(SubcommandModule):
             outdir=None
         )
 
-        label = None
+        self.label = gmp.args.label
 
         for event in events:
+            self.eventid = event.id
             logging.info(
-                'Computed waveform metrics for event %s...' % event.id)
-            event_dir = os.path.join(gmp.data_path, event.id)
+                'Computed waveform metrics for event %s...' % self.eventid)
+            event_dir = os.path.join(gmp.data_path, self.eventid)
             workname = os.path.join(event_dir, 'workspace.hdf')
             if not os.path.isfile(workname):
                 logging.info(
                     'No workspace file found for event %s. Please run '
                     'subcommand \'assemble\' to generate workspace file.'
-                    % event.id)
+                    % self.eventid)
                 logging.info('Continuing to next event.')
                 continue
-            workspace = StreamWorkspace.open(workname)
-            labels = workspace.getLabels()
-            if len(labels):
-                labels.remove('unprocessed')
-            else:
-                logging.info('No processed waveform data in workspace. Please '
-                             'run assemble.')
-                sys.exit(1)
 
-            # If there are more than 1 processed labels, prompt user to select
-            # one.
-            if len(labels) > 1 and label is not None:
-                print('Which label do you want to use?')
-                for lab in labels:
-                    print('\t%s' % lab)
-                tmplab = input()
-                if tmplab not in labels:
-                    raise ValueError('%s not a valid label. Exiting.' % tmplab)
-                else:
-                    label = tmplab
-            else:
-                label = labels[0]
+            self.workspace = StreamWorkspace.open(workname)
+            self._get_pstreams()
 
-            pstreams = workspace.getStreams(
-                event.id, labels=[label])
-
-            for stream in pstreams:
+            for stream in self.pstreams:
                 logging.info(
                     'Calculating waveform metrics for %s...' % stream.get_id())
                 summary = StationSummary.from_config(
@@ -102,12 +69,12 @@ class ComputeWaveformMetricsModule(SubcommandModule):
                     format_netsta(stream[0].stats),
                     format_nslit(stream[0].stats, stream.get_inst(), tag)
                 ])
-                workspace.insert_aux(
+                self.workspace.insert_aux(
                     xmlstr, 'WaveFormMetrics', metricpath,
                     overwrite=gmp.args.overwrite)
 
-            workspace.close()
+            self.workspace.close()
 
         logging.info('Added waveform metrics to workspace files '
-                     'with tag \'%s\'.' % label)
+                     'with tag \'%s\'.' % self.label)
         logging.info('No new files created.')

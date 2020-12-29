@@ -4,6 +4,7 @@ import logging
 
 
 from gmprocess.subcommands.base import SubcommandModule
+from gmprocess.subcommands.arg_dicts import ARG_DICTS
 from gmprocess.io.fetch_utils import get_events
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.utils.constants import DEFAULT_FLOAT_FORMAT, DEFAULT_NA_REP
@@ -16,15 +17,8 @@ class ExportFailureTablesModule(SubcommandModule):
     aliases = ('ftables', )
 
     arguments = [
-        {
-            'short_flag': '-e',
-            'long_flag': '--eventid',
-            'help': ('Comcat event ID. If None (default) all events in '
-                     'project data directory will be used.'),
-            'type': str,
-            'default': None,
-            'nargs': '+'
-        }, {
+        ARG_DICTS['eventid'],
+        ARG_DICTS['label'], {
             'short_flag': '-t',
             'long_flag': '--type',
             'help': (
@@ -38,14 +32,8 @@ class ExportFailureTablesModule(SubcommandModule):
             'type': str,
             'default': 'short',
             'choices': ['short', 'long', 'net']
-        }, {
-            'short_flag': '-o',
-            'long_flag': '--output-format',
-            'help': 'Output file format.',
-            'type': str,
-            'default': 'csv',
-            'choices': ['excel', 'csv']
-        }
+        },
+        ARG_DICTS['output_format']
     ]
 
     def main(self, gmp):
@@ -64,47 +52,25 @@ class ExportFailureTablesModule(SubcommandModule):
             outdir=None
         )
 
-        label = None
+        self.label = gmp.args.label
 
         for event in events:
+            self.eventid = event.id
             logging.info(
-                'Creating failure tables for event %s...' % event.id)
-            event_dir = os.path.join(gmp.data_path, event.id)
+                'Creating failure tables for event %s...' % self.eventid)
+            event_dir = os.path.join(gmp.data_path, self.eventid)
             workname = os.path.join(event_dir, 'workspace.hdf')
             if not os.path.isfile(workname):
                 logging.info(
                     'No workspace file found for event %s. Please run '
                     'subcommand \'assemble\' to generate workspace file.'
-                    % event.id)
+                    % self.eventid)
                 logging.info('Continuing to next event.')
                 continue
-            workspace = StreamWorkspace.open(workname)
-            labels = workspace.getLabels()
 
-            if len(labels):
-                labels.remove('unprocessed')
-            else:
-                logging.info('No processed waveform data in workspace. Please '
-                             'run assemble.')
-                sys.exit(1)
-
-            # If there are more than 1 processed labels, prompt user to select
-            # one.
-            if len(labels) > 1 and label is not None:
-                print('Which label do you want to use?')
-                for lab in labels:
-                    print('\t%s' % lab)
-                tmplab = input()
-                if tmplab not in labels:
-                    raise ValueError('%s not a valid label. Exiting.' % tmplab)
-                else:
-                    label = tmplab
-            else:
-                label = labels[0]
-
-            pstreams = workspace.getStreams(
-                event.id, labels=[label])
-            workspace.close()
+            self.workspace = StreamWorkspace.open(workname)
+            self._get_pstreams()
+            self.workspace.close()
 
             if gmp.args.type == 'short':
                 index = 'Failure reason'
@@ -116,17 +82,17 @@ class ExportFailureTablesModule(SubcommandModule):
                 index = 'Network'
                 col = ['Number of passed records', 'Number of failed records']
 
-            status_info = pstreams.get_status(gmp.args.type)
+            status_info = self.pstreams.get_status(gmp.args.type)
             base_file_name = os.path.join(
                 event_dir, 'failure_reasons_%s.csv' % gmp.args.type)
 
             if gmp.args.output_format == 'csv':
                 csvfile = base_file_name + '.csv'
                 self.append_file('Provenance', csvfile)
-                status_info.to_csv(csvfile)
+                status_info.to_csv(csvfile, header=col, index_label=index)
             else:
                 excelfile = base_file_name + '.xlsx'
                 self.append_file('Provenance', excelfile)
-                status_info.to_excel(excelfile, index=False)
+                status_info.to_excel(excelfile, header=col, index_label=index)
 
         self._summarize_files_created()
