@@ -29,7 +29,7 @@ from gmprocess.utils.plot import summary_plots, plot_regression, plot_moveout
 from gmprocess.utils.config import get_config
 from gmprocess.utils.tables import set_precisions
 from gmprocess.utils.constants import \
-    DEFAULT_FLOAT_FORMAT, DEFAULT_NA_REP, TAG_FMT, NON_IMT_COLS
+    DEFAULT_FLOAT_FORMAT, DEFAULT_NA_REP, TAG_FMT, NON_IMT_COLS, WORKSPACE_NAME
 
 
 class MyFormatter(argparse.RawTextHelpFormatter,
@@ -71,7 +71,7 @@ def process_event(event, outdir, pcommands,
     if not os.path.exists(event_dir):
         os.makedirs(event_dir)
 
-    workname = os.path.join(event_dir, 'workspace.hdf')
+    workname = os.path.join(event_dir, WORKSPACE_NAME)
     workspace_exists = os.path.isfile(workname)
     workspace_has_processed = False
     workspace = None

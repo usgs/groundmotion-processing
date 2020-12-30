@@ -1,13 +1,16 @@
 import os
+import sys
 import logging
 from datetime import datetime
 
+from dask.distributed import Client, as_completed
+
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.io.fetch_utils import get_events
 from gmprocess.waveform_processing.processing import process_streams
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.utils.constants import TAG_FMT
+from gmprocess.utils.constants import WORKSPACE_NAME
 
 
 class ProcessWaveformsModule(SubcommandModule):
@@ -16,6 +19,10 @@ class ProcessWaveformsModule(SubcommandModule):
     command_name = 'process_waveforms'
     aliases = ('process', )
 
+    # Note: do not use the ARG_DICT entry for label because the explanation is
+    # different here: here it is used to set the label adn will default to
+    # the date/time, but in subsequent subcommands it is used for selecting
+    # from existing labels.
     arguments = [
         ARG_DICTS['eventid'], {
             'short_flag': '-l',
@@ -25,13 +32,8 @@ class ProcessWaveformsModule(SubcommandModule):
                      'YYYYMMDDHHMMSS format.'),
             'type': str,
             'default': None,
-        }, {
-            'short_flag': '-n',
-            'long_flag': '--num-processes',
-            'help': 'Number of parallel processes to run over events.',
-            'type': int,
-            'default': 0,
-        }
+        },
+        ARG_DICTS['num_processes']
     ]
 
     def main(self, gmp):
@@ -42,38 +44,67 @@ class ProcessWaveformsModule(SubcommandModule):
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
 
-        events = get_events(
-            eventids=gmp.args.eventid,
-            textfile=None,
-            eventinfo=None,
-            directory=gmp.data_path,
-            outdir=None
-        )
+        self.gmp = gmp
+        self._get_events()
 
         # get the process tag from the user or define by current datetime
-        process_tag = gmp.args.label or datetime.utcnow().strftime(TAG_FMT)
-        logging.info('Processing tag: %s' % process_tag)
+        self.process_tag = (gmp.args.label or
+                            datetime.utcnow().strftime(TAG_FMT))
+        logging.info('Processing tag: %s' % self.process_tag)
 
-        for event in events:
-            event_dir = os.path.join(gmp.data_path, event.id)
-            workname = os.path.join(event_dir, 'workspace.hdf')
-            if not os.path.isfile(workname):
-                logging.info(
-                    'No workspace file found for event %s. Please run '
-                    'subcommand \'assemble\' to generate workspace file.')
-                logging.info('Continuing to next event.')
-                continue
+        if gmp.args.num_processes:
+            # parallelize processing on events
+            try:
+                client = Client(n_workers=gmp.args.num_processes)
+            except Exception as ex:
+                print(ex)
+                print("Could not create a dask client.")
+                print("To turn off paralleization, use '--num-processes 0'.")
+                sys.exit(1)
+            futures = client.map(self._process_event, self.events)
+            for result in as_completed(futures, with_results=True):
+                print(result)
+                # print('Completed event: %s' % result)
+        else:
+            for event in self.events:
+                event_dir = os.path.join(gmp.data_path, event.id)
+                workname = os.path.join(event_dir, WORKSPACE_NAME)
+                if not os.path.isfile(workname):
+                    logging.info(
+                        'No workspace file found for event %s. Please run '
+                        'subcommand \'assemble\' to generate workspace file.')
+                    logging.info('Continuing to next event.')
+                    continue
 
-            workspace = StreamWorkspace.open(workname)
-            rstreams = workspace.getStreams(
-                event.id, labels=['unprocessed'])
+                workspace = StreamWorkspace.open(workname)
+                rstreams = workspace.getStreams(
+                    event.id, labels=['unprocessed'])
 
-            logging.info('Processing \'%s\' streams for event %s...'
-                         % ('unprocessed', event.id))
-            pstreams = process_streams(rstreams, event, config=gmp.conf)
-            workspace.addStreams(event, pstreams, label=process_tag)
-            workspace.close()
+                logging.info('Processing \'%s\' streams for event %s...'
+                             % ('unprocessed', event.id))
+                pstreams = process_streams(rstreams, event, config=gmp.conf)
+                workspace.addStreams(event, pstreams, label=self.process_tag)
+                workspace.close()
 
-        logging.info('Added processed waveforms to event workspace files '
-                     'with tag \'%s\'.' % process_tag)
-        logging.info('No new files created.')
+        self._summarize_files_created()
+
+    def _process_event(self, event):
+        event_dir = os.path.join(self.gmp.data_path, event.id)
+        workname = os.path.join(event_dir, WORKSPACE_NAME)
+        if not os.path.isfile(workname):
+            logging.info(
+                'No workspace file found for event %s. Please run '
+                'subcommand \'assemble\' to generate workspace file.')
+            logging.info('Continuing to next event.')
+            return event.id
+
+        workspace = StreamWorkspace.open(workname)
+        rstreams = workspace.getStreams(
+            event.id, labels=['unprocessed'])
+
+        logging.info('Processing \'%s\' streams for event %s...'
+                     % ('unprocessed', event.id))
+        pstreams = process_streams(rstreams, event, config=self.gmp.conf)
+        workspace.addStreams(event, pstreams, label=self.process_tag)
+        workspace.close()
+        return event.id

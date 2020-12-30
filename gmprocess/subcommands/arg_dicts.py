@@ -25,11 +25,18 @@ ARG_DICTS = {
         'action': 'store_true'
     },
     'output_format': {
-        'short_flag': '-o',
+        'short_flag': '-f',
         'long_flag': '--output-format',
         'help': 'Output file format.',
         'type': str,
         'default': 'csv',
         'choices': ['excel', 'csv']
+    },
+    'num_processes': {
+        'short_flag': '-n',
+        'long_flag': '--num-processes',
+        'help': 'Number of parallel processes to run over events.',
+        'type': int,
+        'default': 0,
     }
 }

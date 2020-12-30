@@ -3,10 +3,10 @@ import logging
 
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.io.fetch_utils import get_events
 from gmprocess.io.asdf.stream_workspace import \
     StreamWorkspace, format_netsta, format_nslit
 from gmprocess.metrics.station_summary import StationSummary
+from gmprocess.utils.constants import WORKSPACE_NAME
 
 
 class ComputeWaveformMetricsModule(SubcommandModule):
@@ -29,22 +29,15 @@ class ComputeWaveformMetricsModule(SubcommandModule):
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
 
-        events = get_events(
-            eventids=gmp.args.eventid,
-            textfile=None,
-            eventinfo=None,
-            directory=gmp.data_path,
-            outdir=None
-        )
+        self.gmp = gmp
+        self._get_events()
 
-        self.label = gmp.args.label
-
-        for event in events:
+        for event in self.events:
             self.eventid = event.id
             logging.info(
                 'Computed waveform metrics for event %s...' % self.eventid)
             event_dir = os.path.join(gmp.data_path, self.eventid)
-            workname = os.path.join(event_dir, 'workspace.hdf')
+            workname = os.path.join(event_dir, WORKSPACE_NAME)
             if not os.path.isfile(workname):
                 logging.info(
                     'No workspace file found for event %s. Please run '
@@ -76,5 +69,5 @@ class ComputeWaveformMetricsModule(SubcommandModule):
             self.workspace.close()
 
         logging.info('Added waveform metrics to workspace files '
-                     'with tag \'%s\'.' % self.label)
-        logging.info('No new files created.')
+                     'with tag \'%s\'.' % self.gmp.args.label)
+        self._summarize_files_created()

@@ -1,5 +1,7 @@
 import os
+import sys
 import logging
+import glob
 
 import pandas as pd
 
@@ -39,7 +41,18 @@ class GenerateRegressionPlotModule(SubcommandModule):
         # TODO - where is this being written? Is it a requirement?
         # It appears this is being written in gmprocess2 and
         # generate_metric_tables.py, and it gets appended to when re-run.
-        event_file = os.path.join(gmp.data_path, 'events.csv')
+        event_files = glob.glob(os.path.join(gmp.data_path, '*_events.*'))
+        if len(event_files) == 1:
+            event_file = event_files[0]
+        elif len(event_files) == 0:
+            print('No event file found. Cannot build regression plot.')
+            print('Please run \'gmp export_metric_tables\'.')
+            sys.exit(1)
+        else:
+            print('Multiple event files found, please select one:')
+            for e in event_files:
+                print('\t%s' % e)
+            event_file = input('> ')
         event_table = pd.read_csv(event_file).drop_duplicates()
 
         # make a regression plot of the most common imc/imt combination we
@@ -58,12 +71,15 @@ class GenerateRegressionPlotModule(SubcommandModule):
             pref_imts = ['PGA', 'PGV', 'SA(1.0)']
             found_imc = None
             found_imt = None
+            tab_key_list = list(imc_tables.keys())
+            tab_key_imcs = [k.split('_')[-1] for k in tab_key_list]
+            tab_key_dict = dict(zip(tab_key_imcs, tab_key_list))
             for imc in pref_imcs:
-                if imc in imc_tables:
+                if imc in tab_key_imcs:
                     for imt in pref_imts:
-                        if imt in imc_tables[imc].columns:
+                        if imt in imc_tables[tab_key_dict[imc]].columns:
                             found_imt = imt
-                            found_imc = imc
+                            found_imc = tab_key_dict[imc]
                             break
                     if found_imc:
                         break

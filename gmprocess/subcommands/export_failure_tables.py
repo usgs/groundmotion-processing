@@ -1,13 +1,11 @@
 import os
-import sys
 import logging
 
 
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.io.fetch_utils import get_events
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
-from gmprocess.utils.constants import DEFAULT_FLOAT_FORMAT, DEFAULT_NA_REP
+from gmprocess.utils.constants import WORKSPACE_NAME
 
 
 class ExportFailureTablesModule(SubcommandModule):
@@ -44,22 +42,15 @@ class ExportFailureTablesModule(SubcommandModule):
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
 
-        events = get_events(
-            eventids=gmp.args.eventid,
-            textfile=None,
-            eventinfo=None,
-            directory=gmp.data_path,
-            outdir=None
-        )
+        self.gmp = gmp
+        self._get_events()
 
-        self.label = gmp.args.label
-
-        for event in events:
+        for event in self.events:
             self.eventid = event.id
             logging.info(
                 'Creating failure tables for event %s...' % self.eventid)
-            event_dir = os.path.join(gmp.data_path, self.eventid)
-            workname = os.path.join(event_dir, 'workspace.hdf')
+            event_dir = os.path.join(self.gmp.data_path, self.eventid)
+            workname = os.path.join(event_dir, WORKSPACE_NAME)
             if not os.path.isfile(workname):
                 logging.info(
                     'No workspace file found for event %s. Please run '
@@ -72,27 +63,30 @@ class ExportFailureTablesModule(SubcommandModule):
             self._get_pstreams()
             self.workspace.close()
 
-            if gmp.args.type == 'short':
+            if self.gmp.args.type == 'short':
                 index = 'Failure reason'
                 col = ['Number of records']
-            elif gmp.args.type == 'long':
+            elif self.gmp.args.type == 'long':
                 index = 'Station ID'
                 col = ['Failure reason']
-            elif gmp.args.type == 'net':
+            elif self.gmp.args.type == 'net':
                 index = 'Network'
                 col = ['Number of passed records', 'Number of failed records']
 
-            status_info = self.pstreams.get_status(gmp.args.type)
+            status_info = self.pstreams.get_status(self.gmp.args.type)
             base_file_name = os.path.join(
-                event_dir, 'failure_reasons_%s.csv' % gmp.args.type)
+                event_dir,
+                '%s_%s_failure_reasons_%s' % (
+                    gmp.project, gmp.args.label, self.gmp.args.type)
+            )
 
-            if gmp.args.output_format == 'csv':
+            if self.gmp.args.output_format == 'csv':
                 csvfile = base_file_name + '.csv'
-                self.append_file('Provenance', csvfile)
+                self.append_file('Failure table', csvfile)
                 status_info.to_csv(csvfile, header=col, index_label=index)
             else:
                 excelfile = base_file_name + '.xlsx'
-                self.append_file('Provenance', excelfile)
+                self.append_file('Failure table', excelfile)
                 status_info.to_excel(excelfile, header=col, index_label=index)
 
         self._summarize_files_created()

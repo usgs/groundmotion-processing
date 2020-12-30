@@ -310,7 +310,7 @@ class StreamWorkspace(object):
                 # nested dictionaries.
                 # Also, this seems like a lot of effort
                 # just to store a string in HDF, but other
-                # approached failed. Suggestions are welcome.
+                # approaches failed. Suggestions are welcome.
                 jdict = _stringify_dict(jdict)
                 jsonbytes = json.dumps(jdict).encode('utf-8')
                 jsonarray = np.frombuffer(jsonbytes, dtype=np.uint8)

@@ -3,8 +3,9 @@ import logging
 
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.io.fetch_utils import get_events, save_shakemap_amps
+from gmprocess.io.fetch_utils import save_shakemap_amps
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
+from gmprocess.utils.constants import WORKSPACE_NAME
 
 
 class ExportShakeMapModule(SubcommandModule):
@@ -26,23 +27,16 @@ class ExportShakeMapModule(SubcommandModule):
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
 
-        events = get_events(
-            eventids=gmp.args.eventid,
-            textfile=None,
-            eventinfo=None,
-            directory=gmp.data_path,
-            outdir=None
-        )
+        self.gmp = gmp
+        self._get_events()
 
-        self.label = gmp.args.label
-
-        for event in events:
+        for event in self.events:
             self.eventid = event.id
             logging.info(
                 'Creating shakemap files for event %s...' % self.eventid)
 
             event_dir = os.path.join(gmp.data_path, event.id)
-            workname = os.path.join(event_dir, 'workspace.hdf')
+            workname = os.path.join(event_dir, WORKSPACE_NAME)
             if not os.path.isfile(workname):
                 logging.info(
                     'No workspace file found for event %s. Please run '
@@ -55,6 +49,9 @@ class ExportShakeMapModule(SubcommandModule):
             self._get_pstreams()
             self.workspace.close()
 
+            # TODO: re-write this so that it uses the already computer values
+            # in self.workspace.dataset.auxiliary_data.WaveFormMetrics
+            # rather than recomputing the metrics from self.pstreams.
             shakemap_file, jsonfile = save_shakemap_amps(
                 self.pstreams, event, event_dir)
             self.append_file('shakemap', shakemap_file)

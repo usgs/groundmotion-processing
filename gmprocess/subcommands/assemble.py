@@ -4,7 +4,7 @@ import logging
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
 from gmprocess.io.fetch_utils import download
-from gmprocess.io.fetch_utils import get_events
+from gmprocess.utils.constants import WORKSPACE_NAME
 
 
 class AssembleModule(SubcommandModule):
@@ -30,8 +30,7 @@ class AssembleModule(SubcommandModule):
             'default': None,
             'nargs': 7,
             'metavar': ('ID', 'TIME', 'LAT', 'LON', 'DEPTH', 'MAG', 'MAG_TYPE')
-        },
-        ARG_DICTS['overwrite'], {
+        }, {
             'short_flag': '-d',
             'long_flag': '--data-source',
             'help': (
@@ -41,7 +40,8 @@ class AssembleModule(SubcommandModule):
                 'containing data'),
             'type': str,
             'default': None
-        }
+        },
+        ARG_DICTS['overwrite']
     ]
 
     def main(self, gmp):
@@ -52,44 +52,18 @@ class AssembleModule(SubcommandModule):
             gmp: GmpApp instance.
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
+        self.gmp = gmp
 
-        if gmp.args.data_source is None:
-            # Use project directory from config
-            temp_dir = gmp.data_path
-            if not os.path.isdir(temp_dir):
-                raise OSError('No such directory: %s' % temp_dir)
-        elif gmp.args.data_source == 'download':
-            temp_dir = None
-        else:
-            temp_dir = gmp.args.data_source
-            if not os.path.isdir(temp_dir):
-                raise OSError('No such directory: %s' % temp_dir)
+        self._get_events()
+        print(self.events)
 
-        # NOTE: as currently written, `get_events` will do the following,
-        #  **stopping** at the first condition that is met:
-        #     1) Use event ids if event id is not None
-        #     2) Use textfile if it is not None
-        #     3) Use event info if it is not None
-        #     4) Use directory if it is not None
-        #     5) Use outdir if it is not None
-        # So in order to ever make use of the 'outdir' argument, we need to
-        # set 'directory' to None, but otherwise set it to proj_data_path.
-        #
-        # This whole thing is really hacky and should be refactored!!
-        events = get_events(
-            eventids=gmp.args.eventid,
-            textfile=gmp.args.textfile,
-            eventinfo=gmp.args.info,
-            directory=temp_dir,
-            outdir=gmp.data_path
-        )
-        logging.info('Number of events to assemble: %s' % len(events))
-        for event in events:
+        logging.info('Number of events to assemble: %s' % len(self.events))
+        for event in self.events:
             logging.info('Starting event: %s' % event.id)
             event_dir = os.path.join(gmp.data_path, event.id)
             if not os.path.exists(event_dir):
                 os.makedirs(event_dir)
-            workname = os.path.join(event_dir, 'workspace.hdf')
+            workname = os.path.join(event_dir, WORKSPACE_NAME)
             workspace_exists = os.path.isfile(workname)
             if workspace_exists:
                 logging.info("ASDF exists: %s" % workname)
@@ -110,7 +84,7 @@ class AssembleModule(SubcommandModule):
                 event=event,
                 event_dir=event_dir,
                 config=gmp.conf,
-                directory=temp_dir
+                directory=self.download_dir
             )
             workspace.close()
             self.append_file('Workspace', workname)

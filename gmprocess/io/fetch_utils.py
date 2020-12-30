@@ -30,7 +30,7 @@ from gmprocess.io.read_directory import directory_to_streams
 from gmprocess.io.global_fetcher import fetch_data
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.utils.event import ScalarEvent
-from gmprocess.utils.constants import RUPTURE_FILE
+from gmprocess.utils.constants import RUPTURE_FILE, WORKSPACE_NAME
 
 TIMEFMT2 = '%Y-%m-%dT%H:%M:%S.%f'
 
@@ -112,7 +112,7 @@ def download(event, event_dir, config, directory):
             plot_raw(rawdir, tcollection, event)
 
     # Create the workspace file and put the unprocessed waveforms in it
-    workname = os.path.join(event_dir, 'workspace.hdf')
+    workname = os.path.join(event_dir, WORKSPACE_NAME)
 
     # Remove any existing workspace file
     if os.path.isfile(workname):

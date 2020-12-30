@@ -1,5 +1,4 @@
 import os
-import sys
 import logging
 
 
@@ -7,7 +6,7 @@ from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
 from gmprocess.io.fetch_utils import get_events
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
-from gmprocess.utils.constants import DEFAULT_FLOAT_FORMAT, DEFAULT_NA_REP
+from gmprocess.utils.constants import WORKSPACE_NAME
 
 
 class ExportProvenanceTablesModule(SubcommandModule):
@@ -30,22 +29,15 @@ class ExportProvenanceTablesModule(SubcommandModule):
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
 
-        events = get_events(
-            eventids=gmp.args.eventid,
-            textfile=None,
-            eventinfo=None,
-            directory=gmp.data_path,
-            outdir=None
-        )
+        self.gmp = gmp
+        self._get_events()
 
-        self.label = gmp.args.label
-
-        for event in events:
+        for event in self.events:
             self.eventid = event.id
             logging.info(
                 'Creating provenance tables for event %s...' % self.eventid)
             event_dir = os.path.join(gmp.data_path, self.eventid)
-            workname = os.path.join(event_dir, 'workspace.hdf')
+            workname = os.path.join(event_dir, WORKSPACE_NAME)
             if not os.path.isfile(workname):
                 logging.info(
                     'No workspace file found for event %s. Please run '
@@ -58,15 +50,16 @@ class ExportProvenanceTablesModule(SubcommandModule):
             self._get_pstreams()
 
             provdata = self.workspace.getProvenance(
-                self.eventid, labels=self.label)
+                self.eventid, labels=self.gmp.args.label)
             self.workspace.close()
 
+            basename = '%s_%s_provenance' % (gmp.project, gmp.args.label)
             if gmp.args.output_format == 'csv':
-                csvfile = os.path.join(event_dir, 'provenance.csv')
+                csvfile = os.path.join(event_dir, '%s.csv' % basename)
                 self.append_file('Provenance', csvfile)
                 provdata.to_csv(csvfile, index=False)
             else:
-                excelfile = os.path.join(event_dir, 'provenance.xlsx')
+                excelfile = os.path.join(event_dir, '%s.xlsx' % basename)
                 self.append_file('Provenance', excelfile)
                 provdata.to_excel(excelfile, index=False)
 
