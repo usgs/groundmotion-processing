@@ -35,10 +35,9 @@ class ProjectsModule(SubcommandModule):
         }, {
             'short_flag': '-c',
             'long_flag': '--create',
-            'help': 'Create new project PROJECT and switch to it.',
-            'type': str,
-            'metavar': 'PROJECT',
-            'default': None
+            'help': 'Create a project and switch to it.',
+            'action': 'store_true',
+            'default': False
         }, {
             'short_flag': '-d',
             'long_flag': '--delete',
@@ -63,14 +62,9 @@ class ProjectsModule(SubcommandModule):
         configfile = gmp.PROJECTS_FILE
 
         if gmp.args.create:
-            project = gmp.args.create
-            if 'projects' in config and project in config['projects']:
-                msg = ('Project %s already in %s.  Run %s -l to see available '
-                       'projects.')
-                print(msg % (project, configfile, self.command_name))
-                sys.exit(1)
-            create(config, project)
+            create(config)
             sys.exit(0)
+
         config = check_project_config(config)
 
         if args.list:
@@ -207,7 +201,7 @@ def check_project_config(config):
     return config
 
 
-def create(config, project):
+def create(config):
     """
     Args:
         config (ConfigObj):
@@ -215,7 +209,12 @@ def create(config, project):
         project (str):
             Project name.
     """
-
+    project = input('Please enter a project title: ')
+    if 'projects' in config and project in config['projects']:
+        msg = ('Project %s already in %s.  Run \'projects -l\' to see '
+               'available projects.')
+        print(msg % (project, config))
+        sys.exit(1)
     default_conf, default_data = get_default_project_paths(project)
     new_conf_path, new_data_path = \
         set_project_paths(default_conf, default_data)
@@ -242,8 +241,8 @@ def create(config, project):
           'to the config file and reported in the provenance of the data '
           'processed in this project.')
     user_info = {}
-    user_info['name'] = input('\tName:')
-    user_info['email'] = input('\tEmail:')
+    user_info['name'] = input('\tName: ')
+    user_info['email'] = input('\tEmail: ')
     gmp_conf['user'] = user_info
     proj_conf_file = os.path.join(new_conf_path, 'config.yml')
     with open(proj_conf_file, 'w') as yf:

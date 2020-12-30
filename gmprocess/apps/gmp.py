@@ -40,7 +40,11 @@ class GmpApp(object):
               easier to deal with.
     """
 
-    PROJECTS_PATH = os.path.join(os.path.expanduser('~'), '.gmp')
+    # Try not to let tests interfere with actual system:
+    if 'CALLED_FROM_PYTEST' not in os.environ:
+        PROJECTS_PATH = os.path.join(os.path.expanduser('~'), '.gmp')
+    else:
+        PROJECTS_PATH = os.path.join(os.getcwd(), 'pytest_gmp_proj_dir')
     PROJECTS_FILE = os.path.join(PROJECTS_PATH, 'projects.conf')
 
     def __init__(self):
@@ -51,8 +55,6 @@ class GmpApp(object):
         logging.debug('Logging level includes DEBUG.')
 
     def main(self):
-        # Putting this here because `execute` needs to happen after logging
-        # is setup.
         if self.args.subcommand is None:
             self.parser.print_help()
         else:
@@ -67,7 +69,7 @@ class GmpApp(object):
         if not os.path.isfile(self.PROJECTS_FILE):
             # If projects.conf file doesn't exist then we need to run the
             # initial setup.
-            print('No projects config file detected. Running initial setup...')
+            print('No project config file detected. Running initial setup...')
             self._initial_setup()
 
         self.projects_conf = ConfigObj(self.PROJECTS_FILE)
@@ -89,10 +91,13 @@ class GmpApp(object):
         """
         if not os.path.isdir(self.PROJECTS_PATH):
             os.mkdir(self.PROJECTS_PATH)
-        project_name = input('Please enter a project title:')
         empty_conf = ConfigObj()
         empty_conf.filename = self.PROJECTS_FILE
-        create(empty_conf, project_name)
+        create(empty_conf)
+        # Need to exit here because if gmp projects -c is called when there is
+        # no prior setup, the user would otherwise be forced to setup two
+        # projects.
+        sys.exit(0)
 
     def _parse_command_line(self):
         """Parse command line arguments.

@@ -2,9 +2,10 @@ ARG_DICTS = {
     'label': {
         'short_flag': '-l',
         'long_flag': '--label',
-        'help': ('Processing label. If None (default) then we will use '
-                     'the unprocessed lable if there is only one, and prompt '
-                     'you to select one otherwise.'),
+        'help': ('Processing label. If None (default) then we will diregard '
+                 'the unprocessed label, and if there is only one remaining '
+                 'label then we will it. If there are multiple remaining '
+                 'labels then we will prmpt you to select one.'),
         'type': str,
         'default': None,
     },
@@ -30,7 +31,8 @@ ARG_DICTS = {
         'help': 'Output file format.',
         'type': str,
         'default': 'csv',
-        'choices': ['excel', 'csv']
+        'choices': ['excel', 'csv'],
+        'metavar': 'FORMAT'
     },
     'num_processes': {
         'short_flag': '-n',
@@ -38,5 +40,6 @@ ARG_DICTS = {
         'help': 'Number of parallel processes to run over events.',
         'type': int,
         'default': 0,
+        'metavar': 'n'
     }
 }

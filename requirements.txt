@@ -20,6 +20,7 @@ ps2ff
 pyasdf
 pytest
 pytest-cov
+pytest-console-scripts
 pyyaml
 scipy
 setuptools-scm
