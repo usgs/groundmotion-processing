@@ -12,13 +12,15 @@ from invutils import get_inventory
 
 def test_trace():
     data = np.random.rand(1000)
-    header = {'sampling_rate': 1,
-              'npts': len(data),
-              'network': 'US',
-              'location': '11',
-              'station': 'ABCD',
-              'channel': 'HN1',
-              'starttime': UTCDateTime(2010, 1, 1, 0, 0, 0)}
+    header = {
+        'sampling_rate': 1,
+        'npts': len(data),
+        'network': 'US',
+        'location': '11',
+        'station': 'ABCD',
+        'channel': 'HN1',
+        'starttime': UTCDateTime(2010, 1, 1, 0, 0, 0)
+    }
     inventory = get_inventory()
     invtrace = StationTrace(data=data,
                             header=header, inventory=inventory)
@@ -32,6 +34,9 @@ def test_trace():
     assert invtrace.getParameter('failed')
     assert invtrace.getParameter('corner_frequencies') == [1, 2, 3]
     assert invtrace.getParameter('metadata') == {'name': 'Fred'}
+
+    prov = invtrace.getProvSeries()
+    assert prov[0] == 'demean'
 
 
 if __name__ == '__main__':

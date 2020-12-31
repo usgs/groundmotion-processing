@@ -317,8 +317,18 @@ def get_events(eventids, textfile, eventinfo, directory,
     """
     events = []
     if eventids is not None:
+        # Get list of events from directory if it has been provided
+        if directory is not None:
+            tevents = events_from_directory(directory)
+        elif outdir is not None:
+            tevents = events_from_directory(outdir)
         for eventid in eventids:
-            event = get_event_object(eventid)
+            if len(tevents):
+                event = [e for e in tevents if e.id == eventid][0]
+            if not len(event):
+                # This connects to comcat to get event, does not check for a
+                # local json file
+                event = get_event_object(eventid)
             events.append(event)
     elif textfile is not None:
         events = parse_event_file(textfile)
@@ -334,44 +344,35 @@ def get_events(eventids, textfile, eventinfo, directory,
         event.fromParams(eid, time, lat, lon, dep, mag, mag_type)
         events = [event]
     elif directory is not None:
-        eventfiles = get_event_files(directory)
-        if not len(eventfiles):
-            eventids = [f for f in os.listdir(directory)
-                        if not f.startswith('.')]
-            for eventid in eventids:
-                try:
-                    event = get_event_object(eventid)
-                    events.append(event)
-
-                    # If the event ID has been updated, make sure to rename
-                    # the source folder and issue a warning to the user
-                    if event.id != eventid:
-                        old_dir = os.path.join(directory, eventid)
-                        new_dir = os.path.join(directory, event.id)
-                        os.rename(old_dir, new_dir)
-                        logging.warn('Directory %s has been renamed to %s.' %
-                                     (old_dir, new_dir))
-                except BaseException:
-                    logging.warning(
-                        'Could not get info for event id: %s' % eventid
-                    )
-        else:
-            events = read_event_json_files(eventfiles)
-
+        events = events_from_directory(directory)
     elif outdir is not None:
-        eventfiles = get_event_files(outdir)
-        if not len(eventfiles):
-            eventids = os.listdir(outdir)
-            for eventid in eventids:
-                try:
-                    event = get_event_object(eventid)
-                    events.append(event)
-                except BaseException:
-                    logging.warning(
-                        'Could not get info for event id: %s' % eventid
-                    )
-        else:
-            events = read_event_json_files(eventfiles)
+        events = events_from_directory(outdir)
+    return events
+
+
+def events_from_directory(dir):
+    events = []
+    eventfiles = get_event_files(dir)
+    if len(eventfiles):
+        events = read_event_json_files(eventfiles)
+    else:
+        eventids = [f for f in os.listdir(dir) if not f.startswith('.')]
+        for eventid in eventids:
+            try:
+                event = get_event_object(eventid)
+                events.append(event)
+
+                # If the event ID has been updated, make sure to rename
+                # the source folder and issue a warning to the user
+                if event.id != eventid:
+                    old_dir = os.path.join(dir, eventid)
+                    new_dir = os.path.join(dir, event.id)
+                    os.rename(old_dir, new_dir)
+                    logging.warn('Directory %s has been renamed to %s.' %
+                                 (old_dir, new_dir))
+            except BaseException:
+                logging.warning(
+                    'Could not get info for event id: %s' % eventid)
 
     return events
 
