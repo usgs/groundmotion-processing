@@ -35,7 +35,7 @@ class ComputeWaveformMetricsModule(SubcommandModule):
         for event in self.events:
             self.eventid = event.id
             logging.info(
-                'Computed waveform metrics for event %s...' % self.eventid)
+                'Computing waveform metrics for event %s...' % self.eventid)
             event_dir = os.path.join(gmp.data_path, self.eventid)
             workname = os.path.join(event_dir, WORKSPACE_NAME)
             if not os.path.isfile(workname):

@@ -79,7 +79,7 @@ class GenerateRegressionPlotModule(SubcommandModule):
                     for imt in pref_imts:
                         if imt in imc_tables[tab_key_dict[imc]].columns:
                             found_imt = imt
-                            found_imc = tab_key_dict[imc]
+                            found_imc = imc
                             break
                     if found_imc:
                         break
@@ -92,10 +92,13 @@ class GenerateRegressionPlotModule(SubcommandModule):
                 found_imt = imtlist[0]
 
             if found_imc and found_imt:
-                pngfile = '%s_%s.png' % (found_imc, found_imt)
+                pngfile = (
+                    'regression_%s_%s.png' %
+                    (found_imc, found_imt)
+                )
                 regression_file = os.path.join(gmp.data_path, pngfile)
                 plot_regression(event_table, found_imc,
-                                imc_tables[found_imc],
+                                imc_tables[tab_key_dict[found_imc]],
                                 found_imt,
                                 regression_file,
                                 distance_metric='EpicentralDistance',

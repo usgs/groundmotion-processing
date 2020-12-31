@@ -29,8 +29,17 @@ def test_assemble(script_runner):
         external_source = pkg_resources.resource_filename(
             'gmprocess', os.path.join('data', 'testdata', 'demo2'))
         ret = script_runner.run(
-            'gmp', 'assemble', '-e', 'usp000a1b0', '-d', external_source)
+            'gmp', 'assemble', '-e', 'ci38457511', '-d', external_source)
         assert ret.success
+
+        # Check that output files are created
+        events = ['ci38457511', 'ci38038071']
+        out_names = ['workspace.h5']
+        for event in events:
+            for outname in out_names:
+                dfile = os.path.join(ddir, event, outname)
+                print(dfile)
+                assert os.path.isfile(dfile)
 
     except Exception as ex:
         raise ex

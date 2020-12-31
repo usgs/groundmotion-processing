@@ -47,7 +47,7 @@ class ComputeStationMetricsModule(SubcommandModule):
 
         for event in self.events:
             self.eventid = event.id
-            logging.info('Computed station metrics for event %s...'
+            logging.info('Computing station metrics for event %s...'
                          % self.eventid)
             event_dir = os.path.join(gmp.data_path, self.eventid)
             workname = os.path.join(event_dir, WORKSPACE_NAME)
