@@ -25,6 +25,7 @@ pyyaml
 scipy
 setuptools-scm
 requests
+vcrpy
 autopep8
 flake8
 pyflakes
