@@ -624,7 +624,7 @@ class StreamCollection(object):
             failure_reasons = pd.Series(
                 [next(tr for tr in st if tr.hasParameter('failure')).
                     getParameter('failure')['reason'] for st in self.streams
-                    if not st.passed])
+                    if not st.passed], dtype=str)
             return failure_reasons.value_counts()
         elif status == 'net':
             failure_dict = {}
