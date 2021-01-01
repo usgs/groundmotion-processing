@@ -179,7 +179,7 @@ def fit_spectra(st, origin, kappa=0.035,
                 'moment_lnsd': sd[0],
                 'magnitude': magnitude_fit,
                 'f0': f0_fit,
-                'minimize_message': result.message.decode(),
+                'minimize_message': result.message,
                 'minimize_success': result.success,
                 'mean_squared_error': mean_squared_error,
                 'R2': r_squared

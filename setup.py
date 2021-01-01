@@ -1,9 +1,8 @@
 
+from setuptools import setup
 import os
 from distutils.extension import Extension
-from Cython.Distutils import build_ext
 from Cython.Build import cythonize
-from setuptools import setup
 import glob
 import numpy
 
