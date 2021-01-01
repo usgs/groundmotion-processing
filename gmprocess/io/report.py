@@ -209,7 +209,7 @@ def build_report_latex(sc, directory, origin, config=None):
 
     res = False
     # Do not save report if running tests
-    if 'CALLED_FROM_PYTEST' not in os.environ:
+    if os.getenv('CALLED_FROM_PYTEST') is None:
 
         # Set working directory to be the event subdirectory
         current_directory = os.getcwd()
