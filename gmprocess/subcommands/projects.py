@@ -65,6 +65,7 @@ class ProjectsModule(SubcommandModule):
             create(config)
             sys.exit(0)
 
+        print('*** check_project_config')
         config = check_project_config(config)
 
         if args.list:
@@ -209,6 +210,7 @@ def create(config):
         project (str):
             Project name.
     """
+    print('*** projects.create')
     project = input('Please enter a project title: ')
     if 'projects' in config and project in config['projects']:
         msg = ('Project %s already in %s.  Run \'projects -l\' to see '
@@ -227,6 +229,7 @@ def create(config):
         'data_path': new_data_path
     }
     config['project'] = project
+    print('*** config.write')
     config.write()
     sproj = Project(project, config['projects'][project])
     print('\nCreated project: %s' % (sproj))
@@ -234,7 +237,7 @@ def create(config):
     # Sart with production conf from repository, then add user info
     data_path = pkg_resources.resource_filename('gmprocess', 'data')
     current_conf = os.path.join(data_path, CONFIG_FILE_PRODUCTION)
-    print('reading %s' % current_conf)
+    print('*** loading %s' % current_conf)
     with open(current_conf, 'rt', encoding='cp850') as f:
         gmp_conf = yaml.load(f, Loader=yaml.SafeLoader)
 
@@ -246,5 +249,6 @@ def create(config):
     user_info['email'] = input('\tEmail: ')
     gmp_conf['user'] = user_info
     proj_conf_file = os.path.join(new_conf_path, 'config.yml')
+    print('*** dumping gmp_conf')
     with open(proj_conf_file, 'w') as yf:
         yaml.dump(gmp_conf, yf, Dumper=yaml.SafeDumper)
