@@ -4,11 +4,13 @@ import os
 import shutil
 import pkg_resources
 
+from gmprocess.utils import constants
+
 
 def test_assemble(script_runner):
     try:
         # Need to create profile first.
-        cdir = 'pytest_gmp_proj_dir'
+        cdir = constants.PROJECTS_PATH_TEST
         ddir = pkg_resources.resource_filename(
             'gmprocess', os.path.join('data', 'testdata', 'demo'))
         setup_inputs = io.StringIO(
@@ -44,7 +46,7 @@ def test_assemble(script_runner):
     except Exception as ex:
         raise ex
     finally:
-        shutil.rmtree('pytest_gmp_proj_dir')
+        shutil.rmtree(constants.PROJECTS_PATH_TEST)
         # Remove workspace and image files
         pattern = ['workspace.h5', '.png']
         for root, _, files in os.walk(ddir):

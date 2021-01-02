@@ -2,6 +2,8 @@
 import io
 import shutil
 
+from gmprocess.utils import constants
+
 
 def test_projects(script_runner):
     try:
@@ -33,7 +35,7 @@ def test_projects(script_runner):
     except Exception as ex:
         raise ex
     finally:
-        shutil.rmtree('pytest_gmp_proj_dir')
+        shutil.rmtree(constants.PROJECTS_PATH_TEST)
 
 
 if __name__ == '__main__':

@@ -15,6 +15,7 @@ from gmprocess.utils.config import get_config
 from gmprocess.utils.logging import setup_logger
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.projects import create
+from gmprocess.utils import constants
 
 
 class GmpApp(object):
@@ -41,11 +42,11 @@ class GmpApp(object):
     """
 
     # Try not to let tests interfere with actual system:
-    if (('CALLED_FROM_PYTEST' not in os.environ) or
-            (os.getenv('CALLED_FROM_PYTEST') is None)):
-        PROJECTS_PATH = os.path.join(os.path.expanduser('~'), '.gmp')
+    if os.getenv('CALLED_FROM_PYTEST') is None:
+        PROJECTS_PATH = constants.PROJECTS_PATH
     else:
-        PROJECTS_PATH = os.path.join(os.getcwd(), 'pytest_gmp_proj_dir')
+        PROJECTS_PATH = constants.PROJECTS_PATH_TEST
+
     PROJECTS_FILE = os.path.join(PROJECTS_PATH, 'projects.conf')
 
     def __init__(self):

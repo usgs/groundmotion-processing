@@ -1,4 +1,8 @@
 import scipy.constants as sp
+import os
+
+PROJECTS_PATH = os.path.join(os.path.expanduser('~'), '.gmp')
+PROJECTS_PATH_TEST = os.path.join(os.path.expanduser('~'), 'gmptest')
 
 CONFIG_FILE_TEST = 'config_test.yml'
 CONFIG_FILE_PRODUCTION = 'config_production.yml'

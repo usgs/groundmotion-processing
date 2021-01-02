@@ -4,11 +4,13 @@ import os
 import shutil
 import pkg_resources
 
+from gmprocess.utils import constants
+
 
 def test_process_waveforms(script_runner):
     try:
         # Need to create profile first.
-        cdir = 'pytest_gmp_proj_dir'
+        cdir = constants.PROJECTS_PATH_TEST
         ddir = pkg_resources.resource_filename(
             'gmprocess', os.path.join('data', 'testdata',
                                       'demo_steps', 'process_waveforms'))
@@ -41,7 +43,7 @@ def test_process_waveforms(script_runner):
     except Exception as ex:
         raise ex
     finally:
-        shutil.rmtree('pytest_gmp_proj_dir')
+        shutil.rmtree(constants.PROJECTS_PATH_TEST)
         # Move the hdf files back
         events = ['ci38038071', 'ci38457511']
         for event in events:

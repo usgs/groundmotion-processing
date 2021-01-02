@@ -66,8 +66,7 @@ def get_config(config_file=None, section=None):
     """
 
     if config_file is None:
-        if (('CALLED_FROM_PYTEST' in os.environ) or
-                (os.getenv('CALLED_FROM_PYTEST') is not None)):
+        if os.getenv('CALLED_FROM_PYTEST') is not None:
             file_to_use = CONFIG_FILE_TEST
         else:
             file_to_use = CONFIG_FILE_PRODUCTION

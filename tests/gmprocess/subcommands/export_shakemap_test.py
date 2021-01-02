@@ -4,11 +4,13 @@ import os
 import shutil
 import pkg_resources
 
+from gmprocess.utils import constants
+
 
 def test_export_shakemap(script_runner):
     try:
         # Need to create profile first.
-        cdir = 'pytest_gmp_proj_dir'
+        cdir = constants.PROJECTS_PATH_TEST
         ddir = pkg_resources.resource_filename(
             'gmprocess', os.path.join('data', 'testdata',
                                       'demo_steps', 'exports'))
@@ -32,7 +34,7 @@ def test_export_shakemap(script_runner):
     except Exception as ex:
         raise ex
     finally:
-        shutil.rmtree('pytest_gmp_proj_dir')
+        shutil.rmtree(constants.PROJECTS_PATH_TEST)
         # Remove created files
         events = ['ci38457511', 'ci38038071']
         out_names = ['shakemap.xlsx', 'gmprocess_dat.json']
