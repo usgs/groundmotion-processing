@@ -238,7 +238,7 @@ def create(config):
     data_path = pkg_resources.resource_filename('gmprocess', 'data')
     current_conf = os.path.join(data_path, CONFIG_FILE_PRODUCTION)
     print('*** loading %s' % current_conf)
-    with open(current_conf, 'rt', encoding='cp850') as f:
+    with open(current_conf, 'rt') as f:
         gmp_conf = yaml.load(f, Loader=yaml.SafeLoader)
 
     print('Please enter your name and email. This informaitn will be added '

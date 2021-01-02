@@ -9,7 +9,7 @@ from gmprocess.utils import constants
 def test_gmp(script_runner):
     try:
         # Need to create profile first.
-        setup_inputs = io.StringIO("test\n\n\nname\nemail\n")
+        setup_inputs = io.StringIO("test\r\r\rname\remail\r")
         ret = script_runner.run('gmp', 'projects', '-c', stdin=setup_inputs)
         assert ret.success
 
