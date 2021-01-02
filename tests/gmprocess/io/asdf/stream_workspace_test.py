@@ -257,6 +257,10 @@ def _test_metrics2():
 
 
 def test_metrics():
+    print('\ntest_metrics')
+    print('CALLED_FROM_PYTEST' in os.environ)
+    print(os.getenv('CALLED_FROM_PYTEST'))
+    print('\n')
     eventid = 'usb000syza'
     datafiles, event = read_data_dir('knet', eventid, '*')
     datadir = os.path.split(datafiles[0])[0]
@@ -425,7 +429,7 @@ def add_processing(config, keys):
 
 
 if __name__ == '__main__':
-    # os.environ['CALLED_FROM_PYTEST'] = 'True'
+    os.environ['CALLED_FROM_PYTEST'] = 'True'
     # test_stream_params()
     # test_workspace()
     # test_metrics2()

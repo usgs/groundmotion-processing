@@ -41,8 +41,7 @@ class GmpApp(object):
     """
 
     # Try not to let tests interfere with actual system:
-    # if 'CALLED_FROM_PYTEST' not in os.environ:
-    if os.getenv('CALLED_FROM_PYTEST') is None:
+    if 'CALLED_FROM_PYTEST' not in os.environ:
         PROJECTS_PATH = os.path.join(os.path.expanduser('~'), '.gmp')
     else:
         PROJECTS_PATH = os.path.join(os.getcwd(), 'pytest_gmp_proj_dir')

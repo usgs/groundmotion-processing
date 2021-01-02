@@ -39,11 +39,6 @@ setup(
                   'hschovanec@usgs.gov, jrekoske@usgs.gov, '
                   'baagaard@usgs.gov, cbworden@contractor.usgs.gov'),
     url='https://github.com/usgs/groundmotion-processing',
-    # use_scm_version={
-    #     "write_to": "gmprocess/_version.py",
-    #     "write_to_template": '__version__ = "{version}"',
-    #     "tag_regex": r"^(?P<prefix>v)?(?P<version>[^\+]+)(?P<suffix>.*)?$",
-    # },
     packages=[
         'gmprocess',
         'gmprocess.apps',
