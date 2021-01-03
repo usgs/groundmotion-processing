@@ -11,6 +11,7 @@ def test_gmp(script_runner):
         # Need to create profile first.
         setup_inputs = io.StringIO("test\n\n\nname\nemail\n")
         ret = script_runner.run('gmp', 'projects', '-c', stdin=setup_inputs)
+        setup_inputs.close()
         assert ret.success
 
         ret = script_runner.run('gmp', '--version')

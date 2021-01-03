@@ -26,6 +26,7 @@ def test_process_waveforms(script_runner):
             "test\n%s\n%s\nname\nemail\n" % (cdir, ddir)
         )
         ret = script_runner.run('gmp', 'projects', '-c', stdin=setup_inputs)
+        setup_inputs.close()
         assert ret.success
 
         ret = script_runner.run('gmp', 'process_waveforms')

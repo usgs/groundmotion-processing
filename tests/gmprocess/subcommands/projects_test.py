@@ -10,6 +10,7 @@ def test_projects(script_runner):
         # Need to create profile first.
         setup_inputs = io.StringIO("test\n\n\nname\nemail\n")
         ret = script_runner.run('gmp', 'projects', '-c', stdin=setup_inputs)
+        setup_inputs.close()
         assert ret.success
 
         ret = script_runner.run('gmp', 'projects', '-h')
@@ -17,6 +18,7 @@ def test_projects(script_runner):
 
         setup_inputs = io.StringIO("test2\n\n\nname\nemail\n")
         ret = script_runner.run('gmp', 'projects', '-c', stdin=setup_inputs)
+        setup_inputs.close()
         assert ret.success
 
         ret = script_runner.run('gmp', 'projects', '-l')
@@ -29,6 +31,7 @@ def test_projects(script_runner):
         setup_inputs = io.StringIO("y\n")
         ret = script_runner.run(
             'gmp', 'projects', '-d', 'test2', stdin=setup_inputs)
+        setup_inputs.close()
         assert ret.success
         assert 'Project: test2' not in ret.stdout
 
