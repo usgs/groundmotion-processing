@@ -50,7 +50,6 @@ class GmpApp(object):
     PROJECTS_FILE = os.path.join(PROJECTS_PATH, 'projects.conf')
 
     def __init__(self):
-        print('*** gmp __init__')
         self._load_config()
         self._parse_command_line()
         setup_logger(self.args)
@@ -69,14 +68,13 @@ class GmpApp(object):
             self.args.func().main(self)
 
     def _load_config(self):
-        print('*** gmp _load_config')
         if not os.path.isfile(self.PROJECTS_FILE):
             # If projects.conf file doesn't exist then we need to run the
             # initial setup.
             print('No project config file detected. Running initial setup...')
             self._initial_setup()
 
-        self.projects_conf = ConfigObj(self.PROJECTS_FILE)
+        self.projects_conf = ConfigObj(self.PROJECTS_FILE, encoding='utf-8')
         self.project = self.projects_conf['project']
         self.current_project = self.projects_conf['projects'][self.project]
         self.conf_path = self.current_project['conf_path']
@@ -86,9 +84,7 @@ class GmpApp(object):
             print('Config file does not exist: %s' % self.conf_file)
             print('Exiting.')
             sys.exit(1)
-        print('*** Calling get_config')
         self.conf = get_config(self.conf_file)
-        print('*** After get_config')
 
     def _initial_setup(self):
         """
@@ -97,7 +93,7 @@ class GmpApp(object):
         """
         if not os.path.isdir(self.PROJECTS_PATH):
             os.mkdir(self.PROJECTS_PATH)
-        empty_conf = ConfigObj()
+        empty_conf = ConfigObj(encoding='utf-8')
         empty_conf.filename = self.PROJECTS_FILE
         create(empty_conf)
         # Need to exit here because if gmp projects -c is called when there is
