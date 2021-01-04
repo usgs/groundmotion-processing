@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+# -*- coding: utf-8 -*-
 
 def test_list_metrics(script_runner):
     ret = script_runner.run('list_metrics')

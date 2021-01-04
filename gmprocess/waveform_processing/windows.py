@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 """
 Helper functions for windowing singal and noise in a trace.
 """

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # stdlib imports
 import warnings
@@ -48,6 +49,7 @@ def test_sa():
         pgms.loc['SA(1.000)', 'ROTD(100.0)'].Result,
         146.90233501240979
     )
+
 
 if __name__ == '__main__':
     test_sa()

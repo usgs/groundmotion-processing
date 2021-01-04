@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 """
 Module that provides functions for manipulating the various tables
 (pandas DataFrames) produced by gmprocess.

@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import io
 import os
 import shutil
@@ -16,7 +18,7 @@ def test_export_provenance_tables(script_runner):
                                       'demo_steps', 'exports'))
         setup_inputs = io.StringIO(
             "test\n%s\n%s\nname\nemail\n" % (cdir, ddir)
-        )
+        ).encode('utf-8')
         ret = script_runner.run('gmp', 'projects', '-c', stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success

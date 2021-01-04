@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from gmprocess.io.read import read_data
 from gmprocess.waveform_processing.windows import \

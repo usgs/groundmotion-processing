@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # stdlib imports
 from gmprocess.io.fetch_utils import read_event_json_files

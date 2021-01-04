@@ -1,4 +1,5 @@
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 def highpass_filter(st, filter_order=5, number_of_passes=2):
     """

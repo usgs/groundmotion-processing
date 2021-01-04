@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from gmprocess.waveform_processing.phase import (PowerPicker, pphase_pick, pick_ar,
                                                  pick_kalkan, pick_power, pick_baer,
                                                  pick_yeck, pick_travel,

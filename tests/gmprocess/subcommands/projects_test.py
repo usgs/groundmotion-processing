@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import io
 import shutil
 
@@ -8,7 +10,7 @@ from gmprocess.utils import constants
 def test_projects(script_runner):
     try:
         # Need to create profile first.
-        setup_inputs = io.StringIO("test\n\n\nname\nemail\n")
+        setup_inputs = io.StringIO("test\n\n\nname\nemail\n").encode('utf-8')
         ret = script_runner.run('gmp', 'projects', '-c', stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
@@ -16,7 +18,7 @@ def test_projects(script_runner):
         ret = script_runner.run('gmp', 'projects', '-h')
         assert ret.success
 
-        setup_inputs = io.StringIO("test2\n\n\nname\nemail\n")
+        setup_inputs = io.StringIO("test2\n\n\nname\nemail\n").encode('utf-8')
         ret = script_runner.run('gmp', 'projects', '-c', stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
@@ -28,7 +30,7 @@ def test_projects(script_runner):
         ret = script_runner.run('gmp', 'projects', '-s', 'test')
         assert ret.success
 
-        setup_inputs = io.StringIO("y\n")
+        setup_inputs = io.StringIO("y\n").encode('utf-8')
         ret = script_runner.run(
             'gmp', 'projects', '-d', 'test2', stdin=setup_inputs)
         setup_inputs.close()

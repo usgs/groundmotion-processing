@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # Local imports
 from gmprocess.metrics.imc.imc import IMC
 

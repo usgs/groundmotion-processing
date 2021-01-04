@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import os
 from gmprocess.utils.event import get_event_dict, get_event_object, ScalarEvent

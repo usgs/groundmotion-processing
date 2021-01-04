@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import io
 import os
 import shutil
@@ -15,7 +17,7 @@ def test_assemble(script_runner):
             'gmprocess', os.path.join('data', 'testdata', 'demo'))
         setup_inputs = io.StringIO(
             "test\n%s\n%s\nname\nemail\n" % (cdir, ddir)
-        )
+        ).encode('utf-8')
         ret = script_runner.run('gmp', 'projects', '-c', stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success

@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 """
 Methods for handling/picking corner frequencies.
 """

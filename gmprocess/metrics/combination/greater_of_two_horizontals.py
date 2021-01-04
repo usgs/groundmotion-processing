@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from gmprocess.metrics.combination.combination import Combination
 import numpy as np
 

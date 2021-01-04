@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # Local import
 from gmprocess.metrics.oscillators import get_spectral
 from gmprocess.metrics.transform.transform import Transform

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import os
 from gmprocess.io.seedname import get_channel_name, is_channel_north
