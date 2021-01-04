@@ -85,7 +85,7 @@ def test_StreamCollection():
 
     # Test to_dataframe
     jsonfile = os.path.join(directory, 'event.json')
-    with open(jsonfile, 'rt') as f:
+    with open(jsonfile, 'rt', encoding='utf-8') as f:
         origin = json.load(f)
     dmg_df = sc_test.to_dataframe(origin)
     np.testing.assert_allclose(

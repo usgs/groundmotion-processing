@@ -42,7 +42,7 @@ def loadCSV(data_path, row_ignore=0, col_ignore=0):
     '''
 
     M = []
-    with open(data_path) as csvfile:
+    with open(data_path, encoding='utf-8') as csvfile:
         readCSV = csv.reader(csvfile)
 
         # Skip header
@@ -130,7 +130,7 @@ class neuralNet():
             information (masterF.txt, weights.csv, biases.csv)
         '''
         data_path = os.path.join(nn_path, 'masterF.txt')
-        with open(data_path) as masterF:
+        with open(data_path, encoding='utf-8') as masterF:
             readCSV = csv.reader(masterF)
             for row in readCSV:
                 if len(row) == 7:

@@ -67,7 +67,7 @@ def test_cosmos():
 
     # read the maximum from the text header check that the trace max
     # is the equivalent when rounded to the same number of decimal places
-    with open(one_channel, 'rt') as f:
+    with open(one_channel, 'rt', encoding='utf-8') as f:
         file_line = f.readlines()[10].replace(' ', '').lower()
     file_max = file_line[file_line.find('max=') + 4: file_line.find('cm')]
     assert np.round(stream1[0].max(), 3) == float(file_max)

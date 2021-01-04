@@ -18,7 +18,7 @@ def load_model(model):
     """
     mod_file = pkg_resources.resource_filename(
         'gmprocess', os.path.join('data', MODULE_FILE))
-    with open(mod_file, 'r') as f:
+    with open(mod_file, 'r', encoding='utf-8') as f:
         mods = yaml.load(f, Loader=yaml.FullLoader)
 
     # Import module

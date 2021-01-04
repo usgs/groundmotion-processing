@@ -79,7 +79,7 @@ def get_config(config_file=None, section=None):
         fmt = ('Missing config file: %s.')
         raise OSError(fmt % config_file)
     else:
-        with open(config_file, 'r') as f:
+        with open(config_file, 'r', encoding='utf-8') as f:
             config = yaml.load(f, Loader=yaml.FullLoader)
 
     if section is not None:

@@ -311,7 +311,7 @@ def _test_colocated():
     datadir = os.path.split(datafiles[0])[0]
     raw_streams = StreamCollection.from_directory(datadir)
     config_file = os.path.join(datadir, 'test_config.yml')
-    with open(config_file, 'r') as f:
+    with open(config_file, 'r', encoding='utf-8') as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
     processed_streams = process_streams(raw_streams, event, config=config)
 

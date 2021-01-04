@@ -175,7 +175,7 @@ def is_cosmos(filename):
     """
     logging.debug("Checking if format is cosmos.")
     try:
-        line = open(filename, 'rt').readline()
+        line = open(filename, 'rt', encoding='utf-8').readline()
         for marker in VALID_MARKERS:
             if line.lower().find(marker.lower()) >= 0:
                 if line.lower().find('(format v') >= 0:
@@ -213,7 +213,7 @@ def read_cosmos(filename, **kwargs):
     location = kwargs.get('location', '')
 
     # count the number of lines in the file
-    with open(filename) as f:
+    with open(filename, encoding='utf-8') as f:
         line_count = sum(1 for _ in f)
 
     # read as many channels as are present in the file
@@ -245,7 +245,7 @@ def _read_channel(filename, line_offset, location=''):
         tuple: (obspy Trace, int line offset)
     """
     # read station, location, and process level from text header
-    with open(filename, 'rt') as f:
+    with open(filename, 'rt', encoding='utf-8') as f:
         for _ in range(line_offset):
             next(f)
         lines = [next(f) for x in range(TEXT_HDR_ROWS)]
@@ -755,7 +755,7 @@ def _read_lines(skip_rows, filename):
         num_lines = npts
 
         # read and store comment lines
-        with open(filename, 'rt') as f:
+        with open(filename, 'rt', encoding='utf-8') as f:
             file = f.readlines()
         max_lines = skip_rows + num_lines
         comment = [file[idx] for idx in range(skip_rows, max_lines)]

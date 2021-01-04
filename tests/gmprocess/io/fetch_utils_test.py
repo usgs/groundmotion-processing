@@ -26,7 +26,7 @@ def test_get_shakemap():
         processed = workspace.getStreams(eventid, labels=[label])
 
         excelfile, jsonfile = save_shakemap_amps(processed, event, tdir)
-        with open(jsonfile, 'rt') as fp:
+        with open(jsonfile, 'rt', encoding='utf-8') as fp:
             jdict = json.load(fp)
         assert jdict['features'][0]['id'] == 'CJ.T001230'
 

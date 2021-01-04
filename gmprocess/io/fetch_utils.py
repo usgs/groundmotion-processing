@@ -278,7 +278,7 @@ def read_event_json_files(eventfiles):
     """
     events = []
     for eventfile in eventfiles:
-        with open(eventfile, 'rt') as f:
+        with open(eventfile, 'rt', encoding='utf-8') as f:
             eventdict = json.load(f)
             # eventdict['depth'] *= 1000
             event = get_event_object(eventdict)
@@ -397,7 +397,7 @@ def create_event_file(event, event_dir):
         'magnitude_type': event.magnitude_type
     }
     eventfile = os.path.join(event_dir, 'event.json')
-    with open(eventfile, 'wt') as f:
+    with open(eventfile, 'wt', encoding='utf-8') as f:
         json.dump(edict, f)
 
 
@@ -459,7 +459,7 @@ def save_shakemap_amps(processed, event, event_dir):
         # get shakemap json, save to output directory
         jsonfile = os.path.join(event_dir, 'gmprocess_dat.json')
         jsonstr = get_shakemap_json(dataframe)
-        with open(jsonfile, 'wt') as fp:
+        with open(jsonfile, 'wt', encoding='utf-8') as fp:
             fp.write(jsonstr)
 
     return (ampfile_name, jsonfile)
@@ -537,7 +537,7 @@ def update_config(custom_cfg_file):
     if not os.path.isfile(custom_cfg_file):
         return config
     try:
-        with open(custom_cfg_file, 'rt') as f:
+        with open(custom_cfg_file, 'rt', encoding='utf-8') as f:
             custom_cfg = yaml.load(f, Loader=yaml.FullLoader)
             update_dict(config, custom_cfg)
     except yaml.parser.ParserError:

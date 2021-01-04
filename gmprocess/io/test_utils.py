@@ -51,7 +51,7 @@ def read_data_dir(file_format, eventid, files=None):
     jsonfile = os.path.join(eventdir, 'event.json')
     if not os.path.isfile(jsonfile):
         event = None
-    with open(jsonfile, 'rt') as f:
+    with open(jsonfile, 'rt', encoding='utf-8') as f:
         tevent = json.load(f)
         event = ScalarEvent()
         if 'magnitude_type' not in tevent.keys():

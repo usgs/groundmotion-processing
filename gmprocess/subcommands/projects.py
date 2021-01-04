@@ -234,7 +234,7 @@ def create(config):
     # Sart with production conf from repository, then add user info
     data_path = pkg_resources.resource_filename('gmprocess', 'data')
     current_conf = os.path.join(data_path, CONFIG_FILE_PRODUCTION)
-    with open(current_conf, 'rt') as f:
+    with open(current_conf, 'rt', encoding='utf-8') as f:
         gmp_conf = yaml.load(f, Loader=yaml.SafeLoader)
 
     print('Please enter your name and email. This informaitn will be added '
@@ -245,5 +245,5 @@ def create(config):
     user_info['email'] = input('\tEmail: ')
     gmp_conf['user'] = user_info
     proj_conf_file = os.path.join(new_conf_path, 'config.yml')
-    with open(proj_conf_file, 'w') as yf:
+    with open(proj_conf_file, 'w', encoding='utf-8') as yf:
         yaml.dump(gmp_conf, yf, Dumper=yaml.SafeDumper)

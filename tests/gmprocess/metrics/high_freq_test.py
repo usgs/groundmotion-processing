@@ -19,7 +19,7 @@ def read_at2(dfile, horient=0.0):
     # testing, it is not a general purpose reader since this format does not
     # contain a lot of metadata that is generally required for it to be useful.
     skiprows = 4
-    datafile = open(dfile, 'r')
+    datafile = open(dfile, 'r', encoding='utf-8')
     datareader = csv.reader(datafile)
     data = []
     header = []

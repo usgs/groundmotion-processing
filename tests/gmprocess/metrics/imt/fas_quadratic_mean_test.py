@@ -27,7 +27,7 @@ def test_fas():
 
     stream = StationStream([])
     for idx, fpath in enumerate([p1, p2]):
-        with open(fpath) as file_obj:
+        with open(fpath, encoding='utf-8') as file_obj:
             for _ in range(3):
                 next(file_obj)
             meta = re.findall(r'[.0-9]+', next(file_obj))

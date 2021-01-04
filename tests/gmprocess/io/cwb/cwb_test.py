@@ -77,7 +77,7 @@ def test():
     temp_dir = tempfile.mkdtemp()
     try:
         tfile = os.path.join(temp_dir, 'tfile.txt')
-        with open(tfile, "w") as f:
+        with open(tfile, "w", encoding='utf-8') as f:
             f.write(missing_info)
         metadata = _get_header_info(open(tfile, 'rt'), data)
     except Exception as e:

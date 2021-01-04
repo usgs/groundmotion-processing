@@ -118,7 +118,7 @@ def _read_channel(filename, line_offset):
         tuple: (obspy Trace, int line offset)
     """
     # read station and location strings from text header
-    with open(filename, 'rt') as f:
+    with open(filename, 'rt', encoding='utf-8') as f:
         for _ in range(line_offset):
             next(f)
         lines = [next(f) for x in range(TEXT_HDR_ROWS)]

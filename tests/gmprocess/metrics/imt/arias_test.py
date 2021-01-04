@@ -20,7 +20,7 @@ def test_arias():
     ddir = os.path.join('data', 'testdata')
     datadir = pkg_resources.resource_filename('gmprocess', ddir)
     data_file = os.path.join(datadir, 'arias_data.json')
-    with open(data_file, 'rt') as f:
+    with open(data_file, 'rt', encoding='utf-8') as f:
         jdict = json.load(f)
 
     time = np.array(jdict['time'])

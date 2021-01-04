@@ -628,7 +628,7 @@ This program will allow the user to:
     handler.setFormatter(logging.Formatter('%(message)s'))
     logfiles = glob.glob(os.path.join(outdir, logbase + '*'))
     for logfile in logfiles:
-        with open(logfile, 'rt') as logobj:
+        with open(logfile, 'rt', encoding='utf-8') as logobj:
             for line in logobj.readlines():
                 logging.info(line.strip())
         os.remove(logfile)

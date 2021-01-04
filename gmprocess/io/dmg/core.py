@@ -105,7 +105,7 @@ def is_dmg(filename):
     """
     logging.debug("Checking if format is dmg.")
     try:
-        f = open(filename, 'rt')
+        f = open(filename, 'rt', encoding='utf-8')
         first_line = f.readline().upper()
         second_line = f.readline().upper()
         third_line = f.readline().upper()
@@ -157,7 +157,7 @@ def read_dmg(filename, **kwargs):
         raise Exception('DMG: Not a valid choice of units.')
 
     # Check for DMG format and determine volume type
-    line = open(filename, 'rt').readline()
+    line = open(filename, 'rt', encoding='utf-8').readline()
     if is_dmg(filename):
         if line.lower().find('uncorrected') >= 0:
             reader = 'V1'
@@ -167,7 +167,7 @@ def read_dmg(filename, **kwargs):
             reader = 'V3'
 
     # Count the number of lines in the file
-    with open(filename) as f:
+    with open(filename, encoding='utf-8') as f:
         line_count = sum(1 for _ in f)
 
     # Read as many channels as are present in the file
@@ -209,7 +209,7 @@ def _read_volume_one(filename, line_offset, location='', units='acc'):
     """
     # Parse the header portion of the file
     try:
-        with open(filename, 'rt') as f:
+        with open(filename, 'rt', encoding='utf-8') as f:
             for _ in range(line_offset):
                 next(f)
             lines = [next(f) for x in range(V1_TEXT_HDR_ROWS)]
@@ -240,7 +240,7 @@ def _read_volume_one(filename, line_offset, location='', units='acc'):
 
     # sometimes (??) a line of text is inserted in between the float header and
     # the beginning of the data. Let's check for this...
-    with open(filename, 'rt') as f:
+    with open(filename, 'rt', encoding='utf-8') as f:
         for _ in range(skip_rows):
             next(f)
         test_line = f.readline()
@@ -299,7 +299,7 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
         tuple: (list of obspy Trace, int line offset)
     """
     try:
-        with open(filename, 'rt') as f:
+        with open(filename, 'rt', encoding='utf-8') as f:
             for _ in range(line_offset):
                 next(f)
             lines = [next(f) for x in range(V2_TEXT_HDR_ROWS)]
