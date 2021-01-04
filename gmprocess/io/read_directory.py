@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """
 Module for methods for reading in directories of data, particularly messy data
 from CESMD.

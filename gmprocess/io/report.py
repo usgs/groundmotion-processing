@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # stdlib imports
 import os
 from shutil import which
@@ -220,7 +223,7 @@ def build_report_latex(sc, directory, origin, config=None):
 
         # File name for printing out later relative base directory
         latex_file = os.path.join(directory, file_name)
-        with open(file_name, 'w') as f:
+        with open(file_name, 'w', encoding='utf-8') as f:
             f.write(report)
 
         # Can we find pdflatex?

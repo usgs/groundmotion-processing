@@ -3,6 +3,7 @@ pip=18.0
 c-compiler
 cython
 dask
+h5py>=2.8.0
 impactutils
 ipython
 jupyter
@@ -19,6 +20,7 @@ ps2ff
 pyasdf
 pytest
 pytest-cov
+pytest-console-scripts
 pyyaml
 scipy
 setuptools-scm

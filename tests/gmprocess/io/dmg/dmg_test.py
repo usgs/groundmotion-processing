@@ -208,7 +208,7 @@ def test_dmg():
     temp_dir = tempfile.mkdtemp()
     try:
         tmp = os.path.join(temp_dir, 'tfile.txt')
-        with open(tmp, 'w') as f:
+        with open(tmp, 'w', encoding='utf-8') as f:
             f.write(no_stream)
         with pytest.raises(GMProcessException):
             read_dmg(tmp)[0]

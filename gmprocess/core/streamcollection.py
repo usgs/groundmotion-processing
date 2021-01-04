@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """
 Module for StreamCollection class.
 
@@ -33,8 +35,7 @@ NETWORKS_USING_LOCATION = ['RE']
 
 
 class StreamCollection(object):
-    """
-    A collection/list of StationStream objects.
+    """A collection/list of StationStream objects.
 
     This is a list of StationStream objects, where the constituent
     StationTraces are grouped such that:
@@ -46,14 +47,14 @@ class StreamCollection(object):
     TODO:
         - Check for and handle misaligned start times and end times.
         - Check units
-
     """
 
     def __init__(self, streams=None, drop_non_free=True,
                  handle_duplicates=True, max_dist_tolerance=None,
                  preference_order=None, process_level_preference=None,
                  format_preference=None):
-        """
+        """Initialize StreamCollection.
+
         Args:
             streams (list):
                 List of StationStream objects.
@@ -78,7 +79,6 @@ class StreamCollection(object):
                 Example: ['cosmos', 'dmg'] indicates that cosmos files are
                 preferred over dmg files.
         """
-
         # Some initial checks of input streams
         if not isinstance(streams, list):
             raise TypeError(
@@ -122,9 +122,7 @@ class StreamCollection(object):
         return n - self.n_passed
 
     def validate(self):
-        """Some validation checks across streams.
-
-        """
+        """Some validation checks across streams."""
         # If tag exists, it should be consistent across StationStreams
         all_labels = []
         for stream in self:
@@ -143,8 +141,7 @@ class StreamCollection(object):
                 'Only one label allowed within a StreamCollection.')
 
     def select_colocated(self, preference=["HN?", "BN?", "HH?", "BH?"]):
-        """
-        Detect colocated instruments and select the preferred instrument type.
+        """Detect colocated instruments, return preferred instrument type.
 
         This uses the a list of the first two channel characters, given as
         'preference' in the 'colocated' section of the config. The algorithm
@@ -164,7 +161,6 @@ class StreamCollection(object):
             preference (list):
                 List of strings indicating preferred instrument types.
         """
-
         # Create a list of streams with matching id (combo of net and station).
         all_matches = []
         match_list = []
@@ -229,8 +225,7 @@ class StreamCollection(object):
 
     @classmethod
     def from_directory(cls, directory):
-        """
-        Create a StreamCollection instance from a directory of data.
+        """Create a StreamCollection instance from a directory of data.
 
         Args:
             directory (str):
@@ -247,8 +242,7 @@ class StreamCollection(object):
 
     @classmethod
     def from_traces(cls, traces):
-        """
-        Create a StreamCollection instance from a list of traces.
+        """Create a StreamCollection instance from a list of traces.
 
         Args:
             traces (list):
@@ -362,9 +356,7 @@ class StreamCollection(object):
         return dataframe
 
     def __str__(self):
-        """
-        String summary of the StreamCollection.
-        """
+        """String summary of the StreamCollection."""
         summary = ''
         n = len(self.streams)
         summary += '%s StationStreams(s) in StreamCollection:\n' % n
@@ -373,9 +365,7 @@ class StreamCollection(object):
         return summary
 
     def describe(self):
-        """
-        More verbose description of StreamCollection.
-        """
+        """More verbose description of StreamCollection."""
         summary = ''
         summary += str(len(self.streams)) + \
             ' StationStreams(s) in StreamCollection:\n'
@@ -384,62 +374,39 @@ class StreamCollection(object):
         print(summary)
 
     def __len__(self):
-        """
-        Length of StreamCollection is the number of constituent StationStreams.
-        """
+        """Number of constituent StationStreams."""
         return len(self.streams)
 
     def __nonzero__(self):
-        """
-        Nonzero if there are no StationStreams.
-        """
         return bool(len(self.traces))
 
     def __add__(self, other):
-        """
-        Add two streams together means appending to list of streams.
-        """
         if not isinstance(other, StreamCollection):
             raise TypeError
         streams = self.streams + other.streams
         return self.__class__(streams)
 
     def __iter__(self):
-        """
-        Iterator for StreamCollection iterates over constituent StationStreams.
-        """
+        """Iterator for StreamCollection over constituent StationStreams."""
         return list(self.streams).__iter__()
 
     def __setitem__(self, index, stream):
-        """
-        __setitem__ method.
-        """
         self.streams.__setitem__(index, stream)
 
     def __getitem__(self, index):
-        """
-        __getitem__ method.
-        """
         if isinstance(index, slice):
             return self.__class__(stream=self.streams.__getitem__(index))
         else:
             return self.streams.__getitem__(index)
 
     def __delitem__(self, index):
-        """
-        __delitem__ method.
-        """
         return self.streams.__delitem__(index)
 
     def __getslice__(self, i, j, k=1):
-        """
-        Getslice method.
-        """
         return self.__class__(streams=self.streams[max(0, i):max(0, j):k])
 
     def append(self, stream):
-        """
-        Append a single StationStream object.
+        """Append a single StationStream object.
 
         Args:
             stream:
@@ -453,22 +420,18 @@ class StreamCollection(object):
                 'Append only uspports adding a single StationStream.')
 
     def pop(self, index=(-1)):
-        """
-        Remove and return the StationStream object specified by index from
-        the StreamCollection.
-        """
+        """Remove and return item at index (default last)."""
         return self.streams.pop(index)
 
     def copy(self):
-        """
-        Copy method.
-        """
+        """Copy method."""
         return copy.deepcopy(self)
 
     def select(self, network=None, station=None, instrument=None):
-        """
-        Return a new StreamCollection with only those StationStreams
-        that match the selection criteria.
+        """Select Streams.
+
+        Return a new StreamCollection with only those StationStreams that
+        match network, station, and/or instrument selection criteria.
 
         Based on obspy's `select` method for traces.
 
@@ -500,7 +463,6 @@ class StreamCollection(object):
         return self.__class__(sel)
 
     def __group_by_net_sta_inst(self):
-
         trace_list = []
         stream_params = gather_stream_parameters(self.streams)
         for st in self.streams:
@@ -664,7 +626,7 @@ class StreamCollection(object):
             failure_reasons = pd.Series(
                 [next(tr for tr in st if tr.hasParameter('failure')).
                     getParameter('failure')['reason'] for st in self.streams
-                    if not st.passed])
+                    if not st.passed], dtype=str)
             return failure_reasons.value_counts()
         elif status == 'net':
             failure_dict = {}
@@ -731,8 +693,7 @@ def gather_stream_parameters(streams):
 
 
 def insert_stream_parameters(streams, stream_params):
-    """
-    Helper function for inserting the stream parameters back to the streams.
+    """Helper function for inserting the stream parameters back to the streams.
 
     Args:
         streams (list): list of StationStream objects.
@@ -772,7 +733,8 @@ def split_station(grouped_trace_list):
 
 
 def are_duplicates(tr1, tr2, max_dist_tolerance):
-    """
+    """Check if traces are duplicates.
+
     Determines whether two StationTraces are duplicates by checking the
     station, channel codes, and the distance between them.
 
@@ -788,7 +750,6 @@ def are_duplicates(tr1, tr2, max_dist_tolerance):
     Returns:
         bool. True if traces are duplicates, False otherwise.
     """
-
     orientation_codes = set()
     for tr in [tr1, tr2]:
         if tr.stats.channel[2] in ['1', 'N']:
@@ -817,8 +778,7 @@ def are_duplicates(tr1, tr2, max_dist_tolerance):
 
 def choose_preferred(tr1, tr2, preference_order, process_level_preference,
                      format_preference):
-    """
-    Determines which trace is preferred. Returns the preferred the trace.
+    """Determines which trace is preferred. Returns the preferred the trace.
 
     Args:
         tr1 (StationTrace):
@@ -842,7 +802,6 @@ def choose_preferred(tr1, tr2, preference_order, process_level_preference,
     Returns:
         The preferred trace (StationTrace).
     """
-
     traces = [tr1, tr2]
     for pref in preference_order:
         if pref == 'process_level':

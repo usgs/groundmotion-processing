@@ -77,7 +77,7 @@ def test_layout():
     layout_path = os.path.join('data', 'testdata', 'asdf')
     testroot = pkg_resources.resource_filename('gmprocess', layout_path)
     layout_abspath = os.path.join(testroot, LAYOUT_FILENAME)
-    with open(layout_abspath, "r") as fin:
+    with open(layout_abspath, "r", encoding='utf-8') as fin:
         lines = fin.readlines()
         for line in lines:
             itype, item = line.split()

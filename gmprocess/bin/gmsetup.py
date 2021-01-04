@@ -44,7 +44,7 @@ def main():
     config_file = os.path.join(data_path, CONFIG_FILE_PRODUCTION)
 
     if args.list_sections:
-        with open(config_file, 'rt') as f:
+        with open(config_file, 'rt', encoding='utf-8') as f:
             config = yaml.load(f, Loader=yaml.SafeLoader)
             sections = list(config.keys())
             print('Supported sections:')
@@ -57,7 +57,7 @@ def main():
     if not os.path.isdir(install_dir):
         os.makedirs(install_dir)
 
-    with open(config_file, 'rt') as f:
+    with open(config_file, 'rt', encoding='utf-8') as f:
         config = yaml.load(f, Loader=yaml.SafeLoader)
         kill_sections = []
         if args.sections is not None:
@@ -78,7 +78,7 @@ def main():
                 userinfo['email'] = args.email
             config['user'] = userinfo
 
-        fout = open(args.config_file, 'wt')
+        fout = open(args.config_file, 'wt', encoding='utf-8')
         yaml.dump(config, stream=fout, Dumper=yaml.SafeDumper)
         fout.close()
 

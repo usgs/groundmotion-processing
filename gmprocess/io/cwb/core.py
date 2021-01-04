@@ -33,7 +33,7 @@ def is_cwb(filename):
     """
     logging.debug("Checking if format is cwb.")
     try:
-        f = open(filename, 'rt')
+        f = open(filename, 'rt', encoding='utf-8')
         line = f.readline()
         f.close()
         if line.startswith('#Earthquake Information'):
@@ -58,7 +58,7 @@ def read_cwb(filename, **kwargs):
     if not is_cwb(filename):
         raise Exception('%s is not a valid CWB strong motion data file.'
                         % filename)
-    f = open(filename, 'rt')
+    f = open(filename, 'rt', encoding='utf-8')
     # according to the powers that defined the Network.Station.Channel.Location
     # "standard", Location is a two character field.  Most data providers,
     # including CWB here, don't provide this.  We'll flag it as "--".

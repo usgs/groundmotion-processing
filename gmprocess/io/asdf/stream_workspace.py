@@ -270,6 +270,7 @@ class StreamWorkspace(object):
         base_prov = _get_person_agent(base_prov)
         base_prov = _get_software_agent(base_prov)
 
+        logging.debug(streams)
         for stream in streams:
             station = stream[0].stats['station']
             logging.info('Adding waveforms for station %s' % station)
@@ -309,7 +310,7 @@ class StreamWorkspace(object):
                 # nested dictionaries.
                 # Also, this seems like a lot of effort
                 # just to store a string in HDF, but other
-                # approached failed. Suggestions are welcome.
+                # approaches failed. Suggestions are welcome.
                 jdict = _stringify_dict(jdict)
                 jsonbytes = json.dumps(jdict).encode('utf-8')
                 jsonarray = np.frombuffer(jsonbytes, dtype=np.uint8)
@@ -538,17 +539,28 @@ class StreamWorkspace(object):
                 stations.append(station)
         return stations
 
-    def insert_aux(self, datastr, data_name, path):
+    def insert_aux(self, datastr, data_name, path, overwrite=False):
         """Insert a string (usually json or xml) into Auxilliary array.
 
         Args:
-            datastr (str): String containing data to insert into Aux array.
-            data_name (str): What this data should be called in the ASDF file.
-            path (str): The aux path where this data should be stored.
+            datastr (str):
+                String containing data to insert into Aux array.
+            data_name (str):
+                What this data should be called in the ASDF file.
+            path (str):
+                The aux path where this data should be stored.
+            overwrite (bool):
+                Should the data be overwritten if it already exists?
         """
         # this seems like a lot of effort
         # just to store a string in HDF, but other
-        # approached failed. Suggestions are welcome.
+        # approaches failed. Suggestions are welcome.
+
+        group_name = "%s/%s" % (data_name, path)
+        data_exists = group_name in self.dataset._auxiliary_data_group
+        if overwrite and data_exists:
+            del self.dataset._auxiliary_data_group[group_name]
+
         databuf = datastr.encode('utf-8')
         data_array = np.frombuffer(databuf, dtype=np.uint8)
         dtype = data_name
@@ -564,6 +576,7 @@ class StreamWorkspace(object):
                     calc_station_metrics=True, calc_waveform_metrics=True):
         """
         Calculate waveform and/or station metrics for a set of waveforms.
+
         Args:
             eventid (str):
                 ID of event to search for in ASDF file.
@@ -605,7 +618,8 @@ class StreamWorkspace(object):
             'depth': event.depth_km,
             'locstring': '',
             'mag': event.magnitude,
-            'time': event.time})
+            'time': event.time
+        })
         rupture = get_rupture(origin, rupture_file)
 
         vs30_grids = None
@@ -1016,7 +1030,8 @@ class StreamWorkspace(object):
         """Verify that the workspace file contains an event matching eventid.
 
         Args:
-            eventid (str): ID of event to search for in ASDF file.
+            eventid (str):
+                ID of event to search for in ASDF file.
 
         Returns:
             bool: True if event matching ID is found, False if not.
@@ -1030,7 +1045,8 @@ class StreamWorkspace(object):
         """Get a ScalarEvent object from the ASDF file.
 
         Args:
-            eventid (str): ID of event to search for in ASDF file.
+            eventid (str):
+                ID of event to search for in ASDF file.
 
         Returns:
             ScalarEvent:
@@ -1048,19 +1064,19 @@ class StreamWorkspace(object):
         return eventobj2
 
     def getProvenance(self, eventid, stations=None, labels=None):
-        """Return DataFrame with processing history for streams matching input criteria.
+        """Return DataFrame with processing history matching input criteria.
 
         Output will look like this:
-          Record  Processing Step     Step Attribute              Attribute Value
-0    NZ.HSES.HN1  Remove Response        input_units                       counts
-1    NZ.HSES.HN1  Remove Response       output_units                       cm/s^2
-2    NZ.HSES.HN1          Detrend  detrending_method                       linear
-3    NZ.HSES.HN1          Detrend  detrending_method                       demean
-4    NZ.HSES.HN1              Cut       new_end_time  2016-11-13T11:05:44.000000Z
-5    NZ.HSES.HN1              Cut     new_start_time  2016-11-13T11:02:58.000000Z
-6    NZ.HSES.HN1            Taper               side                         both
-7    NZ.HSES.HN1            Taper        taper_width                         0.05
-8    NZ.HSES.HN1            Taper        window_type                         Hann
+        Record  Processing Step     Step Attribute              Attribute Value
+0  NZ.HSES.HN1  Remove Response        input_units                       counts
+1  NZ.HSES.HN1  Remove Response       output_units                       cm/s^2
+2  NZ.HSES.HN1          Detrend  detrending_method                       linear
+3  NZ.HSES.HN1          Detrend  detrending_method                       demean
+4  NZ.HSES.HN1              Cut       new_end_time  2016-11-13T11:05:44.000000Z
+5  NZ.HSES.HN1              Cut     new_start_time  2016-11-13T11:02:58.000000Z
+6  NZ.HSES.HN1            Taper               side                         both
+7  NZ.HSES.HN1            Taper        taper_width                         0.05
+8  NZ.HSES.HN1            Taper        window_type                         Hann
 ...
 
         Args:
@@ -1141,7 +1157,6 @@ def _stringify_dict(indict):
 
 def _get_id(event):
     eid = event.origins[0].resource_id.id
-
     return eid
 
 

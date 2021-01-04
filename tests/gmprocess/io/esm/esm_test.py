@@ -21,7 +21,7 @@ def test():
     try:
         assert is_esm(os.path.abspath(__file__))
     except AssertionError:
-        assert 1 == 1
+        pass
 
     # test a esm file with npoints % 10 == 0
     stream1 = read_esm(esm_file1)[0]

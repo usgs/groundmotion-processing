@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # stdlib imports
 import glob
 import os
@@ -90,8 +93,8 @@ def streams_to_dataframe(streams, imcs=None, imts=None, event=None):
     for 0.3 second spectral acceleration, for example.
 
     Args:
-        directory (str):
-            Directory of ground motion files (streams).
+        streams (StreamCollection):
+            List of streams as a StreamCollection object.
         imcs (list):
             Strings designating desired components to create in table.
         imts (list):

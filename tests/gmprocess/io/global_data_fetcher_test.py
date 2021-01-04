@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from gmprocess.io.global_fetcher import fetch_data
 from datetime import datetime

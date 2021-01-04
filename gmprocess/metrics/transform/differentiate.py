@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # Third party imports
 from gmprocess.metrics.transform.transform import Transform
 from gmprocess.core.stationstream import StationStream

@@ -30,7 +30,8 @@ def is_esm(filename):
     """Check to see if file is an ESM strong motion file.
 
     Args:
-        filename (str): Path to possible ESM strong motion file.
+        filename (str):
+            Path to possible ESM strong motion file.
     Returns:
         bool: True if ESM, False otherwise.
     """
@@ -55,8 +56,10 @@ def read_esm(filename):
     """Read European ESM strong motion file.
 
     Args:
-        filename (str): Path to possible ESM data file.
-        kwargs (ref): Other arguments will be ignored.
+        filename (str):
+            Path to possible ESM data file.
+        kwargs (ref):
+            Other arguments will be ignored.
     Returns:
         Stream: Obspy Stream containing one channels of acceleration data
             (cm/s**2).
@@ -155,13 +158,20 @@ def read_esm(filename):
     except ValueError:
         highfreq = np.nan
     if not np.isnan(lowfreq) and not np.isnan(lowfreq):
-        filter_att = {'bandpass_filter':
-                      {'filter_type': ftype,
-                       'lower_corner_frequency': lowfreq,
-                       'higher_corner_frequency': highfreq,
-                       'filter_order': forder}}
+        filter_att = {
+            'bandpass_filter': {
+                'filter_type': ftype,
+                'lower_corner_frequency': lowfreq,
+                'higher_corner_frequency': highfreq,
+                'filter_order': forder
+            }
+        }
         trace.setProvenance('lowpass_filter', filter_att)
-    detrend_att = {'detrend': {'detrending_method': 'baseline'}}
+    detrend_att = {
+        'detrend': {
+            'detrending_method': 'baseline'
+        }
+    }
     if 'NOT REMOVED' not in header['BASELINE_CORRECTION']:
         trace.setProvenance('detrend', detrend_att)
     stream = StationStream(traces=[trace])

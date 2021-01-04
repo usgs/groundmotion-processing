@@ -1,3 +1,12 @@
+.. raw:: html
+
+   <embed>
+      <div>
+      <img style="vertical-align:middle" src="docs/images/gmp_logo.png" height="40px">
+      <span style="color:#A0A0A0;font-size:20px;position:relative;bottom: -4px;left:10px;"><i>ground motion processing</i></span>
+      </div>
+   </embed>
+
 Introduction
 ------------
 This is a project designed to provide a number of functions related to parsing
@@ -9,11 +18,19 @@ data and related issues.
 
 Documentation
 -------------
-https://usgs.github.io/groundmotion-processing/
+- Please note, we are in the process of improving the documentation.
+- The manual is available
+  `here <https://usgs.github.io/groundmotion-processing/>`_.
+- Also, please see the 
+  `Wiki <https://github.com/usgs/groundmotion-processing/wiki>`_ 
+  as a "quick start" guide.
 
 
 Build info
 ----------
+
+We are in the process of trying to support Windows. As the table below shows, 
+we are still not able to pass all tests on Windows OS yet. 
 
 +---------+------------------+-----------------+------------+
 | Azure   | |AzureM1015P37|  | OSX 10.15       | Python 3.7 |

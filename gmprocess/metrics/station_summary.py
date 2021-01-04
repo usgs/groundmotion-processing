@@ -144,9 +144,10 @@ class StationSummary(object):
                     rupture=None, vs30_grids=None):
         """
         Args:
-            stream (obspy.core.stream.Stream): Strong motion timeseries
-                for one station.
-            config (dictionary): Configuration dictionary.
+            stream (obspy.core.stream.Stream):
+                Strong motion timeseries for one station.
+            config (dictionary):
+                Configuration dictionary.
             event (ScalarEvent):
                 Object containing latitude, longitude, depth, and magnitude.
             calc_waveform_metrics (bool):
@@ -639,20 +640,19 @@ class StationSummary(object):
                 'gc2_ry': gc2_dict['ry'][0],
                 'gc2_ry0': gc2_dict['ry0'][0],
                 'gc2_U': gc2_dict['U'][0],
-                'gc2_T': gc2_dict['T'][0]})
+                'gc2_T': gc2_dict['T'][0]
+            })
 
         if vs30_grids is not None:
             for vs30_name in vs30_grids.keys():
+                tmpgrid = vs30_grids[vs30_name]
                 self._vs30[vs30_name] = {
-                    'value':
-                        vs30_grids[vs30_name]['grid_object'].getValue(
-                            lat, lon),
-                    'column_header':
-                        vs30_grids[vs30_name]['column_header'],
-                    'readme_entry':
-                        vs30_grids[vs30_name]['readme_entry'],
-                    'units':
-                        vs30_grids[vs30_name]['units']}
+                    'value': tmpgrid['grid_object'].getValue(
+                        float(lat), float(lon)),
+                    'column_header': tmpgrid['column_header'],
+                    'readme_entry': tmpgrid['readme_entry'],
+                    'units': tmpgrid['units']
+                }
 
     def get_metric_xml(self):
         """Return XML for waveform metrics as defined for our ASDF implementation.

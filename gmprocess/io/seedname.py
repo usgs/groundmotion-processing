@@ -1,4 +1,5 @@
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 def get_channel_name(sample_rate, is_acceleration=True,
                      is_vertical=False, is_north=True):

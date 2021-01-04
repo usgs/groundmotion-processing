@@ -98,7 +98,7 @@ jobs:
 
   - script: |
       call activate gmprocess
-      pytest -s -rxs -vv
+      pytest . --capture=no
     displayName: Run tests (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
   

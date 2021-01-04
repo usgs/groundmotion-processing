@@ -164,6 +164,7 @@ class GeoNetFetcher(object):
         data = req.text
         f = io.StringIO(data)
         df = pd.read_csv(f, parse_dates=['origintime'])
+        f.close()
         # some of the column names have spaces in them
         cols = df.columns
         newcols = {}

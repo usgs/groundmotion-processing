@@ -1,9 +1,9 @@
+# -*- coding: utf-8 -*-
 
+from setuptools import setup
 import os
 from distutils.extension import Extension
-from Cython.Distutils import build_ext
 from Cython.Build import cythonize
-from setuptools import setup
 import glob
 import numpy
 
@@ -40,14 +40,11 @@ setup(
                   'hschovanec@usgs.gov, jrekoske@usgs.gov, '
                   'baagaard@usgs.gov, cbworden@contractor.usgs.gov'),
     url='https://github.com/usgs/groundmotion-processing',
-    use_scm_version={
-        "write_to": "gmprocess/_version.py",
-        "write_to_template": '__version__ = "{version}"',
-        "tag_regex": r"^(?P<prefix>v)?(?P<version>[^\+]+)(?P<suffix>.*)?$",
-    },
     packages=[
         'gmprocess',
+        'gmprocess.apps',
         'gmprocess.bin',
+        'gmprocess.subcommands',
         'gmprocess.core',
         'gmprocess.io',
         'gmprocess.io.asdf',
@@ -83,7 +80,8 @@ setup(
         'console_scripts': [
             'gmconvert = gmprocess.bin.gmconvert:main',
             'gminfo = gmprocess.bin.gminfo:main',
-            'gmprocess = gmprocess.bin.gmprocess:main',
+            'gmp = gmprocess.bin.gmp:main',
+            'gmprocess2 = gmprocess.bin.gmprocess2:main',
             'gmsetup = gmprocess.bin.gmsetup:main',
             'gmworkspace = gmprocess.bin.gmworkspace:main',
             'list_metrics = gmprocess.bin.list_metrics:main'

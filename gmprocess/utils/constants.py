@@ -1,4 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import scipy.constants as sp
+import os
+
+PROJECTS_PATH = os.path.join(os.path.expanduser('~'), '.gmp')
+PROJECTS_PATH_TEST = os.path.join(os.path.expanduser('~'), 'gmptest')
 
 CONFIG_FILE_TEST = 'config_test.yml'
 CONFIG_FILE_PRODUCTION = 'config_production.yml'
@@ -6,6 +13,9 @@ PICKER_FILE = 'picker.yml'
 MODULE_FILE = 'modules.yml'
 RUPTURE_FILE = 'rupture.json'
 GAL_TO_PCTG = 1 / sp.g
+
+WORKSPACE_NAME = 'workspace.h5'
+WORKSPACE_NAME_OLD = 'workspace.hdf'
 
 # Converts acceleration units to cm/s/s
 # Converts velocity units to cm/s
@@ -56,3 +66,33 @@ DEFAULT_NA_REP = 'nan'
 
 # Elevation to use for calculating fault distances (m)
 ELEVATION_FOR_DISTANCE_CALCS = 0.0
+
+# Processing tag format
+TAG_FMT = '%Y%m%d%H%M%S'
+
+
+NON_IMT_COLS = set([
+    'EarthquakeId',
+    'EarthquakeTime',
+    'EarthquakeLatitude',
+    'EarthquakeLongitude',
+    'EarthquakeDepth',
+    'EarthquakeMagnitude',
+    'EarthquakeMagnitudeType'
+    'Network',
+    'DataProvider',
+    'StationCode',
+    'StationID',
+    'StationDescription',
+    'StationLatitude',
+    'StationLongitude',
+    'StationElevation',
+    'SamplingRate',
+    'EpicentralDistance',
+    'HypocentralDistance',
+    'H1Lowpass',
+    'H1Highpass',
+    'H2Lowpass',
+    'H2Highpass',
+    'SourceFile']
+)

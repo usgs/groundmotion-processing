@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # Local imports
 from gmprocess.metrics.gather import gather_pgms
 

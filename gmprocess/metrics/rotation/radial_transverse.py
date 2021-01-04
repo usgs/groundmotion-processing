@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # Third party imports
 import numpy as np
 from obspy.geodetics.base import gps2dist_azimuth

@@ -372,8 +372,8 @@ class KNETFetcher(DataFetcher):
         # Japan gives us a LOT of data, much of which is not useful as it is
         # too far away. Use the following distance thresholds for different
         # magnitude ranges, and trim streams that are beyond this distance.
+        threshold_distance = None
         if self.restrict_stations:
-            threshold_distance = None
             for mag, tdistance in MAGS.items():
                 if self.magnitude < mag:
                     threshold_distance = tdistance

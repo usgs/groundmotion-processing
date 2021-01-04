@@ -1,4 +1,5 @@
 #!/usr/bin/env pytest
+# -*- coding: utf-8 -*-
 
 # stdlib imports
 import os

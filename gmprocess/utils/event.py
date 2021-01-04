@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import logging
 
 # third party imports
@@ -77,16 +80,18 @@ class ScalarEvent(Event):
                 fmt = 'Can\'t make UTCDateTime from string "%s" - error "%s"'
                 raise TypeError(fmt % (time, str(e)))
 
-        origin = Origin(resource_id=id,
-                        time=time,
-                        longitude=lon,
-                        latitude=lat,
-                        depth=depth * 1000)
+        origin = Origin(
+            resource_id=id,
+            time=time,
+            longitude=lon,
+            latitude=lat,
+            depth=depth * 1000)
 
         self.origins = [origin]
-        magnitude = Magnitude(resource_id=id,
-                              mag=magnitude,
-                              magnitude_type=mag_type)
+        magnitude = Magnitude(
+            resource_id=id,
+            mag=magnitude,
+            magnitude_type=mag_type)
         self.magnitudes = [magnitude]
         self.resource_id = id
 

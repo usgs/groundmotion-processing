@@ -30,7 +30,7 @@ from gmprocess.io.read_directory import directory_to_streams
 from gmprocess.io.global_fetcher import fetch_data
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.utils.event import ScalarEvent
-from gmprocess.utils.constants import RUPTURE_FILE
+from gmprocess.utils.constants import RUPTURE_FILE, WORKSPACE_NAME
 
 TIMEFMT2 = '%Y-%m-%dT%H:%M:%S.%f'
 
@@ -95,9 +95,14 @@ def download(event, event_dir, config, directory):
         in_event_dir = os.path.join(directory, event.id)
         rup_file = get_rupture_file(in_event_dir)
         in_raw_dir = get_rawdir(in_event_dir)
+        logging.debug('in_raw_dir: %s' % in_raw_dir)
         streams, bad, terrors = directory_to_streams(in_raw_dir)
+        logging.debug('streams:')
+        logging.debug(streams)
         tcollection = StreamCollection(streams, **config['duplicate'])
         create_event_file(event, event_dir)
+    logging.debug('tcollection.describe():')
+    logging.debug(tcollection.describe())
 
     # Plot the raw waveforms
     with warnings.catch_warnings():
@@ -107,7 +112,7 @@ def download(event, event_dir, config, directory):
             plot_raw(rawdir, tcollection, event)
 
     # Create the workspace file and put the unprocessed waveforms in it
-    workname = os.path.join(event_dir, 'workspace.hdf')
+    workname = os.path.join(event_dir, WORKSPACE_NAME)
 
     # Remove any existing workspace file
     if os.path.isfile(workname):
@@ -115,10 +120,11 @@ def download(event, event_dir, config, directory):
 
     workspace = StreamWorkspace(workname)
     workspace.addEvent(event)
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", category=H5pyDeprecationWarning)
-        workspace.addStreams(event, tcollection, label='unprocessed')
-
+    logging.debug('workspace.dataset.events:')
+    logging.debug(workspace.dataset.events)
+    workspace.addStreams(event, tcollection, label='unprocessed')
+    logging.debug('workspace.dataset.waveforms.list():')
+    logging.debug(workspace.dataset.waveforms.list())
     return (workspace, workname, tcollection, rup_file)
 
 
@@ -272,7 +278,7 @@ def read_event_json_files(eventfiles):
     """
     events = []
     for eventfile in eventfiles:
-        with open(eventfile, 'rt') as f:
+        with open(eventfile, 'rt', encoding='utf-8') as f:
             eventdict = json.load(f)
             # eventdict['depth'] *= 1000
             event = get_event_object(eventdict)
@@ -311,8 +317,18 @@ def get_events(eventids, textfile, eventinfo, directory,
     """
     events = []
     if eventids is not None:
+        # Get list of events from directory if it has been provided
+        if directory is not None:
+            tevents = events_from_directory(directory)
+        elif outdir is not None:
+            tevents = events_from_directory(outdir)
         for eventid in eventids:
-            event = get_event_object(eventid)
+            if len(tevents):
+                event = [e for e in tevents if e.id == eventid][0]
+            if not len(event):
+                # This connects to comcat to get event, does not check for a
+                # local json file
+                event = get_event_object(eventid)
             events.append(event)
     elif textfile is not None:
         events = parse_event_file(textfile)
@@ -328,44 +344,35 @@ def get_events(eventids, textfile, eventinfo, directory,
         event.fromParams(eid, time, lat, lon, dep, mag, mag_type)
         events = [event]
     elif directory is not None:
-        eventfiles = get_event_files(directory)
-        if not len(eventfiles):
-            eventids = [f for f in os.listdir(directory)
-                        if not f.startswith('.')]
-            for eventid in eventids:
-                try:
-                    event = get_event_object(eventid)
-                    events.append(event)
-
-                    # If the event ID has been updated, make sure to rename
-                    # the source folder and issue a warning to the user
-                    if event.id != eventid:
-                        old_dir = os.path.join(directory, eventid)
-                        new_dir = os.path.join(directory, event.id)
-                        os.rename(old_dir, new_dir)
-                        logging.warn('Directory %s has been renamed to %s.' %
-                                     (old_dir, new_dir))
-                except BaseException:
-                    logging.warning(
-                        'Could not get info for event id: %s' % eventid
-                    )
-        else:
-            events = read_event_json_files(eventfiles)
-
+        events = events_from_directory(directory)
     elif outdir is not None:
-        eventfiles = get_event_files(outdir)
-        if not len(eventfiles):
-            eventids = os.listdir(outdir)
-            for eventid in eventids:
-                try:
-                    event = get_event_object(eventid)
-                    events.append(event)
-                except BaseException:
-                    logging.warning(
-                        'Could not get info for event id: %s' % eventid
-                    )
-        else:
-            events = read_event_json_files(eventfiles)
+        events = events_from_directory(outdir)
+    return events
+
+
+def events_from_directory(dir):
+    events = []
+    eventfiles = get_event_files(dir)
+    if len(eventfiles):
+        events = read_event_json_files(eventfiles)
+    else:
+        eventids = [f for f in os.listdir(dir) if not f.startswith('.')]
+        for eventid in eventids:
+            try:
+                event = get_event_object(eventid)
+                events.append(event)
+
+                # If the event ID has been updated, make sure to rename
+                # the source folder and issue a warning to the user
+                if event.id != eventid:
+                    old_dir = os.path.join(dir, eventid)
+                    new_dir = os.path.join(dir, event.id)
+                    os.rename(old_dir, new_dir)
+                    logging.warn('Directory %s has been renamed to %s.' %
+                                 (old_dir, new_dir))
+            except BaseException:
+                logging.warning(
+                    'Could not get info for event id: %s' % eventid)
 
     return events
 
@@ -390,7 +397,7 @@ def create_event_file(event, event_dir):
         'magnitude_type': event.magnitude_type
     }
     eventfile = os.path.join(event_dir, 'event.json')
-    with open(eventfile, 'wt') as f:
+    with open(eventfile, 'wt', encoding='utf-8') as f:
         json.dump(edict, f)
 
 
@@ -423,8 +430,8 @@ def save_shakemap_amps(processed, event, event_dir):
     """
     ampfile_name = None
     if processed.n_passed:
-        dataframe = streams_to_dataframe(processed,
-                                         event=event)
+        dataframe = streams_to_dataframe(
+            processed, event=event)
         ampfile_name = os.path.join(event_dir, 'shakemap.xlsx')
 
         # saving with index=False not supported by pandas
@@ -452,7 +459,7 @@ def save_shakemap_amps(processed, event, event_dir):
         # get shakemap json, save to output directory
         jsonfile = os.path.join(event_dir, 'gmprocess_dat.json')
         jsonstr = get_shakemap_json(dataframe)
-        with open(jsonfile, 'wt') as fp:
+        with open(jsonfile, 'wt', encoding='utf-8') as fp:
             fp.write(jsonstr)
 
     return (ampfile_name, jsonfile)
@@ -470,9 +477,10 @@ def get_shakemap_json(dataframe):
         network = row["NETID"].iloc[0]
         name = row["NAME"].iloc[0]
         source = row["SOURCE"].iloc[0]
-        geometry = {'type': 'Point',
-                    'coordinates': (lon, lat)
-                    }
+        geometry = {
+            'type': 'Point',
+            'coordinates': (lon, lat)
+        }
         sid = f'{network}.{station}'
         feature['id'] = sid
         feature['geometry'] = geometry
@@ -529,10 +537,10 @@ def update_config(custom_cfg_file):
     if not os.path.isfile(custom_cfg_file):
         return config
     try:
-        with open(custom_cfg_file, 'rt') as f:
+        with open(custom_cfg_file, 'rt', encoding='utf-8') as f:
             custom_cfg = yaml.load(f, Loader=yaml.FullLoader)
             update_dict(config, custom_cfg)
-    except yaml.parser.ParserError as pe:
+    except yaml.parser.ParserError:
         return None
 
     return config
@@ -582,10 +590,11 @@ def plot_raw(rawdir, tcollection, event):
             ax.set_title('')
             ax.axvline(ptime, color='r')
             ax.set_xlim(left=0, right=trace.times()[-1])
-            legstr = '%s.%s.%s.%s' % (trace.stats.network,
-                                      trace.stats.station,
-                                      trace.stats.location,
-                                      trace.stats.channel)
+            legstr = '%s.%s.%s.%s' % (
+                trace.stats.network,
+                trace.stats.station,
+                trace.stats.location,
+                trace.stats.channel)
             ax.legend(labels=[legstr], frameon=True, loc='upper left')
             tbefore = event.time + arrival_time < trace.stats.starttime + 1.0
             tafter = event.time + arrival_time > trace.stats.endtime - 1.0
@@ -601,8 +610,8 @@ def plot_raw(rawdir, tcollection, event):
 
 
 def get_rupture_file(event_dir):
-    """
-    Returns the path to the rupture file, or None if there is not rupture file.
+    """Get the path to the rupture file, or None if there is not rupture file.
+
     Args:
         event_dir (str): Event directory.
     Returns:

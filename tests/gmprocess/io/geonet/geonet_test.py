@@ -17,18 +17,17 @@ def test():
     datadir_2018 = pkg_resources.resource_filename('gmprocess', dpath_2018)
 
     # first test a non-geonet file
-    try:
-        assert is_geonet(os.path.abspath(__file__))
-    except AssertionError:
-        assert 1 == 1
+    assert is_geonet(os.path.abspath(__file__)) is False
 
     # loop over some events that test different properties
-    comps = [('20161113_110259_WTMC_20.V1A', 'V1 file w/ remainder row', -1102.6, 922.9, 3154.1),
-             ('20161113_110259_WTMC_20.V2A',
-              'V2 file w/ remainder row', -973.31, 796.64, 1802.19),
-             ('20161113_110313_THZ_20.V1A',
-              'V1 file w/out remainder row', 39.97, 48.46, -24.91),
-             ]
+    comps = [
+        ('20161113_110259_WTMC_20.V1A',
+         'V1 file w/ remainder row', -1102.6, 922.9, 3154.1),
+        ('20161113_110259_WTMC_20.V2A',
+         'V2 file w/ remainder row', -973.31, 796.64, 1802.19),
+        ('20161113_110313_THZ_20.V1A',
+         'V1 file w/out remainder row', 39.97, 48.46, -24.91),
+    ]
 
     for comp in comps:
         fname = comp[0]
@@ -45,8 +44,10 @@ def test():
         np.testing.assert_almost_equal(
             stream[2].max(), test_vals[2], decimal=1)
 
-    comps = [('20180212_211557_WPWS_20.V2A',
-              'V2 file w/out remainder row', -4.16, -19.40, -2.73)]
+    comps = [
+        ('20180212_211557_WPWS_20.V2A',
+         'V2 file w/out remainder row', -4.16, -19.40, -2.73)
+    ]
     for comp in comps:
         fname = comp[0]
         desc = comp[1]

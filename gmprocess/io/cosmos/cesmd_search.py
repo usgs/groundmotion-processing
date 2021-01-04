@@ -442,7 +442,7 @@ def get_records(output,
                 fin = myzip.open(member)
                 flatfile = member.replace('/', '_')
                 outfile = os.path.join(output, flatfile)
-                with open(outfile, 'wb') as fout:
+                with open(outfile, 'wb', encoding='utf-8') as fout:
                     fout.write(fin.read())
                 fin.close()
             else:
@@ -463,7 +463,7 @@ def get_records(output,
                             if not os.path.exists(datadir):
                                 os.makedirs(datadir)
                             outfile = os.path.join(datadir, flatfile)
-                            with open(outfile, 'wb') as fout:
+                            with open(outfile, 'wb', encoding='utf-8') as fout:
                                 fout.write(fin.read())
                             fin.close()
                     tmpzip.close()
@@ -487,6 +487,6 @@ def get_records(output,
     else:
         if not output.endswith('.zip'):
             output += '.zip'
-        with open(output, 'wb') as f:
+        with open(output, 'wb', encoding='utf-8') as f:
             f.write(response.content)
         return (output, [])

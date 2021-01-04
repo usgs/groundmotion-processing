@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # Third party imports
 import numpy as np
 from obspy import Stream
