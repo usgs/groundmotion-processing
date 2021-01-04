@@ -1,6 +1,11 @@
-.. image:: docs/images/gmp_logo_sm.png
-    :align: center
+.. raw:: html
 
+   <embed>
+      <div>
+      <img style="vertical-align:middle" src="docs/images/gmp_logo.png" height="40px">
+      <span style="color:#A0A0A0;font-size:20px;position:relative;bottom: -4px;left:10px;"><i>ground motion processing</i></span>
+      </div>
+   </embed>
 
 Introduction
 ------------
