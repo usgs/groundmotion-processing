@@ -18,7 +18,7 @@ def test_export_regression_plot(script_runner):
                                       'demo_steps', 'exports'))
         setup_inputs = io.StringIO(
             "test\n%s\n%s\nname\nemail\n" % (cdir, ddir)
-        ).encode('utf-8')
+        )
         ret = script_runner.run('gmp', 'projects', '-c', stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success

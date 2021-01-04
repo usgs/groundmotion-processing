@@ -26,7 +26,7 @@ def test_compute_waveform_metrics(script_runner):
 
         setup_inputs = io.StringIO(
             "test\n%s\n%s\nname\nemail\n" % (cdir, ddir)
-        ).encode('utf-8')
+        )
         ret = script_runner.run('gmp', 'projects', '-c', stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
