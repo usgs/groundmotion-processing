@@ -22,15 +22,16 @@ class ExportShakeMapModule(SubcommandModule):
         ARG_DICTS['label']
     ]
 
-    def main(self, gmp):
+    def main(self, eqprocess):
         """Export files for ShakeMap input.
 
         Args:
-            gmp: GmpApp instance.
+            eqprocess:
+                EQprocessApp instance.
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
 
-        self.gmp = gmp
+        self.eqprocess = eqprocess
         self._get_events()
 
         for event in self.events:
@@ -38,7 +39,7 @@ class ExportShakeMapModule(SubcommandModule):
             logging.info(
                 'Creating shakemap files for event %s...' % self.eventid)
 
-            event_dir = os.path.join(gmp.data_path, event.id)
+            event_dir = os.path.join(eqprocess.data_path, event.id)
             workname = os.path.join(event_dir, WORKSPACE_NAME)
             if not os.path.isfile(workname):
                 logging.info(

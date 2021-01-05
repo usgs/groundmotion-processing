@@ -4,7 +4,8 @@
 import scipy.constants as sp
 import os
 
-PROJECTS_PATH = os.path.join(os.path.expanduser('~'), '.gmp')
+PROJ_CONF_DIR = '.gmprocess'
+PROJECTS_PATH = os.path.join(os.path.expanduser('~'), PROJ_CONF_DIR)
 PROJECTS_PATH_TEST = os.path.join(os.path.expanduser('~'), 'gmptest')
 
 CONFIG_FILE_TEST = 'config_test.yml'

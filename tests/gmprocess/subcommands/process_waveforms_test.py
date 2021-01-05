@@ -25,13 +25,14 @@ def test_process_waveforms(script_runner):
             shutil.copyfile(src, dst)
 
         setup_inputs = io.StringIO(
-            "test\n%s\n%s\nname\nemail\n" % (cdir, ddir)
+            "2\ntest\n%s\n%s\nname\nemail\n" % (cdir, ddir)
         )
-        ret = script_runner.run('gmp', 'projects', '-c', stdin=setup_inputs)
+        ret = script_runner.run(
+            'eqprocess', 'projects', '-c', stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
 
-        ret = script_runner.run('gmp', 'process_waveforms')
+        ret = script_runner.run('eqprocess', 'process_waveforms')
         assert ret.success
 
         # No new files created, check stderr

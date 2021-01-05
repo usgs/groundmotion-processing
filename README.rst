@@ -2,8 +2,8 @@
 
    <embed>
       <div>
-      <img style="vertical-align:middle" src="docs/images/gmp_logo.png" height="40px">
-      <span style="color:#A0A0A0;font-size:20px;position:relative;bottom: -4px;left:10px;"><i>ground motion processing</i></span>
+      <img style="vertical-align:middle" src="docs/images/gmprocess_logo.png" height="50px">
+      <span style="color:#C5C5C5;font-size:20px;position:relative;bottom: -4px;left:12px;"><i><b>ground motion processing</b></i></span>
       </div>
    </embed>
 

@@ -18,17 +18,18 @@ from gmprocess.utils.config import get_config
 from gmprocess.utils.logging import setup_logger
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.projects import create
+from gmprocess.subcommands.init import InitModule
 from gmprocess.utils import constants
 
 
-class GmpApp(object):
+class EQprocessApp(object):
     """Main driver app for gmrpocess command-line interface.
 
     This is meant to replace the `gmrpocess` program.
 
     To limit the number of paths specified as arguments, this app relies on
     some config options associated with "projects". Project information is
-    saved in `~/.gmp/projects.conf`.
+    saved in `~/.gmprocess/projects.conf`.
 
     GmpApp makes use subcommands that are specified in the
     gmprocess.subcommands package.
@@ -44,15 +45,22 @@ class GmpApp(object):
               easier to deal with.
     """
 
-    # Try not to let tests interfere with actual system:
-    if os.getenv('CALLED_FROM_PYTEST') is None:
-        PROJECTS_PATH = constants.PROJECTS_PATH
-    else:
-        PROJECTS_PATH = constants.PROJECTS_PATH_TEST
-
-    PROJECTS_FILE = os.path.join(PROJECTS_PATH, 'projects.conf')
-
     def __init__(self):
+        # Try not to let tests interfere with actual system:
+        if os.getenv('CALLED_FROM_PYTEST') is None:
+            # Not called from pytest
+            local_proj = os.path.join(os.getcwd(), constants.PROJ_CONF_DIR)
+            local_proj_conf = os.path.join(local_proj, 'projects.conf')
+            if os.path.isdir(local_proj) and os.path.isfile(local_proj_conf):
+                PROJECTS_PATH = local_proj
+            else:
+                PROJECTS_PATH = constants.PROJECTS_PATH
+        else:
+            PROJECTS_PATH = constants.PROJECTS_PATH_TEST
+
+        self.PROJECTS_PATH = PROJECTS_PATH
+        self.PROJECTS_FILE = os.path.join(PROJECTS_PATH, 'projects.conf')
+
         self._load_config()
         self._parse_command_line()
         setup_logger(self.args)
@@ -74,8 +82,22 @@ class GmpApp(object):
         if not os.path.isfile(self.PROJECTS_FILE):
             # If projects.conf file doesn't exist then we need to run the
             # initial setup.
-            print('No project config file detected. Running initial setup...')
-            self._initial_setup()
+            print('No project config file detected.')
+            print('Please select a project setup option:')
+            print('(1) Initialize the current directory as a eqprocess')
+            print('    project, which will contain data and conf')
+            print('    subdirectories.')
+            print('(2) Setup a project with data and conf locations that')
+            print('    are independent of the current directory.')
+            response = int(input('> '))
+            if response not in [1, 2]:
+                print('Not a valid response. Existing.')
+                sys.exit(0)
+            elif response == 1:
+                InitModule().main(self)
+                sys.exit(0)
+            else:
+                self._initial_setup()
 
         self.projects_conf = ConfigObj(self.PROJECTS_FILE, encoding='utf-8')
         self.project = self.projects_conf['project']
@@ -91,8 +113,8 @@ class GmpApp(object):
 
     def _initial_setup(self):
         """
-        Initial setup of ~/.gmp/projects.conf; essentially invoke
-        # gmp projects -c <project>
+        Initial setup of ~/.gmprogress/projects.conf; essentially invoke
+        # eqprocess projects -c
         """
         if not os.path.isdir(self.PROJECTS_PATH):
             os.mkdir(self.PROJECTS_PATH)

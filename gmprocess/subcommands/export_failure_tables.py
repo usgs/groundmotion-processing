@@ -37,22 +37,23 @@ class ExportFailureTablesModule(SubcommandModule):
         ARG_DICTS['output_format']
     ]
 
-    def main(self, gmp):
+    def main(self, eqprocess):
         """Export failure tables.
 
         Args:
-            gmp: GmpApp instance.
+            eqprocess:
+                EQprocessApp instance.
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
 
-        self.gmp = gmp
+        self.eqprocess = eqprocess
         self._get_events()
 
         for event in self.events:
             self.eventid = event.id
             logging.info(
                 'Creating failure tables for event %s...' % self.eventid)
-            event_dir = os.path.join(self.gmp.data_path, self.eventid)
+            event_dir = os.path.join(self.eqprocess.data_path, self.eventid)
             workname = os.path.join(event_dir, WORKSPACE_NAME)
             if not os.path.isfile(workname):
                 logging.info(
@@ -66,24 +67,25 @@ class ExportFailureTablesModule(SubcommandModule):
             self._get_pstreams()
             self.workspace.close()
 
-            if self.gmp.args.type == 'short':
+            if self.eqprocess.args.type == 'short':
                 index = 'Failure reason'
                 col = ['Number of records']
-            elif self.gmp.args.type == 'long':
+            elif self.eqprocess.args.type == 'long':
                 index = 'Station ID'
                 col = ['Failure reason']
-            elif self.gmp.args.type == 'net':
+            elif self.eqprocess.args.type == 'net':
                 index = 'Network'
                 col = ['Number of passed records', 'Number of failed records']
 
-            status_info = self.pstreams.get_status(self.gmp.args.type)
+            status_info = self.pstreams.get_status(self.eqprocess.args.type)
             base_file_name = os.path.join(
                 event_dir,
                 '%s_%s_failure_reasons_%s' % (
-                    gmp.project, gmp.args.label, self.gmp.args.type)
+                    eqprocess.project, eqprocess.args.label,
+                    self.eqprocess.args.type)
             )
 
-            if self.gmp.args.output_format == 'csv':
+            if self.eqprocess.args.output_format == 'csv':
                 csvfile = base_file_name + '.csv'
                 self.append_file('Failure table', csvfile)
                 status_info.to_csv(csvfile, header=col, index_label=index)

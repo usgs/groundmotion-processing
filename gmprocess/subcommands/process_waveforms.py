@@ -39,26 +39,27 @@ class ProcessWaveformsModule(SubcommandModule):
         ARG_DICTS['num_processes']
     ]
 
-    def main(self, gmp):
+    def main(self, eqprocess):
         """Process data using steps defined in configuration file.
 
         Args:
-            gmp: GmpApp instance.
+            eqprocess:
+                EQprocessApp instance.
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
 
-        self.gmp = gmp
+        self.eqprocess = eqprocess
         self._get_events()
 
         # get the process tag from the user or define by current datetime
-        self.process_tag = (gmp.args.label or
+        self.process_tag = (eqprocess.args.label or
                             datetime.utcnow().strftime(TAG_FMT))
         logging.info('Processing tag: %s' % self.process_tag)
 
-        if gmp.args.num_processes:
+        if eqprocess.args.num_processes:
             # parallelize processing on events
             try:
-                client = Client(n_workers=gmp.args.num_processes)
+                client = Client(n_workers=eqprocess.args.num_processes)
             except Exception as ex:
                 print(ex)
                 print("Could not create a dask client.")
@@ -70,7 +71,7 @@ class ProcessWaveformsModule(SubcommandModule):
                 # print('Completed event: %s' % result)
         else:
             for event in self.events:
-                event_dir = os.path.join(gmp.data_path, event.id)
+                event_dir = os.path.join(eqprocess.data_path, event.id)
                 workname = os.path.join(event_dir, WORKSPACE_NAME)
                 if not os.path.isfile(workname):
                     logging.info(
@@ -85,14 +86,15 @@ class ProcessWaveformsModule(SubcommandModule):
 
                 logging.info('Processing \'%s\' streams for event %s...'
                              % ('unprocessed', event.id))
-                pstreams = process_streams(rstreams, event, config=gmp.conf)
+                pstreams = process_streams(
+                    rstreams, event, config=eqprocess.conf)
                 workspace.addStreams(event, pstreams, label=self.process_tag)
                 workspace.close()
 
         self._summarize_files_created()
 
     def _process_event(self, event):
-        event_dir = os.path.join(self.gmp.data_path, event.id)
+        event_dir = os.path.join(self.eqprocess.data_path, event.id)
         workname = os.path.join(event_dir, WORKSPACE_NAME)
         if not os.path.isfile(workname):
             logging.info(
@@ -107,7 +109,7 @@ class ProcessWaveformsModule(SubcommandModule):
 
         logging.info('Processing \'%s\' streams for event %s...'
                      % ('unprocessed', event.id))
-        pstreams = process_streams(rstreams, event, config=self.gmp.conf)
+        pstreams = process_streams(rstreams, event, config=self.eqprocess.conf)
         workspace.addStreams(event, pstreams, label=self.process_tag)
         workspace.close()
         return event.id

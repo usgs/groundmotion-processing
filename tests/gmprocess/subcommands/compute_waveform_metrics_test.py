@@ -25,13 +25,14 @@ def test_compute_waveform_metrics(script_runner):
             shutil.copyfile(src, dst)
 
         setup_inputs = io.StringIO(
-            "test\n%s\n%s\nname\nemail\n" % (cdir, ddir)
+            "2\ntest\n%s\n%s\nname\nemail\n" % (cdir, ddir)
         )
-        ret = script_runner.run('gmp', 'projects', '-c', stdin=setup_inputs)
+        ret = script_runner.run(
+            'eqprocess', 'projects', '-c', stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
 
-        ret = script_runner.run('gmp', 'compute_waveform_metrics')
+        ret = script_runner.run('eqprocess', 'compute_waveform_metrics')
         assert ret.success
 
         assert "Added waveform metrics to workspace files with" in ret.stderr

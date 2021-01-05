@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-from gmprocess.apps.gmp import GmpApp
+from gmprocess.apps.eqprocess import EQprocessApp
 
 
 def main():
-    GmpApp().main()
+    EQprocessApp().main()
 
 
 if __name__ == "__main__":

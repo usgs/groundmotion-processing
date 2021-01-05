@@ -29,21 +29,22 @@ class ComputeStationMetricsModule(SubcommandModule):
         ARG_DICTS['overwrite']
     ]
 
-    def main(self, gmp):
+    def main(self, eqprocess):
         """Compute station metrics.
 
         Args:
-            gmp: GmpApp instance.
+            eqprocess:
+                EQprocessApp instance.
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
 
-        self.gmp = gmp
+        self.eqprocess = eqprocess
         self._get_events()
 
         vs30_grids = None
-        if gmp.conf is not None:
-            if 'vs30' in gmp.conf['metrics']:
-                vs30_grids = gmp.conf['metrics']['vs30']
+        if eqprocess.conf is not None:
+            if 'vs30' in eqprocess.conf['metrics']:
+                vs30_grids = eqprocess.conf['metrics']['vs30']
                 for vs30_name in vs30_grids:
                     vs30_grids[vs30_name]['grid_object'] = GMTGrid.load(
                         vs30_grids[vs30_name]['file'])
@@ -52,7 +53,7 @@ class ComputeStationMetricsModule(SubcommandModule):
             self.eventid = event.id
             logging.info('Computing station metrics for event %s...'
                          % self.eventid)
-            event_dir = os.path.join(gmp.data_path, self.eventid)
+            event_dir = os.path.join(eqprocess.data_path, self.eventid)
             workname = os.path.join(event_dir, WORKSPACE_NAME)
             if not os.path.isfile(workname):
                 logging.info(
@@ -83,7 +84,7 @@ class ComputeStationMetricsModule(SubcommandModule):
                 logging.info(
                     'Calculating station metrics for %s...' % stream.get_id())
                 summary = StationSummary.from_config(
-                    stream, event=event, config=gmp.conf,
+                    stream, event=event, config=eqprocess.conf,
                     calc_waveform_metrics=False,
                     calc_station_metrics=True,
                     rupture=rupture, vs30_grids=vs30_grids)
@@ -97,10 +98,10 @@ class ComputeStationMetricsModule(SubcommandModule):
                 ])
                 self.workspace.insert_aux(
                     xmlstr, 'StationMetrics', metricpath,
-                    overwrite=gmp.args.overwrite)
+                    overwrite=eqprocess.args.overwrite)
 
             self.workspace.close()
 
         logging.info('Added station metrics to workspace files '
-                     'with tag \'%s\'.' % self.gmp.args.label)
+                     'with tag \'%s\'.' % self.eqprocess.args.label)
         self._summarize_files_created()

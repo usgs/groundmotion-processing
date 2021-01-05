@@ -80,7 +80,7 @@ setup(
         'console_scripts': [
             'gmconvert = gmprocess.bin.gmconvert:main',
             'gminfo = gmprocess.bin.gminfo:main',
-            'gmp = gmprocess.bin.gmp:main',
+            'eqprocess = gmprocess.bin.eqprocess:main',
             'gmprocess2 = gmprocess.bin.gmprocess2:main',
             'gmsetup = gmprocess.bin.gmsetup:main',
             'gmworkspace = gmprocess.bin.gmworkspace:main',

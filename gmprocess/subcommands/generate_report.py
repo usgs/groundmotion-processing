@@ -25,7 +25,7 @@ class GenerateReportModule(SubcommandModule):
         ARG_DICTS['label']
     ]
 
-    def main(self, gmp):
+    def main(self, eqprocess):
         """Generate summary report.
 
         This function generates summary plots and then combines them into a
@@ -34,16 +34,17 @@ class GenerateReportModule(SubcommandModule):
         constituent plots will be available.
 
         Args:
-            gmp: GmpApp instance.
+            eqprocess:
+                EQprocessApp instance.
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
 
-        self.gmp = gmp
+        self.eqprocess = eqprocess
         self._get_events()
 
         for event in self.events:
             self.eventid = event.id
-            event_dir = os.path.join(gmp.data_path, self.eventid)
+            event_dir = os.path.join(eqprocess.data_path, self.eventid)
             workname = os.path.join(event_dir, WORKSPACE_NAME)
             if not os.path.isfile(workname):
                 logging.info(
@@ -75,14 +76,14 @@ class GenerateReportModule(SubcommandModule):
             logging.info(
                 'Generating summary report for event %s...' % self.eventid)
 
-            build_conf = gmp.conf['build_report']
+            build_conf = eqprocess.conf['build_report']
             report_format = build_conf['format']
             if report_format == 'latex':
                 report_file, success = build_report_latex(
                     self.pstreams,
                     event_dir,
                     event,
-                    config=gmp.conf
+                    config=eqprocess.conf
                 )
             else:
                 report_file = ''

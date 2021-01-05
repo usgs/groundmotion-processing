@@ -16,25 +16,27 @@ def test_assemble(script_runner):
         ddir = pkg_resources.resource_filename(
             'gmprocess', os.path.join('data', 'testdata', 'demo'))
         setup_inputs = io.StringIO(
-            "test\n%s\n%s\nname\nemail\n" % (cdir, ddir)
+            "2\ntest\n%s\n%s\nname\nemail\n" % (cdir, ddir)
         )
-        ret = script_runner.run('gmp', 'projects', '-c', stdin=setup_inputs)
+        ret = script_runner.run(
+            'eqprocess', 'projects', '-c', stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
 
-        ret = script_runner.run('gmp', 'assemble', '-h')
+        ret = script_runner.run('eqprocess', 'assemble', '-h')
         assert ret.success
 
-        ret = script_runner.run('gmp', 'assemble')
+        ret = script_runner.run('eqprocess', 'assemble')
         assert ret.success
 
-        ret = script_runner.run('gmp', 'assemble', '-e', 'ci38457511', '-o')
+        ret = script_runner.run(
+            'eqprocess', 'assemble', '-e', 'ci38457511', '-o')
         assert ret.success
 
         external_source = pkg_resources.resource_filename(
             'gmprocess', os.path.join('data', 'testdata', 'demo2'))
         ret = script_runner.run(
-            'gmp', 'assemble', '-e', 'usp000a1b0', '-d', external_source)
+            'eqprocess', 'assemble', '-e', 'usp000a1b0', '-d', external_source)
         assert ret.success
 
         # Check that output files are created

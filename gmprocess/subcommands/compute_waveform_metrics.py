@@ -24,22 +24,23 @@ class ComputeWaveformMetricsModule(SubcommandModule):
         ARG_DICTS['overwrite']
     ]
 
-    def main(self, gmp):
+    def main(self, eqprocess):
         """Compute waveform metrics.
 
         Args:
-            gmp: GmpApp instance.
+            eqprocess:
+                EQprocessApp instance.
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
 
-        self.gmp = gmp
+        self.eqprocess = eqprocess
         self._get_events()
 
         for event in self.events:
             self.eventid = event.id
             logging.info(
                 'Computing waveform metrics for event %s...' % self.eventid)
-            event_dir = os.path.join(gmp.data_path, self.eventid)
+            event_dir = os.path.join(eqprocess.data_path, self.eventid)
             workname = os.path.join(event_dir, WORKSPACE_NAME)
             if not os.path.isfile(workname):
                 logging.info(
@@ -56,7 +57,7 @@ class ComputeWaveformMetricsModule(SubcommandModule):
                 logging.info(
                     'Calculating waveform metrics for %s...' % stream.get_id())
                 summary = StationSummary.from_config(
-                    stream, event=event, config=gmp.conf,
+                    stream, event=event, config=eqprocess.conf,
                     calc_waveform_metrics=True,
                     calc_station_metrics=False)
                 xmlstr = summary.get_metric_xml()
@@ -67,10 +68,10 @@ class ComputeWaveformMetricsModule(SubcommandModule):
                 ])
                 self.workspace.insert_aux(
                     xmlstr, 'WaveFormMetrics', metricpath,
-                    overwrite=gmp.args.overwrite)
+                    overwrite=eqprocess.args.overwrite)
 
             self.workspace.close()
 
         logging.info('Added waveform metrics to workspace files '
-                     'with tag \'%s\'.' % self.gmp.args.label)
+                     'with tag \'%s\'.' % self.eqprocess.args.label)
         self._summarize_files_created()
