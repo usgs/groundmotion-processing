@@ -20,7 +20,7 @@ def update_dict(target, source):
     """
     for key, value in source.items():
         if not isinstance(value, dict) or \
-                not key in target.keys() or \
+                key not in target.keys() or \
                 not isinstance(target[key], dict):
             target[key] = value
         else:

@@ -14,7 +14,6 @@ import matplotlib.lines as mlines
 import pandas as pd
 from openpyxl import load_workbook
 import yaml
-from h5py.h5py_warnings import H5pyDeprecationWarning
 import numpy as np
 from impactutils.mapping.city import Cities
 from impactutils.mapping.mercatormap import MercatorMap

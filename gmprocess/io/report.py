@@ -13,7 +13,6 @@ import pandas as pd
 from impactutils.io.cmd import get_command_output
 
 # local imports
-import gmprocess
 from gmprocess.utils.config import get_config
 
 PREAMBLE = """

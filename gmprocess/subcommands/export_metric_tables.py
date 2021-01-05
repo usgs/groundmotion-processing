@@ -7,7 +7,6 @@ import logging
 
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.io.fetch_utils import get_events
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.utils.tables import set_precisions
 from gmprocess.utils.constants import DEFAULT_FLOAT_FORMAT, DEFAULT_NA_REP

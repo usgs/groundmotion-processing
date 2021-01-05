@@ -24,28 +24,30 @@ from gmprocess.utils.config import get_config
 
 SEARCH_URL = 'http://kyhdata.deprem.gov.tr/2K/kyhdata_v4.php?dst=TU9EVUxFX05BTUU9ZWFydGhxdWFrZSZNT0RVTEVfVEFTSz1zZWFyY2g%3D'
 
-EQ_FORM_DATA = {'from_day': '',
-                'from_month': '',
-                'from_year': '',
-                'from_md': '',
-                'to_md': '',
-                'to_day': '',
-                'to_month': '',
-                'to_year': '',
-                'from_ml': '',
-                'to_ml': '',
-                'from_epi_lat': '34.00',
-                'to_epi_lat': '43.00',
-                'from_ms': '',
-                'to_ms': '',
-                'from_epi_lon': '24.0',
-                'to_epi_lon': '45.82',
-                'from_mw': '',
-                'to_mw': '',
-                'from_depth': '',
-                'to_depth': '',
-                'from_mb': '',
-                'to_mb': ''}
+EQ_FORM_DATA = {
+    'from_day': '',
+    'from_month': '',
+    'from_year': '',
+    'from_md': '',
+    'to_md': '',
+    'to_day': '',
+    'to_month': '',
+    'to_year': '',
+    'from_ml': '',
+    'to_ml': '',
+    'from_epi_lat': '34.00',
+    'to_epi_lat': '43.00',
+    'from_ms': '',
+    'to_ms': '',
+    'from_epi_lon': '24.0',
+    'to_epi_lon': '45.82',
+    'from_mw': '',
+    'to_mw': '',
+    'from_depth': '',
+    'to_depth': '',
+    'from_mb': '',
+    'to_mb': ''
+}
 
 # 2019/03/13-13:48:00.00
 TIMEFMT = '%Y-%m-%dT%H:%M:%S'

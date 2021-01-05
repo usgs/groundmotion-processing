@@ -9,9 +9,8 @@ import pytz
 from obspy.core.utcdatetime import UTCDateTime
 from obspy.clients.fdsn.header import URL_MAPPINGS, FDSNException
 from obspy.clients.fdsn import Client
-from obspy.clients.fdsn.mass_downloader import (CircularDomain,
-                                                Restrictions,
-                                                MassDownloader)
+from obspy.clients.fdsn.mass_downloader import \
+    CircularDomain, Restrictions, MassDownloader
 
 # local imports
 from gmprocess.io.fetcher import DataFetcher, _get_first_value
@@ -219,6 +218,7 @@ class FDSNFetcher(DataFetcher):
         domain = CircularDomain(latitude=self.lat, longitude=self.lon,
                                 minradius=0, maxradius=self.radius)
 
+        min_dist = self.minimum_interstation_distance_in_m
         restrictions = Restrictions(
             # Define the temporal bounds of the waveform data.
             starttime=origin_time - self.time_before,
@@ -231,7 +231,7 @@ class FDSNFetcher(DataFetcher):
             # desired total duration will be discarded.
             minimum_length=self.minimum_length,
             sanitize=self.sanitize,
-            minimum_interstation_distance_in_m=self.minimum_interstation_distance_in_m,
+            minimum_interstation_distance_in_m=min_dist,
             exclude_networks=self.exclude_networks,
             exclude_stations=self.exclude_stations,
             channel_priorities=self.channels)
