@@ -8,18 +8,19 @@ import shutil
 from gmprocess.utils import constants
 
 
-def test_gmp(script_runner):
+def test_eqprocess(script_runner):
     try:
         # Need to create profile first.
-        setup_inputs = io.StringIO("test\n\n\nname\nemail\n")
-        ret = script_runner.run('gmp', 'projects', '-c', stdin=setup_inputs)
+        setup_inputs = io.StringIO("2\ntest\n\n\nname\nemail\n")
+        ret = script_runner.run(
+            'eqprocess', 'projects', '-c', stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
 
-        ret = script_runner.run('gmp', '--version')
+        ret = script_runner.run('eqprocess', '--version')
         assert ret.success
 
-        ret = script_runner.run('gmp', '--help')
+        ret = script_runner.run('eqprocess', '--help')
         assert ret.success
     except Exception as ex:
         raise ex
@@ -29,4 +30,4 @@ def test_gmp(script_runner):
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
-    test_gmp()
+    test_eqprocess()

@@ -17,13 +17,14 @@ def test_export_metric_tables(script_runner):
             'gmprocess', os.path.join('data', 'testdata',
                                       'demo_steps', 'exports'))
         setup_inputs = io.StringIO(
-            "test\n%s\n%s\nname\nemail\n" % (cdir, ddir)
+            "2\ntest\n%s\n%s\nname\nemail\n" % (cdir, ddir)
         )
-        ret = script_runner.run('gmp', 'projects', '-c', stdin=setup_inputs)
+        ret = script_runner.run(
+            'eqprocess', 'projects', '-c', stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
 
-        ret = script_runner.run('gmp', 'mtables')
+        ret = script_runner.run('eqprocess', 'mtables')
         assert ret.success
 
         # Check that output tables were created

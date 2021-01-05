@@ -16,7 +16,7 @@ from gmprocess.utils.constants import CONFIG_FILE_PRODUCTION
 
 class ProjectsModule(SubcommandModule):
     """
-    Manage gmp projects.
+    Manage eqprocess projects.
     """
     command_name = 'projects'
     aliases = ('proj', )
@@ -25,7 +25,7 @@ class ProjectsModule(SubcommandModule):
         {
             'short_flag': '-l',
             'long_flag': '--list',
-            'help': 'List all configured gmp projects.',
+            'help': 'List all configured eqprocess projects.',
             'default': False,
             'action': 'store_true'
         }, {
@@ -51,20 +51,20 @@ class ProjectsModule(SubcommandModule):
         },
     ]
 
-    def main(self, gmp):
+    def main(self, eqprocess):
         """
-        Manage gmp projects.
+        Manage eqprocess projects.
 
         Args:
-            gmp:
-                GmpApp instance.
+            eqprocess:
+                EQprocessApp instance.
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
-        args = gmp.args
-        config = gmp.projects_conf
-        configfile = gmp.PROJECTS_FILE
+        args = eqprocess.args
+        config = eqprocess.projects_conf
+        configfile = eqprocess.PROJECTS_FILE
 
-        if gmp.args.create:
+        if eqprocess.args.create:
             create(config)
             sys.exit(0)
 
@@ -181,7 +181,7 @@ def check_project_config(config):
     """
     # Check that at least one project exists
     if 'projects' not in config:
-        logging.error('There are currently no projects. Use "gmp '
+        logging.error('There are currently no projects. Use "eqprocess '
                       'projects -c <project>" to create one.')
         sys.exit(1)
     # Check that the paths for each project exist
@@ -204,23 +204,33 @@ def check_project_config(config):
     return config
 
 
-def create(config):
+def create(config, cwd=False):
     """
     Args:
         config (ConfigObj):
             ConfigObj instance representing the parsed projects config.
-        project (str):
-            Project name.
+        cwd (bool):
+            Is this for initializing a "local" project in the current
+            working directory?
     """
-    project = input('Please enter a project title: ')
-    if 'projects' in config and project in config['projects']:
-        msg = ('Project %s already in %s.  Run \'projects -l\' to see '
-               'available projects.')
-        print(msg % (project, config))
-        sys.exit(1)
-    default_conf, default_data = get_default_project_paths(project)
-    new_conf_path, new_data_path = \
-        set_project_paths(default_conf, default_data)
+    if not cwd:
+        project = input('Please enter a project title: ')
+        if 'projects' in config and project in config['projects']:
+            msg = ('Project %s already in %s.  Run \'eqprocess projects -l\' '
+                   'to see available projects.')
+            print(msg % (project, config))
+            sys.exit(1)
+        default_conf, default_data = get_default_project_paths(project)
+        new_conf_path, new_data_path = \
+            set_project_paths(default_conf, default_data)
+    else:
+        project = 'local'
+        cwd = os.getcwd()
+        new_conf_path = os.path.join(cwd, 'conf')
+        new_data_path = os.path.join(cwd, 'data')
+        for p in [new_conf_path, new_data_path]:
+            if not os.path.isdir(p):
+                os.mkdir(p)
 
     if 'projects' not in config:
         config['projects'] = {}
@@ -229,6 +239,7 @@ def create(config):
         'conf_path': new_conf_path,
         'data_path': new_data_path
     }
+
     config['project'] = project
     config.write()
     sproj = Project(project, config['projects'][project])
@@ -238,7 +249,7 @@ def create(config):
     data_path = pkg_resources.resource_filename('gmprocess', 'data')
     current_conf = os.path.join(data_path, CONFIG_FILE_PRODUCTION)
     with open(current_conf, 'rt', encoding='utf-8') as f:
-        gmp_conf = yaml.load(f, Loader=yaml.SafeLoader)
+        eqprocess_conf = yaml.load(f, Loader=yaml.SafeLoader)
 
     print('Please enter your name and email. This informaitn will be added '
           'to the config file and reported in the provenance of the data '
@@ -246,7 +257,7 @@ def create(config):
     user_info = {}
     user_info['name'] = input('\tName: ')
     user_info['email'] = input('\tEmail: ')
-    gmp_conf['user'] = user_info
+    eqprocess_conf['user'] = user_info
     proj_conf_file = os.path.join(new_conf_path, 'config.yml')
     with open(proj_conf_file, 'w', encoding='utf-8') as yf:
-        yaml.dump(gmp_conf, yf, Dumper=yaml.SafeDumper)
+        yaml.dump(eqprocess_conf, yf, Dumper=yaml.SafeDumper)

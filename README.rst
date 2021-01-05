@@ -2,7 +2,7 @@
 
    <embed>
       <div>
-      <img style="vertical-align:middle" src="docs/images/gmp_logo.png" height="40px">
+      <img style="vertical-align:middle" src="docs/images/gmprocess_logo.png" height="50px">
       <span style="color:#A0A0A0;font-size:20px;position:relative;bottom: -4px;left:10px;"><i>ground motion processing</i></span>
       </div>
    </embed>
