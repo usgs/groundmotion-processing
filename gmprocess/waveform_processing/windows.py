@@ -346,7 +346,8 @@ def trim_multiple_events(st, origin, catalog, travel_time_df, pga_factor,
             List of ScalarEvent objects.
         travel_time_df (DataFrame):
             A pandas DataFrame that contains the travel time information
-            (obtained using gmprocess.waveform_processing.phase.create_travel_time_dataframe).
+            (obtained from
+            gmprocess.waveform_processing.phase.create_travel_time_dataframe).
             The columns in the DataFrame are the station ids and the indices
             are the earthquake ids.
         pga_factor (float):

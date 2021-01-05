@@ -47,7 +47,8 @@ class Combination(object):
             elif len(horizontal_channels) < 2:
                 raise PGMException(
                     'Combination: Less than two horizontal channels.')
-            elif len(horizontal_channels[0].data) != len(horizontal_channels[1].data):
+            elif (len(horizontal_channels[0].data) !=
+                  len(horizontal_channels[1].data)):
                 raise PGMException(
                     'Combination: Horizontal channels have different lengths.')
         elif isinstance(self.combination_data, dict):

@@ -552,7 +552,8 @@ class StationSummary(object):
                     imc = imc_element.tag.upper()
                     if imc in ['H1', 'H2', 'Z']:
                         if 'original_channel' in imc_element.attrib:
-                            channel_dict[imc] = imc_element.attrib['original_channel']
+                            channel_dict[imc] = \
+                                imc_element.attrib['original_channel']
                     value = float(imc_element.text)
                     tdict[imc] = value
 
@@ -655,7 +656,7 @@ class StationSummary(object):
                 }
 
     def get_metric_xml(self):
-        """Return XML for waveform metrics as defined for our ASDF implementation.
+        """Return waveform metrics XML as defined for our ASDF implementation.
 
         Returns:
             str: XML in the form:

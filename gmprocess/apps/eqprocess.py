@@ -9,9 +9,7 @@ import pkgutil
 import inspect
 import argparse
 import logging
-
 from configobj import ConfigObj
-import logging
 from setuptools_scm import get_version
 
 from gmprocess.utils.config import get_config
@@ -25,7 +23,7 @@ from gmprocess.utils import constants
 class EQprocessApp(object):
     """Main driver app for gmrpocess command-line interface.
 
-    This is meant to replace the `gmrpocess` program.
+    This is meant to replace the `gmprocess` program.
 
     To limit the number of paths specified as arguments, this app relies on
     some config options associated with "projects". Project information is

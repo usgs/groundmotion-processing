@@ -587,10 +587,6 @@ def summary_plots(st, directory, origin):
             snr_conf = None
 
         trace_failed = tr.hasParameter('failure')
-        if trace_failed:
-            failure_reason = tr.getParameter('failure')['reason']
-        else:
-            failure_reason = ''
 
         # Note that the theoretical spectra will only be available for
         # horizontal channels

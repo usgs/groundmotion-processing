@@ -2,15 +2,14 @@
 
    <embed>
       <div>
-      <img style="vertical-align:middle" src="docs/images/gmprocess_logo.png" height="50px">
-      <span style="color:#C5C5C5;font-size:20px;position:relative;bottom: -4px;left:12px;"><i><b>ground motion processing</b></i></span>
+      <img style="vertical-align:middle" src="docs/images/gmprocess_logo_large.png" height="50px">
       </div>
    </embed>
 
 Introduction
 ------------
 This is a project designed to provide a number of functions related to parsing
-and processing ground motion data, building on top of the 
+and processing earthquake ground motion data, building on top of the 
 `ObsPy <https://github.com/obspy/obspy/wiki>`_
 library. Most of the extensions that we provide are to handle strong motion
 data and related issues.
