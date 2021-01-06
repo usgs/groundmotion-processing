@@ -12,31 +12,31 @@ def test_projects(script_runner):
         # Need to create profile first.
         setup_inputs = io.StringIO("2\ntest\n\n\nname\nemail\n")
         ret = script_runner.run(
-            'eqprocess', 'projects', '-c', stdin=setup_inputs)
+            'gmrecords', 'projects', '-c', stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
 
         ret = script_runner.run(
-            'eqprocess', 'projects', '-h')
+            'gmrecords', 'projects', '-h')
         assert ret.success
 
         setup_inputs = io.StringIO("test2\n\n\nname\nemail\n")
         ret = script_runner.run(
-            'eqprocess', 'projects', '-c', stdin=setup_inputs)
+            'gmrecords', 'projects', '-c', stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
 
         ret = script_runner.run(
-            'eqprocess', 'projects', '-l')
+            'gmrecords', 'projects', '-l')
         assert ret.success
         assert 'Project: test2 **Current Project**' in ret.stdout
 
-        ret = script_runner.run('eqprocess', 'projects', '-s', 'test')
+        ret = script_runner.run('gmrecords', 'projects', '-s', 'test')
         assert ret.success
 
         setup_inputs = io.StringIO("y\n")
         ret = script_runner.run(
-            'eqprocess', 'projects', '-d', 'test2', stdin=setup_inputs)
+            'gmrecords', 'projects', '-d', 'test2', stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
         assert 'Project: test2' not in ret.stdout

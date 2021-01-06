@@ -19,12 +19,12 @@ def test_export_provenance_tables(script_runner):
         setup_inputs = io.StringIO(
             "2\ntest\n%s\n%s\nname\nemail\n" % (cdir, ddir)
         )
-        ret = script_runner.run('eqprocess', 'projects', '-c',
+        ret = script_runner.run('gmrecords', 'projects', '-c',
                                 stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
 
-        ret = script_runner.run('eqprocess', 'ptables')
+        ret = script_runner.run('gmrecords', 'ptables')
         assert ret.success
 
         # Check that files were created

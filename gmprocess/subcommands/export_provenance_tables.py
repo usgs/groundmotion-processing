@@ -23,23 +23,23 @@ class ExportProvenanceTablesModule(SubcommandModule):
         ARG_DICTS['output_format']
     ]
 
-    def main(self, eqprocess):
+    def main(self, gmrecords):
         """Export provenance tables.
 
         Args:
-            eqprocess:
-                EQprocessApp instance.
+            gmrecords:
+                GMrecordsApp instance.
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
 
-        self.eqprocess = eqprocess
+        self.gmrecords = gmrecords
         self._get_events()
 
         for event in self.events:
             self.eventid = event.id
             logging.info(
                 'Creating provenance tables for event %s...' % self.eventid)
-            event_dir = os.path.join(eqprocess.data_path, self.eventid)
+            event_dir = os.path.join(gmrecords.data_path, self.eventid)
             workname = os.path.join(event_dir, WORKSPACE_NAME)
             if not os.path.isfile(workname):
                 logging.info(
@@ -53,12 +53,12 @@ class ExportProvenanceTablesModule(SubcommandModule):
             self._get_pstreams()
 
             provdata = self.workspace.getProvenance(
-                self.eventid, labels=self.eqprocess.args.label)
+                self.eventid, labels=self.gmrecords.args.label)
             self.workspace.close()
 
             basename = '%s_%s_provenance' % (
-                eqprocess.project, eqprocess.args.label)
-            if eqprocess.args.output_format == 'csv':
+                gmrecords.project, gmrecords.args.label)
+            if gmrecords.args.output_format == 'csv':
                 csvfile = os.path.join(event_dir, '%s.csv' % basename)
                 self.append_file('Provenance', csvfile)
                 provdata.to_csv(csvfile, index=False)

@@ -28,11 +28,11 @@ def test_compute_station_metrics(script_runner):
             "2\ntest\n%s\n%s\nname\nemail\n" % (cdir, ddir)
         )
         ret = script_runner.run(
-            'eqprocess', 'projects', '-c', stdin=setup_inputs)
+            'gmrecords', 'projects', '-c', stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
 
-        ret = script_runner.run('eqprocess', 'compute_station_metrics')
+        ret = script_runner.run('gmrecords', 'compute_station_metrics')
         print(ret.stderr)
         assert ret.success
 

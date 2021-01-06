@@ -21,24 +21,24 @@ class GenerateRegressionPlotModule(SubcommandModule):
 
     arguments = []
 
-    def main(self, eqprocess):
+    def main(self, gmrecords):
         """Generate multi-event \"regression\" plot.
 
         Args:
-            eqprocess:
-                EQprocessApp instance.
+            gmrecords:
+                GMrecordsApp instance.
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
 
         imc_table_names = [file.replace('_README', '')
-                           for file in os.listdir(eqprocess.data_path)
+                           for file in os.listdir(gmrecords.data_path)
                            if 'README' in file]
 
         imc_tables = {}
         for file in imc_table_names:
             imckey = os.path.splitext(file)[0]
             imc_tables[imckey] = pd.read_csv(
-                os.path.join(eqprocess.data_path, file))
+                os.path.join(gmrecords.data_path, file))
             if 'fit_spectra_parameters' in imc_tables:
                 del imc_tables['fit_spectra_parameters']
 
@@ -46,12 +46,12 @@ class GenerateRegressionPlotModule(SubcommandModule):
         # It appears this is being written in gmprocess2 and
         # generate_metric_tables.py, and it gets appended to when re-run.
         event_files = glob.glob(os.path.join(
-            eqprocess.data_path, '*_events.*'))
+            gmrecords.data_path, '*_events.*'))
         if len(event_files) == 1:
             event_file = event_files[0]
         elif len(event_files) == 0:
             print('No event file found. Cannot build regression plot.')
-            print('Please run \'eqprocess export_metric_tables\'.')
+            print('Please run \'gmrecords export_metric_tables\'.')
             sys.exit(1)
         else:
             print('Multiple event files found, please select one:')
@@ -101,7 +101,7 @@ class GenerateRegressionPlotModule(SubcommandModule):
                     'regression_%s_%s.png' %
                     (found_imc, found_imt)
                 )
-                regression_file = os.path.join(eqprocess.data_path, pngfile)
+                regression_file = os.path.join(gmrecords.data_path, pngfile)
                 plot_regression(event_table, found_imc,
                                 imc_tables[tab_key_dict[found_imc]],
                                 found_imt,

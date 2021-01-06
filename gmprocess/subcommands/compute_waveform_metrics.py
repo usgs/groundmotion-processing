@@ -24,23 +24,23 @@ class ComputeWaveformMetricsModule(SubcommandModule):
         ARG_DICTS['overwrite']
     ]
 
-    def main(self, eqprocess):
+    def main(self, gmrecords):
         """Compute waveform metrics.
 
         Args:
-            eqprocess:
-                EQprocessApp instance.
+            gmrecords:
+                GMrecordsApp instance.
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
 
-        self.eqprocess = eqprocess
+        self.gmrecords = gmrecords
         self._get_events()
 
         for event in self.events:
             self.eventid = event.id
             logging.info(
                 'Computing waveform metrics for event %s...' % self.eventid)
-            event_dir = os.path.join(eqprocess.data_path, self.eventid)
+            event_dir = os.path.join(gmrecords.data_path, self.eventid)
             workname = os.path.join(event_dir, WORKSPACE_NAME)
             if not os.path.isfile(workname):
                 logging.info(
@@ -57,7 +57,7 @@ class ComputeWaveformMetricsModule(SubcommandModule):
                 logging.info(
                     'Calculating waveform metrics for %s...' % stream.get_id())
                 summary = StationSummary.from_config(
-                    stream, event=event, config=eqprocess.conf,
+                    stream, event=event, config=gmrecords.conf,
                     calc_waveform_metrics=True,
                     calc_station_metrics=False)
                 xmlstr = summary.get_metric_xml()
@@ -68,10 +68,10 @@ class ComputeWaveformMetricsModule(SubcommandModule):
                 ])
                 self.workspace.insert_aux(
                     xmlstr, 'WaveFormMetrics', metricpath,
-                    overwrite=eqprocess.args.overwrite)
+                    overwrite=gmrecords.args.overwrite)
 
             self.workspace.close()
 
         logging.info('Added waveform metrics to workspace files '
-                     'with tag \'%s\'.' % self.eqprocess.args.label)
+                     'with tag \'%s\'.' % self.gmrecords.args.label)
         self._summarize_files_created()

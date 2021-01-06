@@ -20,11 +20,11 @@ def test_export_metric_tables(script_runner):
             "2\ntest\n%s\n%s\nname\nemail\n" % (cdir, ddir)
         )
         ret = script_runner.run(
-            'eqprocess', 'projects', '-c', stdin=setup_inputs)
+            'gmrecords', 'projects', '-c', stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
 
-        ret = script_runner.run('eqprocess', 'mtables')
+        ret = script_runner.run('gmrecords', 'mtables')
         assert ret.success
 
         # Check that output tables were created

@@ -40,9 +40,9 @@ class SubcommandModule(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def main(self, eqprocess):
+    def main(self, gmrecords):
         """
-        All main methods should take one gmp object (a EQprocessApp instance).
+        All main methods should take one gmp object (a GMrecordsApp instance).
         """
         raise NotImplementedError
 
@@ -77,7 +77,7 @@ class SubcommandModule(ABC):
 
         # If there are more than 1 processed labels, prompt user to select
         # one.
-        if (len(labels) > 1) and (self.eqprocess.args.label is None):
+        if (len(labels) > 1) and (self.gmrecords.args.label is None):
             print('\nWhich label do you want to use?')
             for lab in labels:
                 print('\t%s' % lab)
@@ -86,12 +86,12 @@ class SubcommandModule(ABC):
                 print('%s not a valid label. Exiting.' % tmplab)
                 sys.exit(1)
             else:
-                self.eqprocess.args.label = tmplab
-        elif self.eqprocess.args.label is None:
-            self.eqprocess.args.label = labels[0]
+                self.gmrecords.args.label = tmplab
+        elif self.gmrecords.args.label is None:
+            self.gmrecords.args.label = labels[0]
 
         self.pstreams = self.workspace.getStreams(
-            self.eventid, labels=[self.eqprocess.args.label])
+            self.eventid, labels=[self.gmrecords.args.label])
 
     def _get_events(self):
         # NOTE: as currently written, `get_events` will do the following,
@@ -106,30 +106,30 @@ class SubcommandModule(ABC):
         #
         # This whole thing is really hacky and should probably be completely
         # rewritten.
-        if hasattr(self.eqprocess.args, 'data_source'):
-            if self.eqprocess.args.data_source is None:
+        if hasattr(self.gmrecords.args, 'data_source'):
+            if self.gmrecords.args.data_source is None:
                 # Use project directory from config
-                temp_dir = self.eqprocess.data_path
+                temp_dir = self.gmrecords.data_path
                 if not os.path.isdir(temp_dir):
                     raise OSError('No such directory: %s' % temp_dir)
-            elif self.eqprocess.args.data_source == 'download':
+            elif self.gmrecords.args.data_source == 'download':
                 temp_dir = None
             else:
-                temp_dir = self.eqprocess.args.data_source
+                temp_dir = self.gmrecords.args.data_source
                 if not os.path.isdir(temp_dir):
                     raise OSError('No such directory: %s' % temp_dir)
             self.download_dir = temp_dir
         else:
             self.download_dir = None
 
-        info = self.eqprocess.args.info if hasattr(
-            self.eqprocess.args, 'info') else None
-        tfile = self.eqprocess.args.textfile if \
-            hasattr(self.eqprocess.args, 'textfile') else None
+        info = self.gmrecords.args.info if hasattr(
+            self.gmrecords.args, 'info') else None
+        tfile = self.gmrecords.args.textfile if \
+            hasattr(self.gmrecords.args, 'textfile') else None
         self.events = get_events(
-            eventids=self.eqprocess.args.eventid,
+            eventids=self.gmrecords.args.eventid,
             textfile=tfile,
             eventinfo=info,
             directory=self.download_dir,
-            outdir=self.eqprocess.data_path
+            outdir=self.gmrecords.data_path
         )

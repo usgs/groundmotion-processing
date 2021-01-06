@@ -26,23 +26,23 @@ class ExportMetricTablesModule(SubcommandModule):
         ARG_DICTS['overwrite']
     ]
 
-    def main(self, eqprocess):
+    def main(self, gmrecords):
         """Export metric tables.
 
         Args:
-            eqprocess:
-                EQprocessApp instance.
+            gmrecords:
+                GMrecordsApp instance.
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
 
-        self.eqprocess = eqprocess
+        self.gmrecords = gmrecords
         self._get_events()
 
         for event in self.events:
             self.eventid = event.id
             logging.info(
                 'Creating tables for event %s...' % self.eventid)
-            event_dir = os.path.join(eqprocess.data_path, self.eventid)
+            event_dir = os.path.join(gmrecords.data_path, self.eventid)
             workname = os.path.join(event_dir, WORKSPACE_NAME)
             if not os.path.isfile(workname):
                 logging.info(
@@ -56,12 +56,12 @@ class ExportMetricTablesModule(SubcommandModule):
             self._get_pstreams()
 
             event_table, imc_tables, readmes = self.workspace.getTables(
-                self.eqprocess.args.label, streams=self.pstreams)
+                self.gmrecords.args.label, streams=self.pstreams)
             ev_fit_spec, fit_readme = self.workspace.getFitSpectraTable(
-                self.eventid, self.eqprocess.args.label, self.pstreams)
+                self.eventid, self.gmrecords.args.label, self.pstreams)
             self.workspace.close()
 
-            outdir = eqprocess.data_path
+            outdir = gmrecords.data_path
 
             # Set the precisions for the imc tables, event table, and
             # fit_spectra table before writing
@@ -73,15 +73,15 @@ class ExportMetricTablesModule(SubcommandModule):
 
             imc_list = [
                 '%s_%s_metrics_%s' %
-                (eqprocess.project, eqprocess.args.label, imc.lower())
+                (gmrecords.project, gmrecords.args.label, imc.lower())
                 for imc in imc_tables_formatted.keys()
             ]
             readme_list = [
                 '%s_%s_metrics_%s_README' %
-                (eqprocess.project, eqprocess.args.label, imc.lower())
+                (gmrecords.project, gmrecords.args.label, imc.lower())
                 for imc in readmes.keys()
             ]
-            proj_lab = (eqprocess.project, eqprocess.args.label)
+            proj_lab = (gmrecords.project, gmrecords.args.label)
 
             event_filename = ['%s_%s_events' % proj_lab]
             filenames = event_filename + imc_list + readme_list + [
@@ -93,7 +93,7 @@ class ExportMetricTablesModule(SubcommandModule):
                 imc_tables_formatted.values()) + list(
                 readmes.values()) + [df_fit_spectra_formatted, fit_readme]
 
-            output_format = eqprocess.args.output_format
+            output_format = gmrecords.args.output_format
             if output_format != 'csv':
                 output_format = 'xlsx'
 
@@ -104,7 +104,7 @@ class ExportMetricTablesModule(SubcommandModule):
                     if 'README' in filename:
                         continue
                     else:
-                        if self.eqprocess.args.overwrite:
+                        if self.gmrecords.args.overwrite:
                             logging.warning('File exists: %s' % filename)
                             logging.warning('Overwriting file: %s' % filename)
                             mode = 'w'
