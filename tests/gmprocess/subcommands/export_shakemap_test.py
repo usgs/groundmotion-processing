@@ -20,11 +20,11 @@ def test_export_shakemap(script_runner):
             "2\ntest\n%s\n%s\nname\nemail\n" % (cdir, ddir)
         )
         ret = script_runner.run(
-            'eqprocess', 'projects', '-c', stdin=setup_inputs)
+            'gmrecords', 'projects', '-c', stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
 
-        ret = script_runner.run('eqprocess', 'shakemap')
+        ret = script_runner.run('gmrecords', 'shakemap')
         assert ret.success
 
         # Check that output files are created

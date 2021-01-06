@@ -19,13 +19,13 @@ class InitModule(SubcommandModule):
 
     arguments = []
 
-    def main(self, eqprocess):
+    def main(self, gmrecords):
         """
         Initialize the current directory as a gmprocess project directory.
 
         Args:
-            eqprocess:
-                EQprocessApp instance.
+            gmrecords:
+                GMrecordsApp instance.
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
 

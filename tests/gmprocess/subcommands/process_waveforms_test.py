@@ -28,11 +28,11 @@ def test_process_waveforms(script_runner):
             "2\ntest\n%s\n%s\nname\nemail\n" % (cdir, ddir)
         )
         ret = script_runner.run(
-            'eqprocess', 'projects', '-c', stdin=setup_inputs)
+            'gmrecords', 'projects', '-c', stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
 
-        ret = script_runner.run('eqprocess', 'process_waveforms')
+        ret = script_runner.run('gmrecords', 'process_waveforms')
         assert ret.success
 
         # No new files created, check stderr

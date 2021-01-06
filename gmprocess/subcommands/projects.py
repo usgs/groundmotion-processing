@@ -16,7 +16,7 @@ from gmprocess.utils.constants import CONFIG_FILE_PRODUCTION
 
 class ProjectsModule(SubcommandModule):
     """
-    Manage eqprocess projects.
+    Manage gmrecords projects.
     """
     command_name = 'projects'
     aliases = ('proj', )
@@ -25,7 +25,7 @@ class ProjectsModule(SubcommandModule):
         {
             'short_flag': '-l',
             'long_flag': '--list',
-            'help': 'List all configured eqprocess projects.',
+            'help': 'List all configured gmrecords projects.',
             'default': False,
             'action': 'store_true'
         }, {
@@ -51,20 +51,20 @@ class ProjectsModule(SubcommandModule):
         },
     ]
 
-    def main(self, eqprocess):
+    def main(self, gmrecords):
         """
-        Manage eqprocess projects.
+        Manage gmrecords projects.
 
         Args:
-            eqprocess:
-                EQprocessApp instance.
+            gmrecords:
+                GMrecordsApp instance.
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
-        args = eqprocess.args
-        config = eqprocess.projects_conf
-        configfile = eqprocess.PROJECTS_FILE
+        args = gmrecords.args
+        config = gmrecords.projects_conf
+        configfile = gmrecords.PROJECTS_FILE
 
-        if eqprocess.args.create:
+        if gmrecords.args.create:
             create(config)
             sys.exit(0)
 
@@ -181,7 +181,7 @@ def check_project_config(config):
     """
     # Check that at least one project exists
     if 'projects' not in config:
-        logging.error('There are currently no projects. Use "eqprocess '
+        logging.error('There are currently no projects. Use "gmrecords '
                       'projects -c <project>" to create one.')
         sys.exit(1)
     # Check that the paths for each project exist
@@ -216,7 +216,7 @@ def create(config, cwd=False):
     if not cwd:
         project = input('Please enter a project title: ')
         if 'projects' in config and project in config['projects']:
-            msg = ('Project %s already in %s.  Run \'eqprocess projects -l\' '
+            msg = ('Project %s already in %s.  Run \'gmrecords projects -l\' '
                    'to see available projects.')
             print(msg % (project, config))
             sys.exit(1)
@@ -249,15 +249,15 @@ def create(config, cwd=False):
     data_path = pkg_resources.resource_filename('gmprocess', 'data')
     current_conf = os.path.join(data_path, CONFIG_FILE_PRODUCTION)
     with open(current_conf, 'rt', encoding='utf-8') as f:
-        eqprocess_conf = yaml.load(f, Loader=yaml.SafeLoader)
+        gmrecords_conf = yaml.load(f, Loader=yaml.SafeLoader)
 
-    print('Please enter your name and email. This informaitn will be added '
-          'to the config file and reported in the provenance of the data '
-          'processed in this project.')
+    print('Please enter your name and email. This informaitn will be added')
+    print('to the config file and reported in the provenance of the data')
+    print('processed in this project.')
     user_info = {}
     user_info['name'] = input('\tName: ')
     user_info['email'] = input('\tEmail: ')
-    eqprocess_conf['user'] = user_info
+    gmrecords_conf['user'] = user_info
     proj_conf_file = os.path.join(new_conf_path, 'config.yml')
     with open(proj_conf_file, 'w', encoding='utf-8') as yf:
-        yaml.dump(eqprocess_conf, yf, Dumper=yaml.SafeDumper)
+        yaml.dump(gmrecords_conf, yf, Dumper=yaml.SafeDumper)

@@ -47,16 +47,16 @@ class AssembleModule(SubcommandModule):
         ARG_DICTS['overwrite']
     ]
 
-    def main(self, eqprocess):
+    def main(self, gmrecords):
         """
         Assemble data and organize it into an ASDF file.
 
         Args:
-            eqprocess:
-                EQprocessApp instance.
+            gmrecords:
+                GMrecordsApp instance.
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
-        self.eqprocess = eqprocess
+        self.gmrecords = gmrecords
 
         self._get_events()
         print(self.events)
@@ -64,14 +64,14 @@ class AssembleModule(SubcommandModule):
         logging.info('Number of events to assemble: %s' % len(self.events))
         for event in self.events:
             logging.info('Starting event: %s' % event.id)
-            event_dir = os.path.join(eqprocess.data_path, event.id)
+            event_dir = os.path.join(gmrecords.data_path, event.id)
             if not os.path.exists(event_dir):
                 os.makedirs(event_dir)
             workname = os.path.join(event_dir, WORKSPACE_NAME)
             workspace_exists = os.path.isfile(workname)
             if workspace_exists:
                 logging.info("ASDF exists: %s" % workname)
-                if not eqprocess.args.overwrite:
+                if not gmrecords.args.overwrite:
                     logging.info("The --overwrite argument not selected.")
                     logging.info("No action taken for %s." % event.id)
                     continue
@@ -87,7 +87,7 @@ class AssembleModule(SubcommandModule):
             workspace, _, _, _ = download(
                 event=event,
                 event_dir=event_dir,
-                config=eqprocess.conf,
+                config=gmrecords.conf,
                 directory=self.download_dir
             )
             workspace.close()
