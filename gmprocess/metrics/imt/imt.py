@@ -30,6 +30,10 @@ class IMT(object):
         Checks whether the combinations of imt and imc is valid.
 
         Args:
+            imc (str):
+                Intensity measure component.
+
+        Returns:
             bool: Whether or not the pair is valid.
         """
         imc = imc.lower()
@@ -43,7 +47,7 @@ class IMT(object):
         """
         Steps for the imt/imc computation.
 
-        Args:
+        Returns:
             self._steps: Steps for the imt/imc computation as a dictionary.
         """
         return self._steps

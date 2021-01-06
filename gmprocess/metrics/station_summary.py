@@ -159,6 +159,10 @@ class StationSummary(object):
             vs30_grids (dict):
                 A dictionary containing the vs30 grid files, names, and
                 descriptions (see config).
+
+        Returns:
+            class: StationSummary class.
+
         Note:
             Assumes a processed stream with units of gal (1 cm/s^2).
             No processing is done by this class.
@@ -206,11 +210,19 @@ class StationSummary(object):
     def from_pgms(cls, station_code, pgms):
         """
         Args:
-            station_code (str): Station code for the given pgms.
-            pgms (dictionary): Dictionary of pgms.
+            station_code (str):
+                Station code for the given pgms.
+            pgms (dict):
+                Dictionary of pgms.
+
+        Returns:
+            class: StationSummary clsas.
+
         Note:
             The pgm dictionary must be formated as imts with subdictionaries
             containing imcs:
+
+            ```
                 {
                   'SA1.0': {
                     'H2': 84.23215974982956,
@@ -220,6 +232,8 @@ class StationSummary(object):
                   },
                   ...
                 }
+            ```
+
             This should be the default format for significant ground motion
             parametric data from COMCAT.
         """
@@ -251,17 +265,27 @@ class StationSummary(object):
                     calc_station_metrics=True, rupture=None, vs30_grids=None):
         """
         Args:
-            stream (obspy.core.stream.Stream): Strong motion timeseries
-                for one station.
-            components (list): List of requested components (str).
-            imts (list): List of requested imts (str).
+            stream (obspy.core.stream.Stream):
+                Strong motion timeseries for one station.
+            components (list):
+                List of requested components (str).
+            imts (list):
+                List of requested imts (str).
             event (ScalarEvent):
                 Origin/magnitude for the event containing time, latitude,
                 longitude, depth, and magnitude.
-            damping (float): Damping of oscillator. Default is None.
-            smoothing (float): Smoothing method. Default is None.
-            bandwidth (float): Bandwidth of smoothing. Default is None.
-            config (dictionary): Configuration dictionary.
+            damping (float):
+                Damping of oscillator. Default is None.
+            smoothing (float):
+                Smoothing method. Default is None.
+            bandwidth (float):
+                Bandwidth of smoothing. Default is None.
+            allow_nans (bool):
+                Should nans be allowed in the smoothed spectra. If False, then
+                the number of points in the FFT will be computed to ensure
+                that nans will not result in the smoothed spectra.
+            config (dictionary):
+                Configuration dictionary.
             calc_waveform_metrics (bool):
                 Whether to calculate waveform metrics. Default is True.
             calc_station_metrics (bool):
@@ -324,6 +348,12 @@ class StationSummary(object):
     def get_pgm(self, imt, imc):
         """
         Finds the imt/imc value requested.
+
+        Args:
+            imt (str):
+                Requested intensity measure type.
+            imc (str):
+                Requested intensity measure component.
 
         Returns:
             float: Value for the imt, imc requested.
@@ -523,10 +553,13 @@ class StationSummary(object):
         </station_metrics>
 
         Args:
-            xml_stream (str): Stream metrics XML string in format above.
-            xml_station (str): Station metrics XML string in format above.
+            xml_stream (str):
+                Stream metrics XML string in format above.
+            xml_station (str):
+                Station metrics XML string in format above.
+
         Returns:
-            StationSummary: Object summarizing all station metrics.
+            object: StationSummary Object summarizing all station metrics.
 
         """
         imtlist = gather_pgms()[0]
@@ -670,6 +703,8 @@ class StationSummary(object):
                     </maximum_component>
                 </waveform_metrics>
 
+        Raises:
+            KeyError: if the requrested imt is not present.
         """
         FLOAT_MATCH = r'[0-9]*\.[0-9]*'
         root = etree.Element('waveform_metrics',

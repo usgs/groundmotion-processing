@@ -15,7 +15,7 @@ class Combination(object):
     def __init__(self, combination_data):
         """
         Args:
-            timeseries (obspy.core.stream.Stream or numpy.ndarray):
+            combination_data (obspy.core.stream.Stream or numpy.ndarray):
                 Data for calculation.
         """
         self.combination_data = combination_data
@@ -30,8 +30,8 @@ class Combination(object):
 
         Raises:
             PGMException: if there are less than or greater than two
-                    horizontal channels, or if the length of the traces are
-                    not equal.
+                horizontal channels, or if the length of the traces are
+                not equal.
         """
         horizontal_channels = []
         if isinstance(self.combination_data, (StationStream, Stream)):
@@ -64,5 +64,5 @@ class Combination(object):
                 raise PGMException(
                     'Combination: Less than two horizontal channels.')
         else:
-            raise Exception('Combination: Invalid input data type')
+            raise PGMException('Combination: Invalid input data type')
         return horizontal_channels

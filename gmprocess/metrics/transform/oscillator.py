@@ -22,6 +22,11 @@ class oscillator(Transform):
                 Period for spectral amplitude calculations.
             times (numpy.ndarray):
                 Times for the spectral amplitude calculations.
+            allow_nans (bool):
+                Should nans be allowed in the smoothed spectra. If False, then
+                the number of points in the FFT will be computed to ensure
+                that nans will not result in the smoothed spectra.
+
         """
         super().__init__(transform_data, damping=None, period=None, times=None,
                          max_period=None, allow_nans=None, bandwidth=None)
