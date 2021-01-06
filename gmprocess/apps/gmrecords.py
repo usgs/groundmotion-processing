@@ -15,7 +15,7 @@ from setuptools_scm import get_version
 from gmprocess.utils.config import get_config
 from gmprocess.utils.logging import setup_logger
 from gmprocess.subcommands.base import SubcommandModule
-from gmprocess.subcommands.projects import create
+from gmprocess.subcommands.projects import Project, create
 from gmprocess.subcommands.init import InitModule
 from gmprocess.utils import constants
 
@@ -60,6 +60,7 @@ class GMrecordsApp(object):
         self.PROJECTS_FILE = os.path.join(PROJECTS_PATH, 'projects.conf')
 
         self._load_config()
+
         self._parse_command_line()
         setup_logger(self.args)
         logging.info('Logging level includes INFO.')
@@ -69,6 +70,17 @@ class GMrecordsApp(object):
         if self.args.subcommand is None:
             self.parser.print_help()
         else:
+            if self.args.subcommand != 'projects':
+                # Print the current project information to try to avoid
+                # confusion
+                selected_project = self.projects_conf['project']
+                proj = Project(
+                    selected_project,
+                    self.projects_conf['projects'][selected_project]
+                )
+                print('-' * 80)
+                print(proj)
+                print('-' * 80)
             # -----------------------------------------------------------------
             # This calls the init method of the subcommand that was specified
             # at the command line and hands off the GmpApp object ("self") as

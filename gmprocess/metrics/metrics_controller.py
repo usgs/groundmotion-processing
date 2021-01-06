@@ -42,24 +42,33 @@ class MetricsController(object):
 
     def __init__(self, imts, imcs, timeseries, bandwidth=None, damping=None,
                  event=None, smooth_type=None, allow_nans=None):
-        """
+        """Initialize MetricsController class.
+
         Args:
             imts (list):
                 Intensity measurement types (string) to calculate.
             imcs (list):
                 Intensity measurement components (string) to
-                calculate. timeseries (StationStream): Stream of the
-                timeseries data.
+                calculate.
+            timeseries (StationStream):
+                Stream of the timeseries data.
+            bandwidth (float):
+                Bandwidth for the smoothing calculation.
+            damping (float):
+                Damping for the oscillator calculation.
             event (ScalarEvent):
                 Defines the focal time, geographic location, and magnitude of
                 an earthquake hypocenter. Default is None.
-            damping (float):
-                Damping for the oscillator calculation.
-            bandwidth (float):
-                Bandwidth for the smoothing calculation.
-            smoothing (string):
+            smooth_type (string):
                 Currently not used, as konno_ohmachi is the only smoothing
                 type.
+            allow_nans (bool):
+                Should nans be allowed in the smoothed spectra. If False, then
+                the number of points in the FFT will be computed to ensure
+                that nans will not result in the smoothed spectra.
+
+        Raises:
+            PGMException: Requires an event for radial_transfer imcs.
         """
         if not isinstance(imts, (list, np.ndarray)):
             imts = [imts]
@@ -114,6 +123,9 @@ class MetricsController(object):
             event (ScalarEvent):
                 Defines the focal time, geographic location and magnitude of
                 an earthquake hypocenter. Default is None.
+
+        Returns:
+            MetricsController class.
 
         Notes:
             Custom configs must be in the following format:
@@ -430,8 +442,8 @@ class MetricsController(object):
         Validates that the input is a StationStream, the units are either
         'vel' or 'acc', and the length of the traces are all equal.
 
-        Railses:
-            PGMException for the cases where:
+        Raises:
+            PGMException: for the cases where
                     1. The input is not a StationStream.
                     2. The units are not velocity or acceleration.
                     3. The length of the traces are not equal.
@@ -558,19 +570,21 @@ class MetricsController(object):
             if cls_tupple[0] != base_class and cls_tupple[0] != 'PGMException':
                 return cls_tupple[1]
 
-    def _parse_period(self, imt):
+    @staticmethod
+    def _parse_period(imt):
         """
         Parses the period from the imt.
 
         Args:
-            imt (string): Imt that contains a period similar to one of the
-                    following examples:
-                            - SA(1.0)
-                            - SA(1)
-                            - SA1.0
-                            - SA1
+            imt (string):
+                Imt that contains a period similar to one of the following
+                examples:
+                    - SA(1.0)
+                    - SA(1)
+                    - SA1.0
+                    - SA1
         Returns:
-            string: Period for the calculation.
+            str: Period for the calculation.
 
         Notes:
             Can be either a float or integer.
@@ -585,19 +599,22 @@ class MetricsController(object):
             period = None
         return period
 
-    def _parse_percentile(self, imc):
+    @staticmethod
+    def _parse_percentile(imc):
         """
         Parses the percentile from the imc.
 
         Args:
-            imc (string): Imc that contains a period similar to one of the
-                    following examples:
-                            - ROTD(50.0)
-                            - ROTD(50)
-                            - ROTD50.0
-                            - ROTD50
+            imc (string):
+                Imc that contains a period similar to one of the following
+                examples:
+                    - ROTD(50.0)
+                    - ROTD(50)
+                    - ROTD50.0
+                    - ROTD50
+
         Returns:
-            string: Period for the calculation.
+            str: Period for the calculation.
 
         Notes:
             Can be either a float or integer.

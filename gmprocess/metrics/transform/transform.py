@@ -20,6 +20,10 @@ class Transform(object):
                 Period for spectral amplitude calculations. Default is None.
             times (numpy.ndarray):
                 Times for the spectral amplitude calculations. Default is None.
+            allow_nans (bool):
+                Should nans be allowed in the smoothed spectra. If False, then
+                the number of points in the FFT will be computed to ensure
+                that nans will not result in the smoothed spectra.
         """
         self.transform_data = transform_data
 

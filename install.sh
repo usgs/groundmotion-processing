@@ -143,9 +143,6 @@ if [ $? -ne 0 ];then
     exit 1
 fi
 
-# Pin a specific pip version that works with setuptools-scm
-pip install --upgrade pip==18.0
-
 # if pip upgrade fails, complain but try to keep going
 if [ $? -ne 0 ];then
     echo "Failed to upgrade pip, trying to continue..."

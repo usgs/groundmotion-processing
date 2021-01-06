@@ -1,5 +1,5 @@
 python
-pip=18.0
+pip
 c-compiler
 cython
 dask

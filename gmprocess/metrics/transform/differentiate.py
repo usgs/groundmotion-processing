@@ -21,6 +21,10 @@ class Differentiate(Transform):
                 Period for spectral amplitude calculations. Default is None.
             times (numpy.ndarray):
                 Times for the spectral amplitude calculations. Default is None.
+            allow_nans (bool):
+                Should nans be allowed in the smoothed spectra. If False, then
+                the number of points in the FFT will be computed to ensure
+                that nans will not result in the smoothed spectra.
         """
         super().__init__(transform_data, damping=None, period=None, times=None,
                          max_period=None, allow_nans=None, bandwidth=None)
@@ -29,6 +33,18 @@ class Differentiate(Transform):
     def get_derivative(self):
         """
         Calculated the derivative of each trace's data.
+
+        Args:
+            damping (float):
+                Damping for spectral amplitude calculations. Default is None.
+            period (float):
+                Period for spectral amplitude calculations. Default is None.
+            times (numpy.ndarray):
+                Times for the spectral amplitude calculations. Default is None.
+            allow_nans (bool):
+                Should nans be allowed in the smoothed spectra. If False, then
+                the number of points in the FFT will be computed to ensure
+                that nans will not result in the smoothed spectra.
 
         Returns:
             stream: StationStream with the differentiated data.

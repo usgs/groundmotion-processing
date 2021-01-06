@@ -29,12 +29,13 @@ class IMC(object):
         self._available_imts = imts
 
     def valid_combination(self, imt):
-        """
-        Checks whether the combinations of imt and imc is valid.
+        """Checks whether the combinations of imt and imc is valid.
 
         Args:
-            bool:
-                Whether or not the pair is valid.
+            imt: (string):
+                Intensity measurement type.
+        Returns:
+            bool: Whether or not the pair is valid.
         """
         imt = self.imt.lower()
         if imt in self._available_imts and imt not in self._invalid_imts:
@@ -47,8 +48,7 @@ class IMC(object):
         """
         Steps for the imt/imc computation.
 
-        Args:
-            self._steps:
-                Steps for the imt/imc computation as a dictionary.
+        Returns:
+            self._steps: Steps for the imt/imc computation as a dictionary.
         """
         return self._steps
