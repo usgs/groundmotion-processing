@@ -75,7 +75,7 @@ jobs:
 
   - script: |
       conda create --name gmprocess  python=$(python.version) --file requirements.txt --strict-channel-priority -c conda-forge -y -v
-      pip install -U git+https://github.com/emthompson-usgs/pytest-console-scripts.git
+      pip install -U git+https://github.com/emthompson-usgs/pytest-console-scripts.git@patch
     displayName: Create conda environment (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
