@@ -13,10 +13,8 @@ from .fetcher import DataFetcher
 from gmprocess.utils.config import get_config
 
 
-def fetch_data(time, lat, lon,
-               depth, magnitude,
-               config=None,
-               rawdir=None, drop_non_free=True):
+def fetch_data(time, lat, lon, depth, magnitude,
+               config=None, rawdir=None, drop_non_free=True):
     """Retrieve data using any DataFetcher subclass.
 
     Args:
@@ -55,10 +53,9 @@ def fetch_data(time, lat, lon,
     errors = []
     for fetchname, fetcher in fetchers.items():
         try:
-            fetchinst = fetcher(time, lat, lon,
-                                depth, magnitude,
-                                config=config,
-                                rawdir=rawdir, drop_non_free=drop_non_free)
+            fetchinst = fetcher(
+                time, lat, lon, depth, magnitude, config=config,
+                rawdir=rawdir, drop_non_free=drop_non_free)
         except Exception as e:
             fmt = 'Could not instantiate Fetcher %s, due to error\n "%s"'
             tpl = (fetchname, str(e))
@@ -103,8 +100,10 @@ def find_fetchers(lat, lon):
     """Create a dictionary of classname:class to be used in main().
 
     Args:
-        lat (float): Origin latitude.
-        lon (float): Origin longitude.
+        lat (float):
+            Origin latitude.
+        lon (float):
+            Origin longitude.
 
     Returns:
         dict: Dictionary of classname:class where each class

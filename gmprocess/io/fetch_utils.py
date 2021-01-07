@@ -49,7 +49,7 @@ UNITS = {'PGA': '%g',
 FLOAT_PATTERN = r'[-+]?[0-9]*\.?[0-9]+'
 
 
-def download(event, event_dir, config, directory):
+def download(event, event_dir, config, directory, create_workspace=True):
     """Download data or load data from local directory, turn into Streams.
 
     Args:
@@ -65,6 +65,8 @@ def download(event, event_dir, config, directory):
             example, if `directory` is 'proj_dir' and you have data for
             event id 'abc123' then the raw data to be read in should be
             located in `proj_dir/abc123/raw/`.
+        create_workspace (bool):
+            Create workspace file?
 
     Returns:
         tuple:
@@ -110,20 +112,24 @@ def download(event, event_dir, config, directory):
         if not len(pngfiles):
             plot_raw(rawdir, tcollection, event)
 
-    # Create the workspace file and put the unprocessed waveforms in it
-    workname = os.path.join(event_dir, WORKSPACE_NAME)
+    if create_workspace:
+        # Create the workspace file and put the unprocessed waveforms in it
+        workname = os.path.join(event_dir, WORKSPACE_NAME)
 
-    # Remove any existing workspace file
-    if os.path.isfile(workname):
-        os.remove(workname)
+        # Remove any existing workspace file
+        if os.path.isfile(workname):
+            os.remove(workname)
 
-    workspace = StreamWorkspace(workname)
-    workspace.addEvent(event)
-    logging.debug('workspace.dataset.events:')
-    logging.debug(workspace.dataset.events)
-    workspace.addStreams(event, tcollection, label='unprocessed')
-    logging.debug('workspace.dataset.waveforms.list():')
-    logging.debug(workspace.dataset.waveforms.list())
+        workspace = StreamWorkspace(workname)
+        workspace.addEvent(event)
+        logging.debug('workspace.dataset.events:')
+        logging.debug(workspace.dataset.events)
+        workspace.addStreams(event, tcollection, label='unprocessed')
+        logging.debug('workspace.dataset.waveforms.list():')
+        logging.debug(workspace.dataset.waveforms.list())
+    else:
+        workspace = None
+        workname = None
     return (workspace, workname, tcollection, rup_file)
 
 
@@ -279,7 +285,6 @@ def read_event_json_files(eventfiles):
     for eventfile in eventfiles:
         with open(eventfile, 'rt', encoding='utf-8') as f:
             eventdict = json.load(f)
-            # eventdict['depth'] *= 1000
             event = get_event_object(eventdict)
             events.append(event)
     return events
@@ -317,6 +322,7 @@ def get_events(eventids, textfile, eventinfo, directory,
     events = []
     if eventids is not None:
         # Get list of events from directory if it has been provided
+        tevents = []
         if directory is not None:
             tevents = events_from_directory(directory)
         elif outdir is not None:
@@ -324,7 +330,7 @@ def get_events(eventids, textfile, eventinfo, directory,
         for eventid in eventids:
             if len(tevents):
                 event = [e for e in tevents if e.id == eventid][0]
-            if not len(event):
+            else:
                 # This connects to comcat to get event, does not check for a
                 # local json file
                 event = get_event_object(eventid)
@@ -613,6 +619,7 @@ def get_rupture_file(event_dir):
 
     Args:
         event_dir (str): Event directory.
+
     Returns:
         str: Path to the rupture file. Returns None if no rupture file exists.
     """
