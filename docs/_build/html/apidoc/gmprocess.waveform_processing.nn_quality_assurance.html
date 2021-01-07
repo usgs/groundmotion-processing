@@ -1,0 +1,649 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="gmprocess.waveform_processing.phase" href="gmprocess.waveform_processing.phase.html" /><link rel="prev" title="gmprocess.waveform_processing.filtering" href="gmprocess.waveform_processing.filtering.html" />
+
+    <meta name="generator" content="sphinx-3.4.0, furo 2020.12.28.beta22"/>
+        <title>gmprocess.waveform_processing.nn_quality_assurance - gmprocess 1.0.4 documentation</title>
+      <link rel="stylesheet" href="../_static/styles/furo.css?digest=d315feae89b83a5365ff3ccc3644a1018972e3a0">
+    <link rel="stylesheet" href="../_static/pygments.css">
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
+    
+
+
+<style>
+  :root {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+
+  /* For allowing end-user-specific overrides */
+  .override-light {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  .override-dark {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+</style><link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=26485485040e7aaf717c13fd0188a5ad2c2deb60">
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script defer="defer" src="../_static/jquery.js"></script>
+    <script defer="defer" src="../_static/underscore.js"></script>
+    <script defer="defer" src="../_static/doctools.js"></script>
+    <script defer src="../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></head>
+  <body dir="">
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z"/>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">gmprocess 1.0.4 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand centered" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/gmprocess_logo.png" alt="Logo"/>
+  </div>
+  
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html">
+  <input class="sidebar-search" placeholder=Search name="q">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">Objective</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html#motivation">Motivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html#target-use-cases">Target Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/workspace.html">Workspace</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/running.html">Running the code</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Processing Steps</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../processing-steps/reading.html">Reading data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../processing-steps/retrieve.html">Retrieving data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../processing-steps/windowing.html">Windowing data</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../processing-steps/index.html">Waveform processing</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../processing-steps/waveform-processing.html">Waveform Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../processing-steps/waveform-processing/initial-qc.html">Initial quality control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../processing-steps/waveform-processing/remove-response.html">Removing instrument response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../processing-steps/waveform-processing/phase-pickers.html">Phase pickers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../processing-steps/waveform-processing/baseline-correction.html">Baseline correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../processing-steps/waveform-processing/filtering.html">Filtering</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../processing-steps/data-units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../processing-steps/waveform-metrics.html">Waveform metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../processing-steps/station-metrics.html">Station metrics</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Using gmprocess</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gmprocess/gmprocess.html">The gmprocess command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gmprocess/reading.html">Reading data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gmprocess/waveform-processing.html">Waveform processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gmprocess/reports.html">Processing reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gmprocess/exporting.html">Exporting data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../utilities/gmworkspace.html">The gmworkspace command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utilities/gmconvert.html">Converting data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/matlab.html">Matlab utilities</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Python Scripting</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../scripting/index.html">Data structures</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../scripting/data-structures.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scripting/data-structures/station-trace.html">StationTrace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scripting/data-structures/station-stream.html">StationStream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scripting/data-structures/stream-collection.html">StreamCollection</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/scripting.html">Writing Python scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/waveform-metrics.html">Waveform metrics</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Development</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../developer/code-layout.html">Code layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/readers.html">Adding new data readers</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="gmprocess.html">API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="gmprocess.core.html">gmprocess.core</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.core.stationstream.html">gmprocess.core.stationstream</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.core.stationtrace.html">gmprocess.core.stationtrace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.core.streamcollection.html">gmprocess.core.streamcollection</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="gmprocess.io.html">gmprocess.io</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.catalog.html">gmprocess.io.catalog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.fetcher.html">gmprocess.io.fetcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.global_fetcher.html">gmprocess.io.global_fetcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.nga.html">gmprocess.io.nga</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.read.html">gmprocess.io.read</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.read_directory.html">gmprocess.io.read_directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.report.html">gmprocess.io.report</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.seedname.html">gmprocess.io.seedname</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.stream.html">gmprocess.io.stream</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.utils.html">gmprocess.io.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="gmprocess.utils.html">gmprocess.utils</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label for="toctree-checkbox-6"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.utils.args.html">gmprocess.utils.args</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.utils.config.html">gmprocess.utils.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.utils.event.html">gmprocess.utils.event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.utils.exception.html">gmprocess.utils.exception</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.utils.logging.html">gmprocess.utils.logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.utils.models.html">gmprocess.utils.models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.utils.plot.html">gmprocess.utils.plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.utils.tables.html">gmprocess.utils.tables</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="gmprocess.waveform_processing.html">gmprocess.waveform_processing</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label for="toctree-checkbox-7"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.adjust_highpass.html">gmprocess.waveform_processing.adjust_highpass</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.corner_frequencies.html">gmprocess.waveform_processing.corner_frequencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.fft.html">gmprocess.waveform_processing.fft</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.filtering.html">gmprocess.waveform_processing.filtering</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">gmprocess.waveform_processing.nn_quality_assurance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.phase.html">gmprocess.waveform_processing.phase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.pretesting.html">gmprocess.waveform_processing.pretesting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.processing.html">gmprocess.waveform_processing.processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.snr.html">gmprocess.waveform_processing.snr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.spectrum.html">gmprocess.waveform_processing.spectrum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.windows.html">gmprocess.waveform_processing.windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.zero_crossings.html">gmprocess.waveform_processing.zero_crossings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <main class="main">
+    <div class="content">
+      <article role="main">
+        <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        </label>
+        <div class="section" id="module-gmprocess.waveform_processing.nn_quality_assurance">
+<span id="gmprocess-waveform-processing-nn-quality-assurance"></span><h1>gmprocess.waveform_processing.nn_quality_assurance<a class="headerlink" href="#module-gmprocess.waveform_processing.nn_quality_assurance" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="gmprocess.waveform_processing.nn_quality_assurance.NNet_QA">
+<code class="sig-prename descclassname">gmprocess.waveform_processing.nn_quality_assurance.</code><code class="sig-name descname">NNet_QA</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">st</span></em>, <em class="sig-param"><span class="n">acceptance_threshold</span></em>, <em class="sig-param"><span class="n">model_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#NNet_QA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.NNet_QA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assess the quality of a stream by analyzing its two horizontal components
+as described in Bellagamba et al. (2019). Performs three steps:
+1) Compute the quality metrics (see paper for more info)
+2) Preprocess the quality metrics (deskew, standardize and decorrelate)
+3) Evaluate the quality using a neural network-based model
+Two models are available: ‘Cant’ and ‘CantWell’.
+To minimize the number of low quality ground motion included, the natural
+acceptance threshold 0.5 can be raised (up to an extreme value of 0.95).
+Recommended parameters are:
+-   acceptance_threshold = 0.5 or 0.6
+-   model_name = ‘CantWell’</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>st</strong> (<em>list of traces</em>) – The ground motion record to analyze. Should contain at least 2
+orthogonal  horizontal traces.</p></li>
+<li><p><strong>acceptance_threshold</strong> (<em>float</em>) – Threshold from which GM records are considered acceptable.</p></li>
+<li><p><strong>model_name</strong> (<em>string</em>) – name of the used model (‘Cant’ or ‘CantWell’)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>stream of traces tagged with quality scores and flags,
+used model name and acceptance threshold</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>st</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="gmprocess.waveform_processing.nn_quality_assurance.calculateHusid">
+<code class="sig-prename descclassname">gmprocess.waveform_processing.nn_quality_assurance.</code><code class="sig-name descname">calculateHusid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">acc</span></em>, <em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#calculateHusid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.calculateHusid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the husid and Arias of a signal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>acc</strong> (<em>np.array</em>) – accelerogram vector</p></li>
+<li><p><strong>t</strong> (<em>np.array</em>) – time vector (constant time step)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>vector of floats
+AI: vector of floats
+Arias: float, max value of AI
+husid index at 5, 75 and 95% (used for duration)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>husid</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="gmprocess.waveform_processing.nn_quality_assurance.calculateSNR_min">
+<code class="sig-prename descclassname">gmprocess.waveform_processing.nn_quality_assurance.</code><code class="sig-name descname">calculateSNR_min</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ft_freq</span></em>, <em class="sig-param"><span class="n">snr</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#calculateSNR_min"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.calculateSNR_min" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the SNR min between 0.1 and 20 Hz</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ft_freq</strong> (<em>list of float</em>) – vector of frequencies used in the Fourier spectrum</p></li>
+<li><p><strong>snr</strong> (<em>list of float</em>) – vector of the snr at the frequencies in ft_freq</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>min snr between 0.1 and 20 Hz</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="gmprocess.waveform_processing.nn_quality_assurance.computeQualityMetrics">
+<code class="sig-prename descclassname">gmprocess.waveform_processing.nn_quality_assurance.</code><code class="sig-name descname">computeQualityMetrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">st</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#computeQualityMetrics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.computeQualityMetrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the 2 horizontal components and format the P-wave arrival time before
+launching the computation of the qualtiy metrics as in Bellagamba et al.
+(2019)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>st</strong> (<em>list of trace</em>) – a list of trace as defined in gmprocess (USGS)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of float containing the 20 quality metrics</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="gmprocess.waveform_processing.nn_quality_assurance.decorrelateData">
+<code class="sig-prename descclassname">gmprocess.waveform_processing.nn_quality_assurance.</code><code class="sig-name descname">decorrelateData</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">M</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#decorrelateData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.decorrelateData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorrelate the data based on a Mahalanobis tranform. The transformation
+matrix is given as an input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>np.array</em>) – numpy array containing the data to be decorrelated (size = N).</p></li>
+<li><p><strong>M</strong> (<em>np.array</em>) – decorrelation matrix (size NxN)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of float containing the decorrelated data</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="gmprocess.waveform_processing.nn_quality_assurance.deskewData">
+<code class="sig-prename descclassname">gmprocess.waveform_processing.nn_quality_assurance.</code><code class="sig-name descname">deskewData</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">model_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#deskewData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.deskewData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs the deskewing operations used in Bellagamba et al. (2019) on the
+quality metrics vector. Depending on the selected model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>list of floats</em>) – 20 quality metrics computed as described in the</p></li>
+<li><p><strong>paper</strong> – </p></li>
+<li><p><strong>model_name</strong> (<em>string</em>) – name of the selected model. Available ‘Cant’ and</p></li>
+<li><p><strong>as described in the paper</strong> (<em>'CantWell'</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>processed (deskewed) data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of float</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="gmprocess.waveform_processing.nn_quality_assurance.getClassificationMetrics">
+<code class="sig-prename descclassname">gmprocess.waveform_processing.nn_quality_assurance.</code><code class="sig-name descname">getClassificationMetrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tr</span></em>, <em class="sig-param"><span class="n">p_pick</span></em>, <em class="sig-param"><span class="n">delta_t</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#getClassificationMetrics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.getClassificationMetrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the quality metrics as in Bellagamba et al. (2019). More details
+in the paper.</p>
+<dl class="simple">
+<dt>WARNINGS: - Acceleration untis changed into g at the beginning!</dt><dd><ul class="simple">
+<li><p>Vertical component is not used!</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tr</strong> (<em>list of list of float</em>) – each list contains an horizontal trace</p></li>
+<li><p><strong>p_pick</strong> (<em>float</em>) – estimated P-wave arrival time (in seconds) from the start of the
+record</p></li>
+<li><p><strong>delta_t</strong> (<em>float</em>) – time step used in the record in seconds (decimal)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of float containing the quality metrics (size = 20)</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="gmprocess.waveform_processing.nn_quality_assurance.getFreqIndex">
+<code class="sig-prename descclassname">gmprocess.waveform_processing.nn_quality_assurance.</code><code class="sig-name descname">getFreqIndex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ft_freq</span></em>, <em class="sig-param"><span class="n">lower</span></em>, <em class="sig-param"><span class="n">upper</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#getFreqIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.getFreqIndex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the indices of a frequency range in the frequency vector</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ft_freq</strong> (<em>list of float</em>) – list of ordred frequencies</p></li>
+<li><p><strong>lower</strong> (<em>float</em>) – lower boud of the frequency range</p></li>
+<li><p><strong>upper</strong> (<em>float</em>) – upper bound of the frequency range</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the indices bounding the range</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int, int</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="gmprocess.waveform_processing.nn_quality_assurance.getHusidIndex">
+<code class="sig-prename descclassname">gmprocess.waveform_processing.nn_quality_assurance.</code><code class="sig-name descname">getHusidIndex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">husid</span></em>, <em class="sig-param"><span class="n">threshold</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#getHusidIndex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.getHusidIndex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the index of the husid for a particular threshold</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>husid</strong> (<em>list of float</em>) – husid vector</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>) – threshold not to be exceeded</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the index of the latest value below the threshold</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="gmprocess.waveform_processing.nn_quality_assurance.get_husid">
+<code class="sig-prename descclassname">gmprocess.waveform_processing.nn_quality_assurance.</code><code class="sig-name descname">get_husid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">acceleration</span></em>, <em class="sig-param"><span class="n">time_vector</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#get_husid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.get_husid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Husid vector, defined as int{acceleration ** 2.}</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>acceleration</strong> (<em>np.array</em>) – Vector of acceleration values</p></li>
+<li><p><strong>time_vector</strong> (<em>np.array</em>) – Time vector in seconds</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="gmprocess.waveform_processing.nn_quality_assurance.isNumber">
+<code class="sig-prename descclassname">gmprocess.waveform_processing.nn_quality_assurance.</code><code class="sig-name descname">isNumber</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#isNumber"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.isNumber" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if given input is a number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>s</strong> (<em>any type</em>) – Data to test</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if is a number, False if isn’t</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="gmprocess.waveform_processing.nn_quality_assurance.loadCSV">
+<code class="sig-prename descclassname">gmprocess.waveform_processing.nn_quality_assurance.</code><code class="sig-name descname">loadCSV</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_path</span></em>, <em class="sig-param"><span class="n">row_ignore</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">col_ignore</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#loadCSV"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.loadCSV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load csv files from a given path and returns a list of list.
+For all imported data, check if is a number. If so, returns a
+float. If not, returns a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_path</strong> (<em>string</em>) – path to the csv to load</p></li>
+<li><p><strong>row_ignore</strong> (<em>int</em>) – number of rows to ignore</p></li>
+<li><p><strong>col_ignore</strong> (<em>int</em>) – number of columns to ignore</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>containing the data from the csv</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of list</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py class">
+<dt id="gmprocess.waveform_processing.nn_quality_assurance.neuralNet">
+<em class="property">class </em><code class="sig-prename descclassname">gmprocess.waveform_processing.nn_quality_assurance.</code><code class="sig-name descname">neuralNet</code><a class="reference internal" href="../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#neuralNet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.neuralNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class allowing the instantiation and use of simple (1 or 2 layers)
+neural networks</p>
+<dl class="py method">
+<dt id="gmprocess.waveform_processing.nn_quality_assurance.neuralNet.loadNN">
+<code class="sig-name descname">loadNN</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nn_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#neuralNet.loadNN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.neuralNet.loadNN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populate an instantated neural netowrk with data contained in a
+specific folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nn_path</strong> (<em>string</em>) – path to the folder containing the required</p></li>
+<li><p><strong>information</strong> (<em>masterF.txt</em><em>, </em><em>weights.csv</em><em>, </em><em>biases.csv</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt id="gmprocess.waveform_processing.nn_quality_assurance.neuralNet.useNN">
+<code class="sig-name descname">useNN</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v_input</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#neuralNet.useNN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.neuralNet.useNN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use a populated neural network (i.e. from the input, returns the
+classification score or the regression result).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>v_input</strong> (<em>list</em><em> or </em><em>np.array</em>) – list or numpy array of the inputs</p></li>
+<li><p><strong>be all numerical</strong><strong>)</strong><strong> Size must be equal to the NN input layer</strong> (<em>(</em><em>must</em>) – </p></li>
+<li><p><strong>size.</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>numpy array containing the results.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>v_inter (np.array)</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+<dl class="py function">
+<dt id="gmprocess.waveform_processing.nn_quality_assurance.preprocessQualityMetrics">
+<code class="sig-prename descclassname">gmprocess.waveform_processing.nn_quality_assurance.</code><code class="sig-name descname">preprocessQualityMetrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">qm</span></em>, <em class="sig-param"><span class="n">model_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#preprocessQualityMetrics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.preprocessQualityMetrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pre-process the quality metrics according to Bellagamba et al. (2019)
+(i.e. deskews, standardizes and decorrelates the quality metrics)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qm</strong> (<em>list of float</em>) – quality metrics estimated according to the paper</p></li>
+<li><p><strong>model_name</strong> (<em>string</em>) – name of the used model for processing. Available: ‘Cant’ and
+‘CantWell’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of float containing the pre-processed quality metrics.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="gmprocess.waveform_processing.nn_quality_assurance.sigmoid">
+<code class="sig-prename descclassname">gmprocess.waveform_processing.nn_quality_assurance.</code><code class="sig-name descname">sigmoid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v_input</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#sigmoid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.sigmoid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a sigmoid operation on the input (1/(e(-x)+1))</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v_input</strong> (<em>float</em>) – a number defined on R (real)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>sigmoid result (a number between 0 and 1)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="gmprocess.waveform_processing.nn_quality_assurance.standardizeData">
+<code class="sig-prename descclassname">gmprocess.waveform_processing.nn_quality_assurance.</code><code class="sig-name descname">standardizeData</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">mu</span></em>, <em class="sig-param"><span class="n">sigma</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#standardizeData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.standardizeData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a standardization operation on the given data ((X-mu)/sigma)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>list of float</em>) – data to standardize (size represents the dimensionality of the data
+and not the number of point to standardize)</p></li>
+<li><p><strong>mu</strong> (<em>list of float</em>) – means</p></li>
+<li><p><strong>sigma</strong> (<em>list of float</em>) – standard deviation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>standardized data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list o float</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py function">
+<dt id="gmprocess.waveform_processing.nn_quality_assurance.tanh">
+<code class="sig-prename descclassname">gmprocess.waveform_processing.nn_quality_assurance.</code><code class="sig-name descname">tanh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v_input</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#tanh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.tanh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a hyperbolic tangent operation on the input (2/(e(2x)+1))</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v_input</strong> (<em>float</em><em>) </em><em>a number defined on R</em><em> (</em><em>real</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>tanh result (a number between -1 and 1)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+</div>
+
+      </article>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="gmprocess.waveform_processing.phase.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">gmprocess.waveform_processing.phase</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="gmprocess.waveform_processing.filtering.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">gmprocess.waveform_processing.filtering</div>
+                
+              </div>
+            </a>
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; Public Domain
+            |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+            |
+            <a class="muted-link" href="../_sources/apidoc/gmprocess.waveform_processing.nn_quality_assurance.rst.txt"
+               rel="nofollow">
+              Show Source
+            </a>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </main>
+</div>
+  </body>
+</html>
