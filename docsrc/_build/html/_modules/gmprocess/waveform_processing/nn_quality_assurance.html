@@ -1,0 +1,1205 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
+
+    <meta name="generator" content="sphinx-3.4.0, furo 2020.12.28.beta22"/>
+        <title>gmprocess.waveform_processing.nn_quality_assurance - gmprocess 1.0.4 documentation</title>
+      <link rel="stylesheet" href="../../../_static/styles/furo.css?digest=d315feae89b83a5365ff3ccc3644a1018972e3a0">
+    <link rel="stylesheet" href="../../../_static/pygments.css">
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../../../_static/pygments_dark.css">
+    
+
+
+<style>
+  :root {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+
+  /* For allowing end-user-specific overrides */
+  .override-light {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  .override-dark {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+</style><link rel="stylesheet" href="../../../_static/styles/furo-extensions.css?digest=26485485040e7aaf717c13fd0188a5ad2c2deb60">
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script defer="defer" src="../../../_static/jquery.js"></script>
+    <script defer="defer" src="../../../_static/underscore.js"></script>
+    <script defer="defer" src="../../../_static/doctools.js"></script>
+    <script defer src="../../../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></head>
+  <body dir="">
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z"/>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">gmprocess 1.0.4 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand centered" href="../../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../_static/gmprocess_logo.png" alt="Logo"/>
+  </div>
+  
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html">
+  <input class="sidebar-search" placeholder=Search name="q">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview/index.html">Objective</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview/index.html#motivation">Motivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview/index.html#target-use-cases">Target Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview/features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview/workspace.html">Workspace</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/running.html">Running the code</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Processing Steps</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../processing-steps/reading.html">Reading data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../processing-steps/retrieve.html">Retrieving data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../processing-steps/windowing.html">Windowing data</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../processing-steps/index.html">Waveform processing</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../processing-steps/waveform-processing.html">Waveform Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../processing-steps/waveform-processing/initial-qc.html">Initial quality control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../processing-steps/waveform-processing/remove-response.html">Removing instrument response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../processing-steps/waveform-processing/phase-pickers.html">Phase pickers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../processing-steps/waveform-processing/baseline-correction.html">Baseline correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../processing-steps/waveform-processing/filtering.html">Filtering</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../processing-steps/data-units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../processing-steps/waveform-metrics.html">Waveform metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../processing-steps/station-metrics.html">Station metrics</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Using gmprocess</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gmprocess/gmprocess.html">The gmprocess command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gmprocess/reading.html">Reading data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gmprocess/waveform-processing.html">Waveform processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gmprocess/reports.html">Processing reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gmprocess/exporting.html">Exporting data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../utilities/gmworkspace.html">The gmworkspace command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utilities/gmconvert.html">Converting data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tools/matlab.html">Matlab utilities</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Python Scripting</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../scripting/index.html">Data structures</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../scripting/data-structures.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../scripting/data-structures/station-trace.html">StationTrace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../scripting/data-structures/station-stream.html">StationStream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../scripting/data-structures/stream-collection.html">StreamCollection</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/scripting.html">Writing Python scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripting/waveform-metrics.html">Waveform metrics</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/code-layout.html">Code layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer/readers.html">Adding new data readers</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../apidoc/gmprocess.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../apidoc/gmprocess.core.html">gmprocess.core</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.core.stationstream.html">gmprocess.core.stationstream</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.core.stationtrace.html">gmprocess.core.stationtrace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.core.streamcollection.html">gmprocess.core.streamcollection</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../apidoc/gmprocess.io.html">gmprocess.io</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.io.catalog.html">gmprocess.io.catalog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.io.fetcher.html">gmprocess.io.fetcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.io.global_fetcher.html">gmprocess.io.global_fetcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.io.nga.html">gmprocess.io.nga</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.io.read.html">gmprocess.io.read</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.io.read_directory.html">gmprocess.io.read_directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.io.report.html">gmprocess.io.report</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.io.seedname.html">gmprocess.io.seedname</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.io.stream.html">gmprocess.io.stream</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.io.utils.html">gmprocess.io.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../apidoc/gmprocess.utils.html">gmprocess.utils</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label for="toctree-checkbox-6"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.utils.args.html">gmprocess.utils.args</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.utils.config.html">gmprocess.utils.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.utils.event.html">gmprocess.utils.event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.utils.exception.html">gmprocess.utils.exception</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.utils.logging.html">gmprocess.utils.logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.utils.models.html">gmprocess.utils.models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.utils.plot.html">gmprocess.utils.plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.utils.tables.html">gmprocess.utils.tables</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../apidoc/gmprocess.waveform_processing.html">gmprocess.waveform_processing</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label for="toctree-checkbox-7"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.waveform_processing.adjust_highpass.html">gmprocess.waveform_processing.adjust_highpass</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.waveform_processing.corner_frequencies.html">gmprocess.waveform_processing.corner_frequencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.waveform_processing.fft.html">gmprocess.waveform_processing.fft</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.waveform_processing.filtering.html">gmprocess.waveform_processing.filtering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html">gmprocess.waveform_processing.nn_quality_assurance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.waveform_processing.phase.html">gmprocess.waveform_processing.phase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.waveform_processing.pretesting.html">gmprocess.waveform_processing.pretesting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.waveform_processing.processing.html">gmprocess.waveform_processing.processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.waveform_processing.snr.html">gmprocess.waveform_processing.snr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.waveform_processing.spectrum.html">gmprocess.waveform_processing.spectrum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.waveform_processing.windows.html">gmprocess.waveform_processing.windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../apidoc/gmprocess.waveform_processing.zero_crossings.html">gmprocess.waveform_processing.zero_crossings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <main class="main">
+    <div class="content">
+      <article role="main">
+        <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        </label>
+        <h1>Source code for gmprocess.waveform_processing.nn_quality_assurance</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">cumtrapz</span>
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+
+<div class="viewcode-block" id="isNumber"><a class="viewcode-back" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html#gmprocess.waveform_processing.nn_quality_assurance.isNumber">[docs]</a><span class="k">def</span> <span class="nf">isNumber</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Check if given input is a number.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        s (any type):</span>
+<span class="sd">            Data to test</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True if is a number, False if isn't</span>
+<span class="sd">    '''</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="loadCSV"><a class="viewcode-back" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html#gmprocess.waveform_processing.nn_quality_assurance.loadCSV">[docs]</a><span class="k">def</span> <span class="nf">loadCSV</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">row_ignore</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">col_ignore</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Load csv files from a given path and returns a list of list.</span>
+<span class="sd">    For all imported data, check if is a number. If so, returns a</span>
+<span class="sd">    float. If not, returns a string.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data_path (string): path to the csv to load</span>
+<span class="sd">        row_ignore (int): number of rows to ignore</span>
+<span class="sd">        col_ignore (int) : number of columns to ignore</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list of list: containing the data from the csv</span>
+<span class="sd">    '''</span>
+
+    <span class="n">M</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">:</span>
+        <span class="n">readCSV</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csvfile</span><span class="p">)</span>
+
+        <span class="c1"># Skip header</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">row_ignore</span><span class="p">):</span>
+            <span class="nb">next</span><span class="p">(</span><span class="n">csvfile</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">readCSV</span><span class="p">:</span>
+            <span class="c1"># Input vector</span>
+            <span class="n">single_line</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">col_ignore</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">isNumber</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+                    <span class="n">single_line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">single_line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">M</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">single_line</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">M</span></div>
+
+
+<div class="viewcode-block" id="sigmoid"><a class="viewcode-back" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html#gmprocess.waveform_processing.nn_quality_assurance.sigmoid">[docs]</a><span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">v_input</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Performs a sigmoid operation on the input (1/(e(-x)+1))</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        v_input (float): a number defined on R (real)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: sigmoid result (a number between 0 and 1)</span>
+<span class="sd">    '''</span>
+    <span class="n">v_act</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v_input</span><span class="p">:</span>
+        <span class="n">v_act</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">v_act</span></div>
+
+
+<div class="viewcode-block" id="tanh"><a class="viewcode-back" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html#gmprocess.waveform_processing.nn_quality_assurance.tanh">[docs]</a><span class="k">def</span> <span class="nf">tanh</span><span class="p">(</span><span class="n">v_input</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Performs a hyperbolic tangent operation on the input (2/(e(2x)+1))</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        v_input (float) a number defined on R (real)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: tanh result (a number between -1 and 1)</span>
+<span class="sd">    '''</span>
+    <span class="n">v_act</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v_input</span><span class="p">:</span>
+        <span class="n">v_act</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">v_act</span></div>
+
+
+<div class="viewcode-block" id="neuralNet"><a class="viewcode-back" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html#gmprocess.waveform_processing.nn_quality_assurance.neuralNet">[docs]</a><span class="k">class</span> <span class="nc">neuralNet</span><span class="p">():</span>
+    <span class="sd">'''</span>
+<span class="sd">    Class allowing the instantiation and use of simple (1 or 2 layers)</span>
+<span class="sd">    neural networks</span>
+<span class="sd">    '''</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">'''</span>
+<span class="sd">        Instantiate an empty neural network (no weights, functions, or</span>
+<span class="sd">        biases loaded</span>
+<span class="sd">        '''</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_input</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_neuron_H1</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_neuron_H2</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_output</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation_H1</span> <span class="o">=</span> <span class="s1">'NA'</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation_H2</span> <span class="o">=</span> <span class="s1">'NA'</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation_output</span> <span class="o">=</span> <span class="s1">'NA'</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_H1</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_H2</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b_H1</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b_H2</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_output</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b_output</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># loadNN: load and build neural network model</span>
+<div class="viewcode-block" id="neuralNet.loadNN"><a class="viewcode-back" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html#gmprocess.waveform_processing.nn_quality_assurance.neuralNet.loadNN">[docs]</a>    <span class="k">def</span> <span class="nf">loadNN</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nn_path</span><span class="p">):</span>
+        <span class="sd">'''</span>
+<span class="sd">        Populate an instantated neural netowrk with data contained in a</span>
+<span class="sd">        specific folder.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            nn_path (string): path to the folder containing the required</span>
+<span class="sd">            information (masterF.txt, weights.csv, biases.csv)</span>
+<span class="sd">        '''</span>
+        <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s1">'masterF.txt'</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">)</span> <span class="k">as</span> <span class="n">masterF</span><span class="p">:</span>
+            <span class="n">readCSV</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">masterF</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">readCSV</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">n_input</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">n_neuron_H1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">n_neuron_H2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">n_output</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">activation_H1</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">activation_H2</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">activation_output</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">n_input</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">n_neuron_H1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">n_output</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">activation_H1</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">activation_output</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+
+        <span class="n">masterF</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c1"># Load weights and biases</span>
+        <span class="c1"># Weights first hidden layer</span>
+        <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s1">'weight_1.csv'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_H1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">loadCSV</span><span class="p">(</span><span class="n">data_path</span><span class="p">))</span>
+        <span class="c1"># Biases first hidden layer</span>
+        <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s1">'bias_1.csv'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b_H1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">loadCSV</span><span class="p">(</span><span class="n">data_path</span><span class="p">))</span>
+        <span class="c1"># Weights output layer</span>
+        <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s1">'weight_output.csv'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">loadCSV</span><span class="p">(</span><span class="n">data_path</span><span class="p">))</span>
+        <span class="c1"># Biases output layer</span>
+        <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s1">'bias_output.csv'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b_output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">loadCSV</span><span class="p">(</span><span class="n">data_path</span><span class="p">))</span>
+
+        <span class="c1"># Second hidden layer</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_neuron_H2</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># Weights second hidden layer</span>
+            <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s1">'weight_2.csv'</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">w_H2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">loadCSV</span><span class="p">(</span><span class="n">data_path</span><span class="p">))</span>
+            <span class="c1"># Biases second hidden layer</span>
+            <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s1">'bias_2.csv'</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">b_H2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">loadCSV</span><span class="p">(</span><span class="n">data_path</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="neuralNet.useNN"><a class="viewcode-back" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html#gmprocess.waveform_processing.nn_quality_assurance.neuralNet.useNN">[docs]</a>    <span class="k">def</span> <span class="nf">useNN</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v_input</span><span class="p">):</span>
+        <span class="sd">'''</span>
+<span class="sd">        Use a populated neural network (i.e. from the input, returns the</span>
+<span class="sd">        classification score or the regression result).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            v_input (list or np.array): list or numpy array of the inputs</span>
+<span class="sd">            (must be all numerical). Size must be equal to the NN input layer</span>
+<span class="sd">            size.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            v_inter (np.array): numpy array containing the results.</span>
+<span class="sd">        '''</span>
+        <span class="n">v_inter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+        <span class="c1"># Transform input if required</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v_input</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">v_input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">v_input</span><span class="p">)</span>
+
+        <span class="c1"># First layer</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_H1</span> <span class="o">==</span> <span class="s1">'sigmoid'</span><span class="p">:</span>
+            <span class="n">v_inter</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_input</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_H1</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_H1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_H1</span> <span class="o">==</span> <span class="s1">'tanh'</span><span class="p">:</span>
+            <span class="n">v_inter</span> <span class="o">=</span> <span class="n">tanh</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_input</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_H1</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_H1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">v_inter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_input</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_H1</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_H1</span>
+
+        <span class="c1"># If second layer exist</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_neuron_H2</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_H2</span> <span class="o">==</span> <span class="s1">'sigmoid'</span><span class="p">:</span>
+                <span class="n">v_inter</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_inter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_H2</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_H2</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_H2</span> <span class="o">==</span> <span class="s1">'tanh'</span><span class="p">:</span>
+                <span class="n">v_inter</span> <span class="o">=</span> <span class="n">tanh</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_inter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_H2</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_H2</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">v_inter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_inter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_H2</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_H2</span>
+
+        <span class="c1"># Final layer</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_output</span> <span class="o">==</span> <span class="s1">'sigmoid'</span><span class="p">:</span>
+            <span class="n">v_inter</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_inter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_output</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_output</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_output</span> <span class="o">==</span> <span class="s1">'tanh'</span><span class="p">:</span>
+            <span class="n">v_inter</span> <span class="o">=</span> <span class="n">tanh</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_inter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_output</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_output</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">v_inter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_inter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_output</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_output</span>
+
+        <span class="k">return</span> <span class="n">v_inter</span></div></div>
+
+
+<div class="viewcode-block" id="deskewData"><a class="viewcode-back" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html#gmprocess.waveform_processing.nn_quality_assurance.deskewData">[docs]</a><span class="k">def</span> <span class="nf">deskewData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Performs the deskewing operations used in Bellagamba et al. (2019) on the</span>
+<span class="sd">    quality metrics vector. Depending on the selected model.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (list of floats): 20 quality metrics computed as described in the</span>
+<span class="sd">        paper</span>
+<span class="sd">        model_name (string): name of the selected model. Available 'Cant' and</span>
+<span class="sd">        'CantWell' as described in the paper</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list of float: processed (deskewed) data</span>
+<span class="sd">    '''</span>
+    <span class="k">if</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s1">'Cant'</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">11</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">15</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">16</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">17</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="mf">1.2</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="o">-.</span><span class="mi">2</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="o">-.</span><span class="mi">06</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">19</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**.</span><span class="mi">43</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**.</span><span class="mi">25</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**.</span><span class="mi">23</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">9</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**.</span><span class="mi">05</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">18</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**.</span><span class="mi">33</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="o">.</span><span class="mi">12</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="o">.</span><span class="mi">48</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="o">.</span><span class="mi">37</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">12</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**.</span><span class="mi">05</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">13</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**.</span><span class="mi">08</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="o">.</span><span class="mi">16</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">14</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data</span>
+
+    <span class="k">elif</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s1">'CantWell'</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">11</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">15</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">16</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">17</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="mf">1.2</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="o">-.</span><span class="mi">2</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="o">-.</span><span class="mi">06</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">19</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**.</span><span class="mi">43</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**.</span><span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**.</span><span class="mi">23</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">9</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**.</span><span class="mi">2</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">18</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**.</span><span class="mi">33</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="o">.</span><span class="mi">05</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="o">.</span><span class="mi">3</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="o">.</span><span class="mi">37</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">12</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**.</span><span class="mi">05</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">13</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**.</span><span class="mi">08</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="o">.</span><span class="mi">05</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">14</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="o">.</span><span class="mi">05</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="standardizeData"><a class="viewcode-back" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html#gmprocess.waveform_processing.nn_quality_assurance.standardizeData">[docs]</a><span class="k">def</span> <span class="nf">standardizeData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Performs a standardization operation on the given data ((X-mu)/sigma)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (list of float):</span>
+<span class="sd">            data to standardize (size represents the dimensionality of the data</span>
+<span class="sd">            and not the number of point to standardize)</span>
+<span class="sd">        mu (list of float):</span>
+<span class="sd">            means</span>
+<span class="sd">        sigma (list of float):</span>
+<span class="sd">            standard deviation</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list o float: standardized data</span>
+<span class="sd">    '''</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">mu</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="n">sigma</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="decorrelateData"><a class="viewcode-back" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html#gmprocess.waveform_processing.nn_quality_assurance.decorrelateData">[docs]</a><span class="k">def</span> <span class="nf">decorrelateData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Decorrelate the data based on a Mahalanobis tranform. The transformation</span>
+<span class="sd">    matrix is given as an input.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (np.array):</span>
+<span class="sd">            numpy array containing the data to be decorrelated (size = N).</span>
+<span class="sd">        M (np.array):</span>
+<span class="sd">            decorrelation matrix (size NxN)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list of float containing the decorrelated data</span>
+<span class="sd">    '''</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="preprocessQualityMetrics"><a class="viewcode-back" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html#gmprocess.waveform_processing.nn_quality_assurance.preprocessQualityMetrics">[docs]</a><span class="k">def</span> <span class="nf">preprocessQualityMetrics</span><span class="p">(</span><span class="n">qm</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Pre-process the quality metrics according to Bellagamba et al. (2019)</span>
+<span class="sd">    (i.e. deskews, standardizes and decorrelates the quality metrics)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        qm (list of float):</span>
+<span class="sd">            quality metrics estimated according to the paper</span>
+<span class="sd">        model_name (string):</span>
+<span class="sd">            name of the used model for processing. Available: 'Cant' and</span>
+<span class="sd">            'CantWell'.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list of float containing the pre-processed quality metrics.</span>
+<span class="sd">    '''</span>
+    <span class="c1"># Building dir path from model name</span>
+    <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">'data'</span><span class="p">,</span> <span class="s1">'nn_qa'</span><span class="p">)</span>
+    <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
+    <span class="n">data_path</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s1">'gmprocess'</span><span class="p">,</span> <span class="n">data_path</span><span class="p">)</span>
+
+    <span class="c1"># Get resource from the correct dir</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">loadCSV</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">'M.csv'</span><span class="p">))</span>
+    <span class="n">csv_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">'mu_sigma.csv'</span><span class="p">)</span>
+    <span class="p">[</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">]</span> <span class="o">=</span> <span class="n">loadCSV</span><span class="p">(</span><span class="n">csv_dir</span><span class="p">)</span>
+
+    <span class="c1"># Deskew, standardize and decorrelate data</span>
+    <span class="n">qm</span> <span class="o">=</span> <span class="n">deskewData</span><span class="p">(</span><span class="n">qm</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
+    <span class="n">qm</span> <span class="o">=</span> <span class="n">standardizeData</span><span class="p">(</span><span class="n">qm</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+    <span class="n">qm</span> <span class="o">=</span> <span class="n">decorrelateData</span><span class="p">(</span><span class="n">qm</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">qm</span></div>
+
+
+<div class="viewcode-block" id="get_husid"><a class="viewcode-back" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html#gmprocess.waveform_processing.nn_quality_assurance.get_husid">[docs]</a><span class="k">def</span> <span class="nf">get_husid</span><span class="p">(</span><span class="n">acceleration</span><span class="p">,</span> <span class="n">time_vector</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Returns the Husid vector, defined as int{acceleration ** 2.}</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        acceleration (np.array):</span>
+<span class="sd">            Vector of acceleration values</span>
+<span class="sd">        time_vector (np.array):</span>
+<span class="sd">            Time vector in seconds</span>
+<span class="sd">    """</span>
+    <span class="n">husid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="n">cumtrapz</span><span class="p">(</span><span class="n">acceleration</span> <span class="o">**</span> <span class="mf">2.</span><span class="p">,</span> <span class="n">time_vector</span><span class="p">)])</span>
+    <span class="n">AI</span> <span class="o">=</span> <span class="n">husid</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">husid</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">husid</span><span class="p">,</span> <span class="n">AI</span></div>
+
+
+<div class="viewcode-block" id="getFreqIndex"><a class="viewcode-back" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html#gmprocess.waveform_processing.nn_quality_assurance.getFreqIndex">[docs]</a><span class="k">def</span> <span class="nf">getFreqIndex</span><span class="p">(</span><span class="n">ft_freq</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Gets the indices of a frequency range in the frequency vector</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ft_freq (list of float):</span>
+<span class="sd">            list of ordred frequencies</span>
+<span class="sd">        lower (float):</span>
+<span class="sd">            lower boud of the frequency range</span>
+<span class="sd">        upper (float):</span>
+<span class="sd">            upper bound of the frequency range</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int, int: the indices bounding the range</span>
+<span class="sd">    '''</span>
+    <span class="n">lower_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ft_freq</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">lower</span><span class="p">]</span>
+    <span class="n">upper_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ft_freq</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">upper</span><span class="p">]</span>
+    <span class="n">lower_index</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">lower_indices</span><span class="p">)</span>
+    <span class="n">upper_index</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">upper_indices</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lower_index</span><span class="p">,</span> <span class="n">upper_index</span></div>
+
+
+<div class="viewcode-block" id="getHusidIndex"><a class="viewcode-back" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html#gmprocess.waveform_processing.nn_quality_assurance.getHusidIndex">[docs]</a><span class="k">def</span> <span class="nf">getHusidIndex</span><span class="p">(</span><span class="n">husid</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Returns the index of the husid for a particular threshold</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        husid (list of float):</span>
+<span class="sd">            husid vector</span>
+<span class="sd">        threshold (float):</span>
+<span class="sd">            threshold not to be exceeded</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int: the index of the latest value below the threshold</span>
+<span class="sd">    '''</span>
+    <span class="n">husid_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">husid</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">]</span>
+    <span class="n">husid_index</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">husid_indices</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">husid_index</span></div>
+
+
+<div class="viewcode-block" id="calculateSNR_min"><a class="viewcode-back" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html#gmprocess.waveform_processing.nn_quality_assurance.calculateSNR_min">[docs]</a><span class="k">def</span> <span class="nf">calculateSNR_min</span><span class="p">(</span><span class="n">ft_freq</span><span class="p">,</span> <span class="n">snr</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Calculate the SNR min between 0.1 and 20 Hz</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ft_freq (list of float):</span>
+<span class="sd">            vector of frequencies used in the Fourier spectrum</span>
+<span class="sd">        snr (list of float):</span>
+<span class="sd">            vector of the snr at the frequencies in ft_freq</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: min snr between 0.1 and 20 Hz</span>
+<span class="sd">    '''</span>
+    <span class="c1"># Frequencies must be available between 0.1 and 20 Hz</span>
+    <span class="n">lower_index</span><span class="p">,</span> <span class="n">upper_index</span> <span class="o">=</span> <span class="n">getFreqIndex</span><span class="p">(</span><span class="n">ft_freq</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="n">snr_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">snr</span><span class="p">[</span><span class="n">lower_index</span><span class="p">:</span><span class="n">upper_index</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">snr_min</span></div>
+
+
+<div class="viewcode-block" id="calculateHusid"><a class="viewcode-back" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html#gmprocess.waveform_processing.nn_quality_assurance.calculateHusid">[docs]</a><span class="k">def</span> <span class="nf">calculateHusid</span><span class="p">(</span><span class="n">acc</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Calculate the husid and Arias of a signal.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        acc (np.array):</span>
+<span class="sd">            accelerogram vector</span>
+<span class="sd">        t (np.array):</span>
+<span class="sd">            time vector (constant time step)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        husid: vector of floats</span>
+<span class="sd">        AI: vector of floats</span>
+<span class="sd">        Arias: float, max value of AI</span>
+<span class="sd">        husid index at 5, 75 and 95% (used for duration)</span>
+<span class="sd">    '''</span>
+    <span class="n">husid</span><span class="p">,</span> <span class="n">AI</span> <span class="o">=</span> <span class="n">get_husid</span><span class="p">(</span><span class="n">acc</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+    <span class="n">Arias</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">husid</span><span class="p">)</span>
+    <span class="n">husid_index_5</span> <span class="o">=</span> <span class="n">getHusidIndex</span><span class="p">(</span><span class="n">AI</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+    <span class="n">husid_index_75</span> <span class="o">=</span> <span class="n">getHusidIndex</span><span class="p">(</span><span class="n">AI</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">)</span>
+    <span class="n">husid_index_95</span> <span class="o">=</span> <span class="n">getHusidIndex</span><span class="p">(</span><span class="n">AI</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">husid</span><span class="p">,</span> <span class="n">AI</span><span class="p">,</span> <span class="n">Arias</span><span class="p">,</span> <span class="n">husid_index_5</span><span class="p">,</span> <span class="n">husid_index_75</span><span class="p">,</span> <span class="n">husid_index_95</span></div>
+
+
+<div class="viewcode-block" id="getClassificationMetrics"><a class="viewcode-back" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html#gmprocess.waveform_processing.nn_quality_assurance.getClassificationMetrics">[docs]</a><span class="k">def</span> <span class="nf">getClassificationMetrics</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">p_pick</span><span class="p">,</span> <span class="n">delta_t</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Compute the quality metrics as in Bellagamba et al. (2019). More details</span>
+<span class="sd">    in the paper.</span>
+
+<span class="sd">    WARNINGS: - Acceleration untis changed into g at the beginning!</span>
+<span class="sd">              - Vertical component is not used!</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        tr (list of list of float):</span>
+<span class="sd">            each list contains an horizontal trace</span>
+<span class="sd">        p_pick (float):</span>
+<span class="sd">            estimated P-wave arrival time (in seconds) from the start of the</span>
+<span class="sd">            record</span>
+<span class="sd">        delta_t (float):</span>
+<span class="sd">            time step used in the record in seconds (decimal)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List of float containing the quality metrics (size = 20)</span>
+<span class="sd">    '''</span>
+    <span class="c1">########################################</span>
+    <span class="c1"># Acceleration units changed into g!!! #</span>
+    <span class="c1">#    Vertical component not used!!!    #</span>
+    <span class="c1">########################################</span>
+
+    <span class="c1"># Extract data from dictionary</span>
+    <span class="c1"># First horizontal comp</span>
+    <span class="n">acc_comp1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s1">'acc_comp1'</span><span class="p">])</span> <span class="o">/</span> <span class="mf">981.</span>
+    <span class="n">smooth_ft1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s1">'smooth_ft1'</span><span class="p">])</span> <span class="o">/</span> <span class="mf">981.</span>
+    <span class="n">smooth_ft1_freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s1">'smooth_ft1_freq'</span><span class="p">])</span>
+    <span class="n">smooth_ft1_pe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s1">'smooth_ft1_pe'</span><span class="p">])</span> <span class="o">/</span> <span class="mf">981.</span>
+    <span class="n">snr1_freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s1">'snr1_freq'</span><span class="p">])</span>
+
+    <span class="c1"># Second horizontal comp</span>
+    <span class="n">acc_comp2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s1">'acc_comp2'</span><span class="p">])</span> <span class="o">/</span> <span class="mf">981.</span>
+    <span class="n">smooth_ft2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s1">'smooth_ft2'</span><span class="p">])</span> <span class="o">/</span> <span class="mf">981.</span>
+    <span class="n">smooth_ft2_pe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s1">'smooth_ft2_pe'</span><span class="p">])</span> <span class="o">/</span> <span class="mf">981.</span>
+
+    <span class="c1"># Sample rate</span>
+    <span class="n">sample_rate</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">delta_t</span>
+
+    <span class="c1"># Index of the P-wave arrival time</span>
+    <span class="n">index_p_arrival</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">p_pick</span><span class="p">,</span> <span class="n">sample_rate</span><span class="p">)))</span>
+
+    <span class="c1"># recreate a time vector</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">acc_comp1</span><span class="p">))</span> <span class="o">*</span> <span class="n">delta_t</span>
+
+    <span class="c1"># set up a copy of accelerations for plotting later (they get changed</span>
+    <span class="c1"># by window/taper in the ft step)</span>
+    <span class="n">acc1</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">acc_comp1</span><span class="p">)</span>
+    <span class="n">acc2</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">acc_comp2</span><span class="p">)</span>
+
+    <span class="c1"># calculate husid and Arias intensities</span>
+    <span class="n">husid1</span><span class="p">,</span> <span class="n">AI1</span><span class="p">,</span> <span class="n">Arias1</span><span class="p">,</span> <span class="n">husid_index1_5</span><span class="p">,</span> <span class="n">husid_index1_75</span><span class="p">,</span> <span class="n">husid_index1_95</span> <span class="o">=</span> \
+        <span class="n">calculateHusid</span><span class="p">(</span><span class="n">acc1</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+    <span class="n">husid2</span><span class="p">,</span> <span class="n">AI2</span><span class="p">,</span> <span class="n">Arias2</span><span class="p">,</span> <span class="n">husid_index2_5</span><span class="p">,</span> <span class="n">husid_index2_75</span><span class="p">,</span> <span class="n">husid_index2_95</span> <span class="o">=</span> \
+        <span class="n">calculateHusid</span><span class="p">(</span><span class="n">acc2</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+
+    <span class="c1"># calculate max amplitudes of acc time series, final is geomean</span>
+    <span class="n">PGA1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">acc1</span><span class="p">))</span>
+    <span class="n">PGA2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">acc2</span><span class="p">))</span>
+    <span class="n">amp1_pe</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">acc1</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">index_p_arrival</span><span class="p">]))</span>
+    <span class="n">amp2_pe</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">acc2</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">index_p_arrival</span><span class="p">]))</span>
+    <span class="n">PGA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">PGA1</span> <span class="o">*</span> <span class="n">PGA2</span><span class="p">)</span>
+    <span class="n">PN</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">amp1_pe</span> <span class="o">*</span> <span class="n">amp2_pe</span><span class="p">)</span>
+    <span class="n">PN_average</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">acc1</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">index_p_arrival</span><span class="p">]))</span> <span class="o">*</span>
+                         <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">acc2</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">index_p_arrival</span><span class="p">])))</span>
+    <span class="n">PNPGA</span> <span class="o">=</span> <span class="n">PN</span> <span class="o">/</span> <span class="n">PGA</span>
+
+    <span class="c1"># calculate effective head and tail lengths</span>
+    <span class="n">tail_duration</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">tail_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tail_duration</span> <span class="o">*</span> <span class="n">sample_rate</span><span class="p">)</span>
+    <span class="n">tail_average1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">acc1</span><span class="p">[</span><span class="o">-</span><span class="n">tail_length</span><span class="p">:]))</span>
+    <span class="n">tail_average2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">acc2</span><span class="p">[</span><span class="o">-</span><span class="n">tail_length</span><span class="p">:]))</span>
+    <span class="k">if</span> <span class="n">PGA1</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">PGA2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">tail_ratio1</span> <span class="o">=</span> <span class="n">tail_average1</span> <span class="o">/</span> <span class="n">PGA1</span>
+        <span class="n">tail_ratio2</span> <span class="o">=</span> <span class="n">tail_average2</span> <span class="o">/</span> <span class="n">PGA2</span>
+        <span class="n">tail_ratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tail_ratio1</span> <span class="o">*</span> <span class="n">tail_ratio2</span><span class="p">)</span>
+        <span class="n">tailnoise_ratio</span> <span class="o">=</span> <span class="n">tail_ratio</span> <span class="o">/</span> <span class="n">PN_average</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">'PGA1 or PGA2 is 0'</span><span class="p">)</span>
+        <span class="n">tail_ratio1</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">tail_ratio2</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">tail_ratio</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="n">mtail_duration</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">mtail_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mtail_duration</span> <span class="o">*</span> <span class="n">sample_rate</span><span class="p">)</span>
+    <span class="n">mtail_max1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">acc1</span><span class="p">[</span><span class="o">-</span><span class="n">mtail_length</span><span class="p">:]))</span>
+    <span class="n">mtail_max2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">acc2</span><span class="p">[</span><span class="o">-</span><span class="n">mtail_length</span><span class="p">:]))</span>
+    <span class="k">if</span> <span class="n">PGA1</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">PGA2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">mtail_ratio1</span> <span class="o">=</span> <span class="n">mtail_max1</span> <span class="o">/</span> <span class="n">PGA1</span>
+        <span class="n">mtail_ratio2</span> <span class="o">=</span> <span class="n">mtail_max2</span> <span class="o">/</span> <span class="n">PGA2</span>
+        <span class="n">mtail_ratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mtail_ratio1</span> <span class="o">*</span> <span class="n">mtail_ratio2</span><span class="p">)</span>
+        <span class="n">mtailnoise_ratio</span> <span class="o">=</span> <span class="n">mtail_ratio</span> <span class="o">/</span> <span class="n">PN</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">'PGA1 or PGA2 is 0'</span><span class="p">)</span>
+        <span class="n">mtail_ratio1</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">mtail_ratio2</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">mtail_ratio</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="n">head_duration</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">head_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">head_duration</span> <span class="o">*</span> <span class="n">sample_rate</span><span class="p">)</span>
+    <span class="n">head_average1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">acc1</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">head_length</span><span class="p">]))</span>
+    <span class="n">head_average2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">acc2</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">head_length</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="n">PGA1</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">PGA2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">head_ratio1</span> <span class="o">=</span> <span class="n">head_average1</span> <span class="o">/</span> <span class="n">PGA1</span>
+        <span class="n">head_ratio2</span> <span class="o">=</span> <span class="n">head_average2</span> <span class="o">/</span> <span class="n">PGA2</span>
+        <span class="n">head_ratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">head_ratio1</span> <span class="o">*</span> <span class="n">head_ratio2</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">'PGA1 or PGA2 is 0'</span><span class="p">)</span>
+        <span class="n">head_ratio1</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">head_ratio2</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">head_ratio</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="c1"># bracketed durations between 10%, 20%, 30%, 40% and 50% of PGA</span>
+    <span class="c1"># first get all vector indices where abs max acc is greater than or</span>
+    <span class="c1"># equal, and less than or equal to x*PGA</span>
+    <span class="n">hindex1_10</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">acc1</span><span class="p">)</span>
+                  <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mf">0.10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">acc1</span><span class="p">)))]</span>
+    <span class="n">hindex2_10</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">acc2</span><span class="p">)</span>
+                  <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mf">0.10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">acc2</span><span class="p">)))]</span>
+    <span class="n">hindex1_20</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">acc1</span><span class="p">)</span>
+                  <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mf">0.20</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">acc1</span><span class="p">)))]</span>
+    <span class="n">hindex2_20</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">acc2</span><span class="p">)</span>
+                  <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mf">0.20</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">acc2</span><span class="p">)))]</span>
+
+    <span class="c1"># get bracketed duration (from last and first time the index is exceeded)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hindex1_10</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">hindex2_10</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">bracketedPGA_10</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span>
+            <span class="nb">max</span><span class="p">(</span><span class="n">hindex1_10</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">hindex1_10</span><span class="p">))</span> <span class="o">*</span> <span class="n">delta_t</span><span class="p">)</span> <span class="o">*</span>
+            <span class="p">((</span><span class="nb">max</span><span class="p">(</span><span class="n">hindex2_10</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">hindex2_10</span><span class="p">))</span> <span class="o">*</span> <span class="n">delta_t</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bracketedPGA_10</span> <span class="o">=</span> <span class="mf">9999.0</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hindex1_20</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">hindex2_20</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">bracketedPGA_20</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span>
+            <span class="nb">max</span><span class="p">(</span><span class="n">hindex1_20</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">hindex1_20</span><span class="p">))</span> <span class="o">*</span> <span class="n">delta_t</span><span class="p">)</span> <span class="o">*</span>
+            <span class="p">((</span><span class="nb">max</span><span class="p">(</span><span class="n">hindex2_20</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">hindex2_20</span><span class="p">))</span> <span class="o">*</span> <span class="n">delta_t</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bracketedPGA_20</span> <span class="o">=</span> <span class="mf">9999.0</span>
+
+    <span class="n">bracketedPGA_10_20</span> <span class="o">=</span> <span class="n">bracketedPGA_10</span> <span class="o">/</span> <span class="n">bracketedPGA_20</span>
+
+    <span class="c1"># calculate Ds575 and Ds595</span>
+    <span class="n">Ds575</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="n">husid_index1_75</span> <span class="o">-</span> <span class="n">husid_index1_5</span><span class="p">)</span> <span class="o">*</span> <span class="n">delta_t</span><span class="p">)</span> <span class="o">*</span>
+                    <span class="p">((</span><span class="n">husid_index2_75</span> <span class="o">-</span> <span class="n">husid_index2_5</span><span class="p">)</span> <span class="o">*</span> <span class="n">delta_t</span><span class="p">))</span>
+    <span class="n">Ds595</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="n">husid_index1_95</span> <span class="o">-</span> <span class="n">husid_index1_5</span><span class="p">)</span> <span class="o">*</span> <span class="n">delta_t</span><span class="p">)</span> <span class="o">*</span>
+                    <span class="p">((</span><span class="n">husid_index2_95</span> <span class="o">-</span> <span class="n">husid_index2_5</span><span class="p">)</span> <span class="o">*</span> <span class="n">delta_t</span><span class="p">))</span>
+
+    <span class="c1"># geomean of fourier spectra</span>
+    <span class="n">smooth_ftgm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">smooth_ft1</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">smooth_ft2</span><span class="p">)))</span>
+    <span class="n">smooth_ftgm_pe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">smooth_ft1_pe</span><span class="p">),</span>
+                                         <span class="nb">abs</span><span class="p">(</span><span class="n">smooth_ft2_pe</span><span class="p">)))</span>
+
+    <span class="c1"># snr metrics - min, max and averages</span>
+    <span class="n">lower_index</span><span class="p">,</span> <span class="n">upper_index</span> <span class="o">=</span> <span class="n">getFreqIndex</span><span class="p">(</span><span class="n">smooth_ft1_freq</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s1">'ignore'</span><span class="p">):</span>
+        <span class="n">snrgm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">smooth_ftgm</span><span class="p">,</span> <span class="n">smooth_ftgm_pe</span><span class="p">)</span>
+    <span class="n">snr_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">snrgm</span><span class="p">[</span><span class="n">lower_index</span><span class="p">:</span><span class="n">upper_index</span><span class="p">])</span>
+    <span class="n">snr_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">snrgm</span><span class="p">)</span>
+
+    <span class="n">lower_index_average</span><span class="p">,</span> <span class="n">upper_index_average</span> <span class="o">=</span> <span class="n">getFreqIndex</span><span class="p">(</span><span class="n">snr1_freq</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">snr_average</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span>
+        <span class="n">snrgm</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">:</span><span class="n">upper_index_average</span><span class="p">],</span>
+        <span class="n">snr1_freq</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">:</span><span class="n">upper_index_average</span><span class="p">])</span> <span class="o">/</span>
+        <span class="p">(</span><span class="n">snr1_freq</span><span class="p">[</span><span class="n">upper_index_average</span><span class="p">]</span> <span class="o">-</span> <span class="n">snr1_freq</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">]))</span>
+
+    <span class="n">lower_index_average</span><span class="p">,</span> <span class="n">upper_index_average</span> <span class="o">=</span> <span class="n">getFreqIndex</span><span class="p">(</span>
+        <span class="n">snr1_freq</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">ft_a1</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span>
+        <span class="n">smooth_ftgm</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">:</span><span class="n">upper_index_average</span><span class="p">],</span>
+        <span class="n">snr1_freq</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">:</span><span class="n">upper_index_average</span><span class="p">])</span> <span class="o">/</span>
+        <span class="p">(</span><span class="n">snr1_freq</span><span class="p">[</span><span class="n">upper_index_average</span><span class="p">]</span> <span class="o">-</span> <span class="n">snr1_freq</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">]))</span>
+    <span class="n">snr_a1</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span>
+        <span class="n">snrgm</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">:</span><span class="n">upper_index_average</span><span class="p">],</span>
+        <span class="n">snr1_freq</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">:</span><span class="n">upper_index_average</span><span class="p">])</span> <span class="o">/</span>
+        <span class="p">(</span><span class="n">snr1_freq</span><span class="p">[</span><span class="n">upper_index_average</span><span class="p">]</span> <span class="o">-</span> <span class="n">snr1_freq</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">]))</span>
+
+    <span class="n">lower_index_average</span><span class="p">,</span> <span class="n">upper_index_average</span> <span class="o">=</span> <span class="n">getFreqIndex</span><span class="p">(</span>
+        <span class="n">snr1_freq</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">ft_a2</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span>
+        <span class="n">smooth_ftgm</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">:</span><span class="n">upper_index_average</span><span class="p">],</span>
+        <span class="n">snr1_freq</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">:</span><span class="n">upper_index_average</span><span class="p">])</span> <span class="o">/</span>
+        <span class="p">(</span><span class="n">snr1_freq</span><span class="p">[</span><span class="n">upper_index_average</span><span class="p">]</span> <span class="o">-</span> <span class="n">snr1_freq</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">]))</span>
+    <span class="n">snr_a2</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span>
+        <span class="n">snrgm</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">:</span><span class="n">upper_index_average</span><span class="p">],</span>
+        <span class="n">snr1_freq</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">:</span><span class="n">upper_index_average</span><span class="p">])</span> <span class="o">/</span>
+        <span class="p">(</span><span class="n">snr1_freq</span><span class="p">[</span><span class="n">upper_index_average</span><span class="p">]</span> <span class="o">-</span> <span class="n">snr1_freq</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">]))</span>
+
+    <span class="n">lower_index_average</span><span class="p">,</span> <span class="n">upper_index_average</span> <span class="o">=</span> <span class="n">getFreqIndex</span><span class="p">(</span>
+        <span class="n">snr1_freq</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+    <span class="n">snr_a3</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span>
+        <span class="n">snrgm</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">:</span><span class="n">upper_index_average</span><span class="p">],</span>
+        <span class="n">snr1_freq</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">:</span><span class="n">upper_index_average</span><span class="p">])</span> <span class="o">/</span>
+        <span class="p">(</span><span class="n">snr1_freq</span><span class="p">[</span><span class="n">upper_index_average</span><span class="p">]</span> <span class="o">-</span> <span class="n">snr1_freq</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">]))</span>
+
+    <span class="n">lower_index_average</span><span class="p">,</span> <span class="n">upper_index_average</span> <span class="o">=</span> <span class="n">getFreqIndex</span><span class="p">(</span>
+        <span class="n">snr1_freq</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">)</span>
+    <span class="n">snr_a4</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span>
+        <span class="n">snrgm</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">:</span><span class="n">upper_index_average</span><span class="p">],</span>
+        <span class="n">snr1_freq</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">:</span><span class="n">upper_index_average</span><span class="p">])</span> <span class="o">/</span>
+        <span class="p">(</span><span class="n">snr1_freq</span><span class="p">[</span><span class="n">upper_index_average</span><span class="p">]</span> <span class="o">-</span> <span class="n">snr1_freq</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">]))</span>
+
+    <span class="n">lower_index_average</span><span class="p">,</span> <span class="n">upper_index_average</span> <span class="o">=</span> <span class="n">getFreqIndex</span><span class="p">(</span>
+        <span class="n">snr1_freq</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)</span>
+    <span class="n">snr_a5</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span>
+        <span class="n">snrgm</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">:</span><span class="n">upper_index_average</span><span class="p">],</span>
+        <span class="n">snr1_freq</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">:</span><span class="n">upper_index_average</span><span class="p">])</span> <span class="o">/</span>
+        <span class="p">(</span><span class="n">snr1_freq</span><span class="p">[</span><span class="n">upper_index_average</span><span class="p">]</span> <span class="o">-</span> <span class="n">snr1_freq</span><span class="p">[</span><span class="n">lower_index_average</span><span class="p">]))</span>
+
+    <span class="n">ft_a1_a2</span> <span class="o">=</span> <span class="n">ft_a1</span> <span class="o">/</span> <span class="n">ft_a2</span>
+
+    <span class="c1"># calculate lf to max signal ratios</span>
+    <span class="n">signal1_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">smooth_ft1</span><span class="p">)</span>
+    <span class="n">lf1</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span>
+        <span class="n">smooth_ft1</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">lower_index</span><span class="p">],</span>
+        <span class="n">smooth_ft1_freq</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">lower_index</span><span class="p">])</span> <span class="o">/</span>
+        <span class="p">(</span><span class="n">smooth_ft1_freq</span><span class="p">[</span><span class="n">lower_index</span><span class="p">]</span> <span class="o">-</span> <span class="n">smooth_ft1_freq</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">lf1_pe</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span>
+        <span class="n">smooth_ft1_pe</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">lower_index</span><span class="p">],</span>
+        <span class="n">smooth_ft1_freq</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">lower_index</span><span class="p">])</span> <span class="o">/</span>
+        <span class="p">(</span><span class="n">smooth_ft1_freq</span><span class="p">[</span><span class="n">lower_index</span><span class="p">]</span> <span class="o">-</span> <span class="n">smooth_ft1_freq</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+    <span class="n">signal2_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">smooth_ft2</span><span class="p">)</span>
+    <span class="n">lf2</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span>
+        <span class="n">smooth_ft2</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">lower_index</span><span class="p">],</span>
+        <span class="n">smooth_ft1_freq</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">lower_index</span><span class="p">])</span> <span class="o">/</span>
+        <span class="p">(</span><span class="n">smooth_ft1_freq</span><span class="p">[</span><span class="n">lower_index</span><span class="p">]</span> <span class="o">-</span> <span class="n">smooth_ft1_freq</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">lf2_pe</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span>
+        <span class="n">smooth_ft2_pe</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">lower_index</span><span class="p">],</span>
+        <span class="n">smooth_ft1_freq</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">lower_index</span><span class="p">])</span> <span class="o">/</span>
+        <span class="p">(</span><span class="n">smooth_ft1_freq</span><span class="p">[</span><span class="n">lower_index</span><span class="p">]</span> <span class="o">-</span> <span class="n">smooth_ft1_freq</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+    <span class="n">signal_ratio_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">lf1</span> <span class="o">/</span> <span class="n">signal1_max</span><span class="p">,</span> <span class="n">lf2</span> <span class="o">/</span> <span class="n">signal2_max</span><span class="p">])</span>
+    <span class="n">signal_pe_ratio_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">lf1_pe</span> <span class="o">/</span> <span class="n">signal1_max</span><span class="p">,</span> <span class="n">lf2_pe</span> <span class="o">/</span> <span class="n">signal2_max</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">signal_pe_ratio_max</span><span class="p">,</span>
+            <span class="n">signal_ratio_max</span><span class="p">,</span>
+            <span class="n">snr_min</span><span class="p">,</span>
+            <span class="n">snr_max</span><span class="p">,</span>
+            <span class="n">snr_average</span><span class="p">,</span>
+            <span class="n">tail_ratio</span><span class="p">,</span>
+            <span class="n">mtail_ratio</span><span class="p">,</span>
+            <span class="n">tailnoise_ratio</span><span class="p">,</span>
+            <span class="n">mtailnoise_ratio</span><span class="p">,</span>
+            <span class="n">head_ratio</span><span class="p">,</span>
+            <span class="n">snr_a1</span><span class="p">,</span>
+            <span class="n">snr_a2</span><span class="p">,</span>
+            <span class="n">snr_a3</span><span class="p">,</span>
+            <span class="n">snr_a4</span><span class="p">,</span>
+            <span class="n">snr_a5</span><span class="p">,</span>
+            <span class="n">ft_a1_a2</span><span class="p">,</span>
+            <span class="n">PNPGA</span><span class="p">,</span>
+            <span class="n">bracketedPGA_10_20</span><span class="p">,</span>
+            <span class="n">Ds575</span><span class="p">,</span>
+            <span class="n">Ds595</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="computeQualityMetrics"><a class="viewcode-back" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html#gmprocess.waveform_processing.nn_quality_assurance.computeQualityMetrics">[docs]</a><span class="k">def</span> <span class="nf">computeQualityMetrics</span><span class="p">(</span><span class="n">st</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Get the 2 horizontal components and format the P-wave arrival time before</span>
+<span class="sd">    launching the computation of the qualtiy metrics as in Bellagamba et al.</span>
+<span class="sd">    (2019)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        st (list of trace): a list of trace as defined in gmprocess (USGS)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List of float containing the 20 quality metrics</span>
+<span class="sd">    '''</span>
+    <span class="c1"># Initialize dictionary of variables necessary to the computation of the QM</span>
+    <span class="n">tr</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># Determine if traces are horizontal or vertical</span>
+    <span class="n">ind</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">tr_i</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">'Z'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s1">'channel'</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
+            <span class="n">ind</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ind</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'v'</span><span class="p">)</span>
+
+    <span class="c1"># Extract required info from each trace in the stream</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">tr_i</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">'v'</span><span class="p">:</span>
+            <span class="c1"># Raw accelerogram (debiased and detrended)</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s1">'acc_comp'</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">data</span>
+
+            <span class="c1"># Fourier spectrum</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s1">'ft'</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s1">'signal_spectrum'</span><span class="p">)[</span><span class="s1">'spec'</span><span class="p">]</span>
+
+            <span class="c1"># Frequ of the Fourier spectrum</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s1">'ft'</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s1">'_freq'</span>
+            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s1">'signal_spectrum'</span><span class="p">)[</span><span class="s1">'freq'</span><span class="p">]</span>
+
+            <span class="c1"># Smoothed Fourier spectrum</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s1">'smooth_ft'</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">sig_spec</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s1">'smooth_signal_spectrum'</span><span class="p">)[</span><span class="s1">'spec'</span><span class="p">]</span>
+            <span class="n">sig_spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">sig_spec</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">sig_spec</span><span class="p">)</span>
+            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sig_spec</span>
+
+            <span class="c1"># Freq of he smoothed Fourier spectrum</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s1">'smooth_ft'</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s1">'_freq'</span>
+            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s1">'smooth_signal_spectrum'</span><span class="p">)[</span><span class="s1">'freq'</span><span class="p">]</span>
+
+            <span class="c1"># Fourier spectrum of the pre-event trace</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s1">'ft'</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s1">'_pe'</span>
+            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s1">'noise_spectrum'</span><span class="p">)[</span><span class="s1">'spec'</span><span class="p">]</span>
+
+            <span class="c1"># Frequ of the Fourier spectrum (pre-event trace)</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s1">'ft'</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s1">'_freq_pe'</span>
+            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s1">'noise_spectrum'</span><span class="p">)[</span><span class="s1">'freq'</span><span class="p">]</span>
+
+            <span class="c1"># Smoothed Fourier spectrum of the pre-event trace</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s1">'smooth_ft'</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s1">'_pe'</span>
+            <span class="n">noise_spec</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s1">'smooth_noise_spectrum'</span><span class="p">)[</span><span class="s1">'spec'</span><span class="p">]</span>
+            <span class="n">noise_spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">noise_spec</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">noise_spec</span><span class="p">)</span>
+            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">noise_spec</span>
+
+            <span class="c1"># SNR</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s1">'snr'</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s1">'snr'</span><span class="p">)[</span><span class="s1">'snr'</span><span class="p">]</span>
+
+            <span class="c1"># SNR freq</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s1">'snr'</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s1">'_freq'</span>
+            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s1">'snr'</span><span class="p">)[</span><span class="s1">'freq'</span><span class="p">]</span>
+
+        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># P-wave arrival time</span>
+    <span class="n">split_prov</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s1">'signal_split'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">split_prov</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">split_prov</span> <span class="o">=</span> <span class="n">split_prov</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">split_time</span> <span class="o">=</span> <span class="n">split_prov</span><span class="p">[</span><span class="s1">'split_time'</span><span class="p">]</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span>
+    <span class="n">p_pick</span> <span class="o">=</span> <span class="n">split_time</span> <span class="o">-</span> <span class="n">start_time</span>
+
+    <span class="c1"># Get the delta t</span>
+    <span class="n">delta_t</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span>
+
+    <span class="c1"># Compute the QM</span>
+    <span class="n">qm</span> <span class="o">=</span> <span class="n">getClassificationMetrics</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">p_pick</span><span class="p">,</span> <span class="n">delta_t</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">qm</span></div>
+
+
+<div class="viewcode-block" id="NNet_QA"><a class="viewcode-back" href="../../../apidoc/gmprocess.waveform_processing.nn_quality_assurance.html#gmprocess.waveform_processing.nn_quality_assurance.NNet_QA">[docs]</a><span class="k">def</span> <span class="nf">NNet_QA</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">acceptance_threshold</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Assess the quality of a stream by analyzing its two horizontal components</span>
+<span class="sd">    as described in Bellagamba et al. (2019). Performs three steps:</span>
+<span class="sd">    1) Compute the quality metrics (see paper for more info)</span>
+<span class="sd">    2) Preprocess the quality metrics (deskew, standardize and decorrelate)</span>
+<span class="sd">    3) Evaluate the quality using a neural network-based model</span>
+<span class="sd">    Two models are available: 'Cant' and 'CantWell'.</span>
+<span class="sd">    To minimize the number of low quality ground motion included, the natural</span>
+<span class="sd">    acceptance threshold 0.5 can be raised (up to an extreme value of 0.95).</span>
+<span class="sd">    Recommended parameters are:</span>
+<span class="sd">    -   acceptance_threshold = 0.5 or 0.6</span>
+<span class="sd">    -   model_name = 'CantWell'</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        st (list of traces):</span>
+<span class="sd">            The ground motion record to analyze. Should contain at least 2</span>
+<span class="sd">            orthogonal  horizontal traces.</span>
+<span class="sd">        acceptance_threshold (float):</span>
+<span class="sd">            Threshold from which GM records are considered acceptable.</span>
+<span class="sd">        model_name (string):</span>
+<span class="sd">            name of the used model ('Cant' or 'CantWell')</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        st: stream of traces tagged with quality scores and flags,</span>
+<span class="sd">        used model name and acceptance threshold</span>
+<span class="sd">    '''</span>
+
+    <span class="c1"># This check only works if we have two horizontal components in the stream</span>
+    <span class="k">if</span> <span class="n">st</span><span class="o">.</span><span class="n">num_horizontal</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s1">'Stream does not contain two horiztonal components. '</span>
+                    <span class="s1">'NNet QA check will not be performed.'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">st</span>
+
+    <span class="c1"># Also need to check that we don't have data arrays of all zeros, as this</span>
+    <span class="c1"># will cause problems</span>
+    <span class="n">all_zeros</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">all_zeros</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">if</span> <span class="n">all_zeros</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s1">'The data contains all zeros, so the '</span>
+                    <span class="s1">'NNet_QA check is not able to be performed.'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">st</span>
+
+    <span class="c1"># Check that we have the required trace parameters</span>
+    <span class="n">have_params</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">{</span><span class="s1">'signal_spectrum'</span><span class="p">,</span> <span class="s1">'noise_spectrum'</span><span class="p">,</span> <span class="s1">'snr'</span><span class="p">}</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span>
+                <span class="nb">set</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">getCachedNames</span><span class="p">())):</span>
+            <span class="n">have_params</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">have_params</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s1">'One or more traces in the stream does have the required '</span>
+                    <span class="s1">'trace parameters to perform the NNet_QA check.'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">st</span>
+
+    <span class="c1"># Create the path to the NN folder based on model name</span>
+    <span class="n">nn_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">'data'</span><span class="p">,</span> <span class="s1">'nn_qa'</span><span class="p">)</span>
+    <span class="n">nn_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
+    <span class="n">nn_path</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s1">'gmprocess'</span><span class="p">,</span> <span class="n">nn_path</span><span class="p">)</span>
+
+    <span class="c1"># Compute the quality metrics</span>
+    <span class="n">qm</span> <span class="o">=</span> <span class="n">computeQualityMetrics</span><span class="p">(</span><span class="n">st</span><span class="p">)</span>
+
+    <span class="c1"># Pre-process the qualtiy metrics</span>
+    <span class="n">qm</span> <span class="o">=</span> <span class="n">preprocessQualityMetrics</span><span class="p">(</span><span class="n">qm</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
+
+    <span class="c1"># Instanciate the NN (based on model_name)</span>
+    <span class="n">NN</span> <span class="o">=</span> <span class="n">neuralNet</span><span class="p">()</span>
+    <span class="n">NN</span><span class="o">.</span><span class="n">loadNN</span><span class="p">(</span><span class="n">nn_path</span><span class="p">)</span>
+
+    <span class="c1"># Use NN</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">NN</span><span class="o">.</span><span class="n">useNN</span><span class="p">(</span><span class="n">qm</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Accepted?</span>
+    <span class="n">flag_accept</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">scores</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">acceptance_threshold</span><span class="p">:</span>
+        <span class="n">flag_accept</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># Add parameters to Stream (acceptance threshold, model_name, score_lowQ,</span>
+    <span class="c1"># score_highQ, highQualityFlag)</span>
+    <span class="n">nnet_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'accept_thres'</span><span class="p">:</span> <span class="n">acceptance_threshold</span><span class="p">,</span>
+        <span class="s1">'model_name'</span><span class="p">:</span> <span class="n">model_name</span><span class="p">,</span>
+        <span class="s1">'score_LQ'</span><span class="p">:</span> <span class="n">scores</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="s1">'score_HQ'</span><span class="p">:</span> <span class="n">scores</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="s1">'pass_QA'</span><span class="p">:</span> <span class="n">flag_accept</span>
+    <span class="p">}</span>
+    <span class="n">st</span><span class="o">.</span><span class="n">setStreamParam</span><span class="p">(</span>
+        <span class="s1">'nnet_qa'</span><span class="p">,</span> <span class="n">nnet_dict</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">flag_accept</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s1">'Failed NNet QA check.'</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">st</span></div>
+</pre></div>
+      </article>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; Public Domain
+            |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </main>
+</div>
+  </body>
+</html>
