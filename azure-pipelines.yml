@@ -90,6 +90,7 @@ jobs:
   - script: |
       call activate gmprocess
       pip install -e . --no-deps --force-reinstall -vv
+      pip install -U pytest-console-scripts
     displayName: Install gmprocess packages (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
@@ -99,6 +100,7 @@ jobs:
 
   - bash: |
       source activate gmprocess
+      pip install -U pytest-console-scripts
       export PYTHONPATH="."
       py.test --cov=. --cov-report=xml
     failOnStderr: true
