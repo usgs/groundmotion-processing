@@ -1,0 +1,316 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="gmprocess.waveform_processing.adjust_highpass" href="gmprocess.waveform_processing.adjust_highpass.html" /><link rel="prev" title="gmprocess.utils.tables" href="gmprocess.utils.tables.html" />
+
+    <meta name="generator" content="sphinx-3.4.0, furo 2020.12.28.beta22"/>
+        <title>gmprocess.waveform_processing - gmprocess 1.0.4 documentation</title>
+      <link rel="stylesheet" href="../_static/styles/furo.css?digest=d315feae89b83a5365ff3ccc3644a1018972e3a0">
+    <link rel="stylesheet" href="../_static/pygments.css">
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
+    
+
+
+<style>
+  :root {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+
+  /* For allowing end-user-specific overrides */
+  .override-light {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  .override-dark {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+</style><link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=26485485040e7aaf717c13fd0188a5ad2c2deb60">
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script defer="defer" src="../_static/jquery.js"></script>
+    <script defer="defer" src="../_static/underscore.js"></script>
+    <script defer="defer" src="../_static/doctools.js"></script>
+    <script defer src="../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></head>
+  <body dir="">
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z"/>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     <a href='https://github.com/usgs/groundmotion-processing' style='text-decoration: none'><h1>Ground-motion Processing Software</h1></a> 
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">gmprocess 1.0.4 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand centered" href="../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../_static/gmprocess_logo.png" alt="Logo"/>
+  </div>
+  
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html">
+  <input class="sidebar-search" placeholder=Search name="q">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption"><span class="caption-text">Overview</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html">Objective</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html#motivation">Motivation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/index.html#target-use-cases">Target Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview/workspace.html">Workspace</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/running.html">Running the code</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Processing Steps</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../processing-steps/reading.html">Reading data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../processing-steps/retrieve.html">Retrieving data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../processing-steps/windowing.html">Windowing data</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../processing-steps/index.html">Waveform processing</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../processing-steps/waveform-processing.html">Waveform Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../processing-steps/waveform-processing/initial-qc.html">Initial quality control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../processing-steps/waveform-processing/remove-response.html">Removing instrument response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../processing-steps/waveform-processing/phase-pickers.html">Phase pickers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../processing-steps/waveform-processing/baseline-correction.html">Baseline correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../processing-steps/waveform-processing/filtering.html">Filtering</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../processing-steps/data-units.html">Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../processing-steps/waveform-metrics.html">Waveform metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../processing-steps/station-metrics.html">Station metrics</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Using gmprocess</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gmprocess/gmprocess.html">The gmprocess command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gmprocess/reading.html">Reading data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gmprocess/waveform-processing.html">Waveform processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gmprocess/reports.html">Processing reports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gmprocess/exporting.html">Exporting data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Utilities</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../utilities/gmworkspace.html">The gmworkspace command</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utilities/gmconvert.html">Converting data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/matlab.html">Matlab utilities</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Python Scripting</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../scripting/index.html">Data structures</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../scripting/data-structures.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scripting/data-structures/station-trace.html">StationTrace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scripting/data-structures/station-stream.html">StationStream</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scripting/data-structures/stream-collection.html">StreamCollection</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/scripting.html">Writing Python scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripting/waveform-metrics.html">Waveform metrics</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Development</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../developer/code-layout.html">Code layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/readers.html">Adding new data readers</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="gmprocess.html">API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="gmprocess.core.html">gmprocess.core</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.core.stationstream.html">gmprocess.core.stationstream</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.core.stationtrace.html">gmprocess.core.stationtrace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.core.streamcollection.html">gmprocess.core.streamcollection</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="gmprocess.io.html">gmprocess.io</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.catalog.html">gmprocess.io.catalog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.fetcher.html">gmprocess.io.fetcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.global_fetcher.html">gmprocess.io.global_fetcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.nga.html">gmprocess.io.nga</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.read.html">gmprocess.io.read</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.read_directory.html">gmprocess.io.read_directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.report.html">gmprocess.io.report</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.seedname.html">gmprocess.io.seedname</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.stream.html">gmprocess.io.stream</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.io.utils.html">gmprocess.io.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="gmprocess.utils.html">gmprocess.utils</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label for="toctree-checkbox-6"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.utils.args.html">gmprocess.utils.args</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.utils.config.html">gmprocess.utils.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.utils.event.html">gmprocess.utils.event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.utils.exception.html">gmprocess.utils.exception</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.utils.logging.html">gmprocess.utils.logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.utils.models.html">gmprocess.utils.models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.utils.plot.html">gmprocess.utils.plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.utils.tables.html">gmprocess.utils.tables</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children current-page"><a class="current reference internal" href="#">gmprocess.waveform_processing</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label for="toctree-checkbox-7"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.adjust_highpass.html">gmprocess.waveform_processing.adjust_highpass</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.corner_frequencies.html">gmprocess.waveform_processing.corner_frequencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.fft.html">gmprocess.waveform_processing.fft</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.filtering.html">gmprocess.waveform_processing.filtering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.nn_quality_assurance.html">gmprocess.waveform_processing.nn_quality_assurance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.phase.html">gmprocess.waveform_processing.phase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.pretesting.html">gmprocess.waveform_processing.pretesting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.processing.html">gmprocess.waveform_processing.processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.snr.html">gmprocess.waveform_processing.snr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.spectrum.html">gmprocess.waveform_processing.spectrum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.windows.html">gmprocess.waveform_processing.windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gmprocess.waveform_processing.zero_crossings.html">gmprocess.waveform_processing.zero_crossings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <main class="main">
+    <div class="content">
+      <article role="main">
+        <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        </label>
+        <div class="section" id="gmprocess-waveform-processing">
+<h1>gmprocess.waveform_processing<a class="headerlink" href="#gmprocess-waveform-processing" title="Permalink to this headline">¶</a></h1>
+<p>Submodules</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gmprocess.waveform_processing.adjust_highpass.html">gmprocess.waveform_processing.adjust_highpass</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gmprocess.waveform_processing.corner_frequencies.html">gmprocess.waveform_processing.corner_frequencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gmprocess.waveform_processing.fft.html">gmprocess.waveform_processing.fft</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gmprocess.waveform_processing.filtering.html">gmprocess.waveform_processing.filtering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gmprocess.waveform_processing.nn_quality_assurance.html">gmprocess.waveform_processing.nn_quality_assurance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gmprocess.waveform_processing.phase.html">gmprocess.waveform_processing.phase</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gmprocess.waveform_processing.pretesting.html">gmprocess.waveform_processing.pretesting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gmprocess.waveform_processing.processing.html">gmprocess.waveform_processing.processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gmprocess.waveform_processing.snr.html">gmprocess.waveform_processing.snr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gmprocess.waveform_processing.spectrum.html">gmprocess.waveform_processing.spectrum</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gmprocess.waveform_processing.windows.html">gmprocess.waveform_processing.windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gmprocess.waveform_processing.zero_crossings.html">gmprocess.waveform_processing.zero_crossings</a></li>
+</ul>
+</div>
+<p>Module contents</p>
+<span class="target" id="module-gmprocess.core"></span></div>
+
+      </article>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="gmprocess.waveform_processing.adjust_highpass.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">gmprocess.waveform_processing.adjust_highpass</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="gmprocess.utils.tables.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">gmprocess.utils.tables</div>
+                
+              </div>
+            </a>
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 2020, USGS
+            |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+            |
+            <a class="muted-link" href="../_sources/apidoc/gmprocess.waveform_processing.rst.txt"
+               rel="nofollow">
+              Show Source
+            </a>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </main>
+</div>
+  </body>
+</html>
