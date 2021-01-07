@@ -291,6 +291,7 @@ class StationTrace(Trace):
 
     gmprocess subclasses the Trace object with a StationTrace object, which
     provides the following additional features:
+
         - Validation that length of data matches the number of points in the
           metadata.
         - Validation that required values are set in metadata.
@@ -757,16 +758,15 @@ class StationTrace(Trace):
         """Return a pandas Series containing the processing history for the
         trace.
 
-        BO.NGNH31.HN2  Remove Response  input_units     counts
-                                        output_units    cm/s^2
-                       Taper            side            both
-                                        window_type     Hann
-                                        taper_width     0.05
+        BO.NGNH31.HN2   Remove Response   input_units   counts
+        -                                 output_units  cm/s^2
+        -               Taper             side          both
+        -                                 window_type   Hann
+        -                                 taper_width   0.05
 
         Returns:
             Series:
                 Pandas Series (see above).
-
         """
         tpl = (self.stats.network, self.stats.station, self.stats.channel)
         recstr = '%s.%s.%s' % tpl

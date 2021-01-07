@@ -542,34 +542,25 @@ def pphase_pick(trace, period=None, damping=0.6, nbins=None,
     """Compute P-phase arrival time.
 
     Adapted from Python code written by Francisco Hernandez of the Puerto Rico
-    Strong Motion Program.
-
-    That code was in turn adapted from Matlab code written by Dr. Erol
-    Kalkan, P.E.
-
-    The algorithms are described here in full:
+    Strong Motion Program. That code was in turn adapted from Matlab code written by Dr. Erol
+    Kalkan, P.E. The algorithms are described here in full:
 
     Kalkan, E. (2016). "An automatic P-phase arrival time picker", Bull. of
     Seismol. Soc. of Am., 106, No. 3, doi: 10.1785/0120150111
 
     Args:
-        trace (StationTrace):
-            StationTrace containing waveform (acceleration or velocity) data.
-        period (float):
-            Undamped natural period of the sensor in seconds.
+        trace (StationTrace): StationTrace containing waveform (acceleration or velocity) data.
+        period (float): Undamped natural period of the sensor in seconds.
             Defaults to 0.01s for sample rates >= 100, 0.1s for sample
             rates < 100.
-        damping (float):
-            Damping ratio.
-        nbins (int):
-            Histogram bin size (default is 2/sampling interval). Regional or
+        damping (float): Damping ratio.
+        nbins (int): Histogram bin size (default is 2/sampling interval). Regional or
             teleseismic records may need different values of bin size for
             better picking results)
-        selection (Selector):
-            One of:
-                Selector.TO_PEAK - take segment of waveform from beginning to
-                    absolute peak value (recommended for fast processing).
-                Selector.FULL - take full waveform.
+        selection (Selector): One of:
+            Selector.TO_PEAK - take segment of waveform from beginning to absolute peak value (recommended for fast processing).
+            Selector.FULL - take full waveform.
+
     Returns:
         tuple:
             - Float number of seconds from start of trace to P-Phase beginning.

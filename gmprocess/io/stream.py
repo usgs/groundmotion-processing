@@ -26,6 +26,7 @@ def directory_to_dataframe(directory, imcs=None, imts=None, origin=None,
     sensors can only generate PGV) and on the imtlist passed in by
     user. Spectral acceleration columns will be formatted as SA(0.3)
     for 0.3 second spectral acceleration, for example.
+
     Args:
         directory (str): Directory of ground motion files (streams).
         imcs (list): Strings designating desired components to create
@@ -36,6 +37,7 @@ def directory_to_dataframe(directory, imcs=None, imts=None, origin=None,
                 geographical location of an earthquake hypocenter.
                 Default is None.
         process (bool): Process the stream using the config file.
+
     Returns:
         DataFrame: Pandas dataframe containing columns:
             - STATION Station code.

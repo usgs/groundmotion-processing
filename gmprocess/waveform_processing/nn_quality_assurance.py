@@ -837,15 +837,15 @@ def NNet_QA(st, acceptance_threshold, model_name):
     '''
     Assess the quality of a stream by analyzing its two horizontal components
     as described in Bellagamba et al. (2019). Performs three steps:
-        1) Compute the quality metrics (see paper for more info)
-        2) Preprocess the quality metrics (deskew, standardize and decorrelate)
-        3) Evaluate the quality using a neural network-based model
-    2 models are available: 'Cant' and 'CantWell'.
+    1) Compute the quality metrics (see paper for more info)
+    2) Preprocess the quality metrics (deskew, standardize and decorrelate)
+    3) Evaluate the quality using a neural network-based model
+    Two models are available: 'Cant' and 'CantWell'.
     To minimize the number of low quality ground motion included, the natural
     acceptance threshold 0.5 can be raised (up to an extreme value of 0.95).
     Recommended parameters are:
-        acceptance_threshold = 0.5 or 0.6
-        model_name = 'CantWell'
+    -   acceptance_threshold = 0.5 or 0.6
+    -   model_name = 'CantWell'
 
     Args:
         st (list of traces):

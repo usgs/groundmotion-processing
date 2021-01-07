@@ -41,6 +41,7 @@ Credits/Acknowledgements
 
 .. image:: ./_static/usgs.png
    :alt: usgs logo
+   :target: https://www.usgs.gov
    :scale: 50
 
 .. _`GitHub`: https://github.com/usgs/groundmotion-processing

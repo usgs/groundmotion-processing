@@ -16,6 +16,7 @@ docs/_site
 docs/Gemfile.lock
 docs/figs/*.aux
 docs/figs/*.log
+docsrc/_build/
 gmprocess/_version.py
 gmprocess/version.py
 .vscode/

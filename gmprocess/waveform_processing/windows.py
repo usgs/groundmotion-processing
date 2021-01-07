@@ -325,51 +325,46 @@ def trim_multiple_events(st, origin, catalog, travel_time_df, pga_factor,
     contain signals from multiple events. The catalog should contain events
     down to a low enough magnitude in relation to the events of interest.
     Overall, the algorithm is as follows:
-        1) For each earthquake in the catalog, get the P-wave travel time
-           and estimated PGA at this station.
-        2) Compute the PGA (of the as-recorded horizontal channels).
-        3) Select the P-wave arrival times across all events for this record
-           that are (a) within the signal window, and (b) the predicted PGA is
-           greater than "pga_factor" times the PGA from step #1.
-        4) If any P-wave arrival times match the above criteria, then if any of
-           the arrival times fall within in the first "pct_window_reject"*100%
-           of the signal window, then reject the record. Otherwise, trim the
-           record such that the end time does not include any of the arrivals
-           selected in step #3.
+
+    1) For each earthquake in the catalog, get the P-wave travel time
+       and estimated PGA at this station.
+
+    2) Compute the PGA (of the as-recorded horizontal channels).
+
+    3) Select the P-wave arrival times across all events for this record
+       that are (a) within the signal window, and (b) the predicted PGA is
+       greater than pga_factor times the PGA from step #1.
+
+    4) If any P-wave arrival times match the above criteria, then if any of
+       the arrival times fall within in the first pct_window_reject*100%
+       of the signal window, then reject the record. Otherwise, trim the
+       record such that the end time does not include any of the arrivals
+       selected in step #3.
 
     Args:
-        st (StationStream):
-            Stream of data.
-        origin (ScalarEvent):
-            ScalarEvent object associated with the StationStream.
-        catalog (list):
-            List of ScalarEvent objects.
-        travel_time_df (DataFrame):
-            A pandas DataFrame that contains the travel time information
-            (obtained from
-            gmprocess.waveform_processing.phase.create_travel_time_dataframe).
+        st (StationStream): Stream of data.
+        origin (ScalarEvent): ScalarEvent object associated with the StationStream.
+        catalog (list): List of ScalarEvent objects.
+        travel_time_df (DataFrame): A pandas DataFrame that contains the travel time information
+            (obtained from gmprocess.waveform_processing.phase.create_travel_time_dataframe).
             The columns in the DataFrame are the station ids and the indices
             are the earthquake ids.
-        pga_factor (float):
-            A decimal factor used to determine whether the predicted PGA
+        pga_factor (float): A decimal factor used to determine whether the predicted PGA
             from an event arrival is significant enough that it should be
             considered for removal.
-        pct_window_reject (float):
-            A decimal from 0.0 to 1.0 used to determine if an arrival should
+        pct_window_reject (float): A decimal from 0.0 to 1.0 used to determine if an arrival should
             be trimmed from the record, or if the entire record should be
             rejected. If the arrival falls within the first
-            "pct_window_reject" * 100% of the signal window, then the entire
+            pct_window_reject * 100% of the signal window, then the entire
             record will be rejected. Otherwise, the record will be trimmed
             appropriately.
-        gmpe (str):
-            Short name of the GMPE to use. Must be defined in the modules file.
-        site_parameters (dict):
-            Dictionary of site parameters to input to the GMPE.
-        rupture_parameters:
-            Dictionary of rupture parameters to input to the GMPE.
+        gmpe (str): Short name of the GMPE to use. Must be defined in the modules file.
+        site_parameters (dict): Dictionary of site parameters to input to the GMPE.
+        rupture_parameters: Dictionary of rupture parameters to input to the GMPE.
 
     Returns:
         StationStream: Processed stream.
+
     """
 
     if not st.passed:
