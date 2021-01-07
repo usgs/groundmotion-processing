@@ -16,34 +16,7 @@ class AssembleModule(SubcommandModule):
     command_name = 'assemble'
 
     arguments = [
-        ARG_DICTS['eventid'], {
-            'short_flag': '-t',
-            'long_flag': '--textfile',
-            'help': (
-                'Text file containing lines of ComCat Event IDs or event '
-                'information (ID TIME LAT LON DEPTH MAG).'),
-            'type': str,
-            'default': None
-        }, {
-            'long_flag': '--info',
-            'help': (
-                'Single event information as ID TIME(YYYY-MM-DDTHH:MM:SS) '
-                'LAT LON DEP MAG.'),
-            'type': str,
-            'default': None,
-            'nargs': 7,
-            'metavar': ('ID', 'TIME', 'LAT', 'LON', 'DEPTH', 'MAG', 'MAG_TYPE')
-        }, {
-            'short_flag': '-d',
-            'long_flag': '--data-source',
-            'help': (
-                'Where to look for data. If None (default), assemble raw data '
-                'already present in the project directory; If "download", '
-                'use online data fetches; Or provide a path to a directory '
-                'containing data'),
-            'type': str,
-            'default': None
-        },
+        ARG_DICTS['eventid'],
         ARG_DICTS['overwrite']
     ]
 
@@ -88,7 +61,7 @@ class AssembleModule(SubcommandModule):
                 event=event,
                 event_dir=event_dir,
                 config=gmrecords.conf,
-                directory=self.download_dir
+                directory=gmrecords.data_path
             )
             workspace.close()
             self.append_file('Workspace', workname)

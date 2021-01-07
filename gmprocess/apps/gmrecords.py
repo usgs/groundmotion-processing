@@ -70,7 +70,8 @@ class GMrecordsApp(object):
         if self.args.subcommand is None:
             self.parser.print_help()
         else:
-            if self.args.subcommand != 'projects':
+            exclude_subcommands = ['projects', 'proj', 'init']
+            if self.args.subcommand not in exclude_subcommands:
                 # Print the current project information to try to avoid
                 # confusion
                 selected_project = self.projects_conf['project']
@@ -101,7 +102,7 @@ class GMrecordsApp(object):
             print('    are independent of the current directory.')
             response = int(input('> '))
             if response not in [1, 2]:
-                print('Not a valid response. Existing.')
+                print('Not a valid response. Exiting.')
                 sys.exit(0)
             elif response == 1:
                 InitModule().main(self)

@@ -65,8 +65,14 @@ class ProjectsModule(SubcommandModule):
         configfile = gmrecords.PROJECTS_FILE
 
         if gmrecords.args.create:
-            create(config)
-            sys.exit(0)
+            if config['project'] == '__local__':
+                print(Project('__local__', config['projects']['__local__']))
+                print('You cannot create a new *system-level* project while')
+                print('using a *dirctory* project. Exiting.')
+                sys.exit(0)
+            else:
+                create(config)
+                sys.exit(0)
 
         config = check_project_config(config)
 
@@ -205,7 +211,8 @@ def check_project_config(config):
 
 
 def create(config, cwd=False):
-    """
+    """Create a new gmrecords project.
+
     Args:
         config (ConfigObj):
             ConfigObj instance representing the parsed projects config.
@@ -216,15 +223,15 @@ def create(config, cwd=False):
     if not cwd:
         project = input('Please enter a project title: ')
         if 'projects' in config and project in config['projects']:
-            msg = ('Project %s already in %s.  Run \'gmrecords projects -l\' '
-                   'to see available projects.')
-            print(msg % (project, config))
+            msg = ('Project \'%s\' already exists.  Run \'gmrecords projects '
+                   '-l\' to see existing projects.')
+            print(msg % project)
             sys.exit(1)
         default_conf, default_data = get_default_project_paths(project)
         new_conf_path, new_data_path = \
             set_project_paths(default_conf, default_data)
     else:
-        project = 'local'
+        project = '__local__'
         cwd = os.getcwd()
         new_conf_path = os.path.join(cwd, 'conf')
         new_data_path = os.path.join(cwd, 'data')
