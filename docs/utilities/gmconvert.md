@@ -34,7 +34,7 @@ format.
 
 ## Convert a single file from the NIED KNET format to MiniSEED
 
-```[bash]
+```bash
 gmconvert AOM0011801241951.EW
 ```
 
@@ -44,7 +44,7 @@ The following files will be written to the current directory:
 
 ## Convert the the channels of BO.AOM001 station data into one MiniSEED file
 
-```[bash]
+```bash
 gmconvert AOM0011801241951.*
 ```
 
@@ -58,7 +58,7 @@ The input files are in the `indatadir` directory and the output files
 are in the `outdatadir`. The data files in the `indatadir` can be
 distributed through subdirectories and gmconvert will find them.
 
-```[bash]
+```bash
 gmconvert -i datadir -o outdatadir -f SAC
 ```
 

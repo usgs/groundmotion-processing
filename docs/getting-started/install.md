@@ -2,8 +2,7 @@
 
 ## Dependencies
 
-* Mac OSX or Linux operating systems; we hope to be able to support Windows sysmtems
-  in the next release.
+* Mac OSX, Windows, or Linux operating systems
 
 * bash shell, gcc, git, curl
 
@@ -32,7 +31,7 @@ tested on OSX, CentOS, and Ubuntu.
 bash install.sh
 ```
 
-Note: we are not yet able to test on Mac OS version 10.14 or newer because of institutional
+Note: we are not yet able to test on Mac OS version newer than 10.14 because of institutional
 restrictions. We have also had many bug reports from people who have tried to install our
 code from source, typically related to the C compiler not being able to find header files.
 The best we can do is point you to

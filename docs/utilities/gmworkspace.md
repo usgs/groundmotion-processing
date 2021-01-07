@@ -24,7 +24,7 @@ the information also includes the dimensions and type. Strings are
 stored as bytes (the type is `uint8`).
 
 Show the contents of the `workspace.hdf` file:
-```[bash]
+```
 gmworkspace --filename=workspace.hdf --describe
 ```
 
@@ -35,6 +35,6 @@ storage using by the various groups in the workspace HDF5 file to
 stdout. The storage is shown in megabytes (MB, 2**20 bytes).
 
 Show the storage used in the `workspace.hdf` file:
-```[bash]
+```
 gmworkspace --filename=workspace.hdf --compute-storage
 ```

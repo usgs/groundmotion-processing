@@ -9,8 +9,7 @@
 * The functionality can be accessed via Python libraries or through command
   line programs.
 
-* We currently support Mac and Linux systems, and plan to support Windows in
-  release 1.1.
+* We currently support Mac and Linux, and Windows systems.
 
 * We provide file readers for many strong motion data formats that are not
   otherwise supported in ObsPy.

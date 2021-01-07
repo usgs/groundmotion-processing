@@ -58,13 +58,11 @@ distance and rupture distance.
   rupture models.
 
 
-<figure>
-  <img width="600px" src="figs/asdf_layout.png" alt="ASDF layout"/>
-  <figcaption>Diagram of group and dataset hierarchy in extension of the
-ASDF HDF-5 layout. For brevity, we only show the signal spectra in the
-`Cache`. </figcaption>
-</figure>
+![Diagram of group and dataset hierarchy in extension of the ASDF HDF-5 layout.](asdf_layout.png)
 
+<!-- <figure>
+  <img src="./asdf_layout.png" alt="ASDF layout"/>
+</figure> -->
 
 ### Waveform Metrics
 
