@@ -2,7 +2,7 @@
 
    <embed>
       <div>
-      <img style="vertical-align:middle" src="docs/images/gmprocess_logo_large.png" height="50px">
+      <img style="vertical-align:middle" src="docs/_static/gmprocess_logo_large.png" height="50px">
       </div>
    </embed>
 
@@ -20,7 +20,7 @@ Documentation
 -------------
 - Please note, we are in the process of improving the documentation.
 - The manual is available
-  `here <https://usgs.github.io/groundmotion-processing/>`_.
+  `here <https://groundmotion-processing.readthedocs.io/en/latest/>`_.
 - Also, please see the 
   `Wiki <https://github.com/usgs/groundmotion-processing/wiki>`_ 
   as a "quick start" guide.
