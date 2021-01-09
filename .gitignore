@@ -20,3 +20,4 @@ gmprocess/_version.py
 gmprocess/version.py
 .vscode/
 dask-worker-space/
+docs/_build

@@ -9,4 +9,4 @@ python:
     - requirements: docs/requirements.txt
 
 sphinx:
-  fail_on_warning: true
+  fail_on_warning: false
