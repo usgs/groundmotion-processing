@@ -9,6 +9,9 @@ python:
     - method: pip
       path: .
 
+conda:
+  environment: requirements.txt
+
 sphinx:
   configuration: docs/conf.py
 

@@ -14,8 +14,9 @@
 import glob
 import os
 import sys
+from setuptools_scm import get_version
 
-sys.path.insert(0, os.path.abspath('/Users/jamesasmith/Packages/groundmotion-processing/gmprocess/*'))
+sys.path.insert(0, os.path.abspath("."))
 
 
 # -- Project information -----------------------------------------------------
@@ -24,7 +25,8 @@ project = 'gmprocess'
 copyright = 'Public Domain'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0.4'
+base_dir = os.path.join(os.path.dirname(__file__), os.pardir)
+release = get_version(root=os.path.join(base_dir))
 
 
 # -- General configuration ---------------------------------------------------
@@ -49,7 +51,7 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
-todo_include_todos=True
+todo_include_todos = True
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -61,7 +63,7 @@ html_logo = '_static/gmprocess_logo.png'
 
 html_theme_options = {
     "sidebar_hide_name": True,
-#    "announcement": "<a href='https://github.com/usgs/groundmotion-processing' style='text-decoration: none'><h1>Ground-motion Processing Software</h1></a>"
+    #    "announcement": "<a href='https://github.com/usgs/groundmotion-processing' style='text-decoration: none'><h1>Ground-motion Processing Software</h1></a>"
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
