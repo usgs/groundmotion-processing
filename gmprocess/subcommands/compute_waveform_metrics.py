@@ -54,21 +54,25 @@ class ComputeWaveformMetricsModule(SubcommandModule):
             self._get_pstreams()
 
             for stream in self.pstreams:
-                logging.info(
-                    'Calculating waveform metrics for %s...' % stream.get_id())
-                summary = StationSummary.from_config(
-                    stream, event=event, config=gmrecords.conf,
-                    calc_waveform_metrics=True,
-                    calc_station_metrics=False)
-                xmlstr = summary.get_metric_xml()
-                tag = stream.tag
-                metricpath = '/'.join([
-                    format_netsta(stream[0].stats),
-                    format_nslit(stream[0].stats, stream.get_inst(), tag)
-                ])
-                self.workspace.insert_aux(
-                    xmlstr, 'WaveFormMetrics', metricpath,
-                    overwrite=gmrecords.args.overwrite)
+                if stream.passed:
+                    logging.info(
+                        'Calculating waveform metrics for %s...'
+                        % stream.get_id()
+                    )
+                    summary = StationSummary.from_config(
+                        stream, event=event, config=gmrecords.conf,
+                        calc_waveform_metrics=True,
+                        calc_station_metrics=False
+                    )
+                    xmlstr = summary.get_metric_xml()
+                    tag = stream.tag
+                    metricpath = '/'.join([
+                        format_netsta(stream[0].stats),
+                        format_nslit(stream[0].stats, stream.get_inst(), tag)
+                    ])
+                    self.workspace.insert_aux(
+                        xmlstr, 'WaveFormMetrics', metricpath,
+                        overwrite=gmrecords.args.overwrite)
 
             self.workspace.close()
 
