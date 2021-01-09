@@ -3,3 +3,4 @@ requests>=2
 furo
 recommonmark
 sphinx-autoapi
+setuptools_scm
