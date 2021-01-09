@@ -36,7 +36,7 @@ release = get_version(root=os.path.join(base_dir))
 # ones.
 extensions = [
     'recommonmark',
-    # 'sphinx.ext.autodoc',
+    'sphinx.ext.autodoc',
     'autoapi.extension',
     'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
