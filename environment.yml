@@ -1,0 +1,30 @@
+name: gmprocess
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - pip
+  - c-compiler
+  - cython
+  - dask
+  - h5py>=2.8.0
+  - impactutils
+  - ipython
+  - jupyter
+  - libcomcat
+  - lxml
+  - mapio
+  - matplotlib
+  - numpy
+  - obspy>=1.2.1
+  - openpyxl
+  - openquake.engine>=3.10.1
+  - pandas
+  - ps2ff
+  - pyasdf
+  - pyyaml
+  - scipy
+  - setuptools-scm
+  - requests
+  - vcrpy
