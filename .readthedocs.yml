@@ -10,7 +10,7 @@ python:
       path: .
 
 conda:
-  environment: requirements.txt
+  environment: environment.yml
 
 sphinx:
   configuration: docs/conf.py
