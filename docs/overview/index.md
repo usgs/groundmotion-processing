@@ -17,7 +17,7 @@ integration.
 
 ![Diagram of workspace](/_static/workspace.png)
 
-# Motivation
+## Motivation
 
 * Facilitate creation of ground-motion data sets for multiple types of
   analysis.
@@ -28,7 +28,7 @@ integration.
 * Disentangle ground-motion processing (broad range of uses) from
   specific applications, e.g., ShakeMap generation.
 
-# Target Use Cases
+## Target Use Cases
 
 * Standardize processing of ground-motion waveform data, including
   ground-motion simulations, for deriving a wide variety of Intensity

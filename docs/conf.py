@@ -16,18 +16,18 @@ import os
 import sys
 from setuptools_scm import get_version
 
-sys.path.insert(0, os.path.abspath("."))
+sys.path.insert(0, os.path.abspath(".."))
 
 
 # -- Project information -----------------------------------------------------
 
 project = 'gmprocess'
-copyright = 'Public Domain'
+copyright = 'Unlicense'
 
 # The full version, including alpha/beta/rc tags
 base_dir = os.path.join(os.path.dirname(__file__), os.pardir)
 release = get_version(root=os.path.join(base_dir))
-
+version = release
 
 # -- General configuration ---------------------------------------------------
 
@@ -53,6 +53,7 @@ templates_path = ['_templates']
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+html_static_path = [os.path.abspath('_static')]
 
 todo_include_todos = True
 
@@ -64,14 +65,26 @@ todo_include_todos = True
 html_theme = 'furo'
 html_logo = '_static/gmprocess_logo.png'
 
+announcement_html = """
+    <a href='https://www.usgs.gov/' style='text-decoration: none'>
+        <img id="announcement_left_img" valign="middle" src="%s/docs/_static/usgs.png""></a>
+    Ground-Motion Processing Software
+    <a href='https://github.com/usgs/groundmotion-processing' style='text-decoration: none'>
+        <img id="announcement_right_img" valign="middle"
+            src="%s/docs/_static/GitHub-Mark/PNG/GitHub-Mark-Light-120px-plus.png"></a>
+""" % (base_dir, base_dir)
+
 html_theme_options = {
     "sidebar_hide_name": True,
-    #    "announcement": "<a href='https://github.com/usgs/groundmotion-processing' style='text-decoration: none'><h1>Ground-motion Processing Software</h1></a>"
+    "announcement": announcement_html
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
 
 source_suffix = ['.rst', '.md']
+
+
+def setup(app):
+    app.add_css_file('css/custom.css')

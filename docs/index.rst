@@ -1,5 +1,5 @@
-Welcome to the gmprocess docs
-=============================
+Welcome to the *gmprocess* documentation!
+=========================================
 
 .. include:: ./README.rst
 
@@ -16,7 +16,7 @@ Welcome to the gmprocess docs
    :hidden:
 
    Installation <getting-started/install>
-   Configuration <getting-started/configuration>
+   Initial Setup <getting-started/initial_setup>
    Running the code <getting-started/running>
 
 .. toctree::
@@ -63,7 +63,6 @@ Welcome to the gmprocess docs
 
    Code layout <developer/code-layout>
    Adding new data readers <developer/readers>
-   API <apidoc/gmprocess>
 
 .. Indices and tables
 .. ==================
