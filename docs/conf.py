@@ -65,14 +65,16 @@ todo_include_todos = True
 html_theme = 'furo'
 html_logo = '_static/gmprocess_logo.png'
 
+base_url = 'https://gmprocess.readthedocs.io/en/latest/'
+
 announcement_html = """
     <a href='https://www.usgs.gov/' style='text-decoration: none'>
-        <img id="announcement_left_img" valign="middle" src="%s/docs/_static/usgs.png""></a>
+        <img id="announcement_left_img" valign="middle" src="%s/_static/usgs.png""></a>
     Ground-Motion Processing Software
     <a href='https://github.com/usgs/groundmotion-processing' style='text-decoration: none'>
         <img id="announcement_right_img" valign="middle"
-            src="%s/docs/_static/GitHub-Mark/PNG/GitHub-Mark-Light-120px-plus.png"></a>
-""" % (base_dir, base_dir)
+            src="%s/_static/GitHub-Mark/PNG/GitHub-Mark-Light-120px-plus.png"></a>
+""" % (base_url, base_url)
 
 html_theme_options = {
     "sidebar_hide_name": True,
