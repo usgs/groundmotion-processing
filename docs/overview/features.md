@@ -1,6 +1,6 @@
 # Features
 
-* The software is written in Python and builds upon
+* ***gmprocess*** is written in Python and builds upon
   [ObsPy](https://www.obspy.org) and
   [PyASDF](https://seismicdata.github.io/pyasdf/),
   including [SEIS-PROV](http://seismicdata.github.io/SEIS-PROV/index.html)
@@ -28,4 +28,3 @@
 
 * "Plug-and-play" architecture for efficiently evaluating data reprocessed
   with new or alternative algorithms.
-
