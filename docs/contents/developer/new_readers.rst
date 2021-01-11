@@ -2,7 +2,7 @@ Adding New Data Readers
 =======================
 
 Most of the difficulty in writing data file readers for the various formats
-supported by gmprocess comes in handling the various types of headers and
+supported by *gmprocess* comes in handling the various types of headers and
 inconsistencies in adherence to the various standards. Here we'll be removing
 those from the equation and presenting a semi-idealized data format and some
 code to read it.

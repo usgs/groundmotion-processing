@@ -14,16 +14,21 @@ network/station/channel/location information.
 which provides the following additional features:
 
 - Validation that length of data matches the number of points in the metadata.
-- Validation that required values are set in metadata (see standard below).
+- Validation that required values are set in metadata.
 - A ``fail`` method which can be used by processing routines to mark when
   processing of the ``StationTrace`` has failed some sort of check (signal to
   noise ratio, etc.)
 - A ``free_field`` property which can be used to query the object to ensure that
-  its data comes from a free-field sensor. Note: this is not always known
-  reliably, and different people have have different definitions of the term
-  ``free_field``. When possible, we define a mapping between location code
-  and the ``free_field`` property. For example, see the ``LOCATION_CODES``
-  variable ``core.py`` in ``gmprocess.io.fdsn``.
+  its data comes from a free-field sensor. 
+
+  .. note:: 
+
+     The free field condition is not always known reliably, and different people
+     have have different definitions of the term ``free_field``. When possible,
+     we define a mapping between location code and the ``free_field`` property.
+     For example, see the ``LOCATION_CODES`` variable ``core.py`` in 
+     ``gmprocess.io.fdsn``.
+
 - Methods (e.g., ``getProvenance``, ``setProvenance``) for tracking  processing
   steps that have been performed. These are aligned with the 
   `SEIS-PROV <http://seismicdata.github.io/SEIS-PROV/_generated_details.html#activities>`_
@@ -46,8 +51,8 @@ which provides the following additional features:
 StationStream
 -------------
 
-ObsPy provides a Stream object that serves as a container for zero-to-many
-``Trace`` objects, and gmprocess subclasses the Stream object with the 
+ObsPy provides a ``Stream`` object that serves as a container for zero-to-many
+``Trace`` objects, and gmprocess subclasses the ``Stream`` object with the 
 ``StationStream`` object, which contains ``StationTrace`` objects. It also 
 provides facilities for extracting Obspy inventory data structures, and 
 provenance from the contained ``StationTrace`` objects.

@@ -26,7 +26,7 @@ First clone this repository and go into the root directory with
 
 The ``install.sh`` script in the root directory of the package installs this 
 package and all other dependencies, including python and the required python 
-libraries. It is regularly tested on OSX, CentOS, and Ubuntu.
+libraries. It is regularly tested on OSX and Linux systems.
 
 .. code-block:: console
 
