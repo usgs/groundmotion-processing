@@ -40,3 +40,6 @@
     the condition that neither the USGS nor the U.S. Government shall be held
     liable for any damages resulting from the authorized or unauthorized use of
     the software.
+
+    Any use of trade, firm, or product names is for descriptive purposes only 
+    and does not imply endorsement by the U.S. Government.
