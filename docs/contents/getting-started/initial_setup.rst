@@ -8,14 +8,17 @@ directories so that they do not need to be specified as command line arguments.
 
 There are two different types of projects:
 
-- **directory projects** - A directory project works by checking the current
+**directory projects**
+  A directory project works by checking the current
   working directory for a project config file that holds the data and config 
   info. Thus, in order to activate the project, you have to be in that specific
   directory.
-- **system-level projects** - A system-level project works by checking the
-  users home directory for a project config file that can hold many different
-  configured projects. Thus, when you use a system-level project you can switch
-  between different projects easily from any directory on your system.
+
+**system-level projects**
+  A system-level project works by checking the users home directory for a
+  project config file that can hold many different configured projects. Thus,
+  when you use a system-level project you can switch between different projects
+  easily from any directory on your system.
 
 When you create either type of project, you will be prompted to include your
 name and email. This information is used for the data provenance. It is often

@@ -365,16 +365,16 @@ record might pass the signal-to-noise requirement.
    :class: tip
 
    The full report for each station also includes the provenance table and 
-   failure reason. The **first row** of plots is the acceleration time series, 
-   the **second row** of plots is the velocity time series. The vertical dashed
-   red line indicates the boundary between the signa and noise windows. The
-   **third row** of plots gives the raw and smoothed Fourier amplitude spectra,
-   where the dashed black curve is a Bruce spectra fit to the data, and the
-   vertical dashed line is the corner frequency. The **fourth row** of plots is
-   the signal-to-noise ratio (SNR), where the vertical grey lines indicate the
-   bandpass where the SNR criteria are required, the horizontal grey line is
-   the minimum SNR, and the vertical black dashed lines are the selected 
-   bandpass filter corners.
+   failure reason (not shown here). The **first row** of plots is the 
+   acceleration time series, the **second row** of plots is the velocity time 
+   series. The vertical dashed red line indicates the boundary between the 
+   signal and noise windows. The **third row** of plots gives the raw and 
+   smoothed Fourier amplitude spectra, where the dashed black curve is a Brune 
+   spectra fit to the data, and the vertical dashed line is the corner 
+   frequency. The **fourth row** of plots is the signal-to-noise ratio (SNR), 
+   where the vertical grey lines indicate the bandpass where the SNR criteria 
+   are required, the horizontal grey line is the minimum SNR, and the vertical 
+   black dashed lines are the selected bandpass filter corners.
 
 Compute Station Metrics
 -----------------------
