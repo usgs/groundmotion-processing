@@ -328,7 +328,7 @@ def get_events(eventids, textfile, eventinfo, directory,
         elif outdir is not None:
             tevents = events_from_directory(outdir)
         for eventid in eventids:
-            if len(tevents):
+            if len(tevents) and eventid in tevents:
                 event = [e for e in tevents if e.id == eventid][0]
             else:
                 # This connects to comcat to get event, does not check for a

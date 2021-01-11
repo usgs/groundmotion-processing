@@ -142,9 +142,9 @@ class GMrecordsApp(object):
         """
         # Main program parser
         description = """
-        gmp is a program for retrieving and processing ground motion records,
-        as well as exporting commonly used station and waveform parameters for
-        earthquake hazard analysis.
+        gmrecords is a program for retrieving and processing ground motion
+        records, as well as exporting commonly used station and waveform
+        parameters for earthquake hazard analysis.
         """
         self.parser = argparse.ArgumentParser(description=description)
         group = self.parser.add_mutually_exclusive_group()
