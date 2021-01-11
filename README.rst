@@ -29,21 +29,24 @@ Documentation
 Build info
 ----------
 
-We are in the process of trying to support Windows. As the table below shows, 
-we are still not able to pass all tests on Windows OS yet. 
-
 +---------+------------------+-----------------+------------+
 | Azure   | |AzureM1015P37|  | OSX 10.15       | Python 3.7 |
 +         +------------------+-----------------+------------+
 |         | |AzureM1015P38|  | OSX 10.15       | Python 3.8 |
 +         +------------------+-----------------+------------+
+|         | |AzureM1015P39|  | OSX 10.15       | Python 3.9 |
++         +------------------+-----------------+------------+
 |         | |AzureWP37|      | Windows-latest  | Python 3.7 |
 +         +------------------+-----------------+------------+
 |         | |AzureWP38|      | Windows-latest  | Python 3.8 |
 +         +------------------+-----------------+------------+
+|         | |AzureWP39|      | Windows-latest  | Python 3.9 |
++         +------------------+-----------------+------------+
 |         | |AzureLP37|      | ubuntu-latest   | Python 3.7 |
 +         +------------------+-----------------+------------+
 |         | |AzureLP38|      | ubuntu-latest   | Python 3.8 |
++---------+------------------+-----------------+------------+
+|         | |AzureLP39|      | ubuntu-latest   | Python 3.9 |
 +---------+------------------+-----------------+------------+
 | Codacy  | |Codacy|                                        |
 +---------+-------------------------------------------------+
@@ -67,6 +70,10 @@ we are still not able to pass all tests on Windows OS yet.
    :target: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_build/latest?definitionId=5&branchName=master
    :alt: Build Status: Mac 10.15, python 3.8
 
+.. |AzureM1015P39| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master&jobName=gmprocess&configuration=gmprocess%20MacOS_py39
+   :target: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_build/latest?definitionId=5&branchName=master
+   :alt: Build Status: Mac 10.15, python 3.9
+
 .. |AzureWP37| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master&jobName=gmprocess&configuration=gmprocess%20Windows_py37
    :target: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_build/latest?definitionId=5&branchName=master
    :alt: Build Status: windows-latest, python 3.7
@@ -75,6 +82,10 @@ we are still not able to pass all tests on Windows OS yet.
    :target: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_build/latest?definitionId=5&branchName=master
    :alt: Build Status: windows-latest, python 3.8
 
+.. |AzureWP39| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master&jobName=gmprocess&configuration=gmprocess%20Windows_py39
+   :target: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_build/latest?definitionId=5&branchName=master
+   :alt: Build Status: windows-latest, python 3.9
+
 .. |AzureLP37| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master&jobName=gmprocess&configuration=gmprocess%20Linux_py37
    :target: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_build/latest?definitionId=5&branchName=master
    :alt: Build Status: ubuntu-latest, python 3.7
@@ -82,6 +93,10 @@ we are still not able to pass all tests on Windows OS yet.
 .. |AzureLP38| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master&jobName=gmprocess&configuration=gmprocess%20Linux_py38
    :target: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_build/latest?definitionId=5&branchName=master
    :alt: Build Status: ubuntu-latest, python 3.8
+
+.. |AzureLP39| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master&jobName=gmprocess&configuration=gmprocess%20Linux_py39
+   :target: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_build/latest?definitionId=5&branchName=master
+   :alt: Build Status: ubuntu-latest, python 3.9
 
 .. |readthedocs| image:: https://readthedocs.org/projects/gmprocess/badge/?version=latest
    :target: https://gmprocess.readthedocs.io/en/latest/?badge=latest

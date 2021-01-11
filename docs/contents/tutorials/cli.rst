@@ -7,8 +7,8 @@ Command Line Interface
    interface makes use of "projects" in the 
    :ref:`Initial Setup` section.
 
-The gmrecords command
----------------------
+The "gmrecords" Command
+-----------------------
 
 The primary command line program is called ``gmrecords``. This includes a
 number of "subcommands," which are described by printing the help message:
@@ -55,10 +55,8 @@ number of "subcommands," which are described by printing the help message:
 Note that some of the subcommands with longer names have short aliases to make
 the command line calls more concise.
 
-The project data directory
 
-
-Project configuration
+Project Configuration
 ---------------------
 
 For this tutorial, we will create a system-level project. The example in the
@@ -95,7 +93,7 @@ uses a directory project.
 
 At this point the data and config directories are created but empty.
 
-Download data
+Download Data
 -------------
 
 To limit the number of stations in this example, please edit the ``config.yml``
@@ -106,11 +104,11 @@ file (locaed in the project conf path) to restrict the search radius:
    FDSNFetcher:
      radius: 0.1
 
-Now we will download data by specifying an event id. 
+Now we will download data by specifying an event ID. 
 
 .. tip::
 
-   The easiest way to get data for events is by specifying USGS event ids. 
+   The easiest way to get data for events is by specifying USGS event IDs. 
    These event IDs can be found by searching for events on the 
    `Search Earthquake Catalog <https://earthquake.usgs.gov/earthquakes/search/>`_
    page at the USGS. With ``gmrecords``, you can specify a single event ID or a 
@@ -199,9 +197,10 @@ directory:
     from the USGS data,
   - a ``raw`` directory that holds the downlaoded raw data. In this case, that
     consists of miniseed and StationXML files, 
-  - PNG files that are plots of the raw data.
+    - The downloaded data is contained within the ``raw`` directory.
+    - The ``raw`` directory also has PNG files that are plots of the raw data.
 
-Assemble data
+Assemble Data
 -------------
 
 The ``assemble`` subcommand collects the data in the raw directory and 
@@ -302,7 +301,7 @@ added to the ASDF workspace file.
    INFO 2021-01-10 18:16:25 | stream_workspace.addStreams: Adding waveforms for station KRE
    No new files created.
 
-Note that the console messages indicate that some of the tracles failed the 
+Note that the console messages indicate that some of the traces failed the 
 signal-to-noise requirements.
 
 Generate Report
@@ -316,6 +315,7 @@ station summary that includes:
 - the location where the signal and noise windows were split,
 - the signal and noise spectra (raw and smoothed), and
 - a table of the processing steps applied to the record.
+- the failure reason for stations that have failed.
 
 .. code-block:: console
 
@@ -339,10 +339,10 @@ station summary that includes:
       /Users/mrmanager/gmprocess_projects/default/data/nc72282711/report_nc72282711.pdf
 
 
-From the report (see below), you can see that the NC.N016 station failed the 
-SNR check. You can also see that it is likely because the signal and noise 
+From the report plots (see below), you can see that the NC.N016 station failed 
+the SNR check. You can also see that it is likely because the signal and noise 
 windows were not cleanly separated and so if the windowing were adjusted this 
-record would likely pass the signal-to-noise requirement.
+record might pass the signal-to-noise requirement.
 
 .. tab:: NC.NHC
 
@@ -360,6 +360,21 @@ record would likely pass the signal-to-noise requirement.
 
     .. image:: ../../_static/nc72282711_YK.KRE.EN.png
 
+
+.. admonition:: Report Explanation
+   :class: tip
+
+   The full report for each station also includes the provenance table and 
+   failure reason. The **first row** of plots is the acceleration time series, 
+   the **second row** of plots is the velocity time series. The vertical dashed
+   red line indicates the boundary between the signa and noise windows. The
+   **third row** of plots gives the raw and smoothed Fourier amplitude spectra,
+   where the dashed black curve is a Bruce spectra fit to the data, and the
+   vertical dashed line is the corner frequency. The **fourth row** of plots is
+   the signal-to-noise ratio (SNR), where the vertical grey lines indicate the
+   bandpass where the SNR criteria are required, the horizontal grey line is
+   the minimum SNR, and the vertical black dashed lines are the selected 
+   bandpass filter corners.
 
 Compute Station Metrics
 -----------------------
@@ -386,10 +401,10 @@ epicentral distance) and add them to the ASDF workspace file.
    No new files created.
 
 Compute Waveform Metrics
------------------------
+------------------------
 
 The ``compute_waveform_metrics`` subcommand computes waveform metrics (such as 
-spectral accelerations) and are added to the ASDF workspace file. The waveform 
+spectral accelerations) and adds them to the ASDF workspace file. The waveform 
 metrics that are computed are defined in the metrics section of the conf file. 
 The metrics are defined by intensity metric types (e.g., spectral acceleration 
 vs duration) and intensity measure component (how the instrument components are 

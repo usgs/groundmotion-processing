@@ -21,3 +21,4 @@ gmprocess/version.py
 .vscode/
 dask-worker-space/
 docs/_build
+MANIFEST.in

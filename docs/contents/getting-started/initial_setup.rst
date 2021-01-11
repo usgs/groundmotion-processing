@@ -33,8 +33,8 @@ where you would like to activate the project
   INFO 2021-01-06 16:38:40 | init.main: Running subcommand 'init'
 
   Created project: Project: local
-      Conf Path: /Users/mrmanager/test_eqprocess/conf
-      Data Path: /Users/mrmanager/test_eqprocess/data
+      Conf Path: /Users/mrmanager/test_gmrecords/conf
+      Data Path: /Users/mrmanager/test_gmrecords/data
   Please enter your name and email. This informaitn will be added
   to the config file and reported in the provenance of the data
   processed in this project.
@@ -47,12 +47,12 @@ arguments are
 
 .. code-block:: console
 
-  $ eqprocess projects -h
-  usage: eqprocess projects [-h] [-l] [-s PROJECT] [-c] [-d PROJECT]
+  $ gmrecords projects -h
+  usage: gmrecords projects [-h] [-l] [-s PROJECT] [-c] [-d PROJECT]
 
   optional arguments:
     -h, --help            show this help message and exit
-    -l, --list            List all configured eqprocess projects.
+    -l, --list            List all configured gmrecords projects.
     -s PROJECT, --switch PROJECT
                           Switch from current project to PROJECT.
     -c, --create          Create a project and switch to it.
