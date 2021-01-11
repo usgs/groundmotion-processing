@@ -11,7 +11,6 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 
-import glob
 import os
 import sys
 from setuptools_scm import get_version
@@ -41,10 +40,13 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
-    'sphinx.ext.viewcode'
+    'sphinx.ext.viewcode',
+    'sphinx.ext.autosectionlabel',
+    'sphinx_inline_tabs'
 ]
 
 autoapi_dirs = ['../gmprocess']
+autoapi_add_toctree_entry = False
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
