@@ -19,8 +19,8 @@ data and related issues.
 Documentation
 -------------
 - Please note, we are in the process of improving the documentation.
-- The manual is available
-  `here <https://groundmotion-processing.readthedocs.io/en/latest/>`_.
+- The full documentation is available
+  `here <https://gmprocess.readthedocs.io/en/latest/index.html>`_.
 - Also, please see the 
   `Wiki <https://github.com/usgs/groundmotion-processing/wiki>`_ 
   as a "quick start" guide.
@@ -48,6 +48,8 @@ we are still not able to pass all tests on Windows OS yet.
 | Codacy  | |Codacy|                                        |
 +---------+-------------------------------------------------+
 | CodeCov | |CodeCov|                                       |
++---------+-------------------------------------------------+
+| Docs    | |readthedocs|                                   +
 +---------+-------------------------------------------------+
 
 .. |Codacy| image:: https://api.codacy.com/project/badge/Grade/582cbceabb814eca9f708e37d6af9479
@@ -80,3 +82,7 @@ we are still not able to pass all tests on Windows OS yet.
 .. |AzureLP38| image:: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_apis/build/status/usgs.groundmotion-processing?branchName=master&jobName=gmprocess&configuration=gmprocess%20Linux_py38
    :target: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_build/latest?definitionId=5&branchName=master
    :alt: Build Status: ubuntu-latest, python 3.8
+
+.. |readthedocs| image:: https://readthedocs.org/projects/gmprocess/badge/?version=latest
+   :target: https://gmprocess.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
