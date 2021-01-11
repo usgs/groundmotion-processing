@@ -4,3 +4,4 @@ furo
 recommonmark
 sphinx-autoapi
 setuptools_scm
+sphinx-inline-tabs
