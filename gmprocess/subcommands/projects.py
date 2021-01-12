@@ -258,7 +258,7 @@ def create(config, cwd=False):
     with open(current_conf, 'rt', encoding='utf-8') as f:
         gmrecords_conf = yaml.load(f, Loader=yaml.SafeLoader)
 
-    print('Please enter your name and email. This informaitn will be added')
+    print('Please enter your name and email. This information will be added')
     print('to the config file and reported in the provenance of the data')
     print('processed in this project.')
     user_info = {}
