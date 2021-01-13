@@ -283,6 +283,7 @@ class FDSNFetcher(DataFetcher):
 
         seed_files = glob.glob(os.path.join(rawdir, '*.mseed'))
         streams = []
+        tstreams = None
         for seed_file in seed_files:
             try:
                 tstreams = read_obspy(seed_file, self.config)
