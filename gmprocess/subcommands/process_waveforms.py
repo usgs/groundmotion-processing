@@ -71,25 +71,7 @@ class ProcessWaveformsModule(SubcommandModule):
                 # print('Completed event: %s' % result)
         else:
             for event in self.events:
-                event_dir = os.path.join(gmrecords.data_path, event.id)
-                workname = os.path.join(event_dir, WORKSPACE_NAME)
-                if not os.path.isfile(workname):
-                    logging.info(
-                        'No workspace file found for event %s. Please run '
-                        'subcommand \'assemble\' to generate workspace file.')
-                    logging.info('Continuing to next event.')
-                    continue
-
-                workspace = StreamWorkspace.open(workname)
-                rstreams = workspace.getStreams(
-                    event.id, labels=['unprocessed'])
-
-                logging.info('Processing \'%s\' streams for event %s...'
-                             % ('unprocessed', event.id))
-                pstreams = process_streams(
-                    rstreams, event, config=gmrecords.conf)
-                workspace.addStreams(event, pstreams, label=self.process_tag)
-                workspace.close()
+                self._process_event(event)
 
         self._summarize_files_created()
 
