@@ -18,12 +18,10 @@ data and related issues.
 
 Documentation
 -------------
-- Please note, we are in the process of improving the documentation.
+- Please note, we are in the process of improving the documentation and that
+  there are some incomplete sections.
 - The full documentation is available
   `here <https://gmprocess.readthedocs.io/en/latest/index.html>`_.
-- Also, please see the 
-  `Wiki <https://github.com/usgs/groundmotion-processing/wiki>`_ 
-  as a "quick start" guide.
 
 
 Build info
