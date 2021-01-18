@@ -59,9 +59,7 @@ the command line calls more concise.
 Project Configuration
 ---------------------
 
-For this tutorial, we will create a system-level project. The example in the
-`Quick Start <https://github.com/usgs/groundmotion-processing/wiki/>`_ guide
-uses a directory project.
+For this tutorial, we will create a system-level project. 
 
 .. code-block:: console
 
