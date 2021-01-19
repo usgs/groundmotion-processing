@@ -11,7 +11,7 @@ from gmprocess.utils import constants
 def test_gmrecords(script_runner):
     try:
         # Need to create profile first.
-        setup_inputs = io.StringIO("2\ntest\n\n\nname\nemail\n")
+        setup_inputs = io.StringIO("2\ntest\n\n\nname\ntest@email.com\n")
         ret = script_runner.run(
             'gmrecords', 'projects', '-c', stdin=setup_inputs)
         setup_inputs.close()
