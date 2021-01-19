@@ -3,6 +3,7 @@
 
 import os
 import sys
+import re
 import logging
 import shutil
 import yaml
@@ -12,6 +13,9 @@ from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.utils.prompt import \
     query_yes_no, set_project_paths, get_default_project_paths
 from gmprocess.utils.constants import CONFIG_FILE_PRODUCTION
+
+# Regular expression for checking valid email
+re_email = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
 
 
 class ProjectsModule(SubcommandModule):
@@ -220,18 +224,19 @@ def create(config, cwd=False):
             Is this for initializing a "local" project in the current
             working directory?
     """
+    project = input('Please enter a project title: [default]')
+    if not len(project.strip()):
+        project = 'default'
+    if 'projects' in config and project in config['projects']:
+        msg = ('Project \'%s\' already exists.  Run \'gmrecords projects '
+               '-l\' to see existing projects.')
+        print(msg % project)
+        sys.exit(1)
     if not cwd:
-        project = input('Please enter a project title: ')
-        if 'projects' in config and project in config['projects']:
-            msg = ('Project \'%s\' already exists.  Run \'gmrecords projects '
-                   '-l\' to see existing projects.')
-            print(msg % project)
-            sys.exit(1)
         default_conf, default_data = get_default_project_paths(project)
         new_conf_path, new_data_path = \
             set_project_paths(default_conf, default_data)
     else:
-        project = '__local__'
         cwd = os.getcwd()
         new_conf_path = os.path.join(cwd, 'conf')
         new_data_path = os.path.join(cwd, 'data')
@@ -263,7 +268,13 @@ def create(config, cwd=False):
     print('processed in this project.')
     user_info = {}
     user_info['name'] = input('\tName: ')
+    if not len(user_info['name'].strip()):
+        print('User name is required. Exiting.')
+        sys.exit(0)
     user_info['email'] = input('\tEmail: ')
+    if not re.search(re_email, user_info['email']):
+        print("Invalid Email. Exiting.")
+        sys.exit(0)
     gmrecords_conf['user'] = user_info
     proj_conf_file = os.path.join(new_conf_path, 'config.yml')
     with open(proj_conf_file, 'w', encoding='utf-8') as yf:

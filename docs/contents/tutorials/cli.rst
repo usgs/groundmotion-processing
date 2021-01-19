@@ -195,6 +195,7 @@ directory:
     from the USGS data,
   - a ``raw`` directory that holds the downlaoded raw data. In this case, that
     consists of miniseed and StationXML files, 
+
     - The downloaded data is contained within the ``raw`` directory.
     - The ``raw`` directory also has PNG files that are plots of the raw data.
 

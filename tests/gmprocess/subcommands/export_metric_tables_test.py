@@ -17,7 +17,7 @@ def test_export_metric_tables(script_runner):
             'gmprocess', os.path.join('data', 'testdata',
                                       'demo_steps', 'exports'))
         setup_inputs = io.StringIO(
-            "2\ntest\n%s\n%s\nname\nemail\n" % (cdir, ddir)
+            "2\ntest\n%s\n%s\nname\ntest@email.com\n" % (cdir, ddir)
         )
         ret = script_runner.run(
             'gmrecords', 'projects', '-c', stdin=setup_inputs)

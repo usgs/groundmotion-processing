@@ -25,7 +25,7 @@ def test_compute_station_metrics(script_runner):
             shutil.copyfile(src, dst)
 
         setup_inputs = io.StringIO(
-            "2\ntest\n%s\n%s\nname\nemail\n" % (cdir, ddir)
+            "2\ntest\n%s\n%s\nname\ntest@email.com\n" % (cdir, ddir)
         )
         ret = script_runner.run(
             'gmrecords', 'projects', '-c', stdin=setup_inputs)

@@ -71,9 +71,8 @@ class SubcommandModule(ABC):
         if len(labels):
             labels.remove('unprocessed')
         else:
-            logging.info('No processed waveform data in workspace. Please '
-                         'run assemble.')
-            sys.exit(1)
+            logging.info('No processed waveform data in workspace for event %s'
+                         % self.eventid)
 
         # If there are more than 1 processed labels, prompt user to select
         # one.

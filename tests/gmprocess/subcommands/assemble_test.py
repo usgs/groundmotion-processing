@@ -16,7 +16,7 @@ def test_assemble(script_runner):
         ddir = pkg_resources.resource_filename(
             'gmprocess', os.path.join('data', 'testdata', 'demo'))
         setup_inputs = io.StringIO(
-            "2\ntest\n%s\n%s\nname\nemail\n" % (cdir, ddir)
+            "2\ntest\n%s\n%s\nname\ntest@email.com\n" % (cdir, ddir)
         )
         ret = script_runner.run(
             'gmrecords', 'projects', '-c', stdin=setup_inputs)
