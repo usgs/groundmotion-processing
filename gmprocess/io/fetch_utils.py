@@ -209,18 +209,27 @@ def draw_stations_map(pstreams, event, event_dir):
     draw_scale(ax)
     ax.plot(cx, cy, 'r*', markersize=16,
             transform=mmap.geoproj, zorder=8)
-    status = [FAILED_COLOR if np.any([trace.hasParameter("failure")
-                                      for trace in stream]) else PASSED_COLOR
-              for stream in pstreams]
-    ax.scatter(lons, lats, c=status, marker='^', edgecolors='k',
-               transform=mmap.geoproj, zorder=100, s=48)
+
+    failed = np.array([
+        np.any([trace.hasParameter("failure") for trace in stream])
+        for stream in pstreams])
+
+    # Plot the failed first
+    ax.scatter(lons[failed], lats[failed], c=FAILED_COLOR,
+               marker='v', edgecolors='k', transform=mmap.geoproj, zorder=100,
+               s=48)
+
+    # Plot the successes above the failures
+    ax.scatter(lons[~failed], lats[~failed], c=PASSED_COLOR,
+               marker='^', edgecolors='k', transform=mmap.geoproj, zorder=101,
+               s=48)
 
     passed_marker = mlines.Line2D(
         [], [], color=PASSED_COLOR, marker='^',
         markeredgecolor='k', markersize=12,
         label='Passed station', linestyle='None')
     failed_marker = mlines.Line2D(
-        [], [], color=FAILED_COLOR, marker='^',
+        [], [], color=FAILED_COLOR, marker='v',
         markeredgecolor='k', markersize=12,
         label='Failed station', linestyle='None')
     earthquake_marker = mlines.Line2D(
