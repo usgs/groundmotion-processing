@@ -52,13 +52,10 @@ class ComputeWaveformMetricsModule(SubcommandModule):
             futures = client.map(self._compute_event_waveforms, self.events)
             for result in as_completed(futures, with_results=True):
                 print(result)
-                # print('Completed event: %s' % result)
         else:
             for event in self.events:
                 self._compute_event_waveforms(event)
 
-        logging.info('Added waveform metrics to workspace files '
-                     'with tag \'%s\'.' % self.gmrecords.args.label)
         self._summarize_files_created()
 
     def _compute_event_waveforms(self, event):
@@ -77,6 +74,12 @@ class ComputeWaveformMetricsModule(SubcommandModule):
 
         self.workspace = StreamWorkspace.open(workname)
         self._get_pstreams()
+
+        if not hasattr(self, 'pstreams'):
+            logging.info('No processed waveforms available. No waveform '
+                         'metrics computed.')
+            self.workspace.close()
+            return
 
         for stream in self.pstreams:
             if stream.passed:
@@ -98,4 +101,7 @@ class ComputeWaveformMetricsModule(SubcommandModule):
                 self.workspace.insert_aux(
                     xmlstr, 'WaveFormMetrics', metricpath,
                     overwrite=self.gmrecords.args.overwrite)
+            logging.info('Added waveform metrics to workspace files '
+                         'with tag \'%s\'.' % self.gmrecords.args.label)
+
         self.workspace.close()

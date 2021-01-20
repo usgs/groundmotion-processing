@@ -67,6 +67,11 @@ class ExportFailureTablesModule(SubcommandModule):
             self._get_pstreams()
             self.workspace.close()
 
+            if not hasattr(self, 'pstreams'):
+                logging.info('No processed waveforms available. No failure '
+                             'tables created.')
+                return
+
             if self.gmrecords.args.type == 'short':
                 index = 'Failure reason'
                 col = ['Number of records']

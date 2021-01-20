@@ -80,6 +80,12 @@ class ComputeStationMetricsModule(SubcommandModule):
             })
             rupture = get_rupture(origin, rupture_file)
 
+            if not hasattr(self, 'pstreams'):
+                logging.info('No processed waveforms available. No station '
+                             'metrics computed.')
+                self.workspace.close()
+                return
+
             for stream in self.pstreams:
                 logging.info(
                     'Calculating station metrics for %s...' % stream.get_id())
@@ -99,9 +105,9 @@ class ComputeStationMetricsModule(SubcommandModule):
                 self.workspace.insert_aux(
                     xmlstr, 'StationMetrics', metricpath,
                     overwrite=gmrecords.args.overwrite)
+                logging.info('Added station metrics to workspace files '
+                             'with tag \'%s\'.' % self.gmrecords.args.label)
 
             self.workspace.close()
 
-        logging.info('Added station metrics to workspace files '
-                     'with tag \'%s\'.' % self.gmrecords.args.label)
         self._summarize_files_created()

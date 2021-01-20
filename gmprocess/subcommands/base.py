@@ -70,9 +70,10 @@ class SubcommandModule(ABC):
         labels = self.workspace.getLabels()
         if len(labels):
             labels.remove('unprocessed')
-        else:
+        if not len(labels):
             logging.info('No processed waveform data in workspace for event %s'
                          % self.eventid)
+            return
 
         # If there are more than 1 processed labels, prompt user to select
         # one.
