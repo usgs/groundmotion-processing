@@ -4,6 +4,7 @@
 import os
 import logging
 
+import pandas as pd
 
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
@@ -49,6 +50,7 @@ class ExportFailureTablesModule(SubcommandModule):
         self.gmrecords = gmrecords
         self._get_events()
 
+        failures = []
         for event in self.events:
             self.eventid = event.id
             logging.info(
@@ -83,6 +85,8 @@ class ExportFailureTablesModule(SubcommandModule):
                 col = ['Number of passed records', 'Number of failed records']
 
             status_info = self.pstreams.get_status(self.gmrecords.args.type)
+            failures.append(status_info)
+
             base_file_name = os.path.join(
                 event_dir,
                 '%s_%s_failure_reasons_%s' % (
@@ -98,5 +102,22 @@ class ExportFailureTablesModule(SubcommandModule):
                 excelfile = base_file_name + '.xlsx'
                 self.append_file('Failure table', excelfile)
                 status_info.to_excel(excelfile, header=col, index_label=index)
+
+        if failures:
+            comp_failures_path = (
+                '%s_%s_complete_failures.csv'
+                % (gmrecords.project, gmrecords.args.label))
+            if self.gmrecords.args.type == 'long':
+                for idx, status in enumerate(failures):
+                    if idx == 0:
+                        status.to_csv(comp_failures_path, mode='w')
+                    else:
+                        status.to_csv(comp_failures_path, mode='a',
+                                      header=False)
+            else:
+                df_failures = pd.concat(failures)
+                df_failures = df_failures.groupby(df_failures.index).sum()
+                df_failures.to_csv(comp_failures_path)
+            self.append_file('Complete failures', comp_failures_path)
 
         self._summarize_files_created()
