@@ -53,6 +53,11 @@ class ExportShakeMapModule(SubcommandModule):
             self._get_pstreams()
             self.workspace.close()
 
+            if not hasattr(self, 'pstreams'):
+                logging.info('No processed waveforms available. No shakemap '
+                             'files created.')
+                return
+
             # TODO: re-write this so that it uses the already computer values
             # in self.workspace.dataset.auxiliary_data.WaveFormMetrics
             # rather than recomputing the metrics from self.pstreams.

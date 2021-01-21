@@ -52,6 +52,12 @@ class ExportProvenanceTablesModule(SubcommandModule):
             self.workspace = StreamWorkspace.open(workname)
             self._get_pstreams()
 
+            if not hasattr(self, 'pstreams'):
+                logging.info('No processed waveforms available. No provenance '
+                             'tables created.')
+                self.workspace.close()
+                return
+
             provdata = self.workspace.getProvenance(
                 self.eventid, labels=self.gmrecords.args.label)
             self.workspace.close()

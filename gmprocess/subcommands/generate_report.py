@@ -58,6 +58,11 @@ class GenerateReportModule(SubcommandModule):
             self._get_pstreams()
             self.workspace.close()
 
+            if not hasattr(self, 'pstreams'):
+                logging.info('No processed waveforms available. No report '
+                             'generated.')
+                return
+
             logging.info(
                 'Creating diagnostic plots for event %s...' % self.eventid)
             plot_dir = os.path.join(event_dir, 'plots')
