@@ -33,14 +33,10 @@ def test_assemble(script_runner):
             'gmrecords', 'assemble', '-e', 'ci38457511', '-o')
         assert ret.success
 
-        # external_source = pkg_resources.resource_filename(
-        #     'gmprocess', os.path.join('data', 'testdata', 'demo2'))
-        # ret = script_runner.run(
-        #     'gmrecords', 'assemble', '-e', 'usp000a1b0', '-d', external_source)
-        # assert ret.success
+        ret = script_runner.run(
+            'gmrecords', 'assemble', '-n', '2', '-o')
+        assert ret.success
 
-        # Check that output files are created
-        # events = ['ci38457511', 'ci38038071', 'usp000a1b0']
         events = ['ci38457511', 'ci38038071']
         out_names = ['workspace.h5']
         for event in events:
