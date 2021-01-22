@@ -583,7 +583,8 @@ def check_instrument(st, n_max=3, n_min=1, require_two_horiz=False):
     for failed_test, message in [
             (len(st) > n_max, 'More than %s traces in stream.' % n_max),
             (len(st) < n_min, 'Less than %s traces in stream.' % n_min),
-            (st.num_horizontal != 2, 'Not two horizontal components')
+            (require_two_horiz and (st.num_horizontal != 2),
+             'Not two horizontal components')
     ]:
         if failed_test:
             for tr in st:
