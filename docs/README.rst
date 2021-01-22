@@ -24,6 +24,15 @@
     (`PG&E <http://www.pge.com/>`_) via a cooperative research and development 
     agreement. 
 
+**Reference**
+    If you wish to cite this software, please use this reference:
+
+        Hearne, M., E. M. Thompson, H. Schovanec, J. Rekoske, B. T. Aagaard, 
+        and C. B. Worden (2019). USGS automated ground motion processing 
+        software, USGS Software Release, 
+        doi: `10.5066/P9ANQXN3 <https://dx.doi.org/10.5066/P9ANQXN3>`_.
+
+
 **License**
     This is free and unencumbered software released into the public domain.
     It is distributed under the terms of the

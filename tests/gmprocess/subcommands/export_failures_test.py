@@ -41,11 +41,12 @@ def test_export_failures(script_runner):
     finally:
         shutil.rmtree(constants.PROJECTS_PATH_TEST)
         # Remove created files
-        pattern = '_failure_reasons_'
+        patterns = ['_failure_reasons_', '_complete_failures']
         for root, _, files in os.walk(ddir):
             for file in files:
-                if pattern in file:
-                    os.remove(os.path.join(root, file))
+                for pattern in patterns:
+                    if pattern in file:
+                        os.remove(os.path.join(root, file))
 
 
 if __name__ == '__main__':
