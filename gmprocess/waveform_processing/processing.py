@@ -549,6 +549,51 @@ def taper(st, type="hann", width=0.05, side="both"):
     return st
 
 
+def check_instrument(st, n_max=3, n_min=1, require_two_horiz=False):
+    """
+    Test the channels of the station.
+
+    The purpose of the maximum limit is to skip over stations with muliple
+    strong motion instruments, which can occur with downhole or structural
+    arrays since our code currently is not able to reliably group by location
+    within an array.
+
+    The purpose of the minimum and require_two_horiz checks are to ensure the
+    channels are required for subsequent intensity measures such as ROTD.
+
+    Args:
+        st (StationStream):
+            Stream of data.
+        n_max (int):
+            Maximum allowed number of streams; default to 3.
+        n_min (int):
+            Minimum allowed number of streams; default to 1.
+        require_two_horiz (bool):
+            Require two horizontal components; default to `False`.
+
+    Returns:
+        Stream with adjusted failed fields.
+    """
+    if not st.passed:
+        return st
+
+    logging.debug('Starting check_instrument')
+    logging.debug('len(st) = %s' % len(st))
+
+    for failed_test, message in [
+            (len(st) > n_max, 'More than %s traces in stream.' % n_max),
+            (len(st) < n_min, 'Less than %s traces in stream.' % n_min),
+            (st.num_horizontal != 2, 'Not two horizontal components')
+    ]:
+        if failed_test:
+            for tr in st:
+                tr.fail(message)
+            # Stop at first failed test
+            break
+
+    return st
+
+
 def max_traces(st, n_max=3):
     """
     Reject a stream if it has more than n_max traces.
