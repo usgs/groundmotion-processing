@@ -70,7 +70,7 @@ class ComputeWaveformMetricsModule(SubcommandModule):
                 'subcommand \'assemble\' to generate workspace file.'
                 % self.eventid)
             logging.info('Continuing to next event.')
-            return
+            return event.id
 
         self.workspace = StreamWorkspace.open(workname)
         self._get_pstreams()
@@ -79,7 +79,7 @@ class ComputeWaveformMetricsModule(SubcommandModule):
             logging.info('No processed waveforms available. No waveform '
                          'metrics computed.')
             self.workspace.close()
-            return
+            return event.id
 
         for stream in self.pstreams:
             if stream.passed:
@@ -105,3 +105,4 @@ class ComputeWaveformMetricsModule(SubcommandModule):
                          'with tag \'%s\'.' % self.gmrecords.args.label)
 
         self.workspace.close()
+        return event.id
