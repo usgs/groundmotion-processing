@@ -86,6 +86,25 @@ def test_free_field():
             assert reason == 'Failed free field sensor check.'
 
 
+def test_check_instrument():
+    data_files, origin = read_data_dir('fdsn', 'nc51194936', '*.mseed')
+    streams = []
+    for f in data_files:
+        streams += read_data(f)
+
+    sc = StreamCollection(streams)
+    sc.describe()
+
+    config = update_config(
+        os.path.join(datadir, 'config_test_check_instr.yml'))
+    test = process_streams(sc, origin, config=config)
+
+    for sta, expected in [('CVS', True), ('GASB', True), ('SBT', False)]:
+        st = test.select(station=sta)[0]
+        logging.info('Testing stream: %s' % st)
+        assert st.passed == expected
+
+
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_process_streams()
