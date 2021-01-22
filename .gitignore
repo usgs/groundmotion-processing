@@ -22,3 +22,5 @@ gmprocess/version.py
 dask-worker-space/
 docs/_build
 MANIFEST.in
+# Vim tags
+tags
