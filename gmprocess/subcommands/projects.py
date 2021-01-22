@@ -224,7 +224,7 @@ def create(config, cwd=False):
             Is this for initializing a "local" project in the current
             working directory?
     """
-    project = input('Please enter a project title: [default]')
+    project = input('Please enter a project title: [default] ')
     if not len(project.strip()):
         project = 'default'
     if 'projects' in config and project in config['projects']:
@@ -243,6 +243,9 @@ def create(config, cwd=False):
         for p in [new_conf_path, new_data_path]:
             if not os.path.isdir(p):
                 os.mkdir(p)
+
+    new_conf_path = os.path.abspath(new_conf_path)
+    new_data_path = os.path.abspath(new_data_path)
 
     if 'projects' not in config:
         config['projects'] = {}
