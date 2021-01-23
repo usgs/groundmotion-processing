@@ -1,6 +1,7 @@
 *.pyc
 build
 *~
+.atom/
 .DS_Store
 .ipynb_checkpoints/
 .cache
