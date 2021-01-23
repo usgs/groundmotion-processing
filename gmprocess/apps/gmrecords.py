@@ -59,9 +59,9 @@ class GMrecordsApp(object):
         self.PROJECTS_PATH = PROJECTS_PATH
         self.PROJECTS_FILE = os.path.join(PROJECTS_PATH, 'projects.conf')
 
+        self._parse_command_line()
         self._load_config()
 
-        self._parse_command_line()
         setup_logger(self.args)
         logging.info('Logging level includes INFO.')
         logging.debug('Logging level includes DEBUG.')
