@@ -337,6 +337,9 @@ def find_workspace_files(outdir):
 
 
 def main():
+    logging.warning("gmprocess2 (formerly gmprocess) is deprecated "
+                    "and will be removed soon.")
+    logging.warning("Please use gmrecords instead.")
     description = '''
     Download, process, and extract metrics from raw ground motion data.
 

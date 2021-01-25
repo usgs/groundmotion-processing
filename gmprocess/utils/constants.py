@@ -71,6 +71,8 @@ ELEVATION_FOR_DISTANCE_CALCS = 0.0
 # Processing tag format
 TAG_FMT = '%Y%m%d%H%M%S'
 
+# Event time format
+EVENT_TIMEFMT = '%Y-%m-%dT%H:%M:%S.%f'
 
 NON_IMT_COLS = set([
     'EarthquakeId',
@@ -97,3 +99,11 @@ NON_IMT_COLS = set([
     'H2Highpass',
     'SourceFile']
 )
+
+COMPONENTS = {
+    'ROTD50.0': ['SA', 'PGA', 'PGV'],
+    'QUADRATIC_MEAN': ['FAS'],
+    'GEOMETRIC_MEAN': ['FAS'],
+    'ARITHMETIC_MEAN': ['FAS'],
+    'CHANNELS': ['SA', 'PGA', 'PGV', 'DURATION', 'ARIAS']
+}

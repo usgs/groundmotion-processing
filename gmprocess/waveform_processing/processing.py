@@ -612,6 +612,9 @@ def max_traces(st, n_max=3):
     Returns:
         Stream with adjusted failed fields.
     """
+    logging.warning('This function is deprecated. Please replace with '
+                    'check_instrument, which includes additional '
+                    'functionality.')
     if not st.passed:
         return st
 

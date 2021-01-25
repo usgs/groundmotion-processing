@@ -168,11 +168,12 @@ processing:
     #     min: 5
     #     max: 2e6
 
-    # Apply a maximum number of traces per stream. This can occur with downhole
-    # or structural arrays since our code currently is not able to reliably
-    # group by location within an array.
-    - max_traces:
+    # Check number of traces for each instrument. Max is useful for screening
+    # out downhole or structural arrays with the same station code.
+    - check_instrument:
         n_max: 3
+        n_min: 2
+        require_two_horiz: True
 
     # Require a minimum sample rate
     - min_sample_rate:
