@@ -603,8 +603,8 @@ class StreamWorkspace(object):
             raise KeyError(fmt % eventid)
 
         if streams is None:
-            streams = self.getStreams(eventid, stations=stations,
-                                      labels=labels)
+            streams = self.getStreams(
+                eventid, stations=stations, labels=labels)
 
         event = self.getEvent(eventid)
 
@@ -724,7 +724,7 @@ class StreamWorkspace(object):
         for eventid in self.getEventIds():
             event = self.getEvent(eventid)
             event_info.append({
-                'id': event.id,
+                'id': event.id.replace('smi:local/', ''),
                 'time': event.time,
                 'latitude': event.latitude,
                 'longitude': event.longitude,
@@ -1201,7 +1201,10 @@ def _get_table_row(stream, summary, event, imc):
             z_lowpass = z_lowfilt[0]['corner_frequency']
         if len(z_highfilt):
             z_highpass = z_highfilt[0]['corner_frequency']
-        filter_dict = {'ZLowpass': z_lowpass, 'ZHighpass': z_highpass}
+        filter_dict = {
+            'ZLowpass': z_lowpass,
+            'ZHighpass': z_highpass
+        }
     else:
         h1 = stream.select(channel='*1')
         h2 = stream.select(channel='*2')
@@ -1239,35 +1242,37 @@ def _get_table_row(stream, summary, event, imc):
 
     dists = summary.distances
 
-    row = {'EarthquakeId': event.id,
-           'EarthquakeTime': event.time,
-           'EarthquakeLatitude': event.latitude,
-           'EarthquakeLongitude': event.longitude,
-           'EarthquakeDepth': event.depth_km,
-           'EarthquakeMagnitude': event.magnitude,
-           'EarthquakeMagnitudeType': event.magnitude_type,
-           'Network': stream[0].stats.network,
-           'DataProvider': stream[0].stats.standard.source,
-           'StationCode': stream[0].stats.station,
-           'StationID': stream.get_id(),
-           'StationDescription': stream[0].stats.standard.station_name,
-           'StationLatitude': stream[0].stats.coordinates.latitude,
-           'StationLongitude': stream[0].stats.coordinates.longitude,
-           'StationElevation': stream[0].stats.coordinates.elevation,
-           'SamplingRate': stream[0].stats.sampling_rate,
-           'BackAzimuth': summary._back_azimuth,
-           'EpicentralDistance': dists['epicentral'],
-           'HypocentralDistance': dists['hypocentral'],
-           'RuptureDistance': dists['rupture'],
-           'RuptureDistanceVar': dists['rupture_var'],
-           'JoynerBooreDistance': dists['joyner_boore'],
-           'JoynerBooreDistanceVar': dists['joyner_boore_var'],
-           'GC2_rx': dists['gc2_rx'],
-           'GC2_ry': dists['gc2_ry'],
-           'GC2_ry0': dists['gc2_ry0'],
-           'GC2_U': dists['gc2_U'],
-           'GC2_T': dists['gc2_T'],
-           'SourceFile': stream[0].stats.standard.source_file}
+    row = {
+        'EarthquakeId': event.id.replace('smi:local/', ''),
+        'EarthquakeTime': event.time,
+        'EarthquakeLatitude': event.latitude,
+        'EarthquakeLongitude': event.longitude,
+        'EarthquakeDepth': event.depth_km,
+        'EarthquakeMagnitude': event.magnitude,
+        'EarthquakeMagnitudeType': event.magnitude_type,
+        'Network': stream[0].stats.network,
+        'DataProvider': stream[0].stats.standard.source,
+        'StationCode': stream[0].stats.station,
+        'StationID': stream.get_id(),
+        'StationDescription': stream[0].stats.standard.station_name,
+        'StationLatitude': stream[0].stats.coordinates.latitude,
+        'StationLongitude': stream[0].stats.coordinates.longitude,
+        'StationElevation': stream[0].stats.coordinates.elevation,
+        'SamplingRate': stream[0].stats.sampling_rate,
+        'BackAzimuth': summary._back_azimuth,
+        'EpicentralDistance': dists['epicentral'],
+        'HypocentralDistance': dists['hypocentral'],
+        'RuptureDistance': dists['rupture'],
+        'RuptureDistanceVar': dists['rupture_var'],
+        'JoynerBooreDistance': dists['joyner_boore'],
+        'JoynerBooreDistanceVar': dists['joyner_boore_var'],
+        'GC2_rx': dists['gc2_rx'],
+        'GC2_ry': dists['gc2_ry'],
+        'GC2_ry0': dists['gc2_ry0'],
+        'GC2_U': dists['gc2_U'],
+        'GC2_T': dists['gc2_T'],
+        'SourceFile': stream[0].stats.standard.source_file
+    }
 
     # Add the filter frequency information to the row
     row.update(filter_dict)

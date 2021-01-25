@@ -29,7 +29,7 @@ def test_export_shakemap(script_runner):
 
         # Check that output files are created
         events = ['ci38457511', 'ci38038071']
-        out_names = ['shakemap.xlsx', 'gmprocess_dat.json']
+        out_names = ['metrics.json', 'groundmotions_dat.json']
         for event in events:
             for outname in out_names:
                 dfile = os.path.join(ddir, event, outname)
@@ -41,7 +41,7 @@ def test_export_shakemap(script_runner):
         shutil.rmtree(constants.PROJECTS_PATH_TEST)
         # Remove created files
         events = ['ci38457511', 'ci38038071']
-        out_names = ['shakemap.xlsx', 'gmprocess_dat.json']
+        out_names = ['metrics.json', 'groundmotions_dat.json']
         for event in events:
             for outname in out_names:
                 dfile = os.path.join(ddir, event, outname)

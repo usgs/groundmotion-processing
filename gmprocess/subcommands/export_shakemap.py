@@ -6,7 +6,7 @@ import logging
 
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.io.fetch_utils import save_shakemap_amps
+from gmprocess.io.fetch_utils import create_json
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.utils.constants import WORKSPACE_NAME
 
@@ -50,8 +50,8 @@ class ExportShakeMapModule(SubcommandModule):
                 continue
 
             self.workspace = StreamWorkspace.open(workname)
+            self._get_labels()
             self._get_pstreams()
-            self.workspace.close()
 
             if not hasattr(self, 'pstreams'):
                 logging.info('No processed waveforms available. No shakemap '
@@ -61,9 +61,14 @@ class ExportShakeMapModule(SubcommandModule):
             # TODO: re-write this so that it uses the already computer values
             # in self.workspace.dataset.auxiliary_data.WaveFormMetrics
             # rather than recomputing the metrics from self.pstreams.
-            shakemap_file, jsonfile = save_shakemap_amps(
-                self.pstreams, event, event_dir)
-            self.append_file('shakemap', shakemap_file)
+            # shakemap_file, jsonfile = save_shakemap_amps(
+            #     self.pstreams, event, event_dir)
+
+            jsonfile, stationfile, _ = create_json(
+                self.workspace, event, event_dir, self.gmrecords.args.label)
+
+            self.workspace.close()
             self.append_file('shakemap', jsonfile)
+            self.append_file('shakemap', stationfile)
 
         self._summarize_files_created()

@@ -725,16 +725,18 @@ class StationSummary(object):
             period = None
             if imtstr.startswith('sa') or imtstr.startswith('fas'):
                 period = float(re.search(FLOAT_MATCH, imtstr).group())
-                attdict = {'period': METRICS_XML_FLOAT_STRING_FORMAT[
-                    'period'] % period,
-                    'units': units}
+                attdict = {
+                    'period': (METRICS_XML_FLOAT_STRING_FORMAT['period']
+                               % period),
+                    'units': units
+                }
                 if imtstr.startswith('sa'):
                     imtstr = 'sa'
                     damping = self._damping
                     if damping is None:
                         damping = DEFAULT_DAMPING
-                    attdict['damping'] = METRICS_XML_FLOAT_STRING_FORMAT[
-                        'damping'] % damping
+                    attdict['damping'] = \
+                        METRICS_XML_FLOAT_STRING_FORMAT['damping'] % damping
                 else:
                     imtstr = 'fas'
                 imt_tag = etree.SubElement(root, imtstr, attrib=attdict)
@@ -744,7 +746,9 @@ class StationSummary(object):
             for imc in self.components:
                 imcstr = imc.lower().replace('(', '').replace(')', '')
                 if imc in ['H1', 'H2', 'Z']:
-                    attributes = {'original_channel': self.channel_dict[imc]}
+                    attributes = {
+                        'original_channel': self.channel_dict[imc]
+                    }
                 else:
                     attributes = {}
                 imc_tag = etree.SubElement(imt_tag, imcstr, attrib=attributes)
