@@ -212,8 +212,7 @@ def spectrum_cost(x,
     Function to compute RMS log residuals for optimization.
 
     Args:
-        x (tuple): Tuple of the natural log of moment (dyne-cm) and the natural log
-            of stress drop (bars).
+        x (tuple): Tuple of the moment (dyne-cm) and the stress drop (bars).
         freq (array): Numpy array of frequencies (Hz).
         obs_spec (array)
             Numpy array of observed Fourier spectral amplitudes.
