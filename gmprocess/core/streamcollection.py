@@ -595,14 +595,14 @@ class StreamCollection(object):
     def get_status(self, status):
         """Returns a summary of the status of the streams in StreamCollection.
 
-        If status='short': Returns a two column table, columns are "failure reason" and
-            "number of records". Number of rows in the number of unique failure
+        If status='short': Returns a two column table, columns are "Failure Reason" and
+            "Number of Records". Number of rows is the number of unique failure
             reasons.
-        If status='net': Returns a three column table, columns are "network",
-            "number passed", and "number failed"; number of rows is the number
+        If status='net': Returns a three column table, columns are "Network",
+            "Number Passed", and "Number Failed"; number of rows is the number
             of unique networks.
-        If status='long': Returns a two column table, columns are "station id" and
-            "failure reason" (blank if passed).
+        If status='long': Returns a two column table, columns are "StationID" and
+            "Failure Reason".
 
         Args:
             status (str): The status level (see description).
@@ -617,19 +617,24 @@ class StreamCollection(object):
                 [next(tr for tr in st if tr.hasParameter('failure')).
                     getParameter('failure')['reason'] for st in self.streams
                     if not st.passed], dtype=str)
-            return failure_reasons.value_counts()
+            failure_counts = failure_reasons.value_counts()
+            failure_counts.name = 'Number of Records'
+            failure_counts.index.name = 'Failure Reason'
+            return failure_counts
         elif status == 'net':
             failure_dict = {}
             for st in self.streams:
                 net = st[0].stats.network
                 if net not in failure_dict:
-                    failure_dict[net] = {'number passed': 0,
-                                         'number failed': 0}
+                    failure_dict[net] = {'Number Passed': 0,
+                                         'Number Failed': 0}
                 if st.passed:
-                    failure_dict[net]['number passed'] += 1
+                    failure_dict[net]['Number Passed'] += 1
                 else:
-                    failure_dict[net]['number failed'] += 1
-            return pd.DataFrame.from_dict(failure_dict).transpose()
+                    failure_dict[net]['Number Failed'] += 1
+            df = pd.DataFrame.from_dict(failure_dict).transpose()
+            df.index.name = 'Network'
+            return df
         elif status == 'long':
             failure_reasons = []
             for st in self.streams:
@@ -641,7 +646,10 @@ class StreamCollection(object):
                 else:
                     failure_reasons.append('')
             sta_ids = [st.id for st in self.streams]
-            return pd.Series(index=sta_ids, data=failure_reasons)
+            failure_srs = pd.Series(
+                index=sta_ids, data=failure_reasons, name='Failure reason')
+            failure_srs.index.name = 'StationID'
+            return failure_srs
         else:
             raise ValueError('Status must be "short", "net", or "long".')
 

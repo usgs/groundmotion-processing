@@ -50,7 +50,7 @@ class ExportFailureTablesModule(SubcommandModule):
         self.gmrecords = gmrecords
         self._get_events()
 
-        failures = []
+        failures = {}
         for event in self.events:
             self.eventid = event.id
             logging.info(
@@ -74,18 +74,8 @@ class ExportFailureTablesModule(SubcommandModule):
                              'tables created.')
                 return
 
-            if self.gmrecords.args.type == 'short':
-                index = 'Failure reason'
-                col = ['Number of records']
-            elif self.gmrecords.args.type == 'long':
-                index = 'Station ID'
-                col = ['Failure reason']
-            elif self.gmrecords.args.type == 'net':
-                index = 'Network'
-                col = ['Number of passed records', 'Number of failed records']
-
             status_info = self.pstreams.get_status(self.gmrecords.args.type)
-            failures.append(status_info)
+            failures[event.id] = status_info
 
             base_file_name = os.path.join(
                 event_dir,
@@ -97,25 +87,28 @@ class ExportFailureTablesModule(SubcommandModule):
             if self.gmrecords.args.output_format == 'csv':
                 csvfile = base_file_name + '.csv'
                 self.append_file('Failure table', csvfile)
-                status_info.to_csv(csvfile, header=col, index_label=index)
+                status_info.to_csv(csvfile)
             else:
                 excelfile = base_file_name + '.xlsx'
                 self.append_file('Failure table', excelfile)
-                status_info.to_excel(excelfile, header=col, index_label=index)
+                status_info.to_excel(excelfile)
 
         if failures:
-            comp_failures_path = (
-                '%s_%s_complete_failures.csv'
-                % (gmrecords.project, gmrecords.args.label))
+            comp_failures_path = os.path.join(
+                self.gmrecords.data_path, '%s_%s_complete_failures.csv' % (
+                    gmrecords.project, gmrecords.args.label))
             if self.gmrecords.args.type == 'long':
-                for idx, status in enumerate(failures):
+                for idx, item in enumerate(failures.items()):
+                    eqid, status = item
+                    status = pd.DataFrame(status)
+                    status['EarthquakeId'] = eqid
                     if idx == 0:
                         status.to_csv(comp_failures_path, mode='w')
                     else:
                         status.to_csv(comp_failures_path, mode='a',
                                       header=False)
             else:
-                df_failures = pd.concat(failures)
+                df_failures = pd.concat(failures.values())
                 df_failures = df_failures.groupby(df_failures.index).sum()
                 df_failures.to_csv(comp_failures_path)
             self.append_file('Complete failures', comp_failures_path)
