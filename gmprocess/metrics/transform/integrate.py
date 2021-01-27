@@ -40,6 +40,9 @@ class Integrate(Transform):
         stream = StationStream([])
         for trace in self.transform_data:
             integrated_trace = trace.copy().integrate()
-            integrated_trace.stats['units'] = 'vel'
+            if integrated_trace.stats.standard.units == 'acc':
+                integrated_trace.stats.standard.units = 'vel'
+            elif integrated_trace.stats.standard.units == 'vel':
+                integrated_trace.stats.standard.units = 'disp'
             stream.append(integrated_trace)
         return stream

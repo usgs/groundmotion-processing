@@ -41,10 +41,24 @@ class Max(Reduction):
             maximums: Dictionary of maximum value for each channel.
         """
         maximums = {}
+        times = {}
         if isinstance(self.reduction_data, (Stream, StationStream)):
             for trace in self.reduction_data:
-                maximums[trace.stats.channel] = np.abs(trace.max())
+                if trace.stats.standard.units == 'acc':
+                    key = 'pga_time'
+                elif trace.stats.standard.units == 'vel':
+                    key = 'pgv_time'
+                elif trace.stats.standard.units == 'disp':
+                    key = 'pgd_time'
+                else:
+                    key = 'peak_time'
+                idx = np.argmax(np.abs(trace.data))
+                max_value = np.abs(trace.data[idx])
+                max_time = trace.times(type='utcdatetime')[idx]
+                maximums[trace.stats.channel] = max_value
+                times[trace.stats.channel] = {key: max_time}
+            return maximums, times
         else:
             for chan in self.reduction_data:
                 maximums[chan] = np.abs(self.reduction_data[chan]).max()
-        return maximums
+            return maximums
