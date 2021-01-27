@@ -250,12 +250,12 @@ def test_get_status():
     assert long.at['PG.PSD.HN'] == 'Failure 3'
 
     net = sc.get_status('net')
-    assert net.at['AZ', 'number passed'] == 1
-    assert net.at['AZ', 'number failed'] == 2
-    assert net.at['CI', 'number passed'] == 2
-    assert net.at['CI', 'number failed'] == 1
-    assert net.at['PG', 'number passed'] == 0
-    assert net.at['PG', 'number failed'] == 1
+    assert net.at['AZ', 'Number Passed'] == 1
+    assert net.at['AZ', 'Number Failed'] == 2
+    assert net.at['CI', 'Number Passed'] == 2
+    assert net.at['CI', 'Number Failed'] == 1
+    assert net.at['PG', 'Number Passed'] == 0
+    assert net.at['PG', 'Number Failed'] == 1
 
 
 if __name__ == '__main__':
