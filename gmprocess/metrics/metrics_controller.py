@@ -7,6 +7,7 @@ import re
 
 # Third party imports
 import numpy as np
+from obspy import Stream
 import pandas as pd
 
 # Local imports
@@ -310,6 +311,7 @@ class MetricsController(object):
             rotation_path = 'gmprocess.metrics.rotation.'
             combination_path = 'gmprocess.metrics.combination.'
             reduction_path = 'gmprocess.metrics.reduction.'
+
             try:
                 # -------------------------------------------------------------
                 # Transform 1
@@ -364,13 +366,20 @@ class MetricsController(object):
                 # * Currently, the percentile reduction uses the length
                 #   of c1 to decide if it needs to take the max of the
                 #   data before applying the reduction.
-
                 red_mod = importlib.import_module(
                     reduction_path + step_set['Reduction'])
                 red_cls = self._get_subclass(inspect.getmembers(
                     red_mod, inspect.isclass), 'Reduction')
                 red = red_cls(c1, self.bandwidth, percentile,
                               period, self.smooth_type).result
+
+                if step_set['Reduction'] == 'max' and isinstance(c1, (Stream, StationStream)):
+                    times = red[1]
+                    if imt_imc.split('_')[-1] == 'channels':
+                        for chan in times:
+                            for key in times[chan]:
+                                self.timeseries.select(channel=chan)[0].stats[key] = times[chan][key]
+                    red = red[0]
 
                 # -------------------------------------------------------------
                 # Combination 2
