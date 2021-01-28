@@ -88,6 +88,7 @@ class GenerateReportModule(SubcommandModule):
                     self.pstreams,
                     event_dir,
                     event,
+                    prefix="%s_%s" % (gmrecords.project, gmrecords.args.label),
                     config=gmrecords.conf
                 )
             else:
