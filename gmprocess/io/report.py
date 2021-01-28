@@ -118,7 +118,7 @@ moveout_page_tex = '''
 '''
 
 
-def build_report_latex(sc, directory, origin, config=None):
+def build_report_latex(sc, directory, origin, prefix='', config=None):
     """
     Build latex summary report.
 
@@ -129,6 +129,8 @@ def build_report_latex(sc, directory, origin, config=None):
             Directory for saving report.
         origin (ScalarEvent):
             ScalarEvent object.
+        prefix (str):
+            String to prepend to report file name.
         config (dict):
             Config dictionary.
     Returns:
@@ -218,7 +220,7 @@ def build_report_latex(sc, directory, origin, config=None):
         os.chdir(directory)
 
         # File name relative to current location
-        file_name = ('report_%s.tex' % (origin.id))
+        file_name = ('%s_report_%s.tex' % (prefix, origin.id))
 
         # File name for printing out later relative base directory
         latex_file = os.path.join(directory, file_name)
