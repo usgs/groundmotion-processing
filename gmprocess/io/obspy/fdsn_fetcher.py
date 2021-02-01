@@ -192,6 +192,9 @@ class FDSNFetcher(DataFetcher):
         Returns:
             StreamCollection: StreamCollection object.
         """
+        # Bail out if FDSNFetcher not configured
+        if 'FDSNFetcher' not in self.config['fetchers']:
+            return
         rawdir = self.rawdir
         if self.rawdir is None:
             rawdir = tempfile.mkdtemp()
@@ -239,7 +242,6 @@ class FDSNFetcher(DataFetcher):
         # For each of the providers, check if we have a username and password
         # provided in the config. If we do, initialize the client with the
         # username and password. Otherwise, use default initalization.
-        fdsn_config = self.config['fetchers']['FDSNFetcher']
         client_list = []
         for provider_str in URL_MAPPINGS.keys():
             if provider_str == GEO_NET_ARCHIVE_KEY:
@@ -247,6 +249,7 @@ class FDSNFetcher(DataFetcher):
                 if dt < GEONET_ARCHIVE_DAYS:
                     provider_str = GEONET_REALTIME_URL
             try:
+                fdsn_config = self.config['fetchers']['FDSNFetcher']
                 if provider_str in fdsn_config:
                     client = Client(
                         provider_str,
@@ -258,46 +261,49 @@ class FDSNFetcher(DataFetcher):
             # If the FDSN service is down, then an FDSNException is raised
             except FDSNException:
                 logging.warning('Unable to initalize client %s' % provider_str)
+            except KeyError:
+                logging.warning('Unable to initalize client %s' % provider_str)
 
-        # Pass off the initalized clients to the Mass Downloader
-        mdl = MassDownloader(providers=client_list)
+        if len(client_list):
+            # Pass off the initalized clients to the Mass Downloader
+            mdl = MassDownloader(providers=client_list)
 
-        # we can have a problem of file overlap, so let's remove existing
-        # mseed files from the raw directory.
-        logging.info('Deleting old MiniSEED files...')
-        delete_old_files(rawdir, '*.mseed')
+            # we can have a problem of file overlap, so let's remove existing
+            # mseed files from the raw directory.
+            logging.info('Deleting old MiniSEED files...')
+            delete_old_files(rawdir, '*.mseed')
 
-        # remove existing png files as well
-        logging.info('Deleting old PNG files...')
-        delete_old_files(rawdir, '*.png')
+            # remove existing png files as well
+            logging.info('Deleting old PNG files...')
+            delete_old_files(rawdir, '*.png')
 
-        # remove existing xml files as well
-        logging.info('Deleting old XML files...')
-        delete_old_files(rawdir, '*.xml')
+            # remove existing xml files as well
+            logging.info('Deleting old XML files...')
+            delete_old_files(rawdir, '*.xml')
 
-        logging.info('Downloading new MiniSEED files...')
-        # The data will be downloaded to the ``./waveforms/`` and
-        # ``./stations/`` folders with automatically chosen file names.
-        mdl.download(domain, restrictions, mseed_storage=rawdir,
-                     stationxml_storage=rawdir)
+            logging.info('Downloading new MiniSEED files...')
+            # The data will be downloaded to the ``./waveforms/`` and
+            # ``./stations/`` folders with automatically chosen file names.
+            mdl.download(domain, restrictions, mseed_storage=rawdir,
+                         stationxml_storage=rawdir)
 
-        seed_files = glob.glob(os.path.join(rawdir, '*.mseed'))
-        streams = []
-        for seed_file in seed_files:
-            try:
-                tstreams = read_obspy(seed_file, self.config)
-            except Exception as e:
-                tstreams = None
-                fmt = 'Could not read seed file %s - "%s"'
-                logging.info(fmt % (seed_file, str(e)))
-            if tstreams is None:
-                continue
-            else:
-                streams += tstreams
+            seed_files = glob.glob(os.path.join(rawdir, '*.mseed'))
+            streams = []
+            for seed_file in seed_files:
+                try:
+                    tstreams = read_obspy(seed_file, self.config)
+                except Exception as e:
+                    tstreams = None
+                    fmt = 'Could not read seed file %s - "%s"'
+                    logging.info(fmt % (seed_file, str(e)))
+                if tstreams is None:
+                    continue
+                else:
+                    streams += tstreams
 
-        stream_collection = StreamCollection(streams=streams,
-                                             drop_non_free=self.drop_non_free)
-        return stream_collection
+            stream_collection = StreamCollection(
+                streams=streams, drop_non_free=self.drop_non_free)
+            return stream_collection
 
 
 def delete_old_files(rawdir, pattern):

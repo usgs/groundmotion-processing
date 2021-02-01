@@ -107,8 +107,9 @@ def download(event, event_dir, config, directory, create_workspace=True):
         logging.debug(streams)
         tcollection = StreamCollection(streams, **config['duplicate'])
         create_event_file(event, event_dir)
-    logging.debug('tcollection.describe():')
-    logging.debug(tcollection.describe())
+    if len(tcollection):
+        logging.debug('tcollection.describe():')
+        logging.debug(tcollection.describe())
 
     # Plot the raw waveforms
     with warnings.catch_warnings():

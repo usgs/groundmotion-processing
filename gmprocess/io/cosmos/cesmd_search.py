@@ -76,33 +76,34 @@ FAULT_TYPES = ['NM', 'RS', 'SS']
 
 # for those search parameters where the Python names differ from the ones
 # defined by the web API, use this translation table.
-KEY_TABLE = {'return_type': 'rettype',
-             'process_level': 'download',
-             'group_by': 'groupby',
-             'min_station_dist': 'minepidist',
-             'max_station_dist': 'maxepidist',
-             'network': 'netid',
-             'station_type': 'sttype',
-             'include_inactive': 'abandoned',
-             'station_name': 'stname',
-             'min_station_latitude': 'minlat',
-             'max_station_latitude': 'maxlat',
-             'min_station_longitude': 'minlon',
-             'max_station_longitude': 'maxlon',
-             'station_latitude': 'slat',
-             'station_longitude': 'slon',
-             'radius_km': 'srad',
-             'station_code': 'stcode',
-             'event_name': 'evname',
-             'fault_type': 'faulttype',
-             'min_event_latitude': 'eminlat',
-             'max_event_latitude': 'emaxlat',
-             'min_event_longitude': 'eminlon',
-             'max_event_longitude': 'emaxlon',
-             'event_latitude': 'elat',
-             'event_longitude': 'elon',
-             'event_radius': 'erad',
-             }
+KEY_TABLE = {
+    'return_type': 'rettype',
+    'process_level': 'download',
+    'group_by': 'groupby',
+    'min_station_dist': 'minepidist',
+    'max_station_dist': 'maxepidist',
+    'network': 'netid',
+    'station_type': 'sttype',
+    'include_inactive': 'abandoned',
+    'station_name': 'stname',
+    'min_station_latitude': 'minlat',
+    'max_station_latitude': 'maxlat',
+    'min_station_longitude': 'minlon',
+    'max_station_longitude': 'maxlon',
+    'station_latitude': 'slat',
+    'station_longitude': 'slon',
+    'radius_km': 'srad',
+    'station_code': 'stcode',
+    'event_name': 'evname',
+    'fault_type': 'faulttype',
+    'min_event_latitude': 'eminlat',
+    'max_event_latitude': 'emaxlat',
+    'min_event_longitude': 'eminlon',
+    'max_event_longitude': 'emaxlon',
+    'event_latitude': 'elat',
+    'event_longitude': 'elon',
+    'event_radius': 'erad',
+}
 
 
 def get_metadata(eqlat=None,
@@ -137,12 +138,14 @@ def get_metadata(eqlat=None,
         dict: Dictionary of event/station information.
 
     """ % (','.join(STATION_TYPES))
-    params = {'rettype': 'metadata',
-              'groupby': 'event',
-              'format': 'json',
-              'nodata': 404,
-              'sttype': STATION_TYPES[station_type],
-              'abandoned': abandoned}
+    params = {
+        'rettype': 'metadata',
+        'groupby': 'event',
+        'format': 'json',
+        'nodata': 404,
+        'sttype': STATION_TYPES[station_type],
+        'abandoned': abandoned
+    }
     has_event_info = (eqlat is not None) and (
         eqlon is not None) and (eqtime is not None)
 
@@ -190,17 +193,18 @@ def get_stations_dataframe(metadata):
             - processed_avail
 
     """
-    rows = {'network': [],
-            'station_code': [],
-            'station_name': [],
-            'latitude': [],
-            'longitude': [],
-            'elevation': [],
-            'station_type': [],
-            'epidist': [],
-            'raw_avail': [],
-            'processed_avail': [],
-            }
+    rows = {
+        'network': [],
+        'station_code': [],
+        'station_name': [],
+        'latitude': [],
+        'longitude': [],
+        'elevation': [],
+        'station_type': [],
+        'epidist': [],
+        'raw_avail': [],
+        'processed_avail': [],
+    }
     for event in metadata['results']['events']:
         for station in event['stations']:
             rows['network'].append(station['network'])
@@ -392,10 +396,12 @@ def get_records(output,
             'Select events either by bounding box or by radius, not both.')
 
     # now convert process levels to string webservice expects
-    levels = {'processed': 'P',
-              'raw': 'R',
-              'plots': 'T',
-              'all': 'P,R,T'}
+    levels = {
+        'processed': 'P',
+        'raw': 'R',
+        'plots': 'T',
+        'all': 'P,R,T'
+    }
     inputargs['process_level'] = levels[process_level]
 
     # now convert input args to keys of parameters expected by

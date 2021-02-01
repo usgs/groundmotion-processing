@@ -150,7 +150,7 @@ def test_trim_multiple_events():
     for st in sc:
         st.detrend('demean')
         remove_response(st, None, None)
-        st = corner_frequencies.constant(st)
+        st = corner_frequencies.get_constant(st)
         lowpass_filter(st)
         highpass_filter(st)
         signal_split(st, origin)

@@ -487,9 +487,9 @@ def get_corner_frequencies(st, method='constant', constant=None, snr=None):
 
     logging.debug('Setting corner frequencies...')
     if method == 'constant':
-        st = corner_frequencies.constant(st, **constant)
+        st = corner_frequencies.get_constant(st, **constant)
     elif method == 'snr':
-        st = corner_frequencies.snr(st, **snr)
+        st = corner_frequencies.get_snr(st, **snr)
         if snr['same_horiz'] and st.passed and st.num_horizontal > 1:
             lps = [tr.getParameter('corner_frequencies')[
                 'lowpass'] for tr in st]

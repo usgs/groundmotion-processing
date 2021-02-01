@@ -52,21 +52,32 @@ class CESMDFetcher(DataFetcher):
         https://strongmotioncenter.org/wserv/records/builder/
 
         Args:
-            time (datetime): Origin time.
-            lat (float): Origin latitude.
-            lon (float): Origin longitude.
-            depth (float): Origin depth.
-            magnitude (float): Origin magnitude.
-            email (str): email address for CESMD site.
-            process_type (str): One of 'raw' or 'processed'.
-            station_type (str): One of "Array", "Ground", "Building",
-                                "Bridge", "Dam", "Tunnel", "Wharf",
-                                "Other"
-            eq_radius (float): Earthquake search radius (km).
-            eq_dt (float): Earthquake search time window (sec).
-            station_radius (float): Station search radius (km).
-            rawdir (str): Path to location where raw data will be stored.
-                          If not specified, raw data will be deleted.
+            time (datetime):
+                Origin time.
+            lat (float):
+                Origin latitude.
+            lon (float):
+                Origin longitude.
+            depth (float):
+                Origin depth.
+            magnitude (float):
+                Origin magnitude.
+            email (str):
+                email address for CESMD site.
+            process_type (str):
+                One of 'raw' or 'processed'.
+            station_type (str):
+                One of "Array", "Ground", "Building", "Bridge", "Dam",
+                "Tunnel", "Wharf", "Other"
+            eq_radius (float):
+                Earthquake search radius (km).
+            eq_dt (float):
+                Earthquake search time window (sec).
+            station_radius (float):
+                Station search radius (km).
+            rawdir (str):
+                Path to location where raw data will be stored. If not
+                specified, raw data will be deleted.
             config (dict):
                 Dictionary containing configuration.
                 If None, retrieve global config.
@@ -104,17 +115,14 @@ class CESMDFetcher(DataFetcher):
                     cfg_station_type = fetch_cfg['station_type']
 
         radius = _get_first_value(eq_radius, cfg_eq_radius, EQ_RADIUS)
-        station_radius = _get_first_value(station_radius,
-                                          cfg_station_radius,
-                                          STATION_RADIUS)
+        station_radius = _get_first_value(
+            station_radius, cfg_station_radius, STATION_RADIUS)
         eq_dt = _get_first_value(eq_dt, cfg_eq_dt, EQ_DT)
 
-        station_type = _get_first_value(station_type,
-                                        cfg_station_type,
-                                        STATION_TYPE)
-        process_type = _get_first_value(process_type,
-                                        cfg_process_type,
-                                        PROCESS_TYPE)
+        station_type = _get_first_value(
+            station_type, cfg_station_type, STATION_TYPE)
+        process_type = _get_first_value(
+            process_type, cfg_process_type, PROCESS_TYPE)
 
         # for CESMD, user (email address) is required
         if email is None:
@@ -247,9 +255,8 @@ class CESMDFetcher(DataFetcher):
 
         if nstations < MAX_STATIONS:
             try:
-                (outfolder,
-                 datafiles) = get_records(
-                     self.rawdir,
+                (outfolder, datafiles) = get_records(
+                    self.rawdir,
                     self.email,
                     unpack=True,
                     event_latitude=self.lat,
@@ -277,6 +284,7 @@ class CESMDFetcher(DataFetcher):
             # fetch (note that this may not be the same as the number of files)
             # so we're splitting up the stations by distance and downloading
             # them in chunks.
+
             # the stations are grouped a little oddly in the results of
             # the metadata - there are a number of "event" entries, all
             # with the same ID, and they each contain some collection
@@ -333,6 +341,6 @@ class CESMDFetcher(DataFetcher):
                 logging.info('Could not read %s: error "%s"' %
                              (dfile, str(gme)))
 
-        stream_collection = StreamCollection(streams=streams,
-                                             drop_non_free=self.drop_non_free)
+        stream_collection = StreamCollection(
+            streams=streams, drop_non_free=self.drop_non_free)
         return stream_collection
