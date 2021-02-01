@@ -13,7 +13,7 @@ TAPER_TYPE = 'hann'
 TAPER_SIDE = 'both'
 
 
-def constant(st, highpass=0.08, lowpass=20.0):
+def get_constant(st, highpass=0.08, lowpass=20.0):
     """Use constant corner frequencies across all records.
 
     Args:
@@ -39,7 +39,7 @@ def constant(st, highpass=0.08, lowpass=20.0):
     return st
 
 
-def snr(st, same_horiz=True, bandwidth=20):
+def get_snr(st, same_horiz=True, bandwidth=20):
     """Set corner frequencies from SNR.
 
     Args:
