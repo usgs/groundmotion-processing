@@ -774,4 +774,7 @@ def _read_lines(skip_rows, filename):
         data_arr = np.genfromtxt(filename, skip_header=skip_rows,
                                  max_rows=num_lines, dtype=np.float64,
                                  delimiter=widths).flatten()
+        # Strip off nans that are created by genfromtxt when the last
+        # row is incomplete
+        data_arr = data_arr[~np.isnan(data_arr)]
     return num_lines, data_arr
