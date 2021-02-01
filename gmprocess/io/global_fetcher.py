@@ -48,7 +48,15 @@ def fetch_data(time, lat, lon, depth, magnitude,
     """
     if config is None:
         config = get_config()
-    fetchers = find_fetchers(lat, lon)
+    tfetchers = find_fetchers(lat, lon)
+
+    # Remove fetchers if they are not present in the conf file
+    fetchers = {k: v for k, v in tfetchers.items() if k in config['fetchers']}
+
+    for fname in fetchers.keys():
+        if fname not in config['fetchers']:
+            del fetchers[fname]
+
     instances = []
     errors = []
     for fetchname, fetcher in fetchers.items():
