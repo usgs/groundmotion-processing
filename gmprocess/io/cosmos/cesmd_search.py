@@ -170,12 +170,12 @@ def get_metadata(eqlat=None,
     return metadata
 
 
-def get_stations_dataframe(event_json):
+def get_stations_dataframe(metadata):
     """Return a dataframe of station information from one event in CESMD
     metadata.
 
     Args:
-        event_json (dict): Event dictionary from CESMD metadata.
+        metadata (dict): metata dictionary from CESMD.
     Returns:
         dataframe: Contains columns:
             - network
@@ -201,26 +201,27 @@ def get_stations_dataframe(event_json):
             'raw_avail': [],
             'processed_avail': [],
             }
-    for station in event_json['stations']:
-        rows['network'].append(station['network'])
-        rows['station_code'].append(station['code'])
-        rows['station_name'].append(station['name'])
-        rows['latitude'].append(station['latitude'])
-        rows['longitude'].append(station['longitude'])
-        elevation = station['elevation']
-        if elevation == 'null' or elevation is None:
-            rows['elevation'].append(np.nan)
-        else:
-            try:
-                rows['elevation'].append(float(elevation))
-            except BaseException:
-                pass
-        rows['station_type'].append(station['type'])
-        record = station['record']
-        rows['epidist'].append(record['epidist'])
-        avail = record['data_availability']
-        rows['raw_avail'].append(avail['raw'])
-        rows['processed_avail'].append(avail['processed'])
+    for event in metadata['results']['events']:
+        for station in event['stations']:
+            rows['network'].append(station['network'])
+            rows['station_code'].append(station['code'])
+            rows['station_name'].append(station['name'])
+            rows['latitude'].append(station['latitude'])
+            rows['longitude'].append(station['longitude'])
+            elevation = station['elevation']
+            if elevation == 'null' or elevation is None:
+                rows['elevation'].append(np.nan)
+            else:
+                try:
+                    rows['elevation'].append(float(elevation))
+                except BaseException:
+                    pass
+            rows['station_type'].append(station['type'])
+            record = station['record']
+            rows['epidist'].append(record['epidist'])
+            avail = record['data_availability']
+            rows['raw_avail'].append(avail['raw'])
+            rows['processed_avail'].append(avail['processed'])
 
     dataframe = pd.DataFrame(data=rows)
     return dataframe

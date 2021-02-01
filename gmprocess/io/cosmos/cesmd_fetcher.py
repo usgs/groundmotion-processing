@@ -236,6 +236,7 @@ class CESMDFetcher(DataFetcher):
         for event in self.metadata['results']['events']:
             if event['time'] == event_dict['time'].strftime(TIMEFMT):
                 has_event = True
+                nstations = self.metadata['count']
                 break
 
         if not has_event:
@@ -244,7 +245,7 @@ class CESMDFetcher(DataFetcher):
         starttime = self.time - timedelta(seconds=self.eq_dt // 2)
         endtime = self.time + timedelta(seconds=self.eq_dt // 2)
 
-        if len(event['stations']) < MAX_STATIONS:
+        if nstations < MAX_STATIONS:
             try:
                 (outfolder,
                  datafiles) = get_records(
@@ -276,7 +277,12 @@ class CESMDFetcher(DataFetcher):
             # fetch (note that this may not be the same as the number of files)
             # so we're splitting up the stations by distance and downloading
             # them in chunks.
-            dataframe = get_stations_dataframe(event)
+            # the stations are grouped a little oddly in the results of
+            # the metadata - there are a number of "event" entries, all
+            # with the same ID, and they each contain some collection
+            # of stations. We want all of those stations, so we need to
+            # iterate over the "events" and each station within them.
+            dataframe = get_stations_dataframe(self.metadata)
             distances = sorted(dataframe['epidist'].to_numpy())
             nchunks = int(np.ceil(len(distances) / MAX_STATIONS))
             distance_chunks = np.array_split(distances, nchunks)
