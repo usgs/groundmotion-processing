@@ -35,6 +35,9 @@ CODES, SOURCES1, SOURCES2 = np.genfromtxt(
     encoding='latin-1', unpack=True, dtype=bytes, delimiter=','
 )
 
+# Updated tables:
+# https://www.strongmotioncenter.org/NCESMD/reports/COSMOS_Tables.pdf
+
 CODES = CODES.astype(str)
 BUILDING_TYPES = {
     1: 'Small fiberglass shelter',
@@ -42,23 +45,74 @@ BUILDING_TYPES = {
     3: 'Sensors buried/set in ground',
     4: 'Reference station',
     5: 'Base of building',
+    6: 'Freefield, Unspecified',
+    7: 'Ocean-bottom sensors',
+    8: 'Sensors in small near-surface vault (1-2m deep)',
+    9: 'Sensors in underground observatory or large vault (~3 m^3 or larger)',
     10: 'Building',
     11: 'Bridge',
     12: 'Dam',
+    13: 'Wharf',
+    14: 'Tunnel or mine adit (3m or more from surface)',
+    15: 'Other lifeline structure',
     20: 'Other structure',
     50: 'Geotechnical array',
-    51: 'Other array'
+    51: 'Other array',
+    999: 'Unspecified'
 }
 
 COSMOS_NETWORKS = {
-    1: ('', 'U.S. Coast and Geodetic Survey', 'C&GS'),
+    1: ('C_', 'U.S. Coast and Geodetic Survey', 'C&GS'),
     2: ('NP', 'U.S. Geological Survey', 'USGS'),
     3: ('RE', 'U.S. Bureau of Reclamation', 'USBR'),
-    4: ('', 'U.S. Army Corps of Engineers', 'ACOE'),
+    4: ('A_', 'U.S. Army Corps of Engineers', 'ACOE'),
     5: ('CE', 'California Geological Survey', 'CGS'),
-    6: ('CI', 'California Institute of Technology', 'CIT'),
-    7: ('BK', 'UC Berkeley', 'UCB'),
+    6: ('CI', 'California Institute of Technology', 'SCSN'),
+    7: ('BK', 'UC Berkeley', 'BDSN'),
+    8: ('NC', 'USGS - Northern Calif Regional Network', 'NCSN'),
+    9: ('SB', 'UC Santa Barbara', 'UCSB'),
+    10: ('AZ', 'UC San Diego - ANZA', 'ANZA'),
+    14: ('NN', 'UNR - W. Great Basin/E. Sierra Nevada', 'UNR'),
+    15: ('UW', 'UW - Pacific NW Regional Network', 'PNSN'),
+    16: ('TO', 'Caltech - Tectonics Observatory', 'CTO'),
+    17: ('AA', 'UA - Anchorage Strong Motion Network', 'AEIC'),
+    20: ('WR', ' Calif. Dept. Water Resources', 'CDWR'),
+    21: ('PG', 'Pacific Gas & Electric', 'PG&E'),
+    30: ('US', 'USGS - National Seismic Network', 'NEIC'),
+    31: ('GS', 'US Geological Survey Networks', 'USGS'),
+    32: ('IU', 'IRIS/USGS Network', 'IRGS'),
+    33: ('CU', 'Caribbean USGS Network', 'CUGS'),
+    34: ('NQ', 'NetQuakes', 'NQGS'),
+    35: ('US', 'US National Seismic Network (USNSN)', 'USGS'),
+    36: ('AG', 'Arkansas Seismic Network', 'ASN'),
+    37: ('AK', 'Alaska Regional Network', 'UAGI'),
+    38: ('AO', 'Arkansas Seismic Observatory, UALR', 'ASO'),
+    39: ('AV', 'Alaska Volcano Observatory', 'AVO'),
+    40: ('ET', 'Southern Appalachian Seismic Network', 'CERI'),
+    46: ('LD', 'Lamont-Doherty Coop. Seism. Network', 'LCSN'),
+    47: ('LL', 'LLNL NTS Network', 'LLNL'),
+    48: ('MB', 'Montana Regional Seismic Network', 'MRSN'),
+    49: ('NE', 'New England Seismic Network', 'NUSN'),
+    50: ('NM', 'Coop New Madrid Seismc Network, St Louis Univ', 'CNMSN'),
+    51: ('UW', 'Pacific Northwest Regional Sesmic Network', 'PNSN'),
+    52: ('UU', 'Univ of Utah Seismograph Stations', 'UUSS'),
+    53: ('WY', 'Yellowstone Wyoming Seismic Network', 'YWSN'),
+    54: ('PR', 'Puerto Rico Strong Motion Program', 'UPRM'),
+    55: ('CO', 'South Carolina Seismic Network', 'SCSN'),
+    56: ('HV', 'Hawaiian Volcano Observatory Network', 'HVO'),
+    57: ('IC', 'New China Digital Seismograph Network', 'USGS'),
+    58: ('II', 'IRIS/IDA Seismic Network', 'SIO'),
+    59: ('IW', ' Intermountain West Seismic Network', 'USGS'),
+    60: ('NA', 'Central and Eastern US Network', 'UCSD'),
+    61: ('TA', ' USArray Transportable Array (EarthScope_TA)', 'IRIS'),
+    62: ('TR', 'Eastern Caribbean Seismograph Network', 'SRTC'),
+    63: ('C', 'Univ Chile, Dept of Geophysics', 'CNSN'),
+    64: ('SN', 'Southern Great Basin Network', 'SGBN'),
     100: ('TW', 'Taiwan Weather Bureau', 'CWB'),
+    107: ('BG', 'UC Berkeley - Geysers Seismic Network', 'BGSN'),
+    110: ('BO', ' Bosai-Ken (NIED), Japan', 'NIED'),
+    111: ('UO', 'Univ. of Oregon Regional Network', 'UO'),
+    199: ('Unspecified', '--'),
     200: ('KD', 'Kandilli Observatory', 'KOER')
 }
 
