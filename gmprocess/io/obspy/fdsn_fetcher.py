@@ -268,19 +268,6 @@ class FDSNFetcher(DataFetcher):
             # Pass off the initalized clients to the Mass Downloader
             mdl = MassDownloader(providers=client_list)
 
-            # we can have a problem of file overlap, so let's remove existing
-            # mseed files from the raw directory.
-            logging.info('Deleting old MiniSEED files...')
-            delete_old_files(rawdir, '*.mseed')
-
-            # remove existing png files as well
-            logging.info('Deleting old PNG files...')
-            delete_old_files(rawdir, '*.png')
-
-            # remove existing xml files as well
-            logging.info('Deleting old XML files...')
-            delete_old_files(rawdir, '*.xml')
-
             logging.info('Downloading new MiniSEED files...')
             # The data will be downloaded to the ``./waveforms/`` and
             # ``./stations/`` folders with automatically chosen file names.
@@ -304,9 +291,3 @@ class FDSNFetcher(DataFetcher):
             stream_collection = StreamCollection(
                 streams=streams, drop_non_free=self.drop_non_free)
             return stream_collection
-
-
-def delete_old_files(rawdir, pattern):
-    pfiles = glob.glob(os.path.join(rawdir, pattern))
-    for pfile in pfiles:
-        os.remove(pfile)

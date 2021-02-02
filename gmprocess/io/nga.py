@@ -33,7 +33,7 @@ def get_nga_record_sequence_no(st, eq_name, distance_tolerance=50):
 
     Returns:
         int: Matching record sequence number from NGA flatfile. Returns
-            numpy.nan if record sequence number is not found.
+        numpy.nan if record sequence number is not found.
 
     """
 
