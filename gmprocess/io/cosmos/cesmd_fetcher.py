@@ -7,7 +7,6 @@ import logging
 import pytz
 from obspy.core.utcdatetime import UTCDateTime
 import numpy as np
-from requests.exceptions import ConnectionError
 
 # local imports
 from gmprocess.io.fetcher import DataFetcher, _get_first_value

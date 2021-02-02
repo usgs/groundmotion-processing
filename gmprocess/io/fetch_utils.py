@@ -46,10 +46,11 @@ FAILED_COLOR = '#ff2222'
 
 MAP_PADDING = 1.1  # Station map padding value
 
-UNITS = {'PGA': '%g',
-         'PGV': 'cm/s',
-         'SA': '%g'
-         }
+UNITS = {
+    'PGA': '%g',
+    'PGV': 'cm/s',
+    'SA': '%g'
+}
 
 FLOAT_PATTERN = r'[-+]?[0-9]*\.?[0-9]+'
 
