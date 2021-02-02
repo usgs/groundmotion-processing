@@ -6,11 +6,9 @@ from datetime import timedelta
 
 # third party imports
 from requests import Session, Request
+from requests.exceptions import ConnectionError
 import pandas as pd
 import numpy as np
-
-# local imports
-from gmprocess.utils.exception import GMProcessException
 
 URL_TEMPLATE = 'https://strongmotioncenter.org/wserv/records/query'
 RETURN_TYPES = ['dataset', 'metadata']
@@ -137,6 +135,10 @@ def get_metadata(eqlat=None,
     Returns:
         dict: Dictionary of event/station information.
 
+    Raises:
+        ValueError
+        ConnectionError
+
     """ % (','.join(STATION_TYPES))
     params = {
         'rettype': 'metadata',
@@ -150,7 +152,7 @@ def get_metadata(eqlat=None,
         eqlon is not None) and (eqtime is not None)
 
     if not has_event_info:
-        raise GMProcessException(
+        raise ValueError(
             'get_metadata must get either event id or event information.')
     else:
         starttime = eqtime - timedelta(seconds=eqtimewindow // 2)
@@ -167,7 +169,7 @@ def get_metadata(eqlat=None,
     response = session.get(request.url)
     if response.status_code != 200:
         fmt = 'Could not retrieve data from url "%s": Server response %i'
-        raise Exception(fmt % (request.url, response.status_code))
+        raise ConnectionError(fmt % (request.url, response.status_code))
     metadata = response.json()
 
     return metadata
@@ -345,6 +347,8 @@ def get_records(output,
     Returns:
         tuple: (Top level output directory, list of data files)
 
+    Raises:
+        KeyError
     """
     # getting the inputargs must be the first line of the method!
     inputargs = locals().copy()
@@ -432,7 +436,7 @@ def get_records(output,
 
     if not response.status_code == 200:
         fmt = 'Your url "%s" returned a status code of %i with message: "%s"'
-        raise GMProcessException(
+        raise ConnectionError(
             fmt % (url, response.status_code, response.reason))
 
     if unpack:

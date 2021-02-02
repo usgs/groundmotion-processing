@@ -9,7 +9,6 @@ from obspy.core.trace import Stats
 
 # local imports
 from gmprocess.utils.constants import UNIT_CONVERSIONS
-from gmprocess.utils.exception import GMProcessException
 from gmprocess.io.seedname import get_channel_name, get_units_type
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
@@ -64,7 +63,7 @@ def is_usc(filename, **kwargs):
             alternate_start = start + 2
             alternate_stop = stop - 2
         elif first_line.find('RESPONSE') >= 0:
-            raise GMProcessException(
+            raise ValueError(
                 'USC: Derived response spectra and fourier '
                 'amplitude spectra not supported: %s' % filename)
         else:
@@ -132,7 +131,7 @@ def read_usc(filename, **kwargs):
         stream = read_volume_one(
             filename, location=location, alternate=alternate)
     else:
-        raise GMProcessException('USC: Not a supported volume.')
+        raise ValueError('USC: Not a supported volume.')
 
     return stream
 
@@ -225,7 +224,7 @@ def _read_channel(filename, line_offset, volume, location='', alternate=False):
             data *= UNIT_CONVERSIONS[unit]
             logging.debug('Data converted from %s to cm/s/s' % (unit))
         else:
-            raise GMProcessException('USC: %s is not a supported unit.' % unit)
+            raise ValueError('USC: %s is not a supported unit.' % unit)
 
     # Put file name into dictionary
     head, tail = os.path.split(filename)
@@ -336,7 +335,7 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
         else:
             errstr = ('USC: Not enough information to distinguish horizontal '
                       'from vertical channels.')
-            raise GMProcessException(errstr)
+            raise BaseException(errstr)
 
         if location == '':
             hdr['location'] = '--'

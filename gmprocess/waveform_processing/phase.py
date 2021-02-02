@@ -17,7 +17,6 @@ from obspy.geodetics.base import locations2degrees
 from obspy.taup import TauPyModel
 
 # local imports
-from gmprocess.utils.exception import GMProcessException
 from gmprocess.utils.config import get_config
 from gmprocess.utils.event import ScalarEvent
 
@@ -228,7 +227,7 @@ def pick_kalkan(stream, picker_config=None, config=None):
     if minloc < min_noise_dur:
         fmt = 'Noise window (%.1f s) less than minimum (%.1f)'
         tpl = (minloc, min_noise_dur)
-        raise GMProcessException(fmt % tpl)
+        raise ValueError(fmt % tpl)
     mean_snr = calc_snr(stream, minloc)
 
     return (minloc, mean_snr)
@@ -266,7 +265,7 @@ def pick_ar(stream, picker_config=None, config=None):
     # Check if we found one of each component
     # If not, use the next picker in the order of preference
     if len(st_e) != 1 or len(st_n) != 1 or len(st_z) != 1:
-        raise GMProcessException('Unable to perform AR picker.')
+        raise BaseException('Unable to perform AR picker.')
 
     minloc = ar_pick(st_z[0].data, st_n[0].data, st_e[0].data,
                      st_z[0].stats.sampling_rate,
@@ -274,7 +273,7 @@ def pick_ar(stream, picker_config=None, config=None):
     if minloc < min_noise_dur:
         fmt = 'Noise window (%.1f s) less than minimum (%.1f)'
         tpl = (minloc, min_noise_dur)
-        raise GMProcessException(fmt % tpl)
+        raise ValueError(fmt % tpl)
     mean_snr = calc_snr(stream, minloc)
 
     return (minloc, mean_snr)
@@ -319,7 +318,7 @@ def pick_baer(stream, picker_config=None, config=None):
     if minloc < min_noise_dur:
         fmt = 'Noise window (%.1f s) less than minimum (%.1f)'
         tpl = (minloc, min_noise_dur)
-        raise GMProcessException(fmt % tpl)
+        raise ValueError(fmt % tpl)
     mean_snr = calc_snr(stream, minloc)
 
     return (minloc, mean_snr)
@@ -413,7 +412,7 @@ def pick_yeck(stream):
     if minloc < min_noise_dur:
         fmt = 'Noise window (%.1f s) less than minimum (%.1f)'
         tpl = (minloc, min_noise_dur)
-        raise GMProcessException(fmt % tpl)
+        raise ValueError(fmt % tpl)
     mean_snr = calc_snr(stream, minloc)
 
     return (minloc, mean_snr)
@@ -456,7 +455,7 @@ def pick_power(stream, picker_config=None, config=None):
     if minloc < min_noise_dur:
         fmt = 'Noise window (%.1f s) less than minimum (%.1f)'
         tpl = (minloc, min_noise_dur)
-        raise GMProcessException(fmt % tpl)
+        raise ValueError(fmt % tpl)
     mean_snr = calc_snr(stream, minloc)
 
     return (minloc, mean_snr)

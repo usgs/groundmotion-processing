@@ -14,7 +14,6 @@ import pytz
 
 # local imports
 from gmprocess.utils.constants import UNIT_CONVERSIONS
-from gmprocess.utils.exception import GMProcessException
 from gmprocess.io.usc.core import is_usc
 from gmprocess.io.seedname import get_channel_name, get_units_type
 from gmprocess.core.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
@@ -185,7 +184,7 @@ def read_dmg(filename, **kwargs):
             if traces is not None:
                 trace_list += traces
         else:
-            raise GMProcessException('DMG: Not a supported volume.')
+            raise ValueError('DMG: Not a supported volume.')
 
     stream = StationStream([])
     for trace in trace_list:
@@ -272,7 +271,7 @@ def _read_volume_one(filename, line_offset, location='', units='acc'):
         acc_data *= UNIT_CONVERSIONS[unit]
         logging.debug('Data converted from %s to cm/s/s' % (unit))
     else:
-        raise GMProcessException('DMG: %s is not a supported unit.' % unit)
+        raise ValueError('DMG: %s is not a supported unit.' % unit)
 
     acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()))
 
@@ -337,7 +336,7 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
             acc_data *= UNIT_CONVERSIONS[unit]
             logging.debug('Data converted from %s to cm/s/s' % (unit))
         else:
-            raise GMProcessException('DMG: %s is not a supported unit.' % unit)
+            raise ValueError('DMG: %s is not a supported unit.' % unit)
         acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()))
 
         response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
@@ -765,7 +764,7 @@ def _get_channel(angle, sampling_rate):
     else:
         errstr = ('Not enough information to distinguish horizontal from '
                   'vertical channels.')
-        raise GMProcessException('DMG: ' + errstr)
+        raise BaseException('DMG: ' + errstr)
     return channel
 
 

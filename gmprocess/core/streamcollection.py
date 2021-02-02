@@ -18,7 +18,6 @@ from obspy.geodetics import gps2dist_azimuth
 import pandas as pd
 import numpy as np
 
-from gmprocess.utils.exception import GMProcessException
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.core.stationtrace import REV_PROCESS_LEVELS
 from gmprocess.core.stationstream import StationStream
@@ -137,7 +136,7 @@ class StreamCollection(object):
             else:
                 all_labels.append("")
         if len(set(all_labels)) > 1:
-            raise GMProcessException(
+            raise ValueError(
                 'Only one label allowed within a StreamCollection.')
 
     def select_colocated(self, preference=["HN?", "BN?", "HH?", "BH?"]):

@@ -5,29 +5,22 @@
 import os
 
 from gmprocess.io.read import read_data, _get_format, _validate_format
-from gmprocess.utils.exception import GMProcessException
 from gmprocess.io.test_utils import read_data_dir
 
 
 def test_read():
-    cosmos_files, _ = read_data_dir('cosmos',
-                                    'ci14155260',
-                                    'Cosmos12TimeSeriesTest.v1')
-    cwb_files, _ = read_data_dir('cwb',
-                                 'us1000chhc',
-                                 '1-EAS.dat')
-    dmg_files, _ = read_data_dir('dmg',
-                                 'nc71734741',
-                                 'CE89146.V2')
-    geonet_files, _ = read_data_dir('geonet',
-                                    'us1000778i',
-                                    '20161113_110259_WTMC_20.V1A')
-    knet_files, _ = read_data_dir('knet',
-                                  'us2000cnnl',
-                                  'AOM0011801241951.EW')
-    smc_files, _ = read_data_dir('smc',
-                                 'nc216859',
-                                 '0111a.smc')
+    cosmos_files, _ = read_data_dir(
+        'cosmos', 'ci14155260', 'Cosmos12TimeSeriesTest.v1')
+    cwb_files, _ = read_data_dir(
+        'cwb', 'us1000chhc', '1-EAS.dat')
+    dmg_files, _ = read_data_dir(
+        'dmg', 'nc71734741', 'CE89146.V2')
+    geonet_files, _ = read_data_dir(
+        'geonet', 'us1000778i', '20161113_110259_WTMC_20.V1A')
+    knet_files, _ = read_data_dir(
+        'knet', 'us2000cnnl', 'AOM0011801241951.EW')
+    smc_files, _ = read_data_dir(
+        'smc', 'nc216859', '0111a.smc')
 
     file_dict = {}
     file_dict['cosmos'] = cosmos_files[0]
@@ -59,7 +52,7 @@ def test_read():
         file_path = smc_files[0].replace('0111a.smc', 'not_a_file.smc')
         read_data(file_path)[0]
         success = True
-    except GMProcessException:
+    except BaseException:
         success = False
     assert success == False
 
