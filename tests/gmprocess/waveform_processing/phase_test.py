@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from gmprocess.waveform_processing.phase import (PowerPicker, pphase_pick, pick_ar,
-                                                 pick_kalkan, pick_power, pick_baer,
-                                                 pick_yeck, pick_travel,
-                                                 create_travel_time_dataframe)
+from gmprocess.waveform_processing.phase import (
+    PowerPicker, pphase_pick, pick_ar,
+    pick_kalkan, pick_power, pick_baer,
+    pick_yeck, pick_travel,
+    create_travel_time_dataframe
+)
 from gmprocess.io.read import read_data
 from gmprocess.io.test_utils import read_data_dir
-from gmprocess.utils.exception import GMProcessException
 from gmprocess.utils.config import get_config
 from gmprocess.core.streamcollection import StreamCollection
 from obspy import read, UTCDateTime
@@ -53,11 +54,15 @@ def test_pphase_picker():
     x = np.squeeze(matlabfile['x'])
 
     dt = matlabfile['dt'][0][0]
-    hdr = {'delta': dt,
-           'sampling_rate': 1 / dt,
-           'npts': len(x),
-           'starttime': UTCDateTime('1970-01-01'),
-           'standard': {'units': 'acc'}}
+    hdr = {
+        'delta': dt,
+        'sampling_rate': 1 / dt,
+        'npts': len(x),
+        'starttime': UTCDateTime('1970-01-01'),
+        'standard': {
+            'units': 'acc'
+        }
+    }
     trace = Trace(data=x, header=hdr)
     stream = Stream(traces=[trace])
     period = 0.01
@@ -89,11 +94,11 @@ def test_all_pickers():
                     loc, mean_snr = pick_power(
                         stream, picker_config=picker_config)
                 elif method == 'kalkan':
-                    loc, mean_snr = pick_kalkan(stream,
-                                                picker_config=picker_config)
+                    loc, mean_snr = pick_kalkan(
+                        stream, picker_config=picker_config)
                 elif method == 'yeck':
                     loc, mean_snr = pick_yeck(stream)
-            except GMProcessException:
+            except BaseException:
                 loc = -1
                 mean_snr = np.nan
             row = {
@@ -180,9 +185,11 @@ def test_get_travel_time_df():
             for eqidx, time in enumerate(df[sta]):
                 sta_coords = scs[dfidx][staidx][0].stats.coordinates
                 event = catalog[eqidx]
-                dist = locations2degrees(sta_coords['latitude'],
-                                         sta_coords['longitude'],
-                                         event.latitude, event.longitude)
+                dist = locations2degrees(
+                    sta_coords['latitude'],
+                    sta_coords['longitude'],
+                    event.latitude, event.longitude
+                )
                 if event.depth_km < 0:
                     depth = 0
                 else:

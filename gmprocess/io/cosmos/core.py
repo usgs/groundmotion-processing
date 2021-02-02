@@ -14,7 +14,6 @@ import scipy.constants as sp
 
 # local imports
 from gmprocess.utils.constants import UNIT_CONVERSIONS
-from gmprocess.utils.exception import GMProcessException
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
 from gmprocess.io.seedname import get_channel_name, get_units_type
@@ -349,11 +348,11 @@ def _read_channel(filename, line_offset, location=''):
         logging.debug('Data converted from %s to cm/s/s' % (unit))
     else:
         if unit != 'counts':
-            raise GMProcessException(
+            raise ValueError(
                 'COSMOS: %s is not a supported unit.' % unit)
 
     if hdr['standard']['units'] != 'acc':
-        raise GMProcessException('COSMOS: Only acceleration data accepted.')
+        raise ValueError('COSMOS: Only acceleration data accepted.')
 
     trace = StationTrace(data.copy(), Stats(hdr.copy()))
 
@@ -529,7 +528,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
                     is_north=False)
                 horizontal_angle = 90.0
             else:  # For the occassional 'OTHR' channel
-                raise GMProcessException('Channel name is not valid.')
+                raise ValueError('Channel name is not valid.')
 
         elif horizontal_angle >= 0 and horizontal_angle <= 360:
             if (
@@ -552,7 +551,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     else:
         errstr = ('Not enough information to distinguish horizontal from '
                   'vertical channels.')
-        raise GMProcessException('COSMOS: ' + errstr)
+        raise BaseException('COSMOS: ' + errstr)
     hdr['channel'] = channel
     logging.debug('channel: %s' % hdr['channel'])
     if location == '':
@@ -576,7 +575,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
             hdr['starttime'] = datetime(
                 year, month, day, hour, minute)
         except Exception:
-            raise GMProcessException(
+            raise BaseException(
                 'COSMOS: Inadequate start time information.')
     else:
         second = second
@@ -585,7 +584,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
             hdr['starttime'] = datetime(
                 year, month, day, hour, minute, int(second), microsecond)
         except Exception:
-            raise GMProcessException(
+            raise BaseException(
                 'COSMOS: Inadequate start time information.')
 
     if flt_data[62] != unknown:
@@ -765,7 +764,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
         fmt = '%s.%s.%s.%s'
         tpl = (hdr['network'], hdr['station'], hdr['channel'], hdr['location'])
         nscl = fmt % tpl
-        raise GMProcessException('Gain of 0 discovered for NSCL: %s' % nscl)
+        raise ValueError('Gain of 0 discovered for NSCL: %s' % nscl)
     denom = ctov * vtog * (1.0 / gain) * sp.g
     standard['instrument_sensitivity'] = 1 / denom
 

@@ -9,7 +9,6 @@ import logging
 import numpy as np
 
 # local imports
-from gmprocess.utils.exception import GMProcessException
 from gmprocess.io.seedname import get_channel_name, get_units_type
 from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.core.stationstream import StationStream
@@ -115,7 +114,9 @@ def is_smc(filename):
     """Check to see if file is a SMC (corrected, in acc.) strong motion file.
 
     Args:
-        filename (str): Path to possible SMC corrected data file.
+        filename (str):
+            Path to possible SMC corrected data file.
+
     Returns:
         bool: True if SMC, False otherwise.
     """
@@ -127,12 +128,10 @@ def is_smc(filename):
             if firstline in VALID_HEADERS:
                 return True
             if 'DISPLACEMENT' in firstline:
-                return True
-                raise GMProcessException(
+                raise BaseException(
                     'SMC: Diplacement records are not supported.')
             elif 'VELOCITY' in firstline:
-                return True
-                raise GMProcessException(
+                raise BaseException(
                     'SMC: Velocity records are not supported.')
             elif '*' in firstline:
                 end_ascii = lines[10]
@@ -155,7 +154,8 @@ def read_smc(filename, **kwargs):
     """Read SMC strong motion file.
 
     Args:
-        filename (str): Path to possible SMC data file.
+        filename (str):
+            Path to possible SMC data file.
         kwargs (ref):
             any_structure (bool): Read data from any type of structure,
                 raise Exception if False and structure type is not free-field.
@@ -177,15 +177,15 @@ def read_smc(filename, **kwargs):
     with open(filename, 'rt') as f:
         line = f.readline().strip()
         if 'DISPLACEMENT' in line:
-            raise GMProcessException(
+            raise BaseException(
                 'SMC: Diplacement records are not supported: '
                 '%s.' % filename)
         elif 'VELOCITY' in line:
-            raise GMProcessException(
+            raise BaseException(
                 'SMC: Velocity records are not supported: '
                 '%s.' % filename)
         elif line == "*":
-            raise GMProcessException(
+            raise BaseException(
                 'SMC: No record volume specified in file: '
                 '%s.' % filename)
 
@@ -330,7 +330,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
             fmt = ('Could not find year in SMC file %s. Not present '
                    'in integer header and not parseable from line '
                    '4 of ASCII header. Error: "%s"')
-            raise GMProcessException(fmt % (filename, str(ve)))
+            raise ValueError(fmt % (filename, str(ve)))
 
     jday = intheader[0, 2]
     hour = intheader[0, 3]
@@ -400,7 +400,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     if problem_flag == 1:
         if not accept_flagged:
             fmt = 'SMC: Record found in file %s has a problem flag!'
-            raise GMProcessException(fmt % filename)
+            raise BaseException(fmt % filename)
         else:
             logging.warning(
                 'SMC: Data contains a problem flag for network/station: '

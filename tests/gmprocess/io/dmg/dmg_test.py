@@ -13,7 +13,6 @@ from obspy.core.utcdatetime import UTCDateTime
 
 # local imports
 from gmprocess.utils.constants import UNIT_CONVERSIONS
-from gmprocess.utils.exception import GMProcessException
 from gmprocess.io.dmg.core import is_dmg, read_dmg, _get_date, _get_time
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.core.stationtrace import PROCESS_LEVELS
@@ -101,12 +100,12 @@ def test_dmg_v1():
 
 
 def test_dmg():
-    file1, _ = read_data_dir('dmg', 'nc71734741', files=[
-                             'CE89146.V2'])
-    file2, _ = read_data_dir('dmg', 'ci15481673', files=[
-                             'CIWLT.V2'])
-    file3, _ = read_data_dir('dmg', 'nc72282711', files=[
-                             'CE58667.V2'])
+    file1, _ = read_data_dir(
+        'dmg', 'nc71734741', files=['CE89146.V2'])
+    file2, _ = read_data_dir(
+        'dmg', 'ci15481673', files=['CIWLT.V2'])
+    file3, _ = read_data_dir(
+        'dmg', 'nc72282711', files=['CE58667.V2'])
     file1 = file1[0]
     file2 = file2[0]
     file3 = file3[0]
@@ -197,7 +196,7 @@ def test_dmg():
             'BadHeader.V2'])
         file4 = file4[0]
         read_dmg(file4)[0]
-    except Exception:
+    except BaseException:
         success = False
     assert success == False
     # Test alternate defaults
@@ -210,7 +209,7 @@ def test_dmg():
         tmp = os.path.join(temp_dir, 'tfile.txt')
         with open(tmp, 'w', encoding='utf-8') as f:
             f.write(no_stream)
-        with pytest.raises(GMProcessException):
+        with pytest.raises(BaseException):
             read_dmg(tmp)[0]
     except Exception as ex:
         raise(ex)
@@ -220,8 +219,8 @@ def test_dmg():
 
 def test_pacific():
     # test a data file whose trigger time is not in UTC
-    file1, _ = read_data_dir('dmg', 'nc1091100', files=[
-                             'ce36456p_CE36456.V2'])
+    file1, _ = read_data_dir(
+        'dmg', 'nc1091100', files=['ce36456p_CE36456.V2'])
     streams = read_dmg(file1[0])
     trace = streams[0][0]
     # 05/02/83, 16:42:48.2

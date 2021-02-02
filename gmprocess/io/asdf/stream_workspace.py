@@ -23,7 +23,6 @@ from gmprocess.core.stationtrace import (
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.metrics.station_summary import StationSummary, XML_UNITS
-from gmprocess.utils.exception import GMProcessException
 from gmprocess.utils.event import ScalarEvent
 
 TIMEPAT = '[0-9]{4}-[0-9]{2}-[0-9]{2}T'
@@ -253,7 +252,7 @@ class StreamWorkspace(object):
         """
         if label is not None:
             if '_' in label:
-                raise GMProcessException(
+                raise ValueError(
                     'Stream label cannot contain an underscore.')
 
         # To allow for multiple processed versions of the same Stream

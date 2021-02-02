@@ -7,13 +7,13 @@ import logging
 import pytz
 from obspy.core.utcdatetime import UTCDateTime
 import numpy as np
+from requests.exceptions import ConnectionError
 
 # local imports
 from gmprocess.io.fetcher import DataFetcher, _get_first_value
 from gmprocess.io.read import read_data
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.utils.config import get_config
-from gmprocess.utils.exception import GMProcessException
 from gmprocess.io.cosmos.cesmd_search import (
     get_records, get_metadata,
     get_stations_dataframe)
@@ -194,7 +194,7 @@ class CESMDFetcher(DataFetcher):
                 eqtimewindow=self.eq_dt,  # seconds
                 eqradius=self.radius,  # km
                 station_radius=self.station_radius)
-        except Exception:
+        except BaseException:
             return []
 
         tmp_events = metadata['results']['events']
@@ -269,11 +269,11 @@ class CESMDFetcher(DataFetcher):
                     startdate=starttime,
                     enddate=endtime,
                 )
-            except GMProcessException as gpe:
+            except BaseException as ex:
                 eqfmt = 'M%.1f %s'
                 eqdesc = eqfmt % (
                     self.magnitude, self.time.strftime('%Y-%m-%d %H:%M:%S'))
-                if '404' in str(gpe):
+                if '404' in str(ex):
                     logging.info('Could not find data records for %s' % eqdesc)
                 else:
                     logging.info(
@@ -314,7 +314,7 @@ class CESMDFetcher(DataFetcher):
                         startdate=starttime,
                         enddate=endtime,
                     )
-                except GMProcessException as gpe:
+                except BaseException as gpe:
                     eqfmt = 'M%.1f %s'
                     eqdesc = eqfmt % (
                         self.magnitude,
@@ -337,9 +337,9 @@ class CESMDFetcher(DataFetcher):
             logging.info('Reading CESMD file %s...' % dfile)
             try:
                 streams += read_data(dfile)
-            except GMProcessException as gme:
+            except BaseException as ex:
                 logging.info('Could not read %s: error "%s"' %
-                             (dfile, str(gme)))
+                             (dfile, str(ex)))
 
         stream_collection = StreamCollection(
             streams=streams, drop_non_free=self.drop_non_free)
