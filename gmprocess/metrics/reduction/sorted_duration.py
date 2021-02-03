@@ -54,7 +54,6 @@ class SortedDuration(Reduction):
             dt = trace.stats['delta']
             # convert from cm/s/s to m/s/s
             acc = trace.data * 0.01
-            time = trace.times()
 
             # Calculate Arias Intensity
             integrated_acc2 = integrate.cumtrapz(acc * acc, dx=dt)
@@ -64,12 +63,8 @@ class SortedDuration(Reduction):
             ai_norm = arias_intensity / np.max(arias_intensity)
 
             # Binned intervals
-            ai_norm_levels = np.linspace(1 / NBINS, 1, NBINS)
-            index = np.ones(len(ai_norm_levels))
-            for i in range(len(ai_norm_levels) - 1):
-                index[i] = np.nonzero(ai_norm > ai_norm_levels[i])[0][0]
-            index[-1] = len(acc) - 1
-            index = np.append(0, index)
+            ai_norm_levels = np.linspace(0, 1, NBINS + 1)
+            index = np.searchsorted(ai_norm, ai_norm_levels, side='right')
             dindex = index[1:] - index[:-1]
             D5_75_sorted = sum(np.sort(dindex)[:int(P_END * NBINS)]) * dt
 
