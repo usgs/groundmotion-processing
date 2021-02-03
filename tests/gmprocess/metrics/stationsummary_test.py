@@ -68,7 +68,8 @@ def test_stationsummary():
         imcs = stream_summary.available_imcs
         np.testing.assert_array_equal(np.sort(imcs), target_available)
         target_available = np.sort(np.asarray([
-            'pga', 'pgv', 'sa', 'arias', 'fas', 'duration']))
+            'pga', 'pgv', 'sa', 'arias', 'fas', 'duration', 'sorted_duration'
+        ]))
         imts = stream_summary.available_imts
         np.testing.assert_array_equal(np.sort(imts), target_available)
     test_pgms = {
