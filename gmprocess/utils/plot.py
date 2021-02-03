@@ -458,7 +458,7 @@ def plot_moveout(streams, epilat, epilon, orientation=None, max_dist=None,
 
             # Multiply by distance to normalize
             if normalize:
-                trace.data = trace.data.astype(np.float) * distance
+                trace.data = trace.data.astype(float) * distance
             trace.data *= scale
 
             times = []

@@ -396,12 +396,15 @@ class MetricsController(object):
                 red = red_cls(c1, self.bandwidth, percentile,
                               period, self.smooth_type).result
 
-                if step_set['Reduction'] == 'max' and isinstance(c1, (Stream, StationStream)):
+                if (step_set['Reduction'] == 'max' and
+                        isinstance(c1, (Stream, StationStream))):
                     times = red[1]
                     if imt_imc.split('_')[-1] == 'channels':
                         for chan in times:
                             for key in times[chan]:
-                                self.timeseries.select(channel=chan)[0].stats[key] = times[chan][key]
+                                self.timeseries.select(
+                                    channel=chan)[0].stats[key] = \
+                                    times[chan][key]
                     red = red[0]
 
                 # -------------------------------------------------------------

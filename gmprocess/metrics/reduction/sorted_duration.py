@@ -10,12 +10,17 @@ from gmprocess.utils.constants import GAL_TO_PCTG
 from gmprocess.metrics.reduction.reduction import Reduction
 
 # Hard code percentiles for duration now. Need to make this conigurable.
-P_START = 0.05
-P_END = 0.95
+P_START = 0.0
+P_END = 0.7
+NBINS = 20
 
 
-class Duration(Reduction):
-    """Class for calculation of duration."""
+class SortedDuration(Reduction):
+    """Class for calculation of sorted duration.
+
+    This code is based on the implementation provided by Mahdi Bahrampouri on
+    2/2/2021.
+    """
 
     def __init__(self, reduction_data, bandwidth=None, percentile=None,
                  period=None, smoothing=None):
@@ -35,16 +40,16 @@ class Duration(Reduction):
         """
         super().__init__(reduction_data, bandwidth=None, percentile=None,
                          period=None, smoothing=None)
-        self.result = self.get_duration()
+        self.result = self.get_sorted_duration()
 
-    def get_duration(self):
+    def get_sorted_duration(self):
         """
         Performs calculation of arias intensity.
 
         Returns:
-            durations: Dictionary of durations for each channel.
+            Dictionary of sorted durations for each channel.
         """
-        durations = {}
+        sorted_durations = {}
         for trace in self.reduction_data:
             dt = trace.stats['delta']
             # convert from cm/s/s to m/s/s
@@ -58,11 +63,17 @@ class Duration(Reduction):
             # Normalized AI
             ai_norm = arias_intensity / np.max(arias_intensity)
 
-            ind0 = np.argmin(np.abs(ai_norm - P_START))
-            ind1 = np.argmin(np.abs(ai_norm - P_END))
+            # Binned intervals
+            ai_norm_levels = np.linspace(1 / NBINS, 1, NBINS)
+            index = np.ones(len(ai_norm_levels))
+            for i in range(len(ai_norm_levels) - 1):
+                index[i] = np.nonzero(ai_norm > ai_norm_levels[i])[0][0]
+            index[-1] = len(acc) - 1
+            index = np.append(0, index)
+            dindex = index[1:] - index[:-1]
+            D5_75_sorted = sum(np.sort(dindex)[:int(P_END * NBINS)]) * dt
 
-            dur595 = time[ind1] - time[ind0]
             channel = trace.stats.channel
-            durations[channel] = dur595
+            sorted_durations[channel] = D5_75_sorted
 
-        return durations
+        return sorted_durations
