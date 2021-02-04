@@ -383,7 +383,7 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
     """Return stats structure from various V1 headers.
 
     Output is a dictionary like this:
-     - network (str): Default is 'ZZ'. Determined using COSMOS_NETWORKS
+     - network (str): Default is '--'. Determined using COSMOS_NETWORKS
      - station (str)
      - channel (str)
      - location (str): Default is '--'
@@ -456,7 +456,7 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
             source = SOURCES1[idx].decode(
                 'utf-8') + ', ' + SOURCES2[idx].decode('utf-8')
         except BaseException:
-            network = 'ZZ'
+            network = '--'
             source = 'unknown'
     hdr['network'] = network
     logging.debug('network: %s' % network)
@@ -568,7 +568,8 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
     """Return stats structure from various headers.
 
     Output is a dictionary like this:
-     - network (str): Default is 'ZZ'. Determined using COSMOS_NETWORKS
+     - network (str): Default is '--' (unknown). Determined using
+       COSMOS_NETWORKS
      - station (str)
      - channel (str)
      - location (str): Default is '--'
@@ -630,7 +631,7 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
         source = SOURCES1[idx].decode(
             'utf-8') + ', ' + SOURCES2[idx].decode('utf-8')
     else:
-        network = 'ZZ'
+        network = '--'
         source = 'unknown'
     hdr['network'] = network
     station_line = lines[5]

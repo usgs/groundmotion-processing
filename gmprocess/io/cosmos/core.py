@@ -460,7 +460,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
             source = SOURCES1[idx].decode(
                 'utf-8') + ', ' + SOURCES2[idx].decode('utf-8')
         else:
-            network = 'ZZ'
+            network = '--'
             source = ''
     hdr['network'] = network
     logging.debug('network: %s' % network)
