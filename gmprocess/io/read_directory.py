@@ -54,7 +54,7 @@ def directory_to_streams(directory):
                 try:
                     logging.debug('Attempting to read: %s' % file_path)
                     streams += read_data(file_path)
-                except Exception as ex:
+                except BaseException as ex:
                     unprocessed_files += [file_path]
                     unprocessed_file_errors += [ex]
 
