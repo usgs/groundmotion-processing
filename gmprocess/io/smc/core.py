@@ -297,7 +297,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     # most of the time it seems has has USGS in it
     # sometimes it's something like JPL/USGS, CDOT/USGS, etc.
     # if it's got USGS in it, let's just say network=US, otherwise "--"
-    stats['network'] = 'ZZ'
+    stats['network'] = '--'
     if ascheader[7].find('USGS') > -1:
         stats['network'] = 'US'
 

@@ -45,7 +45,7 @@ def _test_signal_split():
     # reset the processing parameters...
     for trace in st:
         trace.stats.parameters = []
-    st[0].stats.channel = 'ZZZ'
+    st[0].stats.channel = '--'
     signal_split(st, method='p_arrival', picker_config=PICKER_CONFIG)
 
     for tr in st:
