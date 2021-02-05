@@ -130,33 +130,38 @@ class MetricsController(object):
 
         Notes:
             Custom configs must be in the following format:
-                    {'metrics':
-                            'output_imcs': <list>,
-                            'output_imts': <list>,
-                            'sa':{
-                                    'damping': <float>,
-                                    'periods': {
-                                            'start': <float>,
-                                            'stop': <float>,
-                                            'num': <float>,
-                                            'spacing': <string>,
-                                            'use_array': <bool>,
-                                            'defined_periods': <list>,
-                                    }
-                            },
-                            'fas':{
-                                    'smoothing': <float>,
-                                    'bandwidth': <float>,
-                                    'periods': {
-                                            'start': <float>,
-                                            'stop': <float>,
-                                            'num': <float>,
-                                            'spacing': <string>,
-                                            'use_array': <bool>,
-                                            'defined_periods': <list>,
-                                    }
-                            }
+            {
+                'metrics':
+                    'output_imcs': <list>,
+                    'output_imts': <list>,
+                    'sa':{
+                        'damping': <float>,
+                        'periods': {
+                            'start': <float>,
+                            'stop': <float>,
+                            'num': <float>,
+                            'spacing': <string>,
+                            'use_array': <bool>,
+                            'defined_periods': <list>,
+                        }
+                    },
+                    'fas':{
+                        'smoothing': <str>,
+                        'bandwidth': <float>,
+                        'allow_nans': <bool>,
+                        'periods': {
+                            'start': <float>,
+                            'stop': <float>,
+                            'num': <float>,
+                            'spacing': <string>,
+                            'use_array': <bool>,
+                            'defined_periods': <list>,
+                        }
+                    },
+                    'duration':{
+                        'intervals': <list>
                     }
+            }
             Currently the only acceptied smoothing type is 'konno_ohmachi',
             and the options for spacing are 'linspace' or 'logspace'.
         """
@@ -165,7 +170,7 @@ class MetricsController(object):
         metrics = config['metrics']
         config_imts = [imt.lower() for imt in metrics['output_imts']]
         imcs = [imc.lower() for imc in metrics['output_imcs']]
-        # append periods
+        # append periods for sa and fas, interval for duration
         imts = []
         for imt in config_imts:
             if imt == 'sa':
@@ -196,6 +201,9 @@ class MetricsController(object):
                 else:
                     for period in metrics['fas']['periods']['defined_periods']:
                         imts += ['fas' + str(period)]
+            elif imt == 'duration':
+                for interval in metrics['duration']['intervals']:
+                    imts += ['duration' + interval]
             else:
                 imts += [imt]
         damping = metrics['sa']['damping']
@@ -231,6 +239,7 @@ class MetricsController(object):
         pgm_steps = {}
         for imt in self.imts:
             period = None
+            interval = None
             integrate = False
             differentiate = False
             baseimt = imt
@@ -254,6 +263,11 @@ class MetricsController(object):
                 if period is None:
                     continue
                 imt = 'fas'
+            elif imt.startswith('duration'):
+                interval = self._parse_interval(imt)
+                if interval is None:
+                    continue
+                imt = 'duration'
             if imt not in self._available_imts:
                 continue
             for imc in self.imcs:
@@ -295,6 +309,7 @@ class MetricsController(object):
                 steps.update(imt_steps)
                 steps.update(imc_steps)
                 steps['period'] = period
+                steps['interval'] = interval
                 steps['percentile'] = percentile
                 steps['imc'] = imc
                 steps['imt'] = imt
@@ -313,22 +328,23 @@ class MetricsController(object):
             next step set will begin. The result cell of the dataframe will be
             filled with a np.nan value.
         """
+        # paths
+        transform_path = 'gmprocess.metrics.transform.'
+        rotation_path = 'gmprocess.metrics.rotation.'
+        combination_path = 'gmprocess.metrics.combination.'
+        reduction_path = 'gmprocess.metrics.reduction.'
+
         # Initialize dictionary for storing the results
         result_dict = None
         for idx, imt_imc in enumerate(self.step_sets):
             step_set = self.step_sets[imt_imc]
             period = step_set['period']
+            interval = step_set['interval']
             percentile = step_set['percentile']
             if period is not None:
                 period = float(period)
             if percentile is not None:
                 percentile = float(percentile)
-
-            # paths
-            transform_path = 'gmprocess.metrics.transform.'
-            rotation_path = 'gmprocess.metrics.rotation.'
-            combination_path = 'gmprocess.metrics.combination.'
-            reduction_path = 'gmprocess.metrics.reduction.'
 
             try:
                 # -------------------------------------------------------------
@@ -394,7 +410,7 @@ class MetricsController(object):
                 red_cls = self._get_subclass(inspect.getmembers(
                     red_mod, inspect.isclass), 'Reduction')
                 red = red_cls(c1, self.bandwidth, percentile,
-                              period, self.smooth_type).result
+                              period, self.smooth_type, interval).result
 
                 if (step_set['Reduction'] == 'max' and
                         isinstance(c1, (Stream, StationStream))):
@@ -505,10 +521,13 @@ class MetricsController(object):
         imt = steps['imt']
         period = steps['period']
         percentile = steps['percentile']
+        interval = steps['interval']
         if period is not None:
-            imt_str = '%s(%.3f)' % (imt.upper(), float(period))
-            imt_str = '%s(%s)' % (imt.upper(), METRICS_XML_FLOAT_STRING_FORMAT[
-                'period']) % float(period)
+            sfmt = METRICS_XML_FLOAT_STRING_FORMAT['period']
+            tmp_imt_str = '%s(%s)' % (imt.upper(), sfmt)
+            imt_str = tmp_imt_str % float(period)
+        elif interval is not None:
+            imt_str = '%s%i-%i' % (imt.upper(), interval[0], interval[1])
         else:
             imt_str = imt.upper()
         if percentile is not None:
@@ -610,6 +629,28 @@ class MetricsController(object):
         else:
             period = None
         return period
+
+    @staticmethod
+    def _parse_interval(imt):
+        """
+        Parses the interval from the imt string.
+
+        Args:
+            imt (string):
+                Imt that contains a interval.
+                example:
+                    - duration5-95
+        Returns:
+            str: Interval for the calculation.
+
+        Notes:
+            Can be either a float or integer.
+        """
+        tmpstr = imt.replace('duration', '')
+        if tmpstr:
+            return [int(p) for p in tmpstr.split('-')]
+        else:
+            return None
 
     @staticmethod
     def _parse_percentile(imc):

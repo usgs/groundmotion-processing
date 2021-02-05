@@ -9,20 +9,18 @@ from scipy import integrate
 from gmprocess.utils.constants import GAL_TO_PCTG
 from gmprocess.metrics.reduction.reduction import Reduction
 
-# Hard code percentiles for duration now. Need to make this conigurable.
-P_START = 0.05
-P_END = 0.95
-
 
 class Duration(Reduction):
     """Class for calculation of duration."""
 
     def __init__(self, reduction_data, bandwidth=None, percentile=None,
-                 period=None, smoothing=None):
+                 period=None, smoothing=None, interval=None):
         """
         Args:
             reduction_data (obspy.core.stream.Stream or numpy.ndarray):
                 Intensity measurement component.
+            bandwidth (float):
+                Bandwidth for the smoothing operation. Default is None.
             percentile (float):
                 Percentile for rotation calculations. Default is None.
             period (float):
@@ -30,11 +28,13 @@ class Duration(Reduction):
                 Default is None.
             smoothing (string):
                 Smoothing type. Default is None.
-            bandwidth (float):
-                Bandwidth for the smoothing operation. Default is None.
+            interval (list):
+                List of length 2 with the quantiles (0-1) for duration interval
+                calculation.
         """
         super().__init__(reduction_data, bandwidth=None, percentile=None,
-                         period=None, smoothing=None)
+                         period=None, smoothing=None, interval=None)
+        self.interval = interval
         self.result = self.get_duration()
 
     def get_duration(self):
@@ -58,11 +58,11 @@ class Duration(Reduction):
             # Normalized AI
             ai_norm = arias_intensity / np.max(arias_intensity)
 
-            ind0 = np.argmin(np.abs(ai_norm - P_START))
-            ind1 = np.argmin(np.abs(ai_norm - P_END))
+            ind0 = np.argmin(np.abs(ai_norm - self.interval[0] / 100.0))
+            ind1 = np.argmin(np.abs(ai_norm - self.interval[1] / 100.0))
 
-            dur595 = time[ind1] - time[ind0]
+            dur = time[ind1] - time[ind0]
             channel = trace.stats.channel
-            durations[channel] = dur595
+            durations[channel] = dur
 
         return durations
