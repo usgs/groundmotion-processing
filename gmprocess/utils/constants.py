@@ -56,7 +56,9 @@ METRICS_XML_FLOAT_STRING_FORMAT = {
     'damping': '%.2f',
     'back_azimuth': '%.2f',
     'vs30': '%.2f',
-    'distance': '%.2f'
+    'distance': '%.2f',
+    'duration': '%.8g',
+    'sorted_duration': '%.8g'
 }
 
 # Default float format when we don't have a preference
@@ -105,5 +107,5 @@ COMPONENTS = {
     'QUADRATIC_MEAN': ['FAS'],
     'GEOMETRIC_MEAN': ['FAS'],
     'ARITHMETIC_MEAN': ['FAS'],
-    'CHANNELS': ['SA', 'PGA', 'PGV', 'DURATION', 'ARIAS']
+    'CHANNELS': ['SA', 'PGA', 'PGV', 'DURATION', 'SORTED_DURATION', 'ARIAS']
 }

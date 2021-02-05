@@ -87,7 +87,9 @@ FLATFILE_IMT_COLUMNS = {
            % XML_UNITS['sa'],
     'FAS(X)': 'Fourier amplitude spectrum value (%s) at X seconds'
            % XML_UNITS['fas'],
-    'DURATION': '5-95 percent significant duration (%s)'
+    'DURATIONp-q': 'p-q percent significant duration (%s)'
+           % XML_UNITS['duration'],
+    'SORTED_DURATION': 'Sorted significant duration (%s)'
            % XML_UNITS['duration'],
     'ARIAS': 'Arias intensity (%s)'
            % XML_UNITS['arias']
@@ -792,6 +794,9 @@ class StreamWorkspace(object):
                         readme_dict['SA(X)'] = FLATFILE_IMT_COLUMNS['SA(X)']
                     elif imt.startswith('FAS'):
                         readme_dict['FAS(X)'] = FLATFILE_IMT_COLUMNS['FAS(X)']
+                    elif imt.startswith('DURATION'):
+                        readme_dict['DURATIONp-q'] = \
+                            FLATFILE_IMT_COLUMNS['DURATIONp-q']
                     else:
                         readme_dict[imt] = FLATFILE_IMT_COLUMNS[imt]
             df_readme = pd.DataFrame.from_dict(readme_dict, orient='index')
@@ -906,8 +911,9 @@ class StreamWorkspace(object):
                    (st.passed and st[0].stats.network == network)]
 
         if not len(streams):
-            fmt = '''Stream matching event ID %s,
-            station ID %s, and processing label %s not found in workspace.'''
+            fmt = ('Stream matching event ID %s, '
+                   'station ID %s, and processing label %s not found in '
+                   'workspace.')
             msg = fmt % (eventid, station, label)
             logging.warning(msg)
             return None
@@ -1237,7 +1243,8 @@ def _get_table_row(stream, summary, event, imc):
             'H1Lowpass': h1_lowpass,
             'H1Highpass': h1_highpass,
             'H2Lowpass': h2_lowpass,
-            'H2Highpass': h2_highpass}
+            'H2Highpass': h2_highpass
+        }
 
     dists = summary.distances
 

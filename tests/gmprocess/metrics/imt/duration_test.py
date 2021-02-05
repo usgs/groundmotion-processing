@@ -15,6 +15,7 @@ from gmprocess.io.test_utils import read_data_dir
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace
+from gmprocess.metrics.reduction.duration import Duration
 
 
 def test_duration():
@@ -68,9 +69,9 @@ def test_duration():
         tr.setProvenance('remove_response', response)
 
     station = StationSummary.from_stream(
-        stream, ['ARITHMETIC_MEAN'], ['duration'])
+        stream, ['ARITHMETIC_MEAN'], ['duration5-95'])
     pgms = station.pgms
-    d595 = pgms.loc['DURATION', 'ARITHMETIC_MEAN'].Result
+    d595 = pgms.loc['DURATION5-95', 'ARITHMETIC_MEAN'].Result
 
     np.testing.assert_allclose(d595, target_d595, atol=1e-4, rtol=1e-4)
 
@@ -81,12 +82,30 @@ def test_duration():
         stream,
         ['channels', 'gmrotd', 'rotd50', 'greater_of_two_horizontals',
          'ARITHMETIC_MEAN', 'geometric_mean'],
-        ['duration']
+        ['duration5-95']
     )
     # Currently disallowed
     assert 'gmrotd' not in station.pgms.index.get_level_values(1)
     assert 'rotd50' not in station.pgms.index.get_level_values(1)
     print(station)
+
+
+def test_duration575():
+    ddir = os.path.join('data', 'testdata', 'cosmos', 'us1000hyfh')
+    datadir = pkg_resources.resource_filename('gmprocess', ddir)
+    data_file = os.path.join(
+        datadir, 'us1000hyfh_akbmrp_AKBMR--n.1000hyfh.BNZ.--.acc.V2c')
+    stream = read_data(data_file)[0]
+
+    dur = Duration(stream, interval=[5, 75])
+
+    np.testing.assert_allclose(
+        dur.result['HN1'], 45.325, atol=1e-4, rtol=1e-4)
+
+
+if __name__ == '__main__':
+    test_duration()
+    test_duration575()
 
 
 if __name__ == '__main__':

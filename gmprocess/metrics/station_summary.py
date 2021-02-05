@@ -25,7 +25,8 @@ XML_UNITS = {
     'sa': '%g',
     'arias': 'm/s',
     'fas': 'cm/s',
-    'duration': 's'
+    'duration': 's',
+    'sorted_duration': 's'
 }
 
 DEFAULT_DAMPING = 0.05
@@ -579,6 +580,9 @@ class StationSummary(object):
                     if 'damping' in element.attrib:
                         damping = float(element.attrib['damping'])
                     imt = '%s(%s)' % (etag.upper(), period)
+                elif etag == 'duration':
+                    interval = element.attrib['interval']
+                    imt = '%s%s' % (etag.upper(), interval)
                 else:
                     imt = etag.upper()
                 for imc_element in element.getchildren():
@@ -739,6 +743,13 @@ class StationSummary(object):
                         METRICS_XML_FLOAT_STRING_FORMAT['damping'] % damping
                 else:
                     imtstr = 'fas'
+                imt_tag = etree.SubElement(root, imtstr, attrib=attdict)
+            elif imtstr.startswith('duration'):
+                attdict = {
+                    'interval': imtstr.replace('duration', ''),
+                    'units': units
+                }
+                imtstr = 'duration'
                 imt_tag = etree.SubElement(root, imtstr, attrib=attdict)
             else:
                 imt_tag = etree.SubElement(root, imtstr, units=units)

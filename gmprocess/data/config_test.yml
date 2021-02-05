@@ -462,6 +462,8 @@ metrics:
       - PGA
       - PGV
       - SA
+      - duration
+      - sorted_duration
   # Periods defined for the SA and FAS imts
   sa:
       # damping used to calculate the spectral response
@@ -503,6 +505,10 @@ metrics:
         # predefined by the array of periods.
         defined_periods:
           - 0.3
+  duration:
+      intervals:
+          - 5-75
+          - 5-95
   # Section for Vs30 calculations. This may contain several keys. Each key
   # must be unique, and must have the four attributes: file, column_header,
   # readme_entry, and units.
