@@ -14,7 +14,7 @@ class Max(Reduction):
     """Class for calculation of maximum value."""
 
     def __init__(self, reduction_data, bandwidth=None, percentile=None,
-                 period=None, smoothing=None, interval=[0.05, 0.95]):
+                 period=None, smoothing=None, interval=[5, 95]):
         """
         Args:
             reduction_data (obspy.core.stream.Stream or numpy.ndarray):
@@ -33,7 +33,7 @@ class Max(Reduction):
                 calculation.
         """
         super().__init__(reduction_data, bandwidth=None, percentile=None,
-                         period=None, smoothing=None, interval=[0.05, 0.95])
+                         period=None, smoothing=None, interval=[5, 95])
         self.result = self.get_max()
 
     def get_max(self):

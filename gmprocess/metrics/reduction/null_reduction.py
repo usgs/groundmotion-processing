@@ -10,7 +10,7 @@ class Null_Reduction(Reduction):
         other than returning the input reduction_data."""
 
     def __init__(self, reduction_data, bandwidth=None, percentile=None,
-                 period=None, smoothing=None, interval=[0.05, 0.95]):
+                 period=None, smoothing=None, interval=[5, 95]):
         """
         Args:
             reduction_data (obspy.core.stream.Stream or numpy.ndarray):
@@ -29,7 +29,7 @@ class Null_Reduction(Reduction):
                 calculation.
         """
         super().__init__(reduction_data, bandwidth=None, percentile=None,
-                         period=None, smoothing=None, interval=[0.05, 0.95])
+                         period=None, smoothing=None, interval=[5, 95])
         self.result = self.get_reduction_data()
 
     def get_reduction_data(self):
