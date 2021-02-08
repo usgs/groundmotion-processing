@@ -58,7 +58,7 @@ def directory_to_streams(directory):
                     unprocessed_files += [file_path]
                     unprocessed_file_errors += [ex]
 
-    except Exception as e:
+    except BaseException as e:
         raise e
     finally:
         shutil.rmtree(temp_dir)

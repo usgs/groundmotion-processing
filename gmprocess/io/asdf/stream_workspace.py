@@ -373,7 +373,7 @@ class StreamWorkspace(object):
                                 path=path,
                                 parameters={}
                             )
-                        except Exception:
+                        except BaseException:
                             pass
 
             inventory = stream.getInventory()
@@ -641,7 +641,7 @@ class StreamWorkspace(object):
                     calc_waveform_metrics=calc_waveform_metrics,
                     calc_station_metrics=calc_station_metrics,
                     rupture=rupture, vs30_grids=vs30_grids)
-            except Exception as pgme:
+            except BaseException as pgme:
                 fmt = ('Could not create stream metrics for event %s,'
                        'instrument %s: "%s"')
                 logging.warning(fmt % (eventid, instrument, str(pgme)))

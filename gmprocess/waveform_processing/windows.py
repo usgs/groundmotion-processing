@@ -171,7 +171,7 @@ def signal_split(
                                                 config=config)
                 elif pick_method == 'yeck':
                     loc, mean_snr = pick_kalkan(st)
-            except Exception:
+            except BaseException:
                 loc = -1
                 mean_snr = np.nan
             row = {

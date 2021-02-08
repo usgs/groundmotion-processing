@@ -46,7 +46,7 @@ def is_unam(filename):
     try:
         with open(filename, 'rt') as myfile:
             header = [next(myfile) for x in range(7)]
-    except Exception:
+    except BaseException:
         return False
     if MARKER in header[6]:
         return True

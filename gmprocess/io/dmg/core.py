@@ -730,7 +730,7 @@ def _get_coords(latitude_str, longitude_str):
         latitude = float(latitude_str[:-1])
         if latitude_str.upper().find('S') >= 0:
             latitude = -1 * latitude
-    except Exception:
+    except BaseException:
         logging.warning('No latitude or invalid latitude format provided. '
                         'Setting to np.nan.', Warning)
         latitude = np.nan

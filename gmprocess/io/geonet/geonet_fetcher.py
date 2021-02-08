@@ -278,7 +278,7 @@ class GeoNetFetcher(object):
             try:
                 tstreams = read_geonet(dfile)
                 streams += tstreams
-            except Exception as e:
+            except BaseException as e:
                 fmt = ('Failed to read GeoNet file "%s" due to error "%s". '
                        'Continuing.')
                 tpl = (dfile, str(e))

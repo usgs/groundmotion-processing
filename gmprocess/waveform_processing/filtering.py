@@ -63,7 +63,7 @@ def highpass_filter_trace(tr, filter_order=5, number_of_passes=2):
                 'corner_frequency': freq
             }
         )
-    except Exception as e:
+    except BaseException as e:
         tr.fail("Lowpass filter failed with excpetion: %s" % e)
     return tr
 
@@ -130,6 +130,6 @@ def lowpass_filter_trace(tr, filter_order=5, number_of_passes=2):
                 'corner_frequency': freq
             }
         )
-    except Exception as e:
+    except BaseException as e:
         tr.fail("Lowpass filter failed with excpetion: %s" % e)
     return tr

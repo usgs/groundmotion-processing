@@ -60,7 +60,7 @@ class ProcessWaveformsModule(SubcommandModule):
             # parallelize processing on events
             try:
                 client = Client(n_workers=gmrecords.args.num_processes)
-            except Exception as ex:
+            except BaseException as ex:
                 print(ex)
                 print("Could not create a dask client.")
                 print("To turn off paralleization, use '--num-processes 0'.")
