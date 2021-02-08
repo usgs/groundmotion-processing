@@ -161,7 +161,12 @@ def snr_check(tr, mag, threshold=3.0, min_freq='f0', max_freq=5.0, f0_options={
                 min_freq = f0_options['ceiling']
 
         # Check if signal criteria is met
-        min_snr = np.min(snr[(freq >= min_freq) & (freq <= max_freq)])
+        mask = (freq >= min_freq) & (freq <= max_freq)
+        if np.any(mask):
+            min_snr = np.min(snr[mask])
+        else:
+            min_snr = 0
+
         if min_snr < threshold:
             tr.fail('Failed SNR check; SNR less than threshold.')
     snr_conf = {
