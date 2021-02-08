@@ -47,7 +47,7 @@ def is_esm(filename):
             lines = [next(f) for x in range(TEXT_HDR_ROWS)]
             if lines[0].startswith(HDR1) and lines[1].startswith(HDR2):
                 return True
-    except Exception:
+    except BaseException:
         return False
     return False
 

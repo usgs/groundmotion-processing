@@ -249,7 +249,7 @@ def build_report_latex(sc, directory, origin, prefix='', config=None):
                 print('pdflatex output:')
                 print(stdout.decode())
                 print(stderr.decode())
-        except Exception:
+        except BaseException:
             report_file = ''
             pass
         finally:

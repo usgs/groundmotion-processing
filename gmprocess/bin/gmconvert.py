@@ -118,7 +118,7 @@ https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supp
             logging.info('Parsing %s...' % dfile)
             try:
                 streams = read_data(dfile)
-            except Exception as e:
+            except BaseException as e:
                 error_dict[dfile] = str(e)
                 continue
             allstreams += streams

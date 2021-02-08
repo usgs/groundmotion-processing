@@ -430,7 +430,7 @@ class MetricsController(object):
                 c2_cls = self._get_subclass(inspect.getmembers(
                     c2_mod, inspect.isclass), 'Combination')
                 c2 = c2_cls(red).result
-            except Exception as e:
+            except BaseException as e:
                 msg = ('Error in calculation of %r: %r.\nResult '
                        'cell will be set to np.nan.' % (imt_imc, str(e)))
                 logging.warning(msg)

@@ -64,7 +64,7 @@ def fetch_data(time, lat, lon, depth, magnitude,
             fetchinst = fetcher(
                 time, lat, lon, depth, magnitude, config=config,
                 rawdir=rawdir, drop_non_free=drop_non_free)
-        except Exception as e:
+        except BaseException as e:
             fmt = 'Could not instantiate Fetcher %s, due to error\n "%s"'
             tpl = (fetchname, str(e))
             msg = fmt % tpl

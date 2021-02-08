@@ -46,7 +46,7 @@ def is_knet(filename):
             lines = [next(f) for x in range(TEXT_HDR_ROWS)]
             if lines[0].startswith(HDR1) and lines[5].startswith(HDR2):
                 return True
-    except Exception:
+    except BaseException:
         return False
     return False
 

@@ -76,7 +76,7 @@ class ScalarEvent(Event):
         if isinstance(time, str):
             try:
                 time = UTCDateTime(time)
-            except Exception as e:
+            except BaseException as e:
                 fmt = 'Can\'t make UTCDateTime from string "%s" - error "%s"'
                 raise TypeError(fmt % (time, str(e)))
 

@@ -162,7 +162,7 @@ def is_obspy(filename):
             return True
         else:
             return True
-    except Exception:
+    except BaseException:
         return False
 
     return False

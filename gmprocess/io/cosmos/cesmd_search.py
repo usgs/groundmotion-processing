@@ -479,7 +479,7 @@ def get_records(output,
                             fin.close()
                     tmpzip.close()
                     zfiledata.close()
-                except Exception as e:
+                except BaseException as e:
                     fmt = ('Could not unpack sub-zip file "%s" due to error '
                            '"%s". Skipping.')
                     print(fmt % (member, str(e)))

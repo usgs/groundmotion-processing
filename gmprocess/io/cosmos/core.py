@@ -574,7 +574,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
         try:
             hdr['starttime'] = datetime(
                 year, month, day, hour, minute)
-        except Exception:
+        except BaseException:
             raise BaseException(
                 'COSMOS: Inadequate start time information.')
     else:
@@ -583,7 +583,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
         try:
             hdr['starttime'] = datetime(
                 year, month, day, hour, minute, int(second), microsecond)
-        except Exception:
+        except BaseException:
             raise BaseException(
                 'COSMOS: Inadequate start time information.')
 
@@ -648,7 +648,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
             etime = datetime(year, month, day, hour, minute,
                              int(second), microsecond)
             standard['process_time'] = etime.strftime(TIMEFMT)
-        except Exception:
+        except BaseException:
             standard['process_time'] = ''
     else:
         standard['process_time'] = ''

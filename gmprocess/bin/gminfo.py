@@ -63,7 +63,7 @@ def render_concise(files, save=False):
             for stream in streams:
                 tdf = get_dataframe(filename, stream)
                 df = pd.concat([df, tdf], axis=0)
-        except Exception as e:
+        except BaseException as e:
             row = pd.Series(index=ERROR_COLUMNS)
             row['Filename'] = os.path.abspath(filename)
             row['Error'] = str(e)
@@ -131,7 +131,7 @@ def render_verbose(files):
                 parts = ['\t' + line for line in chstr.split('\n')]
                 chstr = '\n'.join(parts)
                 print(chstr)
-        except Exception as e:
+        except BaseException as e:
             row = pd.Series(index=ERROR_COLUMNS)
             row['Filename'] = os.path.abspath(fname)
             row['Error'] = str(e)

@@ -257,7 +257,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                         pre_filt=(f1, f2, f3, f4))
                     tr.stats.standard.units = output.lower()
                     tr.stats.standard.process_level = PROCESS_LEVELS['V1']
-                except Exception as e:
+                except BaseException as e:
                     reason = ('Encountered an error when attempting to remove '
                               'instrument response: %s' % str(e))
                     tr.fail(reason)
@@ -313,7 +313,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                                 'output_units': ABBREV_UNITS[output]
                             }
                         )
-                except Exception as e:
+                except BaseException as e:
                     reason = ('Encountered an error when attempting to remove '
                               'instrument sensitivity: %s' % str(e))
                     tr.fail(reason)
@@ -323,7 +323,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                           'The instrument code must be either H '
                           '(high gain seismometer) or N (accelerometer).')
                 tr.fail(reason)
-        except Exception as e:
+        except BaseException as e:
             logging.info('Encountered an error when obtaining the poles and '
                          'zeros information: %s. Now using remove_sensitivity '
                          'instead of remove_response.' % str(e))

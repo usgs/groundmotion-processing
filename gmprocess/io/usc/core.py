@@ -70,7 +70,7 @@ def is_usc(filename, **kwargs):
             f.close()
             return False
         f.close()
-    except Exception:
+    except BaseException:
         return False
     finally:
         f.close()
