@@ -104,6 +104,7 @@ NON_IMT_COLS = set([
 
 COMPONENTS = {
     'ROTD50.0': ['SA', 'PGA', 'PGV'],
+    'GREATER_OF_TWO_HORIZONTALS': ['SA', 'PGA', 'PGV'],
     'QUADRATIC_MEAN': ['FAS'],
     'GEOMETRIC_MEAN': ['FAS'],
     'ARITHMETIC_MEAN': ['FAS'],
