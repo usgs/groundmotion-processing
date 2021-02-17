@@ -404,7 +404,7 @@ class StreamWorkspace(object):
         labels = list(set(all_labels))
         return labels
 
-    def getStreams(self, eventid, stations=None, labels=None):
+    def getStreams(self, eventid, stations=None, labels=None, config=None):
         """Get Stream from ASDF file given event id and input tags.
 
         Args:
@@ -414,6 +414,8 @@ class StreamWorkspace(object):
                 List of stations to search for.
             labels (list):
                 List of processing labels to search for.
+            config (dict):
+                Configuration options.
 
         Returns:
             StreamCollection: Object containing list of organized
@@ -457,7 +459,8 @@ class StreamWorkspace(object):
                             ttrace.data = ttrace.data.astype('int64')
                     trace = StationTrace(data=ttrace.data,
                                          header=ttrace.stats,
-                                         inventory=inventory)
+                                         inventory=inventory,
+                                         config=config)
 
                     # get the provenance information
                     provname = format_nslct(trace.stats, tag)
@@ -517,7 +520,7 @@ class StreamWorkspace(object):
                                 stream.setStreamParam(key, value)
 
                     streams.append(stream)
-        streams = StreamCollection(streams)
+        streams = StreamCollection(streams, config=config)
         return streams
 
     def getStations(self, eventid=None):
@@ -871,7 +874,7 @@ class StreamWorkspace(object):
         return (df, readme)
 
     def getStreamMetrics(self, eventid, network, station, label, streams=None,
-                         stream_label=None):
+                         stream_label=None, config=None):
         """Extract a StationSummary object from the ASDF file for a given
         input Stream.
 
@@ -889,6 +892,8 @@ class StreamWorkspace(object):
             stream_label (str):
                 Label to be used in the metrics path when providing a
                 StreamCollection.
+            config (dict):
+                Configuration options.
 
         Returns:
             StationSummary: Object containing all stream metrics or None.
@@ -904,7 +909,7 @@ class StreamWorkspace(object):
         # get the stream matching the eventid, station, and label
         if streams is None:
             streams = self.getStreams(eventid, stations=[station],
-                                      labels=[label])
+                                      labels=[label], config=config)
 
         # Only get streams that passed and match network
         streams = [st for st in streams if

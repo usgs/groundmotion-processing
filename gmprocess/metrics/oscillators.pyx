@@ -10,7 +10,7 @@ from obspy.core.stream import Stream
 from obspy.core.trace import Trace
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace
-from obspy.signal.invsim import corn_freq_2_paz, simulate_seismometer
+from obspy.signal.invsim import corn_freq_2_paz
 from obspy import read
 
 # local imports
@@ -26,9 +26,12 @@ cpdef list calculate_spectrals(trace, period, damping):
     Returns a list of spectral responses for acceleration, velocity,
             and displacement.
     Args:
-        trace (obspy Trace object): The trace to be acted upon
-        period (float): Period in seconds.
-        damping (float): Fraction of critical damping.
+        trace (obspy Trace object):
+            The trace to be acted upon
+        period (float):
+            Period in seconds.
+        damping (float):
+            Fraction of critical damping.
 
     Returns:
         list: List of spectral responses (np.ndarray).
@@ -75,10 +78,13 @@ cpdef list calculate_spectrals(trace, period, damping):
 def get_acceleration(stream, units='%%g'):
     """
     Returns a stream of acceleration with specified units.
+
     Args:
-        stream (obspy.core.stream.Stream): Strong motion timeseries
-            for one station. With units of g (cm/s/s).
-        units (str): Units of accelearation for output. Default is %g
+        stream (obspy.core.stream.Stream):
+            Strong motion timeseries for one station. With units of g (cm/s/s).
+        units (str):
+            Units of accelearation for output. Default is %g.
+
     Returns:
         obpsy.core.stream.Stream: stream of acceleration.
     """
@@ -100,16 +106,22 @@ def get_acceleration(stream, units='%%g'):
     return accel_stream
 
 
-def get_spectral(period, stream, damping=0.05, times=None):
+def get_spectral(period, stream, damping=0.05, times=None, config=None):
     """
     Returns a stream of spectral response with units of %%g.
+
     Args:
-        period (float): Period for spectral response.
-        stream (obspy.core.stream.Stream): Strong motion timeseries
-            for one station.
-        damping (float): Damping of oscillator.
-        times (np.ndarray): Array of times for the horizontal channels.
-            Default is None.
+        period (float):
+            Period for spectral response.
+        stream (obspy.core.stream.Stream):
+            Strong motion timeseries for one station.
+        damping (float):
+            Damping of oscillator.
+        times (np.ndarray):
+            Array of times for the horizontal channels. Default is None.
+        config (dict):
+            Configuraiton options.
+
     Returns:
         obpsy.core.stream.Stream or numpy.ndarray: stream of spectral response.
     """
@@ -128,7 +140,7 @@ def get_spectral(period, stream, damping=0.05, times=None):
             stats.delta = sa_list[4]
             stats.sampling_rate = sa_list[5]
             stats['units'] = '%%g'
-            spect_trace = StationTrace(data=acc_sa, header=stats)
+            spect_trace = StationTrace(data=acc_sa, header=stats, config=config)
             traces += [spect_trace]
         spect_stream = StationStream(traces)
         return spect_stream
@@ -138,10 +150,11 @@ def get_spectral(period, stream, damping=0.05, times=None):
             rot_matrix = stream[idx]
             rotated_spectrals = []
             for idy in range(0, len(rot_matrix)):
-                stats = {'npts': len(rot_matrix[idy]),
-                         'delta': times[1] - times[0],
-                         'sampling_rate': 1.0 / (times[1] - times[0])
-                        }
+                stats = {
+                    'npts': len(rot_matrix[idy]),
+                    'delta': times[1] - times[0],
+                    'sampling_rate': 1.0 / (times[1] - times[0])
+                }
                 new_trace = Trace(data=rot_matrix[idy], header=stats)
                 sa_list = calculate_spectrals(new_trace, period, damping)
                 acc_sa = sa_list[0]
@@ -155,8 +168,9 @@ def get_velocity(stream):
     """
     Returns a stream of velocity with units of cm/s.
     Args:
-        stream (obspy.core.stream.Stream): Strong motion timeseries
-            for one station.
+        stream (obspy.core.stream.Stream):
+            Strong motion timeseries for one station.
+
     Returns:
         obpsy.core.stream.Stream: stream of velocity.
     """

@@ -52,11 +52,14 @@ def is_nsmn(filename):
     return False
 
 
-def read_nsmn(filename):
+def read_nsmn(filename, **kwargs):
     """Read the Turkish NSMN strong motion data format.
 
     Args:
-        filename (str): path to NSMN data file.
+        filename (str):
+            path to NSMN data file.
+        kwargs (ref):
+            Other arguments will be ignored.
 
     Returns:
         list: Sequence of one StationStream object containing 3

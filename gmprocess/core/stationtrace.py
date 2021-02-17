@@ -1019,19 +1019,22 @@ def _get_software_agent(pr):
     return pr
 
 
-def _get_person_agent(pr):
+def _get_person_agent(pr, config=None):
     '''Get the seis-prov entity for the user software.
 
     Args:
         pr (prov.model.ProvDocument):
             Existing ProvDocument.
+        config (dict):
+            Configuration options.
 
     Returns:
         prov.model.ProvDocument:
             Provenance document updated with gmprocess software name/version.
     '''
     username = getpass.getuser()
-    config = get_config()
+    if config is None:
+        config = get_config()
     fullname = ''
     email = ''
     if 'user' in config:

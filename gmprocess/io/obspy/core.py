@@ -179,6 +179,7 @@ def read_obspy(filename, config=None, **kwargs):
             If None, retrieve global config.
         kwargs (ref):
             Other arguments will be ignored.
+
     Returns:
         Stream: StationStream object.
     """

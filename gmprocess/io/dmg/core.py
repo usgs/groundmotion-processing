@@ -133,7 +133,8 @@ def read_dmg(filename, **kwargs):
         CSMIP is synonymous to as DMG in this reader.
 
     Args:
-        filename (str): Path to possible DMG data file.
+        filename (str):
+            Path to possible DMG data file.
         kwargs (ref):
             units (str): String determining which timeseries is return. Valid
                     options include 'acc', 'vel', 'disp'. Default is 'acc'.
@@ -200,9 +201,13 @@ def _read_volume_one(filename, line_offset, location='', units='acc'):
     """Read channel data from DMG Volume 1 text file.
 
     Args:
-        filename (str): Input DMG V1 filename.
-        line_offset (int): Line offset to beginning of channel text block.
-        units (str): units to get
+        filename (str):
+            Input DMG V1 filename.
+        line_offset (int):
+            Line offset to beginning of channel text block.
+        units (str):
+            units to get.
+
     Returns:
         tuple: (list of obspy Trace, int line offset)
     """
@@ -291,9 +296,13 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
     """Read channel data from DMG text file.
 
     Args:
-        filename (str): Input DMG V2 filename.
-        line_offset (int): Line offset to beginning of channel text block.
-        units (str): units to get
+        filename (str):
+            Input DMG V2 filename.
+        line_offset (int):
+            Line offset to beginning of channel text block.
+        units (str):
+            Units to get.
+
     Returns:
         tuple: (list of obspy Trace, int line offset)
     """
@@ -773,8 +782,10 @@ def _read_lines(skip_rows, max_rows, widths, filename):
     """Read lines of headers and.
 
     Args:
-        skip_rows (int): Number of rows to skip.
-        filename (str): Path to possible DMG data file.
+        skip_rows (int):
+            Number of rows to skip.
+        filename (str):
+            Path to possible DMG data file.
     Returns:
         array-like: List of comments or array of data.
     """
@@ -788,9 +799,12 @@ def _get_data_format(filename, skip_rows, npts):
     """Read data header and return the format.
 
     Args:
-        skip_rows (int): Number of rows to skip.
-        filename (str): Path to possible DMG data file.
-        npts (int): Number of data points.
+        skip_rows (int):
+            Number of rows to skip.
+        filename (str):
+            Path to possible DMG data file.
+        npts (int):
+            Number of data points.
     Returns:
         tuple: (int number of rows, list list of widths).
     """
@@ -820,7 +834,8 @@ def _get_units(line):
     Parse units from a text line.
 
     Args:
-        line (str): text line which should contain units.
+        line (str):
+            text line which should contain units.
     """
     line = line.lower()
     if line.find('in units of') >= 0:

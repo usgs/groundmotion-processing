@@ -63,12 +63,14 @@ def is_renadic(filename):
     return False
 
 
-def read_renadic(filename):
+def read_renadic(filename, **kwargs):
     """Read the Chilean RENADIC strong motion data format.
 
     Args:
         filename (str):
             path to RENADIC data file.
+        kwargs (ref):
+            Other arguments will be ignored.
 
     Returns:
         list: Sequence of one StationStream object containing 3

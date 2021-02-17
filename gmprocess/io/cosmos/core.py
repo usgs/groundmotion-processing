@@ -252,6 +252,7 @@ def read_cosmos(filename, **kwargs):
                 6  in the COSMOS strong motion data format documentation for
                 station type codes.
             Other arguments will be ignored.
+
     Returns:
         list: List of StationStreams containing three channels of acceleration
         data (cm/s**2).

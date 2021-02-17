@@ -52,7 +52,7 @@ def is_esm(filename):
     return False
 
 
-def read_esm(filename):
+def read_esm(filename, **kwargs):
     """Read European ESM strong motion file.
 
     Args:
@@ -60,6 +60,7 @@ def read_esm(filename):
             Path to possible ESM data file.
         kwargs (ref):
             Other arguments will be ignored.
+
     Returns:
         Stream: Obspy Stream containing one channels of acceleration data
             (cm/s**2).

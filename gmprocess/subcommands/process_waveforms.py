@@ -87,7 +87,7 @@ class ProcessWaveformsModule(SubcommandModule):
 
         workspace = StreamWorkspace.open(workname)
         rstreams = workspace.getStreams(
-            event.id, labels=['unprocessed'])
+            event.id, labels=['unprocessed'], config=self.gmrecords.conf)
 
         logging.info('Processing \'%s\' streams for event %s...'
                      % ('unprocessed', event.id))

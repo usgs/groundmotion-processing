@@ -16,6 +16,9 @@ from gmprocess.metrics.exception import PGMException
 from gmprocess.metrics.metrics_controller import \
     MetricsController, _get_channel_dict
 from gmprocess.core.stationstream import StationStream
+from gmprocess.utils.config import get_config
+
+config = get_config()
 
 
 def test_get_channel_dict():
@@ -73,7 +76,8 @@ def test_controller():
     stream_v2 = read_geonet(datafile)[0]
 
     # Testing for acceleration --------------------------
-    m1 = MetricsController(input_imts, input_imcs, stream_v2, event=event)
+    m1 = MetricsController(input_imts, input_imcs, stream_v2, event=event,
+                           config=config)
     pgms = m1.pgms
 
     # testing for pga, pgv, sa
@@ -109,7 +113,8 @@ def test_controller():
     # Testing for Velocity --------------------------
     for trace in stream_v2:
         trace.stats.standard.units = 'vel'
-    m = MetricsController(input_imts, input_imcs, stream_v2, event=event)
+    m = MetricsController(input_imts, input_imcs, stream_v2, event=event,
+                          config=config)
     pgms = m.pgms
 
     # testing for pga, pgv, sa
@@ -174,7 +179,8 @@ def test_exceptions():
     # Check for origin Error
     passed = True
     try:
-        m = MetricsController('pga', 'radial_transverse', stream_v2)
+        m = MetricsController('pga', 'radial_transverse', stream_v2,
+                              config=config)
     except PGMException as e:
         passed = False
     assert passed == False
@@ -185,23 +191,23 @@ def test_exceptions():
     st3 = stream_v2.select(component='Z')
     st1 = StationStream([st2[0], st3[0]])
     passed = True
-    m = MetricsController('pga', 'geometric_mean', st1)
+    m = MetricsController('pga', 'geometric_mean', st1, config=config)
     pgm = m.pgms
     result = pgm['Result'].tolist()[0]
     assert np.isnan(result)
     # Check for horizontal passthrough rotd50
-    m = MetricsController('pga', 'rotd50', st1)
+    m = MetricsController('pga', 'rotd50', st1, config=config)
     pgm = m.pgms
     result = pgm['Result'].tolist()[0]
     assert np.isnan(result)
     # Check for horizontal passthrough gmrotd50
-    m = MetricsController('pga', 'gmrotd50', st1)
+    m = MetricsController('pga', 'gmrotd50', st1, config=config)
     pgm = m.pgms
     result = pgm['Result'].tolist()[0]
     assert np.isnan(result)
     # No horizontal channels
     try:
-        m = MetricsController('sa3.0', 'channels', st3)
+        m = MetricsController('sa3.0', 'channels', st3, config=config)
     except PGMException as e:
         passed = False
     assert passed == False
@@ -216,7 +222,7 @@ def test_end_to_end():
     input_imcs = ['greater_of_two_horizontals', 'channels', 'rotd50',
                   'rotd100', 'invalid']
     input_imts = ['sa1.0', 'PGA', 'pgv', 'invalid']
-    m = MetricsController(input_imts, input_imcs, stream)
+    m = MetricsController(input_imts, input_imcs, stream, config=config)
     test_pgms = [
         ('PGV', 'ROTD(100.0)', 114.24894584734818),
         ('PGV', 'ROTD(50.0)', 81.55436750525355),

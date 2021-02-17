@@ -106,7 +106,8 @@ def download(event, event_dir, config, directory, create_workspace=True):
         rup_file = get_rupture_file(in_event_dir)
         in_raw_dir = get_rawdir(in_event_dir)
         logging.debug('in_raw_dir: %s' % in_raw_dir)
-        streams, bad, terrors = directory_to_streams(in_raw_dir)
+        streams, bad, terrors = directory_to_streams(
+            in_raw_dir, config=config)
         logging.debug('streams:')
         logging.debug(streams)
         tcollection = StreamCollection(streams, **config['duplicate'])
@@ -483,7 +484,7 @@ def save_shakemap_amps(processed, event, event_dir):
     return (ampfile_name, jsonfile)
 
 
-def create_json(workspace, event, event_dir, label):
+def create_json(workspace, event, event_dir, label, config=None):
     """Create JSON file for ground motion parametric data.
 
     Args:
@@ -495,12 +496,14 @@ def create_json(workspace, event, event_dir, label):
             Event directory.
         label (str):
             Processing label.
+        config (dict):
+            Configuration options.
     """
     features = []
 
     station_features = []
 
-    streams = workspace.getStreams(event.id, labels=[label])
+    streams = workspace.getStreams(event.id, labels=[label], config=config)
     npassed = 0
     for stream in streams:
         if stream.passed:
@@ -514,7 +517,7 @@ def create_json(workspace, event, event_dir, label):
     # base provenance document that will be copied and used as a template
     base_prov = prov.model.ProvDocument()
     base_prov.add_namespace(*NS_SEIS)
-    base_prov = _get_person_agent(base_prov)
+    base_prov = _get_person_agent(base_prov, config)
     base_prov = _get_software_agent(base_prov)
 
     nfeatures = 0
@@ -545,7 +548,8 @@ def create_json(workspace, event, event_dir, label):
             event.id,
             properties['network_code'],
             properties['station_code'],
-            label
+            label,
+            config=config
         )
 
         if metrics is None:
@@ -611,11 +615,12 @@ def create_json(workspace, event, event_dir, label):
         'type': 'FeatureCollection',
         'features': station_features
     }
-    stationfile = os.path.join(event_dir, 'groundmotions_dat.json')
+    stationfile = os.path.join(
+        event_dir, '%s_groundmotions_dat.json' % event.id)
     with open(stationfile, 'wt') as f:
         json.dump(station_feature_dict, f, allow_nan=False)
 
-    jsonfile = os.path.join(event_dir, 'metrics.json')
+    jsonfile = os.path.join(event_dir, '%s_metrics.json' % event.id)
     with open(jsonfile, 'wt') as f:
         json.dump(feature_dict, f, allow_nan=False)
 

@@ -22,12 +22,16 @@ COLWIDTH = 10
 NCOLS = 4
 
 
-def is_cwb(filename):
+def is_cwb(filename, **kwargs):
     """Check to see if file is a Taiwan Central Weather Bureau strong motion
     file.
 
     Args:
-        filename (str): Path to possible CWB data file.
+        filename (str):
+            Path to possible CWB data file.
+        kwargs (ref):
+            Other arguments will be ignored.
+
     Returns:
         bool: True if CWB, False otherwise.
     """
@@ -47,8 +51,10 @@ def read_cwb(filename, **kwargs):
     """Read Taiwan Central Weather Bureau strong motion file.
 
     Args:
-        filename (str): Path to possible CWB data file.
-        kwargs (ref): Other arguments will be ignored.
+        filename (str):
+            Path to possible CWB data file.
+        kwargs (ref):
+            Other arguments will be ignored.
 
     Returns:
         Stream: Obspy Stream containing three channels of acceleration

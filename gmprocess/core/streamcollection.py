@@ -51,7 +51,7 @@ class StreamCollection(object):
     def __init__(self, streams=None, drop_non_free=True,
                  handle_duplicates=True, max_dist_tolerance=None,
                  preference_order=None, process_level_preference=None,
-                 format_preference=None):
+                 format_preference=None, config=None):
         """Initialize StreamCollection.
 
         Args:
@@ -77,7 +77,10 @@ class StreamCollection(object):
                 in gmprocess.io). Does not need to list all of the formats.
                 Example: ['cosmos', 'dmg'] indicates that cosmos files are
                 preferred over dmg files.
+            config (dict):
+                Configuration options.
         """
+        self.config = config
         # Some initial checks of input streams
         if not isinstance(streams, list):
             raise TypeError(
@@ -542,13 +545,14 @@ class StreamCollection(object):
             'max_dist_tolerance': max_dist_tolerance,
             'preference_order': preference_order,
             'process_level_preference': process_level_preference,
-            'format_preference': format_preference}
-        default_config = None
+            'format_preference': format_preference
+        }
+
         for key, val in preferences.items():
             if val is None:
-                if default_config is None:
-                    default_config = get_config()
-                preferences[key] = default_config['duplicate'][key]
+                if self.config is None:
+                    self.config = get_config()
+                preferences[key] = self.config['duplicate'][key]
 
         stream_params = gather_stream_parameters(self.streams)
 
