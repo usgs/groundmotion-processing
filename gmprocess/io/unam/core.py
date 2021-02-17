@@ -54,11 +54,14 @@ def is_unam(filename):
     return False
 
 
-def read_unam(filename):
+def read_unam(filename, **kwargs):
     """Read the Mexican UNAM strong motion data format.
 
     Args:
-        filename (str): path to UNAM data file.
+        filename (str):
+            Path to UNAM data file.
+        kwargs (ref):
+            Other arguments will be ignored.
 
     Returns:
         list: Sequence of one StationStream object containing 3
@@ -181,18 +184,12 @@ def _read_header(filename):
     az1_north = is_channel_north(az1)
     az2_north = is_channel_north(az2)
     az3_north = is_channel_north(az3)
-    channels[0]['channel'] = get_channel_name(channels[0]['sampling_rate'],
-                                              True,
-                                              az1_vert,
-                                              az1_north)
-    channels[1]['channel'] = get_channel_name(channels[1]['sampling_rate'],
-                                              True,
-                                              az2_vert,
-                                              az2_north)
-    channels[2]['channel'] = get_channel_name(channels[2]['sampling_rate'],
-                                              True,
-                                              az3_vert,
-                                              az3_north)
+    channels[0]['channel'] = get_channel_name(
+        channels[0]['sampling_rate'], True, az1_vert, az1_north)
+    channels[1]['channel'] = get_channel_name(
+        channels[1]['sampling_rate'], True, az2_vert, az2_north)
+    channels[2]['channel'] = get_channel_name(
+        channels[2]['sampling_rate'], True, az3_vert, az3_north)
 
     # get channel npts
     npts_strings = header_dict['NUM. TOTAL DE MUESTRAS, C1-C6'].split('/')

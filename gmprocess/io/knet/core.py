@@ -51,12 +51,15 @@ def is_knet(filename):
     return False
 
 
-def read_knet(filename):
+def read_knet(filename, **kwargs):
     """Read Japanese KNET strong motion file.
 
     Args:
-        filename (str): Path to possible KNET data file.
-        kwargs (ref): Other arguments will be ignored.
+        filename (str):
+            Path to possible KNET data file.
+        kwargs (ref):
+            Other arguments will be ignored.
+
     Returns:
         Stream: Obspy Stream containing three channels of acceleration data
             (cm/s**2).

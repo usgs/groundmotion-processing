@@ -162,6 +162,7 @@ def read_smc(filename, **kwargs):
             accept_flagged (bool): accept problem flagged data.
             set_location (str): Two character code for location.
             Other arguments will be ignored.
+
     Returns:
         Stream: Obspy Stream containing one channel of acceleration data
         (cm/s**2).
@@ -255,20 +256,23 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
       - building_floor (0=basement, 1=floor above basement,
         -1=1st sub-basement, etc.
       - bridge_number_spans
-      - bridge_transducer_location ("free field",
-                                    "at the base of a pier or abutment",
-                                    "on an abutment",
-                                    "on the deck at the top of a pier"
-                                    "on the deck between piers or between an
-                                    abutment and a pier."
-        dam_transducer_location ("upstream or downstream free field",
-                                 "at the base of the dam",
-                                 "on the crest of the dam",
-                                 on the abutment of the dam")
-        construction_type ("Reinforced concrete gravity",
-                           "Reinforced concrete arch",
-                           "earth fill",
-                           "other")
+      - bridge_transducer_location (
+            "free field",
+            "at the base of a pier or abutment",
+            "on an abutment",
+            "on the deck at the top of a pier"
+            "on the deck between piers or between an
+            abutment and a pier.")
+        dam_transducer_location (
+            "upstream or downstream free field",
+            "at the base of the dam",
+            "on the crest of the dam",
+            on the abutment of the dam")
+        construction_type (
+            "Reinforced concrete gravity",
+            "Reinforced concrete arch",
+            "earth fill",
+            "other")
 
         filter_poles
         data_source

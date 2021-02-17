@@ -17,7 +17,7 @@ from gmprocess.io.utils import flatten_directory
 EXT_IGNORE = [".gif", ".csv", ".dis", ".abc", ".zip", ".rs2", ".fs1"]
 
 
-def directory_to_streams(directory):
+def directory_to_streams(directory, config=None):
     """Read in a directory of data to a list of streams.
 
     Note:
@@ -29,6 +29,8 @@ def directory_to_streams(directory):
     Args:
         directory (str):
             Directory of ground motion files (streams).
+        config (dict):
+            Configuration options.
 
     Returns:
         tuple: (List of obspy streams,
@@ -53,7 +55,7 @@ def directory_to_streams(directory):
             if file_ext not in EXT_IGNORE:
                 try:
                     logging.debug('Attempting to read: %s' % file_path)
-                    streams += read_data(file_path)
+                    streams += read_data(file_path, config=config)
                 except BaseException as ex:
                     unprocessed_files += [file_path]
                     unprocessed_file_errors += [ex]

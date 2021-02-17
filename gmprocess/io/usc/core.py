@@ -37,7 +37,11 @@ def is_usc(filename, **kwargs):
     """Check to see if file is a USC strong motion file.
 
     Args:
-        filename (str): Path to possible USC V1 data file.
+        filename (str):
+            Path to possible USC V1 data file.
+        kwargs (ref):
+            Other arguments will be ignored.
+
     Returns:
         bool: True if USC , False otherwise.
     """
@@ -104,8 +108,11 @@ def read_usc(filename, **kwargs):
     """Read USC V1 strong motion file.
 
     Args:
-        filename (str): Path to possible USC V1 data file.
-        kwargs (ref): Ignored by this function.
+        filename (str):
+            Path to possible USC V1 data file.
+        kwargs (ref):
+            Ignored by this function.
+
     Returns:
         Stream: Obspy Stream containing three channels of acceleration data
         (cm/s**2).
@@ -140,7 +147,9 @@ def read_volume_one(filename, location='', alternate=False):
     """Read channel data from USC volume 1 text file.
 
     Args:
-        filename (str): Input DMG V1 filename.
+        filename (str):
+            Input DMG V1 filename.
+
     Returns:
         tuple: (list of obspy Trace, int line offset)
     """
@@ -172,7 +181,8 @@ def _read_channel(filename, line_offset, volume, location='', alternate=False):
         line_offset (int):
             Line offset to beginning of channel text block.
         volume (dictionary):
-            Dictionary of formatting information
+            Dictionary of formatting information.
+
     Returns:
         tuple: (obspy Trace, int line offset)
     """
@@ -425,9 +435,13 @@ def _dms2dd(degrees, minutes, seconds):
     """Helper method for converting degrees, minutes, seconds to decimal.
 
     Args:
-        degrees (int): Lat/Lon degrees.
-        minutes (int): Lat/Lon minutes.
-        seconds (int): Lat/Lon seconds.
+        degrees (int):
+            Lat/Lon degrees.
+        minutes (int):
+            Lat/Lon minutes.
+        seconds (int):
+            Lat/Lon seconds.
+
     Returns:
         float: Lat/Lon in decimal degrees
     """
@@ -440,7 +454,8 @@ def _get_units(line):
     Parse units from a text line.
 
     Args:
-        line (str): text line which should contain units.
+        line (str):
+            Text line which should contain units.
     """
     line = line.lower()
     if line.find('in units of') >= 0:

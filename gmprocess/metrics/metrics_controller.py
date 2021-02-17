@@ -42,7 +42,7 @@ class MetricsController(object):
     """
 
     def __init__(self, imts, imcs, timeseries, bandwidth=None, damping=None,
-                 event=None, smooth_type=None, allow_nans=None):
+                 event=None, smooth_type=None, allow_nans=None, config=None):
         """Initialize MetricsController class.
 
         Args:
@@ -67,10 +67,13 @@ class MetricsController(object):
                 Should nans be allowed in the smoothed spectra. If False, then
                 the number of points in the FFT will be computed to ensure
                 that nans will not result in the smoothed spectra.
+            config (dict):
+                Configuraiton options.
 
         Raises:
             PGMException: Requires an event for radial_transfer imcs.
         """
+        self.config = config
         if not isinstance(imts, (list, np.ndarray)):
             imts = [imts]
         if not isinstance(imcs, (list, np.ndarray)):
@@ -86,7 +89,6 @@ class MetricsController(object):
         self.timeseries = timeseries
         self.validate_stream()
         self.event = event
-        self.config = get_config()
         self.damping = damping
         self.smooth_type = smooth_type
         self.bandwidth = bandwidth
@@ -212,7 +214,7 @@ class MetricsController(object):
         allow_nans = metrics['fas']['allow_nans']
         controller = cls(imts, imcs, timeseries, bandwidth=bandwidth,
                          damping=damping, event=event, smooth_type=smoothing,
-                         allow_nans=allow_nans)
+                         allow_nans=allow_nans, config=config)
 
         return controller
 
@@ -355,7 +357,8 @@ class MetricsController(object):
                     t1_mod, inspect.isclass), 'Transform')
                 t1 = t1_cls(
                     self.timeseries, self.damping, period, self._times,
-                    self.max_period, self.allow_nans, self.bandwidth).result
+                    self.max_period, self.allow_nans, self.bandwidth,
+                    self.config).result
 
                 # -------------------------------------------------------------
                 # Transform 2
@@ -365,7 +368,7 @@ class MetricsController(object):
                     t2_mod, inspect.isclass), 'Transform')
                 t2 = t2_cls(
                     t1, self.damping, period, self._times, self.max_period,
-                    self.allow_nans, self.bandwidth).result
+                    self.allow_nans, self.bandwidth, self.config).result
 
                 # -------------------------------------------------------------
                 # Rotation
@@ -383,7 +386,7 @@ class MetricsController(object):
                     t3_mod, inspect.isclass), 'Transform')
                 t3 = t3_cls(
                     rot, self.damping, period, self._times, self.max_period,
-                    self.allow_nans, self.bandwidth).result
+                    self.allow_nans, self.bandwidth, self.config).result
 
                 # -------------------------------------------------------------
                 # Combination 1

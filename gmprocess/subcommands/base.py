@@ -70,7 +70,8 @@ class SubcommandModule(ABC):
         self._get_labels()
 
         self.pstreams = self.workspace.getStreams(
-            self.eventid, labels=[self.gmrecords.args.label])
+            self.eventid, labels=[self.gmrecords.args.label],
+            config=self.gmrecords.conf)
 
     def _get_events(self):
         # NOTE: as currently written, `get_events` will do the following,

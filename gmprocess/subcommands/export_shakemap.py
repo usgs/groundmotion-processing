@@ -58,7 +58,8 @@ class ExportShakeMapModule(SubcommandModule):
             #     self.pstreams, event, event_dir)
 
             jsonfile, stationfile, _ = create_json(
-                self.workspace, event, event_dir, self.gmrecords.args.label)
+                self.workspace, event, event_dir, self.gmrecords.args.label,
+                config=self.gmrecords.conf)
 
             self.workspace.close()
             self.append_file('shakemap', jsonfile)

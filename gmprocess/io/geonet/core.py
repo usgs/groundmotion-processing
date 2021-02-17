@@ -37,7 +37,9 @@ def is_geonet(filename):
     """Check to see if file is a New Zealand GNS V1 or V2 strong motion file.
 
     Args:
-        filename (str): Path to possible GNS V1/V2 data file.
+        filename (str):
+            Path to possible GNS V1/V2 data file.
+
     Returns:
         bool: True if GNS V1/V2, False otherwise.
     """
@@ -62,8 +64,10 @@ def read_geonet(filename, **kwargs):
     This will be set to either "V1" or "V2".
 
     Args:
-        filename (str): Path to possible GNS V1/V2 data file.
-        kwargs (ref): Other arguments will be ignored.
+        filename (str):
+            Path to possible GNS V1/V2 data file.
+        kwargs (ref):
+            Other arguments will be ignored.
 
     Returns:
         Stream: Obspy Stream containing three channels of acceleration data
@@ -112,8 +116,11 @@ def _read_channel(filename, line_offset):
     """Read channel data from GNS V1 text file.
 
     Args:
-        filename (str): Input GNS V1 filename.
-        line_offset (int): Line offset to beginning of channel text block.
+        filename (str):
+            Input GNS V1 filename.
+        line_offset (int):
+            Line offset to beginning of channel text block.
+
     Returns:
         tuple: (obspy Trace, int line offset)
     """
@@ -208,12 +215,15 @@ def _read_header(hdr_data, station, name, component, data_format,
     """Construct stats dictionary from header lines.
 
     Args:
-        hdr_data (ndarray): (10,10) numpy array containing header data.
-        station (str): Station code obtained from previous text portion of
-            header.
-        location (str): Location string obtained from previous text portion
-            of header.
-        component (str): Component direction (N18E, S72W, etc.)
+        hdr_data (ndarray):
+            (10,10) numpy array containing header data.
+        station (str):
+            Station code obtained from previous text portion of header.
+        location (str):
+            Location string obtained from previous text portion of header.
+        component (str):
+            Component direction (N18E, S72W, etc.)
+
     Returns:
         Dictionary containing fields:
             - network "NZ"
@@ -356,7 +366,8 @@ def _get_channel(component):
     """Determine channel name string from component string.
 
     Args:
-        component (str): String like "N28E".
+        component (str):
+            String like "N28E".
 
     Returns:
         str: Channel (H1,H2,Z)

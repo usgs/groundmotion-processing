@@ -46,11 +46,13 @@ def is_bhrc(filename):
     return False
 
 
-def read_bhrc(filename):
+def read_bhrc(filename, **kwargs):
     """Read the Iran BHRC strong motion data format.
 
     Args:
         filename (str): path to BHRC data file.
+        kwargs (ref):
+            Other arguments will be ignored.
 
     Returns:
         list: Sequence of one StationStream object containing 3
