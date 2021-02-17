@@ -794,7 +794,7 @@ def get_station_feature(stream, metrics, coordinates):
     station_channels = []
     station_channel_names = ['H1', 'H2', 'Z']
     station_amps = {
-        'SA(0.030)': ('sa(0.3)', r'%g'),
+        'SA(0.300)': ('sa(0.3)', r'%g'),
         'SA(1.000)': ('sa(1.0)', r'%g'),
         'SA(3.000)': ('sa(3.0)', r'%g'),
         'PGA': ('pga', r'%g'),
