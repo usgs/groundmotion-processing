@@ -22,9 +22,12 @@ from impactutils.mapping.city import Cities
 from impactutils.mapping.mercatormap import MercatorMap
 from impactutils.mapping.scalebar import draw_scale
 from cartopy import feature as cfeature
+import prov.model
 
 # local imports
 from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.core.stationtrace import (
+    NS_SEIS, _get_person_agent, _get_software_agent)
 from gmprocess.utils.event import get_event_object, ScalarEvent
 from gmprocess.utils.config import get_config, update_dict
 from gmprocess.utils.constants import (
@@ -506,6 +509,14 @@ def create_json(workspace, event, event_dir, label):
         logging.info('No strong motion data found that passes tests. Exiting.')
         return (None, None, 0)
 
+    # Creating a new provenance document and filling in the software
+    # information for every trace can be slow, so here we create a
+    # base provenance document that will be copied and used as a template
+    base_prov = prov.model.ProvDocument()
+    base_prov.add_namespace(*NS_SEIS)
+    base_prov = _get_person_agent(base_prov)
+    base_prov = _get_software_agent(base_prov)
+
     nfeatures = 0
     for stream in streams:
         if not stream.passed:
@@ -557,7 +568,7 @@ def create_json(workspace, event, event_dir, label):
             channel = trace.stats.channel
 
             # get trace provenance
-            provthing = trace.getProvenanceDocument()
+            provthing = trace.getProvenanceDocument(base_prov=base_prov)
             provjson = provthing.serialize(format='json')
             provenance_dict = json.loads(provjson)
             provenance[channel] = provenance_dict
