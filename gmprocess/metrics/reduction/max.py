@@ -56,8 +56,12 @@ class Max(Reduction):
                 else:
                     key = 'peak_time'
                 idx = np.argmax(np.abs(trace.data))
+                dtimes = np.linspace(
+                    0.0, trace.stats.endtime - trace.stats.starttime,
+                    trace.stats.npts)
+                dtime = dtimes[idx]
                 max_value = np.abs(trace.data[idx])
-                max_time = trace.times(type='utcdatetime')[idx]
+                max_time = trace.stats.starttime + dtime
                 maximums[trace.stats.channel] = max_value
                 times[trace.stats.channel] = {key: max_time}
             return maximums, times
