@@ -520,7 +520,11 @@ class StreamWorkspace(object):
                                 stream.setStreamParam(key, value)
 
                     streams.append(stream)
-        streams = StreamCollection(streams, config=config)
+        # No need to handle duplicates when retrieving stations from the
+        # workspace file because it must have been handled before putting them
+        # into the workspace file.
+        streams = StreamCollection(
+            streams, handle_duplicates=False, config=config)
         return streams
 
     def getStations(self, eventid=None):

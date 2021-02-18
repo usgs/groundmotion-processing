@@ -50,9 +50,9 @@ FAILED_COLOR = '#ff2222'
 MAP_PADDING = 1.1  # Station map padding value
 
 UNITS = {
-    'PGA': '%g',
-    'PGV': 'cm/s',
-    'SA': '%g'
+    'PGA': r'%g',
+    'PGV': r'cm/s',
+    'SA': r'%g'
 }
 
 FLOAT_PATTERN = r'[-+]?[0-9]*\.?[0-9]+'
@@ -484,7 +484,8 @@ def save_shakemap_amps(processed, event, event_dir):
     return (ampfile_name, jsonfile)
 
 
-def create_json(workspace, event, event_dir, label, config=None):
+def create_json(workspace, event, event_dir, label, config=None,
+                expanded_imts=False):
     """Create JSON file for ground motion parametric data.
 
     Args:
@@ -498,6 +499,10 @@ def create_json(workspace, event, event_dir, label, config=None):
             Processing label.
         config (dict):
             Configuration options.
+        expanded_imts (bool):
+            Use expanded IMTs. Currently this only means all the SA that have
+            been computed, plus PGA and PGV (if computed). Could eventually
+            expand for other IMTs also.
     """
     features = []
 
@@ -559,7 +564,8 @@ def create_json(workspace, event, event_dir, label, config=None):
                        stream[0].stats.coordinates.latitude,
                        stream[0].stats.coordinates.elevation]
 
-        station_feature = get_station_feature(stream, metrics, coordinates)
+        station_feature = get_station_feature(
+            stream, metrics, coordinates, expanded_imts=expanded_imts)
         if station_feature is not None:
             station_features.append(station_feature)
 
@@ -794,7 +800,8 @@ def get_rupture_file(event_dir):
     return rupture_file
 
 
-def get_station_feature(stream, metrics, coordinates):
+def get_station_feature(stream, metrics, coordinates,
+                        expanded_imts=False):
     scode = f'{stream[0].stats.network}.{stream[0].stats.station}'
     station_feature = OrderedDict()
     station_properties = OrderedDict()
@@ -809,13 +816,29 @@ def get_station_feature(stream, metrics, coordinates):
     station_properties['source'] = stream[0].stats.network
     station_channels = []
     station_channel_names = ['H1', 'H2', 'Z']
-    station_amps = {
-        'SA(0.300)': ('sa(0.3)', r'%g'),
-        'SA(1.000)': ('sa(1.0)', r'%g'),
-        'SA(3.000)': ('sa(3.0)', r'%g'),
-        'PGA': ('pga', r'%g'),
-        'PGV': ('pgv', r'cm/s')
-    }
+
+    if expanded_imts:
+        imts = list(
+            set([i[0] for i in metrics.pgms.index.to_numpy() if i[0].startswith('SA')]))
+        imt_lower = [s.lower() for s in imts]
+        imt_units = [UNITS['SA']] * len(imts)
+        if 'PGA' in metrics.pgms.index:
+            imts.append('PGA')
+            imt_lower.append('pga')
+            imt_units.append(UNITS['PGA'])
+        if 'PGV' in metrics.pgms.index:
+            imts.append('PGV')
+            imt_lower.append('pgv')
+            imt_units.append(UNITS['PGV'])
+        station_amps = {k: v for k, v in zip(imts, zip(imt_lower, imt_units))}
+    else:
+        station_amps = {
+            'SA(0.300)': ('sa(0.3)', UNITS['SA']),
+            'SA(1.000)': ('sa(1.0)', UNITS['SA']),
+            'SA(3.000)': ('sa(3.0)', UNITS['SA']),
+            'PGA': ('pga', UNITS['PGA']),
+            'PGV': ('pgv', UNITS['PGV'])
+        }
 
     channel_dict = metrics.channel_dict
 

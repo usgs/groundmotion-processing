@@ -9,9 +9,6 @@ python:
     - method: pip
       path: .
 
-# conda:
-#   environment: environment.yml
-
 sphinx:
   configuration: docs/conf.py
 
