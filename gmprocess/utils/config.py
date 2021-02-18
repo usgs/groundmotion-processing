@@ -4,7 +4,6 @@
 import os
 import yaml
 import pkg_resources
-import logging
 
 from gmprocess.utils.constants import CONFIG_FILE_TEST, CONFIG_FILE_PRODUCTION
 

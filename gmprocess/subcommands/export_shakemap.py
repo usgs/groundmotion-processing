@@ -19,7 +19,17 @@ class ExportShakeMapModule(SubcommandModule):
 
     arguments = [
         ARG_DICTS['eventid'],
-        ARG_DICTS['label']
+        ARG_DICTS['label'],
+        {
+            'short_flag': '-x',
+            'long_flag': '--expand-imts',
+            'help': ('Use expanded IMTs. Currently this only means all the '
+                     'SA that have been computed, plus PGA and PGV (if '
+                     'computed). Could eventually expand for other IMTs also.'
+                     ),
+            'default': False,
+            'action': 'store_true'
+        }
     ]
 
     def main(self, gmrecords):
@@ -54,12 +64,11 @@ class ExportShakeMapModule(SubcommandModule):
             # TODO: re-write this so that it uses the already computer values
             # in self.workspace.dataset.auxiliary_data.WaveFormMetrics
             # rather than recomputing the metrics from self.pstreams.
-            # shakemap_file, jsonfile = save_shakemap_amps(
-            #     self.pstreams, event, event_dir)
 
+            expanded_imts = self.gmrecords.args.expand_imts
             jsonfile, stationfile, _ = create_json(
                 self.workspace, event, event_dir, self.gmrecords.args.label,
-                config=self.gmrecords.conf)
+                config=self.gmrecords.conf, expanded_imts=expanded_imts)
 
             self.workspace.close()
             self.append_file('shakemap', jsonfile)

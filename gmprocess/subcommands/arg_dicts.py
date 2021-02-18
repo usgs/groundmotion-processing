@@ -5,7 +5,7 @@ ARG_DICTS = {
     'label': {
         'short_flag': '-l',
         'long_flag': '--label',
-        'help': ('Processing label. If None (default) then we will diregard '
+        'help': ('Processing label. If None (default) then we will disregard '
                  'the unprocessed label, and if there is only one remaining '
                  'label then we will it. If there are multiple remaining '
                  'labels then we will prmpt you to select one.'),
