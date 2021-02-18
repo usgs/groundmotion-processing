@@ -819,7 +819,9 @@ def get_station_feature(stream, metrics, coordinates,
 
     if expanded_imts:
         imts = list(
-            set([i[0] for i in metrics.pgms.index.to_numpy() if i[0].startswith('SA')]))
+            set([i[0] for i in metrics.pgms.index.to_numpy()
+                 if i[0].startswith('SA')])
+        )
         imt_lower = [s.lower() for s in imts]
         imt_units = [UNITS['SA']] * len(imts)
         if 'PGA' in metrics.pgms.index:
