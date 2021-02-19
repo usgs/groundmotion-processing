@@ -49,7 +49,10 @@ class Duration(Reduction):
             dt = trace.stats['delta']
             # convert from cm/s/s to m/s/s
             acc = trace.data * 0.01
-            time = trace.times()
+            # times = trace.times()
+            times = np.linspace(
+                0.0, trace.stats.endtime - trace.stats.starttime,
+                trace.stats.npts)
 
             # Calculate Arias Intensity
             integrated_acc2 = integrate.cumtrapz(acc * acc, dx=dt)
@@ -61,7 +64,7 @@ class Duration(Reduction):
             ind0 = np.argmin(np.abs(ai_norm - self.interval[0] / 100.0))
             ind1 = np.argmin(np.abs(ai_norm - self.interval[1] / 100.0))
 
-            dur = time[ind1] - time[ind0]
+            dur = times[ind1] - times[ind0]
             channel = trace.stats.channel
             durations[channel] = dur
 

@@ -579,7 +579,10 @@ class MetricsController(object):
         """
         for trace in self.timeseries:
             if 'Z' not in trace.stats['channel'].upper():
-                times = trace.times()
+                # times = trace.times()
+                times = np.linspace(
+                    0.0, trace.stats.endtime - trace.stats.starttime,
+                    trace.stats.npts)
                 return times
         raise PGMException(
             'MetricsController: At least one horizontal '
