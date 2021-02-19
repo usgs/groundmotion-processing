@@ -36,7 +36,6 @@ class AssembleModule(SubcommandModule):
         self.gmrecords = gmrecords
 
         self._get_events()
-        print(self.events)
 
         logging.info('Number of events to assemble: %s' % len(self.events))
 
