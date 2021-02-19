@@ -109,8 +109,11 @@ echo "Activate base virtual environment"
 eval "$(conda shell.bash hook)"                                                
 conda activate base
 
+# Install mamba, possibly faster than conda
+conda install mamba -c conda-forge -y
+
 # Remove existing environment if it exists
-conda remove -y -n $VENV --all
+mamba remove -y -n $VENV --all
 
 if [ $developer == 1 ]; then
     package_list=( "${package_list[@]}" "${dev_list[@]}" )
@@ -118,12 +121,12 @@ if [ $developer == 1 ]; then
 fi
 
 # Create a conda virtual environment
-conda config --add channels 'defaults'
-conda config --add channels 'conda-forge'
-conda config --set channel_priority strict
+mamba config --add channels 'defaults'
+mamba config --add channels 'conda-forge'
+mamba config --set channel_priority strict
 
 echo "Creating the $VENV virtual environment:"
-conda create -n $VENV -y --file requirements.txt
+mamba create -n $VENV -y --file requirements.txt
 
 # Bail out at this point if the conda create command fails.
 # Clean up zip files we've downloaded
