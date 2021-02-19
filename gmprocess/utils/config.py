@@ -3,9 +3,9 @@
 
 import os
 import yaml
-import pkg_resources
+from configobj import ConfigObj
 
-from gmprocess.utils.constants import CONFIG_FILE_TEST, CONFIG_FILE_PRODUCTION
+from gmprocess.utils import constants
 
 
 def update_dict(target, source):
@@ -67,14 +67,23 @@ def get_config(config_file=None, section=None):
     """
 
     if config_file is None:
-        if os.getenv('CALLED_FROM_PYTEST') is not None:
-            file_to_use = CONFIG_FILE_TEST
+        # Try not to let tests interfere with actual system:
+        if os.getenv('CALLED_FROM_PYTEST') is None:
+            # Not called from pytest
+            local_proj = os.path.join(os.getcwd(), constants.PROJ_CONF_DIR)
+            local_proj_conf = os.path.join(local_proj, 'projects.conf')
+            if os.path.isdir(local_proj) and os.path.isfile(local_proj_conf):
+                PROJECTS_PATH = local_proj
+            else:
+                PROJECTS_PATH = constants.PROJECTS_PATH
         else:
-            file_to_use = CONFIG_FILE_PRODUCTION
-
-        data_dir = os.path.abspath(
-            pkg_resources.resource_filename('gmprocess', 'data'))
-        config_file = os.path.join(data_dir, file_to_use)
+            PROJECTS_PATH = constants.PROJECTS_PATH_TEST
+        PROJECTS_FILE = os.path.join(PROJECTS_PATH, 'projects.conf')
+        projects_conf = ConfigObj(PROJECTS_FILE, encoding='utf-8')
+        project = projects_conf['project']
+        current_project = projects_conf['projects'][project]
+        conf_path = current_project['conf_path']
+        config_file = os.path.join(conf_path, 'config.yml')
 
     if not os.path.isfile(config_file):
         fmt = ('Missing config file: %s.')
