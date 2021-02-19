@@ -3,6 +3,7 @@
 
 import os
 import yaml
+import pkg_resources
 from configobj import ConfigObj
 
 from gmprocess.utils import constants
@@ -76,14 +77,16 @@ def get_config(config_file=None, section=None):
                 PROJECTS_PATH = local_proj
             else:
                 PROJECTS_PATH = constants.PROJECTS_PATH
+            PROJECTS_FILE = os.path.join(PROJECTS_PATH, 'projects.conf')
+            projects_conf = ConfigObj(PROJECTS_FILE, encoding='utf-8')
+            project = projects_conf['project']
+            current_project = projects_conf['projects'][project]
+            conf_path = current_project['conf_path']
+            config_file = os.path.join(conf_path, 'config.yml')
         else:
-            PROJECTS_PATH = constants.PROJECTS_PATH_TEST
-        PROJECTS_FILE = os.path.join(PROJECTS_PATH, 'projects.conf')
-        projects_conf = ConfigObj(PROJECTS_FILE, encoding='utf-8')
-        project = projects_conf['project']
-        current_project = projects_conf['projects'][project]
-        conf_path = current_project['conf_path']
-        config_file = os.path.join(conf_path, 'config.yml')
+            data_dir = os.path.abspath(
+                pkg_resources.resource_filename('gmprocess', 'data'))
+            config_file = os.path.join(data_dir, constants.CONFIG_FILE_TEST)
 
     if not os.path.isfile(config_file):
         fmt = ('Missing config file: %s.')
