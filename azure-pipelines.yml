@@ -84,7 +84,10 @@ jobs:
 
   - script: |
       conda install mamba -c conda-forge -y
-      mamba create --name gmprocess  python=$(python.version) --file requirements.txt --strict-channel-priority -c conda-forge -y -v
+      conda config --add channels 'defaults'
+      conda config --add channels 'conda-forge'
+      conda config --set channel_priority strict
+      mamba create --name gmprocess  python=$(python.version) --file requirements.txt -y -v
     displayName: Create conda environment (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 

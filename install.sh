@@ -121,9 +121,9 @@ if [ $developer == 1 ]; then
 fi
 
 # Create a conda virtual environment
-mamba config --add channels 'defaults'
-mamba config --add channels 'conda-forge'
-mamba config --set channel_priority strict
+conda config --add channels 'defaults'
+conda config --add channels 'conda-forge'
+conda config --set channel_priority strict
 
 echo "Creating the $VENV virtual environment:"
 mamba create -n $VENV -y --file requirements.txt
@@ -202,6 +202,7 @@ else
 fi
 ##################### Try to get in front of missing/wrong C compiler issues #######
 
+pip install pytest-console-scripts
 pip install -e .
 
 # if pip install fails, bow out gracefully
