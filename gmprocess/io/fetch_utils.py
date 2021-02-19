@@ -761,11 +761,14 @@ def plot_raw(rawdir, tcollection, event):
 
         fig, axeslist = plt.subplots(nrows=3, ncols=1, figsize=(12, 6))
         for ax, trace in zip(axeslist, stream):
-            ax.plot(trace.times(), trace.data, color='k')
+            times = np.linspace(
+                0.0, trace.stats.endtime - trace.stats.starttime,
+                trace.stats.npts)
+            ax.plot(times, trace.data, color='k')
             ax.set_xlabel('seconds since start of trace')
             ax.set_title('')
             ax.axvline(ptime, color='r')
-            ax.set_xlim(left=0, right=trace.times()[-1])
+            ax.set_xlim(left=0, right=times[-1])
             legstr = '%s.%s.%s.%s' % (
                 trace.stats.network,
                 trace.stats.station,
