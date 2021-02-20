@@ -10,7 +10,7 @@ jupyter
 libcomcat
 lxml
 mapio
-matplotlib
+matplotlib>3.0
 numpy
 obspy>=1.2.1
 openpyxl

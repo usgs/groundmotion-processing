@@ -83,7 +83,7 @@ jobs:
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
   - script: |
-      conda install mamba -c conda-forge -y
+      conda install mamba libssh2>=1.9.2 -c conda-forge -y
       conda config --add channels 'defaults'
       conda config --add channels 'conda-forge'
       conda config --set channel_priority strict
