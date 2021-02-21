@@ -46,6 +46,40 @@ class SubcommandModule(ABC):
         """
         raise NotImplementedError
 
+    @classmethod
+    def list_arguments(cls):
+        """List the arguments of the subcommand.
+        """
+        arg_list = []
+        for arg in cls.arguments:
+            arg_list.append(
+                arg['long_flag'].replace('--', '').replace('-', '_')
+            )
+        return arg_list
+
+    @classmethod
+    def argugments_default_dict(cls):
+        """List the arguments of the subcommand.
+        """
+        arg_list = cls.list_arguments()
+        default_list = [arg['default'] for arg in cls.arguments]
+        default_dict = dict(zip(arg_list, default_list))
+        return default_dict
+
+    def _check_arguments(self):
+        """Check subcommand's arguments are present and fix if not.
+
+        Puts in default value for arguments if argument is not specified.
+
+        Motivation for this is for when the subcommand module is called
+        directly, rather than from the gmrecords command line program.
+        """
+        args = self.gmrecords.args
+        req_args = self.argugments_default_dict()
+        for arg, val in req_args.items():
+            if arg not in args:
+                args.__dict__.update({arg: val})
+
     def append_file(self, tag, filename):
         """Convenience method to add file via tag to self.files_created.
         """

@@ -38,6 +38,7 @@ class ComputeWaveformMetricsModule(SubcommandModule):
         logging.info('Running subcommand \'%s\'' % self.command_name)
 
         self.gmrecords = gmrecords
+        self._check_arguments()
         self._get_events()
 
         if gmrecords.args.num_processes:

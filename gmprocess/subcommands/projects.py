@@ -64,11 +64,15 @@ class ProjectsModule(SubcommandModule):
                 GMrecordsApp instance.
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
-        args = gmrecords.args
-        config = gmrecords.projects_conf
-        configfile = gmrecords.PROJECTS_FILE
 
-        if gmrecords.args.create:
+        self.gmrecords = gmrecords
+        self._check_arguments()
+
+        args = self.gmrecords.args
+        config = self.gmrecords.projects_conf
+        configfile = self.gmrecords.PROJECTS_FILE
+
+        if self.gmrecords.args.create:
             if config['project'] == '__local__':
                 print(Project('__local__', config['projects']['__local__']))
                 print('You cannot create a new *system-level* project while')
