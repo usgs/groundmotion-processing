@@ -53,6 +53,7 @@ class ComputeStationMetricsModule(SubcommandModule):
         logging.info('Running subcommand \'%s\'' % self.command_name)
 
         self.gmrecords = gmrecords
+        self._check_arguments()
         self._get_events()
 
         vs30_grids = None

@@ -30,15 +30,18 @@ class GenerateRegressionPlotModule(SubcommandModule):
         """
         logging.info('Running subcommand \'%s\'' % self.command_name)
 
+        self.gmrecords = gmrecords
+        self._check_arguments()
+
         imc_table_names = [file.replace('_README', '')
-                           for file in os.listdir(gmrecords.data_path)
+                           for file in os.listdir(self.gmrecords.data_path)
                            if 'README' in file]
 
         imc_tables = {}
         for file in imc_table_names:
             imckey = os.path.splitext(file)[0]
             imc_tables[imckey] = pd.read_csv(
-                os.path.join(gmrecords.data_path, file))
+                os.path.join(self.gmrecords.data_path, file))
             if 'fit_spectra_parameters' in imc_tables:
                 del imc_tables['fit_spectra_parameters']
 
@@ -46,7 +49,7 @@ class GenerateRegressionPlotModule(SubcommandModule):
         # It appears this is being written in gmprocess2 and
         # generate_metric_tables.py, and it gets appended to when re-run.
         event_files = glob.glob(os.path.join(
-            gmrecords.data_path, '*_events.*'))
+            self.gmrecords.data_path, '*_events.*'))
         if len(event_files) == 1:
             event_file = event_files[0]
         elif len(event_files) == 0:
@@ -101,7 +104,8 @@ class GenerateRegressionPlotModule(SubcommandModule):
                     'regression_%s_%s.png' %
                     (found_imc, found_imt)
                 )
-                regression_file = os.path.join(gmrecords.data_path, pngfile)
+                regression_file = os.path.join(
+                    self.gmrecords.data_path, pngfile)
                 plot_regression(event_table, found_imc,
                                 imc_tables[tab_key_dict[found_imc]],
                                 found_imt,
