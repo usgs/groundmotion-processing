@@ -134,7 +134,6 @@ Lastly, we construct the plot
 
    This is the figure constructed for this tutorial.
 
-
 .. Indices and tables
 .. ==================
 
