@@ -70,20 +70,26 @@ def get_config(config_file=None, section=None):
     if config_file is None:
         # Try not to let tests interfere with actual system:
         if os.getenv('CALLED_FROM_PYTEST') is None:
-            # Not called from pytest
+            # Not called from pytest -- Is there a local project?
             local_proj = os.path.join(os.getcwd(), constants.PROJ_CONF_DIR)
             local_proj_conf = os.path.join(local_proj, 'projects.conf')
             if os.path.isdir(local_proj) and os.path.isfile(local_proj_conf):
-                PROJECTS_PATH = local_proj
+                # There's a local project
+                config_file = __proj_to_conf_file(local_proj)
             else:
-                PROJECTS_PATH = constants.PROJECTS_PATH
-            PROJECTS_FILE = os.path.join(PROJECTS_PATH, 'projects.conf')
-            projects_conf = ConfigObj(PROJECTS_FILE, encoding='utf-8')
-            project = projects_conf['project']
-            current_project = projects_conf['projects'][project]
-            conf_path = current_project['conf_path']
-            config_file = os.path.join(conf_path, 'config.yml')
+                # Is there a system project?
+                sys_proj = constants.PROJECTS_PATH
+                sys_proj_conf = os.path.join(sys_proj, 'projects.conf')
+                if os.path.isdir(sys_proj) and os.path.isfile(sys_proj_conf):
+                    config_file = __proj_to_conf_file(sys_proj)
+                else:
+                    # Fall back on conf file in repository
+                    data_dir = os.path.abspath(
+                        pkg_resources.resource_filename('gmprocess', 'data'))
+                    config_file = os.path.join(
+                        data_dir, constants.CONFIG_FILE_PRODUCTION)
         else:
+            # When called by pytest
             data_dir = os.path.abspath(
                 pkg_resources.resource_filename('gmprocess', 'data'))
             config_file = os.path.join(data_dir, constants.CONFIG_FILE_TEST)
@@ -102,3 +108,12 @@ def get_config(config_file=None, section=None):
             config = config[section]
 
     return config
+
+
+def __proj_to_conf_file(path):
+    proj_conf_file = os.path.join(path, 'projects.conf')
+    projects_conf = ConfigObj(proj_conf_file, encoding='utf-8')
+    project = projects_conf['project']
+    current_project = projects_conf['projects'][project]
+    conf_path = current_project['conf_path']
+    return os.path.join(conf_path, 'config.yml')
