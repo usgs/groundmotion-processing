@@ -17,7 +17,7 @@ from gmprocess.metrics.gather import gather_pgms
 from gmprocess.metrics.metrics_controller import MetricsController
 from gmprocess.utils.constants import (
     ELEVATION_FOR_DISTANCE_CALCS, METRICS_XML_FLOAT_STRING_FORMAT)
-
+from gmprocess.utils.tables import _get_table_row, find_float
 
 XML_UNITS = {
     'pga': '%g',
@@ -830,3 +830,64 @@ class StationSummary(object):
                 data.append(value)
         series = pd.Series(data, index)
         return series
+
+    def get_imc_dict(self, imc=None):
+        """Get an IMC table.
+
+        Args:
+            imc (str or list):
+                String of list of strings specifying the requested IMC.
+
+        Returns:
+            A dictionary with keys corresponding to IMCs, where the associated
+            value is a dictionary with keys corresponding to IMTs.
+        """
+        imc_dict = {}
+        pgms = self.pgms
+        if imc is None:
+            imclist = pgms.index.get_level_values('IMC').unique().tolist()
+        elif not isinstance(imc, list):
+            imclist = [imc]
+        else:
+            imclist = imc
+
+        # Note: in this situation, we can only have 1 row per "table" where the
+        # different IMTs are the different columns.
+        for imc in imclist:
+            row = _get_table_row(
+                self._stream, self, self.event, imc)
+            if not len(row):
+                continue
+            imc_dict[imc] = row
+        return imc_dict
+
+    def get_sa_arrays(self, imc=None):
+        """Get an SA arrays for selected IMCs.
+
+        Args:
+            imc (str or list):
+                String of list of strings specifying the requested IMC.
+
+        Returns:
+            A dictionary with keys corresponding to IMCs, where the associated
+            value is a dictionary with keys of 'period' and 'sa' which are
+            numpy arrays.
+        """
+        imc_dict = self.get_imc_dict(imc)
+        sa_arrays = {}
+        for imc_key, id in imc_dict.items():
+            period = []
+            sa = []
+            for imt, val in id.items():
+                tmp_period = find_float(imt)
+                if tmp_period is not None:
+                    period.append(tmp_period)
+                    sa.append(val)
+            period = np.array(period)
+            sa = np.array(sa)
+            idx = np.argsort(period)
+            sa_arrays[imc_key] = {
+                'period': period[idx],
+                'sa': sa[idx]
+            }
+        return sa_arrays

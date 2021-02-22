@@ -24,6 +24,8 @@ from gmprocess.core.stationstream import StationStream
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.metrics.station_summary import StationSummary, XML_UNITS
 from gmprocess.utils.event import ScalarEvent
+from gmprocess.utils.tables import _get_table_row
+
 
 TIMEPAT = '[0-9]{4}-[0-9]{2}-[0-9]{2}T'
 EVENT_TABLE_COLUMNS = ['id', 'time', 'latitude',
@@ -1198,107 +1200,6 @@ def _get_agents(provdoc):
     if 'email' not in person:
         person['email'] = ''
     return (person, software)
-
-
-def _get_table_row(stream, summary, event, imc):
-
-    if imc == 'Z':
-        z = stream.select(channel='*Z')
-        if not len(z):
-            return {}
-        z = z[0]
-        z_lowfilt = z.getProvenance('lowpass_filter')
-        z_highfilt = z.getProvenance('highpass_filter')
-        z_lowpass = np.nan
-        z_highpass = np.nan
-        if len(z_lowfilt):
-            z_lowpass = z_lowfilt[0]['corner_frequency']
-        if len(z_highfilt):
-            z_highpass = z_highfilt[0]['corner_frequency']
-        filter_dict = {
-            'ZLowpass': z_lowpass,
-            'ZHighpass': z_highpass
-        }
-    else:
-        h1 = stream.select(channel='*1')
-        h2 = stream.select(channel='*2')
-        if not len(h1):
-            h1 = stream.select(channel='*N')
-            h2 = stream.select(channel='*E')
-
-        if not len(h1) or not len(h2):
-            return {}
-        h1 = h1[0]
-        h2 = h2[0]
-
-        h1_lowfilt = h1.getProvenance('lowpass_filter')
-        h1_highfilt = h1.getProvenance('highpass_filter')
-        h1_lowpass = np.nan
-        h1_highpass = np.nan
-        if len(h1_lowfilt):
-            h1_lowpass = h1_lowfilt[0]['corner_frequency']
-        if len(h1_highfilt):
-            h1_highpass = h1_highfilt[0]['corner_frequency']
-
-        h2_lowfilt = h2.getProvenance('lowpass_filter')
-        h2_highfilt = h2.getProvenance('highpass_filter')
-        h2_lowpass = np.nan
-        h2_highpass = np.nan
-        if len(h2_lowfilt):
-            h2_lowpass = h2_lowfilt[0]['corner_frequency']
-        if len(h2_highfilt):
-            h2_highpass = h2_highfilt[0]['corner_frequency']
-        filter_dict = {
-            'H1Lowpass': h1_lowpass,
-            'H1Highpass': h1_highpass,
-            'H2Lowpass': h2_lowpass,
-            'H2Highpass': h2_highpass
-        }
-
-    dists = summary.distances
-
-    row = {
-        'EarthquakeId': event.id.replace('smi:local/', ''),
-        'EarthquakeTime': event.time,
-        'EarthquakeLatitude': event.latitude,
-        'EarthquakeLongitude': event.longitude,
-        'EarthquakeDepth': event.depth_km,
-        'EarthquakeMagnitude': event.magnitude,
-        'EarthquakeMagnitudeType': event.magnitude_type,
-        'Network': stream[0].stats.network,
-        'DataProvider': stream[0].stats.standard.source,
-        'StationCode': stream[0].stats.station,
-        'StationID': stream.get_id(),
-        'StationDescription': stream[0].stats.standard.station_name,
-        'StationLatitude': stream[0].stats.coordinates.latitude,
-        'StationLongitude': stream[0].stats.coordinates.longitude,
-        'StationElevation': stream[0].stats.coordinates.elevation,
-        'SamplingRate': stream[0].stats.sampling_rate,
-        'BackAzimuth': summary._back_azimuth,
-        'EpicentralDistance': dists['epicentral'],
-        'HypocentralDistance': dists['hypocentral'],
-        'RuptureDistance': dists['rupture'],
-        'RuptureDistanceVar': dists['rupture_var'],
-        'JoynerBooreDistance': dists['joyner_boore'],
-        'JoynerBooreDistanceVar': dists['joyner_boore_var'],
-        'GC2_rx': dists['gc2_rx'],
-        'GC2_ry': dists['gc2_ry'],
-        'GC2_ry0': dists['gc2_ry0'],
-        'GC2_U': dists['gc2_U'],
-        'GC2_T': dists['gc2_T'],
-        'SourceFile': stream[0].stats.standard.source_file
-    }
-
-    # Add the filter frequency information to the row
-    row.update(filter_dict)
-
-    # Add the Vs30 values to the row
-    for vs30_dict in summary._vs30.values():
-        row[vs30_dict['column_header']] = vs30_dict['value']
-
-    imt_frame = summary.pgms.xs(imc, level=1)
-    row.update(imt_frame.Result.to_dict())
-    return row
 
 
 def _natural_keys(text):

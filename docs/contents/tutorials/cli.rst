@@ -18,8 +18,9 @@ number of "subcommands," which are described by printing the help message:
    $ gmrecords -h
    usage: gmrecords [-h] [-d | -q] [-v] <command> <aliases> ...
 
-   gmrecords is a program for retrieving and processing ground motion records, as well as exporting
-   commonly used station and waveform parameters for earthquake hazard analysis.
+   gmrecords is a program for retrieving and processing ground motion records, as
+   well as exporting commonly used station and waveform parameters for earthquake
+   hazard analysis.
 
    optional arguments:
    -h, --help            show this help message and exit
@@ -30,24 +31,28 @@ number of "subcommands," which are described by printing the help message:
    Subcommands:
    <command> (<aliases>)
       assemble            Assemble raw data and organize it into an ASDF file.
+      auto_shakemap       Chain together subcommands to get shakemap ground
+                           motion file.
       compute_station_metrics (sm)
-                          Compute station metrics.
+                           Compute station metrics.
       compute_waveform_metrics (wm)
-                          Compute waveform metrics.
-      download            Download data and organize it in the project data directory.
+                           Compute waveform metrics.
+      download            Download data and organize it in the project data
+                           directory.
       export_failure_tables (ftables)
-                          Export failure tables.
+                           Export failure tables.
       export_metric_tables (mtables)
-                          Export metric tables.
+                           Export metric tables.
       export_provenance_tables (ptables)
-                          Export provenance tables.
+                           Export provenance tables.
       export_shakemap (shakemap)
-                          Export files for ShakeMap input.
+                           Export files for ShakeMap input.
       generate_regression_plot (regression)
-                          Generate multi-event "regression" plot.
+                           Generate multi-event "regression" plot.
       generate_report (report)
-                          Generate summary report (latex required).
-      init                Initialize the current directory as a gmprocess project directory.
+                           Generate summary report (latex required).
+      init                Initialize the current directory as a gmprocess
+                           project directory.
       process_waveforms (process)
                            Process waveform data.
       projects (proj)     Manage gmrecords projects.
@@ -136,22 +141,22 @@ connections because those are not important for this tutorial.
    ...
    INFO 2021-01-10 17:20:07 | mass_downloader.download: Downloaded 0.7 MB in total.
    4 StationStreams(s) in StreamCollection:
-   3 StationTrace(s) in StationStream (passed):
-      NC.N016.01.HNN | 2014-08-24T10:24:08.345000Z - 2014-08-24T10:25:41.740000Z | 200.0 Hz, 18680 samples (passed)
-      NC.N016.01.HNZ | 2014-08-24T10:24:08.345000Z - 2014-08-24T10:25:41.740000Z | 200.0 Hz, 18680 samples (passed)
-      NC.N016.01.HNE | 2014-08-24T10:24:08.345000Z - 2014-08-24T10:25:41.740000Z | 200.0 Hz, 18680 samples (passed)
-   3 StationTrace(s) in StationStream (passed):
-      YK.KRE.01.ENE | 2014-08-24T10:20:41.541000Z - 2014-08-24T10:22:38.796000Z | 200.0 Hz, 23452 samples (passed)
-      YK.KRE.01.ENZ | 2014-08-24T10:20:41.541000Z - 2014-08-24T10:22:38.796000Z | 200.0 Hz, 23452 samples (passed)
-      YK.KRE.01.ENN | 2014-08-24T10:20:41.541000Z - 2014-08-24T10:22:38.796000Z | 200.0 Hz, 23452 samples (passed)
-   3 StationTrace(s) in StationStream (passed):
-      NC.NHC..HNE | 2014-08-24T10:20:14.070000Z - 2014-08-24T10:27:44.060000Z | 100.0 Hz, 45000 samples (passed)
-      NC.NHC..HNZ | 2014-08-24T10:20:14.070000Z - 2014-08-24T10:27:44.060000Z | 100.0 Hz, 45000 samples (passed)
-      NC.NHC..HNN | 2014-08-24T10:20:14.070000Z - 2014-08-24T10:27:44.060000Z | 100.0 Hz, 45000 samples (passed)
-   3 StationTrace(s) in StationStream (passed):
-      CE.68150..HNE | 2014-08-24T10:20:21.000000Z - 2014-08-24T10:22:19.995000Z | 200.0 Hz, 23800 samples (passed)
-      CE.68150..HNN | 2014-08-24T10:20:21.000000Z - 2014-08-24T10:22:19.995000Z | 200.0 Hz, 23800 samples (passed)
-      CE.68150..HNZ | 2014-08-24T10:20:21.000000Z - 2014-08-24T10:22:19.995000Z | 200.0 Hz, 23800 samples (passed)
+     3 StationTrace(s) in StationStream (passed):
+       NC.N016.01.HNN | 2014-08-24T10:24:08.345000Z - 2014-08-24T10:25:41.740000Z | 200.0 Hz, 18680 samples (passed)
+       NC.N016.01.HNZ | 2014-08-24T10:24:08.345000Z - 2014-08-24T10:25:41.740000Z | 200.0 Hz, 18680 samples (passed)
+       NC.N016.01.HNE | 2014-08-24T10:24:08.345000Z - 2014-08-24T10:25:41.740000Z | 200.0 Hz, 18680 samples (passed)
+     3 StationTrace(s) in StationStream (passed):
+       YK.KRE.01.ENE | 2014-08-24T10:20:41.541000Z - 2014-08-24T10:22:38.796000Z | 200.0 Hz, 23452 samples (passed)
+       YK.KRE.01.ENZ | 2014-08-24T10:20:41.541000Z - 2014-08-24T10:22:38.796000Z | 200.0 Hz, 23452 samples (passed)
+       YK.KRE.01.ENN | 2014-08-24T10:20:41.541000Z - 2014-08-24T10:22:38.796000Z | 200.0 Hz, 23452 samples (passed)
+     3 StationTrace(s) in StationStream (passed):
+       NC.NHC..HNE | 2014-08-24T10:20:14.070000Z - 2014-08-24T10:27:44.060000Z | 100.0 Hz, 45000 samples (passed)
+       NC.NHC..HNZ | 2014-08-24T10:20:14.070000Z - 2014-08-24T10:27:44.060000Z | 100.0 Hz, 45000 samples (passed)
+       NC.NHC..HNN | 2014-08-24T10:20:14.070000Z - 2014-08-24T10:27:44.060000Z | 100.0 Hz, 45000 samples (passed)
+     3 StationTrace(s) in StationStream (passed):
+       CE.68150..HNE | 2014-08-24T10:20:21.000000Z - 2014-08-24T10:22:19.995000Z | 200.0 Hz, 23800 samples (passed)
+       CE.68150..HNN | 2014-08-24T10:20:21.000000Z - 2014-08-24T10:22:19.995000Z | 200.0 Hz, 23800 samples (passed)
+       CE.68150..HNZ | 2014-08-24T10:20:21.000000Z - 2014-08-24T10:22:19.995000Z | 200.0 Hz, 23800 samples (passed)
 
 Note that the message indiates that data for 4 stations was found. The
 downloaded data can be seen in the project data directory
@@ -220,22 +225,22 @@ do not then all of the events in the data directory will be assembled.
    INFO 2021-01-10 17:57:06 | assemble.main: Number of events to assemble: 1
    INFO 2021-01-10 17:57:06 | assemble.main: Starting event: nc72282711
    4 StationStreams(s) in StreamCollection:
-   3 StationTrace(s) in StationStream (passed):
-      NC.N016.01.HNN | 2014-08-24T10:24:08.345000Z - 2014-08-24T10:25:41.740000Z | 200.0 Hz, 18680 samples (passed)
-      NC.N016.01.HNZ | 2014-08-24T10:24:08.345000Z - 2014-08-24T10:25:41.740000Z | 200.0 Hz, 18680 samples (passed)
-      NC.N016.01.HNE | 2014-08-24T10:24:08.345000Z - 2014-08-24T10:25:41.740000Z | 200.0 Hz, 18680 samples (passed)
-   3 StationTrace(s) in StationStream (passed):
-      YK.KRE.01.ENE | 2014-08-24T10:20:41.541000Z - 2014-08-24T10:22:38.796000Z | 200.0 Hz, 23452 samples (passed)
-      YK.KRE.01.ENZ | 2014-08-24T10:20:41.541000Z - 2014-08-24T10:22:38.796000Z | 200.0 Hz, 23452 samples (passed)
-      YK.KRE.01.ENN | 2014-08-24T10:20:41.541000Z - 2014-08-24T10:22:38.796000Z | 200.0 Hz, 23452 samples (passed)
-   3 StationTrace(s) in StationStream (passed):
-      NC.NHC..HNE | 2014-08-24T10:20:14.070000Z - 2014-08-24T10:27:44.060000Z | 100.0 Hz, 45000 samples (passed)
-      NC.NHC..HNZ | 2014-08-24T10:20:14.070000Z - 2014-08-24T10:27:44.060000Z | 100.0 Hz, 45000 samples (passed)
-      NC.NHC..HNN | 2014-08-24T10:20:14.070000Z - 2014-08-24T10:27:44.060000Z | 100.0 Hz, 45000 samples (passed)
-   3 StationTrace(s) in StationStream (passed):
-      CE.68150..HNE | 2014-08-24T10:20:21.000000Z - 2014-08-24T10:22:19.995000Z | 200.0 Hz, 23800 samples (passed)
-      CE.68150..HNN | 2014-08-24T10:20:21.000000Z - 2014-08-24T10:22:19.995000Z | 200.0 Hz, 23800 samples (passed)
-      CE.68150..HNZ | 2014-08-24T10:20:21.000000Z - 2014-08-24T10:22:19.995000Z | 200.0 Hz, 23800 samples (passed)
+     3 StationTrace(s) in StationStream (passed):
+       NC.N016.01.HNN | 2014-08-24T10:24:08.345000Z - 2014-08-24T10:25:41.740000Z | 200.0 Hz, 18680 samples (passed)
+       NC.N016.01.HNZ | 2014-08-24T10:24:08.345000Z - 2014-08-24T10:25:41.740000Z | 200.0 Hz, 18680 samples (passed)
+       NC.N016.01.HNE | 2014-08-24T10:24:08.345000Z - 2014-08-24T10:25:41.740000Z | 200.0 Hz, 18680 samples (passed)
+     3 StationTrace(s) in StationStream (passed):
+       YK.KRE.01.ENE | 2014-08-24T10:20:41.541000Z - 2014-08-24T10:22:38.796000Z | 200.0 Hz, 23452 samples (passed)
+       YK.KRE.01.ENZ | 2014-08-24T10:20:41.541000Z - 2014-08-24T10:22:38.796000Z | 200.0 Hz, 23452 samples (passed)
+       YK.KRE.01.ENN | 2014-08-24T10:20:41.541000Z - 2014-08-24T10:22:38.796000Z | 200.0 Hz, 23452 samples (passed)
+     3 StationTrace(s) in StationStream (passed):
+       NC.NHC..HNE | 2014-08-24T10:20:14.070000Z - 2014-08-24T10:27:44.060000Z | 100.0 Hz, 45000 samples (passed)
+       NC.NHC..HNZ | 2014-08-24T10:20:14.070000Z - 2014-08-24T10:27:44.060000Z | 100.0 Hz, 45000 samples (passed)
+       NC.NHC..HNN | 2014-08-24T10:20:14.070000Z - 2014-08-24T10:27:44.060000Z | 100.0 Hz, 45000 samples (passed)
+     3 StationTrace(s) in StationStream (passed):
+       CE.68150..HNE | 2014-08-24T10:20:21.000000Z - 2014-08-24T10:22:19.995000Z | 200.0 Hz, 23800 samples (passed)
+       CE.68150..HNN | 2014-08-24T10:20:21.000000Z - 2014-08-24T10:22:19.995000Z | 200.0 Hz, 23800 samples (passed)
+       CE.68150..HNZ | 2014-08-24T10:20:21.000000Z - 2014-08-24T10:22:19.995000Z | 200.0 Hz, 23800 samples (passed)
 
    INFO 2021-01-10 17:57:08 | stream_workspace.addStreams: Adding waveforms for station N016
    INFO 2021-01-10 17:57:08 | stream_workspace.addStreams: Adding waveforms for station KRE
@@ -335,7 +340,7 @@ station summary that includes:
    File type: Moveout plot
       /Users/mrmanager/gmprocess_projects/default/data/nc72282711/moveout_plot.png
    File type: Summary report
-      /Users/mrmanager/gmprocess_projects/default/data/nc72282711/report_nc72282711.pdf
+      /Users/mrmanager/gmprocess_projects/default/data/nc72282711/default_20210222012143_report_nc72282711.pdf
 
 
 From the report plots (see below), you can see that the NC.N016 station failed 
@@ -429,7 +434,121 @@ combined).
 Note that you can see from the console output that the waveform metrics were 
 not computed for the station that failed the signal-to-noise ratio test.
 
+Export Failure Tables
+---------------------
 
+It is useful to summarize the reasons that records have failed the QA checks,
+and this information can be output in a spreadsheet using the 
+``export_failure_tables`` subcommand. Unlike many of the other
+subcommands, the output combines the results in all project events and puts
+the result into the base project directory.
+
+.. code-block:: console
+
+   $ gmrecords export_failure_tables
+   INFO 2021-02-21 18:34:07 | gmrecords.__init__: Logging level includes INFO.
+   --------------------------------------------------------------------------------
+   Project: default
+      Conf Path: /Users/mrmanager/test/atlas/conf
+      Data Path: /Users/mrmanager/test/atlas/data
+   --------------------------------------------------------------------------------
+   INFO 2021-02-21 18:34:07 | export_failure_tables.main: Running subcommand 'export_failure_tables'
+   INFO 2021-02-21 18:34:07 | export_failure_tables.main: Creating failure tables for event nc72282711...
+
+   The following files have been created:
+   File type: Failure table
+      /Users/mrmanager/gmprocess_projects/default/data/nc72282711/default_20210222012143_failure_reasons_short.csv
+   File type: Complete failures
+      /Users/mrmanager/gmprocess_projects/default/data/default_20210222012143_complete_failures.csv
+
+Export Metric Tables
+---------------------
+
+Although the metrics can be accessed directly from the ASDF file, it is often
+convenient to save the metrics (both station and waveform) into a "flatfile"
+where each row corresponds to a single record. 
+
+.. code-block:: console
+
+   $ gmrecords export_metric_tables
+   INFO 2021-02-21 18:41:44 | gmrecords.__init__: Logging level includes INFO.
+   --------------------------------------------------------------------------------
+   Project: default
+      Conf Path: /Users/mrmanager/gmprocess_projects/default/conf
+      Data Path: /Users/mrmanager/gmprocess_projects/default/data
+   --------------------------------------------------------------------------------
+   INFO 2021-02-21 18:41:44 | export_metric_tables.main: Running subcommand 'export_metric_tables'
+   INFO 2021-02-21 18:41:44 | export_metric_tables.main: Creating tables for event nc72282711...
+
+   The following files have been created:
+   File type: Metric tables
+      /Users/mrmanager/gmprocess_projects/default/data/default_20210222012143_events.csv
+      /Users/mrmanager/gmprocess_projects/default/data/default_20210222012143_metrics_greater_of_two_horizontals.csv
+      /Users/mrmanager/gmprocess_projects/default/data/default_20210222012143_metrics_z.csv
+      /Users/mrmanager/gmprocess_projects/default/data/default_20210222012143_metrics_h2.csv
+      /Users/mrmanager/gmprocess_projects/default/data/default_20210222012143_metrics_h1.csv
+      /Users/mrmanager/gmprocess_projects/default/data/default_20210222012143_metrics_greater_of_two_horizontals_README.csv
+      /Users/mrmanager/gmprocess_projects/default/data/default_20210222012143_metrics_z_README.csv
+      /Users/mrmanager/gmprocess_projects/default/data/default_20210222012143_metrics_h2_README.csv
+      /Users/mrmanager/gmprocess_projects/default/data/default_20210222012143_metrics_h1_README.csv
+      /Users/mrmanager/gmprocess_projects/default/data/default_20210222012143_fit_spectra_parameters.csv
+      /Users/mrmanager/gmprocess_projects/default/data/default_20210222012143_fit_spectra_parameters_README.csv
+
+Note that the metric tables are organized into separate files for each intensity
+measure component (i.e., "IMT").
+
+Export Provenance Tables
+------------------------
+
+As with the metric and failure tables, you can also output tables summarzing
+the provenance information.
+
+.. code-block:: console
+
+   $ gmrecords export_provenance_tables
+   INFO 2021-02-21 19:36:06 | gmrecords.__init__: Logging level includes INFO.
+   --------------------------------------------------------------------------------
+   Project: default
+      Conf Path: /Users/mrmanager/gmprocess_projects/default/conf
+      Data Path: /Users/mrmanager/gmprocess_projects/default/data
+   --------------------------------------------------------------------------------
+   INFO 2021-02-21 19:36:06 | export_provenance_tables.main: Running subcommand 'export_provenance_tables'
+   INFO 2021-02-21 19:36:06 | export_provenance_tables.main: Creating provenance tables for event nc72282711...
+
+   The following files have been created:
+   File type: Provenance
+      /Users/mrmanager/gmprocess_projects/default/nc72282711/default_20210222012143_provenance.csv
+
+Generate Regression Plot
+------------------------
+
+Although the report created by the ``generate_report`` subcommand is helpful
+for checking for some possible processing problems, it cannot identify
+outliers that may be due to incorrect metadata (such as the gain). This type
+of issue is relatively common, and can sometimes be identified by plotting 
+the peak ground acceleration as a function of distance. 
+
+.. code-block:: console
+
+   $ gmrecords generate_regression_plot
+   INFO 2021-02-21 19:59:25 | gmrecords.__init__: Logging level includes INFO.
+   --------------------------------------------------------------------------------
+   Project: default
+      Conf Path: /Users/mrmanager/gmprocess_projects/default/conf
+      Data Path: /Users/mrmanager/gmprocess_projects/default/data
+   --------------------------------------------------------------------------------
+   INFO 2021-02-21 19:59:25 | generate_regression_plot.main: Running subcommand 'generate_regression_plot'
+
+   The following files have been created:
+   File type: Multi-event regression plot
+      /Users/mrmanager/gmprocess_projects/default/dataregression_h1_PGA.png
+
+The result is given below. For this example dataset, it is not very interesting
+because there are only a few datapoints.
+
+.. figure:: ../../_static/regression_h1_PGA.png
+
+   Example "regression" plot.
 
 .. Indices and tables
 .. ==================

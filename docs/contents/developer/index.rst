@@ -3,9 +3,9 @@ Developer Resources
 
 .. toctree::
 
-   API <../../autoapi/gmprocess/index>
    Contributing Guidelines <contributing>
    Adding New Data Readers <new_readers>
+   API <../../autoapi/gmprocess/index>
 
 
 
