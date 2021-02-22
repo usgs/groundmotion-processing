@@ -4,7 +4,7 @@ Tutorials
 .. toctree::
 
    Command Line Interface <cli>
-   Python Scripting <scripting>
+   Response Spectra Calculation and Comparison <response_spectra>
 
 .. Indices and tables
 .. ==================

@@ -15,8 +15,7 @@
 
 .. todo:: 
 
-    Despite being the first release, I think this should be done to keep
-    the code reproducible.
+    Add change log.
 
 **Acknowledgements**
     The development of this software has been performed by the US Geological
