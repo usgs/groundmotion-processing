@@ -428,7 +428,7 @@ def brune_stress(moment, f0, shear_vel=3.7):
     Returns:
         float: Brune stress drop (bars).
     """
-    stress_drop = ((f0 / (4.906e6 * shear_vel))**3) / moment
+    stress_drop = ((f0 / (4.906e6 * shear_vel))**3) * moment
     return stress_drop
 
 
@@ -484,7 +484,7 @@ def path(freq, dist, gs_mod="REA99", q_mod="REA99"):
 
 def site(freq, kappa, crust_mod='BT15'):
     """
-    Site term, including crustal amplificaiton and kappa.
+    Site term, including crustal amplification and kappa.
 
     Args:
         freq (array): Numpy array of frequencies for computing spectra (Hz).
@@ -502,7 +502,7 @@ def site(freq, kappa, crust_mod='BT15'):
 
 def crustal_amplification(freq, model="BT15"):
     """
-    Crustal amplificaiton model.
+    Crustal amplification model.
 
     Args:
         freq (array): Numpy array of frequencies for computing spectra (Hz).
@@ -525,7 +525,7 @@ def crustal_amplification(freq, model="BT15"):
             5.25,
             60.3
         ])
-        amplificaiton_tab = np.array([
+        amplification_tab = np.array([
             1.00,
             1.01,
             1.03,
@@ -541,13 +541,13 @@ def crustal_amplification(freq, model="BT15"):
         ])
 
         # Interpolation should be linear freq, log amplification
-        log_amp_tab = np.log(amplificaiton_tab)
+        log_amp_tab = np.log(amplification_tab)
         log_amp_interp = np.interp(freq, freq_tab, log_amp_tab)
         crustal_amps = np.exp(log_amp_interp)
     elif model == 'none':
         crustal_amps = np.ones_like(freq)
     else:
-        raise ValueError('Unsupported crustal amplificaiton model.')
+        raise ValueError('Unsupported crustal amplification model.')
 
     return crustal_amps
 
@@ -563,7 +563,7 @@ def geometrical_spreading(freq, dist, model="REA99"):
             - 'REA99' for Raoof et al. (1999)
 
     Returns:
-        Array of anelastic attenuation factor.
+        geom (float): anelastic attenuation factor.
     """
 
     if model == 'REA99':
