@@ -714,13 +714,13 @@ class StreamWorkspace(object):
                        (surface) to station
                      - HypocentralDistance Distance from origin hypocenter
                        (depth) to station
-                     - HN1Lowpass Low pass filter corner frequency for first
+                     - H1Lowpass Low pass filter corner frequency for first
                        horizontal channel
-                     - HN1Highpass High pass filter corner frequency for first
+                     - H1Highpass High pass filter corner frequency for first
                        horizontal channel
-                     - HN2Lowpass Low pass filter corner frequency for second
+                     - H2Lowpass Low pass filter corner frequency for second
                        horizontal channel
-                     - HN2Highpass High pass filter corner frequency for
+                     - H2Highpass High pass filter corner frequency for
                        second horizontal channel
                      - ...desired IMTs (PGA, PGV, SA(0.3), etc.)
                    - dictionary of README DataFrames, where keys are IMCs
