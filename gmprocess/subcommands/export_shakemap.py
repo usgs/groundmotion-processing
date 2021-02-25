@@ -62,9 +62,12 @@ class ExportShakeMapModule(SubcommandModule):
 
             self.workspace = StreamWorkspace.open(workname)
             self._get_labels()
-            # TODO: re-write this so that it uses the already computer values
-            # in self.workspace.dataset.auxiliary_data.WaveFormMetrics
-            # rather than recomputing the metrics from self.pstreams.
+
+            if not hasattr(self, 'pstreams'):
+                logging.info('No processed waveforms available. No shakemap '
+                             'files created.')
+                self.workspace.close()
+                continue
 
             expanded_imts = self.gmrecords.args.expand_imts
             jsonfile, stationfile, _ = create_json(

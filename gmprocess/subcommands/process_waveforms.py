@@ -90,9 +90,14 @@ class ProcessWaveformsModule(SubcommandModule):
         rstreams = workspace.getStreams(
             event.id, labels=['unprocessed'], config=self.gmrecords.conf)
 
-        logging.info('Processing \'%s\' streams for event %s...'
-                     % ('unprocessed', event.id))
-        pstreams = process_streams(rstreams, event, config=self.gmrecords.conf)
-        workspace.addStreams(event, pstreams, label=self.process_tag)
+        if len(rstreams):
+            logging.info('Processing \'%s\' streams for event %s...'
+                         % ('unprocessed', event.id))
+            pstreams = process_streams(
+                rstreams, event, config=self.gmrecords.conf)
+            workspace.addStreams(event, pstreams, label=self.process_tag)
+        else:
+            logging.info('No streams found. Nothing to do. Goodbye.')
+
         workspace.close()
         return event.id

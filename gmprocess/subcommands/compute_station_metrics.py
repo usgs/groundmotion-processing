@@ -101,6 +101,10 @@ class ComputeStationMetricsModule(SubcommandModule):
         self.workspace = StreamWorkspace.open(workname)
         self._get_pstreams()
 
+        if not hasattr(self, 'pstreams'):
+            logging.info('No streams found. Nothing to do. Goodbye.')
+            return event.id
+
         rupture_file = get_rupture_file(event_dir)
         origin = Origin({
             'id': self.eventid,

@@ -102,6 +102,8 @@ class SubcommandModule(ABC):
         """Convenience method for recycled code.
         """
         self._get_labels()
+        if self.gmrecords.args.label is None:
+            return
 
         self.pstreams = self.workspace.getStreams(
             self.eventid, labels=[self.gmrecords.args.label],
