@@ -60,7 +60,7 @@ class ExportMetricTablesModule(SubcommandModule):
                 logging.info('No processed waveforms available. No metric '
                              'tables created.')
                 self.workspace.close()
-                return
+                continue
 
             event_table, imc_tables, readmes = self.workspace.getTables(
                 self.gmrecords.args.label, streams=self.pstreams)

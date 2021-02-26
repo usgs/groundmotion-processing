@@ -77,6 +77,10 @@ class ComputeWaveformMetricsModule(SubcommandModule):
         self._get_pstreams()
 
         if not hasattr(self, 'pstreams'):
+            logging.info('No streams found. Nothing to do. Goodbye.')
+            return event.id
+
+        if not hasattr(self, 'pstreams'):
             logging.info('No processed waveforms available. No waveform '
                          'metrics computed.')
             self.workspace.close()

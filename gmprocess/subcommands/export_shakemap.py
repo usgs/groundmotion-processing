@@ -62,9 +62,6 @@ class ExportShakeMapModule(SubcommandModule):
 
             self.workspace = StreamWorkspace.open(workname)
             self._get_labels()
-            # TODO: re-write this so that it uses the already computer values
-            # in self.workspace.dataset.auxiliary_data.WaveFormMetrics
-            # rather than recomputing the metrics from self.pstreams.
 
             expanded_imts = self.gmrecords.args.expand_imts
             jsonfile, stationfile, _ = create_json(
@@ -72,7 +69,9 @@ class ExportShakeMapModule(SubcommandModule):
                 config=self.gmrecords.conf, expanded_imts=expanded_imts)
 
             self.workspace.close()
-            self.append_file('shakemap', jsonfile)
-            self.append_file('shakemap', stationfile)
+            if jsonfile is not None:
+                self.append_file('shakemap', jsonfile)
+            if stationfile is not None:
+                self.append_file('shakemap', stationfile)
 
         self._summarize_files_created()

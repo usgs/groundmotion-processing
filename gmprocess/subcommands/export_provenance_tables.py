@@ -57,7 +57,7 @@ class ExportProvenanceTablesModule(SubcommandModule):
                 logging.info('No processed waveforms available. No provenance '
                              'tables created.')
                 self.workspace.close()
-                return
+                continue
 
             provdata = self.workspace.getProvenance(
                 self.eventid, labels=self.gmrecords.args.label)

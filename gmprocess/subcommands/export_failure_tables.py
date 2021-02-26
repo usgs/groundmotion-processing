@@ -73,7 +73,7 @@ class ExportFailureTablesModule(SubcommandModule):
             if not hasattr(self, 'pstreams'):
                 logging.info('No processed waveforms available. No failure '
                              'tables created.')
-                return
+                continue
 
             status_info = self.pstreams.get_status(self.gmrecords.args.type)
             failures[event.id] = status_info
