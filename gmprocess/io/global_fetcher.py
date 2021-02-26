@@ -13,8 +13,8 @@ from .fetcher import DataFetcher
 from gmprocess.utils.config import get_config
 
 
-def fetch_data(time, lat, lon, depth, magnitude,
-               config=None, rawdir=None, drop_non_free=True):
+def fetch_data(time, lat, lon, depth, magnitude, config=None, rawdir=None,
+               drop_non_free=True, stream_collection=True):
     """Retrieve data using any DataFetcher subclass.
 
     Args:
@@ -42,6 +42,8 @@ def fetch_data(time, lat, lon, depth, magnitude,
         drop_non_free (bool):
             Option to ignore non-free-field (borehole, sensors on structures,
             etc.)
+        stream_collection (bool):
+            Construct and return a StreamCollection instance?
 
      Returns:
         StreamCollection: StreamCollection object.
@@ -63,7 +65,8 @@ def fetch_data(time, lat, lon, depth, magnitude,
         try:
             fetchinst = fetcher(
                 time, lat, lon, depth, magnitude, config=config,
-                rawdir=rawdir, drop_non_free=drop_non_free)
+                rawdir=rawdir, drop_non_free=drop_non_free,
+                stream_collection=stream_collection)
         except BaseException as e:
             fmt = 'Could not instantiate Fetcher %s, due to error\n "%s"'
             tpl = (fetchname, str(e))

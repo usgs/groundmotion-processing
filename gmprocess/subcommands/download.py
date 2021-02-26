@@ -62,5 +62,6 @@ class DownloadModule(SubcommandModule):
                 event_dir=event_dir,
                 config=gmrecords.conf,
                 directory=None,
-                create_workspace=False
+                create_workspace=False,
+                stream_collection=False
             )

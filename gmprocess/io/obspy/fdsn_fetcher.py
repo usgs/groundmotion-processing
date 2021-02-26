@@ -45,11 +45,10 @@ GEONET_REALTIME_URL = 'http://service-nrt.geonet.org.nz'
 
 
 class FDSNFetcher(DataFetcher):
-    def __init__(self, time, lat, lon,
-                 depth, magnitude,
-                 radius=None, time_before=None,
-                 time_after=None, channels=None,
-                 rawdir=None, config=None, drop_non_free=True):
+    def __init__(self, time, lat, lon, depth, magnitude,
+                 radius=None, time_before=None, time_after=None, channels=None,
+                 rawdir=None, config=None, drop_non_free=True,
+                 stream_collection=True):
         """Create an FDSNFetcher instance.
 
         Download waveform data from the all available FDSN sites
@@ -81,6 +80,8 @@ class FDSNFetcher(DataFetcher):
             drop_non_free (bool):
                 Option to ignore non-free-field (borehole, sensors on
                 structures, etc.)
+            stream_collection (bool):
+                Construct and return a StreamCollection instance?
         """
         # what values do we use for search thresholds?
         # In order of priority:
@@ -160,6 +161,7 @@ class FDSNFetcher(DataFetcher):
             minimum_interstation_distance_in_m
 
         self.drop_non_free = drop_non_free
+        self.stream_collection = stream_collection
         self.BOUNDS = [-180, 180, -90, 90]
         self.config = config
 
@@ -274,20 +276,23 @@ class FDSNFetcher(DataFetcher):
             mdl.download(domain, restrictions, mseed_storage=rawdir,
                          stationxml_storage=rawdir)
 
-            seed_files = glob.glob(os.path.join(rawdir, '*.mseed'))
-            streams = []
-            for seed_file in seed_files:
-                try:
-                    tstreams = read_obspy(seed_file, self.config)
-                except BaseException as e:
-                    tstreams = None
-                    fmt = 'Could not read seed file %s - "%s"'
-                    logging.info(fmt % (seed_file, str(e)))
-                if tstreams is None:
-                    continue
-                else:
-                    streams += tstreams
+            if self.stream_collection:
+                seed_files = glob.glob(os.path.join(rawdir, '*.mseed'))
+                streams = []
+                for seed_file in seed_files:
+                    try:
+                        tstreams = read_obspy(seed_file, self.config)
+                    except BaseException as e:
+                        tstreams = None
+                        fmt = 'Could not read seed file %s - "%s"'
+                        logging.info(fmt % (seed_file, str(e)))
+                    if tstreams is None:
+                        continue
+                    else:
+                        streams += tstreams
 
-            stream_collection = StreamCollection(
-                streams=streams, drop_non_free=self.drop_non_free)
-            return stream_collection
+                stream_collection = StreamCollection(
+                    streams=streams, drop_non_free=self.drop_non_free)
+                return stream_collection
+            else:
+                return None

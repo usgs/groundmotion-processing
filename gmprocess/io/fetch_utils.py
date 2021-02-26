@@ -58,7 +58,8 @@ UNITS = {
 FLOAT_PATTERN = r'[-+]?[0-9]*\.?[0-9]+'
 
 
-def download(event, event_dir, config, directory, create_workspace=True):
+def download(event, event_dir, config, directory, create_workspace=True,
+             stream_collection=True):
     """Download data or load data from local directory, turn into Streams.
 
     Args:
@@ -76,6 +77,8 @@ def download(event, event_dir, config, directory, create_workspace=True):
             located in `proj_dir/abc123/raw/`.
         create_workspace (bool):
             Create workspace file?
+        stream_collection (bool):
+            Construct and return a StreamCollection instance?
 
     Returns:
         tuple:
@@ -95,7 +98,8 @@ def download(event, event_dir, config, directory, create_workspace=True):
             event.depth_km,
             event.magnitude,
             config=config,
-            rawdir=rawdir)
+            rawdir=rawdir, 
+            stream_collection=stream_collection)
         # create an event.json file in each event directory,
         # in case user is simply downloading for now
         create_event_file(event, event_dir)

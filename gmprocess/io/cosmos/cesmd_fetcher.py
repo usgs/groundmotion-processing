@@ -37,14 +37,11 @@ TIMEFMT = '%Y-%m-%d %H:%M:%S'
 
 
 class CESMDFetcher(DataFetcher):
-    def __init__(self, time, lat, lon,
-                 depth, magnitude,
-                 email=None, process_type='raw',
-                 station_type='Ground',
-                 eq_radius=None, eq_dt=None,
-                 station_radius=None,
-                 rawdir=None, config=None,
-                 drop_non_free=True):
+    def __init__(self, time, lat, lon, depth, magnitude,
+                 email=None, process_type='raw', station_type='Ground',
+                 eq_radius=None, eq_dt=None, station_radius=None,
+                 rawdir=None, config=None, drop_non_free=True,
+                 stream_collection=True):
         """Create a CESMDFetcher instance.
 
         Download strong motion records from the CESMD site:
@@ -83,6 +80,8 @@ class CESMDFetcher(DataFetcher):
             drop_non_free (bool):
                 Option to ignore non-free-field (borehole, sensors on
                 structures, etc.)
+            stream_collection (bool):
+                Construct and return a StreamCollection instance?
         """
         # what values do we use for search thresholds?
         # In order of priority:
@@ -166,6 +165,7 @@ class CESMDFetcher(DataFetcher):
         # this announces to the world the valid bounds for this fetcher.
         self.BOUNDS = [xmin, xmax, ymin, ymax]
         self.drop_non_free = drop_non_free
+        self.stream_collection = stream_collection
 
     def getMatchingEvents(self, solve=True):
         """Return a list of dictionaries matching input parameters.
@@ -331,15 +331,18 @@ class CESMDFetcher(DataFetcher):
                     continue
                 datafiles += tfiles
 
-        streams = []
-        for dfile in datafiles:
-            logging.info('Reading CESMD file %s...' % dfile)
-            try:
-                streams += read_data(dfile)
-            except BaseException as ex:
-                logging.info('Could not read %s: error "%s"' %
-                             (dfile, str(ex)))
+        if self.stream_collection:
+            streams = []
+            for dfile in datafiles:
+                logging.info('Reading CESMD file %s...' % dfile)
+                try:
+                    streams += read_data(dfile)
+                except BaseException as ex:
+                    logging.info('Could not read %s: error "%s"' %
+                                 (dfile, str(ex)))
 
-        stream_collection = StreamCollection(
-            streams=streams, drop_non_free=self.drop_non_free)
-        return stream_collection
+            stream_collection = StreamCollection(
+                streams=streams, drop_non_free=self.drop_non_free)
+            return stream_collection
+        else:
+            return None
