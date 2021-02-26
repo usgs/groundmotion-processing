@@ -47,12 +47,10 @@ DMAG = 0.3
 
 
 class GeoNetFetcher(object):
-    def __init__(self, time, lat, lon,
-                 depth, magnitude,
-                 user=None, password=None,
-                 radius=None, dt=None, ddepth=None,
-                 dmag=None,
-                 rawdir=None, config=None, drop_non_free=True):
+    def __init__(self, time, lat, lon, depth, magnitude,
+                 user=None, password=None, radius=None, dt=None, ddepth=None,
+                 dmag=None, rawdir=None, config=None, drop_non_free=True,
+                 stream_collection=True):
         """Create a GeoNetFetcher instance.
 
         Args:
@@ -87,6 +85,8 @@ class GeoNetFetcher(object):
             drop_non_free (bool):
                 Option to ignore non-free-field (borehole, sensors on
                 structures, etc.)
+            stream_collection (bool):
+                Construct and return a StreamCollection instance?
         """
         # what values do we use for search thresholds?
         # In order of priority:
@@ -137,6 +137,7 @@ class GeoNetFetcher(object):
         # this announces to the world the valid bounds for this fetcher.
         self.BOUNDS = [xmin, xmax, ymin, ymax]
         self.drop_non_free = drop_non_free
+        self.stream_collection = stream_collection
 
     def getMatchingEvents(self, solve=True):
         """Return a list of dictionaries matching input parameters.
@@ -287,9 +288,12 @@ class GeoNetFetcher(object):
         if self.rawdir is None:
             shutil.rmtree(rawdir)
 
-        stream_collection = StreamCollection(streams=streams,
-                                             drop_non_free=self.drop_non_free)
-        return stream_collection
+        if self.stream_collection:
+            stream_collection = StreamCollection(
+                streams=streams, drop_non_free=self.drop_non_free)
+            return stream_collection
+        else:
+            return None
 
 
 def _match_closest_time(etime, dirlist):
