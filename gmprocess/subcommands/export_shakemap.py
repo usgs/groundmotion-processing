@@ -63,19 +63,15 @@ class ExportShakeMapModule(SubcommandModule):
             self.workspace = StreamWorkspace.open(workname)
             self._get_labels()
 
-            if not hasattr(self, 'pstreams'):
-                logging.info('No processed waveforms available. No shakemap '
-                             'files created.')
-                self.workspace.close()
-                continue
-
             expanded_imts = self.gmrecords.args.expand_imts
             jsonfile, stationfile, _ = create_json(
                 self.workspace, event, event_dir, self.gmrecords.args.label,
                 config=self.gmrecords.conf, expanded_imts=expanded_imts)
 
             self.workspace.close()
-            self.append_file('shakemap', jsonfile)
-            self.append_file('shakemap', stationfile)
+            if jsonfile is not None:
+                self.append_file('shakemap', jsonfile)
+            if stationfile is not None:
+                self.append_file('shakemap', stationfile)
 
         self._summarize_files_created()
