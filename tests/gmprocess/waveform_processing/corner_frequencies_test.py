@@ -102,7 +102,7 @@ def test_corner_frequencies():
             hp.append(cfdict['highpass'])
     np.testing.assert_allclose(
         np.sort(hp),
-        [0.003052, 0.003052, 0.010265],
+        [0.00505256, 0.00628786, 0.01026485],
         atol=1e-6
     )
 
@@ -116,7 +116,7 @@ def test_corner_frequencies():
     )
     np.testing.assert_allclose(
         np.sort(hps),
-        [0.003052, 0.010265, 0.025275],
+        [0.005839, 0.010265, 0.025275],
         atol=1e-6
     )
 
@@ -140,7 +140,7 @@ def test_corner_frequencies():
 
     np.testing.assert_allclose(
         np.sort(hp),
-        [0.003052, 0.010265, 0.017872],
+        [0.005053, 0.010265, 0.017872],
         atol=1e-6
     )
 
