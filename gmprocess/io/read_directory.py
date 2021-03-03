@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """
 Module for methods for reading in directories of data, particularly messy data
 from CESMD.
@@ -15,7 +17,7 @@ from gmprocess.io.utils import flatten_directory
 EXT_IGNORE = [".gif", ".csv", ".dis", ".abc", ".zip", ".rs2", ".fs1"]
 
 
-def directory_to_streams(directory):
+def directory_to_streams(directory, config=None):
     """Read in a directory of data to a list of streams.
 
     Note:
@@ -27,6 +29,8 @@ def directory_to_streams(directory):
     Args:
         directory (str):
             Directory of ground motion files (streams).
+        config (dict):
+            Configuration options.
 
     Returns:
         tuple: (List of obspy streams,
@@ -34,7 +38,6 @@ def directory_to_streams(directory):
                 List of errors associated with trying to read unprocessed
                 files).
     """
-
     # Use a temp dir so that we don't modify data on disk since that may not be
     # expected or desired in all cases.
     temp_dir = os.path.join(tempfile.mkdtemp(), 'directory_to_streams')
@@ -52,11 +55,12 @@ def directory_to_streams(directory):
             if file_ext not in EXT_IGNORE:
                 try:
                     logging.debug('Attempting to read: %s' % file_path)
-                    streams += read_data(file_path)
-                except Exception as ex:
+                    streams += read_data(file_path, config=config)
+                except BaseException as ex:
                     unprocessed_files += [file_path]
                     unprocessed_file_errors += [ex]
-    except Exception as e:
+
+    except BaseException as e:
         raise e
     finally:
         shutil.rmtree(temp_dir)
@@ -66,7 +70,7 @@ def directory_to_streams(directory):
 
 def _split_all_path(path):
     allparts = []
-    while 1:
+    while True:
         parts = os.path.split(path)
         if parts[0] == path:
             allparts.insert(0, parts[0])
@@ -78,10 +82,3 @@ def _split_all_path(path):
             path = parts[0]
             allparts.insert(0, parts[1])
     return allparts
-
-
-def _handle_duplicates(target):
-    while os.path.exists(target):
-        base, ext = os.path.splitext(target)
-        target = base + DUPLICATE_MARKER + ext
-    return target

@@ -1,0 +1,3 @@
+time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,type,horizontalError,depthError,magError,magNst,status,locationSource,magSource
+2019-07-06T10:37:27.910Z,35.6108322,-117.3811646,-0.83,3.82,mw,53,34,0.07036,0.37,ci,ci38461735,2019-08-01T10:11:21.040Z,"17km S of Trona, CA",earthquake,0.33,0.68,,4,reviewed,ci,ci
+2019-07-04T17:37:25.640Z,35.6758333,-117.4575,15.82,4.01,mlr,27,66,0.08922,0.22,ci,ci37218996,2019-08-16T20:32:58.276Z,"11km SSW of Searles Valley, CA",earthquake,0.36,0.87,0.136,20,reviewed,ci,ci

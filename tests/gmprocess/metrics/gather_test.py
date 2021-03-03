@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+# -*- coding: utf-8 -*-
 
 # third party imports
 import numpy as np
@@ -9,7 +9,8 @@ from gmprocess.metrics.gather import gather_pgms
 
 
 def test_gather():
-    target_imts = ['pga', 'pgv', 'sa', 'fas', 'arias', 'duration']
+    target_imts = [
+        'pga', 'pgv', 'sa', 'fas', 'arias', 'duration', 'sorted_duration']
     target_imcs = [
         'CHANNELS', 'GMROTD', 'ROTD', 'RADIAL_TRANSVERSE',
         'GREATER_OF_TWO_HORIZONTALS', 'ARITHMETIC_MEAN', 'GEOMETRIC_MEAN',

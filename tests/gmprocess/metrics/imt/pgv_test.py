@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # stdlib imports
 import os.path
@@ -36,10 +37,10 @@ def test_pgv():
                                                      ['channels', 'greater_of_two_horizontals',
                                                          'gmrotd50'],
                                                      ['pgv', 'sa1.0', 'saincorrect'])
-    pgv_df = station_summary.pgms[station_summary.pgms.IMT == 'PGV']
-    HN1 = pgv_df[pgv_df.IMC == 'H1'].Result.iloc[0]
-    HN2 = pgv_df[pgv_df.IMC == 'H2'].Result.iloc[0]
-    HNZ = pgv_df[pgv_df.IMC == 'Z'].Result.iloc[0]
+    pgv_df = station_summary.pgms.loc['PGV']
+    HN1 = pgv_df.loc['H1'].Result
+    HN2 = pgv_df.loc['H2'].Result
+    HNZ = pgv_df.loc['Z'].Result
     np.testing.assert_almost_equal(HN2, pgv_target['H2'])
     np.testing.assert_almost_equal(HN1, pgv_target['H1'])
     np.testing.assert_almost_equal(HNZ, pgv_target['Z'])

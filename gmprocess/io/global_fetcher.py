@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # stdlib imports
 import importlib
 import pkg_resources
@@ -7,13 +10,11 @@ import logging
 
 # local imports
 from .fetcher import DataFetcher
-from gmprocess.config import get_config
+from gmprocess.utils.config import get_config
 
 
-def fetch_data(time, lat, lon,
-               depth, magnitude,
-               config=None,
-               rawdir=None, drop_non_free=True):
+def fetch_data(time, lat, lon, depth, magnitude, config=None, rawdir=None,
+               drop_non_free=True, stream_collection=True):
     """Retrieve data using any DataFetcher subclass.
 
     Args:
@@ -41,22 +42,32 @@ def fetch_data(time, lat, lon,
         drop_non_free (bool):
             Option to ignore non-free-field (borehole, sensors on structures,
             etc.)
+        stream_collection (bool):
+            Construct and return a StreamCollection instance?
 
      Returns:
         StreamCollection: StreamCollection object.
     """
     if config is None:
         config = get_config()
-    fetchers = find_fetchers(lat, lon)
+    tfetchers = find_fetchers(lat, lon)
+
+    # Remove fetchers if they are not present in the conf file
+    fetchers = {k: v for k, v in tfetchers.items() if k in config['fetchers']}
+
+    for fname in fetchers.keys():
+        if fname not in config['fetchers']:
+            del fetchers[fname]
+
     instances = []
     errors = []
     for fetchname, fetcher in fetchers.items():
         try:
-            fetchinst = fetcher(time, lat, lon,
-                                depth, magnitude,
-                                config=config,
-                                rawdir=rawdir, drop_non_free=drop_non_free)
-        except Exception as e:
+            fetchinst = fetcher(
+                time, lat, lon, depth, magnitude, config=config,
+                rawdir=rawdir, drop_non_free=drop_non_free,
+                stream_collection=stream_collection)
+        except BaseException as e:
             fmt = 'Could not instantiate Fetcher %s, due to error\n "%s"'
             tpl = (fetchname, str(e))
             msg = fmt % tpl
@@ -100,8 +111,10 @@ def find_fetchers(lat, lon):
     """Create a dictionary of classname:class to be used in main().
 
     Args:
-        lat (float): Origin latitude.
-        lon (float): Origin longitude.
+        lat (float):
+            Origin latitude.
+        lon (float):
+            Origin longitude.
 
     Returns:
         dict: Dictionary of classname:class where each class

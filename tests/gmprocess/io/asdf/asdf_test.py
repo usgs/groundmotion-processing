@@ -1,18 +1,12 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import os
 import shutil
-import logging
-import time
 
-import numpy as np
 from gmprocess.io.asdf.core import is_asdf, read_asdf, write_asdf
-from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.io.read import read_data
-from gmprocess.processing import process_streams
-from gmprocess.config import get_config
 from gmprocess.io.test_utils import read_data_dir
-from gmprocess.event import get_event_object
 import tempfile
 
 
@@ -21,7 +15,6 @@ def test_asdf():
     datafiles, event = read_data_dir('geonet', eventid, '*.V1A')
     tdir = tempfile.mkdtemp()
     try:
-        config = get_config()
         tfile = os.path.join(tdir, 'test.hdf')
         raw_streams = []
         for dfile in datafiles:
@@ -39,8 +32,8 @@ def test_asdf():
         outstreams2 = read_asdf(tfile, label='foo')
         assert len(outstreams2) == len(raw_streams)
 
-    except Exception:
-        assert 1 == 2
+    except Exception as e:
+        raise(e)
     finally:
         shutil.rmtree(tdir)
 

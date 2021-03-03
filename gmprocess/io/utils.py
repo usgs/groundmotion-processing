@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import os
 import zipfile
 import logging
@@ -5,7 +8,7 @@ import logging
 import numpy as np
 
 # local imports
-from gmprocess.config import get_config
+from gmprocess.utils.config import get_config
 
 CONFIG = get_config()
 DUPLICATE_MARKER = '1'
@@ -38,7 +41,7 @@ def resample_uneven_trace(trace, times, data, resample_rate=None,
     Resample unevenly spaced data.
 
     Args:
-        trace (gmprocess.stationtrace.StationTrace):
+        trace (gmprocess.core.stationtrace.StationTrace):
             Trace to resample.
         times (array):
             Array of floats of times in seconds.
@@ -50,7 +53,7 @@ def resample_uneven_trace(trace, times, data, resample_rate=None,
             Method of resampling. Currently only supported is 'linear'.
 
     Returns:
-        trace (gmprocess.stationtrace.StationTrace):
+        trace (gmprocess.core.stationtrace.StationTrace):
             Resampled trace with updated provenance information.
     """
     npts = len(times)
@@ -142,7 +145,7 @@ def _walk_and_unzip(directory):
             try:
                 zipfile.ZipFile(full_file, 'r')
                 is_zip = True
-            except:
+            except BaseException:
                 pass
             if is_zip:
                 has_zips = True
@@ -168,7 +171,7 @@ def _walk_and_unzip(directory):
 
 def _split_all_path(path):
     allparts = []
-    while 1:
+    while True:
         parts = os.path.split(path)
         if parts[0] == path:
             allparts.insert(0, parts[0])

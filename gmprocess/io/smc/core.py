@@ -9,10 +9,9 @@ import logging
 import numpy as np
 
 # local imports
-from gmprocess.exception import GMProcessException
 from gmprocess.io.seedname import get_channel_name, get_units_type
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
-from gmprocess.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.core.stationstream import StationStream
 
 ASCII_HEADER_LINES = 11
 INTEGER_HEADER_LINES = 6
@@ -115,7 +114,9 @@ def is_smc(filename):
     """Check to see if file is a SMC (corrected, in acc.) strong motion file.
 
     Args:
-        filename (str): Path to possible SMC corrected data file.
+        filename (str):
+            Path to possible SMC corrected data file.
+
     Returns:
         bool: True if SMC, False otherwise.
     """
@@ -127,12 +128,10 @@ def is_smc(filename):
             if firstline in VALID_HEADERS:
                 return True
             if 'DISPLACEMENT' in firstline:
-                return True
-                raise GMProcessException(
+                raise BaseException(
                     'SMC: Diplacement records are not supported.')
             elif 'VELOCITY' in firstline:
-                return True
-                raise GMProcessException(
+                raise BaseException(
                     'SMC: Velocity records are not supported.')
             elif '*' in firstline:
                 end_ascii = lines[10]
@@ -155,13 +154,15 @@ def read_smc(filename, **kwargs):
     """Read SMC strong motion file.
 
     Args:
-        filename (str): Path to possible SMC data file.
+        filename (str):
+            Path to possible SMC data file.
         kwargs (ref):
             any_structure (bool): Read data from any type of structure,
                 raise Exception if False and structure type is not free-field.
             accept_flagged (bool): accept problem flagged data.
             set_location (str): Two character code for location.
             Other arguments will be ignored.
+
     Returns:
         Stream: Obspy Stream containing one channel of acceleration data
         (cm/s**2).
@@ -177,14 +178,17 @@ def read_smc(filename, **kwargs):
     with open(filename, 'rt') as f:
         line = f.readline().strip()
         if 'DISPLACEMENT' in line:
-            raise GMProcessException('SMC: Diplacement records are not supported: '
-                                     '%s.' % filename)
+            raise BaseException(
+                'SMC: Diplacement records are not supported: '
+                '%s.' % filename)
         elif 'VELOCITY' in line:
-            raise GMProcessException('SMC: Velocity records are not supported: '
-                                     '%s.' % filename)
+            raise BaseException(
+                'SMC: Velocity records are not supported: '
+                '%s.' % filename)
         elif line == "*":
-            raise GMProcessException('SMC: No record volume specified in file: '
-                                     '%s.' % filename)
+            raise BaseException(
+                'SMC: No record volume specified in file: '
+                '%s.' % filename)
 
     stats, num_comments = _get_header_info(
         filename, any_structure=any_structure,
@@ -249,21 +253,26 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
       - source_format
     - format_specific
       - vertical_orientation
-      - building_floor (0=basement, 1=floor above basement, -1=1st sub-basement, etc.
+      - building_floor (0=basement, 1=floor above basement,
+        -1=1st sub-basement, etc.
       - bridge_number_spans
-      - bridge_transducer_location ("free field",
-                                    "at the base of a pier or abutment",
-                                    "on an abutment",
-                                    "on the deck at the top of a pier"
-                                    "on the deck between piers or between an abutment and a pier."
-        dam_transducer_location ("upstream or downstream free field",
-                                 "at the base of the dam",
-                                 "on the crest of the dam",
-                                 on the abutment of the dam")
-        construction_type ("Reinforced concrete gravity",
-                           "Reinforced concrete arch",
-                           "earth fill",
-                           "other")
+      - bridge_transducer_location (
+            "free field",
+            "at the base of a pier or abutment",
+            "on an abutment",
+            "on the deck at the top of a pier"
+            "on the deck between piers or between an
+            abutment and a pier.")
+        dam_transducer_location (
+            "upstream or downstream free field",
+            "at the base of the dam",
+            "on the crest of the dam",
+            on the abutment of the dam")
+        construction_type (
+            "Reinforced concrete gravity",
+            "Reinforced concrete arch",
+            "earth fill",
+            "other")
 
         filter_poles
         data_source
@@ -283,6 +292,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     stats['station'] = ''
     if len(ascheader[2]) >= 4:
         stats['station'] = ascheader[2][0:4].strip()
+        stats['station'] = stats['station'].strip('\x00')
     logging.debug('station: %s' % stats['station'])
 
     standard['process_time'] = ''
@@ -291,7 +301,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     # most of the time it seems has has USGS in it
     # sometimes it's something like JPL/USGS, CDOT/USGS, etc.
     # if it's got USGS in it, let's just say network=US, otherwise "--"
-    stats['network'] = 'ZZ'
+    stats['network'] = '--'
     if ascheader[7].find('USGS') > -1:
         stats['network'] = 'US'
 
@@ -313,6 +323,19 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     # first line is start time information, and then inst. serial number
     missing_data = intheader[0, 0]
     year = intheader[0, 1]
+
+    # sometimes the year field has a 0 in it. When this happens, we
+    # can try to get a timestamp from line 4 of the ascii header.
+    if year == 0:
+        parts = ascheader[3].split()
+        try:
+            year = int(parts[0])
+        except ValueError as ve:
+            fmt = ('Could not find year in SMC file %s. Not present '
+                   'in integer header and not parseable from line '
+                   '4 of ASCII header. Error: "%s"')
+            raise ValueError(fmt % (filename, str(ve)))
+
     jday = intheader[0, 2]
     hour = intheader[0, 3]
     minute = intheader[0, 4]
@@ -325,7 +348,8 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
         if not intheader[0, 5] == missing_data:
             second = intheader[0, 5]
 
-        # Handle microsecond if missing and convert milliseconds to microseconds
+        # Handle microsecond if missing and convert milliseconds to
+        # microseconds
         microsecond = 0
         if not intheader[0, 6] == missing_data:
             microsecond = intheader[0, 6] / 1e3
@@ -363,6 +387,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
         format_specific['vertical_orientation'] = int(intheader[1, 4])
 
     standard['horizontal_orientation'] = np.nan
+    standard['vertical_orientation'] = np.nan
     if intheader[1, 5] != missing_data:
         standard['horizontal_orientation'] = float(intheader[1, 5])
 
@@ -379,7 +404,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     if problem_flag == 1:
         if not accept_flagged:
             fmt = 'SMC: Record found in file %s has a problem flag!'
-            raise Exception(fmt % filename)
+            raise BaseException(fmt % filename)
         else:
             logging.warning(
                 'SMC: Data contains a problem flag for network/station: '
@@ -455,7 +480,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False,
     if floatheader[2, 2] != missing_data:
         coordinates['elevation'] = floatheader[2, 2]
     else:
-        logging.warn('Setting elevation to 0.0')
+        logging.warning('Setting elevation to 0.0')
 
     # figure out the channel code
     if format_specific['vertical_orientation'] in [0, 180]:

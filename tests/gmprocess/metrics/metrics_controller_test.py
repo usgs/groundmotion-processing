@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # stdlib imports
 import os.path
@@ -12,8 +13,54 @@ import pandas as pd
 from gmprocess.io.geonet.core import read_geonet
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.metrics.exception import PGMException
-from gmprocess.metrics.metrics_controller import MetricsController
-from gmprocess.stationstream import StationStream
+from gmprocess.metrics.metrics_controller import \
+    MetricsController, _get_channel_dict
+from gmprocess.core.stationstream import StationStream
+from gmprocess.utils.config import get_config
+
+config = get_config()
+
+
+def test_get_channel_dict():
+    channel_names1 = ['HNN', 'HNE', 'HNZ']
+    cdict, _ = _get_channel_dict(channel_names1)
+    assert sorted(cdict.keys()) == ['H1', 'H2', 'Z']
+
+    channel_names2 = ['HN1', 'HN2', 'HNZ']
+    cdict, _ = _get_channel_dict(channel_names2)
+    assert sorted(cdict.keys()) == ['H1', 'H2', 'Z']
+
+    channel_names3 = ['HN1', 'HNE', 'HNZ']
+    cdict, _ = _get_channel_dict(channel_names3)
+    assert sorted(cdict.keys()) == ['H1', 'H2', 'Z']
+
+    channel_names4 = ['HN1', 'HNZ']
+    cdict, _ = _get_channel_dict(channel_names4)
+    assert sorted(cdict.keys()) == ['H1', 'Z']
+
+    channel_names5 = ['HN2', 'HN3', 'HNZ']
+    cdict, _ = _get_channel_dict(channel_names5)
+    assert sorted(cdict.keys()) == ['H1', 'H2', 'Z']
+
+    channel_names6 = ['HN2', 'HN3']
+    cdict, _ = _get_channel_dict(channel_names6)
+    assert sorted(cdict.keys()) == ['H1', 'H2']
+
+    channel_names7 = ['HN2', 'HNZ']
+    cdict, _ = _get_channel_dict(channel_names7)
+    assert sorted(cdict.keys()) == ['H1', 'Z']
+
+    channel_names8 = ['HN2']
+    cdict, _ = _get_channel_dict(channel_names8)
+    assert sorted(cdict.keys()) == ['H1']
+
+    channel_names9 = ['HN1']
+    cdict, _ = _get_channel_dict(channel_names9)
+    assert sorted(cdict.keys()) == ['H1']
+
+    channel_names10 = ['HNZ']
+    cdict, _ = _get_channel_dict(channel_names10)
+    assert sorted(cdict.keys()) == ['Z']
 
 
 def test_controller():
@@ -29,7 +76,8 @@ def test_controller():
     stream_v2 = read_geonet(datafile)[0]
 
     # Testing for acceleration --------------------------
-    m1 = MetricsController(input_imts, input_imcs, stream_v2, event=event)
+    m1 = MetricsController(input_imts, input_imcs, stream_v2, event=event,
+                           config=config)
     pgms = m1.pgms
 
     # testing for pga, pgv, sa
@@ -38,32 +86,35 @@ def test_controller():
                    'ARITHMETIC_MEAN', 'H1', 'H2', 'Z',
                    'GREATER_OF_TWO_HORIZONTALS', 'QUADRATIC_MEAN']
     for col in ['PGA', 'PGV', 'SA(1.000)', 'SA(2.000)', 'SA(0.300)']:
-        imt = pgms.loc[pgms['IMT'] == col]
-        imcs = imt['IMC'].tolist()
+        imcs = pgms.loc[col].index.tolist()
         assert len(imcs) == len(target_imcs)
         np.testing.assert_array_equal(np.sort(imcs), np.sort(target_imcs))
 
     # testing for fas
     for col in ['FAS(1.000)', 'FAS(2.000)', 'FAS(0.300)']:
-        imt = pgms.loc[pgms['IMT'] == col]
-        imcs = imt['IMC'].tolist()
-        assert len(imcs) == 3
+        imcs = pgms.loc[col].index.tolist()
+        assert len(imcs) == 9
         np.testing.assert_array_equal(
             np.sort(imcs),
-            ['ARITHMETIC_MEAN', 'GEOMETRIC_MEAN', 'QUADRATIC_MEAN']
+            ['ARITHMETIC_MEAN', 'GEOMETRIC_MEAN', 'GREATER_OF_TWO_HORIZONTALS',
+             'H1', 'H2', 'HNR', 'HNT', 'QUADRATIC_MEAN', 'Z']
         )
 
     # testing for arias
-    imt = pgms.loc[pgms['IMT'] == 'ARIAS']
-    imcs = imt['IMC'].tolist()
-    assert len(imcs) == 1
-    np.testing.assert_array_equal(np.sort(imcs), ['ARITHMETIC_MEAN'])
+    imcs = pgms.loc['ARIAS'].index.tolist()
+    assert len(imcs) == 9
+    np.testing.assert_array_equal(
+        np.sort(imcs),
+        ['ARITHMETIC_MEAN', 'GEOMETRIC_MEAN', 'GREATER_OF_TWO_HORIZONTALS',
+         'H1', 'H2', 'HNR', 'HNT', 'QUADRATIC_MEAN', 'Z']
+    )
     _validate_steps(m1.step_sets, 'acc')
 
     # Testing for Velocity --------------------------
     for trace in stream_v2:
         trace.stats.standard.units = 'vel'
-    m = MetricsController(input_imts, input_imcs, stream_v2, event=event)
+    m = MetricsController(input_imts, input_imcs, stream_v2, event=event,
+                          config=config)
     pgms = m.pgms
 
     # testing for pga, pgv, sa
@@ -72,35 +123,36 @@ def test_controller():
                    'ARITHMETIC_MEAN', 'QUADRATIC_MEAN', 'H1', 'H2',
                    'Z', 'GREATER_OF_TWO_HORIZONTALS']
     for col in ['PGA', 'PGV', 'SA(1.000)', 'SA(2.000)', 'SA(0.300)']:
-        imt = pgms.loc[pgms['IMT'] == col]
-        imcs = imt['IMC'].tolist()
+        imcs = pgms.loc[col].index.tolist()
         assert len(imcs) == len(target_imcs)
         np.testing.assert_array_equal(np.sort(imcs), np.sort(target_imcs))
 
     # testing for fas
     for col in ['FAS(1.000)', 'FAS(2.000)', 'FAS(0.300)']:
-        imt = pgms.loc[pgms['IMT'] == col]
-        imcs = imt['IMC'].tolist()
-        assert len(imcs) == 3
+        imcs = pgms.loc[col].index.tolist()
+        assert len(imcs) == 9
         np.testing.assert_array_equal(
             np.sort(imcs),
-            ['ARITHMETIC_MEAN', 'GEOMETRIC_MEAN', 'QUADRATIC_MEAN']
+            ['ARITHMETIC_MEAN', 'GEOMETRIC_MEAN', 'GREATER_OF_TWO_HORIZONTALS',
+             'H1', 'H2', 'HNR', 'HNT', 'QUADRATIC_MEAN', 'Z']
         )
 
     # testing for arias
-    imt = pgms.loc[pgms['IMT'] == 'ARIAS']
-    imcs = imt['IMC'].tolist()
-    assert len(imcs) == 1
-    np.testing.assert_array_equal(np.sort(imcs), ['ARITHMETIC_MEAN'])
+    imcs = pgms.loc['ARIAS'].index.tolist()
+    assert len(imcs) == 9
+    np.testing.assert_array_equal(
+        np.sort(imcs),
+        ['ARITHMETIC_MEAN', 'GEOMETRIC_MEAN', 'GREATER_OF_TWO_HORIZONTALS',
+         'H1', 'H2', 'HNR', 'HNT', 'QUADRATIC_MEAN', 'Z'
+         ])
     _validate_steps(m.step_sets, 'vel')
 
 
 def _validate_steps(step_sets, data_type):
-    homedir = os.path.dirname(os.path.abspath(
-        __file__))  # where is this script?
-    pathfile = os.path.join(
-        homedir, '..', '..', 'data', 'metrics_controller', 'workflows.csv')
-    df = pd.read_csv(pathfile)
+    datafile = os.path.join(
+        'data', 'testdata', 'metrics_controller', 'workflows.csv')
+    datafile_abspath = pkg_resources.resource_filename('gmprocess', datafile)
+    df = pd.read_csv(datafile_abspath)
     wf_df = df.apply(lambda x: x.astype(str).str.lower())
     # test workflows
     for step_set in step_sets:
@@ -127,7 +179,8 @@ def test_exceptions():
     # Check for origin Error
     passed = True
     try:
-        m = MetricsController('pga', 'radial_transverse', stream_v2)
+        m = MetricsController('pga', 'radial_transverse', stream_v2,
+                              config=config)
     except PGMException as e:
         passed = False
     assert passed == False
@@ -138,23 +191,23 @@ def test_exceptions():
     st3 = stream_v2.select(component='Z')
     st1 = StationStream([st2[0], st3[0]])
     passed = True
-    m = MetricsController('pga', 'geometric_mean', st1)
+    m = MetricsController('pga', 'geometric_mean', st1, config=config)
     pgm = m.pgms
     result = pgm['Result'].tolist()[0]
     assert np.isnan(result)
     # Check for horizontal passthrough rotd50
-    m = MetricsController('pga', 'rotd50', st1)
+    m = MetricsController('pga', 'rotd50', st1, config=config)
     pgm = m.pgms
     result = pgm['Result'].tolist()[0]
     assert np.isnan(result)
     # Check for horizontal passthrough gmrotd50
-    m = MetricsController('pga', 'gmrotd50', st1)
+    m = MetricsController('pga', 'gmrotd50', st1, config=config)
     pgm = m.pgms
     result = pgm['Result'].tolist()[0]
     assert np.isnan(result)
     # No horizontal channels
     try:
-        m = MetricsController('sa3.0', 'channels', st3)
+        m = MetricsController('sa3.0', 'channels', st3, config=config)
     except PGMException as e:
         passed = False
     assert passed == False
@@ -169,7 +222,7 @@ def test_end_to_end():
     input_imcs = ['greater_of_two_horizontals', 'channels', 'rotd50',
                   'rotd100', 'invalid']
     input_imts = ['sa1.0', 'PGA', 'pgv', 'invalid']
-    m = MetricsController(input_imts, input_imcs, stream)
+    m = MetricsController(input_imts, input_imcs, stream, config=config)
     test_pgms = [
         ('PGV', 'ROTD(100.0)', 114.24894584734818),
         ('PGV', 'ROTD(50.0)', 81.55436750525355),
@@ -191,21 +244,21 @@ def test_end_to_end():
         ('SA(1.000)', 'GREATER_OF_TWO_HORIZONTALS', 136.25041187387063)
     ]
     pgms = m.pgms
-    assert len(pgms['IMT'].tolist()) == len(test_pgms)
+    assert len(pgms) == len(test_pgms)
     for target in test_pgms:
         target_imt = target[0]
         target_imc = target[1]
         value = target[2]
-        sub_imt = pgms.loc[pgms['IMT'] == target_imt]
-        df = sub_imt.loc[sub_imt['IMC'] == target_imc]
-        assert len(df['IMT'].tolist()) == 1
+        df = pgms.loc[target_imt, target_imc]
+        assert len(df) == 1
 
         np.testing.assert_array_almost_equal(
-            df['Result'].tolist()[0], value,
+            df['Result'], value,
             decimal=10)
 
 
 if __name__ == '__main__':
+    test_get_channel_dict()
     test_controller()
     test_exceptions()
     test_end_to_end()

@@ -4,16 +4,18 @@
 import os
 import tempfile
 from datetime import datetime, timedelta
+import shutil
+import pytest
 
 # third party imports
 import numpy as np
+from obspy.core.utcdatetime import UTCDateTime
 
 # local imports
-from gmprocess.constants import UNIT_CONVERSIONS
-from gmprocess.exception import GMProcessException
+from gmprocess.utils.constants import UNIT_CONVERSIONS
 from gmprocess.io.dmg.core import is_dmg, read_dmg, _get_date, _get_time
 from gmprocess.io.test_utils import read_data_dir
-from gmprocess.stationtrace import PROCESS_LEVELS
+from gmprocess.core.stationtrace import PROCESS_LEVELS
 
 
 def test_time():
@@ -67,12 +69,13 @@ def test_dmg_v1():
         assert stats['station'] == '14403'
         assert stats['delta'] == .005
         assert stats['location'] == '--'
-        assert stats['network'] == 'ZZ'
+        assert stats['network'] == '--'
         dt = '%Y-%m-%dT%H:%M:%SZ'
         assert stats['starttime'].strftime(dt) == '1994-01-17T12:31:04Z'
         assert stats.coordinates['latitude'] == 33.929
         assert stats.coordinates['longitude'] == -118.26
-        assert stats.standard['station_name'] == 'LOS ANGELES - 116TH ST. SCHOOL'
+        assert stats.standard['station_name'] == \
+            'LOS ANGELES - 116TH ST. SCHOOL'
         assert stats.standard['instrument'] == 'SMA-1'
         assert stats.standard['sensor_serial_number'] == '3492'
         if stats['channel'] == 'HN1':
@@ -97,12 +100,12 @@ def test_dmg_v1():
 
 
 def test_dmg():
-    file1, _ = read_data_dir('dmg', 'nc71734741', files=[
-                             'CE89146.V2'])
-    file2, _ = read_data_dir('dmg', 'ci15481673', files=[
-                             'CIWLT.V2'])
-    file3, _ = read_data_dir('dmg', 'nc72282711', files=[
-                             'CE58667.V2'])
+    file1, _ = read_data_dir(
+        'dmg', 'nc71734741', files=['CE89146.V2'])
+    file2, _ = read_data_dir(
+        'dmg', 'ci15481673', files=['CIWLT.V2'])
+    file3, _ = read_data_dir(
+        'dmg', 'nc72282711', files=['CE58667.V2'])
     file1 = file1[0]
     file2 = file2[0]
     file3 = file3[0]
@@ -119,7 +122,6 @@ def test_dmg():
         for trace in stream1:
             assert trace.stats['standard']['units'] == 'acc'
 
-
     # Test metadata
     stream = read_dmg(file1)[0]
     for trace in stream:
@@ -127,7 +129,7 @@ def test_dmg():
         assert stats['station'] == '89146'
         assert stats['delta'] == .005000
         assert stats['location'] == '--'
-        assert stats['network'] == 'ZZ'
+        assert stats['network'] == '--'
         dt = '%Y-%m-%dT%H:%M:%SZ'
         assert stats['starttime'].strftime(dt) == '2012-02-13T21:06:45Z'
         assert stats.coordinates['latitude'] == 40.941
@@ -194,33 +196,41 @@ def test_dmg():
             'BadHeader.V2'])
         file4 = file4[0]
         read_dmg(file4)[0]
-    except Exception:
+    except BaseException:
         success = False
     assert success == False
     # Test alternate defaults
     no_stream = """RESPONSE AND FOURIER AMPLITUDE SPECTRA
     CORRECTED ACCELEROGRAM
     UNCORRECTED ACCELEROGRAM DATA"""
-    tmp = tempfile.NamedTemporaryFile(delete=True)
-    with open(tmp.name, 'w') as f:
-        f.write(no_stream)
-    f = open(tmp.name, 'rt')
-    try:
-        read_dmg(tmp.name)[0]
-        success = True
-    except GMProcessException:
-        success = False
-    assert success == False
-    tmp.close()
 
-    # test location override
-    stream = read_dmg(filename, location='test')[0]
-    for trace in stream:
-        assert trace.stats.location == 'test'
+    temp_dir = tempfile.mkdtemp()
+    try:
+        tmp = os.path.join(temp_dir, 'tfile.txt')
+        with open(tmp, 'w', encoding='utf-8') as f:
+            f.write(no_stream)
+        with pytest.raises(BaseException):
+            read_dmg(tmp)[0]
+    except Exception as ex:
+        raise(ex)
+    finally:
+        shutil.rmtree(temp_dir)
+
+
+def test_pacific():
+    # test a data file whose trigger time is not in UTC
+    file1, _ = read_data_dir(
+        'dmg', 'nc1091100', files=['ce36456p_CE36456.V2'])
+    streams = read_dmg(file1[0])
+    trace = streams[0][0]
+    # 05/02/83, 16:42:48.2
+    cmptime = UTCDateTime('1983-05-02T23:42:48.2')
+    assert trace.stats.starttime == cmptime
 
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
+    test_pacific()
     test_dmg_non_spec()
     test_time()
     test_dmg_v1()

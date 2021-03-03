@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<FDSNStationXML xmlns="http://www.fdsn.org/xml/station/1" schemaVersion="1.1" xsi:schemaLocation="http://www.fdsn.org/xml/station/1 http://www.fdsn.org/xml/station/fdsn-station-1.1.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <Source>NCEDC</Source>
+ <Sender>NCEDC</Sender>
+ <Module>NCEDC WEB SERVICE: fdsnws-station | version: 1.1</Module>
+ <ModuleURI>http://service.ncedc.org/fdsnws/station/1/query?net=NN&amp;sta=SBT&amp;cha=SHZ&amp;loc=--&amp;start=2008-01-19T23:11:35.000-08:00&amp;end=2008-01-19T23:20:05.000-08:00&amp;level=resp</ModuleURI>
+ <Created>2021-01-21T03:35:56</Created>
+ <Network code="NN" startDate="1972-08-01T00:00:00" endDate="3000-01-01T00:00:00">
+  <Description>Western Great Basin/Eastern Sierra Nevada</Description>
+  <TotalNumberStations>98</TotalNumberStations>
+  <SelectedNumberStations>1</SelectedNumberStations>
+  <Station code="SBT" endDate="2018-06-12T14:34:00" startDate="1999-10-12T00:00:00">
+   <Latitude>39.626701</Latitude>
+   <Longitude>-120.666901</Longitude>
+   <Elevation>2152.0</Elevation>
+   <Site>
+    <Name>Sierra Buttes Ca</Name>
+   </Site>
+   <CreationDate>1999-10-12T00:00:00</CreationDate>
+   <Channel code="SHZ" endDate="2010-10-05T00:00:00" locationCode="" startDate="2001-08-16T00:00:00">
+    <Latitude>39.626701</Latitude>
+    <Longitude>-120.666901</Longitude>
+    <Elevation>2152.0</Elevation>
+    <Depth>0.0</Depth>
+    <Azimuth>0.0</Azimuth>
+    <Dip>-90.0</Dip>
+    <Type>CONTINUOUS</Type>
+    <Type>GEOPHYSICAL</Type>
+    <SampleRate>50.0</SampleRate>
+    <ClockDrift>0.01</ClockDrift>
+    <CalibrationUnits>
+     <Name>A</Name>
+     <Description>Amperes</Description>
+    </CalibrationUnits>
+    <Sensor>
+     <Description>L4</Description>
+    </Sensor>
+    <Response>
+     <InstrumentSensitivity>
+      <Value>7.968856368E8</Value>
+      <Frequency>10.0</Frequency>
+      <InputUnits>
+       <Name>M/S</Name>
+       <Description>Velocity in Meters Per Second</Description>
+      </InputUnits>
+      <OutputUnits>
+       <Name>COUNTS</Name>
+       <Description>Digital Counts</Description>
+      </OutputUnits>
+     </InstrumentSensitivity>
+     <Stage number="1">
+      <PolesZeros>
+       <InputUnits>
+        <Name>M/S</Name>
+        <Description>Velocity in Meters Per Second</Description>
+       </InputUnits>
+       <OutputUnits>
+        <Name>V</Name>
+        <Description>Volts</Description>
+       </OutputUnits>
+       <PzTransferFunctionType>LAPLACE (RADIANS/SECOND)</PzTransferFunctionType>
+       <NormalizationFactor>1.0028458924484</NormalizationFactor>
+       <NormalizationFrequency>10</NormalizationFrequency>
+       <Zero number="0">
+        <Real>0</Real>
+        <Imaginary>0</Imaginary>
+       </Zero>
+       <Zero number="1">
+        <Real>0</Real>
+        <Imaginary>0</Imaginary>
+       </Zero>
+       <Pole number="0">
+        <Real>-5.02649798026121</Real>
+        <Imaginary>3.76987348519591</Imaginary>
+       </Pole>
+       <Pole number="1">
+        <Real>-5.02649798026121</Real>
+        <Imaginary>-3.76987348519591</Imaginary>
+       </Pole>
+      </PolesZeros>
+      <StageGain>
+       <Value>100</Value>
+       <Frequency>10</Frequency>
+      </StageGain>
+     </Stage>
+     <Stage number="2">
+      <PolesZeros>
+       <InputUnits>
+        <Name>V</Name>
+        <Description>Volts</Description>
+       </InputUnits>
+       <OutputUnits>
+        <Name>V</Name>
+        <Description>Volts</Description>
+       </OutputUnits>
+       <PzTransferFunctionType>LAPLACE (RADIANS/SECOND)</PzTransferFunctionType>
+       <NormalizationFactor>15021706149614100000</NormalizationFactor>
+       <NormalizationFrequency>5</NormalizationFrequency>
+       <Pole number="0">
+        <Real>-406.552005351602</Real>
+        <Imaginary>-1517.27273989119</Imaginary>
+       </Pole>
+       <Pole number="1">
+        <Real>-406.552005351602</Real>
+        <Imaginary>1517.27273989119</Imaginary>
+       </Pole>
+       <Pole number="2">
+        <Real>-1110.72073453959</Real>
+        <Imaginary>-1110.72073453959</Imaginary>
+       </Pole>
+       <Pole number="3">
+        <Real>-1110.72073453959</Real>
+        <Imaginary>1110.72073453959</Imaginary>
+       </Pole>
+       <Pole number="4">
+        <Real>-1517.27273989119</Real>
+        <Imaginary>-406.552005351602</Imaginary>
+       </Pole>
+       <Pole number="5">
+        <Real>-1517.27273989119</Real>
+        <Imaginary>406.552005351602</Imaginary>
+       </Pole>
+      </PolesZeros>
+      <StageGain>
+       <Value>9732.36000000001</Value>
+       <Frequency>10</Frequency>
+      </StageGain>
+     </Stage>
+     <Stage number="3">
+      <Coefficients>
+       <InputUnits>
+        <Name>V</Name>
+        <Description>Volts</Description>
+       </InputUnits>
+       <OutputUnits>
+        <Name>COUNTS</Name>
+        <Description>Digital Counts</Description>
+       </OutputUnits>
+       <CfTransferFunctionType>DIGITAL</CfTransferFunctionType>
+      </Coefficients>
+      <Decimation>
+       <InputSampleRate>50.0</InputSampleRate>
+       <Factor>1</Factor>
+       <Offset>0</Offset>
+       <Delay>0.0</Delay>
+       <Correction>0.0</Correction>
+      </Decimation>
+      <StageGain>
+       <Value>818.8</Value>
+       <Frequency>10</Frequency>
+      </StageGain>
+     </Stage>
+    </Response>
+   </Channel>
+  </Station>
+ </Network>
+</FDSNStationXML>

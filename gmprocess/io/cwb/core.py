@@ -10,8 +10,8 @@ from obspy.core.trace import Stats
 
 # local imports
 from gmprocess.io.seedname import get_channel_name, get_units_type
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
-from gmprocess.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.core.stationstream import StationStream
 
 DATE_FMT = '%Y/%m/%d-%H:%M:%S.%f'
 
@@ -22,17 +22,22 @@ COLWIDTH = 10
 NCOLS = 4
 
 
-def is_cwb(filename):
-    """Check to see if file is a Taiwan Central Weather Bureau strong motion file.
+def is_cwb(filename, **kwargs):
+    """Check to see if file is a Taiwan Central Weather Bureau strong motion
+    file.
 
     Args:
-        filename (str): Path to possible CWB data file.
+        filename (str):
+            Path to possible CWB data file.
+        kwargs (ref):
+            Other arguments will be ignored.
+
     Returns:
         bool: True if CWB, False otherwise.
     """
     logging.debug("Checking if format is cwb.")
     try:
-        f = open(filename, 'rt')
+        f = open(filename, 'rt', encoding='utf-8')
         line = f.readline()
         f.close()
         if line.startswith('#Earthquake Information'):
@@ -46,8 +51,10 @@ def read_cwb(filename, **kwargs):
     """Read Taiwan Central Weather Bureau strong motion file.
 
     Args:
-        filename (str): Path to possible CWB data file.
-        kwargs (ref): Other arguments will be ignored.
+        filename (str):
+            Path to possible CWB data file.
+        kwargs (ref):
+            Other arguments will be ignored.
 
     Returns:
         Stream: Obspy Stream containing three channels of acceleration
@@ -57,7 +64,7 @@ def read_cwb(filename, **kwargs):
     if not is_cwb(filename):
         raise Exception('%s is not a valid CWB strong motion data file.'
                         % filename)
-    f = open(filename, 'rt')
+    f = open(filename, 'rt', encoding='utf-8')
     # according to the powers that defined the Network.Station.Channel.Location
     # "standard", Location is a two character field.  Most data providers,
     # including CWB here, don't provide this.  We'll flag it as "--".
@@ -77,6 +84,7 @@ def read_cwb(filename, **kwargs):
         is_vertical=True,
         is_north=False)
     hdr_z['standard']['horizontal_orientation'] = np.nan
+    hdr_z['standard']['vertical_orientation'] = np.nan
     hdr_z['standard']['units_type'] = get_units_type(hdr_z['channel'])
 
     hdr_h1 = hdr.copy()
@@ -86,6 +94,7 @@ def read_cwb(filename, **kwargs):
         is_vertical=False,
         is_north=True)
     hdr_h1['standard']['horizontal_orientation'] = np.nan
+    hdr_h1['standard']['vertical_orientation'] = np.nan
     hdr_h1['standard']['units_type'] = get_units_type(hdr_h1['channel'])
 
     hdr_h2 = hdr.copy()
@@ -95,6 +104,7 @@ def read_cwb(filename, **kwargs):
         is_vertical=False,
         is_north=False)
     hdr_h2['standard']['horizontal_orientation'] = np.nan
+    hdr_h2['standard']['vertical_orientation'] = np.nan
     hdr_h2['standard']['units_type'] = get_units_type(hdr_h2['channel'])
 
     stats_z = Stats(hdr_z)
@@ -210,7 +220,7 @@ def _get_header_info(file, data):
         timedelta(seconds=secs, microseconds=microsecs)
 
     # Set defaults
-    logging.warn('Setting elevation to 0.0')
+    logging.warning('Setting elevation to 0.0')
     coordinates['elevation'] = 0.0
     if 'longitude' not in coordinates:
         coordinates['longitude'] = np.nan

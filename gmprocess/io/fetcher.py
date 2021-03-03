@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # third party imports
 from obspy.core.utcdatetime import UTCDateTime
 from openquake.hazardlib.geo.geodetic import geodetic_distance
@@ -5,14 +8,10 @@ import numpy as np
 
 
 class DataFetcher(object):
-    def __init__(self, time, lat, lon,
-                 depth, magnitude,
-                 user=None, password=None,
-                 radius=100, dt=16, ddepth=30,
-                 dmag=0.3,
-                 rawdir=None,
-                 config=None,
-                 drop_non_free=True):
+    def __init__(self, time, lat, lon, depth, magnitude,
+                 user=None, password=None, radius=100, dt=16, ddepth=30,
+                 dmag=0.3, rawdir=None, config=None,
+                 drop_non_free=True, stream_collection=True):
         """Create a DataFetcher instance.
 
         Args:
@@ -47,6 +46,8 @@ class DataFetcher(object):
             drop_non_free (bool):
                 Option to ignore non-free-field (borehole, sensors on
                 structures, etc.)
+            stream_collection (bool):
+                Construct and return a StreamCollection instance?
         """
         # this method should be implemented in the child class
         pass

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # stdlib imports
 import os.path
@@ -12,15 +13,15 @@ import pkg_resources
 from gmprocess.io.read import read_data
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace
 
 
 def test_arias():
     ddir = os.path.join('data', 'testdata')
     datadir = pkg_resources.resource_filename('gmprocess', ddir)
     data_file = os.path.join(datadir, 'arias_data.json')
-    with open(data_file, 'rt') as f:
+    with open(data_file, 'rt', encoding='utf-8') as f:
         jdict = json.load(f)
 
     time = np.array(jdict['time'])
@@ -49,6 +50,7 @@ def test_arias():
             'process_level': 'raw counts',
             'process_time': '',
             'horizontal_orientation': np.nan,
+            'vertical_orientation': np.nan,
             'units': 'acc',
             'units_type': 'acc',
             'instrument_sensitivity': np.nan,
@@ -68,8 +70,7 @@ def test_arias():
     station = StationSummary.from_stream(
         stream, ['ARITHMETIC_MEAN'], ['arias'])
     pgms = station.pgms
-    Ia = pgms[(pgms.IMT == 'ARIAS') & (
-        pgms.IMC == 'ARITHMETIC_MEAN')].Result.tolist()[0]
+    Ia = pgms.loc['ARIAS', 'ARITHMETIC_MEAN'].Result
     # the target has only one decimal place and is in cm/s/s
     Ia = Ia * 100
     np.testing.assert_almost_equal(Ia, target_IA, decimal=1)

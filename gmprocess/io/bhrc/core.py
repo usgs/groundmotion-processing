@@ -6,17 +6,17 @@ import re
 
 # third party imports
 import numpy as np
-from gmprocess.constants import UNIT_CONVERSIONS
 from obspy.core.utcdatetime import UTCDateTime
 
 # local
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.utils.constants import UNIT_CONVERSIONS
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.io.seedname import get_channel_name, get_units_type
 
 
 INTIMEFMT = '%Y/%m/%d %H:%M:%S'
-FLOATRE = "[-+]?[0-9]*\.?[0-9]+"
+FLOATRE = r"[-+]?[0-9]*\.?[0-9]+"
 INTRE = "[-+]?[0-9]*"
 
 TEXT_HDR_ROWS = 13
@@ -34,7 +34,7 @@ LEVELS = {'VOL1DS': 'V1'}
 
 def is_bhrc(filename):
     try:
-        with open(filename, 'rt') as f:
+        with open(filename, 'rt', encoding='utf-8') as f:
             lines = [next(f) for x in range(TEXT_HDR_ROWS)]
 
         has_line1 = lines[0].startswith('* VOL')
@@ -46,11 +46,13 @@ def is_bhrc(filename):
     return False
 
 
-def read_bhrc(filename):
+def read_bhrc(filename, **kwargs):
     """Read the Iran BHRC strong motion data format.
 
     Args:
         filename (str): path to BHRC data file.
+        kwargs (ref):
+            Other arguments will be ignored.
 
     Returns:
         list: Sequence of one StationStream object containing 3
@@ -88,7 +90,7 @@ def _read_header_lines(filename, offset):
         tuple: (header dictionary containing Stats dictionary with
         extra sub-dicts, updated offset rows)
     """
-    with open(filename, 'rt') as f:
+    with open(filename, 'rt', encoding='utf-8') as f:
         for _ in range(offset):
             next(f)
         lines = [next(f) for x in range(TEXT_HDR_ROWS)]
@@ -105,8 +107,8 @@ def _read_header_lines(filename, offset):
     # is oriented at the sensor azimuth, and the transverse (T) is
     # 90 degrees off from that.
     station_info = lines[7][lines[7].index('Station'):]
-    (lat_str, lon_str,
-     alt_str, lstr, tstr) = re.findall(FLOATRE, station_info)
+    float_strings = re.findall(FLOATRE, station_info)
+    (lat_str, lon_str, alt_str, lstr, tstr) = float_strings[0:5]
     component = lines[4].strip()
     if component == 'V':
         angle = np.nan
@@ -135,8 +137,11 @@ def _read_header_lines(filename, offset):
     standard['units'] = 'acc'
     period_str, damping_str = re.findall(FLOATRE, lines[9])
     standard['instrument_period'] = float(period_str)
+    if standard['instrument_period'] == 0:
+        standard['instrument_period'] = np.nan
     standard['instrument_damping'] = float(damping_str)
     standard['horizontal_orientation'] = angle
+    standard['vertical_orientation'] = np.nan
     standard['comments'] = ''
     head, tail = os.path.split(filename)
     standard['source_file'] = tail or os.path.basename(head)

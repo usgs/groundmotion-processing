@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # stdlib imports
 import os.path
@@ -12,15 +13,16 @@ import pkg_resources
 from gmprocess.io.read import read_data
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace
+from gmprocess.metrics.reduction.duration import Duration
 
 
 def test_duration():
     ddir = os.path.join('data', 'testdata')
     datadir = pkg_resources.resource_filename('gmprocess', ddir)
     data_file = os.path.join(datadir, 'duration_data.json')
-    with open(data_file, 'rt') as f:
+    with open(data_file, 'rt', encoding='utf-8') as f:
         jdict = json.load(f)
 
     time = np.array(jdict['time'])
@@ -49,6 +51,7 @@ def test_duration():
             'process_level': 'raw counts',
             'process_time': '',
             'horizontal_orientation': np.nan,
+            'vertical_orientation': np.nan,
             'units': 'acc',
             'units_type': 'acc',
             'instrument_sensitivity': np.nan,
@@ -66,10 +69,9 @@ def test_duration():
         tr.setProvenance('remove_response', response)
 
     station = StationSummary.from_stream(
-        stream, ['ARITHMETIC_MEAN'], ['duration'])
+        stream, ['ARITHMETIC_MEAN'], ['duration5-95'])
     pgms = station.pgms
-    d595 = pgms[(pgms.IMT == 'DURATION') & (
-        pgms.IMC == 'ARITHMETIC_MEAN')].Result.tolist()[0]
+    d595 = pgms.loc['DURATION5-95', 'ARITHMETIC_MEAN'].Result
 
     np.testing.assert_allclose(d595, target_d595, atol=1e-4, rtol=1e-4)
 
@@ -80,12 +82,30 @@ def test_duration():
         stream,
         ['channels', 'gmrotd', 'rotd50', 'greater_of_two_horizontals',
          'ARITHMETIC_MEAN', 'geometric_mean'],
-        ['duration']
+        ['duration5-95']
     )
     # Currently disallowed
-    assert 'gmrotd' not in station.pgms['IMC']
-    assert 'rotd50' not in station.pgms['IMC']
+    assert 'gmrotd' not in station.pgms.index.get_level_values(1)
+    assert 'rotd50' not in station.pgms.index.get_level_values(1)
     print(station)
+
+
+def test_duration575():
+    ddir = os.path.join('data', 'testdata', 'cosmos', 'us1000hyfh')
+    datadir = pkg_resources.resource_filename('gmprocess', ddir)
+    data_file = os.path.join(
+        datadir, 'us1000hyfh_akbmrp_AKBMR--n.1000hyfh.BNZ.--.acc.V2c')
+    stream = read_data(data_file)[0]
+
+    dur = Duration(stream, interval=[5, 75])
+
+    np.testing.assert_allclose(
+        dur.result['HN1'], 45.325, atol=1e-4, rtol=1e-4)
+
+
+if __name__ == '__main__':
+    test_duration()
+    test_duration575()
 
 
 if __name__ == '__main__':

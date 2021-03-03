@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # stdlib imports
 import os.path
@@ -11,8 +12,8 @@ import pkg_resources
 from gmprocess.io.geonet.core import read_geonet
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace
 
 
 def test_rotd():
@@ -37,6 +38,7 @@ def test_rotd():
             'source_file': '',
             'structure_type': '',
             'horizontal_orientation': np.nan,
+            'vertical_orientation': np.nan,
             'sensor_serial_number': '',
             'process_level': 'corrected physical units',
             'process_time': '',
@@ -59,6 +61,7 @@ def test_rotd():
             'structure_type': '',
             'source_file': '',
             'horizontal_orientation': np.nan,
+            'vertical_orientation': np.nan,
             'sensor_serial_number': '',
             'process_level': 'corrected physical units',
             'process_time': '',
@@ -85,12 +88,11 @@ def test_rotd():
     )
 
     pgms = station.pgms
-    ROTD50 = pgms[pgms.IMC == 'ROTD(50.0)']
-    pga = ROTD50[ROTD50.IMT == 'PGA'].Result.iloc[0]
-    pgv = ROTD50[ROTD50.IMT == 'PGV'].Result.iloc[0]
-    SA10 = ROTD50[ROTD50.IMT == 'SA(1.000)'].Result.iloc[0]
-    SA03 = ROTD50[ROTD50.IMT == 'SA(0.300)'].Result.iloc[0]
-    SA30 = ROTD50[ROTD50.IMT == 'SA(3.000)'].Result.iloc[0]
+    pga = pgms.loc['PGA', 'ROTD(50.0)'].Result
+    pgv = pgms.loc['PGV', 'ROTD(50.0)'].Result
+    SA10 = pgms.loc['SA(1.000)', 'ROTD(50.0)'].Result
+    SA03 = pgms.loc['SA(0.300)', 'ROTD(50.0)'].Result
+    SA30 = pgms.loc['SA(3.000)', 'ROTD(50.0)'].Result
     np.testing.assert_allclose(pga, target_pga50, atol=0.1)
     np.testing.assert_allclose(SA10, target_sa1050, atol=0.1)
     np.testing.assert_allclose(pgv, target_pgv50, atol=0.1)
@@ -105,8 +107,7 @@ def test_exceptions():
     stream_v2 = read_geonet(datafile_v2)[0]
     stream1 = stream_v2.select(channel="HN1")
     pgms = StationSummary.from_stream(stream1, ['rotd50'], ['pga']).pgms
-    assert np.isnan(pgms[(pgms.IMT == 'PGA') & (
-        pgms.IMC == 'ROTD(50.0)')].Result.iloc[0])
+    assert np.isnan(pgms.loc['PGA', 'ROTD(50.0)'].Result)
 
 
 if __name__ == '__main__':

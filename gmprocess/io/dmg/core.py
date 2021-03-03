@@ -10,14 +10,14 @@ import pkg_resources
 # third party
 from obspy.core.trace import Stats
 import numpy as np
+import pytz
 
 # local imports
-from gmprocess.constants import UNIT_CONVERSIONS
-from gmprocess.exception import GMProcessException
+from gmprocess.utils.constants import UNIT_CONVERSIONS
 from gmprocess.io.usc.core import is_usc
 from gmprocess.io.seedname import get_channel_name, get_units_type
-from gmprocess.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
-from gmprocess.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
+from gmprocess.core.stationstream import StationStream
 from gmprocess.io.utils import is_evenly_spaced, resample_uneven_trace
 
 V1_TEXT_HDR_ROWS = 13
@@ -45,7 +45,7 @@ DATE_PATTERNS = [
     '[0-9]{1}-[0-9]{1}-[0-9]{2}',
 ]
 
-TIME_MATCH = '[0-9]{2}:[0-9]{2}:..\.[0-9]{1}'
+TIME_MATCH = r'[0-9]{2}:[0-9]{2}:..\.[0-9]{1}'
 
 code_file = pkg_resources.resource_filename('gmprocess', 'data/fdsn_codes.csv')
 
@@ -104,7 +104,7 @@ def is_dmg(filename):
     """
     logging.debug("Checking if format is dmg.")
     try:
-        f = open(filename, 'rt')
+        f = open(filename, 'rt', encoding='utf-8')
         first_line = f.readline().upper()
         second_line = f.readline().upper()
         third_line = f.readline().upper()
@@ -117,8 +117,8 @@ def is_dmg(filename):
             if second_line.find(V1_MARKER) >= 0:
                 return True
         elif first_line.find(V3_MARKER) >= 0 and not is_usc(filename):
-            if (second_line.find(V2_MARKER) >= 0 and
-                    third_line.find(V1_MARKER) >= 0):
+            if (second_line.find(V2_MARKER) >= 0
+                    and third_line.find(V1_MARKER) >= 0):
                 return True
         else:
             return False
@@ -133,7 +133,8 @@ def read_dmg(filename, **kwargs):
         CSMIP is synonymous to as DMG in this reader.
 
     Args:
-        filename (str): Path to possible DMG data file.
+        filename (str):
+            Path to possible DMG data file.
         kwargs (ref):
             units (str): String determining which timeseries is return. Valid
                     options include 'acc', 'vel', 'disp'. Default is 'acc'.
@@ -156,7 +157,7 @@ def read_dmg(filename, **kwargs):
         raise Exception('DMG: Not a valid choice of units.')
 
     # Check for DMG format and determine volume type
-    line = open(filename, 'rt').readline()
+    line = open(filename, 'rt', encoding='utf-8').readline()
     if is_dmg(filename):
         if line.lower().find('uncorrected') >= 0:
             reader = 'V1'
@@ -166,7 +167,7 @@ def read_dmg(filename, **kwargs):
             reader = 'V3'
 
     # Count the number of lines in the file
-    with open(filename) as f:
+    with open(filename, encoding='utf-8') as f:
         line_count = sum(1 for _ in f)
 
     # Read as many channels as are present in the file
@@ -184,7 +185,7 @@ def read_dmg(filename, **kwargs):
             if traces is not None:
                 trace_list += traces
         else:
-            raise GMProcessException('DMG: Not a supported volume.')
+            raise ValueError('DMG: Not a supported volume.')
 
     stream = StationStream([])
     for trace in trace_list:
@@ -200,15 +201,19 @@ def _read_volume_one(filename, line_offset, location='', units='acc'):
     """Read channel data from DMG Volume 1 text file.
 
     Args:
-        filename (str): Input DMG V1 filename.
-        line_offset (int): Line offset to beginning of channel text block.
-        units (str): units to get
+        filename (str):
+            Input DMG V1 filename.
+        line_offset (int):
+            Line offset to beginning of channel text block.
+        units (str):
+            units to get.
+
     Returns:
         tuple: (list of obspy Trace, int line offset)
     """
     # Parse the header portion of the file
     try:
-        with open(filename, 'rt') as f:
+        with open(filename, 'rt', encoding='utf-8') as f:
             for _ in range(line_offset):
                 next(f)
             lines = [next(f) for x in range(V1_TEXT_HDR_ROWS)]
@@ -239,7 +244,7 @@ def _read_volume_one(filename, line_offset, location='', units='acc'):
 
     # sometimes (??) a line of text is inserted in between the float header and
     # the beginning of the data. Let's check for this...
-    with open(filename, 'rt') as f:
+    with open(filename, 'rt', encoding='utf-8') as f:
         for _ in range(skip_rows):
             next(f)
         test_line = f.readline()
@@ -271,7 +276,7 @@ def _read_volume_one(filename, line_offset, location='', units='acc'):
         acc_data *= UNIT_CONVERSIONS[unit]
         logging.debug('Data converted from %s to cm/s/s' % (unit))
     else:
-        raise GMProcessException('DMG: %s is not a supported unit.' % unit)
+        raise ValueError('DMG: %s is not a supported unit.' % unit)
 
     acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()))
 
@@ -291,14 +296,18 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
     """Read channel data from DMG text file.
 
     Args:
-        filename (str): Input DMG V2 filename.
-        line_offset (int): Line offset to beginning of channel text block.
-        units (str): units to get
+        filename (str):
+            Input DMG V2 filename.
+        line_offset (int):
+            Line offset to beginning of channel text block.
+        units (str):
+            Units to get.
+
     Returns:
         tuple: (list of obspy Trace, int line offset)
     """
     try:
-        with open(filename, 'rt') as f:
+        with open(filename, 'rt', encoding='utf-8') as f:
             for _ in range(line_offset):
                 next(f)
             lines = [next(f) for x in range(V2_TEXT_HDR_ROWS)]
@@ -336,7 +345,7 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
             acc_data *= UNIT_CONVERSIONS[unit]
             logging.debug('Data converted from %s to cm/s/s' % (unit))
         else:
-            raise GMProcessException('DMG: %s is not a supported unit.' % unit)
+            raise ValueError('DMG: %s is not a supported unit.' % unit)
         acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()))
 
         response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
@@ -347,9 +356,9 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
         skip_rows += int(acc_rows) + 1
 
     # -------------------------------------------------------------------------
-    # NOTE: The way we were initially reading velocity and displacement data was
-    # not correct. I'm deleting it for now since we don't need it. If/when we
-    # revisit this we need to be more careful about how this is handled.
+    # NOTE: The way we were initially reading velocity and displacement data
+    # was not correct. I'm deleting it for now since we don't need it. If/when
+    # we revisit this we need to be more careful about how this is handled.
     # -------------------------------------------------------------------------
 
     # read velocity data
@@ -374,7 +383,8 @@ def _read_volume_two(filename, line_offset, location='', units='acc'):
         disp_data = disp_data[:disp_hdr['npts']]
         skip_rows += int(disp_rows) + 1
 
-    new_offset = skip_rows + 1  # there is an 'end of record' line after the data]
+    # there is an 'end of record' line after the data]
+    new_offset = skip_rows + 1
     return (traces, new_offset)
 
 
@@ -382,7 +392,7 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
     """Return stats structure from various V1 headers.
 
     Output is a dictionary like this:
-     - network (str): Default is 'ZZ'. Determined using COSMOS_NETWORKS
+     - network (str): Default is '--'. Determined using COSMOS_NETWORKS
      - station (str)
      - channel (str)
      - location (str): Default is '--'
@@ -445,8 +455,18 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
         source = SOURCES1[idx].decode(
             'utf-8') + ', ' + SOURCES2[idx].decode('utf-8')
     else:
-        network = 'ZZ'
-        source = 'unknown'
+        # newer files have a record_id.network.station.location.channel thing
+        # in the 4th line
+        recinfo = lines[3][0:23]
+        try:
+            parts = recinfo.strip().split('.')
+            network = parts[1].upper()
+            idx = np.argwhere(CODES == network)[0][0]
+            source = SOURCES1[idx].decode(
+                'utf-8') + ', ' + SOURCES2[idx].decode('utf-8')
+        except BaseException:
+            network = '--'
+            source = 'unknown'
     hdr['network'] = network
     logging.debug('network: %s' % network)
     station_line = lines[4]
@@ -456,7 +476,11 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
     angle = int_data[26]
     logging.debug('angle: %s' % angle)
 
-    hdr['npts'] = int_data[27]
+    # newer files seem to have the *real* number of points in int header 32
+    if int_data[32] != 0:
+        hdr['npts'] = int_data[32]
+    else:
+        hdr['npts'] = int_data[27]
     reclen = flt_data[2]
     logging.debug('reclen: %s' % reclen)
     logging.debug('npts: %s' % hdr['npts'])
@@ -464,9 +488,9 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
     logging.debug('sampling_rate: %s' % hdr['sampling_rate'])
     hdr['delta'] = 1 / hdr['sampling_rate']
     hdr['channel'] = _get_channel(angle, hdr['sampling_rate'])
-    # this format uses codes of 500/600 in this angle to indicate a vertical channel
-    # Obspy freaks out with azimuth values > 360, so let's just say horizontal angle
-    # is zero in these cases
+    # this format uses codes of 500/600 in this angle to indicate a vertical
+    # channel Obspy freaks out with azimuth values > 360, so let's just say
+    # horizontal angle is zero in these cases
     if hdr['channel'].endswith('Z'):
         angle = '0.0'
     logging.debug('channel: %s' % hdr['channel'])
@@ -479,8 +503,18 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
     # parse the trigger time
     try:
         trigger_time = _get_date(lines[3]) + _get_time(lines[3])
+        # sometimes these trigger times are in UTC, other times a different
+        # time zone. Figure out if this is the case and modify start time
+        # accordingly
+        # look for three letter string that might be a time zone
+        if 'PDT' in lines[3] or 'PST' in lines[3]:
+            timezone = pytz.timezone('US/Pacific')
+            utcoffset = timezone.utcoffset(trigger_time)
+            # subtracting because we're going from pacific to utc
+            trigger_time -= utcoffset
+
         hdr['starttime'] = trigger_time
-    except:
+    except BaseException:
         logging.warning('No start time provided on trigger line. '
                         'This must be set manually for network/station: '
                         '%s/%s.' % (hdr['network'], hdr['station']))
@@ -492,12 +526,13 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=''):
     latitude, longitude = _get_coords(latitude_str, longitude_str)
     coordinates['latitude'] = latitude
     coordinates['longitude'] = longitude
-    logging.warn('Setting elevation to 0.0')
+    logging.warning('Setting elevation to 0.0')
     coordinates['elevation'] = 0.0
 
     # Standard metadata
     standard['units_type'] = get_units_type(hdr['channel'])
     standard['horizontal_orientation'] = float(angle)
+    standard['vertical_orientation'] = np.nan
     standard['instrument_period'] = flt_data[0]
     standard['instrument_damping'] = flt_data[1]
 
@@ -542,7 +577,8 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
     """Return stats structure from various headers.
 
     Output is a dictionary like this:
-     - network (str): Default is 'ZZ'. Determined using COSMOS_NETWORKS
+     - network (str): Default is '--' (unknown). Determined using
+       COSMOS_NETWORKS
      - station (str)
      - channel (str)
      - location (str): Default is '--'
@@ -604,7 +640,7 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
         source = SOURCES1[idx].decode(
             'utf-8') + ', ' + SOURCES2[idx].decode('utf-8')
     else:
-        network = 'ZZ'
+        network = '--'
         source = 'unknown'
     hdr['network'] = network
     station_line = lines[5]
@@ -616,9 +652,9 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
     hdr['sampling_rate'] = 1 / hdr['delta']
     hdr['channel'] = _get_channel(angle, hdr['sampling_rate'])
 
-    # this format uses codes of 500/600 in this angle to indicate a vertical channel
-    # Obspy freaks out with azimuth values > 360, so let's just say horizontal angle
-    # is zero in these cases
+    # this format uses codes of 500/600 in this angle to indicate a vertical
+    # channel Obspy freaks out with azimuth values > 360, so let's just say
+    # horizontal angle is zero in these cases
     if hdr['channel'].endswith('Z'):
         angle = '0.0'
 
@@ -630,8 +666,17 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
     # parse the trigger time
     try:
         trigger_time = _get_date(lines[4]) + _get_time(lines[4])
+        # sometimes these trigger times are in UTC, other times a different
+        # time zone. Figure out if this is the case and modify start time
+        # accordingly
+        # look for three letter string that might be a time zone
+        if 'PDT' in lines[3] or 'PST' in lines[3]:
+            timezone = pytz.timezone('US/Pacific')
+            utcoffset = timezone.utcoffset(trigger_time)
+            # subtracting because we're going from pacific to utc
+            trigger_time -= utcoffset
         hdr['starttime'] = trigger_time
-    except:
+    except BaseException:
         logging.warning('No start time provided on trigger line. '
                         'This must be set manually for network/station: '
                         '%s/%s.' % (hdr['network'], hdr['station']))
@@ -645,12 +690,13 @@ def _get_header_info(int_data, flt_data, lines, level, location=''):
     latitude, longitude = _get_coords(latitude_str, longitude_str)
     coordinates['latitude'] = latitude
     coordinates['longitude'] = longitude
-    logging.warn('Setting elevation to 0.0')
+    logging.warning('Setting elevation to 0.0')
     coordinates['elevation'] = 0.0
 
     # Standard metadata
     standard['units_type'] = get_units_type(hdr['channel'])
     standard['horizontal_orientation'] = float(angle)
+    standard['vertical_orientation'] = np.nan
     standard['instrument_period'] = flt_data[0]
     standard['instrument_damping'] = flt_data[1]
 
@@ -693,7 +739,7 @@ def _get_coords(latitude_str, longitude_str):
         latitude = float(latitude_str[:-1])
         if latitude_str.upper().find('S') >= 0:
             latitude = -1 * latitude
-    except Exception:
+    except BaseException:
         logging.warning('No latitude or invalid latitude format provided. '
                         'Setting to np.nan.', Warning)
         latitude = np.nan
@@ -701,7 +747,7 @@ def _get_coords(latitude_str, longitude_str):
         longitude = float(longitude_str[:-1])
         if longitude_str.upper().find('W') >= 0:
             longitude = -1 * longitude
-    except:
+    except BaseException:
         logging.warning('No longitude or invalid longitude format provided.',
                         'Setting to np.nan.', Warning)
         longitude = np.nan
@@ -728,7 +774,7 @@ def _get_channel(angle, sampling_rate):
     else:
         errstr = ('Not enough information to distinguish horizontal from '
                   'vertical channels.')
-        raise GMProcessException('DMG: ' + errstr)
+        raise BaseException('DMG: ' + errstr)
     return channel
 
 
@@ -736,8 +782,10 @@ def _read_lines(skip_rows, max_rows, widths, filename):
     """Read lines of headers and.
 
     Args:
-        skip_rows (int): Number of rows to skip.
-        filename (str): Path to possible DMG data file.
+        skip_rows (int):
+            Number of rows to skip.
+        filename (str):
+            Path to possible DMG data file.
     Returns:
         array-like: List of comments or array of data.
     """
@@ -751,9 +799,12 @@ def _get_data_format(filename, skip_rows, npts):
     """Read data header and return the format.
 
     Args:
-        skip_rows (int): Number of rows to skip.
-        filename (str): Path to possible DMG data file.
-        npts (int): Number of data points.
+        skip_rows (int):
+            Number of rows to skip.
+        filename (str):
+            Path to possible DMG data file.
+        npts (int):
+            Number of data points.
     Returns:
         tuple: (int number of rows, list list of widths).
     """
@@ -783,7 +834,8 @@ def _get_units(line):
     Parse units from a text line.
 
     Args:
-        line (str): text line which should contain units.
+        line (str):
+            text line which should contain units.
     """
     line = line.lower()
     if line.find('in units of') >= 0:
@@ -794,18 +846,19 @@ def _get_units(line):
         units_start = line.find('in')
 
     units_section = line[units_start:].replace('.', ' ')
+
     if 'g/10' in units_section:
         physical_units = 'g/10'
-    elif ('10g' in units_section or '10*g' in units_section or
-            'g10' in units_section or 'g*10' in units_section):
+    elif ('10g' in units_section or '10*g' in units_section
+            or 'g10' in units_section or 'g*10' in units_section):
         physical_units = 'g*10'
     elif 'gal' in units_section:
         physical_units = 'cm/s/s'
     elif 'g' in units_section and 'g/' not in units_section:
         physical_units = 'g'
-    elif ('cm/s/s' in units_section or 'cm/sec/sec' in units_section or
-            'cm/s^2' in units_section or 'cm/s2' in units_section or
-            'cm/sec^2' in units_section or 'cm/sec2' in units_section):
+    elif ('cm/s/s' in units_section or 'cm/sec/sec' in units_section
+            or 'cm/s^2' in units_section or 'cm/s2' in units_section
+            or 'cm/sec^2' in units_section or 'cm/sec2' in units_section):
         physical_units = 'cm/s/s'
     elif 'cm/s' in units_section or 'cm/sec' in units_section:
         physical_units = 'cm/s'

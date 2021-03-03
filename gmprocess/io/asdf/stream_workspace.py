@@ -4,67 +4,207 @@ import re
 import copy
 import warnings
 import logging
+import os
 
 # third party imports
 import pyasdf
+import prov.model
 import numpy as np
 from obspy.core.utcdatetime import UTCDateTime
 import pandas as pd
 from h5py.h5py_warnings import H5pyDeprecationWarning
-from obspy.geodetics.base import gps2dist_azimuth
-from openquake.hazardlib.geo.geodetic import distance
+from impactutils.rupture.factory import get_rupture
+from impactutils.rupture.origin import Origin
+from mapio.gmt import GMTGrid
 
 # local imports
-from gmprocess.stationtrace import StationTrace, TIMEFMT_MS
-from gmprocess.stationstream import StationStream
-from gmprocess.streamcollection import StreamCollection
-from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.exception import GMProcessException
-from gmprocess.event import ScalarEvent
+from gmprocess.core.stationtrace import (
+    StationTrace, TIMEFMT_MS, NS_SEIS, _get_person_agent, _get_software_agent)
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.metrics.station_summary import StationSummary, XML_UNITS
+from gmprocess.utils.event import ScalarEvent
+from gmprocess.utils.tables import _get_table_row
+
 
 TIMEPAT = '[0-9]{4}-[0-9]{2}-[0-9]{2}T'
 EVENT_TABLE_COLUMNS = ['id', 'time', 'latitude',
-                       'longitude', 'depth', 'magnitude']
-NON_IMT_COLUMNS = ['ELEVATION', 'EPICENTRAL_DISTANCE',
-                   'HYPOCENTRAL_DISTANCE', 'LAT', 'LON',
-                   'NAME', 'NETID', 'SOURCE', 'STATION']
-FLATFILE_COLUMNS = ['EarthquakeId', 'Network', 'NetworkDescription',
-                    'StationCode', 'StationID',
-                    'StationDescription',
-                    'StationLatitude', 'StationLongitude',
-                    'StationElevation', 'SamplingRate',
-                    'EpicentralDistance', 'HypocentralDistance',
-                    'H1Lowpass', 'H1Highpass',
-                    'H2Lowpass', 'H2Highpass', 'SourceFile']
+                       'longitude', 'depth', 'magnitude', 'magnitude_type']
+
+# List of columns in the flatfile, along with their descriptions for the README
+FLATFILE_COLUMNS = {
+    'EarthquakeId': 'Event ID from Comcat',
+    'EarthquakeTime': 'Earthquake origin time (UTC)',
+    'EarthquakeLatitude': 'Earthquake latitude (decimal degrees)',
+    'EarthquakeLongitude': 'Earthquake longitude (decimal degrees)',
+    'EarthquakeDepth': 'Earthquake depth (km)',
+    'EarthquakeMagnitude': 'Earthquake magnitude',
+    'EarthquakeMagnitudeType': 'Earthquake magnitude type',
+    'Network': 'Network code',
+    'DataProvider': 'Data source provider',
+    'StationCode': 'Station code',
+    'StationID': 'Concatenated network, station, and instrument codes',
+    'StationDescription': 'Station description',
+    'StationLatitude': 'Station latitude (decimal degrees)',
+    'StationLongitude': 'Station longitude (decimal degrees)',
+    'StationElevation': 'Station elevation (m)',
+    'SamplingRate': 'Record sampling rate (Hz)',
+    'BackAzimuth': 'Site-to-source azimuth (decimal degrees)',
+    'EpicentralDistance': 'Epicentral distance (km)',
+    'HypocentralDistance': 'Hypocentral distance (km)',
+    'RuptureDistance': 'Closest distance to the rupture plane (km)',
+    'RuptureDistanceVar': 'Variance of rupture distance estimate (km^2)',
+    'JoynerBooreDistance': 'Joyner-Boore distance (km)',
+    'JoynerBooreDistanceVar':
+        'Variance of Joyner-Boore distance estimate (km^2)',
+    'GC2_rx': (
+        'Distance measured perpendicular to the fault strike from the surface'
+        ' projection of the up-dip edge of the fault plane (km)'),
+    'GC2_ry': (
+        'Distance measured parallel to the fault strike from the midpoint of '
+        'the surface projection of the fault plane (km)'),
+    'GC2_ry0': (
+        'Horizontal distance off the end of the rupture measured parallel to '
+        'strike (km)'),
+    'GC2_U': (
+        'Strike-normal (U) coordinate, defined by Spudich and Chiou (2015; '
+        'https://doi.org/10.3133/ofr20151028) (km)'),
+    'GC2_T': (
+        'Strike-parallel (T) coordinate, defined by Spudich and Chiou '
+        '(2015; https://doi.org/10.3133/ofr20151028) (km)'),
+    'H1Lowpass': 'H1 channel lowpass frequency (Hz)',
+    'H1Highpass': 'H1 channel highpass frequency (Hz)',
+    'H2Lowpass': 'H2 channel lowpass frequency (Hz)',
+    'H2Highpass': 'H2 channel highpass frequency (Hz)',
+    'ZLowpass': 'Vertical channel lowpass frequency (Hz)',
+    'ZHighpass': 'Vertical channel highpass frequency (Hz)',
+    'SourceFile': 'Source file'}
+
+FLATFILE_IMT_COLUMNS = {
+    'PGA': 'Peak ground acceleration (%s)'
+           % XML_UNITS['pga'],
+    'PGV': 'Peak ground velocity (%s)'
+           % XML_UNITS['pgv'],
+    'SA(X)': 'Pseudo-spectral acceleration (%s) at X seconds'
+           % XML_UNITS['sa'],
+    'FAS(X)': 'Fourier amplitude spectrum value (%s) at X seconds'
+           % XML_UNITS['fas'],
+    'DURATIONp-q': 'p-q percent significant duration (%s)'
+           % XML_UNITS['duration'],
+    'SORTED_DURATION': 'Sorted significant duration (%s)'
+           % XML_UNITS['duration'],
+    'ARIAS': 'Arias intensity (%s)'
+           % XML_UNITS['arias']
+}
+
+# List of columns in the fit_spectra_parameters file, along README descriptions
+FIT_SPECTRA_COLUMNS = {
+    'EarthquakeId': 'Event ID from Comcat',
+    'EarthquakeTime': 'Earthquake origin time (UTC)',
+    'EarthquakeLatitude': 'Earthquake latitude (decimal degrees)',
+    'EarthquakeLongitude': 'Earthquake longitude (decimal degrees)',
+    'EarthquakeDepth': 'Earthquake depth (km)',
+    'EarthquakeMagnitude': 'Earthquake magnitude',
+    'EarthquakeMagnitudeType': 'Earthquake magnitude type',
+    'TraceID': 'NET.STA.LOC.CHA',
+    'StationLatitude': 'Station latitude (decimal degrees)',
+    'StationLongitude': 'Station longitude (decimal degrees)',
+    'StationElevation': 'Station elevation (m)',
+    'fmin': 'Record highpass filter frequency (Hz)',
+    'fmax': 'Record lowpass filter frequency (Hz)',
+    'epi_dist': 'Epicentral distance (km)',
+    'f0': 'Brune corner frequency (Hz)',
+    'kappa': 'Site diminution factor (sec)',
+    'magnitude': 'Magnitude from optimized moment',
+    'minimize_message':
+        'Output message from scipy.optimize.minimize',
+    'minimize_success':
+        'Boolean flag indicating if the optimizer exited successfully',
+    'moment': 'Moment fit (dyne-cm)',
+    'moment_lnsd': 'Natural log standard deviation of the moment fit',
+    'stress_drop': 'Stress drop fit (bars)',
+    'stress_drop_lnsd':
+        'Natural log standard deviation of the stress drop fit',
+    'R2': (
+        'Coefficient of determination between fitted and observed spectra'),
+    'mean_squared_error': (
+        'Mean squared error between fitted and observed spectra')
+}
+
 
 M_PER_KM = 1000
 
+FORMAT_VERSION = '1.0'
+
+
+def format_netsta(stats):
+    return '{st.network}.{st.station}'.format(st=stats)
+
+
+def format_nslc(stats):
+    # loc = '' if stats.location == '--' else stats.location
+    return '{st.network}.{st.station}.{st.location}.{st.channel}'.format(
+        st=stats)
+
+
+def format_nslct(stats, tag):
+    return format_nslc(stats) + '_' + tag
+
+
+def format_nslit(stats, inst, tag):
+    # loc = '' if stats.location == '--' else stats.location
+    return '{st.network}.{st.station}.{st.location}.{inst}_{tag}'.format(
+        st=stats, inst=inst, tag=tag)
+
 
 class StreamWorkspace(object):
-    def __init__(self, filename, exists=False):
+    def __init__(self, filename, compression=None):
         """Create an ASDF file given an Event and list of StationStreams.
 
         Args:
             filename (str):
                 Path to ASDF file to create.
+            compression (str):
+                Any value supported by pyasdf.asdf_data_set.ASDFDataSet.
         """
-        if not exists:
-            compression = "gzip-3"
+        if os.path.exists(filename):
+            self.dataset = pyasdf.ASDFDataSet(filename)
         else:
-            compression = None
-        self.dataset = pyasdf.ASDFDataSet(filename, compression=compression)
+            self.dataset = pyasdf.ASDFDataSet(
+                filename, compression=compression)
+        self.FORMAT_VERSION = FORMAT_VERSION
+
+    @classmethod
+    def create(cls, filename, compression=None):
+        """Load from existing ASDF file.
+
+        Args:
+            filename (str):
+                Path to existing ASDF file.
+            compression (str):
+                Any value supported by pyasdf.asdf_data_set.ASDFDataSet.
+
+        Returns:
+            StreamWorkspace: Object containing ASDF file.
+        """
+        if os.path.exists(filename):
+            raise IOError('File %s already exists.' % filename)
+        return cls(filename)
 
     @classmethod
     def open(cls, filename):
         """Load from existing ASDF file.
 
         Args:
-            filename (str): Path to existing ASDF file.
+            filename (str):
+                Path to existing ASDF file.
 
         Returns:
             StreamWorkspace: Object containing ASDF file.
         """
-        return cls(filename, exists=True)
+        if not os.path.exists(filename):
+            raise IOError('File %s does not exist.' % filename)
+        return cls(filename)
 
     def close(self):
         """Close the workspace.
@@ -116,7 +256,7 @@ class StreamWorkspace(object):
         """
         if label is not None:
             if '_' in label:
-                raise GMProcessException(
+                raise ValueError(
                     'Stream label cannot contain an underscore.')
 
         # To allow for multiple processed versions of the same Stream
@@ -124,23 +264,27 @@ class StreamWorkspace(object):
         eventid = _get_id(event)
         if not self.hasEvent(eventid):
             self.addEvent(event)
-        station_dict = {}
+
+        # Creating a new provenance document and filling in the software
+        # information for every trace can be slow, so here we create a
+        # base provenance document that will be copied and used as a template
+        base_prov = prov.model.ProvDocument()
+        base_prov.add_namespace(*NS_SEIS)
+        base_prov = _get_person_agent(base_prov)
+        base_prov = _get_software_agent(base_prov)
+
+        logging.debug(streams)
         for stream in streams:
             station = stream[0].stats['station']
             logging.info('Adding waveforms for station %s' % station)
             # is this a raw file? Check the trace for provenance info.
             is_raw = not len(stream[0].getProvenanceKeys())
 
-            if label is not None:
-                tag = '%s_%s_%s' % (eventid, station.lower(), label)
-            else:
-                if station.lower() in station_dict:
-                    station_sequence = station_dict[station.lower()] + 1
-                else:
-                    station_sequence = 1
-                station_dict[station.lower()] = station_sequence
-                tag = '%s_%s_%05i' % (
-                    eventid, station.lower(), station_sequence)
+            if label is None:
+                tfmt = '%Y%m%d%H%M%S'
+                tnow = UTCDateTime.now().strftime(tfmt)
+                label = 'processed%s' % tnow
+            tag = '{}_{}'.format(eventid, label)
             if is_raw:
                 level = 'raw'
             else:
@@ -149,16 +293,12 @@ class StreamWorkspace(object):
 
             # add processing provenance info from traces
             if level == 'processed':
-                provdocs = stream.getProvenanceDocuments()
+                provdocs = stream.getProvenanceDocuments(base_prov)
                 for provdoc, trace in zip(provdocs, stream):
-                    tpl = (trace.stats.network.lower(),
-                           trace.stats.station.lower(),
-                           trace.stats.channel.lower())
-                    channel = '%s_%s_%s' % tpl
-                    channel_tag = '%s_%s' % (tag, channel)
+                    provname = format_nslct(trace.stats, tag)
                     self.dataset.add_provenance_document(
                         provdoc,
-                        name=channel_tag
+                        name=provname
                     )
 
             # add processing parameters from streams
@@ -173,21 +313,27 @@ class StreamWorkspace(object):
                 # nested dictionaries.
                 # Also, this seems like a lot of effort
                 # just to store a string in HDF, but other
-                # approached failed. Suggestions are welcome.
+                # approaches failed. Suggestions are welcome.
                 jdict = _stringify_dict(jdict)
                 jsonbytes = json.dumps(jdict).encode('utf-8')
                 jsonarray = np.frombuffer(jsonbytes, dtype=np.uint8)
                 dtype = 'StreamProcessingParameters'
+                parampath = '/'.join([
+                    format_netsta(stream[0].stats),
+                    format_nslit(stream[0].stats, stream.get_inst(), tag)
+                ])
                 self.dataset.add_auxiliary_data(
                     jsonarray,
                     data_type=dtype,
-                    path=tag,
+                    path=parampath,
                     parameters={}
                 )
 
             # add processing parameters from traces
             for trace in stream:
-                path = '%s_%s' % (tag, trace.stats.channel)
+                procname = '/'.join([format_netsta(trace.stats),
+                                     format_nslct(trace.stats, tag),
+                                     ])
                 jdict = {}
                 for key in trace.getParameterKeys():
                     value = trace.getParameter(key)
@@ -206,9 +352,32 @@ class StreamWorkspace(object):
                     self.dataset.add_auxiliary_data(
                         jsonarray,
                         data_type=dtype,
-                        path=path,
+                        path=procname,
                         parameters={}
                     )
+
+                # Some processing data is computationally intensive to
+                # compute, so we store it in the 'Cache' group.
+                for specname in trace.getCachedNames():
+                    spectrum = trace.getCached(specname)
+                    # we expect many of these specnames to
+                    # be joined with underscores.
+                    name_parts = specname.split('_')
+                    base_dtype = ''.join([part.capitalize()
+                                          for part in name_parts])
+                    for array_name, array in spectrum.items():
+                        path = base_dtype + array_name.capitalize() \
+                            + "/" + procname
+                        try:
+                            self.dataset.add_auxiliary_data(
+                                array,
+                                data_type='Cache',
+                                path=path,
+                                parameters={}
+                            )
+                        except BaseException:
+                            pass
+
             inventory = stream.getInventory()
             self.dataset.add_stationxml(inventory)
 
@@ -233,44 +402,11 @@ class StreamWorkspace(object):
         all_tags = []
         for w in self.dataset.waveforms:
             all_tags.extend(w.get_waveform_tags())
-        all_labels = list(set([at.split('_')[2] for at in all_tags]))
+        all_labels = list(set([at.split('_')[-1] for at in all_tags]))
         labels = list(set(all_labels))
         return labels
 
-    def getStreamTags(self, eventid, label=None):
-        """
-        Get list of Stream "tags" which can be used to retrieve individual
-        streams.
-
-        Args:
-            eventid (str):
-                Event ID corresponding to a sequence of Streams.
-            label (str):
-                Optional stream label assigned with addStreams().
-
-        Returns:
-            list: Sequence of strings indicating Stream tags corresponding to
-            eventid.
-        """
-        if not self.hasEvent(eventid):
-            fmt = 'Event with a resource id containing %s could not be found.'
-            raise KeyError(fmt % eventid)
-        matching_tags = []
-        for waveform in self.dataset.waveforms:
-            tags = waveform.get_waveform_tags()
-            tags
-            for tag in tags:
-                event_match = eventid in waveform[tag][0].stats.asdf.event_ids
-                label_match = True
-                if label is not None and label not in tag:
-                    label_match = False
-                if event_match and label_match:
-                    matching_tags.append(tag)
-
-        matching_tags = list(set(matching_tags))
-        return matching_tags
-
-    def getStreams(self, eventid, stations=None, labels=None):
+    def getStreams(self, eventid, stations=None, labels=None, config=None):
         """Get Stream from ASDF file given event id and input tags.
 
         Args:
@@ -280,6 +416,8 @@ class StreamWorkspace(object):
                 List of stations to search for.
             labels (list):
                 List of processing labels to search for.
+            config (dict):
+                Configuration options.
 
         Returns:
             StreamCollection: Object containing list of organized
@@ -287,68 +425,108 @@ class StreamWorkspace(object):
         """
         trace_auxholder = []
         stream_auxholder = []
-        if 'TraceProcessingParameters' in self.dataset.auxiliary_data:
-            trace_auxholder = self.dataset.auxiliary_data.TraceProcessingParameters
-        if 'StreamProcessingParameters' in self.dataset.auxiliary_data:
-            stream_auxholder = self.dataset.auxiliary_data.StreamProcessingParameters
+        auxdata = self.dataset.auxiliary_data
+        if 'TraceProcessingParameters' in auxdata:
+            trace_auxholder = auxdata.TraceProcessingParameters
+        if 'StreamProcessingParameters' in auxdata:
+            stream_auxholder = auxdata.StreamProcessingParameters
         streams = []
-        all_tags = []
 
         if stations is None:
             stations = self.getStations(eventid)
         if labels is None:
             labels = self.getLabels()
-        for station in stations:
-            for label in labels:
-                all_tags.append('%s_%s_%s' % (eventid, station.lower(), label))
 
-        for waveform in self.dataset.waveforms:
-            ttags = waveform.get_waveform_tags()
-            wtags = []
-            if not len(all_tags):
-                wtags = ttags
-            else:
-                wtags = list(set(all_tags).intersection(set(ttags)))
-            for tag in wtags:
-                if eventid in waveform[tag][0].stats.asdf.event_ids:
-                    tstream = waveform[tag].copy()
-                    inventory = waveform['StationXML']
-                    for ttrace in tstream:
-                        trace = StationTrace(data=ttrace.data,
-                                             header=ttrace.stats,
-                                             inventory=inventory)
-                        tpl = (trace.stats.network.lower(),
-                               trace.stats.station.lower(),
-                               trace.stats.channel.lower())
-                        channel = '%s_%s_%s' % tpl
-                        channel_tag = '%s_%s' % (tag, channel)
-                        if channel_tag in self.dataset.provenance.list():
-                            provdoc = self.dataset.provenance[channel_tag]
-                            trace.setProvenanceDocument(provdoc)
-                        trace_path = '%s_%s' % (
-                            tag, trace.stats.channel)
-                        if trace_path in trace_auxholder:
-                            bytelist = trace_auxholder[
+        for waveform in self.dataset.ifilter(
+            self.dataset.q.station == stations,
+            self.dataset.q.tag == ['%s_%s' % (eventid, label)
+                                   for label in labels]):
+            tags = waveform.get_waveform_tags()
+            for tag in tags:
+                tstream = waveform[tag]
+
+                inventory = waveform['StationXML']
+                for ttrace in tstream:
+                    if isinstance(ttrace.data[0], np.floating):
+                        if ttrace.data[0].nbytes == 4:
+                            ttrace.data = ttrace.data.astype('float32')
+                        else:
+                            ttrace.data = ttrace.data.astype('float64')
+                    else:
+                        if ttrace.data[0].nbytes == 2:
+                            ttrace.data = ttrace.data.astype('int16')
+                        elif ttrace.data[0].nbytes == 4:
+                            ttrace.data = ttrace.data.astype('int32')
+                        else:
+                            ttrace.data = ttrace.data.astype('int64')
+                    trace = StationTrace(data=ttrace.data,
+                                         header=ttrace.stats,
+                                         inventory=inventory,
+                                         config=config)
+
+                    # get the provenance information
+                    provname = format_nslct(trace.stats, tag)
+                    if provname in self.dataset.provenance.list():
+                        provdoc = self.dataset.provenance[provname]
+                        trace.setProvenanceDocument(provdoc)
+
+                    # get the trace processing parameters
+                    top = format_netsta(trace.stats)
+                    trace_path = format_nslct(trace.stats, tag)
+                    if top in trace_auxholder:
+                        root_auxholder = trace_auxholder[top]
+                        if trace_path in root_auxholder:
+                            bytelist = root_auxholder[
                                 trace_path].data[:].tolist()
                             jsonstr = ''.join([chr(b) for b in bytelist])
                             jdict = json.loads(jsonstr)
                             for key, value in jdict.items():
                                 trace.setParameter(key, value)
 
-                        stream = StationStream(traces=[trace])
-                        stream.tag = tag  # testing this out
+                    # get the trace spectra arrays from auxiliary,
+                    # repack into stationtrace object
+                    spectra = {}
 
-                        # look for stream-based metadata
-                        if tag in stream_auxholder:
-                            bytelist = stream_auxholder[
-                                tag].data[:].tolist()
+                    if 'Cache' in auxdata:
+                        for aux in auxdata['Cache'].list():
+                            auxarray = auxdata['Cache'][aux]
+                            if top not in auxarray.list():
+                                continue
+                            auxarray_top = auxarray[top]
+                            if trace_path in auxarray_top:
+                                specparts = camel_case_split(aux)
+                                array_name = specparts[-1].lower()
+                                specname = '_'.join(specparts[:-1]).lower()
+                                specarray = auxarray_top[trace_path].data[()]
+                                if specname in spectra:
+                                    spectra[specname][array_name] = specarray
+                                else:
+                                    spectra[specname] = {array_name: specarray}
+                        for key, value in spectra.items():
+                            trace.setCached(key, value)
+
+                    stream = StationStream(traces=[trace])
+                    stream.tag = tag  # testing this out
+
+                    # get the stream processing parameters
+                    stream_path = format_nslit(
+                        trace.stats, stream.get_inst(), tag)
+                    if top in stream_auxholder:
+                        top_auxholder = stream_auxholder[top]
+                        if stream_path in top_auxholder:
+                            auxarray = top_auxholder[stream_path]
+                            bytelist = auxarray.data[:].tolist()
                             jsonstr = ''.join([chr(b) for b in bytelist])
                             jdict = json.loads(jsonstr)
                             for key, value in jdict.items():
                                 stream.setStreamParam(key, value)
 
-                        streams.append(stream)
-        streams = StreamCollection(streams)
+                    streams.append(stream)
+        # No need to handle duplicates when retrieving stations from the
+        # workspace file because it must have been handled before putting them
+        # into the workspace file.
+        streams = StreamCollection(
+            streams, handle_duplicates=False, config=config)
         return streams
 
     def getStations(self, eventid=None):
@@ -363,46 +541,36 @@ class StreamWorkspace(object):
         """
         stations = []
         for waveform in self.dataset.waveforms:
-            tags = waveform.get_waveform_tags()
-            for tag in tags:
-                if eventid is None:
-                    event_match = True
-                else:
-                    event_match = eventid in waveform[tag][0].stats.asdf.event_ids
-                if not event_match:
+            for stream_name, _ in waveform.get_waveform_attributes().items():
+                parts = stream_name.split('.')
+                station = parts[1]
+                if station in stations:
                     continue
-                eventid, station, _ = tag.split('_')
-                if station not in stations:
-                    stations.append(station)
+                stations.append(station)
         return stations
 
-    def setStreamMetrics(self, eventid, label, summary):
-        """Set stream metrics from a StationSummary.
-
-        Args:
-            eventid (str):
-                Event ID corresponding to an Event in the workspace.
-            label (str):
-                Processing label to associate with stream metrics.
-            summary (StationSummary):
-                StationSummary object containing stream metrics.
-        """
-        xmlstr = summary.get_metric_xml()
-        path = '%s_%s_%s' % (eventid, summary.station_code.lower(), label)
-
-        self.insert_aux(xmlstr, 'WaveFormMetrics', path)
-
-    def insert_aux(self, datastr, data_name, path):
+    def insert_aux(self, datastr, data_name, path, overwrite=False):
         """Insert a string (usually json or xml) into Auxilliary array.
 
         Args:
-            datastr (str): String containing data to insert into Aux array.
-            data_name (str): What this data should be called in the ASDF file.
-            path (str): The aux path where this data should be stored.
+            datastr (str):
+                String containing data to insert into Aux array.
+            data_name (str):
+                What this data should be called in the ASDF file.
+            path (str):
+                The aux path where this data should be stored.
+            overwrite (bool):
+                Should the data be overwritten if it already exists?
         """
         # this seems like a lot of effort
         # just to store a string in HDF, but other
-        # approached failed. Suggestions are welcome.
+        # approaches failed. Suggestions are welcome.
+
+        group_name = "%s/%s" % (data_name, path)
+        data_exists = group_name in self.dataset._auxiliary_data_group
+        if overwrite and data_exists:
+            del self.dataset._auxiliary_data_group[group_name]
+
         databuf = datastr.encode('utf-8')
         data_array = np.frombuffer(databuf, dtype=np.uint8)
         dtype = data_name
@@ -413,46 +581,11 @@ class StreamWorkspace(object):
             parameters={}
         )
 
-    def calcStationMetrics(self, eventid, stations=None, labels=None):
-        """Calculate distance measures for each station.
-
-        Args:
-            eventid (str):
-                ID of event to search for in ASDF file.
-            stations (list):
-                List of stations to create metrics for.
-            labels (list):
-                List of processing labels to create metrics for.
+    def calcMetrics(self, eventid, stations=None, labels=None, config=None,
+                    streams=None, stream_label=None, rupture_file=None,
+                    calc_station_metrics=True, calc_waveform_metrics=True):
         """
-        if not self.hasEvent(eventid):
-            fmt = 'No event matching %s found in workspace.'
-            raise KeyError(fmt % eventid)
-
-        streams = self.getStreams(eventid, stations=stations, labels=labels)
-        event = self.getEvent(eventid)
-        for stream in streams:
-            tag = stream.tag
-            _, station, label = tag.split('_')
-            elat = event.latitude
-            elon = event.longitude
-            edepth = event.depth_km
-            slat = stream[0].stats.coordinates.latitude
-            slon = stream[0].stats.coordinates.longitude
-            sdep = stream[0].stats.coordinates.elevation
-            epidist_m, _, _ = gps2dist_azimuth(elat, elon, slat, slon)
-            hypocentral_distance = distance(elat, elon, -sdep / M_PER_KM,
-                                            slat, slon, edepth)
-            xmlfmt = '''<station_metrics>
-            <hypocentral_distance units="km">%.1f</hypocentral_distance>
-            <epicentral_distance units="km">%.1f</epicentral_distance>
-            </station_metrics>
-            '''
-            xmlstr = xmlfmt % (hypocentral_distance, epidist_m / M_PER_KM)
-            path = '%s_%s_%s' % (eventid, station.lower(), label)
-            self.insert_aux(xmlstr, 'StationMetrics', path)
-
-    def calcMetrics(self, eventid, stations=None, labels=None, config=None):
-        """Calculate both stream and station metrics for a set of waveforms.
+        Calculate waveform and/or station metrics for a set of waveforms.
 
         Args:
             eventid (str):
@@ -461,72 +594,100 @@ class StreamWorkspace(object):
                 List of stations to create metrics for.
             labels (list):
                 List of processing labels to create metrics for.
-            config (dict): Configuration dictionary.
-        """
-        self.calcStreamMetrics(eventid,
-                               stations=stations,
-                               labels=labels, config=config)
-        self.calcStationMetrics(eventid, stations=stations, labels=labels)
-
-    def calcStreamMetrics(self, eventid, stations=None,
-                          labels=None, config=None):
-        """Create station metrics for specified event/streams.
-
-        Args:
-            eventid (str):
-                ID of event to search for in ASDF file.
-            stations (list):
-                List of stations to create metrics for.
-            labels (list):
-                List of processing labels to create metrics for.
-            imclist (list):
-                List of valid component names.
-            imtlist (list):
-                List of valid IMT names.
             config (dict):
-                Config dictionary.
+                Configuration dictionary.
+            streams (StreamCollection):
+                Optional StreamCollection object to create metrics for.
+            stream_label (str):
+                Label to be used in the metrics path when providing a
+                StreamCollection.
+            rupture_file (str):
+                Path pointing to the rupture file.
+            calc_station_metrics (bool):
+                Whether to calculate station metrics. Default is True.
+            calc_waveform_metrics (bool):
+                Whether to calculate waveform metrics. Default is True.
         """
         if not self.hasEvent(eventid):
             fmt = 'No event matching %s found in workspace.'
             raise KeyError(fmt % eventid)
 
-        streams = self.getStreams(eventid, stations=stations, labels=labels)
+        if streams is None:
+            streams = self.getStreams(
+                eventid, stations=stations, labels=labels)
+
         event = self.getEvent(eventid)
+
+        # Load the rupture file
+        origin = Origin({
+            'id': event.id,
+            'netid': '',
+            'network': '',
+            'lat': event.latitude,
+            'lon': event.longitude,
+            'depth': event.depth_km,
+            'locstring': '',
+            'mag': event.magnitude,
+            'time': event.time
+        })
+        rupture = get_rupture(origin, rupture_file)
+
+        vs30_grids = None
+        if config is not None:
+            if 'vs30' in config['metrics']:
+                vs30_grids = config['metrics']['vs30']
+                for vs30_name in vs30_grids:
+                    vs30_grids[vs30_name]['grid_object'] = GMTGrid.load(
+                        vs30_grids[vs30_name]['file'])
+
         for stream in streams:
-            tag = stream.tag
-            eventid, station, label = tag.split('_')
+            instrument = stream.get_id()
+            logging.info('Calculating stream metrics for %s...' % instrument)
+
             try:
                 summary = StationSummary.from_config(
-                    stream, event=event, config=config)
-            except Exception as pgme:
-                fmt = 'Could not create stream metrics for event %s, station %s: "%s"'
-                logging.warning(fmt % (eventid, station, str(pgme)))
+                    stream, event=event, config=config,
+                    calc_waveform_metrics=calc_waveform_metrics,
+                    calc_station_metrics=calc_station_metrics,
+                    rupture=rupture, vs30_grids=vs30_grids)
+            except BaseException as pgme:
+                fmt = ('Could not create stream metrics for event %s,'
+                       'instrument %s: "%s"')
+                logging.warning(fmt % (eventid, instrument, str(pgme)))
                 continue
 
-            xmlstr = summary.get_metric_xml()
+            if calc_waveform_metrics and stream.passed:
+                xmlstr = summary.get_metric_xml()
+                if stream_label is not None:
+                    tag = '%s_%s' % (eventid, stream_label)
+                else:
+                    tag = stream.tag
+                metricpath = '/'.join([
+                    format_netsta(stream[0].stats),
+                    format_nslit(stream[0].stats, stream.get_inst(), tag),
+                ])
+                self.insert_aux(xmlstr, 'WaveFormMetrics', metricpath)
 
-            path = '%s_%s_%s' % (eventid, summary.station_code.lower(), label)
+            if calc_station_metrics:
+                xmlstr = summary.get_station_xml()
+                metricpath = '/'.join([
+                    format_netsta(stream[0].stats),
+                    format_nslit(stream[0].stats, stream.get_inst(), eventid)
+                ])
+                self.insert_aux(xmlstr, 'StationMetrics', metricpath)
 
-            # this seems like a lot of effort
-            # just to store a string in HDF, but other
-            # approached failed. Suggestions are welcome.
-            xmlbytes = xmlstr.encode('utf-8')
-            jsonarray = np.frombuffer(xmlbytes, dtype=np.uint8)
-            dtype = 'WaveFormMetrics'
-
-            self.dataset.add_auxiliary_data(
-                jsonarray,
-                data_type=dtype,
-                path=path,
-                parameters={}
-            )
-
-    def getTables(self, label, config=None):
-        '''Retrieve dataframes containing event information and IMC/IMT metrics.
+    def getTables(self, label, streams=None, stream_label=None):
+        '''Retrieve dataframes containing event information and IMC/IMT
+        metrics.
 
         Args:
-            label (str): Calculate metrics only for the given label.
-            config (dict): Config dictionary.
+            label (str):
+                Calculate metrics only for the given label.
+            streams (StreamCollection):
+                Optional StreamCollection object to get tables for.
+            stream_label (str):
+                Label to be used in the metrics path when providing a
+                StreamCollection.
 
         Returns:
             tuple: Elements are:
@@ -537,6 +698,7 @@ class StreamWorkspace(object):
                      - longitude Longitude of origin
                      - depth Depth of origin (km)
                      - magnitude Magnitude at origin (km)
+                     - magnitude_type Magnitude type at origin
                    - dictionary of DataFrames, where keys are IMCs and
                      values are DataFrames with columns:
                      - EarthquakeId Earthquake id from event table
@@ -552,158 +714,263 @@ class StreamWorkspace(object):
                        (surface) to station
                      - HypocentralDistance Distance from origin hypocenter
                        (depth) to station
-                     - HN1Lowpass Low pass filter corner frequency for first
+                     - H1Lowpass Low pass filter corner frequency for first
                        horizontal channel
-                     - HN1Highpass High pass filter corner frequency for first
+                     - H1Highpass High pass filter corner frequency for first
                        horizontal channel
-                     - HN2Lowpass Low pass filter corner frequency for second
+                     - H2Lowpass Low pass filter corner frequency for second
                        horizontal channel
-                     - HN2Highpass High pass filter corner frequency for
+                     - H2Highpass High pass filter corner frequency for
                        second horizontal channel
                      - ...desired IMTs (PGA, PGV, SA(0.3), etc.)
+                   - dictionary of README DataFrames, where keys are IMCs
+                     and values are DataFrames with columns:
+                     - Column header
+                     - Description
         '''
-        event_table = pd.DataFrame(columns=EVENT_TABLE_COLUMNS)
+        event_info = []
         imc_tables = {}
+        readme_tables = {}
         for eventid in self.getEventIds():
             event = self.getEvent(eventid)
-            edict = {
-                'id': event.id,
+            event_info.append({
+                'id': event.id.replace('smi:local/', ''),
                 'time': event.time,
                 'latitude': event.latitude,
                 'longitude': event.longitude,
                 'depth': event.depth_km,
-                'magnitude': event.magnitude
-            }
-            event_table = event_table.append(edict, ignore_index=True)
-            streams = self.getStreams(eventid, labels=[label])
+                'magnitude': event.magnitude,
+                'magnitude_type': event.magnitude_type
+            })
+
+            if streams is None:
+                streams = self.getStreams(eventid, labels=[label])
+
             for stream in streams:
                 if not stream.passed:
                     continue
-                if config is None:
-                    station = stream[0].stats.station
-                    summary = self.getStreamMetrics(eventid, station, label)
-                else:
-                    summary = StationSummary.from_config(
-                        stream, event=event, config=config)
+
+                station = stream[0].stats.station
+                network = stream[0].stats.network
+                summary = self.getStreamMetrics(
+                    eventid, network, station, label, streams=[stream],
+                    stream_label=stream_label)
 
                 if summary is None:
                     continue
 
-                imclist = summary.pgms['IMC'].unique().tolist()
-                imtlist = summary.pgms['IMT'].unique().tolist()
+                pgms = summary.pgms
+                imclist = pgms.index.get_level_values('IMC').unique().tolist()
+                imtlist = pgms.index.get_level_values('IMT').unique().tolist()
                 imtlist.sort(key=_natural_keys)
+
+                # Add any Vs30 columns to the list of FLATFILE_COLUMNS
+                for vs30_dict in summary._vs30.values():
+                    FLATFILE_COLUMNS[vs30_dict['column_header']] = \
+                        vs30_dict['readme_entry']
 
                 for imc in imclist:
                     if imc not in imc_tables:
-                        cols = FLATFILE_COLUMNS + imtlist
-                        imc_table = pd.DataFrame(columns=cols)
                         row = _get_table_row(stream, summary, event, imc)
                         if not len(row):
                             continue
-                        imc_table = imc_table.append(row, ignore_index=True)
-                        imc_tables[imc] = imc_table
+                        imc_tables[imc] = [row]
                     else:
-                        imc_table = imc_tables[imc]
                         row = _get_table_row(stream, summary, event, imc)
                         if not len(row):
                             continue
-                        imc_table = imc_table.append(row, ignore_index=True)
-                        imc_tables[imc] = imc_table
+                        imc_tables[imc].append(row)
 
-        return (event_table, imc_tables)
+        # Remove any empty IMT columns from the IMC tables
+        for key, table in imc_tables.items():
+            table = pd.DataFrame.from_dict(table)
+            have_imts = []
+            for imt in list(set(table.columns) & set(imtlist)):
+                if not pd.isna(table[imt]).all():
+                    have_imts.append(imt)
+            have_imts.sort(key=_natural_keys)
+            non_imt_cols = [
+                col for col in table.columns if col not in have_imts]
+            table = table[non_imt_cols + have_imts]
+            imc_tables[key] = table
+            readme_dict = {}
+            for col in table.columns:
+                if col in FLATFILE_COLUMNS:
+                    readme_dict[col] = FLATFILE_COLUMNS[col]
+                else:
+                    imt = col.upper()
+                    if imt.startswith('SA'):
+                        readme_dict['SA(X)'] = FLATFILE_IMT_COLUMNS['SA(X)']
+                    elif imt.startswith('FAS'):
+                        readme_dict['FAS(X)'] = FLATFILE_IMT_COLUMNS['FAS(X)']
+                    elif imt.startswith('DURATION'):
+                        readme_dict['DURATIONp-q'] = \
+                            FLATFILE_IMT_COLUMNS['DURATIONp-q']
+                    else:
+                        readme_dict[imt] = FLATFILE_IMT_COLUMNS[imt]
+            df_readme = pd.DataFrame.from_dict(readme_dict, orient='index')
+            df_readme.reset_index(level=0, inplace=True)
+            df_readme.columns = ['Column header', 'Description']
+            readme_tables[key] = df_readme
 
-    def getMetricsTable(self, eventid, stations=None, labels=None):
-        """Return a pandas DataFrame summarizing the metrics for given Streams.
+        event_table = pd.DataFrame.from_dict(event_info)
+        return (event_table, imc_tables, readme_tables)
+
+    def getFitSpectraTable(self, eventid, label, streams):
+        """
+        Returns a tuple of two pandas DataFrames. The first contains the
+        fit_spectra parameters for each trace in the workspace matching
+        eventid and label. The second is a README describing each column
+        in the first DataFrame.
 
         Args:
             eventid (str):
-                ID of event to search for in ASDF file.
-            stations (list):
-                List of stations to return metrics from.
-            labels (list):
-                List of processing labels to return metrics from.
+                Return parameters only for the given eventid.
+            label (str):
+                Return parameters only for the given label.
+            streams (StreamCollection):
+                Optional StreamCollection object to get parameters for.
 
         Returns:
-            DataFrame:
-                Pandas DataFrame containing IMTs and components defined
-                in setStreamMetrics, plus:
-                    - STATION Station code
-                    - NAME Station name, if available
-                    - SOURCE Data source, if available
-                    - NETID Network source
-                    - LAT Station latitude
-                    - LON Station longitude
+            pandas.DataFrame:
+                A DataFrame containing the fit_spectra parameters on a trace-
+                by-trace basis.
         """
-        if stations is None:
-            stations = self.getStations(eventid)
-        if labels is None:
-            labels = self.getLabels()
+        fit_table = []
+        event = self.getEvent(eventid)
+        if streams is None:
+            streams = self.getStreams(eventid, labels=[label])
+        for st in streams:
+            if not st.passed:
+                continue
+            for tr in st:
+                if tr.hasParameter('fit_spectra'):
+                    fit_dict = tr.getParameter('fit_spectra')
+                    fit_dict['EarthquakeId'] = eventid
+                    fit_dict['EarthquakeTime'] = event.time
+                    fit_dict['EarthquakeLatitude'] = event.latitude
+                    fit_dict['EarthquakeLongitude'] = event.longitude
+                    fit_dict['EarthquakeDepth'] = event.depth_km
+                    fit_dict['EarthquakeMagnitude'] = event.magnitude
+                    fit_dict['EarthquakeMagnitudeType'] = event.magnitude_type
+                    fit_dict['TraceID'] = tr.id
+                    fit_dict['StationLatitude'] = tr.stats.coordinates.latitude
+                    fit_dict['StationLongitude'] = \
+                        tr.stats.coordinates.longitude
+                    fit_dict['StationElevation'] = \
+                        tr.stats.coordinates.elevation
+                    if tr.hasParameter('corner_frequencies'):
+                        freq_dict = tr.getParameter('corner_frequencies')
+                        fit_dict['fmin'] = freq_dict['highpass']
+                        fit_dict['fmax'] = freq_dict['lowpass']
+                    fit_table.append(fit_dict)
 
-        df = None
-        for station in stations:
-            for label in labels:
-                summary = self.getStreamMetrics(eventid, station, label)
-                stream = self.getStreams(eventid,
-                                         stations=[station],
-                                         labels=[label])[0]
-                row = summary.toSeries()
-                row['STATION'] = stream[0].stats.station
-                row['NAME'] = stream[0].stats.standard['station_name']
-                row['SOURCE'] = stream[0].stats.standard['source']
-                row['NETID'] = stream[0].stats.network
-                row['LAT'] = stream[0].stats.coordinates['latitude']
-                row['LON'] = stream[0].stats.coordinates['longitude']
+        if len(fit_table):
+            df = pd.DataFrame.from_dict(fit_table)
+        else:
+            df = pd.DataFrame(columns=FIT_SPECTRA_COLUMNS.keys())
 
-                if df is None:
-                    df = pd.DataFrame(columns=row.index)
-                df = df.append(row, ignore_index=True)
+        # Ensure that the DataFrame columns are ordered correctly
+        df = df[FIT_SPECTRA_COLUMNS.keys()]
 
-        # TODO - reorder df columns. This is complicated with multi-index.
+        readme = pd.DataFrame.from_dict(FIT_SPECTRA_COLUMNS, orient='index')
+        readme.reset_index(level=0, inplace=True)
+        readme.columns = ['Column header', 'Description']
 
-        return df
+        return (df, readme)
 
-    def getStreamMetrics(self, eventid, station, label):
-        """Extract a StationSummary object from the ASDF file for a given input Stream.
+    def getStreamMetrics(self, eventid, network, station, label, streams=None,
+                         stream_label=None, config=None):
+        """Extract a StationSummary object from the ASDF file for a given
+        input Stream.
 
         Args:
             eventid (str):
                 ID of event to search for in ASDF file.
+            network (str):
+                Network to return metrics from.
             station (str):
                 Station to return metrics from.
             label (str):
                 Processing label to return metrics from.
+            streams (StreamCollection):
+                Optional StreamCollection object to get metrics for.
+            stream_label (str):
+                Label to be used in the metrics path when providing a
+                StreamCollection.
+            config (dict):
+                Configuration options.
 
         Returns:
-            StationSummary: Object containing all stream metrics.
+            StationSummary: Object containing all stream metrics or None.
         """
         if 'WaveFormMetrics' not in self.dataset.auxiliary_data:
-            logging.warning('Waveform metrics not found in workspace, '
-                            'cannot get stream metrics.')
-        auxholder = self.dataset.auxiliary_data.WaveFormMetrics
-        stream_path = '%s_%s_%s' % (eventid, station.lower(), label)
-        if stream_path not in auxholder:
-            logging.warning(
-                'Stream path (%s) not in WaveFormMetrics auxiliary_data.'
-                % stream_path)
-            return
+            msg = ('Waveform metrics not found in workspace, '
+                   'cannot get stream metrics.')
+            logging.warning(msg)
+            return None
 
-        bytelist = auxholder[stream_path].data[:].tolist()
-        xml_stream = ''.join([chr(b) for b in bytelist])
-        xml_stream = xml_stream.encode('utf-8')
+        auxholder = self.dataset.auxiliary_data.WaveFormMetrics
+
+        # get the stream matching the eventid, station, and label
+        if streams is None:
+            streams = self.getStreams(eventid, stations=[station],
+                                      labels=[label], config=config)
+
+        # Only get streams that passed and match network
+        streams = [st for st in streams if
+                   (st.passed and st[0].stats.network == network)]
+
+        if not len(streams):
+            fmt = ('Stream matching event ID %s, '
+                   'station ID %s, and processing label %s not found in '
+                   'workspace.')
+            msg = fmt % (eventid, station, label)
+            logging.warning(msg)
+            return None
+
+        if stream_label is not None:
+            stream_tag = '%s_%s' % (eventid, stream_label)
+        else:
+            stream_tag = streams[0].tag
+
+        metricpath = format_nslit(streams[0][0].stats,
+                                  streams[0].get_inst(),
+                                  stream_tag)
+        top = format_netsta(streams[0][0].stats)
+        if top in auxholder:
+            tauxholder = auxholder[top]
+            if metricpath not in tauxholder:
+                fmt = ('Stream metrics path (%s) not in WaveFormMetrics '
+                       'auxiliary_data.')
+                logging.warning(fmt % metricpath)
+                return None
+
+            bytelist = tauxholder[metricpath].data[:].tolist()
+            xml_stream = ''.join([chr(b) for b in bytelist])
+            xml_stream = xml_stream.encode('utf-8')
+        else:
+            return
 
         if 'StationMetrics' not in self.dataset.auxiliary_data:
-            raise KeyError('Station metrics not found in workspace.')
+            logging.warning('Station metrics not found in workspace.')
+            return None
         auxholder = self.dataset.auxiliary_data.StationMetrics
-        stream_path = '%s_%s_%s' % (eventid, station.lower(), label)
-        if stream_path not in auxholder:
-            logging.warning(
-                'Stream path (%s) not in StationMetrics auxiliary_data.'
-                % stream_path)
-            return
+        station_path = format_nslit(
+            streams[0][0].stats, streams[0].get_inst(), eventid)
+        if top in auxholder:
+            tauxholder = auxholder[top]
+            if station_path not in tauxholder:
+                logging.warning(
+                    'Stream path (%s) not in StationMetrics auxiliary_data.'
+                    % station_path)
+                return
 
-        bytelist = auxholder[stream_path].data[:].tolist()
-        xml_station = ''.join([chr(b) for b in bytelist])
-        xml_station = xml_station.encode('utf-8')
+            bytelist = tauxholder[station_path].data[:].tolist()
+            xml_station = ''.join([chr(b) for b in bytelist])
+            xml_station = xml_station.encode('utf-8')
+        else:
+            return
 
         summary = StationSummary.from_xml(xml_stream, xml_station)
         return summary
@@ -729,14 +996,14 @@ class StreamWorkspace(object):
         cols = ['Label', 'UserID', 'UserName',
                 'UserEmail', 'Software', 'Version']
         df = pd.DataFrame(columns=cols, index=None)
-        labels = list(set([ptag.split('_')[2] for ptag in provtags]))
+        labels = list(set([ptag.split('_')[-1] for ptag in provtags]))
         labeldict = {}
         for label in labels:
             for ptag in provtags:
                 if label in ptag:
                     labeldict[label] = ptag
         for label, ptag in labeldict.items():
-            row = pd.Series(index=cols)
+            row = pd.Series(index=cols, dtype=object)
             row['Label'] = label
             provdoc = self.dataset.provenance[ptag]
             user, software = _get_agents(provdoc)
@@ -768,7 +1035,8 @@ class StreamWorkspace(object):
                 net1 = inventory.networks[0]
                 net2 = tinv.networks[0]
                 if net1.code == net2.code:
-                    net1.stations.append(copy.deepcopy(net2.stations[0]))
+                    for sta in net2.stations:
+                        net1.stations.append(copy.deepcopy(sta))
                 else:
                     inventory.networks.append(copy.deepcopy(net2))
 
@@ -778,7 +1046,8 @@ class StreamWorkspace(object):
         """Verify that the workspace file contains an event matching eventid.
 
         Args:
-            eventid (str): ID of event to search for in ASDF file.
+            eventid (str):
+                ID of event to search for in ASDF file.
 
         Returns:
             bool: True if event matching ID is found, False if not.
@@ -792,7 +1061,8 @@ class StreamWorkspace(object):
         """Get a ScalarEvent object from the ASDF file.
 
         Args:
-            eventid (str): ID of event to search for in ASDF file.
+            eventid (str):
+                ID of event to search for in ASDF file.
 
         Returns:
             ScalarEvent:
@@ -810,19 +1080,19 @@ class StreamWorkspace(object):
         return eventobj2
 
     def getProvenance(self, eventid, stations=None, labels=None):
-        """Return DataFrame with processing history for streams matching input criteria.
+        """Return DataFrame with processing history matching input criteria.
 
         Output will look like this:
-          Record  Processing Step     Step Attribute              Attribute Value
-0    NZ.HSES.HN1  Remove Response        input_units                       counts
-1    NZ.HSES.HN1  Remove Response       output_units                       cm/s^2
-2    NZ.HSES.HN1          Detrend  detrending_method                       linear
-3    NZ.HSES.HN1          Detrend  detrending_method                       demean
-4    NZ.HSES.HN1              Cut       new_end_time  2016-11-13T11:05:44.000000Z
-5    NZ.HSES.HN1              Cut     new_start_time  2016-11-13T11:02:58.000000Z
-6    NZ.HSES.HN1            Taper               side                         both
-7    NZ.HSES.HN1            Taper        taper_width                         0.05
-8    NZ.HSES.HN1            Taper        window_type                         Hann
+        Record  Processing Step     Step Attribute              Attribute Value
+0  NZ.HSES.HN1  Remove Response        input_units                       counts
+1  NZ.HSES.HN1  Remove Response       output_units                       cm/s^2
+2  NZ.HSES.HN1          Detrend  detrending_method                       linear
+3  NZ.HSES.HN1          Detrend  detrending_method                       demean
+4  NZ.HSES.HN1              Cut       new_end_time  2016-11-13T11:05:44.000000Z
+5  NZ.HSES.HN1              Cut     new_start_time  2016-11-13T11:02:58.000000Z
+6  NZ.HSES.HN1            Taper               side                         both
+7  NZ.HSES.HN1            Taper        taper_width                         0.05
+8  NZ.HSES.HN1            Taper        window_type                         Hann
 ...
 
         Args:
@@ -838,50 +1108,56 @@ class StreamWorkspace(object):
                 Table of processing steps/parameters (see above).
 
         """
-        all_tags = []
         if stations is None:
             stations = self.getStations(eventid)
         if labels is None:
             labels = self.getLabels()
-        for station in stations:
-            for label in labels:
-                all_tags.append('%s_%s_%s' % (eventid, station.lower(), label))
         cols = ['Record', 'Processing Step',
                 'Step Attribute', 'Attribute Value']
-        df = pd.DataFrame(columns=cols)
-        for tag in all_tags:
-            tlist = self.dataset.provenance.list()
-            reg = re.compile(tag)
-            taglist = list(filter(reg.match, tlist))
-            for trace_tag in taglist:
-                parts = trace_tag.split('_')
-                recstr = '.'.join(parts[2:]).upper()
-                provdoc = self.dataset.provenance[trace_tag]
-                serial = json.loads(provdoc.serialize())
-                for activity, attrs in serial['activity'].items():
-                    pstep = None
-                    for key, value in attrs.items():
-                        if key == 'prov:label':
-                            pstep = value
-                            continue
-                        if key == 'prov:type':
-                            continue
-                        if not isinstance(value, str):
-                            if value['type'] == 'xsd:dateTime':
-                                value = UTCDateTime(value['$'])
-                            elif value['type'] == 'xsd:double':
-                                value = float(value['$'])
-                            elif value['type'] == 'xsd:int':
-                                value = int(value['$'])
-                            else:
-                                pass
-                        attrkey = key.replace('seis_prov:', '')
-                        row = pd.Series(index=cols)
-                        row['Record'] = recstr
-                        row['Processing Step'] = pstep
-                        row['Step Attribute'] = attrkey
-                        row['Attribute Value'] = value
-                        df = df.append(row, ignore_index=True)
+        df_dicts = []
+        for provname in self.dataset.provenance.list():
+            has_station = False
+            for station in stations:
+                if station in provname:
+                    has_station = True
+                    break
+            has_label = False
+            for label in labels:
+                if label in provname:
+                    has_label = True
+                    break
+            if not has_label or not has_station:
+                continue
+
+            provdoc = self.dataset.provenance[provname]
+            serial = json.loads(provdoc.serialize())
+            for activity, attrs in serial['activity'].items():
+                pstep = None
+                for key, value in attrs.items():
+                    if key == 'prov:label':
+                        pstep = value
+                        continue
+                    if key == 'prov:type':
+                        continue
+                    if not isinstance(value, str):
+                        if value['type'] == 'xsd:dateTime':
+                            value = UTCDateTime(value['$'])
+                        elif value['type'] == 'xsd:double':
+                            value = float(value['$'])
+                        elif value['type'] == 'xsd:int':
+                            value = int(value['$'])
+                        else:
+                            pass
+                    attrkey = key.replace('seis_prov:', '')
+                    row = pd.Series(index=cols, dtype=object)
+                    row['Record'] = provname
+                    row['Processing Step'] = pstep
+                    row['Step Attribute'] = attrkey
+                    row['Attribute Value'] = value
+                    df_dicts.append(row)
+
+        df = pd.DataFrame.from_dict(df_dicts)
+        df = df[cols]
 
         return df
 
@@ -897,7 +1173,6 @@ def _stringify_dict(indict):
 
 def _get_id(event):
     eid = event.origins[0].resource_id.id
-
     return eid
 
 
@@ -927,60 +1202,6 @@ def _get_agents(provdoc):
     return (person, software)
 
 
-def _get_table_row(stream, summary, event, imc):
-
-    h1 = stream.select(channel='*1')
-    h2 = stream.select(channel='*2')
-    if not len(h1):
-        h1 = stream.select(channel='*N')
-        h2 = stream.select(channel='*E')
-
-    if not len(h1) or not len(h2):
-        return {}
-    h1 = h1[0]
-    h2 = h2[0]
-
-    h1_lowfilt = h1.getProvenance('lowpass_filter')
-    h1_highfilt = h1.getProvenance('highpass_filter')
-    h1_lowpass = np.nan
-    h1_highpass = np.nan
-    if len(h1_lowfilt):
-        h1_lowpass = h1_lowfilt[0]['corner_frequency']
-    if len(h1_highfilt):
-        h1_highpass = h1_highfilt[0]['corner_frequency']
-
-    h2_lowfilt = h2.getProvenance('lowpass_filter')
-    h2_highfilt = h2.getProvenance('highpass_filter')
-    h2_lowpass = np.nan
-    h2_highpass = np.nan
-    if len(h2_lowfilt):
-        h2_lowpass = h2_lowfilt[0]['corner_frequency']
-    if len(h2_highfilt):
-        h2_highpass = h2_highfilt[0]['corner_frequency']
-
-    row = {'EarthquakeId': event.id,
-           'Network': stream[0].stats.network,
-           'NetworkDescription': stream[0].stats.standard.source,
-           'StationCode': stream[0].stats.station,
-           'StationID': stream.get_id(),
-           'StationDescription': stream[0].stats.standard.station_name,
-           'StationLatitude': stream[0].stats.coordinates.latitude,
-           'StationLongitude': stream[0].stats.coordinates.longitude,
-           'StationElevation': stream[0].stats.coordinates.elevation,
-           'SamplingRate': stream[0].stats.sampling_rate,
-           'EpicentralDistance': summary.epicentral_distance,
-           'HypocentralDistance': summary.hypocentral_distance,
-           'H1Lowpass': h1_lowpass,
-           'H1Highpass': h1_highpass,
-           'H2Lowpass': h2_lowpass,
-           'H2Highpass': h2_highpass,
-           'SourceFile': stream[0].stats.standard.source_file}
-    imt_frame = summary.pgms[summary.pgms['IMC'] == imc].drop('IMC', axis=1)
-    imts = dict(zip(imt_frame['IMT'], imt_frame['Result']))
-    row.update(imts)
-    return row
-
-
 def _natural_keys(text):
     """
     Helper function for sorting IMT list. This is needed because using the
@@ -996,3 +1217,9 @@ def _atof(text):
     except ValueError:
         retval = text
     return retval
+
+
+def camel_case_split(identifier):
+    matches = re.finditer(
+        '.+?(?:(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|$)', identifier)
+    return [m.group(0) for m in matches]

@@ -4,7 +4,6 @@
 from datetime import datetime
 import os
 import re
-import warnings
 import pkg_resources
 import logging
 
@@ -14,10 +13,9 @@ from obspy.core.trace import Stats
 import scipy.constants as sp
 
 # local imports
-from gmprocess.constants import UNIT_CONVERSIONS
-from gmprocess.exception import GMProcessException
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
+from gmprocess.utils.constants import UNIT_CONVERSIONS
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
 from gmprocess.io.seedname import get_channel_name, get_units_type
 
 MICRO_TO_VOLT = 1e6  # convert microvolts to volts
@@ -36,6 +34,9 @@ CODES, SOURCES1, SOURCES2 = np.genfromtxt(
     encoding='latin-1', unpack=True, dtype=bytes, delimiter=','
 )
 
+# Updated tables:
+# https://www.strongmotioncenter.org/NCESMD/reports/COSMOS_Tables.pdf
+
 CODES = CODES.astype(str)
 BUILDING_TYPES = {
     1: 'Small fiberglass shelter',
@@ -43,23 +44,74 @@ BUILDING_TYPES = {
     3: 'Sensors buried/set in ground',
     4: 'Reference station',
     5: 'Base of building',
+    6: 'Freefield, Unspecified',
+    7: 'Ocean-bottom sensors',
+    8: 'Sensors in small near-surface vault (1-2m deep)',
+    9: 'Sensors in underground observatory or large vault (~3 m^3 or larger)',
     10: 'Building',
     11: 'Bridge',
     12: 'Dam',
+    13: 'Wharf',
+    14: 'Tunnel or mine adit (3m or more from surface)',
+    15: 'Other lifeline structure',
     20: 'Other structure',
     50: 'Geotechnical array',
-    51: 'Other array'
+    51: 'Other array',
+    999: 'Unspecified'
 }
 
 COSMOS_NETWORKS = {
-    1: ('', 'U.S. Coast and Geodetic Survey', 'C&GS'),
+    1: ('C_', 'U.S. Coast and Geodetic Survey', 'C&GS'),
     2: ('NP', 'U.S. Geological Survey', 'USGS'),
     3: ('RE', 'U.S. Bureau of Reclamation', 'USBR'),
-    4: ('', 'U.S. Army Corps of Engineers', 'ACOE'),
+    4: ('A_', 'U.S. Army Corps of Engineers', 'ACOE'),
     5: ('CE', 'California Geological Survey', 'CGS'),
-    6: ('CI', 'California Institute of Technology', 'CIT'),
-    7: ('BK', 'UC Berkeley', 'UCB'),
+    6: ('CI', 'California Institute of Technology', 'SCSN'),
+    7: ('BK', 'UC Berkeley', 'BDSN'),
+    8: ('NC', 'USGS - Northern Calif Regional Network', 'NCSN'),
+    9: ('SB', 'UC Santa Barbara', 'UCSB'),
+    10: ('AZ', 'UC San Diego - ANZA', 'ANZA'),
+    14: ('NN', 'UNR - W. Great Basin/E. Sierra Nevada', 'UNR'),
+    15: ('UW', 'UW - Pacific NW Regional Network', 'PNSN'),
+    16: ('TO', 'Caltech - Tectonics Observatory', 'CTO'),
+    17: ('AA', 'UA - Anchorage Strong Motion Network', 'AEIC'),
+    20: ('WR', ' Calif. Dept. Water Resources', 'CDWR'),
+    21: ('PG', 'Pacific Gas & Electric', 'PG&E'),
+    30: ('US', 'USGS - National Seismic Network', 'NEIC'),
+    31: ('GS', 'US Geological Survey Networks', 'USGS'),
+    32: ('IU', 'IRIS/USGS Network', 'IRGS'),
+    33: ('CU', 'Caribbean USGS Network', 'CUGS'),
+    34: ('NQ', 'NetQuakes', 'NQGS'),
+    35: ('US', 'US National Seismic Network (USNSN)', 'USGS'),
+    36: ('AG', 'Arkansas Seismic Network', 'ASN'),
+    37: ('AK', 'Alaska Regional Network', 'UAGI'),
+    38: ('AO', 'Arkansas Seismic Observatory, UALR', 'ASO'),
+    39: ('AV', 'Alaska Volcano Observatory', 'AVO'),
+    40: ('ET', 'Southern Appalachian Seismic Network', 'CERI'),
+    46: ('LD', 'Lamont-Doherty Coop. Seism. Network', 'LCSN'),
+    47: ('LL', 'LLNL NTS Network', 'LLNL'),
+    48: ('MB', 'Montana Regional Seismic Network', 'MRSN'),
+    49: ('NE', 'New England Seismic Network', 'NUSN'),
+    50: ('NM', 'Coop New Madrid Seismc Network, St Louis Univ', 'CNMSN'),
+    51: ('UW', 'Pacific Northwest Regional Sesmic Network', 'PNSN'),
+    52: ('UU', 'Univ of Utah Seismograph Stations', 'UUSS'),
+    53: ('WY', 'Yellowstone Wyoming Seismic Network', 'YWSN'),
+    54: ('PR', 'Puerto Rico Strong Motion Program', 'UPRM'),
+    55: ('CO', 'South Carolina Seismic Network', 'SCSN'),
+    56: ('HV', 'Hawaiian Volcano Observatory Network', 'HVO'),
+    57: ('IC', 'New China Digital Seismograph Network', 'USGS'),
+    58: ('II', 'IRIS/IDA Seismic Network', 'SIO'),
+    59: ('IW', ' Intermountain West Seismic Network', 'USGS'),
+    60: ('NA', 'Central and Eastern US Network', 'UCSD'),
+    61: ('TA', ' USArray Transportable Array (EarthScope_TA)', 'IRIS'),
+    62: ('TR', 'Eastern Caribbean Seismograph Network', 'SRTC'),
+    63: ('C', 'Univ Chile, Dept of Geophysics', 'CNSN'),
+    64: ('SN', 'Southern Great Basin Network', 'SGBN'),
     100: ('TW', 'Taiwan Weather Bureau', 'CWB'),
+    107: ('BG', 'UC Berkeley - Geysers Seismic Network', 'BGSN'),
+    110: ('BO', ' Bosai-Ken (NIED), Japan', 'NIED'),
+    111: ('UO', 'Univ. of Oregon Regional Network', 'UO'),
+    199: ('Unspecified', '--'),
     200: ('KD', 'Kandilli Observatory', 'KOER')
 }
 
@@ -176,7 +228,7 @@ def is_cosmos(filename):
     """
     logging.debug("Checking if format is cosmos.")
     try:
-        line = open(filename, 'rt').readline()
+        line = open(filename, 'rt', encoding='utf-8').readline()
         for marker in VALID_MARKERS:
             if line.lower().find(marker.lower()) >= 0:
                 if line.lower().find('(format v') >= 0:
@@ -200,6 +252,7 @@ def read_cosmos(filename, **kwargs):
                 6  in the COSMOS strong motion data format documentation for
                 station type codes.
             Other arguments will be ignored.
+
     Returns:
         list: List of StationStreams containing three channels of acceleration
         data (cm/s**2).
@@ -214,7 +267,7 @@ def read_cosmos(filename, **kwargs):
     location = kwargs.get('location', '')
 
     # count the number of lines in the file
-    with open(filename) as f:
+    with open(filename, encoding='utf-8') as f:
         line_count = sum(1 for _ in f)
 
     # read as many channels as are present in the file
@@ -226,7 +279,8 @@ def read_cosmos(filename, **kwargs):
         # store the trace if the station type is in the valid_station_types
         # list or store the trace if there is no valid_station_types list
         if valid_station_types is not None:
-            if trace.stats['format_specific']['station_code'] in valid_station_types:
+            scode = trace.stats['format_specific']['station_code']
+            if scode in valid_station_types:
                 stream.append(trace)
         else:
             stream.append(trace)
@@ -245,7 +299,7 @@ def _read_channel(filename, line_offset, location=''):
         tuple: (obspy Trace, int line offset)
     """
     # read station, location, and process level from text header
-    with open(filename, 'rt') as f:
+    with open(filename, 'rt', encoding='utf-8') as f:
         for _ in range(line_offset):
             next(f)
         lines = [next(f) for x in range(TEXT_HDR_ROWS)]
@@ -295,11 +349,11 @@ def _read_channel(filename, line_offset, location=''):
         logging.debug('Data converted from %s to cm/s/s' % (unit))
     else:
         if unit != 'counts':
-            raise GMProcessException(
+            raise ValueError(
                 'COSMOS: %s is not a supported unit.' % unit)
 
     if hdr['standard']['units'] != 'acc':
-        raise GMProcessException('COSMOS: Only acceleration data accepted.')
+        raise ValueError('COSMOS: Only acceleration data accepted.')
 
     trace = StationTrace(data.copy(), Stats(hdr.copy()))
 
@@ -407,7 +461,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
             source = SOURCES1[idx].decode(
                 'utf-8') + ', ' + SOURCES2[idx].decode('utf-8')
         else:
-            network = 'ZZ'
+            network = '--'
             source = ''
     hdr['network'] = network
     logging.debug('network: %s' % network)
@@ -475,7 +529,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
                     is_north=False)
                 horizontal_angle = 90.0
             else:  # For the occassional 'OTHR' channel
-                raise GMProcessException('Channel name is not valid.')
+                raise ValueError('Channel name is not valid.')
 
         elif horizontal_angle >= 0 and horizontal_angle <= 360:
             if (
@@ -498,7 +552,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     else:
         errstr = ('Not enough information to distinguish horizontal from '
                   'vertical channels.')
-        raise GMProcessException('COSMOS: ' + errstr)
+        raise BaseException('COSMOS: ' + errstr)
     hdr['channel'] = channel
     logging.debug('channel: %s' % hdr['channel'])
     if location == '':
@@ -521,8 +575,8 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
         try:
             hdr['starttime'] = datetime(
                 year, month, day, hour, minute)
-        except Exception:
-            raise GMProcessException(
+        except BaseException:
+            raise BaseException(
                 'COSMOS: Inadequate start time information.')
     else:
         second = second
@@ -530,8 +584,8 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
         try:
             hdr['starttime'] = datetime(
                 year, month, day, hour, minute, int(second), microsecond)
-        except Exception:
-            raise GMProcessException(
+        except BaseException:
+            raise BaseException(
                 'COSMOS: Inadequate start time information.')
 
     if flt_data[62] != unknown:
@@ -549,11 +603,12 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     coordinates['elevation'] = float(flt_data[2])
     for key in coordinates:
         if coordinates[key] == unknown:
-            if key != elevation:
-                warnings.warn('Missing %r. Setting to np.nan.' % key, Warning)
+            if key != 'elevation':
+                logging.warning(
+                    'Missing %r. Setting to np.nan.' % key, Warning)
                 coordinates[key] = np.nan
             else:
-                warnings.warn('Missing %r. Setting to 0.0.' % key, Warning)
+                logging.warning('Missing %r. Setting to 0.0.' % key, Warning)
                 coordinates[key] = 0.0
 
     hdr['coordinates'] = coordinates
@@ -562,11 +617,16 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     standard['units_type'] = get_units_type(channel)
     standard['source'] = source
     standard['horizontal_orientation'] = horizontal_orientation
+    standard['vertical_orientation'] = np.nan
     station_name = lines[4][40:-1].strip()
     standard['station_name'] = station_name
     instrument_frequency = float(flt_data[39])
-    standard['instrument_period'] = 1.0 / _check_assign(instrument_frequency,
-                                                        unknown, np.nan)
+    if instrument_frequency == 0:
+        standard['instrument_period'] = np.nan
+        logging.warning('Instrument Frequency == 0')
+    else:
+        inst_freq = _check_assign(instrument_frequency, unknown, np.nan)
+        standard['instrument_period'] = 1.0 / inst_freq
     instrument_damping = float(flt_data[40])
     standard['instrument_damping'] = _check_assign(instrument_damping,
                                                    unknown, np.nan)
@@ -589,7 +649,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
             etime = datetime(year, month, day, hour, minute,
                              int(second), microsecond)
             standard['process_time'] = etime.strftime(TIMEFMT)
-        except Exception:
+        except BaseException:
             standard['process_time'] = ''
     else:
         standard['process_time'] = ''
@@ -701,6 +761,11 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
         gain = format_specific['gain']
     else:
         gain = 1.0
+    if gain == 0:
+        fmt = '%s.%s.%s.%s'
+        tpl = (hdr['network'], hdr['station'], hdr['channel'], hdr['location'])
+        nscl = fmt % tpl
+        raise ValueError('Gain of 0 discovered for NSCL: %s' % nscl)
     denom = ctov * vtog * (1.0 / gain) * sp.g
     standard['instrument_sensitivity'] = 1 / denom
 
@@ -744,7 +809,7 @@ def _read_lines(skip_rows, filename):
         num_lines = npts
 
         # read and store comment lines
-        with open(filename, 'rt') as f:
+        with open(filename, 'rt', encoding='utf-8') as f:
             file = f.readlines()
         max_lines = skip_rows + num_lines
         comment = [file[idx] for idx in range(skip_rows, max_lines)]
@@ -753,7 +818,7 @@ def _read_lines(skip_rows, filename):
         # parse out the format of the data
         # sometimes header has newline characters in it...
         header = header.replace('\n', '')
-        format_data = re.findall('\d+', header[header.find('format=') + 8:])
+        format_data = re.findall(r"\d+", header[header.find('format=') + 8:])
         cols = int(format_data[0])
         fmt = int(format_data[1])
         num_lines = int(np.ceil(npts / cols))
@@ -763,4 +828,7 @@ def _read_lines(skip_rows, filename):
         data_arr = np.genfromtxt(filename, skip_header=skip_rows,
                                  max_rows=num_lines, dtype=np.float64,
                                  delimiter=widths).flatten()
+        # Strip off nans that are created by genfromtxt when the last
+        # row is incomplete
+        data_arr = data_arr[~np.isnan(data_arr)]
     return num_lines, data_arr

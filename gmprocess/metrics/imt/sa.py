@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # Local imports
 from gmprocess.metrics.imt.imt import IMT
 
@@ -14,10 +17,12 @@ class SA(IMT):
     def __init__(self, imt, imc, period):
         """
         Args:
-            imt (string): Intensity measurement type.
-            imc (string): Intensity measurement component.
-            period (float): Period for fourier amplitude spectra and
-                    spectral amplitudes.
+            imt (string):
+                Intensity measurement type.
+            imc (string):
+                Intensity measurement component.
+            period (float):
+                Period for fourier amplitude spectra and spectral amplitudes.
         """
         super().__init__(imt, imc, period=None)
         self._steps = {

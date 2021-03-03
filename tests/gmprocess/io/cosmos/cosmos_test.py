@@ -4,9 +4,9 @@ import os
 import numpy as np
 from gmprocess.io.cosmos.core import is_cosmos, read_cosmos
 from gmprocess.io.test_utils import read_data_dir
-from gmprocess.stationtrace import PROCESS_LEVELS
-from gmprocess.streamcollection import StreamCollection
-from gmprocess.processing import remove_response
+from gmprocess.core.stationtrace import PROCESS_LEVELS
+from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.waveform_processing.processing import remove_response
 
 
 def test_cosmos():
@@ -18,10 +18,7 @@ def test_cosmos():
     two_channels = two_channels[0]
 
     assert is_cosmos(one_channel)
-    try:
-        assert is_cosmos(os.path.abspath(__file__))
-    except AssertionError as ae:
-        assert 1 == 1
+    assert is_cosmos(os.path.abspath(__file__)) is False
 
     # test a one channel cosmos file
     stream1 = read_cosmos(one_channel)[0]
@@ -53,7 +50,8 @@ def test_cosmos():
     assert stats.format_specific['v30'] == 120
     assert stats.format_specific['physical_units'] == 'cm/s/s'
     assert stats.format_specific['least_significant_bit'] == 123.45
-    assert stats.format_specific['low_filter_type'] == 'Butterworth single direction'
+    assert stats.format_specific['low_filter_type'] == \
+        'Butterworth single direction'
     assert stats.format_specific['low_filter_corner'] == 4
     assert stats.format_specific['low_filter_decay'] == 3
     assert stats.format_specific['high_filter_type'] == 'Rectangular'
@@ -69,16 +67,17 @@ def test_cosmos():
 
     # read the maximum from the text header check that the trace max
     # is the equivalent when rounded to the same number of decimal places
-    with open(one_channel, 'rt') as f:
+    with open(one_channel, 'rt', encoding='utf-8') as f:
         file_line = f.readlines()[10].replace(' ', '').lower()
     file_max = file_line[file_line.find('max=') + 4: file_line.find('cm')]
     assert np.round(stream1[0].max(), 3) == float(file_max)
 
-    # test a two channel cosmos file should fail because deg is not a converted unit
+    # test a two channel cosmos file should fail because deg is not a
+    # converted unit
     failed = False
     try:
         stream2 = read_cosmos(two_channels)[0]
-    except:
+    except BaseException:
         failed = True
     assert failed == True
     # test that reading a file that is a valid station type returns a
@@ -102,8 +101,6 @@ def test_cosmos():
     stream = read_cosmos(one_channel, location='test')[0]
     assert stream[0].stats.location == 'test'
 
-    # '/Users/mhearne/src/python/groundmotion-processing/tests/gmprocess/io/../../data/cosmos/ci14155260/Cosmos12TimeSeriesTest.v1'
-
 
 def test_channel_in_filename():
     datafiles, origin = read_data_dir('cosmos', 'us1000hyfh')
@@ -112,8 +109,8 @@ def test_channel_in_filename():
     try:
         streams = read_cosmos(dfile)
 
-    except:
-        assert 1 == 1
+    except BaseException:
+        pass
 
 
 def test_v0():

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # stdlib imports
 import warnings
@@ -25,13 +26,13 @@ def test_pga():
              'gmrotd100', 'gmrotd0', 'rotd50', 'geometric_mean',
              'arithmetic_mean'],
             ['pga', 'sa1.0', 'saincorrect'])
-    pga_df = station_summary.pgms[station_summary.pgms.IMT == 'PGA']
-    AM = pga_df[pga_df.IMC == 'ARITHMETIC_MEAN'].Result.iloc[0]
-    GM = pga_df[pga_df.IMC == 'GEOMETRIC_MEAN'].Result.iloc[0]
-    HN1 = pga_df[pga_df.IMC == 'H1'].Result.iloc[0]
-    HN2 = pga_df[pga_df.IMC == 'H2'].Result.iloc[0]
-    HNZ = pga_df[pga_df.IMC == 'Z'].Result.iloc[0]
-    greater = pga_df[pga_df.IMC == 'GREATER_OF_TWO_HORIZONTALS'].Result.iloc[0]
+    pga_df = station_summary.pgms.loc['PGA']
+    AM = pga_df.loc['ARITHMETIC_MEAN'].Result
+    GM = pga_df.loc['GEOMETRIC_MEAN'].Result
+    HN1 = pga_df.loc['H1'].Result
+    HN2 = pga_df.loc['H2'].Result
+    HNZ = pga_df.loc['Z'].Result
+    greater = pga_df.loc['GREATER_OF_TWO_HORIZONTALS'].Result
     np.testing.assert_allclose(
         AM, 90.242335558014219, rtol=1e-3)
     np.testing.assert_allclose(

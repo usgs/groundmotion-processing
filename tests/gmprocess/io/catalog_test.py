@@ -1,15 +1,15 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # stdlib imports
 import os
 
 # third party imports
-from lxml import etree
 import vcr
 import pkg_resources
 
 # local imports
-from gmprocess.io.catalog import convert_ids, get_ingv_shakemap
+from gmprocess.io.catalog import convert_ids
 
 
 def test_id_conversions():
@@ -56,55 +56,23 @@ def test_id_conversions():
             success = True
         except Exception:
             success = False
-        assert success == False
+        assert success is False
 
         try:
             convert_ids(eventid, 'invalid', 'all')
             success = True
         except Exception:
             success = False
-        assert success == False
+        assert success is False
 
         try:
             convert_ids(eventid, 'USGS', 'unk')
             success = True
         except Exception:
             success = False
-        assert success == False
-
-
-def test_ingvfetch():
-    # eventid = '3011761'
-    # shakemap_xml = get_ingv_shakemap(eventid, catalog='ingv',
-    #                                  output_format='event_dat', flag='0')
-    # assert isinstance(shakemap_xml, etree._Element)
-
-    try:
-        get_ingv_shakemap(eventid, catalog='INGV',
-                          output_format='event_dat', flag='1')
-        success = True
-    except Exception:
-        success = False
-    assert success == False
-
-    try:
-        get_ingv_shakemap(eventid, catalog='INGV',
-                          output_format='invalid', flag='0')
-        success = True
-    except Exception:
-        success = False
-    assert success == False
-
-    try:
-        get_ingv_shakemap(eventid, catalog='INVALID',
-                          output_format='event_dat', flag='0')
-        success = True
-    except Exception:
-        success = False
-    assert success == False
+        assert success is False
 
 
 if __name__ == '__main__':
     os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_id_conversions()
-    test_ingvfetch()

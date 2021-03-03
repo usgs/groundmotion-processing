@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """
 Helper functions for working with the NGA flatfile.
 """
@@ -18,7 +20,7 @@ def get_nga_record_sequence_no(st, eq_name, distance_tolerance=50):
     Returns the associate NGA record sequence number for a given StationStream.
 
     Args:
-        st (gmprocess.stationstream.StationStream):
+        st (gmprocess.core.stationstream.StationStream):
             Station stream to get record sequence number for.
         eq_name (str):
             Earthquake name for finding NGA record sequence numbers. Must
@@ -31,7 +33,7 @@ def get_nga_record_sequence_no(st, eq_name, distance_tolerance=50):
 
     Returns:
         int: Matching record sequence number from NGA flatfile. Returns
-            numpy.nan if record sequence number is not found.
+        numpy.nan if record sequence number is not found.
 
     """
 
