@@ -1166,6 +1166,8 @@ def _stringify_dict(indict):
     for key, value in indict.items():
         if isinstance(value, UTCDateTime):
             indict[key] = value.strftime(TIMEFMT_MS)
+        elif isinstance(value, bytes):
+            indict[key] = value.decode('utf-8')
         elif isinstance(value, dict):
             indict[key] = _stringify_dict(value)
     return indict
