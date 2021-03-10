@@ -39,8 +39,11 @@ def directory_to_streams(directory, config=None):
                 files).
     """
     # Use a temp dir so that we don't modify data on disk since that may not be
-    # expected or desired in all cases.
-    temp_dir = os.path.join(tempfile.mkdtemp(), 'directory_to_streams')
+    # expected or desired in all cases. We create the temporary directory in
+    # the parent directory, which permits using shutil.copytree to duplicate
+    # the data prior to processing.
+    temp_dir = os.path.join(
+        tempfile.mkdtemp(dir=os.path.dirname(directory)), 'directory_to_streams')
     try:
         shutil.copytree(directory, temp_dir)
         flatten_directory(temp_dir)
