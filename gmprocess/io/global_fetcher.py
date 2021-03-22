@@ -102,8 +102,9 @@ def fetch_data(time, lat, lon, depth, magnitude, config=None, rawdir=None,
             else:
                 streams = tstreams
 
-    if streams is None:
-        streams = []
+        if streams is None:
+            streams = []
+
     return (streams, errors)
 
 
