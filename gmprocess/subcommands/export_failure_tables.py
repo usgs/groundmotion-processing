@@ -70,7 +70,7 @@ class ExportFailureTablesModule(SubcommandModule):
             self._get_pstreams()
             self.workspace.close()
 
-            if not hasattr(self, 'pstreams'):
+            if not (hasattr(self, 'pstreams') and len(self.pstreams) > 0):
                 logging.info('No processed waveforms available. No failure '
                              'tables created.')
                 continue

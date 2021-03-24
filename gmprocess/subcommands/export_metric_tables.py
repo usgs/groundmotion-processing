@@ -57,7 +57,7 @@ class ExportMetricTablesModule(SubcommandModule):
             self.workspace = StreamWorkspace.open(workname)
             self._get_pstreams()
 
-            if not hasattr(self, 'pstreams'):
+            if not (hasattr(self, 'pstreams') and len(self.pstreams) > 0):
                 logging.info('No processed waveforms available. No metric '
                              'tables created.')
                 self.workspace.close()
