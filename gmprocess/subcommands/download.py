@@ -16,15 +16,9 @@ class DownloadModule(SubcommandModule):
     command_name = 'download'
 
     arguments = [
-        ARG_DICTS['eventid'], {
-            'short_flag': '-t',
-            'long_flag': '--textfile',
-            'help': (
-                'Text file containing lines of ComCat Event IDs or event '
-                'information (ID TIME LAT LON DEPTH MAG).'),
-            'type': str,
-            'default': None
-        }, {
+        ARG_DICTS['eventid'],
+        ARG_DICTS['textfile'],
+        {
             'long_flag': '--info',
             'help': (
                 'Single event information as ID TIME(YYYY-MM-DDTHH:MM:SS) '

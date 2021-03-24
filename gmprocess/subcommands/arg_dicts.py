@@ -44,5 +44,14 @@ ARG_DICTS = {
         'type': int,
         'default': 0,
         'metavar': 'n'
+    },
+    'textfile': {
+        'short_flag': '-t',
+        'long_flag': '--textfile',
+        'help': (
+            'Text file containing lines of ComCat Event IDs or event '
+            'information (ID TIME LAT LON DEPTH MAG).'),
+        'type': str,
+        'default': None
     }
 }

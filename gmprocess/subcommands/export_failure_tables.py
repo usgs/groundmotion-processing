@@ -20,8 +20,8 @@ class ExportFailureTablesModule(SubcommandModule):
 
     arguments = [
         ARG_DICTS['eventid'],
+        ARG_DICTS['textfile'],
         ARG_DICTS['label'], {
-            'short_flag': '-t',
             'long_flag': '--type',
             'help': (
                 'Output failure information, either in short form ("short"),'
