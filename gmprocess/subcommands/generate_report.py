@@ -22,6 +22,7 @@ class GenerateReportModule(SubcommandModule):
 
     arguments = [
         ARG_DICTS['eventid'],
+        ARG_DICTS['textfile'],
         ARG_DICTS['label']
     ]
 

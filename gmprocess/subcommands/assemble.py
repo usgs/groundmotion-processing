@@ -20,6 +20,7 @@ class AssembleModule(SubcommandModule):
 
     arguments = [
         ARG_DICTS['eventid'],
+        ARG_DICTS['textfile'],
         ARG_DICTS['overwrite'],
         ARG_DICTS['num_processes']
     ]

@@ -21,6 +21,7 @@ class ExportMetricTablesModule(SubcommandModule):
 
     arguments = [
         ARG_DICTS['eventid'],
+        ARG_DICTS['textfile'],
         ARG_DICTS['label'],
         ARG_DICTS['output_format'],
         ARG_DICTS['overwrite']

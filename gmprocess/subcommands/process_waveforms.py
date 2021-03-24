@@ -27,7 +27,8 @@ class ProcessWaveformsModule(SubcommandModule):
     # the date/time, but in subsequent subcommands it is used for selecting
     # from existing labels.
     arguments = [
-        ARG_DICTS['eventid'], {
+        ARG_DICTS['eventid'],
+        ARG_DICTS['textfile'], {
             'short_flag': '-l',
             'long_flag': '--label',
             'help': ('Processing label (single word, no spaces) to attach to '
