@@ -1,83 +1,96 @@
 import numpy as np
-from ClipDetection import ClipDetection
+from gmprocess.waveform_processing.clipping.clip_detection import ClipDetection
 
 
-class Max_amp(ClipDetection):
+class Max_Amp(ClipDetection):
     '''
-    A class to represent the Maximum Amplitude method for clipping detection
+    Class for the maximum amplitude clipping detection algorithm.
 
     Attributes:
-        MAX_AMP (int):
-            A threshold for the absolute maximum amplitude of the trace.
         st (StationStream):
-            Stream of data.
-        classifications (list):
-            List of bools indicating if clipped/unclipped (1,0) for each trace.
+            Record of three orthogonal traces.
+        test_all (bool, default=False):
+            If true, compute and store max amp for all traces.
+        is_clipped (bool):
+            True if the record is clipped.
+        max_amp_thresh (float, default=6e6):
+            A threshold for the absolute maximum amplitude of the trace.
+        max_amp (float/list):
+            The maximum amplitude of the first clipped trace or list of
+            max amps for each trace (if test_all=True).
 
     Methods:
-        _detect():
-            Determines if the trace is clipped or not.
-        get_results():
-            Iterates through each trace in each stream of stream_collection
-            to run _detect on.
+        See parent class.
     '''
-    def __init__(self, st, MAX_AMP=6e6):
+    def __init__(self, st, max_amp_thresh=6e6, test_all=False):
         '''
-        Constructs all neccessary attributes for the Std Dev method object
+        Constructs all neccessary attributes for the Max_Amp method.
 
         Args:
             st (StationStream):
-                Stream of data.
-            MAX_AMP (int):
+                Record of three orthogonal traces.
+            max_amp_thresh (float, default=6e6):
                 A threshold for the absolute maximum amplitude of the trace.
+            test_all (bool, default=False):
+                If true, compute and store max amp for all traces.
         '''
-        ClipDetection.__init__(self, st.copy(), MAX_AMP=MAX_AMP)
+        ClipDetection.__init__(self, st.copy(), test_all)
+        self.max_amp_thresh = max_amp_thresh
+        if self.test_all:
+            self.max_amp = []
+        else:
+            self.max_amp = None
+        self._get_results()
 
-    def _clean_trace(self, clip_tr):
+    def _clean_trace(self, tr):
         '''
-        Helper function to clean the trace
+        Helper function to clean a trace (no normalizing in this
+        algorithm).
 
         Args:
-            clip_tr (StationTrace):
-                Trace of data.
+            tr (StationTrace):
+                A single trace in the record.
 
         Returns:
-            clip_tr (StationTrace):
-                Cleaned trace of data.
+            clean_tr (StationTrace):
+                Cleaned trace.
         '''
-        return ClipDetection._clean_trace(self, clip_tr)
+        t_1 = tr.stats.starttime
+        t_2 = t_1 + 180
+        clean_tr = tr.copy()
+        clean_tr.trim(t_1, t_2)
+        clean_tr.detrend(type='constant')
+        return clean_tr
 
-    def _detect(self, clip_tr):
+    def _detect(self, tr):
         '''
-        If any point exceeds the threshold, fail the trace.
-        Threshold is given as MAX_AMP, the absolute maximum amplitude of
+        If any point exceeds the threshold, fail the trace. Threshold is
+        given as max_amp_thresh, the absolute maximum amplitude of
         the trace.
 
         Args:
-            clip_tr (StationTrace):
-                Trace of data.
+            tr (StationTrace):
+                A single trace in the record.
 
         Returns:
             bool:
-                Did the trace passed the test?
+                Is the trace clipped?
         '''
-        tr_abs = np.abs(clip_tr.copy())
-        if tr_abs.max() > self.MAX_AMP:
+        tr_abs = np.abs(tr.copy())
+        abs_max_amp = tr_abs.max()
+        if self.test_all:
+            self.max_amp.append(abs_max_amp)
+        else:
+            self.max_amp = abs_max_amp
+        if abs_max_amp > self.max_amp_thresh:
             return True
         return False
 
-    def get_results(self):
+    def _get_results(self):
         '''
-        Iterate through each stream collection in stream_collection, each
-        stream in the stream collection, and then through each trace in
-        the stream to run on _detect method.
+        Iterates through and runs _detect() on each trace in the stream to
+        determine if the record is clipped or not.
 
-        Args:
-            None
-
-        Returns:
-            list (bools):
-                Which traces passed the test and were marked as
-                clipped/unclipped.
+        See parent class.
         '''
-        return ClipDetection.get_results(self)
+        return ClipDetection._get_results(self)

@@ -1,82 +1,90 @@
 import numpy as np
-from ClipDetection import ClipDetection
+from gmprocess.waveform_processing.clipping.clip_detection import ClipDetection
 
 
 class Ping(ClipDetection):
     '''
-    A class to represent the ping method for clipping detection
+    Class for the ping clipping detection algorithm.
 
     Attributes:
-        PERCENTAGE (float):
-            Multiplicative factor to determine ping threshold.
         st (StationStream):
-                Stream of data.
+            Record of three orthogonal traces.
+        test_all (bool, default=False):
+            If true, compute and store number of outlying points for
+            all traces.
+        is_clipped (bool):
+            True if the record is clipped.
+        percent_thresh (float, default=0.57):
+            Percent of data range serving as a multiplicative factor
+            to determine ping threshold.
+        num_outliers (int/list):
+            The number of points with difference exceeding threshold
+            in the first clipped trace or list of number of points for
+            each trace (if test_all=True).
 
     Methods:
-        _detect():
-            Determines if the trace is clipped or not.
-        get_results():
-            Iterates through each trace in each stream of stream_collection to
-            run _detect on.
+       See parent class.
     '''
-    def __init__(self, st, PERCENTAGE=0.55):
+    def __init__(self, st, percent_thresh=0.57, test_all=False):
         '''
-        Constructs all neccessary attributes for the Ping method object
+        Constructs all neccessary attributes for the Ping class.
 
         Args:
             st (StationStream):
-                Stream of data.
-            PERCENTAGE (float, default = 0.55):
-                Multiplicative factor to determine ping threshold.
+                Record of three orthogonal traces.
+            percent_thresh (float, default=0.57):
+                Percent of data range serving as a multiplicative factor
+                to determine ping threshold.
+            test_all (bool, default=False):
+                If true, compute and store number of outlying points for
+                all traces.
         '''
-        ClipDetection.__init__(self, st, PERCENTAGE=PERCENTAGE)
+        ClipDetection.__init__(self, st.copy(), test_all)
+        self.percent_thresh = percent_thresh
+        if self.test_all:
+            self.num_outliers = []
+        else:
+            self.num_outliers = None
+        self._get_results()
 
-    def _clean_trace(self, clip_tr):
+    def _clean_trace(self, tr):
         '''
-        Helper function to clean the trace
+        Helper function to clean a trace.
 
-        Args:
-            clip_tr (StationTrace):
-                Trace of data.
-
-        Returns:
-            clip_tr (StationTrace):
-                Cleaned trace of data.
+        See parent class.
         '''
-        return ClipDetection._clean_trace(self, clip_tr)
+        return ClipDetection._clean_trace(self, tr)
 
-    def _detect(self, clip_tr):
+    def _detect(self, tr):
         '''
         If any two points differ by more than a threshold, fail the trace.
-        Threshold is given as PERCENTAGE * datarange.
+        Threshold given as percent_thresh * datarange.
 
         Args:
-            clip_tr (StationTrace):
-                Trace of data.
+            tr (StationTrace):
+                A single trace in the record.
 
         Returns:
             bool:
-                Did the trace passed the test?
+                Is the trace clipped?
         '''
-        is_ping = False
-        data_range = np.abs(np.max(clip_tr.data)) - np.min(clip_tr.data)
-        tr_diff = np.abs(np.diff(clip_tr))
-        if any(tr_diff > self.PERCENTAGE*data_range):
-            is_ping = True
-        return is_ping
+        data_range = np.abs(np.max(tr.data)) - np.min(tr.data)
+        tr_diff = np.abs(np.diff(tr))
+        points_outlying = [val > self.percent_thresh*data_range for val in tr_diff]
+        num_outliers = np.count_nonzero(points_outlying)
+        if self.test_all:
+            self.num_outliers.append(num_outliers)
+        else:
+            self.num_outliers = num_outliers
+        if num_outliers > 0:
+            return True
+        return False
 
-    def get_results(self):
+    def _get_results(self):
         '''
-        Iterate through each stream collection in stream_collection, each
-        stream in the stream collection, and then through each trace in
-        the stream to run on _detect method.
+        Iterates through and runs _detect() on each trace in the stream to
+        determine if the record is clipped or not.
 
-        Args:
-            None
-
-        Returns:
-            list (bools):
-                Which traces passed the test and were marked as
-                clipped/unclipped.
+        See parent class.
         '''
-        return ClipDetection.get_results(self)
+        return ClipDetection._get_results(self)

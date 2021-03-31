@@ -1,53 +1,58 @@
 import numpy as np
-from ClipDetection import ClipDetection
+from gmprocess.waveform_processing.clipping.clip_detection import ClipDetection
 
 
 class Jerk(ClipDetection):
     '''
-    A class to represent the jerk method for clipping detection
+    Class for the jerk clipping detection algorithm.
 
     Attributes:
-        POINT_THRESH (float):
+        st (StationStream):
+            Record of three orthogonal traces.
+        test_all (bool, default=False):
+            If true, compute test values for all traces.
+        is_clipped (bool):
+            True if the record is clipped.
+        point_thresh (float, default=25):
             Minimum number of flagged points required to label trace
             as clipped.
-        st (StationStream):
-                Stream of data.
+        num_outliers (int/list):
+            The number of points with high jerk in the first clipped trace
+            or list of number of points for each trace (if test_all=True).
 
     Methods:
-        _detect(tr):
-            Determines if the trace is clipped or not.
-        get_results():
-            Iterates through each trace in each stream of stream_collection to
-            run _detect on.
+        See parent class.
     '''
-    def __init__(self, st, POINT_THRESH=25):
+    def __init__(self, st, point_thresh=25, test_all=False):
         '''
-        Constructs all neccessary attributes for the Jerk method object
+        Constructs all neccessary attributes for the Max_Amp class.
 
         Args:
             st (StationStream):
-                Stream of data.
-            POINT_THRESH (float, default = 25):
+                Record of three orthogonal traces.
+            point_thresh (float, default=25):
                 Minimum number of flagged points required to label trace
                 as clipped.
+            test_all (bool, default=False):
+                If true, compute and store max amp for all traces.
         '''
-        ClipDetection.__init__(self, st, POINT_THRESH=POINT_THRESH)
+        ClipDetection.__init__(self, st.copy(), test_all)
+        self.point_thresh = point_thresh
+        if self.test_all:
+            self.num_outliers = []
+        else:
+            self.num_outliers = None
+        self._get_results()
 
-    def _clean_trace(self, clip_tr):
+    def _clean_trace(self, tr):
         '''
-        Helper function to clean the trace
+        Helper function to clean a trace.
 
-        Args:
-            clip_tr (StationTrace):
-                Trace of data.
-
-        Returns:
-            clip_tr (StationTrace):
-                Cleaned trace of data.
+        See parent class.
         '''
-        return ClipDetection._clean_trace(self, clip_tr)
+        return ClipDetection._clean_trace(self, tr)
 
-    def _detect(self, clip_tr):
+    def _detect(self, tr):
         '''
         Check for jerk outliers. Based on method described by:
 
@@ -57,36 +62,34 @@ class Jerk(ClipDetection):
             Laboratory Networks, Seismol. Res. Lett. 83, 575–584.
 
         Args:
-            clip_tr (StationTrace):
-                Trace of data.
+            tr (StationTrace):
+                A single trace in the record.
 
         Returns:
             bool:
-                Did the trace passed the test?
+                Is the trace clipped?
         '''
-        temp_st = self.st.copy()
+        temp_st = self.st
         temp_st.differentiate()
-        if clip_tr.stats.channel[1] == 'H':
+        if tr.stats.channel[1] == 'H':
             temp_st.differentiate()
-        abs_diff = np.abs(clip_tr.data)
+        abs_diff = np.abs(tr.data)
         median_x100 = 100*np.median(abs_diff)
         i_jerk, = np.where(abs_diff >= median_x100)
-        if len(i_jerk) > self.POINT_THRESH:
+        num_outliers = len(i_jerk)
+        if self.test_all:
+            self.num_outliers.append(num_outliers)
+        else:
+            self.num_outliers = num_outliers
+        if num_outliers > self.point_thresh:
             return True
         return False
 
-    def get_results(self):
+    def _get_results(self):
         '''
-        Iterate through each stream collection in stream_collection, each
-        stream in the stream collection, and then through each trace in
-        the stream to run on _detect method.
+        Iterates through and runs _detect() on each trace in the stream to
+        determine if the record is clipped or not.
 
-        Args:
-            None
-
-        Returns:
-            list (bools):
-                Which traces passed the test and were marked as
-                clipped/unclipped.
+        See parent class.
         '''
-        return ClipDetection.get_results(self)
+        return ClipDetection._get_results(self)

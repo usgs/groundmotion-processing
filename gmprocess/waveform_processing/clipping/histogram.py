@@ -1,61 +1,68 @@
 import numpy as np
-from ClipDetection import ClipDetection
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
+from gmprocess.waveform_processing.clipping.clip_detection import ClipDetection
 
 
 class Histogram(ClipDetection):
     '''
-    A class to represent the Histogram method for clipping detection
+    Class for the standard deviation clipping detection algorithm.
 
     Attributes:
-        NUM_BINS (int):
-            Number of bins for amplitude histogram.
-        MIN_WIDTH (int):
-            Minimum width of a bump to be indicative of clipping.
-        SEARCH_WIDTH_BINS (int):
-            Bin grouping size.
         st (StationStream):
-            Stream of data.
+            Record of three orthogonal traces.
+        test_all (bool, default=False):
+            If true, compute and store number of clipped intervals for
+            all traces.
+        is_clipped (bool):
+            True if the record is clipped.
+        num_bins (int, default=6200):
+            Number of bins for amplitude histogram.
+        min_width (int, default=7):
+            Minimum width of a bump to be indicative of clipping.
+        search_width_bins (int, default=700):
+            Bin grouping size.
+        num_clip_intervals(int/list):
+            The number of clipped intervals in the first clipped trace
+            or list of number of points for each trace (if test_all=True).
 
     Methods:
-        _detect(tr):
-            Determines if the trace is clipped or not.
-        get_results():
-            Iterates through each trace in each stream of stream_collection
-            to run _detect on.
+        See parent class.
     '''
-    def __init__(self, st, NUM_BINS=6200, MIN_WIDTH=7,
-                 SEARCH_WIDTH_BINS=700):
+    def __init__(self, st, num_bins=6200, min_width=7,
+                    search_width_bins=700, test_all=False):
         '''
-        Constructs all neccessary attributes for the Histogram method object
+        Constructs all neccessary attributes for the Histogram class.
 
         Args:
             st (StationStream):
                 Stream of data.
-            NUM_BINS (int, default = 6300):
+            test_all (bool, default=False):
+                If true, compute and store number of clipped intervals for
+                all traces.
+            num_bins (int, default=6200):
                 Number of bins for amplitude histogram.
-            MIN_WIDTH (int, default = 7):
+            min_width (int, default=7):
                 Minimum width of a bump to be indicative of clipping.
-            SEARCH_WIDTH_BINS (int, default = 700):
-                Bin grouping size
+            search_width_bins (int, default=700):
+                Bin grouping size.
         '''
-        ClipDetection.__init__(self, st,
-                               NUM_BINS=NUM_BINS, MIN_WIDTH=MIN_WIDTH,
-                               SEARCH_WIDTH_BINS=SEARCH_WIDTH_BINS)
+        ClipDetection.__init__(self, st.copy(), test_all)
+        self.num_bins = num_bins
+        self.min_width = min_width
+        self.search_width_bins = search_width_bins
+        if self.test_all:
+            self.num_clip_intervals = []
+        else:
+            self.num_clip_intervals = None
+        self._get_results()
 
-    def _clean_trace(self, clip_tr):
+    def _clean_trace(self, tr):
         '''
-        Helper function to clean the trace
+        Helper function to clean a trace.
 
-        Args:
-            clip_tr (StationTrace):
-                Trace of data.
-
-        Returns:
-            clip_tr (StationTrace):
-                Cleaned trace of data.
+        See parent class.
         '''
-        return ClipDetection._clean_trace(self, clip_tr)
+        return ClipDetection._clean_trace(self, tr)
 
     def _signal_scale(self, signal, alpha):
         '''
@@ -99,7 +106,6 @@ class Histogram(ClipDetection):
                     peaks.append((cur_x, idx))
         # Sort descending
         if should_sort:
-            # Look at this sorting here
             peaks.sort(key=lambda tup: tup[0])
         return peaks
 
@@ -237,7 +243,7 @@ class Histogram(ClipDetection):
         clip_intervals = self._merge_intervals(clip_intervals, 1)
         return clip_intervals
 
-    def _detect(self, clip_tr):
+    def _detect(self, tr):
         '''
         Test for clipping using the histogram-based method. This is a slight
         variation on the method described by:
@@ -247,14 +253,14 @@ class Histogram(ClipDetection):
             Society Convention 141. Audio Engineering Society.
 
         Args:
-            clip_tr (StationTrace):
-                Trace of data.
+            tr (StationTrace):
+                A single trace in the record.
 
         Returns:
             bool:
-                Did the trace passed the test?
+                Is the trace clipped?
         '''
-        amp_hist, edges = np.histogram(clip_tr.data, bins=self.NUM_BINS)
+        amp_hist, edges = np.histogram(tr.data, bins=self.num_bins)
         temp_forward_1 = ExponentialSmoothing(amp_hist.astype(np.float))
         forward_1 = temp_forward_1.fit(smoothing_level=0.2).fittedvalues
         temp_amp_hist = ExponentialSmoothing(forward_1[::-1].astype(np.float))
@@ -268,7 +274,7 @@ class Histogram(ClipDetection):
         negative_clip_upper_idx = -1
         in_bump = False
         width = 0
-        for idx in range(0, self.SEARCH_WIDTH_BINS):
+        for idx in range(0, self.search_width_bins):
             cur_val = novelty[idx]
             # In a bump
             if cur_val > 1:
@@ -281,7 +287,7 @@ class Histogram(ClipDetection):
             else:
                 if in_bump:
                     # The clipping threshold has been found
-                    if width > self.MIN_WIDTH:
+                    if width > self.min_width:
                         negative_clip_lower_idx = idx
                         negative_clip_upper_idx = negative_clip_lower_idx - \
                                                   width
@@ -293,7 +299,7 @@ class Histogram(ClipDetection):
         positive_clip_upper_idx = -1
         in_bump = False
         width = 0
-        for idx in range(len(novelty)-1, nov_len - self.SEARCH_WIDTH_BINS - 1, -1):
+        for idx in range(len(novelty)-1, nov_len - self.search_width_bins-1, -1):
             cur_val = novelty[idx]
             # In a bump
             if cur_val > 1:
@@ -306,7 +312,7 @@ class Histogram(ClipDetection):
             else:
                 if in_bump:
                     # The clipping threshold has been found
-                    if width > self.MIN_WIDTH:
+                    if width > self.min_width:
                         positive_clip_lower_idx = idx
                         positive_clip_upper_idx = idx + width
                         break
@@ -335,36 +341,34 @@ class Histogram(ClipDetection):
         # Now to find the clipping intervals based on the clipping levels.
         negative_clip_intervals = []
         if has_negative_clip:
-            invert_x = self._signal_scale(clip_tr.data, -1)
+            invert_x = self._signal_scale(tr.data, -1)
             valleys = self._find_peaks(invert_x, abs(negative_thresh), True)
-            negative_clip_intervals = self._get_clip_intervals(clip_tr.data,
+            negative_clip_intervals = self._get_clip_intervals(tr.data,
                                                                valleys,
                                                                negative_width)
         positive_clip_intervals = []
         if has_positive_clip:
-            peaks = self._find_peaks(clip_tr.data, positive_thresh, True)
-            positive_clip_intervals = self._get_clip_intervals(clip_tr.data,
+            peaks = self._find_peaks(tr.data, positive_thresh, True)
+            positive_clip_intervals = self._get_clip_intervals(tr.data,
                                                                peaks,
                                                                positive_width)
         # Aggregate the positive and negative clipping intervals.
         clip_intervals = negative_clip_intervals + positive_clip_intervals
         clip_intervals = self._merge_intervals(clip_intervals, 1)
-        if clip_intervals:
+        num_clip_intervals = len(clip_intervals)
+        if self.test_all:
+            self.num_clip_intervals.append(num_clip_intervals)
+        else:
+            self.num_clip_intervals = num_clip_intervals
+        if num_clip_intervals > 0:
             return True
         return False
 
-    def get_results(self):
+    def _get_results(self):
         '''
-        Iterate through each stream collection in stream_collection,
-        each stream in the stream collection, and then through each trace
-        in the stream to run on _detect method.
+        Iterates through and runs _detect() on each trace in the stream to
+        determine if the record is clipped or not.
 
-        Args:
-            None
-
-        Returns:
-            list (bools):
-                Which traces passed the test and were marked as
-                clipped/unclipped.
+        See parent class.
         '''
-        return ClipDetection.get_results(self)
+        return ClipDetection._get_results(self)

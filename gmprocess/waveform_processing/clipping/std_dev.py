@@ -1,99 +1,112 @@
 import numpy as np
-from ClipDetection import ClipDetection
+from gmprocess.waveform_processing.clipping.clip_detection import ClipDetection
 
 
-class Std_dev(ClipDetection):
+class Std_Dev(ClipDetection):
     '''
-    A class to represent the Std Dev method for clipping detection
+    Class for the standard deviation clipping detection algorithm.
 
     Attributes:
-        AMP_THRESH (float):
-            Threshold for maximum/minimum amplitude of trace.
-        N_STD (int):
-            Number of neigboring points to calculate std dev with.
-        STD_THRESH (float):
-            Maximum threshold for std dev.
         st (StationStream):
-                Stream of data.
+            Record of three orthogonal traces.
+        test_all (bool, default=False):
+            If true, compute and store number of outlying points for
+            all traces.
+        is_clipped (bool):
+            True if the record is clipped.
+        amp_thresh (float, default=0.85):
+            Threshold for maximum/minimum amplitude of trace.
+        n_std (int, default=12):
+            Number of neighboring points to calculate std dev with.
+        std_thresh (float, default=0.001):
+            Maximum threshold for std dev.
+        point_thresh (int, default=5):
+            Threshold number of points below std_thresh.
+        num_outliers (int/list):
+            The number of points exceeding the std dev threshold for the
+            first clipped trace or list of number of points for each
+            trace (if test_all=True).
 
     Methods:
-        _detect(tr):
-            Determines if the trace is clipped or not.
-        get_results():
-            Iterates through each trace in each stream of stream_collection to
-            run _detect on.
+        See parent class.
     '''
-    def __init__(self, st, AMP_THRESH=0.85, N_STD=12, STD_THRESH=0.001):
+    def __init__(self, st, amp_thresh=0.85, n_std=12, std_thresh=0.001,
+                 point_thresh=5, test_all=False):
         '''
-        Constructs all neccessary attributes for the Std Dev method object
+        Constructs all neccessary attributes for the Std_Dev class.
 
         Args:
-            st_collection (list):
-                List of stream collection objects.
-            AMP_THRESH (float, default = 0.85):
+            st (StationStream):
+                Record of three orthogonal traces.
+            test_all (bool, default=False):
+                If true, compute and store number of outlying points for
+                all traces.
+            amp_thresh (float, default=0.85):
                 Threshold for maximum/minimum amplitude of trace.
-            N_STD (int, default = 12):
-                Number of neigboring points to calculate std dev with.
-            STD_THRESH (float, default = 0.001):
+            n_std (int, default=12):
+                Number of neighboring points to calculate std dev with.
+            std_thresh (float, default=0.001):
                 Maximum threshold for std dev.
+            point_thresh (int, default=5):
+                Threshold number of points exceeding std_thresh.
         '''
-        ClipDetection.__init__(self, st, AMP_THRESH=AMP_THRESH,
-                               N_STD=N_STD, STD_THRESH=STD_THRESH)
+        ClipDetection.__init__(self, st.copy(), test_all)
+        self.amp_thresh = amp_thresh
+        self.n_std = n_std
+        self.std_thresh = std_thresh
+        self.point_thresh = point_thresh
+        if self.test_all:
+            self.num_outliers = []
+        else:
+            self.num_outliers = None
+        self._get_results()
 
-    def _clean_trace(self, clip_tr):
+    def _clean_trace(self, tr):
         '''
-        Helper function to clean the trace
+        Helper function to clean a trace.
+
+        See parent class.
+        '''
+        return ClipDetection._clean_trace(self, tr)
+
+    def _detect(self, tr):
+        '''
+        For all points with amplitude greater than amp_thresh, calculate
+        standard deviation (std) of the n_std neighboring points. Fail the trace
+        if the std of n_std neighboring points is less than std_thresh for
+        any point_thresh points.
 
         Args:
-            clip_tr (StationTrace):
-                Trace of data.
+            tr (StationTrace):
+                A single trace in the record.
 
-        Returns:
-            clip_tr (StationTrace):
-                Cleaned trace of data.
-        '''
-        return ClipDetection._clean_trace(self, clip_tr)
-
-    def _detect(self, clip_tr):
-        '''
-        For all points with amplitude greater than AMP_THRESH, calculate
-        standard deviation (std) of N_STD neighboring points. Fail the trace
-        if the std of N_STD neighboring points is less than STD_THRESH for
-        any N points.
-
-        Args:
-            clip_tr (StationTrace):
-                Trace of data.
         Returns:
             bool:
-                Did the trace passed the test?
+                Is the trace clipped?
         '''
-        low_std = False
-        tr_std = clip_tr.copy()
-        tr_std.data = np.zeros(len(clip_tr.data))
-        thresh_max = self.AMP_THRESH * np.max(clip_tr.data)
-        thresh_min = self.AMP_THRESH * np.min(clip_tr.data)
-        for i in range(len(clip_tr.data) - self.N_STD):
-            tr_std.data[i] = np.std(clip_tr.data[i:i + self.N_STD])
-        i_lowstd, = np.where((tr_std.data < self.STD_THRESH) &
-                             ((clip_tr.data >= thresh_max) |
-                             (clip_tr.data <= thresh_min)))
-        if len(i_lowstd) > 5:
-            low_std = True
-        return low_std
+        tr_std = tr.copy()
+        tr_std.data = np.zeros(len(tr.data))
+        thresh_max = self.amp_thresh * np.max(tr.data)
+        thresh_min = self.amp_thresh * np.min(tr.data)
+        for i in range(len(tr.data) - self.n_std):
+            tr_std.data[i] = np.std(tr.data[i:i + self.n_std])
+        i_lowstd, = np.where((tr_std.data < self.std_thresh) &
+                             ((tr.data >= thresh_max) |
+                             (tr.data <= thresh_min)))
+        num_outliers = len(i_lowstd)
+        if self.test_all:
+            self.num_outliers.append(num_outliers)
+        else:
+            self.num_outliers = num_outliers
+        if num_outliers > self.point_thresh:
+            return True
+        return False
 
-    def get_results(self):
+    def _get_results(self):
         '''
-        Iterate through each stream collection in stream_collection,
-        each stream in the stream collection, and then through each trace
-        in the stream to run on _detect method.
+        Iterates through and runs _detect() on each trace in the stream to
+        determine if the record is clipped or not.
 
-        Args:
-            None
-
-        Returns:
-            list (bools):
-                Which traces passed the test and were marked as
-                clipped/unclipped.
+        See parent class.
         '''
-        return ClipDetection.get_results(self)
+        return ClipDetection._get_results(self)
