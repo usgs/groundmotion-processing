@@ -18,6 +18,7 @@ from matplotlib.dates import num2date
 
 from gmprocess.metrics.reduction.arias import Arias
 from gmprocess.waveform_processing import spectrum
+from gmprocess.metrics.oscillators import get_spectral
 
 MIN_MAG = 4.0
 MAX_MAG = 7.0
@@ -743,3 +744,67 @@ def summary_plots(st, directory, origin):
         plt.close('all')
 
     return file_name
+
+
+def plot_oscillators(st, periods=[0.1, 2, 5, 10], file=None, show=False):
+    """
+    Produces a figure of the oscillator responses for a StationStream. The
+    figure will plot the acceleration traces in the first row, and then an
+    additional row for each oscillator period. The number of columns is the
+    number of channels in the stream.
+
+    Args:
+        st (gmprocess.core.stationstream.StationStream):
+            StaionStream of data.
+        periods (list):
+            A list of periods (floats, in seconds).
+        file (str):
+            File where the image will be saved. Default is None.
+        show (bool):
+            Show the figure. Default is False.
+    """
+
+    fig, axes = plt.subplots(nrows=len(periods) + 1, ncols=len(st), figsize=(
+        4 * len(st), 2 * len(periods)))
+    if len(st) == 1:
+        # Ensure that axes is a 2D numpy array
+        axes = axes.reshape(-1, 1)
+
+    for i in range(axes.shape[0]):
+        if i == 0:
+            plot_st = st
+            ylabel = 'Acceleration (cm/s$^2$)'
+            textstr = 'T: %s s \nPGA: %.2g cm/s$^2$'
+        else:
+            prd = periods[i - 1]
+            plot_st = get_spectral(prd, st)
+            ylabel = 'SA %s s (%%g)' % prd
+            textstr = 'T: %s s \nSA: %.2g %%g'
+
+        for j, tr in enumerate(plot_st):
+            ax = axes[i, j]
+            dtimes = np.linspace(
+                0, tr.stats.endtime - tr.stats.starttime, tr.stats.npts)
+            ax.plot(dtimes, tr.data, 'k', linewidth=0.5)
+
+            # Get time and amplitude of max SA (using absolute value)
+            tmax = dtimes[np.argmax(abs(tr.data))]
+            sa_max = max(tr.data, key=abs)
+
+            ax.axvline(tmax, c='r', ls='--')
+            ax.scatter([tmax], [sa_max], c='r', edgecolors='k', zorder=10)
+            ax.text(0.01, 0.98, textstr % (tmax, sa_max),
+                    transform=ax.transAxes, va='top')
+
+            if i == 0:
+                ax.set_title(tr.id)
+            if i == len(periods):
+                ax.set_xlabel('Time (s)')
+            ax.set_ylabel(ylabel)
+
+    plt.tight_layout()
+
+    if file is not None:
+        plt.savefig(file)
+    if show:
+        plt.show()
