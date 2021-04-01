@@ -787,8 +787,9 @@ def plot_oscillators(st, periods=[0.1, 2, 5, 10], file=None, show=False):
                 0, tr.stats.endtime - tr.stats.starttime, tr.stats.npts)
             ax.plot(dtimes, tr.data, 'k', linewidth=0.5)
 
-            tmax = dtimes[np.argmax(tr.data)]
-            sa_max = np.max(tr.data)
+            # Get time and amplitude of max SA (using absolute value)
+            tmax = dtimes[np.argmax(abs(tr.data))]
+            sa_max = max(tr.data, key=abs)
 
             ax.axvline(tmax, c='r', ls='--')
             ax.scatter([tmax], [sa_max], c='r', edgecolors='k', zorder=10)
