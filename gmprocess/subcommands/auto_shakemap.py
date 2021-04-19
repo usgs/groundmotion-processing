@@ -8,6 +8,7 @@ from gmprocess.subcommands.base import SubcommandModule
 
 from gmprocess.apps.gmrecords import GMrecordsApp
 from gmprocess.subcommands.download import DownloadModule
+from gmprocess.subcommands.import_data import ImportModule
 from gmprocess.subcommands.assemble import AssembleModule
 from gmprocess.subcommands.process_waveforms import ProcessWaveformsModule
 from gmprocess.subcommands.compute_station_metrics import \
@@ -28,8 +29,22 @@ class AutoShakemapModule(SubcommandModule):
 
     arguments = [
         ARG_DICTS['eventid'], {
+            'short_flag': '-p',
+            'long_flag': '--path',
+            'help': ('Path to external data file or directory. If given, '
+                     'then the download step is also skipped.'),
+            'type': str,
+            'default': None
+        }, {
             'long_flag': '--skip-download',
             'help': 'Skip data downlaod step.',
+            'default': False,
+            'action': 'store_true'
+        }, {
+            'short_flag': '-d',
+            'long_flag': '--diagnostics',
+            'help': ('Include diagnostic outputs that are created after '
+                     'ShakeMap data file is created.'),
             'default': False,
             'action': 'store_true'
         }
@@ -45,13 +60,17 @@ class AutoShakemapModule(SubcommandModule):
         gmrecords.args.overwrite = True
 
         # Chain together relevant subcommand modules:
-        if not gmrecords.args.skip_download:
+        if ((not gmrecords.args.skip_download)
+                and (gmrecords.args.path is None)):
             DownloadModule().main(gmrecords)
+        if gmrecords.args.path is not None:
+            ImportModule().main(gmrecords)
         AssembleModule().main(gmrecords)
         ProcessWaveformsModule().main(gmrecords)
         ComputeStationMetricsModule().main(gmrecords)
         ComputeWaveformMetricsModule().main(gmrecords)
         ExportShakeMapModule().main(gmrecords)
-        ExportMetricTablesModule().main(gmrecords)
-        GenerateRegressionPlotModule().main(gmrecords)
-        GenerateReportModule().main(gmrecords)
+        if gmrecords.args.diagnostics:
+            ExportMetricTablesModule().main(gmrecords)
+            GenerateRegressionPlotModule().main(gmrecords)
+            GenerateReportModule().main(gmrecords)
