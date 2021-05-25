@@ -23,6 +23,14 @@ def test_fas():
     """
     ddir = os.path.join('data', 'testdata')
     datadir = pkg_resources.resource_filename('gmprocess', ddir)
+
+    '''
+    Note: the testing data in the fas_*_.pkl files now uses the convention
+    of using the next power of 2 for the number of FFT points. The original
+    files based on thee Jupyter notebook above just used the length of the
+    traces for the FFT.
+    '''
+
     fas_file = os.path.join(datadir, 'fas_arithmetic_mean.pkl')
     p1 = os.path.join(datadir, 'peer', 'RSN763_LOMAP_GIL067.AT2')
     p2 = os.path.join(datadir, 'peer', 'RSN763_LOMAP_GIL337.AT2')
@@ -35,7 +43,8 @@ def test_fas():
             meta = re.findall(r'[.0-9]+', next(file_obj))
             dt = float(meta[1])
             accels = np.array(
-                [col for line in file_obj for col in line.split()])
+                [col for line in file_obj for col in line.split()],
+                dtype=float)
         trace = StationTrace(data=accels, header={
             'channel': 'H' + str(idx),
             'delta': dt,
