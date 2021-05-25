@@ -55,10 +55,7 @@ class FFT(Transform):
         fft_dict = {}
         for trace in self.transform_data:
 
-            if self.allow_nans:
-                nfft = len(trace.data)
-            else:
-                nfft = self.get_nfft()
+            nfft = self.get_nfft(trace)
 
             # Check if we already have computed the FFT for this trace
             if trace.hasCached('fas_spectrum'):
@@ -77,18 +74,24 @@ class FFT(Transform):
 
         return fft_dict
 
-    def get_nfft(self):
+    def get_nfft(self, trace):
         """
-        Returns the number of points for the FFT that will ensure that the
-        Fourier Amplitude Spectrum can be computed without returning NaNs
-        (due to the spectral resolution requirements of the Konno-Ohmachi
-        smoothing).
+        If allow_nans is True, returns the number of points for the FFT that
+        will ensure that the Fourier Amplitude Spectrum can be computed without
+        returning NaNs (due to the spectral resolution requirements of the
+        Konno-Ohmachi smoothing). Otherwise, just use the length of the trace
+        for the number points. This always returns the next highest power of 2.
 
         Returns:
             int: Number of points for the FFT.
         """
-        nyquist = 0.5 * self.transform_data[0].stats.sampling_rate
-        min_freq = 1.0 / self.max_period
-        df = (min_freq * 10**(3.0 / self.bandwidth)) - (
-            min_freq / 10**(3.0 / self.bandwidth))
-        return next_pow_2(nyquist / df)
+
+        if self.allow_nans:
+            nfft = len(trace.data)
+        else:
+            nyquist = 0.5 * self.transform_data[0].stats.sampling_rate
+            min_freq = 1.0 / self.max_period
+            df = (min_freq * 10**(3.0 / self.bandwidth)) - (
+                min_freq / 10**(3.0 / self.bandwidth))
+            nfft = max(len(trace.data), nyquist / df)
+        return next_pow_2(nfft)

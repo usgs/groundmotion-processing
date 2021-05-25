@@ -35,7 +35,8 @@ def test_fas():
             meta = re.findall(r'[.0-9]+', next(file_obj))
             dt = float(meta[1])
             accels = np.array(
-                [col for line in file_obj for col in line.split()])
+                [col for line in file_obj for col in line.split()],
+                dtype=float)
         trace = StationTrace(data=accels, header={
             'channel': 'H' + str(idx),
             'delta': dt,
