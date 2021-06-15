@@ -16,9 +16,13 @@ from impactutils.io.cmd import get_command_output
 from gmprocess.utils.config import get_config
 
 PREAMBLE = """
-\\documentclass[9pt]{article}
-\\usepackage{helvet}
-\\renewcommand{\\familydefault}{\\sfdefault}
+\\documentclass[9pt]{extarticle}
+
+% Allows for 9pt article class
+\\usepackage{extsizes}
+
+\\usepackage{sansmathfonts}
+\\usepackage[T1]{fontenc}
 
 \\usepackage{graphicx}
 \\usepackage{tikz}
