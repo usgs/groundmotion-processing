@@ -85,7 +85,7 @@ def fetch_data(time, lat, lon, depth, magnitude, config=None, rawdir=None,
     for fetcher in instances:
         if 'FDSN' in str(fetcher):
             tstreams = fetcher.retrieveData()
-            if len(streams):
+            if streams:
                 streams = streams + tstreams
             else:
                 streams = tstreams
@@ -97,7 +97,7 @@ def fetch_data(time, lat, lon, depth, magnitude, config=None, rawdir=None,
                 logging.warn(msg % (esummary, str(fetcher)))
                 continue
             tstreams = fetcher.retrieveData(events[0])
-            if len(streams):
+            if streams:
                 streams = streams + tstreams
             else:
                 streams = tstreams
