@@ -164,9 +164,9 @@ processing:
     # Amplitude check to avoid clipping. Units are usually counts (e.g., with
     # data from IRIS) but some sources will convert to physical units so it
     # is important to be careful with this step.
-    # - check_max_amplitude:
-    #     min: 5
-    #     max: 2e6
+    - check_max_amplitude:
+        min: 5
+        max: 2e6
 
     # Check number of traces for each instrument. Max is useful for screening
     # out downhole or structural arrays with the same station code.
