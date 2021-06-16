@@ -11,7 +11,6 @@ from setuptools_scm import get_version
 # third party imports
 import numpy as np
 import pandas as pd
-from impactutils.io.cmd import get_command_output
 
 # local imports
 from gmprocess.utils.config import get_config
