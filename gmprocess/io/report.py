@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 
 # stdlib imports
-import os
-from shutil import which
 import glob
+import os
+import subprocess
+
 from setuptools_scm import get_version
 
 # third party imports
@@ -233,12 +234,13 @@ def build_report_latex(sc, directory, origin, prefix='', config=None):
 
         # Can we find pdflatex?
         try:
-            pdflatex_bin = which('pdflatex')
-            pdflatex_options = '-interaction=nonstopmode -halt-on-error'
-            cmd = '%s %s %s' % (pdflatex_bin, pdflatex_options, file_name)
-            res, stdout, stderr = get_command_output(cmd)
+            cp = subprocess.run(
+                ['pdflatex', '-interaction=nonstopmode', '-halt-on-error', file_name],
+                capture_output=True,
+                text=True
+            )
             report_file = latex_file
-            if res:
+            if cp.returncode == 0:
                 base, ext = os.path.splitext(file_name)
                 pdf_file = base + '.pdf'
                 if os.path.isfile(pdf_file):
@@ -251,8 +253,8 @@ def build_report_latex(sc, directory, origin, prefix='', config=None):
                     res = False
             else:
                 print('pdflatex output:')
-                print(stdout.decode())
-                print(stderr.decode())
+                print(cp.stdout)
+                print(cp.stderr)
         except BaseException:
             report_file = ''
             pass
