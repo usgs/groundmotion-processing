@@ -19,8 +19,6 @@ import numpy
 from obspy.core.utcdatetime import UTCDateTime
 from obspy.core.inventory import Comment
 
-# local imports
-from gmprocess.exception import GMProcessException
 
 UNITS = {
     'acc': 'cm/s/s',
