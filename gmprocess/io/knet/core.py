@@ -12,8 +12,8 @@ import numpy as np
 
 # local imports
 from gmprocess.io.seedname import get_channel_name, get_units_type
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
-from gmprocess.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.core.stationstream import StationStream
 
 TEXT_HDR_ROWS = 17
 TIMEFMT = '%Y/%m/%d %H:%M:%S'
@@ -46,17 +46,20 @@ def is_knet(filename):
             lines = [next(f) for x in range(TEXT_HDR_ROWS)]
             if lines[0].startswith(HDR1) and lines[5].startswith(HDR2):
                 return True
-    except Exception:
+    except BaseException:
         return False
     return False
 
 
-def read_knet(filename):
+def read_knet(filename, **kwargs):
     """Read Japanese KNET strong motion file.
 
     Args:
-        filename (str): Path to possible KNET data file.
-        kwargs (ref): Other arguments will be ignored.
+        filename (str):
+            Path to possible KNET data file.
+        kwargs (ref):
+            Other arguments will be ignored.
+
     Returns:
         Stream: Obspy Stream containing three channels of acceleration data
             (cm/s**2).

@@ -6,17 +6,17 @@ import re
 
 # third party imports
 import numpy as np
-from gmprocess.constants import UNIT_CONVERSIONS
 from obspy.core.utcdatetime import UTCDateTime
 
 # local
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.utils.constants import UNIT_CONVERSIONS
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.io.seedname import get_channel_name, get_units_type
 
 
 INTIMEFMT = '%Y/%m/%d %H:%M:%S'
-FLOATRE = "[-+]?[0-9]*\.?[0-9]+"
+FLOATRE = r"[-+]?[0-9]*\.?[0-9]+"
 INTRE = "[-+]?[0-9]*"
 
 TEXT_HDR_ROWS = 13
@@ -34,7 +34,7 @@ LEVELS = {'VOL1DS': 'V1'}
 
 def is_bhrc(filename):
     try:
-        with open(filename, 'rt') as f:
+        with open(filename, 'rt', encoding='utf-8') as f:
             lines = [next(f) for x in range(TEXT_HDR_ROWS)]
 
         has_line1 = lines[0].startswith('* VOL')
@@ -46,11 +46,13 @@ def is_bhrc(filename):
     return False
 
 
-def read_bhrc(filename):
+def read_bhrc(filename, **kwargs):
     """Read the Iran BHRC strong motion data format.
 
     Args:
         filename (str): path to BHRC data file.
+        kwargs (ref):
+            Other arguments will be ignored.
 
     Returns:
         list: Sequence of one StationStream object containing 3
@@ -88,7 +90,7 @@ def _read_header_lines(filename, offset):
         tuple: (header dictionary containing Stats dictionary with
         extra sub-dicts, updated offset rows)
     """
-    with open(filename, 'rt') as f:
+    with open(filename, 'rt', encoding='utf-8') as f:
         for _ in range(offset):
             next(f)
         lines = [next(f) for x in range(TEXT_HDR_ROWS)]

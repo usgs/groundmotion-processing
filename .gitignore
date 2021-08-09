@@ -1,10 +1,11 @@
 *.pyc
 build
 *~
+.atom/
 .DS_Store
 .ipynb_checkpoints/
 .cache
-.coverage
+.coverage*
 .coverage.xml
 htmlcov
 gmprocess.egg-info/
@@ -16,3 +17,11 @@ docs/_site
 docs/Gemfile.lock
 docs/figs/*.aux
 docs/figs/*.log
+gmprocess/_version.py
+gmprocess/version.py
+.vscode/
+dask-worker-space/
+docs/_build
+MANIFEST.in
+# Vim tags
+tags

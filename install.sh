@@ -28,10 +28,6 @@ while getopts p:d FLAG; do
     p)
         py_ver=$OPTARG
       ;;
-    d)
-        echo "Installing developer packages."
-        developer=1
-      ;;
   esac
 done
 
@@ -116,42 +112,6 @@ conda activate base
 # Remove existing environment if it exists
 conda remove -y -n $VENV --all
 
-# Extra packages to install with dev option
-dev_list=(
-    "autopep8"
-    "flake8"
-    "pyflakes"
-    "rope"
-    "yapf"
-)
-
-# Required package list:
-package_list=(
-    "python=$py_ver"
-    "$CC_PKG"
-    "cython"
-    "impactutils"
-    "ipython"
-    "jupyter"
-    "libcomcat"
-    "lxml"
-    "mapio"
-    "matplotlib"
-    "numpy"
-    "obspy>=1.2.1"
-    "openpyxl"
-    "openquake.engine"
-    "pandas"
-    "ps2ff"
-    "pyasdf"
-    "pytest"
-    "pytest-cov"
-    "pyyaml"
-    "requests"
-    "vcrpy"
-)
-
-
 if [ $developer == 1 ]; then
     package_list=( "${package_list[@]}" "${dev_list[@]}" )
     echo ${package_list[*]}
@@ -163,7 +123,7 @@ conda config --add channels 'conda-forge'
 conda config --set channel_priority strict
 
 echo "Creating the $VENV virtual environment:"
-conda create -n $VENV -y ${package_list[*]}
+conda create -n $VENV -y --file requirements.txt
 
 # Bail out at this point if the conda create command fails.
 # Clean up zip files we've downloaded
@@ -183,9 +143,6 @@ if [ $? -ne 0 ];then
     exit 1
 fi
 
-# upgrade pip, mostly so pip doesn't complain about not being new...
-pip install --upgrade pip
-
 # if pip upgrade fails, complain but try to keep going
 if [ $? -ne 0 ];then
     echo "Failed to upgrade pip, trying to continue..."
@@ -200,6 +157,48 @@ fi
 
 # This package
 echo "Installing ${VENV}..."
+
+##################### Try to get in front of missing/wrong C compiler issues #######
+clang_exists=0
+clang_path=`which clang`
+if [ -n "${clang_path}" ]; then
+    clang_exists=1
+    echo "clang is installed on your system."
+fi
+
+gcc_exists=0
+gcc_path=`which gcc`
+if [ -n "$gcc_path" ]; then
+    gcc_exists=1
+    echo "gcc is installed on your system."
+fi
+
+if [ clang_exists == 0 ] && [ gcc_exists == 0 ]; then
+    echo "You are missing a C compiler. Please install either gcc or clang."
+    exit 1
+fi
+
+# test to see if CC is set
+# https://stackoverflow.com/a/13864829
+cc_set=0
+x=""
+if [ -n "${CC}" ]; then # if $CC is set
+    cc_set=1
+    echo "CC is set to '${CC}'"
+fi
+
+if [ $cc_set == 0 ]; then
+    if [ $clang_exists == 1 ];then
+        export CC=clang
+    else
+        export CC=gcc
+    fi
+    echo "Using ${CC} as C compiler"
+else
+    echo "CC is set to ${CC} already."
+fi
+##################### Try to get in front of missing/wrong C compiler issues #######
+
 pip install -e .
 
 # if pip install fails, bow out gracefully

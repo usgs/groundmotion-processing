@@ -97,6 +97,20 @@ read:
     # Resampling rate if times are unevenly spaced
     resample_rate: 200
 
+    # SAC header doesn't include units (!) and is generally assumed to be:
+    #     nm/s/s for acceleration
+    #     nm/s   for velocity
+    #     nm     for displacement
+    # The following is a multiplicative factor to convert the ACTUAL data the 
+    # SAC files being used to cm/s/s for accel or cm/s for velocity.
+    sac_conversion_factor: 1e-7      # For nm/s/s
+    # sac_conversion_factor: 1e-4    # For um/s/s
+    # sac_conversion_factor: 980.665 # For g
+
+    # Also, data source is not included in SAC headers, so we provide an option
+    # to set it here:
+    sac_source: Unknown
+    
 # -----------------------------------------------------------------------------
 # Options for separating noise/signal windows
 #
@@ -154,11 +168,12 @@ processing:
     #     min: 5
     #     max: 2e6
 
-    # Apply a maximum number of traces per stream. This can occur with downhole
-    # or structural arrays since our code currently is not able to reliably
-    # group by location within an array.
-    - max_traces:
+    # Check number of traces for each instrument. Max is useful for screening
+    # out downhole or structural arrays with the same station code.
+    - check_instrument:
         n_max: 3
+        n_min: 2
+        require_two_horiz: True
 
     # Require a minimum sample rate
     - min_sample_rate:
@@ -405,6 +420,10 @@ duplicate:
     # Maximum distance tolerance (in m) for duplicate data
     max_dist_tolerance: 500
 
+    # List of preferences (in order) for handling duplicate data.
+    preference_order: ['process_level', 'source_format', 'starttime', 'npts',
+                       'sampling_rate', 'location_code']
+
     # Preference for selecting process level when faced with duplicate data
     # but with different processing levels. Must be a list containing
     # 'V0', 'V1', and 'V2'. The first item is the most preferred,
@@ -443,6 +462,8 @@ metrics:
       - PGA
       - PGV
       - SA
+      - duration
+      - sorted_duration
   # Periods defined for the SA and FAS imts
   sa:
       # damping used to calculate the spectral response
@@ -467,6 +488,7 @@ metrics:
   fas:
       smoothing: konno_ohmachi
       bandwidth: 20.0
+      allow_nans: True
       periods:
         # Parameters defining an array of periods
         # syntax is the same as that used for numpy linspace and logspace
@@ -483,6 +505,10 @@ metrics:
         # predefined by the array of periods.
         defined_periods:
           - 0.3
+  duration:
+      intervals:
+          - 5-75
+          - 5-95
   # Section for Vs30 calculations. This may contain several keys. Each key
   # must be unique, and must have the four attributes: file, column_header,
   # readme_entry, and units.

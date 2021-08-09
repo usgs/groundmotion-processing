@@ -12,8 +12,8 @@ import numpy as np
 
 # local imports
 from gmprocess.io.seedname import get_channel_name, get_units_type
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
-from gmprocess.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.core.stationstream import StationStream
 
 NZCATWINDOW = 5 * 60  # number of seconds to search around in GeoNet EQ catalog
 
@@ -37,7 +37,9 @@ def is_geonet(filename):
     """Check to see if file is a New Zealand GNS V1 or V2 strong motion file.
 
     Args:
-        filename (str): Path to possible GNS V1/V2 data file.
+        filename (str):
+            Path to possible GNS V1/V2 data file.
+
     Returns:
         bool: True if GNS V1/V2, False otherwise.
     """
@@ -62,8 +64,10 @@ def read_geonet(filename, **kwargs):
     This will be set to either "V1" or "V2".
 
     Args:
-        filename (str): Path to possible GNS V1/V2 data file.
-        kwargs (ref): Other arguments will be ignored.
+        filename (str):
+            Path to possible GNS V1/V2 data file.
+        kwargs (ref):
+            Other arguments will be ignored.
 
     Returns:
         Stream: Obspy Stream containing three channels of acceleration data
@@ -112,13 +116,16 @@ def _read_channel(filename, line_offset):
     """Read channel data from GNS V1 text file.
 
     Args:
-        filename (str): Input GNS V1 filename.
-        line_offset (int): Line offset to beginning of channel text block.
+        filename (str):
+            Input GNS V1 filename.
+        line_offset (int):
+            Line offset to beginning of channel text block.
+
     Returns:
         tuple: (obspy Trace, int line offset)
     """
     # read station and location strings from text header
-    with open(filename, 'rt') as f:
+    with open(filename, 'rt', encoding='utf-8') as f:
         for _ in range(line_offset):
             next(f)
         lines = [next(f) for x in range(TEXT_HDR_ROWS)]
@@ -140,7 +147,7 @@ def _read_channel(filename, line_offset):
 
     # parse the sensor resolution from the text header
     resolution_str = lines[4].split()[1]
-    resolution = int(re.search('\d+', resolution_str).group())
+    resolution = int(re.search(r"\d+", resolution_str).group())
 
     # read floating point header array
     skip_header = line_offset + TEXT_HDR_ROWS
@@ -173,10 +180,8 @@ def _read_channel(filename, line_offset):
     if nvel:
         if nvel % COLS_PER_ROW != 0:
             nvel_rows = int(np.floor(nvel / COLS_PER_ROW))
-            nvel_rows2 = 1
         else:
             nvel_rows = int(np.ceil(nvel / COLS_PER_ROW))
-            nvel_rows2 = 0
         skip_header_vel = line_offset + TEXT_HDR_ROWS + FP_HDR_ROWS + nrows
         widths = [8] * COLS_PER_ROW
         velocity = np.genfromtxt(filename, skip_header=skip_header_vel,
@@ -210,12 +215,15 @@ def _read_header(hdr_data, station, name, component, data_format,
     """Construct stats dictionary from header lines.
 
     Args:
-        hdr_data (ndarray): (10,10) numpy array containing header data.
-        station (str): Station code obtained from previous text portion of
-            header.
-        location (str): Location string obtained from previous text portion
-            of header.
-        component (str): Component direction (N18E, S72W, etc.)
+        hdr_data (ndarray):
+            (10,10) numpy array containing header data.
+        station (str):
+            Station code obtained from previous text portion of header.
+        location (str):
+            Location string obtained from previous text portion of header.
+        component (str):
+            Component direction (N18E, S72W, etc.)
+
     Returns:
         Dictionary containing fields:
             - network "NZ"
@@ -323,7 +331,7 @@ def _read_header(hdr_data, station, name, component, data_format,
     lonmn = hdr_data[2, 4]
     lonsc = hdr_data[2, 5]
     coordinates['longitude'] = _dms_to_dd(londg, lonmn, lonsc)
-    logging.warn('Setting elevation to 0.0')
+    logging.warning('Setting elevation to 0.0')
     coordinates['elevation'] = 0.0
 
     # get other standard metadata
@@ -358,7 +366,8 @@ def _get_channel(component):
     """Determine channel name string from component string.
 
     Args:
-        component (str): String like "N28E".
+        component (str):
+            String like "N28E".
 
     Returns:
         str: Channel (H1,H2,Z)

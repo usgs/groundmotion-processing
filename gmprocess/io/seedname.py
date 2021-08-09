@@ -1,4 +1,5 @@
-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 def get_channel_name(sample_rate, is_acceleration=True,
                      is_vertical=False, is_north=True):
@@ -49,7 +50,8 @@ def get_units_type(channel):
 
 
 def is_channel_north(angle):
-    '''Determine whether horizontal angle is closer to North/South than East/West.
+    '''Determine whether horizontal angle is closer to North/South than
+    East/West.
 
     Args:
         angle (float):

@@ -27,12 +27,14 @@ def is_asdf(filename):
 
 
 def read_asdf(filename, eventid=None, stations=None, label=None):
-    """Read Streams of data (complete with processing metadata) from an ASDF file.
+    """Read Streams of data (complete with processing metadata) from an ASDF
+    file.
 
     Args:
         filename (str):
             Path to valid ASDF file.
-        label (str): Optional processing label to filter streams.
+        label (str):
+            Optional processing label to filter streams.
 
     Returns:
         list:

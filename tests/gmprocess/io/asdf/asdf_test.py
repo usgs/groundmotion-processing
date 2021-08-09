@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import os
 import shutil
@@ -32,7 +33,7 @@ def test_asdf():
         assert len(outstreams2) == len(raw_streams)
 
     except Exception as e:
-        assert 1 == 2
+        raise(e)
     finally:
         shutil.rmtree(tdir)
 

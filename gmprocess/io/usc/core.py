@@ -8,11 +8,10 @@ import numpy as np
 from obspy.core.trace import Stats
 
 # local imports
-from gmprocess.constants import UNIT_CONVERSIONS
-from gmprocess.exception import GMProcessException
+from gmprocess.utils.constants import UNIT_CONVERSIONS
 from gmprocess.io.seedname import get_channel_name, get_units_type
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.io.utils import is_evenly_spaced, resample_uneven_trace
 
 VOLUMES = {
@@ -38,7 +37,11 @@ def is_usc(filename, **kwargs):
     """Check to see if file is a USC strong motion file.
 
     Args:
-        filename (str): Path to possible USC V1 data file.
+        filename (str):
+            Path to possible USC V1 data file.
+        kwargs (ref):
+            Other arguments will be ignored.
+
     Returns:
         bool: True if USC , False otherwise.
     """
@@ -64,14 +67,14 @@ def is_usc(filename, **kwargs):
             alternate_start = start + 2
             alternate_stop = stop - 2
         elif first_line.find('RESPONSE') >= 0:
-            raise GMProcessException(
+            raise ValueError(
                 'USC: Derived response spectra and fourier '
                 'amplitude spectra not supported: %s' % filename)
         else:
             f.close()
             return False
         f.close()
-    except Exception:
+    except BaseException:
         return False
     finally:
         f.close()
@@ -90,14 +93,13 @@ def is_usc(filename, **kwargs):
 def _check_header(start, stop, filename):
     passing = True
     with open(filename, 'r') as f:
-        counter = stop
         for i in range(start):
             f.readline()
         for i in range(stop):
             line = f.readline()
             try:
                 int(line[72:74])
-            except:
+            except BaseException:
                 passing = False
     return passing
 
@@ -106,8 +108,11 @@ def read_usc(filename, **kwargs):
     """Read USC V1 strong motion file.
 
     Args:
-        filename (str): Path to possible USC V1 data file.
-        kwargs (ref): Ignored by this function.
+        filename (str):
+            Path to possible USC V1 data file.
+        kwargs (ref):
+            Ignored by this function.
+
     Returns:
         Stream: Obspy Stream containing three channels of acceleration data
         (cm/s**2).
@@ -123,7 +128,7 @@ def read_usc(filename, **kwargs):
     try:
         f = open(filename, 'rt')
         first_line = f.readline()
-    except:
+    except BaseException:
         pass
     finally:
         if f is not None:
@@ -133,7 +138,7 @@ def read_usc(filename, **kwargs):
         stream = read_volume_one(
             filename, location=location, alternate=alternate)
     else:
-        raise GMProcessException('USC: Not a supported volume.')
+        raise ValueError('USC: Not a supported volume.')
 
     return stream
 
@@ -142,7 +147,9 @@ def read_volume_one(filename, location='', alternate=False):
     """Read channel data from USC volume 1 text file.
 
     Args:
-        filename (str): Input DMG V1 filename.
+        filename (str):
+            Input DMG V1 filename.
+
     Returns:
         tuple: (list of obspy Trace, int line offset)
     """
@@ -155,7 +162,8 @@ def read_volume_one(filename, location='', alternate=False):
     stream = StationStream([])
     while line_offset < line_count:
         trace, line_offset = _read_channel(
-            filename, line_offset, volume, location=location, alternate=alternate)
+            filename, line_offset, volume, location=location,
+            alternate=alternate)
         # store the trace if the station type is in the valid_station_types
         # list or store the trace if there is no valid_station_types list
         if trace is not None:
@@ -168,9 +176,13 @@ def _read_channel(filename, line_offset, volume, location='', alternate=False):
     """Read channel data from USC V1 text file.
 
     Args:
-        filename (str): Input USC V1 filename.
-        line_offset (int): Line offset to beginning of channel text block.
-        volume (dictionary): Dictionary of formatting information
+        filename (str):
+            Input USC V1 filename.
+        line_offset (int):
+            Line offset to beginning of channel text block.
+        volume (dictionary):
+            Dictionary of formatting information.
+
     Returns:
         tuple: (obspy Trace, int line offset)
     """
@@ -222,7 +234,7 @@ def _read_channel(filename, line_offset, volume, location='', alternate=False):
             data *= UNIT_CONVERSIONS[unit]
             logging.debug('Data converted from %s to cm/s/s' % (unit))
         else:
-            raise GMProcessException('USC: %s is not a supported unit.' % unit)
+            raise ValueError('USC: %s is not a supported unit.' % unit)
 
     # Put file name into dictionary
     head, tail = os.path.split(filename)
@@ -331,9 +343,9 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
             hdr['channel'] = channel
             logging.debug('channel: %s' % hdr['channel'])
         else:
-            errstr = ('USC: Not enough information to distinguish horizontal from '
-                      'vertical channels.')
-            raise GMProcessException(errstr)
+            errstr = ('USC: Not enough information to distinguish horizontal '
+                      'from vertical channels.')
+            raise BaseException(errstr)
 
         if location == '':
             hdr['location'] = '--'
@@ -381,7 +393,7 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
             longitude = -longitude
         coordinates['latitude'] = latitude
         coordinates['longitude'] = longitude
-        logging.warn('Setting elevation to 0.0')
+        logging.warning('Setting elevation to 0.0')
         coordinates['elevation'] = 0.0
         # Get standard paramaters
         standard['units_type'] = get_units_type(hdr['channel'])
@@ -423,9 +435,13 @@ def _dms2dd(degrees, minutes, seconds):
     """Helper method for converting degrees, minutes, seconds to decimal.
 
     Args:
-        degrees (int): Lat/Lon degrees.
-        minutes (int): Lat/Lon minutes.
-        seconds (int): Lat/Lon seconds.
+        degrees (int):
+            Lat/Lon degrees.
+        minutes (int):
+            Lat/Lon minutes.
+        seconds (int):
+            Lat/Lon seconds.
+
     Returns:
         float: Lat/Lon in decimal degrees
     """
@@ -438,7 +454,8 @@ def _get_units(line):
     Parse units from a text line.
 
     Args:
-        line (str): text line which should contain units.
+        line (str):
+            Text line which should contain units.
     """
     line = line.lower()
     if line.find('in units of') >= 0:

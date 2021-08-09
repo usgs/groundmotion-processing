@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # stdlib imports
 import os.path
@@ -12,15 +13,15 @@ import pkg_resources
 from gmprocess.io.read import read_data
 from gmprocess.io.test_utils import read_data_dir
 from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace
 
 
 def test_arias():
     ddir = os.path.join('data', 'testdata')
     datadir = pkg_resources.resource_filename('gmprocess', ddir)
     data_file = os.path.join(datadir, 'arias_data.json')
-    with open(data_file, 'rt') as f:
+    with open(data_file, 'rt', encoding='utf-8') as f:
         jdict = json.load(f)
 
     time = np.array(jdict['time'])

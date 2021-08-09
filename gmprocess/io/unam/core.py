@@ -7,23 +7,20 @@ import re
 
 # third party imports
 import numpy as np
-from scipy import constants
 
 # local
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
-from gmprocess.io.seedname import (get_channel_name,
-                                   get_units_type,
-                                   is_channel_north)
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.io.seedname import (get_channel_name, is_channel_north)
 
 
 TIMEFMT1 = '%Y/%m/%d %H:%M:%S.%f'
 TIMEFMT2 = '%Y/%m/%d %H:%M:%S'
-FLOATRE = "[-+]?[0-9]*\.?[0-9]+"
+FLOATRE = r"[-+]?[0-9]*\.?[0-9]+"
 INTRE = "[-+]?[0-9]*"
 
 # 20/07/2017 22:30:58.000000
-TIME_RE = '[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}\.?[0-9]*'
+TIME_RE = r'[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}\.?[0-9]*'
 
 HEADER_LINES = 88
 HEADER_PLUS_COMMENT = 103
@@ -49,7 +46,7 @@ def is_unam(filename):
     try:
         with open(filename, 'rt') as myfile:
             header = [next(myfile) for x in range(7)]
-    except Exception:
+    except BaseException:
         return False
     if MARKER in header[6]:
         return True
@@ -57,11 +54,14 @@ def is_unam(filename):
     return False
 
 
-def read_unam(filename):
+def read_unam(filename, **kwargs):
     """Read the Mexican UNAM strong motion data format.
 
     Args:
-        filename (str): path to UNAM data file.
+        filename (str):
+            Path to UNAM data file.
+        kwargs (ref):
+            Other arguments will be ignored.
 
     Returns:
         list: Sequence of one StationStream object containing 3
@@ -184,18 +184,12 @@ def _read_header(filename):
     az1_north = is_channel_north(az1)
     az2_north = is_channel_north(az2)
     az3_north = is_channel_north(az3)
-    channels[0]['channel'] = get_channel_name(channels[0]['sampling_rate'],
-                                              True,
-                                              az1_vert,
-                                              az1_north)
-    channels[1]['channel'] = get_channel_name(channels[1]['sampling_rate'],
-                                              True,
-                                              az2_vert,
-                                              az2_north)
-    channels[2]['channel'] = get_channel_name(channels[2]['sampling_rate'],
-                                              True,
-                                              az3_vert,
-                                              az3_north)
+    channels[0]['channel'] = get_channel_name(
+        channels[0]['sampling_rate'], True, az1_vert, az1_north)
+    channels[1]['channel'] = get_channel_name(
+        channels[1]['sampling_rate'], True, az2_vert, az2_north)
+    channels[2]['channel'] = get_channel_name(
+        channels[2]['sampling_rate'], True, az3_vert, az3_north)
 
     # get channel npts
     npts_strings = header_dict['NUM. TOTAL DE MUESTRAS, C1-C6'].split('/')
@@ -227,86 +221,94 @@ def _read_header(filename):
         if coord2.strip().endswith('S'):
             latitude *= -1
     elevation = float(header_dict['ALTITUD (msnm)'])
-    cdict = {'latitude': latitude,
-             'longitude': longitude,
-             'elevation': elevation}
+    cdict = {
+        'latitude': latitude,
+        'longitude': longitude,
+        'elevation': elevation
+    }
     channels[0]['coordinates'] = cdict
     channels[1]['coordinates'] = cdict
     channels[2]['coordinates'] = cdict
 
     # fill in other standard stuff
-    channels[0]['standard']['units_type'] = 'acc'
-    channels[1]['standard']['units_type'] = 'acc'
-    channels[2]['standard']['units_type'] = 'acc'
+    standard0 = channels[0]['standard']
+    standard1 = channels[1]['standard']
+    standard2 = channels[2]['standard']
+    standard0['units_type'] = 'acc'
+    standard1['units_type'] = 'acc'
+    standard2['units_type'] = 'acc'
 
-    channels[0]['standard']['source_format'] = SOURCE_FORMAT
-    channels[1]['standard']['source_format'] = SOURCE_FORMAT
-    channels[2]['standard']['source_format'] = SOURCE_FORMAT
+    standard0['source_format'] = SOURCE_FORMAT
+    standard1['source_format'] = SOURCE_FORMAT
+    standard2['source_format'] = SOURCE_FORMAT
 
-    channels[0]['standard']['instrument'] = header_dict['MODELO DEL ACELEROGRAFO']
-    channels[1]['standard']['instrument'] = header_dict['MODELO DEL ACELEROGRAFO']
-    channels[2]['standard']['instrument'] = header_dict['MODELO DEL ACELEROGRAFO']
+    standard0['instrument'] = header_dict['MODELO DEL ACELEROGRAFO']
+    standard1['instrument'] = header_dict['MODELO DEL ACELEROGRAFO']
+    standard2['instrument'] = header_dict['MODELO DEL ACELEROGRAFO']
 
-    channels[0]['standard']['sensor_serial_number'] = header_dict['NUMERO DE SERIE DEL ACELEROGRAFO']
-    channels[1]['standard']['sensor_serial_number'] = header_dict['NUMERO DE SERIE DEL ACELEROGRAFO']
-    channels[2]['standard']['sensor_serial_number'] = header_dict['NUMERO DE SERIE DEL ACELEROGRAFO']
+    standard0['sensor_serial_number'] = \
+        header_dict['NUMERO DE SERIE DEL ACELEROGRAFO']
+    standard1['sensor_serial_number'] = \
+        header_dict['NUMERO DE SERIE DEL ACELEROGRAFO']
+    standard2['sensor_serial_number'] = \
+        header_dict['NUMERO DE SERIE DEL ACELEROGRAFO']
 
-    channels[0]['standard']['process_level'] = PROCESS_LEVELS['V1']
-    channels[1]['standard']['process_level'] = PROCESS_LEVELS['V1']
-    channels[2]['standard']['process_level'] = PROCESS_LEVELS['V1']
+    standard0['process_level'] = PROCESS_LEVELS['V1']
+    standard1['process_level'] = PROCESS_LEVELS['V1']
+    standard2['process_level'] = PROCESS_LEVELS['V1']
 
-    channels[0]['standard']['process_time'] = ''
-    channels[1]['standard']['process_time'] = ''
-    channels[2]['standard']['process_time'] = ''
+    standard0['process_time'] = ''
+    standard1['process_time'] = ''
+    standard2['process_time'] = ''
 
-    channels[0]['standard']['station_name'] = header_dict['NOMBRE DE LA ESTACION']
-    channels[1]['standard']['station_name'] = header_dict['NOMBRE DE LA ESTACION']
-    channels[2]['standard']['station_name'] = header_dict['NOMBRE DE LA ESTACION']
+    standard0['station_name'] = header_dict['NOMBRE DE LA ESTACION']
+    standard1['station_name'] = header_dict['NOMBRE DE LA ESTACION']
+    standard2['station_name'] = header_dict['NOMBRE DE LA ESTACION']
 
-    channels[0]['standard']['structure_type'] = ''
-    channels[1]['standard']['structure_type'] = ''
-    channels[2]['standard']['structure_type'] = ''
+    standard0['structure_type'] = ''
+    standard1['structure_type'] = ''
+    standard2['structure_type'] = ''
 
-    channels[0]['standard']['corner_frequency'] = np.nan
-    channels[1]['standard']['corner_frequency'] = np.nan
-    channels[2]['standard']['corner_frequency'] = np.nan
+    standard0['corner_frequency'] = np.nan
+    standard1['corner_frequency'] = np.nan
+    standard2['corner_frequency'] = np.nan
 
-    channels[0]['standard']['units'] = 'cm/s/s'
-    channels[1]['standard']['units'] = 'cm/s/s'
-    channels[2]['standard']['units'] = 'cm/s/s'
+    standard0['units'] = 'cm/s/s'
+    standard1['units'] = 'cm/s/s'
+    standard2['units'] = 'cm/s/s'
 
     periods = _get_periods(header_dict['FREC. NAT. DE SENSORES, C1-C6, (Hz)'])
-    channels[0]['standard']['instrument_period'] = periods[0]
-    channels[1]['standard']['instrument_period'] = periods[1]
-    channels[2]['standard']['instrument_period'] = periods[2]
+    standard0['instrument_period'] = periods[0]
+    standard1['instrument_period'] = periods[1]
+    standard2['instrument_period'] = periods[2]
 
     dampings = _get_dampings(header_dict['AMORTIGUAMIENTO DE SENSORES, C1-C6'])
-    channels[0]['standard']['instrument_damping'] = dampings[0]
-    channels[1]['standard']['instrument_damping'] = dampings[1]
-    channels[2]['standard']['instrument_damping'] = dampings[2]
+    standard0['instrument_damping'] = dampings[0]
+    standard1['instrument_damping'] = dampings[1]
+    standard2['instrument_damping'] = dampings[2]
 
     with open(filename, 'rt') as myfile:
         header = [next(myfile) for x in range(HEADER_PLUS_COMMENT)]
     clines = header[89:102]
     comments = ' '.join(clines).strip()
-    channels[0]['standard']['comments'] = comments
-    channels[1]['standard']['comments'] = comments
-    channels[2]['standard']['comments'] = comments
+    standard0['comments'] = comments
+    standard1['comments'] = comments
+    standard2['comments'] = comments
 
     head, tail = os.path.split(filename)
     source_file = tail or os.path.basename(head)
-    channels[0]['standard']['source_file'] = source_file
-    channels[1]['standard']['source_file'] = source_file
-    channels[2]['standard']['source_file'] = source_file
+    standard0['source_file'] = source_file
+    standard1['source_file'] = source_file
+    standard2['source_file'] = source_file
 
-    channels[0]['standard']['source'] = SOURCE
-    channels[1]['standard']['source'] = SOURCE
-    channels[2]['standard']['source'] = SOURCE
+    standard0['source'] = SOURCE
+    standard1['source'] = SOURCE
+    standard2['source'] = SOURCE
 
     decfactor = float(header_dict['FACTOR DE DECIMACION'])
-    channels[0]['standard']['instrument_sensitivity'] = decfactor
-    channels[1]['standard']['instrument_sensitivity'] = decfactor
-    channels[2]['standard']['instrument_sensitivity'] = decfactor
+    standard0['instrument_sensitivity'] = decfactor
+    standard1['instrument_sensitivity'] = decfactor
+    standard2['instrument_sensitivity'] = decfactor
 
     return channels
 

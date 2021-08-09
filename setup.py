@@ -1,29 +1,31 @@
-import os
-import versioneer
-from distutils.core import setup
-from distutils.extension import Extension
-from Cython.Distutils import build_ext
-from Cython.Build import cythonize
-import numpy
-import glob
+# -*- coding: utf-8 -*-
 
-os.environ['CC'] = 'clang'
+from setuptools import setup
+import os
+from distutils.extension import Extension
+from Cython.Build import cythonize
+import glob
+import numpy
 
 sourcefiles = ["gmprocess/metrics/oscillators.pyx",
                "gmprocess/metrics/cfuncs.c"]
-ko_sourcefiles = ["gmprocess/smoothing/konno_ohmachi.pyx",
-                  "gmprocess/smoothing/smoothing.c"]
+ko_sourcefiles = ["gmprocess/waveform_processing/smoothing/konno_ohmachi.pyx",
+                  "gmprocess/waveform_processing/smoothing/smoothing.c"]
+
+libraries = []
+if os.name == 'posix':
+    libraries.append('m')
 
 ext_modules = [
     Extension(
         "gmprocess.metrics.oscillators",
         sourcefiles,
-        libraries=["m"],
+        libraries=libraries,
         include_dirs=[numpy.get_include()]),
     Extension(
-        "gmprocess.smoothing.konno_ohmachi",
+        "gmprocess.waveform_processing.smoothing.konno_ohmachi",
         ko_sourcefiles,
-        libraries=["m"],
+        libraries=libraries,
         include_dirs=[numpy.get_include()])
 ]
 
@@ -38,15 +40,17 @@ setup(
                   'hschovanec@usgs.gov, jrekoske@usgs.gov, '
                   'baagaard@usgs.gov, cbworden@contractor.usgs.gov'),
     url='https://github.com/usgs/groundmotion-processing',
-    version=versioneer.get_version(),
-    mdclass=versioneer.get_cmdclass(),
     packages=[
         'gmprocess',
+        'gmprocess.apps',
+        'gmprocess.bin',
+        'gmprocess.subcommands',
+        'gmprocess.core',
         'gmprocess.io',
         'gmprocess.io.asdf',
         'gmprocess.io.bhrc',
         'gmprocess.io.esm',
-        'gmprocess.io.fdsn',
+        'gmprocess.io.obspy',
         'gmprocess.io.nsmn',
         'gmprocess.io.cwb',
         'gmprocess.io.dmg',
@@ -64,14 +68,24 @@ setup(
         'gmprocess.metrics.combination',
         'gmprocess.metrics.transform',
         'gmprocess.metrics.reduction',
-        'gmprocess.smoothing'],
+        'gmprocess.utils',
+        'gmprocess.waveform_processing',
+        'gmprocess.waveform_processing.smoothing'
+    ],
     package_data={
         'gmprocess':
             glob.glob('gmprocess/data/**', recursive=True)
     },
-    scripts=glob.glob('bin/*'),
-    cmdclass={
-        "build_ext": build_ext
+    entry_points={
+        'console_scripts': [
+            'gmconvert = gmprocess.bin.gmconvert:main',
+            'gminfo = gmprocess.bin.gminfo:main',
+            'gmrecords = gmprocess.bin.gmrecords:main',
+            'gmprocess2 = gmprocess.bin.gmprocess2:main',
+            'gmsetup = gmprocess.bin.gmsetup:main',
+            'gmworkspace = gmprocess.bin.gmworkspace:main',
+            'list_metrics = gmprocess.bin.list_metrics:main'
+        ]
     },
     ext_modules=cythonize(ext_modules)
 )

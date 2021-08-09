@@ -7,15 +7,16 @@ import re
 
 # Third party imports
 import numpy as np
+from obspy import Stream
 import pandas as pd
 
 # Local imports
-from gmprocess.config import get_config
-from gmprocess.constants import GAL_TO_PCTG
+from gmprocess.utils.config import get_config
+from gmprocess.utils.constants import GAL_TO_PCTG
 from gmprocess.metrics.exception import PGMException
 from gmprocess.metrics.gather import gather_pgms
-from gmprocess.stationstream import StationStream
-from gmprocess.constants import METRICS_XML_FLOAT_STRING_FORMAT
+from gmprocess.core.stationstream import StationStream
+from gmprocess.utils.constants import METRICS_XML_FLOAT_STRING_FORMAT
 
 
 def _get_channel_dict(channel_names):
@@ -41,26 +42,38 @@ class MetricsController(object):
     """
 
     def __init__(self, imts, imcs, timeseries, bandwidth=None, damping=None,
-                 event=None, smooth_type=None):
-        """
+                 event=None, smooth_type=None, allow_nans=None, config=None):
+        """Initialize MetricsController class.
+
         Args:
             imts (list):
                 Intensity measurement types (string) to calculate.
             imcs (list):
                 Intensity measurement components (string) to
-                calculate. timeseries (StationStream): Stream of the
-                timeseries data.
+                calculate.
+            timeseries (StationStream):
+                Stream of the timeseries data.
+            bandwidth (float):
+                Bandwidth for the smoothing calculation.
+            damping (float):
+                Damping for the oscillator calculation.
             event (ScalarEvent):
                 Defines the focal time, geographic location, and magnitude of
                 an earthquake hypocenter. Default is None.
-            damping (float):
-                Damping for the oscillator calculation.
-            bandwidth (float):
-                Bandwidth for the smoothing calculation.
-            smoothing (string):
+            smooth_type (string):
                 Currently not used, as konno_ohmachi is the only smoothing
                 type.
+            allow_nans (bool):
+                Should nans be allowed in the smoothed spectra. If False, then
+                the number of points in the FFT will be computed to ensure
+                that nans will not result in the smoothed spectra.
+            config (dict):
+                Configuraiton options.
+
+        Raises:
+            PGMException: Requires an event for radial_transfer imcs.
         """
+        self.config = config
         if not isinstance(imts, (list, np.ndarray)):
             imts = [imts]
         if not isinstance(imcs, (list, np.ndarray)):
@@ -76,16 +89,18 @@ class MetricsController(object):
         self.timeseries = timeseries
         self.validate_stream()
         self.event = event
-        self.config = get_config()
         self.damping = damping
         self.smooth_type = smooth_type
         self.bandwidth = bandwidth
+        self.allow_nans = allow_nans
         if damping is None:
             self.damping = self.config['metrics']['sa']['damping']
         if smooth_type is None:
             self.smooth_type = self.config['metrics']['fas']['smoothing']
         if bandwidth is None:
             self.bandwidth = self.config['metrics']['fas']['bandwidth']
+        if allow_nans is None:
+            self.allow_nans = self.config['metrics']['fas']['allow_nans']
         self._available_imts, self._available_imcs = gather_pgms()
         self._step_sets = self.get_steps()
         imtstr = '_'.join(imts)
@@ -93,6 +108,7 @@ class MetricsController(object):
             self._times = self._get_horizontal_time()
         else:
             self._times = None
+        self.max_period = self._get_max_period()
         self.pgms = self.execute_steps()
 
     @classmethod
@@ -111,35 +127,43 @@ class MetricsController(object):
                 Defines the focal time, geographic location and magnitude of
                 an earthquake hypocenter. Default is None.
 
+        Returns:
+            MetricsController class.
+
         Notes:
             Custom configs must be in the following format:
-                    {'metrics':
-                            'output_imcs': <list>,
-                            'output_imts': <list>,
-                            'sa':{
-                                    'damping': <float>,
-                                    'periods': {
-                                            'start': <float>,
-                                            'stop': <float>,
-                                            'num': <float>,
-                                            'spacing': <string>,
-                                            'use_array': <bool>,
-                                            'defined_periods': <list>,
-                                    }
-                            },
-                            'fas':{
-                                    'smoothing': <float>,
-                                    'bandwidth': <float>,
-                                    'periods': {
-                                            'start': <float>,
-                                            'stop': <float>,
-                                            'num': <float>,
-                                            'spacing': <string>,
-                                            'use_array': <bool>,
-                                            'defined_periods': <list>,
-                                    }
-                            }
+            {
+                'metrics':
+                    'output_imcs': <list>,
+                    'output_imts': <list>,
+                    'sa':{
+                        'damping': <float>,
+                        'periods': {
+                            'start': <float>,
+                            'stop': <float>,
+                            'num': <float>,
+                            'spacing': <string>,
+                            'use_array': <bool>,
+                            'defined_periods': <list>,
+                        }
+                    },
+                    'fas':{
+                        'smoothing': <str>,
+                        'bandwidth': <float>,
+                        'allow_nans': <bool>,
+                        'periods': {
+                            'start': <float>,
+                            'stop': <float>,
+                            'num': <float>,
+                            'spacing': <string>,
+                            'use_array': <bool>,
+                            'defined_periods': <list>,
+                        }
+                    },
+                    'duration':{
+                        'intervals': <list>
                     }
+            }
             Currently the only acceptied smoothing type is 'konno_ohmachi',
             and the options for spacing are 'linspace' or 'logspace'.
         """
@@ -148,7 +172,7 @@ class MetricsController(object):
         metrics = config['metrics']
         config_imts = [imt.lower() for imt in metrics['output_imts']]
         imcs = [imc.lower() for imc in metrics['output_imcs']]
-        # append periods
+        # append periods for sa and fas, interval for duration
         imts = []
         for imt in config_imts:
             if imt == 'sa':
@@ -179,13 +203,18 @@ class MetricsController(object):
                 else:
                     for period in metrics['fas']['periods']['defined_periods']:
                         imts += ['fas' + str(period)]
+            elif imt == 'duration':
+                for interval in metrics['duration']['intervals']:
+                    imts += ['duration' + interval]
             else:
                 imts += [imt]
         damping = metrics['sa']['damping']
         smoothing = metrics['fas']['smoothing']
         bandwidth = metrics['fas']['bandwidth']
+        allow_nans = metrics['fas']['allow_nans']
         controller = cls(imts, imcs, timeseries, bandwidth=bandwidth,
-                         damping=damping, event=event, smooth_type=smoothing)
+                         damping=damping, event=event, smooth_type=smoothing,
+                         allow_nans=allow_nans, config=config)
 
         return controller
 
@@ -212,6 +241,7 @@ class MetricsController(object):
         pgm_steps = {}
         for imt in self.imts:
             period = None
+            interval = None
             integrate = False
             differentiate = False
             baseimt = imt
@@ -235,6 +265,11 @@ class MetricsController(object):
                 if period is None:
                     continue
                 imt = 'fas'
+            elif imt.startswith('duration'):
+                interval = self._parse_interval(imt)
+                if interval is None:
+                    continue
+                imt = 'duration'
             if imt not in self._available_imts:
                 continue
             for imc in self.imcs:
@@ -276,6 +311,7 @@ class MetricsController(object):
                 steps.update(imt_steps)
                 steps.update(imc_steps)
                 steps['period'] = period
+                steps['interval'] = interval
                 steps['percentile'] = percentile
                 steps['imc'] = imc
                 steps['imt'] = imt
@@ -294,22 +330,24 @@ class MetricsController(object):
             next step set will begin. The result cell of the dataframe will be
             filled with a np.nan value.
         """
+        # paths
+        transform_path = 'gmprocess.metrics.transform.'
+        rotation_path = 'gmprocess.metrics.rotation.'
+        combination_path = 'gmprocess.metrics.combination.'
+        reduction_path = 'gmprocess.metrics.reduction.'
+
         # Initialize dictionary for storing the results
         result_dict = None
         for idx, imt_imc in enumerate(self.step_sets):
             step_set = self.step_sets[imt_imc]
             period = step_set['period']
+            interval = step_set['interval']
             percentile = step_set['percentile']
             if period is not None:
                 period = float(period)
             if percentile is not None:
                 percentile = float(percentile)
 
-            # paths
-            transform_path = 'gmprocess.metrics.transform.'
-            rotation_path = 'gmprocess.metrics.rotation.'
-            combination_path = 'gmprocess.metrics.combination.'
-            reduction_path = 'gmprocess.metrics.reduction.'
             try:
                 # -------------------------------------------------------------
                 # Transform 1
@@ -317,8 +355,10 @@ class MetricsController(object):
                     transform_path + step_set['Transform1'])
                 t1_cls = self._get_subclass(inspect.getmembers(
                     t1_mod, inspect.isclass), 'Transform')
-                t1 = t1_cls(self.timeseries, self.damping, period,
-                            self._times).result
+                t1 = t1_cls(
+                    self.timeseries, self.damping, period, self._times,
+                    self.max_period, self.allow_nans, self.bandwidth,
+                    self.config).result
 
                 # -------------------------------------------------------------
                 # Transform 2
@@ -326,7 +366,9 @@ class MetricsController(object):
                     transform_path + step_set['Transform2'])
                 t2_cls = self._get_subclass(inspect.getmembers(
                     t2_mod, inspect.isclass), 'Transform')
-                t2 = t2_cls(t1, self.damping, period, self._times).result
+                t2 = t2_cls(
+                    t1, self.damping, period, self._times, self.max_period,
+                    self.allow_nans, self.bandwidth, self.config).result
 
                 # -------------------------------------------------------------
                 # Rotation
@@ -342,7 +384,9 @@ class MetricsController(object):
                     transform_path + step_set['Transform3'])
                 t3_cls = self._get_subclass(inspect.getmembers(
                     t3_mod, inspect.isclass), 'Transform')
-                t3 = t3_cls(rot, self.damping, period, self._times).result
+                t3 = t3_cls(
+                    rot, self.damping, period, self._times, self.max_period,
+                    self.allow_nans, self.bandwidth, self.config).result
 
                 # -------------------------------------------------------------
                 # Combination 1
@@ -364,13 +408,23 @@ class MetricsController(object):
                 # * Currently, the percentile reduction uses the length
                 #   of c1 to decide if it needs to take the max of the
                 #   data before applying the reduction.
-
                 red_mod = importlib.import_module(
                     reduction_path + step_set['Reduction'])
                 red_cls = self._get_subclass(inspect.getmembers(
                     red_mod, inspect.isclass), 'Reduction')
                 red = red_cls(c1, self.bandwidth, percentile,
-                              period, self.smooth_type).result
+                              period, self.smooth_type, interval).result
+
+                if (step_set['Reduction'] == 'max' and
+                        isinstance(c1, (Stream, StationStream))):
+                    times = red[1]
+                    if imt_imc.split('_')[-1] == 'channels':
+                        for chan in times:
+                            for key in times[chan]:
+                                self.timeseries.select(
+                                    channel=chan)[0].stats[key] = \
+                                    times[chan][key]
+                    red = red[0]
 
                 # -------------------------------------------------------------
                 # Combination 2
@@ -379,7 +433,7 @@ class MetricsController(object):
                 c2_cls = self._get_subclass(inspect.getmembers(
                     c2_mod, inspect.isclass), 'Combination')
                 c2 = c2_cls(red).result
-            except Exception as e:
+            except BaseException as e:
                 msg = ('Error in calculation of %r: %r.\nResult '
                        'cell will be set to np.nan.' % (imt_imc, str(e)))
                 logging.warning(msg)
@@ -419,8 +473,8 @@ class MetricsController(object):
         Validates that the input is a StationStream, the units are either
         'vel' or 'acc', and the length of the traces are all equal.
 
-        Railses:
-            PGMException for the cases where:
+        Raises:
+            PGMException: for the cases where
                     1. The input is not a StationStream.
                     2. The units are not velocity or acceleration.
                     3. The length of the traces are not equal.
@@ -470,10 +524,13 @@ class MetricsController(object):
         imt = steps['imt']
         period = steps['period']
         percentile = steps['percentile']
+        interval = steps['interval']
         if period is not None:
-            imt_str = '%s(%.3f)' % (imt.upper(), float(period))
-            imt_str = '%s(%s)' % (imt.upper(), METRICS_XML_FLOAT_STRING_FORMAT[
-                'period']) % float(period)
+            sfmt = METRICS_XML_FLOAT_STRING_FORMAT['period']
+            tmp_imt_str = '%s(%s)' % (imt.upper(), sfmt)
+            imt_str = tmp_imt_str % float(period)
+        elif interval is not None:
+            imt_str = '%s%i-%i' % (imt.upper(), interval[0], interval[1])
         else:
             imt_str = imt.upper()
         if percentile is not None:
@@ -522,7 +579,10 @@ class MetricsController(object):
         """
         for trace in self.timeseries:
             if 'Z' not in trace.stats['channel'].upper():
-                times = trace.times()
+                # times = trace.times()
+                times = np.linspace(
+                    0.0, trace.stats.endtime - trace.stats.starttime,
+                    trace.stats.npts)
                 return times
         raise PGMException(
             'MetricsController: At least one horizontal '
@@ -547,24 +607,26 @@ class MetricsController(object):
             if cls_tupple[0] != base_class and cls_tupple[0] != 'PGMException':
                 return cls_tupple[1]
 
-    def _parse_period(self, imt):
+    @staticmethod
+    def _parse_period(imt):
         """
         Parses the period from the imt.
 
         Args:
-            imt (string): Imt that contains a period similar to one of the
-                    following examples:
-                            - SA(1.0)
-                            - SA(1)
-                            - SA1.0
-                            - SA1
+            imt (string):
+                Imt that contains a period similar to one of the following
+                examples:
+                    - SA(1.0)
+                    - SA(1)
+                    - SA1.0
+                    - SA1
         Returns:
-            string: Period for the calculation.
+            str: Period for the calculation.
 
         Notes:
             Can be either a float or integer.
         """
-        period = re.findall('\d+', imt)
+        period = re.findall(r'\d+', imt)
 
         if len(period) > 1:
             period = '.'.join(period)
@@ -574,24 +636,49 @@ class MetricsController(object):
             period = None
         return period
 
-    def _parse_percentile(self, imc):
+    @staticmethod
+    def _parse_interval(imt):
         """
-        Parses the percentile from the imc.
+        Parses the interval from the imt string.
 
         Args:
-            imc (string): Imc that contains a period similar to one of the
-                    following examples:
-                            - ROTD(50.0)
-                            - ROTD(50)
-                            - ROTD50.0
-                            - ROTD50
+            imt (string):
+                Imt that contains a interval.
+                example:
+                    - duration5-95
         Returns:
-            string: Period for the calculation.
+            str: Interval for the calculation.
 
         Notes:
             Can be either a float or integer.
         """
-        percentile = re.findall('\d+', imc)
+        tmpstr = imt.replace('duration', '')
+        if tmpstr:
+            return [int(p) for p in tmpstr.split('-')]
+        else:
+            return None
+
+    @staticmethod
+    def _parse_percentile(imc):
+        """
+        Parses the percentile from the imc.
+
+        Args:
+            imc (string):
+                Imc that contains a period similar to one of the following
+                examples:
+                    - ROTD(50.0)
+                    - ROTD(50)
+                    - ROTD50.0
+                    - ROTD50
+
+        Returns:
+            str: Period for the calculation.
+
+        Notes:
+            Can be either a float or integer.
+        """
+        percentile = re.findall(r'\d+', imc)
         if len(percentile) > 1:
             percentile = '.'.join(percentile)
         elif len(percentile) == 1:
@@ -599,6 +686,17 @@ class MetricsController(object):
         else:
             percentile = None
         return percentile
+
+    def _get_max_period(self):
+        periods = []
+        for imt in self.imts:
+            period = self._parse_period(imt)
+            if period is not None:
+                periods.append(float(period))
+        if periods:
+            return max(periods)
+        else:
+            return None
 
     def clean_imts(self):
         cleaned_imts = set()

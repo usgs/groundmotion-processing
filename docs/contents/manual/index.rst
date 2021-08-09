@@ -1,0 +1,19 @@
+Manual
+======
+
+.. toctree::
+
+   Data Structures <data_structures>
+   Workspace <workspace>
+   Configuration File <config_file>
+   Processing Steps <processing>
+   Utilities <utilities>
+
+
+
+.. Indices and tables
+.. ==================
+
+.. * :ref:`genindex`
+.. * :ref:`modindex`
+.. * :ref:`search`

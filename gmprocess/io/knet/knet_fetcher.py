@@ -21,8 +21,8 @@ from obspy.core.utcdatetime import UTCDateTime
 # local imports
 from gmprocess.io.fetcher import DataFetcher, _get_first_value
 from gmprocess.io.knet.core import read_knet
-from gmprocess.streamcollection import StreamCollection
-from gmprocess.config import get_config
+from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.utils.config import get_config
 
 
 JST_OFFSET = 9 * 3600  # Japan standard time is UTC + 9
@@ -44,11 +44,11 @@ QUARTERS = {1: 1, 2: 1, 3: 1,
             10: 10, 11: 10, 12: 10}
 
 # 2019/03/13-13:48:00.00
-TIMEPAT = '[0-9]{4}/[0-9]{2}/[0-9]{2}-[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{2}'
-LATPAT = '[0-9]{2}\.[0-9]{2}N'
-LONPAT = '[0-9]{3}\.[0-9]{2}E'
+TIMEPAT = r'[0-9]{4}/[0-9]{2}/[0-9]{2}-[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{2}'
+LATPAT = r'[0-9]{2}\.[0-9]{2}N'
+LONPAT = r'[0-9]{3}\.[0-9]{2}E'
 DEPPAT = '[0-9]{3}km'
-MAGPAT = 'M[0-9]{1}\.[0-9]{1}'
+MAGPAT = r'M[0-9]{1}\.[0-9]{1}'
 TIMEFMT = '%Y/%m/%d-%H:%M:%S.%f'
 
 # default values for this fetcher
@@ -74,37 +74,50 @@ MAGS[9.9] = 1065
 
 
 class KNETFetcher(DataFetcher):
-    def __init__(self, time, lat, lon,
-                 depth, magnitude,
-                 user=None, password=None,
-                 radius=None, dt=None, ddepth=None,
-                 dmag=None,
-                 rawdir=None, config=None, drop_non_free=True):
+    def __init__(self, time, lat, lon, depth, magnitude,
+                 user=None, password=None, radius=None, dt=None, ddepth=None,
+                 dmag=None, rawdir=None, config=None,
+                 drop_non_free=True, stream_collection=True):
         """Create a KNETFetcher instance.
 
         Download KNET/KikNet data from the Japanese NIED site:
         http://www.kyoshin.bosai.go.jp/cgi-bin/kyoshin/quick/list_eqid_en.cgi
 
         Args:
-            time (datetime): Origin time.
-            lat (float): Origin latitude.
-            lon (float): Origin longitude.
-            depth (float): Origin depth.
-            magnitude (float): Origin magnitude.
-            user (str): username for KNET/KikNET site.
-            password (str): (Optional) password for site.
-            radius (float): Search radius (km).
-            dt (float): Search time window (sec).
-            ddepth (float): Search depth window (km).
-            dmag (float): Search magnitude window (magnitude units).
-            rawdir (str): Path to location where raw data will be stored.
-                          If not specified, raw data will be deleted.
+            time (datetime):
+                Origin time.
+            lat (float):
+                Origin latitude.
+            lon (float):
+                Origin longitude.
+            depth (float):
+                Origin depth.
+            magnitude (float):
+                Origin magnitude.
+            user (str):
+                username for KNET/KikNET site.
+            password (str):
+                (Optional) password for site.
+            radius (float):
+                Search radius (km).
+            dt (float):
+                Search time window (sec).
+            ddepth (float):
+                Search depth window (km).
+            dmag (float):
+                Search magnitude window (magnitude units).
+            rawdir (str):
+                Path to location where raw data will be stored. If not
+                specified, raw data will be deleted.
             config (dict):
-                Dictionary containing configuration. 
+                Dictionary containing configuration.
                 If None, retrieve global config.
             drop_non_free (bool):
-                Option to ignore non-free-field (borehole, 
-                sensors on structures, etc.)
+                Option to ignore non-free-field (borehole, sensors on
+                structures, etc.)
+            stream_collection (bool):
+                Construct and return a StreamCollection instance?
+
         """
         # what values do we use for search thresholds?
         # In order of priority:
@@ -147,7 +160,8 @@ class KNETFetcher(DataFetcher):
                 user = cfg_user
                 password = cfg_password
             else:
-                fmt = 'Username/password are required to retrieve KNET/KikNET data.'
+                fmt = ('Username/password are required to retrieve '
+                       'KNET/KikNET data.')
                 raise Exception(fmt)
 
         if user == 'USERNAME' or password == 'PASSWORD':
@@ -161,9 +175,10 @@ class KNETFetcher(DataFetcher):
                    'to use your username and password.')
             raise Exception(fmt)
 
-        # allow user to turn restrict stations on or off. Restricting saves time,
-        # probably will not ignore significant data.
-        self.restrict_stations = config['fetchers']['KNETFetcher']['restrict_stations']
+        # allow user to turn restrict stations on or off. Restricting saves
+        # time, probably will not ignore significant data.
+        self.restrict_stations = \
+            config['fetchers']['KNETFetcher']['restrict_stations']
 
         self.user = user
         self.password = password
@@ -188,6 +203,7 @@ class KNETFetcher(DataFetcher):
         # this announces to the world the valid bounds for this fetcher.
         self.BOUNDS = [xmin, xmax, ymin, ymax]
         self.drop_non_free = drop_non_free
+        self.stream_collection = stream_collection
 
     def getMatchingEvents(self, solve=True):
         """Return a list of dictionaries matching input parameters.
@@ -354,37 +370,43 @@ class KNETFetcher(DataFetcher):
             tar.close()
             os.remove(tarball)
 
-        streams = []
         for subdir in subdirs:
             gzfiles = glob.glob(os.path.join(subdir, '*.gz'))
             for gzfile in gzfiles:
                 os.remove(gzfile)
-            datafiles = glob.glob(os.path.join(subdir, '*.*'))
-            for dfile in datafiles:
-                logging.info('Reading KNET/KikNet file %s...' % dfile)
-                streams += read_knet(dfile)
 
-        if self.rawdir is None:
-            shutil.rmtree(rawdir)
+        if self.stream_collection:
+            streams = []
+            for subdir in subdirs:
+                datafiles = glob.glob(os.path.join(subdir, '*.*'))
+                for dfile in datafiles:
+                    logging.info('Reading KNET/KikNet file %s...' % dfile)
+                    streams += read_knet(dfile)
 
-        # Japan gives us a LOT of data, much of which is not useful as it is
-        # too far away. Use the following distance thresholds for different
-        # magnitude ranges, and trim streams that are beyond this distance.
-        if self.restrict_stations:
+            if self.rawdir is None:
+                shutil.rmtree(rawdir)
+
+            # Japan gives us a LOT of data, much of which is not useful as it
+            # is too far away. Use the following distance thresholds for
+            # different magnitude ranges, and trim streams that are beyond this
+            # distance.
             threshold_distance = None
-            for mag, tdistance in MAGS.items():
-                if self.magnitude < mag:
-                    threshold_distance = tdistance
-                    break
+            if self.restrict_stations:
+                for mag, tdistance in MAGS.items():
+                    if self.magnitude < mag:
+                        threshold_distance = tdistance
+                        break
 
-        newstreams = []
-        for stream in streams:
-            slat = stream[0].stats.coordinates.latitude
-            slon = stream[0].stats.coordinates.longitude
-            distance = geodetic_distance(self.lon, self.lat, slon, slat)
-            if distance <= threshold_distance:
-                newstreams.append(stream)
+            newstreams = []
+            for stream in streams:
+                slat = stream[0].stats.coordinates.latitude
+                slon = stream[0].stats.coordinates.longitude
+                distance = geodetic_distance(self.lon, self.lat, slon, slat)
+                if distance <= threshold_distance:
+                    newstreams.append(stream)
 
-        stream_collection = StreamCollection(streams=newstreams,
-                                             drop_non_free=self.drop_non_free)
-        return stream_collection
+            stream_collection = StreamCollection(
+                streams=newstreams, drop_non_free=self.drop_non_free)
+            return stream_collection
+        else:
+            return None

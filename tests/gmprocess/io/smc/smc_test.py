@@ -9,7 +9,7 @@ import numpy as np
 import pkg_resources
 
 from gmprocess.io.smc.core import is_smc, read_smc
-from gmprocess.streamcollection import StreamCollection
+from gmprocess.core.streamcollection import StreamCollection
 
 
 def test_smc():
@@ -60,7 +60,7 @@ def test_smc():
 
 
 def test_bad():
-    dpath = os.path.join('data', 'testdata', 'duplicate_records')
+    dpath = os.path.join('data', 'testdata', 'duplicate', 'general')
     datadir = pkg_resources.resource_filename('gmprocess', dpath)
     tfile = 'np01002r_4225a_u.smc'
     dfile = os.path.join(datadir, tfile)

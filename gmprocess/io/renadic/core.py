@@ -13,8 +13,8 @@ import pandas as pd
 import pkg_resources
 
 # local
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.io.seedname import get_channel_name
 
 
@@ -63,11 +63,14 @@ def is_renadic(filename):
     return False
 
 
-def read_renadic(filename):
+def read_renadic(filename, **kwargs):
     """Read the Chilean RENADIC strong motion data format.
 
     Args:
-        filename (str): path to RENADIC data file.
+        filename (str):
+            path to RENADIC data file.
+        kwargs (ref):
+            Other arguments will be ignored.
 
     Returns:
         list: Sequence of one StationStream object containing 3
@@ -80,7 +83,7 @@ def read_renadic(filename):
     data_dir = pkg_resources.resource_filename('gmprocess',
                                                'data')
     tablefile = os.path.join(data_dir, 'station_coordinates.xlsx')
-    table = pd.read_excel(tablefile)
+    table = pd.read_excel(tablefile, engine="openpyxl")
 
     with open(filename, 'rt', encoding=ENCODING) as f:
         lines1 = [next(f) for x in range(TEXT_HDR_ROWS)]
@@ -248,7 +251,7 @@ def _read_header(lines, filename, table):
         lon = row['Lon']
 
     altitude = 0.0
-    logging.warn('Setting elevation to 0.0')
+    logging.warning('Setting elevation to 0.0')
     coords = {'latitude': lat,
               'longitude': lon,
               'elevation': altitude}

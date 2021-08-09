@@ -10,8 +10,8 @@ from obspy.core.trace import Stats
 import numpy as np
 
 # local imports
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
-from gmprocess.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.core.stationstream import StationStream
 
 TEXT_HDR_ROWS = 64
 # 20190728_160919.870
@@ -30,7 +30,8 @@ def is_esm(filename):
     """Check to see if file is an ESM strong motion file.
 
     Args:
-        filename (str): Path to possible ESM strong motion file.
+        filename (str):
+            Path to possible ESM strong motion file.
     Returns:
         bool: True if ESM, False otherwise.
     """
@@ -46,17 +47,20 @@ def is_esm(filename):
             lines = [next(f) for x in range(TEXT_HDR_ROWS)]
             if lines[0].startswith(HDR1) and lines[1].startswith(HDR2):
                 return True
-    except Exception:
+    except BaseException:
         return False
     return False
 
 
-def read_esm(filename):
+def read_esm(filename, **kwargs):
     """Read European ESM strong motion file.
 
     Args:
-        filename (str): Path to possible ESM data file.
-        kwargs (ref): Other arguments will be ignored.
+        filename (str):
+            Path to possible ESM data file.
+        kwargs (ref):
+            Other arguments will be ignored.
+
     Returns:
         Stream: Obspy Stream containing one channels of acceleration data
             (cm/s**2).
@@ -78,7 +82,6 @@ def read_esm(filename):
 
     stats = {}
     standard = {}
-    format_specific = {}
     coordinates = {}
 
     # fill in all known stats header fields
@@ -156,13 +159,20 @@ def read_esm(filename):
     except ValueError:
         highfreq = np.nan
     if not np.isnan(lowfreq) and not np.isnan(lowfreq):
-        filter_att = {'bandpass_filter':
-                      {'filter_type': ftype,
-                       'lower_corner_frequency': lowfreq,
-                       'higher_corner_frequency': highfreq,
-                       'filter_order': forder}}
+        filter_att = {
+            'bandpass_filter': {
+                'filter_type': ftype,
+                'lower_corner_frequency': lowfreq,
+                'higher_corner_frequency': highfreq,
+                'filter_order': forder
+            }
+        }
         trace.setProvenance('lowpass_filter', filter_att)
-    detrend_att = {'detrend': {'detrending_method': 'baseline'}}
+    detrend_att = {
+        'detrend': {
+            'detrending_method': 'baseline'
+        }
+    }
     if 'NOT REMOVED' not in header['BASELINE_CORRECTION']:
         trace.setProvenance('detrend', detrend_att)
     stream = StationStream(traces=[trace])

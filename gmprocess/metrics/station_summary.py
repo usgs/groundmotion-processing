@@ -12,12 +12,12 @@ from openquake.hazardlib.geo.geodetic import distance
 from impactutils.rupture.point_rupture import PointRupture
 
 # local imports
-from gmprocess.config import get_config
+from gmprocess.utils.config import get_config
 from gmprocess.metrics.gather import gather_pgms
 from gmprocess.metrics.metrics_controller import MetricsController
-from gmprocess.constants import (
+from gmprocess.utils.constants import (
     ELEVATION_FOR_DISTANCE_CALCS, METRICS_XML_FLOAT_STRING_FORMAT)
-
+from gmprocess.utils.tables import _get_table_row, find_float
 
 XML_UNITS = {
     'pga': '%g',
@@ -25,7 +25,8 @@ XML_UNITS = {
     'sa': '%g',
     'arias': 'm/s',
     'fas': 'cm/s',
-    'duration': 's'
+    'duration': 's',
+    'sorted_duration': 's'
 }
 
 DEFAULT_DAMPING = 0.05
@@ -144,9 +145,10 @@ class StationSummary(object):
                     rupture=None, vs30_grids=None):
         """
         Args:
-            stream (obspy.core.stream.Stream): Strong motion timeseries
-                for one station.
-            config (dictionary): Configuration dictionary.
+            stream (obspy.core.stream.Stream):
+                Strong motion timeseries for one station.
+            config (dictionary):
+                Configuration dictionary.
             event (ScalarEvent):
                 Object containing latitude, longitude, depth, and magnitude.
             calc_waveform_metrics (bool):
@@ -158,6 +160,10 @@ class StationSummary(object):
             vs30_grids (dict):
                 A dictionary containing the vs30 grid files, names, and
                 descriptions (see config).
+
+        Returns:
+            class: StationSummary class.
+
         Note:
             Assumes a processed stream with units of gal (1 cm/s^2).
             No processing is done by this class.
@@ -205,11 +211,19 @@ class StationSummary(object):
     def from_pgms(cls, station_code, pgms):
         """
         Args:
-            station_code (str): Station code for the given pgms.
-            pgms (dictionary): Dictionary of pgms.
+            station_code (str):
+                Station code for the given pgms.
+            pgms (dict):
+                Dictionary of pgms.
+
+        Returns:
+            class: StationSummary clsas.
+
         Note:
             The pgm dictionary must be formated as imts with subdictionaries
             containing imcs:
+
+            ```
                 {
                   'SA1.0': {
                     'H2': 84.23215974982956,
@@ -219,6 +233,8 @@ class StationSummary(object):
                   },
                   ...
                 }
+            ```
+
             This should be the default format for significant ground motion
             parametric data from COMCAT.
         """
@@ -245,22 +261,32 @@ class StationSummary(object):
 
     @classmethod
     def from_stream(cls, stream, components, imts, event=None,
-                    damping=None, smoothing=None, bandwidth=None, config=None,
-                    calc_waveform_metrics=True, calc_station_metrics=True,
-                    rupture=None, vs30_grids=None):
+                    damping=None, smoothing=None, bandwidth=None,
+                    allow_nans=None, config=None, calc_waveform_metrics=True,
+                    calc_station_metrics=True, rupture=None, vs30_grids=None):
         """
         Args:
-            stream (obspy.core.stream.Stream): Strong motion timeseries
-                for one station.
-            components (list): List of requested components (str).
-            imts (list): List of requested imts (str).
+            stream (obspy.core.stream.Stream):
+                Strong motion timeseries for one station.
+            components (list):
+                List of requested components (str).
+            imts (list):
+                List of requested imts (str).
             event (ScalarEvent):
                 Origin/magnitude for the event containing time, latitude,
                 longitude, depth, and magnitude.
-            damping (float): Damping of oscillator. Default is None.
-            smoothing (float): Smoothing method. Default is None.
-            bandwidth (float): Bandwidth of smoothing. Default is None.
-            config (dictionary): Configuration dictionary.
+            damping (float):
+                Damping of oscillator. Default is None.
+            smoothing (float):
+                Smoothing method. Default is None.
+            bandwidth (float):
+                Bandwidth of smoothing. Default is None.
+            allow_nans (bool):
+                Should nans be allowed in the smoothed spectra. If False, then
+                the number of points in the FFT will be computed to ensure
+                that nans will not result in the smoothed spectra.
+            config (dictionary):
+                Configuration dictionary.
             calc_waveform_metrics (bool):
                 Whether to calculate waveform metrics. Default is True.
             calc_station_metrics (bool):
@@ -286,6 +312,8 @@ class StationSummary(object):
             smoothing = config['metrics']['fas']['smoothing']
         if bandwidth is None:
             bandwidth = config['metrics']['fas']['bandwidth']
+        if allow_nans is None:
+            allow_nans = config['metrics']['fas']['allow_nans']
 
         station._damping = damping
         station._smoothing = smoothing
@@ -295,10 +323,10 @@ class StationSummary(object):
         station.set_metadata()
 
         if stream.passed and calc_waveform_metrics:
-            metrics = MetricsController(imts, components, stream,
-                                        bandwidth=bandwidth, damping=damping,
-                                        event=event,
-                                        smooth_type=smoothing)
+            metrics = MetricsController(
+                imts, components, stream, bandwidth=bandwidth,
+                allow_nans=allow_nans, damping=damping, event=event,
+                smooth_type=smoothing)
             station.channel_dict = metrics.channel_dict.copy()
             pgms = metrics.pgms
 
@@ -321,6 +349,12 @@ class StationSummary(object):
     def get_pgm(self, imt, imc):
         """
         Finds the imt/imc value requested.
+
+        Args:
+            imt (str):
+                Requested intensity measure type.
+            imc (str):
+                Requested intensity measure component.
 
         Returns:
             float: Value for the imt, imc requested.
@@ -520,10 +554,13 @@ class StationSummary(object):
         </station_metrics>
 
         Args:
-            xml_stream (str): Stream metrics XML string in format above.
-            xml_station (str): Station metrics XML string in format above.
+            xml_stream (str):
+                Stream metrics XML string in format above.
+            xml_station (str):
+                Station metrics XML string in format above.
+
         Returns:
-            StationSummary: Object summarizing all station metrics.
+            object: StationSummary Object summarizing all station metrics.
 
         """
         imtlist = gather_pgms()[0]
@@ -543,13 +580,17 @@ class StationSummary(object):
                     if 'damping' in element.attrib:
                         damping = float(element.attrib['damping'])
                     imt = '%s(%s)' % (etag.upper(), period)
+                elif etag == 'duration':
+                    interval = element.attrib['interval']
+                    imt = '%s%s' % (etag.upper(), interval)
                 else:
                     imt = etag.upper()
                 for imc_element in element.getchildren():
                     imc = imc_element.tag.upper()
                     if imc in ['H1', 'H2', 'Z']:
                         if 'original_channel' in imc_element.attrib:
-                            channel_dict[imc] = imc_element.attrib['original_channel']
+                            channel_dict[imc] = \
+                                imc_element.attrib['original_channel']
                     value = float(imc_element.text)
                     tdict[imc] = value
 
@@ -637,23 +678,22 @@ class StationSummary(object):
                 'gc2_ry': gc2_dict['ry'][0],
                 'gc2_ry0': gc2_dict['ry0'][0],
                 'gc2_U': gc2_dict['U'][0],
-                'gc2_T': gc2_dict['T'][0]})
+                'gc2_T': gc2_dict['T'][0]
+            })
 
         if vs30_grids is not None:
             for vs30_name in vs30_grids.keys():
+                tmpgrid = vs30_grids[vs30_name]
                 self._vs30[vs30_name] = {
-                    'value':
-                        vs30_grids[vs30_name]['grid_object'].getValue(
-                            lat, lon),
-                    'column_header':
-                        vs30_grids[vs30_name]['column_header'],
-                    'readme_entry':
-                        vs30_grids[vs30_name]['readme_entry'],
-                    'units':
-                        vs30_grids[vs30_name]['units']}
+                    'value': tmpgrid['grid_object'].getValue(
+                        float(lat), float(lon)),
+                    'column_header': tmpgrid['column_header'],
+                    'readme_entry': tmpgrid['readme_entry'],
+                    'units': tmpgrid['units']
+                }
 
     def get_metric_xml(self):
-        """Return XML for waveform metrics as defined for our ASDF implementation.
+        """Return waveform metrics XML as defined for our ASDF implementation.
 
         Returns:
             str: XML in the form:
@@ -667,6 +707,8 @@ class StationSummary(object):
                     </maximum_component>
                 </waveform_metrics>
 
+        Raises:
+            KeyError: if the requrested imt is not present.
         """
         FLOAT_MATCH = r'[0-9]*\.[0-9]*'
         root = etree.Element('waveform_metrics',
@@ -687,18 +729,27 @@ class StationSummary(object):
             period = None
             if imtstr.startswith('sa') or imtstr.startswith('fas'):
                 period = float(re.search(FLOAT_MATCH, imtstr).group())
-                attdict = {'period': METRICS_XML_FLOAT_STRING_FORMAT[
-                    'period'] % period,
-                           'units': units}
+                attdict = {
+                    'period': (METRICS_XML_FLOAT_STRING_FORMAT['period']
+                               % period),
+                    'units': units
+                }
                 if imtstr.startswith('sa'):
                     imtstr = 'sa'
                     damping = self._damping
                     if damping is None:
                         damping = DEFAULT_DAMPING
-                    attdict['damping'] = METRICS_XML_FLOAT_STRING_FORMAT[
-                        'damping'] % damping
+                    attdict['damping'] = \
+                        METRICS_XML_FLOAT_STRING_FORMAT['damping'] % damping
                 else:
                     imtstr = 'fas'
+                imt_tag = etree.SubElement(root, imtstr, attrib=attdict)
+            elif imtstr.startswith('duration'):
+                attdict = {
+                    'interval': imtstr.replace('duration', ''),
+                    'units': units
+                }
+                imtstr = 'duration'
                 imt_tag = etree.SubElement(root, imtstr, attrib=attdict)
             else:
                 imt_tag = etree.SubElement(root, imtstr, units=units)
@@ -706,7 +757,9 @@ class StationSummary(object):
             for imc in self.components:
                 imcstr = imc.lower().replace('(', '').replace(')', '')
                 if imc in ['H1', 'H2', 'Z']:
-                    attributes = {'original_channel': self.channel_dict[imc]}
+                    attributes = {
+                        'original_channel': self.channel_dict[imc]
+                    }
                 else:
                     attributes = {}
                 imc_tag = etree.SubElement(imt_tag, imcstr, attrib=attributes)
@@ -777,3 +830,64 @@ class StationSummary(object):
                 data.append(value)
         series = pd.Series(data, index)
         return series
+
+    def get_imc_dict(self, imc=None):
+        """Get an IMC table.
+
+        Args:
+            imc (str or list):
+                String of list of strings specifying the requested IMC.
+
+        Returns:
+            A dictionary with keys corresponding to IMCs, where the associated
+            value is a dictionary with keys corresponding to IMTs.
+        """
+        imc_dict = {}
+        pgms = self.pgms
+        if imc is None:
+            imclist = pgms.index.get_level_values('IMC').unique().tolist()
+        elif not isinstance(imc, list):
+            imclist = [imc]
+        else:
+            imclist = imc
+
+        # Note: in this situation, we can only have 1 row per "table" where the
+        # different IMTs are the different columns.
+        for imc in imclist:
+            row = _get_table_row(
+                self._stream, self, self.event, imc)
+            if not len(row):
+                continue
+            imc_dict[imc] = row
+        return imc_dict
+
+    def get_sa_arrays(self, imc=None):
+        """Get an SA arrays for selected IMCs.
+
+        Args:
+            imc (str or list):
+                String of list of strings specifying the requested IMC.
+
+        Returns:
+            A dictionary with keys corresponding to IMCs, where the associated
+            value is a dictionary with keys of 'period' and 'sa' which are
+            numpy arrays.
+        """
+        imc_dict = self.get_imc_dict(imc)
+        sa_arrays = {}
+        for imc_key, id in imc_dict.items():
+            period = []
+            sa = []
+            for imt, val in id.items():
+                tmp_period = find_float(imt)
+                if tmp_period is not None:
+                    period.append(tmp_period)
+                    sa.append(val)
+            period = np.array(period)
+            sa = np.array(sa)
+            idx = np.argsort(period)
+            sa_arrays[imc_key] = {
+                'period': period[idx],
+                'sa': sa[idx]
+            }
+        return sa_arrays

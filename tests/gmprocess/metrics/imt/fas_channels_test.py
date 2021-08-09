@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # stdlib imports
 import os.path
@@ -11,8 +12,8 @@ import pkg_resources
 
 # Local imports
 from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace
 
 
 def test_fas():
@@ -28,13 +29,14 @@ def test_fas():
 
     stream = StationStream([])
     for idx, fpath in enumerate([p1, p2]):
-        with open(fpath) as file_obj:
+        with open(fpath, encoding='utf-8') as file_obj:
             for _ in range(3):
                 next(file_obj)
             meta = re.findall(r'[.0-9]+', next(file_obj))
             dt = float(meta[1])
             accels = np.array(
-                [col for line in file_obj for col in line.split()])
+                [col for line in file_obj for col in line.split()],
+                dtype=float)
         trace = StationTrace(data=accels, header={
             'channel': 'H' + str(idx),
             'delta': dt,
@@ -71,7 +73,7 @@ def test_fas():
     per = np.unique([
         float(i[0].split(')')[0].split('(')[1]) for i in ind_vals]
     )
-    freqs = 1/per
+    freqs = 1 / per
     imts = ['fas' + str(p) for p in per]
     summary = StationSummary.from_stream(
         stream, ['channels'], imts, bandwidth=30)

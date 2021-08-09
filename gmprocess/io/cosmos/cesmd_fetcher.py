@@ -11,11 +11,11 @@ import numpy as np
 # local imports
 from gmprocess.io.fetcher import DataFetcher, _get_first_value
 from gmprocess.io.read import read_data
-from gmprocess.streamcollection import StreamCollection
-from gmprocess.config import get_config
-from gmprocess.exception import GMProcessException
-from gmprocess.io.cosmos.cesmd_search import (get_records, get_metadata,
-                                              get_stations_dataframe)
+from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.utils.config import get_config
+from gmprocess.io.cosmos.cesmd_search import (
+    get_records, get_metadata,
+    get_stations_dataframe)
 
 # default values for this fetcher
 # if None specified in constructor, AND no parameters specified in
@@ -37,41 +37,51 @@ TIMEFMT = '%Y-%m-%d %H:%M:%S'
 
 
 class CESMDFetcher(DataFetcher):
-    def __init__(self, time, lat, lon,
-                 depth, magnitude,
-                 email=None, process_type='raw',
-                 station_type='Ground',
-                 eq_radius=None, eq_dt=None,
-                 station_radius=None,
-                 rawdir=None, config=None,
-                 drop_non_free=True):
+    def __init__(self, time, lat, lon, depth, magnitude,
+                 email=None, process_type='raw', station_type='Ground',
+                 eq_radius=None, eq_dt=None, station_radius=None,
+                 rawdir=None, config=None, drop_non_free=True,
+                 stream_collection=True):
         """Create a CESMDFetcher instance.
 
         Download strong motion records from the CESMD site:
         https://strongmotioncenter.org/wserv/records/builder/
 
         Args:
-            time (datetime): Origin time.
-            lat (float): Origin latitude.
-            lon (float): Origin longitude.
-            depth (float): Origin depth.
-            magnitude (float): Origin magnitude.
-            email (str): email address for CESMD site.
-            process_type (str): One of 'raw' or 'processed'.
-            station_type (str): One of "Array", "Ground", "Building",
-                                "Bridge", "Dam", "Tunnel", "Wharf",
-                                "Other"
-            eq_radius (float): Earthquake search radius (km).
-            eq_dt (float): Earthquake search time window (sec).
-            station_radius (float): Station search radius (km).
-            rawdir (str): Path to location where raw data will be stored.
-                          If not specified, raw data will be deleted.
+            time (datetime):
+                Origin time.
+            lat (float):
+                Origin latitude.
+            lon (float):
+                Origin longitude.
+            depth (float):
+                Origin depth.
+            magnitude (float):
+                Origin magnitude.
+            email (str):
+                email address for CESMD site.
+            process_type (str):
+                One of 'raw' or 'processed'.
+            station_type (str):
+                One of "Array", "Ground", "Building", "Bridge", "Dam",
+                "Tunnel", "Wharf", "Other"
+            eq_radius (float):
+                Earthquake search radius (km).
+            eq_dt (float):
+                Earthquake search time window (sec).
+            station_radius (float):
+                Station search radius (km).
+            rawdir (str):
+                Path to location where raw data will be stored. If not
+                specified, raw data will be deleted.
             config (dict):
                 Dictionary containing configuration.
                 If None, retrieve global config.
             drop_non_free (bool):
                 Option to ignore non-free-field (borehole, sensors on
                 structures, etc.)
+            stream_collection (bool):
+                Construct and return a StreamCollection instance?
         """
         # what values do we use for search thresholds?
         # In order of priority:
@@ -103,17 +113,14 @@ class CESMDFetcher(DataFetcher):
                     cfg_station_type = fetch_cfg['station_type']
 
         radius = _get_first_value(eq_radius, cfg_eq_radius, EQ_RADIUS)
-        station_radius = _get_first_value(station_radius,
-                                          cfg_station_radius,
-                                          STATION_RADIUS)
+        station_radius = _get_first_value(
+            station_radius, cfg_station_radius, STATION_RADIUS)
         eq_dt = _get_first_value(eq_dt, cfg_eq_dt, EQ_DT)
 
-        station_type = _get_first_value(station_type,
-                                        cfg_station_type,
-                                        STATION_TYPE)
-        process_type = _get_first_value(process_type,
-                                        cfg_process_type,
-                                        PROCESS_TYPE)
+        station_type = _get_first_value(
+            station_type, cfg_station_type, STATION_TYPE)
+        process_type = _get_first_value(
+            process_type, cfg_process_type, PROCESS_TYPE)
 
         # for CESMD, user (email address) is required
         if email is None:
@@ -158,6 +165,7 @@ class CESMDFetcher(DataFetcher):
         # this announces to the world the valid bounds for this fetcher.
         self.BOUNDS = [xmin, xmax, ymin, ymax]
         self.drop_non_free = drop_non_free
+        self.stream_collection = stream_collection
 
     def getMatchingEvents(self, solve=True):
         """Return a list of dictionaries matching input parameters.
@@ -176,15 +184,16 @@ class CESMDFetcher(DataFetcher):
                   - mag Event magnitude
         """
         try:
-            metadata = get_metadata(eqlat=self.lat,
-                                    eqlon=self.lon,
-                                    eqtime=self.time,
-                                    abandoned=False,
-                                    station_type=self.station_type,
-                                    eqtimewindow=self.eq_dt,  # seconds
-                                    eqradius=self.radius,  # km
-                                    station_radius=self.station_radius)
-        except Exception:
+            metadata = get_metadata(
+                eqlat=self.lat,
+                eqlon=self.lon,
+                eqtime=self.time,
+                abandoned=False,
+                station_type=self.station_type,
+                eqtimewindow=self.eq_dt,  # seconds
+                eqradius=self.radius,  # km
+                station_radius=self.station_radius)
+        except BaseException:
             return []
 
         tmp_events = metadata['results']['events']
@@ -234,6 +243,7 @@ class CESMDFetcher(DataFetcher):
         for event in self.metadata['results']['events']:
             if event['time'] == event_dict['time'].strftime(TIMEFMT):
                 has_event = True
+                nstations = self.metadata['count']
                 break
 
         if not has_event:
@@ -242,27 +252,27 @@ class CESMDFetcher(DataFetcher):
         starttime = self.time - timedelta(seconds=self.eq_dt // 2)
         endtime = self.time + timedelta(seconds=self.eq_dt // 2)
 
-        if len(event['stations']) < MAX_STATIONS:
+        if nstations < MAX_STATIONS:
             try:
-                (outfolder,
-                 datafiles) = get_records(self.rawdir,
-                                          self.email,
-                                          unpack=True,
-                                          event_latitude=self.lat,
-                                          event_longitude=self.lon,
-                                          event_radius=self.radius,
-                                          process_level=self.process_type,
-                                          group_by='event',
-                                          max_station_dist=self.station_radius,
-                                          station_type=self.station_type,
-                                          startdate=starttime,
-                                          enddate=endtime,
-                                          )
-            except GMProcessException as gpe:
+                (outfolder, datafiles) = get_records(
+                    self.rawdir,
+                    self.email,
+                    unpack=True,
+                    event_latitude=self.lat,
+                    event_longitude=self.lon,
+                    event_radius=self.radius,
+                    process_level=self.process_type,
+                    group_by='event',
+                    max_station_dist=self.station_radius,
+                    station_type=self.station_type,
+                    startdate=starttime,
+                    enddate=endtime,
+                )
+            except BaseException as ex:
                 eqfmt = 'M%.1f %s'
                 eqdesc = eqfmt % (
                     self.magnitude, self.time.strftime('%Y-%m-%d %H:%M:%S'))
-                if '404' in str(gpe):
+                if '404' in str(ex):
                     logging.info('Could not find data records for %s' % eqdesc)
                 else:
                     logging.info(
@@ -271,11 +281,16 @@ class CESMDFetcher(DataFetcher):
         else:
             # web service has a maximum number of stations you're allowed to
             # fetch (note that this may not be the same as the number of files)
-            # so we're splitting up the stations by distance and downloading them
-            # in chunks.
-            dataframe = get_stations_dataframe(event)
-            distances = dataframe['epidist'].to_numpy()
-            distances.sort()
+            # so we're splitting up the stations by distance and downloading
+            # them in chunks.
+
+            # the stations are grouped a little oddly in the results of
+            # the metadata - there are a number of "event" entries, all
+            # with the same ID, and they each contain some collection
+            # of stations. We want all of those stations, so we need to
+            # iterate over the "events" and each station within them.
+            dataframe = get_stations_dataframe(self.metadata)
+            distances = sorted(dataframe['epidist'].to_numpy())
             nchunks = int(np.ceil(len(distances) / MAX_STATIONS))
             distance_chunks = np.array_split(distances, nchunks)
             datafiles = []
@@ -283,43 +298,51 @@ class CESMDFetcher(DataFetcher):
                 mindist = chunk[0]
                 maxdist = chunk[-1]
                 try:
-                    (_, tfiles) = get_records(self.rawdir,
-                                              self.email,
-                                              unpack=True,
-                                              event_latitude=self.lat,
-                                              event_longitude=self.lon,
-                                              event_radius=self.radius,
-                                              process_level=self.process_type,
-                                              group_by='event',
-                                              min_station_dist=mindist,
-                                              max_station_dist=maxdist,
-                                              station_type=self.station_type,
-                                              startdate=starttime,
-                                              enddate=endtime,
-                                              )
-                except GMProcessException as gpe:
+                    (_, tfiles) = get_records(
+                        self.rawdir,
+                        self.email,
+                        unpack=True,
+                        event_latitude=self.lat,
+                        event_longitude=self.lon,
+                        event_radius=self.radius,
+                        process_level=self.process_type,
+                        group_by='event',
+                        min_station_dist=mindist,
+                        max_station_dist=maxdist,
+                        station_type=self.station_type,
+                        startdate=starttime,
+                        enddate=endtime,
+                    )
+                except BaseException as gpe:
                     eqfmt = 'M%.1f %s'
                     eqdesc = eqfmt % (
-                        self.magnitude, self.time.strftime('%Y-%m-%d %H:%M:%S'))
+                        self.magnitude,
+                        self.time.strftime('%Y-%m-%d %H:%M:%S')
+                    )
                     if '404' in str(gpe):
                         fmt = ('Could not find data records for %s '
                                'between %.1f km and %.1f km')
                         logging.info(fmt % (eqdesc, mindist, maxdist))
                     else:
                         logging.warning(
-                            'Unplanned exception getting records for %s' % eqdesc)
+                            'Unplanned exception getting records for %s'
+                            % eqdesc
+                        )
                     continue
                 datafiles += tfiles
 
-        streams = []
-        for dfile in datafiles:
-            logging.info('Reading CESMD file %s...' % dfile)
-            try:
-                streams += read_data(dfile)
-            except GMProcessException as gme:
-                logging.info('Could not read %s: error "%s"' %
-                             (dfile, str(gme)))
+        if self.stream_collection:
+            streams = []
+            for dfile in datafiles:
+                logging.info('Reading CESMD file %s...' % dfile)
+                try:
+                    streams += read_data(dfile)
+                except BaseException as ex:
+                    logging.info('Could not read %s: error "%s"' %
+                                 (dfile, str(ex)))
 
-        stream_collection = StreamCollection(streams=streams,
-                                             drop_non_free=self.drop_non_free)
-        return stream_collection
+            stream_collection = StreamCollection(
+                streams=streams, drop_non_free=self.drop_non_free)
+            return stream_collection
+        else:
+            return None

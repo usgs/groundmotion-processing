@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # stdlib imports
 import importlib
 import os.path
@@ -6,10 +9,6 @@ import pkg_resources
 
 # third party imports
 import numpy as np
-
-# local imports
-from gmprocess.exception import GMProcessException
-
 
 EXCLUDED = ['__pycache__']
 
@@ -27,7 +26,7 @@ def read_data(filename, read_format=None, **kwargs):
     """
     # Check if file exists
     if not os.path.exists(filename):
-        raise GMProcessException('Not a file %r' % filename)
+        raise OSError('Not a file %r' % filename)
     # Get and validate format
     if read_format is None:
         read_format = _get_format(filename)
@@ -76,9 +75,9 @@ def _get_format(filename):
     elif len(formats) == 2 and 'gmobspy' in formats:
         return formats[formats != 'gmobspy'][0]
     elif len(formats) == 0:
-        raise GMProcessException('No format found for file %r.' % filename)
+        raise Exception('No format found for file %r.' % filename)
     else:
-        raise GMProcessException(
+        raise Exception(
             'Multiple formats passing: %r. Please retry file %r '
             'with a specified format.' % (formats.tolist(), filename))
 

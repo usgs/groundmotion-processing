@@ -4,6 +4,7 @@
 # third party imports
 import h5py
 
+
 class TallyStorage(object):
     """Tally storage used within each group.
     """
@@ -72,7 +73,8 @@ class TallyStorage(object):
                         'groups': {}
                     }
             else:
-                raise ValueError("Group item '{}' is of type '{}', expected "
-                                 "'h5.Dataset' or 'h5.Group'".format(name, type(item)))
+                raise ValueError(
+                    "Group item '{}' is of type '{}', expected "
+                    "'h5.Dataset' or 'h5.Group'".format(name, type(item)))
             subtotal_bytes += item_bytes
         return (subtotal_bytes, storage)

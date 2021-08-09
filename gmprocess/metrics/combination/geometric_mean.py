@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # Local imports
 import numpy as np
 
@@ -32,7 +35,7 @@ class Geometric_Mean(Combination):
                 # this is the case where IMT is FAS
                 gm = {
                     'freqs': h1['freqs'],
-                    'spectra': np.sqrt(h1['spectra']*h2['spectra'])
+                    'spectra': np.sqrt(h1['spectra'] * h2['spectra'])
                 }
             else:
                 gm = {'': np.sqrt(h1 * h2)}
@@ -42,5 +45,5 @@ class Geometric_Mean(Combination):
             time_freq = horizontals[0]
             h1, h2 = horizontals[1], horizontals[2]
             gm = [time_freq]
-            gm += [np.sqrt(np.asarray(h1)*np.asarray(h2))]
+            gm += [np.sqrt(np.asarray(h1) * np.asarray(h2))]
         return gm

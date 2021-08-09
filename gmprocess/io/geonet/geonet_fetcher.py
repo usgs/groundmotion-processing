@@ -17,16 +17,17 @@ from obspy.core.utcdatetime import UTCDateTime
 import pandas as pd
 
 # local imports
-from gmprocess.io.fetcher import DataFetcher, _get_first_value
+from gmprocess.io.fetcher import _get_first_value
 from gmprocess.io.geonet.core import read_geonet
-from gmprocess.streamcollection import StreamCollection
-from gmprocess.config import get_config
+from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.utils.config import get_config
 
 
 CATBASE = 'https://quakesearch.geonet.org.nz/csv?bbox=163.95996,-49.18170,182.63672,-32.28713&startdate=%s&enddate=%s'
 GEOBASE = 'ftp://ftp.geonet.org.nz/strong/processed/[YEAR]/[MONTH]/'
 TIMEFMT = '%Y-%m-%dT%H:%M:%S'
-NZTIMEDELTA = 2  # number of seconds allowed between GeoNet catalog time and event timestamp on FTP site
+NZTIMEDELTA = 2  # number of seconds allowed between GeoNet catalog time and
+# event timestamp on FTP site
 NZCATWINDOW = 5 * 60  # number of seconds to search around in GeoNet EQ catalog
 KM2DEG = 1 / 111.0
 
@@ -46,33 +47,46 @@ DMAG = 0.3
 
 
 class GeoNetFetcher(object):
-    def __init__(self, time, lat, lon,
-                 depth, magnitude,
-                 user=None, password=None,
-                 radius=None, dt=None, ddepth=None,
-                 dmag=None,
-                 rawdir=None, config=None, drop_non_free=True):
+    def __init__(self, time, lat, lon, depth, magnitude,
+                 user=None, password=None, radius=None, dt=None, ddepth=None,
+                 dmag=None, rawdir=None, config=None, drop_non_free=True,
+                 stream_collection=True):
         """Create a GeoNetFetcher instance.
 
         Args:
-            time (datetime): Origin time.
-            lat (float): Origin latitude.
-            lon (float): Origin longitude.
-            depth (float): Origin depth.
-            magnitude (float): Origin magnitude.
-            user (str): (Optional) username for site.
-            password (str): (Optional) password for site.
-            radius (float): Search radius (km).
-            dt (float): Search time window (sec).
-            ddepth (float): Search depth window (km).
-            dmag (float): Search magnitude window (magnitude units).
-            rawdir (str): Path to location where raw data will be stored.
-                          If not specified, raw data will be deleted.
+            time (datetime):
+                Origin time.
+            lat (float):
+                Origin latitude.
+            lon (float):
+                Origin longitude.
+            depth (float):
+                Origin depth.
+            magnitude (float):
+                Origin magnitude.
+            user (str):
+                (Optional) username for site.
+            password (str):
+                (Optional) password for site.
+            radius (float):
+                Search radius (km).
+            dt (float):
+                Search time window (sec).
+            ddepth (float):
+                Search depth window (km).
+            dmag (float):
+                Search magnitude window (magnitude units).
+            rawdir (str):
+                Path to location where raw data will be stored. If not
+                specified, raw data will be deleted.
             config (dict):
-                Dictionary containing configuration. 
+                Dictionary containing configuration.
                 If None, retrieve global config.
             drop_non_free (bool):
-                Option to ignore non-free-field (borehole, sensors on structures, etc.)
+                Option to ignore non-free-field (borehole, sensors on
+                structures, etc.)
+            stream_collection (bool):
+                Construct and return a StreamCollection instance?
         """
         # what values do we use for search thresholds?
         # In order of priority:
@@ -123,6 +137,7 @@ class GeoNetFetcher(object):
         # this announces to the world the valid bounds for this fetcher.
         self.BOUNDS = [xmin, xmax, ymin, ymax]
         self.drop_non_free = drop_non_free
+        self.stream_collection = stream_collection
 
     def getMatchingEvents(self, solve=True):
         """Return a list of dictionaries matching input parameters.
@@ -150,6 +165,7 @@ class GeoNetFetcher(object):
         data = req.text
         f = io.StringIO(data)
         df = pd.read_csv(f, parse_dates=['origintime'])
+        f.close()
         # some of the column names have spaces in them
         cols = df.columns
         newcols = {}
@@ -215,8 +231,9 @@ class GeoNetFetcher(object):
         os.chdir(rawdir)
         datafiles = []
 
-        # we cannot depend on the time given to us by the GeoNet catalog to match
-        # the directory name on the FTP site, so we must do a secondary matching.
+        # we cannot depend on the time given to us by the GeoNet catalog to
+        # match the directory name on the FTP site, so we must do a secondary
+        # matching.
         dirlist = ftp.nlst()
         fname = _match_closest_time(etime, dirlist)
 
@@ -226,8 +243,8 @@ class GeoNetFetcher(object):
         try:
             ftp.cwd(fname)
         except ftplib.error_perm:
-            msg = 'Could not find an FTP data folder called "%s". Returning.' % (
-                urllib.parse.urljoin(neturl, fname))
+            msg = ('Could not find an FTP data folder called "%s". Returning.'
+                   % (urllib.parse.urljoin(neturl, fname)))
             raise Exception(msg)
 
         dirlist = ftp.nlst()
@@ -262,17 +279,21 @@ class GeoNetFetcher(object):
             try:
                 tstreams = read_geonet(dfile)
                 streams += tstreams
-            except Exception as e:
-                fmt = 'Failed to read GeoNet file "%s" due to error "%s". Continuing.'
+            except BaseException as e:
+                fmt = ('Failed to read GeoNet file "%s" due to error "%s". '
+                       'Continuing.')
                 tpl = (dfile, str(e))
                 logging.warn(fmt % tpl)
 
         if self.rawdir is None:
             shutil.rmtree(rawdir)
 
-        stream_collection = StreamCollection(streams=streams,
-                                             drop_non_free=self.drop_non_free)
-        return stream_collection
+        if self.stream_collection:
+            stream_collection = StreamCollection(
+                streams=streams, drop_non_free=self.drop_non_free)
+            return stream_collection
+        else:
+            return None
 
 
 def _match_closest_time(etime, dirlist):

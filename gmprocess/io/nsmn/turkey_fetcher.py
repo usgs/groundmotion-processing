@@ -18,34 +18,36 @@ import pandas as pd
 # local imports
 from gmprocess.io.fetcher import DataFetcher, _get_first_value
 from gmprocess.io.nsmn.core import read_nsmn
-from gmprocess.streamcollection import StreamCollection
-from gmprocess.config import get_config
+from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.utils.config import get_config
 
 
 SEARCH_URL = 'http://kyhdata.deprem.gov.tr/2K/kyhdata_v4.php?dst=TU9EVUxFX05BTUU9ZWFydGhxdWFrZSZNT0RVTEVfVEFTSz1zZWFyY2g%3D'
 
-EQ_FORM_DATA = {'from_day': '',
-                'from_month': '',
-                'from_year': '',
-                'from_md': '',
-                'to_md': '',
-                'to_day': '',
-                'to_month': '',
-                'to_year': '',
-                'from_ml': '',
-                'to_ml': '',
-                'from_epi_lat': '34.00',
-                'to_epi_lat': '43.00',
-                'from_ms': '',
-                'to_ms': '',
-                'from_epi_lon': '24.0',
-                'to_epi_lon': '45.82',
-                'from_mw': '',
-                'to_mw': '',
-                'from_depth': '',
-                'to_depth': '',
-                'from_mb': '',
-                'to_mb': ''}
+EQ_FORM_DATA = {
+    'from_day': '',
+    'from_month': '',
+    'from_year': '',
+    'from_md': '',
+    'to_md': '',
+    'to_day': '',
+    'to_month': '',
+    'to_year': '',
+    'from_ml': '',
+    'to_ml': '',
+    'from_epi_lat': '34.00',
+    'to_epi_lat': '43.00',
+    'from_ms': '',
+    'to_ms': '',
+    'from_epi_lon': '24.0',
+    'to_epi_lon': '45.82',
+    'from_mw': '',
+    'to_mw': '',
+    'from_depth': '',
+    'to_depth': '',
+    'from_mb': '',
+    'to_mb': ''
+}
 
 # 2019/03/13-13:48:00.00
 TIMEFMT = '%Y-%m-%dT%H:%M:%S'
@@ -72,22 +74,33 @@ class TurkeyFetcher(DataFetcher):
         http://kyhdata.deprem.gov.tr/2K/kyhdata_v4.php
 
         Args:
-            time (datetime): Origin time.
-            lat (float): Origin latitude.
-            lon (float): Origin longitude.
-            depth (float): Origin depth.
-            magnitude (float): Origin magnitude.
-            radius (float): Search radius (km).
-            dt (float): Search time window (sec).
-            ddepth (float): Search depth window (km).
-            dmag (float): Search magnitude window (magnitude units).
-            rawdir (str): Path to location where raw data will be stored.
-                          If not specified, raw data will be deleted.
+            time (datetime):
+                Origin time.
+            lat (float):
+                Origin latitude.
+            lon (float):
+                Origin longitude.
+            depth (float):
+                Origin depth.
+            magnitude (float):
+                Origin magnitude.
+            radius (float):
+                Search radius (km).
+            dt (float):
+                Search time window (sec).
+            ddepth (float):
+                Search depth window (km).
+            dmag (float):
+                Search magnitude window (magnitude units).
+            rawdir (str):
+                Path to location where raw data will be stored. If not
+                specified, raw data will be deleted.
             config (dict):
-                Dictionary containing configuration. 
+                Dictionary containing configuration.
                 If None, retrieve global config.
             drop_non_free (bool):
-                Option to ignore non-free-field (borehole, sensors on structures, etc.)
+                Option to ignore non-free-field (borehole, sensors on
+                structures, etc.)
         """
         # what values do we use for search thresholds?
         # In order of priority:
@@ -256,7 +269,9 @@ def get_turkey_dataframe(time, dt):
             - latitude Earthquake origin latitude.
             - longitude Earthquake origin longitude.
             - depth Earthquake origin depth.
-            - magnitude Largest Turkish magnitude (from list of ML, MD ,MS ,MW ,MB)
+            - magnitude Largest Turkish magnitude (from list of ML, MD, MS,
+              MW, MB)
+        or None if no events are found.
 
     """
     urlparts = urlparse(SEARCH_URL)
@@ -275,41 +290,45 @@ def get_turkey_dataframe(time, dt):
         return None
     data = req.text
     soup = BeautifulSoup(data, features="lxml")
-    table = soup.find_all('table', 'tableType_01')[0]
-    cols = ['id', 'origintime', 'latitude',
-            'longitude', 'depth', 'magnitude', 'url']
-    df = pd.DataFrame(columns=cols)
-    for row in table.find_all('tr'):
-        if 'class' in row.attrs and row.attrs['class'] == ['headerRowType_01']:
-            continue
-        cols = row.find_all('td', 'coltype01')
-        href = cols[0].contents[0].attrs['href']
-        event_url = urljoin('http://' + urlparts.netloc, href)
-        eid = cols[0].contents[0].contents[0]
-        datestr = str(cols[1].contents[0])
-        timestr = str(cols[2].contents[0])
-        timestr = timestr[0:8]
-        lat = float(str(cols[3].contents[0]))
-        lon = float(str(cols[4].contents[0]))
-        depth = float(str(cols[5].contents[0]))
-        mags = []
-        for i in range(6, 11):
-            if len(cols[i].contents):
-                mag = float(str(cols[i].contents[0]))
-                mags.append(mag)
-        mag = max(mags)
-        time = datetime.strptime(datestr + 'T' + timestr, TIMEFMT)
-        time = pd.Timestamp(time).tz_localize('UTC')
-        edict = {'id': eid,
-                 'url': event_url,
-                 'origintime': time,
-                 'latitude': lat,
-                 'longitude': lon,
-                 'depth': depth,
-                 'magnitude': mag}
-        df = df.append(edict, ignore_index=True)
+    all_table = soup.find_all('table', 'tableType_01')
+    if len(all_table):
+        table = all_table[0]
+        cols = ['id', 'origintime', 'latitude',
+                'longitude', 'depth', 'magnitude', 'url']
+        df = pd.DataFrame(columns=cols)
+        for row in table.find_all('tr'):
+            if 'class' in row.attrs and row.attrs['class'] == [
+                    'headerRowType_01']:
+                continue
+            cols = row.find_all('td', 'coltype01')
+            href = cols[0].contents[0].attrs['href']
+            event_url = urljoin('http://' + urlparts.netloc, href)
+            eid = cols[0].contents[0].contents[0]
+            datestr = str(cols[1].contents[0])
+            timestr = str(cols[2].contents[0])
+            timestr = timestr[0:8]
+            lat = float(str(cols[3].contents[0]))
+            lon = float(str(cols[4].contents[0]))
+            depth = float(str(cols[5].contents[0]))
+            mags = []
+            for i in range(6, 11):
+                if len(cols[i].contents):
+                    mag = float(str(cols[i].contents[0]))
+                    mags.append(mag)
+            mag = max(mags)
+            time = datetime.strptime(datestr + 'T' + timestr, TIMEFMT)
+            time = pd.Timestamp(time).tz_localize('UTC')
+            edict = {'id': eid,
+                     'url': event_url,
+                     'origintime': time,
+                     'latitude': lat,
+                     'longitude': lon,
+                     'depth': depth,
+                     'magnitude': mag}
+            df = df.append(edict, ignore_index=True)
 
-    # make sure that origintime is actually a time
-    df['origintime'] = pd.to_datetime(df['origintime'])
-
-    return df
+        # make sure that origintime is actually a time
+        df['origintime'] = pd.to_datetime(df['origintime'])
+        return df
+    else:
+        return None

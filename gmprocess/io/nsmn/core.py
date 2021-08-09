@@ -12,17 +12,17 @@ import numpy as np
 from scipy import constants
 
 # local
-from gmprocess.stationstream import StationStream
-from gmprocess.stationtrace import StationTrace, PROCESS_LEVELS
+from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.io.seedname import get_channel_name, get_units_type
 
 
 TIMEFMT = '%d/%m/%Y %H:%M:%S.%f'
-FLOATRE = "[-+]?[0-9]*\.?[0-9]+"
+FLOATRE = r"[-+]?[0-9]*\.?[0-9]+"
 INTRE = "[-+]?[0-9]*"
 
 # 20/07/2017 22:30:58.000000
-TIME_RE = '[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}\.?[0-9]*'
+TIME_RE = r'[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}\.?[0-9]*'
 
 TEXT_HDR_ROWS = 18
 
@@ -52,11 +52,14 @@ def is_nsmn(filename):
     return False
 
 
-def read_nsmn(filename):
+def read_nsmn(filename, **kwargs):
     """Read the Turkish NSMN strong motion data format.
 
     Args:
-        filename (str): path to NSMN data file.
+        filename (str):
+            path to NSMN data file.
+        kwargs (ref):
+            Other arguments will be ignored.
 
     Returns:
         list: Sequence of one StationStream object containing 3
