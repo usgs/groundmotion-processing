@@ -646,7 +646,7 @@ def _correct_baseline(trace):
 
     # Fit a sixth order polynomial to displacement time series, requiring
     # that the 1st and 0th order coefficients are zero
-    time_values = np.linspace(0, trace.stats.npts - 1, trace.stats.npts)
+    time_values = np.linspace(0, trace.stats.npts - 1, trace.stats.npts) * trace.stats.delta
     poly_cofs = list(curve_fit(_poly_func, time_values, disp_data)[0])
     poly_cofs += [0, 0]
 
