@@ -24,6 +24,7 @@ pytest-console-scripts
 pyyaml
 scipy
 setuptools-scm
+statsmodels
 requests
 vcrpy
 autopep8
