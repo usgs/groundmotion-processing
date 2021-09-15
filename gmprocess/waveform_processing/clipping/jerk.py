@@ -23,6 +23,7 @@ class Jerk(ClipDetection):
     Methods:
         See parent class.
     '''
+
     def __init__(self, st, point_thresh=25, test_all=False):
         '''
         Constructs all neccessary attributes for the Max_Amp class.
@@ -74,7 +75,7 @@ class Jerk(ClipDetection):
         if tr.stats.channel[1] == 'H':
             temp_st.differentiate()
         abs_diff = np.abs(tr.data)
-        median_x100 = 100*np.median(abs_diff)
+        median_x100 = 100 * np.median(abs_diff)
         i_jerk, = np.where(abs_diff >= median_x100)
         num_outliers = len(i_jerk)
         if self.test_all:
