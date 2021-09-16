@@ -11,6 +11,7 @@ from gmprocess.waveform_processing.clipping.max_amp import Max_Amp
 
 def test_max_calc():
     data_files, _ = read_data_dir('clipping_samples', 'hv70907436', '*.mseed')
+    data_files.sort()
     streams = []
     for f in data_files:
         streams += read_data(f)
@@ -22,14 +23,13 @@ def test_max_calc():
         max_amp_method = Max_Amp(st)
         st_max_amps.append(max_amp_method.max_amp)
 
-    st_max_amps.sort()
     np.testing.assert_allclose(
         st_max_amps,
-        np.array([8122003.3022054331,
+        np.array([8553230.5231931563,
                   8379389.0031664912,
-                  8509963.5836342424,
-                  8553230.5231931563,
+                  8122003.3022054331,
                   8698976.5524693076,
+                  8509963.5836342424,
                   8766397.4644186441]),
         rtol=1e-5
     )
