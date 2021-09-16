@@ -11,6 +11,7 @@ from gmprocess.waveform_processing.clipping.histogram import Histogram
 
 def test_num_clip_intervals():
     data_files, _ = read_data_dir('clipping_samples', 'hv70907436', '*.mseed')
+    data_files.sort()
     streams = []
     for f in data_files:
         streams += read_data(f)
@@ -24,12 +25,13 @@ def test_num_clip_intervals():
 
     np.testing.assert_equal(
         num_clip_intervals,
-        np.array([23, 7, 9, 0, 17, 37])
+        np.array([0, 9, 37, 10, 17, 7])
     )
 
 
 def test_all_num_clip_intervals():
     data_files, _ = read_data_dir('clipping_samples', 'hv70907436', '*.mseed')
+    data_files.sort()
     streams = []
     for f in data_files:
         streams += read_data(f)
@@ -43,12 +45,14 @@ def test_all_num_clip_intervals():
 
     np.testing.assert_equal(
         num_clip_intervals,
-        np.array([[23, 0, 10],
-                  [7, 0, 0],
-                  [9, 17, 0],
-                  [0, 0, 0],
-                  [17, 37, 20],
-                  [37, 31, 8]])
+        np.array([[
+            0, 0, 0],
+            [0, 9, 17],
+            [37, 31, 8],
+            [10, 23, 0],
+            [17, 37, 20],
+            [0, 0, 7]
+        ])
     )
 
 
