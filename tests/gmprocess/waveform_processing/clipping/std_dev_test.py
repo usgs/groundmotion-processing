@@ -11,6 +11,7 @@ from gmprocess.waveform_processing.clipping.std_dev import Std_Dev
 
 def test_num_outliers():
     data_files, _ = read_data_dir('clipping_samples', 'hv70907436', '*.mseed')
+    data_files.sort()
     streams = []
     for f in data_files:
         streams += read_data(f)
@@ -24,12 +25,13 @@ def test_num_outliers():
 
     np.testing.assert_equal(
         num_outliers,
-        np.array([76, 4862, 1086, 0, 60, 131])
+        np.array([0, 1086, 131, 1018, 60, 4862])
     )
 
 
 def test_all_num_outliers():
     data_files, _ = read_data_dir('clipping_samples', 'hv70907436', '*.mseed')
+    data_files.sort()
     streams = []
     for f in data_files:
         streams += read_data(f)
@@ -43,12 +45,14 @@ def test_all_num_outliers():
 
     np.testing.assert_equal(
         num_outliers,
-        np.array([[76, 0, 1018],
-                  [4862, 0, 0],
-                  [1086, 23, 0],
-                  [0, 0, 0],
-                  [60, 1314, 1511],
-                  [131, 252, 4482]])
+        np.array([
+            [0, 0, 0],
+            [0, 1086, 23],
+            [131, 252, 4482],
+            [1018, 76, 0],
+            [60, 1314, 1511],
+            [0, 0, 4862]
+        ])
     )
 
 

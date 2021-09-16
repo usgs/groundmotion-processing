@@ -11,6 +11,7 @@ from gmprocess.waveform_processing.clipping.jerk import Jerk
 
 def test_num_outliers():
     data_files, _ = read_data_dir('clipping_samples', 'hv70907436', '*.mseed')
+    data_files.sort()
     streams = []
     for f in data_files:
         streams += read_data(f)
@@ -24,12 +25,13 @@ def test_num_outliers():
 
     np.testing.assert_equal(
         num_outliers,
-        np.array([1381, 1356, 1290, 1158, 1025, 923])
+        np.array([1137, 878, 923, 1111, 1025, 1356])
     )
 
 
 def test_all_num_outliers():
     data_files, _ = read_data_dir('clipping_samples', 'hv70907436', '*.mseed')
+    data_files.sort()
     streams = []
     for f in data_files:
         streams += read_data(f)
@@ -43,12 +45,14 @@ def test_all_num_outliers():
 
     np.testing.assert_equal(
         num_outliers,
-        np.array([[0, 1381, 748],
-                  [0, 1356, 1296],
-                  [0, 1290, 1156],
-                  [0, 1158, 979],
-                  [0, 1025, 1071],
-                  [0, 923, 806]])
+        np.array([
+            [0, 1137, 1060],
+            [0, 878, 1298],
+            [0, 923, 806],
+            [0, 1111, 1277],
+            [0, 1025, 1071],
+            [0, 1356, 1542]
+        ])
     )
 
 

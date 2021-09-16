@@ -11,6 +11,7 @@ from gmprocess.waveform_processing.clipping.ping import Ping
 
 def test_num_outliers():
     data_files, _ = read_data_dir('clipping_samples', 'hv70907436', '*.mseed')
+    data_files.sort()
     streams = []
     for f in data_files:
         streams += read_data(f)
@@ -24,12 +25,13 @@ def test_num_outliers():
 
     np.testing.assert_equal(
         num_outliers,
-        np.array([8, 29, 199, 239, 133, 0])
+        np.array([239, 26, 0, 6, 133, 145])
     )
 
 
 def test_all_num_outliers():
     data_files, _ = read_data_dir('clipping_samples', 'hv70907436', '*.mseed')
+    data_files.sort()
     streams = []
     for f in data_files:
         streams += read_data(f)
@@ -43,12 +45,14 @@ def test_all_num_outliers():
 
     np.testing.assert_equal(
         num_outliers,
-        np.array([[8, 2, 6],
-                  [29, 264, 145],
-                  [199, 30, 26],
-                  [239, 22, 0],
-                  [133, 341, 22],
-                  [0, 0, 0]])
+        np.array([
+            [239, 0, 22],
+            [26, 199, 30],
+            [0, 0, 0],
+            [6, 8, 2],
+            [133, 341, 22],
+            [145, 264, 29]
+        ])
     )
 
 
