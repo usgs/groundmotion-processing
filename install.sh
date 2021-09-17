@@ -94,6 +94,10 @@ else
     echo "conda detected, installing $VENV environment..."
 fi
 
+echo "Installing mamba from conda-forge"
+
+conda install mamba -y -n base -c conda-forge
+
 echo "Installing packages from conda-forge"
 
 # Choose an environment file based on platform
@@ -112,10 +116,6 @@ conda activate base
 # Remove existing environment if it exists
 conda remove -y -n $VENV --all
 
-if [ $developer == 1 ]; then
-    package_list=( "${package_list[@]}" "${dev_list[@]}" )
-    echo ${package_list[*]}
-fi
 
 # Create a conda virtual environment
 conda config --add channels 'defaults'
@@ -123,7 +123,8 @@ conda config --add channels 'conda-forge'
 conda config --set channel_priority strict
 
 echo "Creating the $VENV virtual environment:"
-conda create -n $VENV -y --file requirements.txt
+# conda create -n $VENV -y --file requirements.txt
+mamba create -n $VENV -y --file requirements.txt
 
 # Bail out at this point if the conda create command fails.
 # Clean up zip files we've downloaded

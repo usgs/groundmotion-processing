@@ -35,7 +35,7 @@ class Jerk(ClipDetection):
                 Minimum number of flagged points required to label trace
                 as clipped.
             test_all (bool, default=False):
-                If true, compute and store max amp for all traces.
+                If true, compute and store number of outliers for all traces.
         '''
         ClipDetection.__init__(self, st.copy(), test_all)
         self.point_thresh = point_thresh

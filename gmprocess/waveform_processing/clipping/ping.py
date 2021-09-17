@@ -25,6 +25,7 @@ class Ping(ClipDetection):
     Methods:
        See parent class.
     '''
+
     def __init__(self, st, percent_thresh=0.57, test_all=False):
         '''
         Constructs all neccessary attributes for the Ping class.
@@ -70,7 +71,9 @@ class Ping(ClipDetection):
         '''
         data_range = np.abs(np.max(tr.data)) - np.min(tr.data)
         tr_diff = np.abs(np.diff(tr))
-        points_outlying = [val > self.percent_thresh*data_range for val in tr_diff]
+        points_outlying = [
+            val > self.percent_thresh *
+            data_range for val in tr_diff]
         num_outliers = np.count_nonzero(points_outlying)
         if self.test_all:
             self.num_outliers.append(num_outliers)
