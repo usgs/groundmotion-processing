@@ -30,6 +30,7 @@ class Std_Dev(ClipDetection):
     Methods:
         See parent class.
     '''
+
     def __init__(self, st, amp_thresh=0.85, n_std=12, std_thresh=0.001,
                  point_thresh=5, test_all=False):
         '''

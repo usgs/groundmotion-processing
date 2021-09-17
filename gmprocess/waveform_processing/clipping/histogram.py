@@ -28,8 +28,9 @@ class Histogram(ClipDetection):
     Methods:
         See parent class.
     '''
+
     def __init__(self, st, num_bins=6200, min_width=7,
-                    search_width_bins=700, test_all=False):
+                 search_width_bins=700, test_all=False):
         '''
         Constructs all neccessary attributes for the Histogram class.
 
@@ -100,8 +101,8 @@ class Histogram(ClipDetection):
         for idx in range(1, len(signal) - 1):
             cur_x = signal[idx]
             if cur_x >= thresh:
-                prev_x = signal[idx-1]
-                next_x = signal[idx+1]
+                prev_x = signal[idx - 1]
+                next_x = signal[idx + 1]
                 if (cur_x > prev_x) and (cur_x > next_x):
                     peaks.append((cur_x, idx))
         # Sort descending
@@ -199,8 +200,8 @@ class Histogram(ClipDetection):
                 num_iters = num_iters + 1
                 cur_mag = abs(signal[left_idx])
                 prev_mag = abs(signal[left_idx + 1])
-                working_avg = (((num_iters - 1) * working_avg) / 
-                              num_iters) + \
+                working_avg = (((num_iters - 1) * working_avg) /
+                               num_iters) + \
                               (cur_mag / num_iters)
                 avg_diff = abs(working_avg - cur_mag)
                 if avg_diff > thresh:
@@ -224,7 +225,7 @@ class Histogram(ClipDetection):
                 cur_mag = abs(signal[right_idx])
                 prev_mag = abs(signal[right_idx - 1])
                 working_avg = (((num_iters - 1) * working_avg) /
-                              num_iters) + \
+                               num_iters) + \
                               (cur_mag / num_iters)
                 avg_diff = abs(working_avg - cur_mag)
                 if avg_diff > thresh:
@@ -260,15 +261,32 @@ class Histogram(ClipDetection):
             bool:
                 Is the trace clipped?
         '''
+        init_method = 'estimated'
         amp_hist, edges = np.histogram(tr.data, bins=self.num_bins)
-        temp_forward_1 = ExponentialSmoothing(amp_hist.astype(np.float))
-        forward_1 = temp_forward_1.fit(smoothing_level=0.2).fittedvalues
-        temp_amp_hist = ExponentialSmoothing(forward_1[::-1].astype(np.float))
-        amp_hist = temp_amp_hist.fit(smoothing_level=0.2).fittedvalues[::-1]
-        temp_forward_2 = ExponentialSmoothing(amp_hist.astype(np.float))
-        forward_2 = temp_forward_2.fit(smoothing_level=0.025).fittedvalues
-        temp_smoothed_amp_hist = ExponentialSmoothing(forward_2[::-1].astype(np.float))
-        smoothed_amp_hist = temp_smoothed_amp_hist.fit(smoothing_level=0.025).fittedvalues[::-1]
+        temp_forward_1 = ExponentialSmoothing(
+            amp_hist.astype(np.float),
+            initialization_method=init_method
+        )
+        forward_1 = temp_forward_1.fit(
+            smoothing_level=0.2).fittedvalues
+        temp_amp_hist = ExponentialSmoothing(
+            forward_1[::-1].astype(np.float),
+            initialization_method=init_method
+        )
+        amp_hist = temp_amp_hist.fit(
+            smoothing_level=0.2).fittedvalues[::-1]
+        temp_forward_2 = ExponentialSmoothing(
+            amp_hist.astype(np.float),
+            initialization_method=init_method
+        )
+        forward_2 = temp_forward_2.fit(
+            smoothing_level=0.025).fittedvalues
+        temp_smoothed_amp_hist = ExponentialSmoothing(
+            forward_2[::-1].astype(np.float),
+            initialization_method=init_method
+        )
+        smoothed_amp_hist = temp_smoothed_amp_hist.fit(
+            smoothing_level=0.025).fittedvalues[::-1]
         novelty = amp_hist - smoothed_amp_hist
         negative_clip_lower_idx = -1
         negative_clip_upper_idx = -1
@@ -290,7 +308,7 @@ class Histogram(ClipDetection):
                     if width > self.min_width:
                         negative_clip_lower_idx = idx
                         negative_clip_upper_idx = negative_clip_lower_idx - \
-                                                  width
+                            width
                         break
                     width = 0
                     in_bump = False
@@ -299,7 +317,8 @@ class Histogram(ClipDetection):
         positive_clip_upper_idx = -1
         in_bump = False
         width = 0
-        for idx in range(len(novelty)-1, nov_len - self.search_width_bins-1, -1):
+        for idx in range(len(novelty) - 1, nov_len -
+                         self.search_width_bins - 1, -1):
             cur_val = novelty[idx]
             # In a bump
             if cur_val > 1:
