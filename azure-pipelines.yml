@@ -83,8 +83,7 @@ jobs:
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
   - script: |
-      conda install mamba -y -n base -c conda-forge
-      mamba create --name gmprocess  python=$(python.version) --file requirements.txt -c conda-forge -y -v
+      conda create --name gmprocess  python=$(python.version) --file requirements.txt -c conda-forge -y -v
     displayName: Create conda environment (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
