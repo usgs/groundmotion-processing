@@ -57,6 +57,5 @@ def test_all_num_clip_intervals():
 
 
 if __name__ == '__main__':
-    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_num_clip_intervals()
     test_all_num_clip_intervals()

@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import numpy as np
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 from gmprocess.waveform_processing.clipping.clip_detection import ClipDetection
@@ -56,14 +59,6 @@ class Histogram(ClipDetection):
         else:
             self.num_clip_intervals = None
         self._get_results()
-
-    def _clean_trace(self, tr):
-        '''
-        Helper function to clean a trace.
-
-        See parent class.
-        '''
-        return ClipDetection._clean_trace(self, tr)
 
     def _signal_scale(self, signal, alpha):
         '''

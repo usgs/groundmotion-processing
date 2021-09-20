@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import numpy as np
 from gmprocess.waveform_processing.clipping.clip_detection import ClipDetection
 
@@ -47,14 +50,6 @@ class Ping(ClipDetection):
         else:
             self.num_outliers = None
         self._get_results()
-
-    def _clean_trace(self, tr):
-        '''
-        Helper function to clean a trace.
-
-        See parent class.
-        '''
-        return ClipDetection._clean_trace(self, tr)
 
     def _detect(self, tr):
         '''
