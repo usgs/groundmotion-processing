@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import numpy as np
 from gmprocess.waveform_processing.clipping.clip_detection import ClipDetection
 
@@ -62,20 +65,12 @@ class Std_Dev(ClipDetection):
             self.num_outliers = None
         self._get_results()
 
-    def _clean_trace(self, tr):
-        '''
-        Helper function to clean a trace.
-
-        See parent class.
-        '''
-        return ClipDetection._clean_trace(self, tr)
-
     def _detect(self, tr):
         '''
         For all points with amplitude greater than amp_thresh, calculate
-        standard deviation (std) of the n_std neighboring points. Fail the trace
-        if the std of n_std neighboring points is less than std_thresh for
-        any point_thresh points.
+        standard deviation (std) of the n_std neighboring points. Fail the
+        trace if the std of n_std neighboring points is less than std_thresh
+        for any point_thresh points.
 
         Args:
             tr (StationTrace):

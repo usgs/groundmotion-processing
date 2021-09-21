@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import numpy as np
 from gmprocess.waveform_processing.clipping.clip_detection import ClipDetection
 
@@ -22,6 +25,7 @@ class Max_Amp(ClipDetection):
     Methods:
         See parent class.
     '''
+
     def __init__(self, st, max_amp_thresh=6e6, test_all=False):
         '''
         Constructs all neccessary attributes for the Max_Amp method.

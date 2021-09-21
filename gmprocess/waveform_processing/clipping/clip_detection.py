@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 class ClipDetection():
     '''
     Parent class for clipping detection algorithms.
@@ -18,6 +21,7 @@ class ClipDetection():
         _get_results():
             Iterates through and runs _detect() on each trace in the stream.
     '''
+
     def __init__(self, st, test_all=False):
         '''
         Constructs all neccessary attributes for the ClipDetection method
@@ -32,7 +36,7 @@ class ClipDetection():
         self.st = st.copy()
         self.is_clipped = False
         self.test_all = test_all
-    
+
     def _clean_trace(self, tr):
         '''
         Helper function to clean the trace
