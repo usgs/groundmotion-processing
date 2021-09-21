@@ -51,6 +51,24 @@ class Ping(ClipDetection):
             self.num_outliers = None
         self._get_results()
 
+    def _clean_trace(self, tr):
+        '''
+        Pre-processing steps.
+
+        Args:
+            tr (StationTrace):
+                A single trace in the record.
+
+        Returns:
+            clean_tr (StationTrace):
+                Cleaned trace.
+        '''
+        t_1 = tr.stats.starttime
+        t_2 = t_1 + 180
+        clean_tr = tr.copy()
+        clean_tr.trim(t_1, t_2)
+        return clean_tr
+
     def _detect(self, tr):
         '''
         If any two points differ by more than a threshold, fail the trace.
