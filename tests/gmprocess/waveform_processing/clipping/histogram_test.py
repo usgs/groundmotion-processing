@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import numpy as np
 from gmprocess.io.read import read_data
 from gmprocess.io.test_utils import read_data_dir
@@ -25,7 +24,7 @@ def test_num_clip_intervals():
 
     np.testing.assert_equal(
         num_clip_intervals,
-        np.array([0, 9, 37, 10, 17, 7])
+        np.array([0, 9, 37, 10, 16, 8])
     )
 
 
@@ -47,11 +46,11 @@ def test_all_num_clip_intervals():
         num_clip_intervals,
         np.array([[
             0, 0, 0],
-            [0, 9, 17],
+            [0, 9, 18],
             [37, 31, 8],
             [10, 23, 0],
-            [17, 37, 20],
-            [0, 0, 7]
+            [16, 40, 21],
+            [0, 0, 8]
         ])
     )
 

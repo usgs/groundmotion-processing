@@ -27,7 +27,7 @@ class Jerk(ClipDetection):
         See parent class.
     '''
 
-    def __init__(self, st, point_thresh=25, test_all=False):
+    def __init__(self, st, point_thresh=400, test_all=False):
         '''
         Constructs all neccessary attributes for the Max_Amp class.
 
@@ -48,6 +48,24 @@ class Jerk(ClipDetection):
             self.num_outliers = None
         self._get_results()
 
+    def _clean_trace(self, tr):
+        '''
+        Pre-processing steps.
+
+        Args:
+            tr (StationTrace):
+                A single trace in the record.
+
+        Returns:
+            clean_tr (StationTrace):
+                Cleaned trace.
+        '''
+        t_1 = tr.stats.starttime
+        t_2 = t_1 + 180
+        clean_tr = tr.copy()
+        clean_tr.trim(t_1, t_2)
+        return clean_tr
+
     def _detect(self, tr):
         '''
         Check for jerk outliers. Based on method described by:
@@ -65,11 +83,10 @@ class Jerk(ClipDetection):
             bool:
                 Is the trace clipped?
         '''
-        temp_st = self.st
-        temp_st.differentiate()
-        if tr.stats.channel[1] == 'H':
-            temp_st.differentiate()
-        abs_diff = np.abs(tr.data)
+        temp_tr = tr.copy()
+        temp_tr.differentiate()
+        temp_tr.differentiate()
+        abs_diff = np.abs(temp_tr.data)
         median_x100 = 100 * np.median(abs_diff)
         i_jerk, = np.where(abs_diff >= median_x100)
         num_outliers = len(i_jerk)

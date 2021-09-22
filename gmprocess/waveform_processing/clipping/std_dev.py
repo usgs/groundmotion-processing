@@ -65,6 +65,26 @@ class Std_Dev(ClipDetection):
             self.num_outliers = None
         self._get_results()
 
+    def _clean_trace(self, tr):
+        '''
+        Helper function to clean the trace
+
+        Args:
+            tr (StationTrace):
+                A single trace in the record.
+
+        Returns:
+            clean_tr (StationTrace):
+                Cleaned trace.
+        '''
+        t_1 = tr.stats.starttime
+        t_2 = t_1 + 180
+        clean_tr = tr.copy()
+        clean_tr.trim(t_1, t_2)
+        clean_tr.detrend(type='constant')
+        clean_tr.normalize()
+        return clean_tr
+
     def _detect(self, tr):
         '''
         For all points with amplitude greater than amp_thresh, calculate

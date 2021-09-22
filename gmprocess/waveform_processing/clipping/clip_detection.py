@@ -39,7 +39,7 @@ class ClipDetection():
 
     def _clean_trace(self, tr):
         '''
-        Helper function to clean the trace
+        Pre-processing steps.
 
         Args:
             tr (StationTrace):
@@ -49,13 +49,7 @@ class ClipDetection():
             clean_tr (StationTrace):
                 Cleaned trace.
         '''
-        t_1 = tr.stats.starttime
-        t_2 = t_1 + 180
-        clean_tr = tr.copy()
-        clean_tr.trim(t_1, t_2)
-        clean_tr.detrend(type='constant')
-        clean_tr.normalize()
-        return clean_tr
+        return tr
 
     def _detect(self, clip_tr):
         '''
