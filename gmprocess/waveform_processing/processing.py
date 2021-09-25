@@ -28,20 +28,27 @@ from gmprocess.waveform_processing.pretesting import (  # NOQA
     check_max_amplitude,
     check_sta_lta,
     check_free_field)
-from gmprocess.waveform_processing.filtering import lowpass_filter, highpass_filter  # NOQA
-from gmprocess.waveform_processing.adjust_highpass import adjust_highpass_corner  # NOQA
-from gmprocess.waveform_processing.zero_crossings import check_zero_crossings  # NOQA
-from gmprocess.waveform_processing.nn_quality_assurance import NNet_QA  # NOQA
+from gmprocess.waveform_processing.filtering import \
+    lowpass_filter, highpass_filter  # NOQA
+from gmprocess.waveform_processing.adjust_highpass import \
+    adjust_highpass_corner  # NOQA
+from gmprocess.waveform_processing.zero_crossings import \
+    check_zero_crossings  # NOQA
+from gmprocess.waveform_processing.nn_quality_assurance import \
+    NNet_QA  # NOQA
 from gmprocess.waveform_processing.snr import compute_snr  # NOQA
 from gmprocess.waveform_processing.spectrum import fit_spectra  # NOQA
-from gmprocess.waveform_processing.windows import cut, trim_multiple_events  # NOQA
+from gmprocess.waveform_processing.windows import \
+    cut, trim_multiple_events  # NOQA
+from gmprocess.waveform_processing.clipping.clipping_check import \
+    check_clipping  # NOQA
 # -----------------------------------------------------------------------------
 
 M_TO_CM = 100.0
 
 # List of processing steps that require an origin
 # besides the arguments in the conf file.
-REQ_ORIGIN = ['fit_spectra', 'trim_multiple_events']
+REQ_ORIGIN = ['fit_spectra', 'trim_multiple_events', 'check_clipping']
 
 
 TAPER_TYPES = {
@@ -646,7 +653,10 @@ def _correct_baseline(trace):
 
     # Fit a sixth order polynomial to displacement time series, requiring
     # that the 1st and 0th order coefficients are zero
-    time_values = np.linspace(0, trace.stats.npts - 1, trace.stats.npts) * trace.stats.delta
+    time_values = np.linspace(
+        0,
+        trace.stats.npts - 1,
+        trace.stats.npts) * trace.stats.delta
     poly_cofs = list(curve_fit(_poly_func, time_values, disp_data)[0])
     poly_cofs += [0, 0]
 

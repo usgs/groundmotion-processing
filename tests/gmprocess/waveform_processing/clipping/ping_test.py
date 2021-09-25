@@ -57,6 +57,5 @@ def test_all_num_outliers():
 
 
 if __name__ == '__main__':
-    os.environ['CALLED_FROM_PYTEST'] = 'True'
     test_num_outliers()
     test_all_num_outliers()

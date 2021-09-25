@@ -111,7 +111,7 @@ def compute_snr(st, bandwidth, mag=None, check=None):
             If None, no checks performed.
 
     Returns:
-        StationTrace with SNR dictionaries added as trace parameters.
+        StationStream with SNR dictionaries added as trace parameters.
     """
     for tr in st:
         # Do we have estimates of the signal split time?
