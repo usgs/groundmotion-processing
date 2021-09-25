@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""Module for individual/heuristic clipping methods. These get combined
+with the neurual network model (clipping_ann.py). The NN model gets
+called by clipping_check.py module.
+"""
+
+
 class ClipDetection():
     '''
     Parent class for clipping detection algorithms.
