@@ -4,7 +4,6 @@
 import os
 import sys
 import logging
-from datetime import datetime
 
 from dask.distributed import Client, as_completed
 
@@ -12,7 +11,6 @@ from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
 from gmprocess.waveform_processing.processing import process_streams
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
-from gmprocess.utils.constants import TAG_FMT
 from gmprocess.utils.constants import WORKSPACE_NAME
 
 
@@ -32,8 +30,7 @@ class ProcessWaveformsModule(SubcommandModule):
             'short_flag': '-l',
             'long_flag': '--label',
             'help': ('Processing label (single word, no spaces) to attach to '
-                     'processed files. Defaults to the current time in '
-                     'YYYYMMDDHHMMSS format.'),
+                     'processed files. Defaults label is \'default\'.'),
             'type': str,
             'default': None,
         },
@@ -53,9 +50,9 @@ class ProcessWaveformsModule(SubcommandModule):
         self._check_arguments()
         self._get_events()
 
-        # get the process tag from the user or define by current datetime
+        # get the process tag from the user or use "default" for tag
         self.process_tag = (gmrecords.args.label or
-                            datetime.utcnow().strftime(TAG_FMT))
+                            "default")
         logging.info('Processing tag: %s' % self.process_tag)
 
         if gmrecords.args.num_processes:
