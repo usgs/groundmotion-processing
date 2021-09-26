@@ -47,13 +47,13 @@ PREAMBLE = """
    includeheadfoot
 }
 
-\setlength\parindent{0pt}
+\\setlength\\parindent{0pt}
 
 % Use custom headers
 \\usepackage{fancyhdr}
 \\pagestyle{fancy}
 \\fancyhf{}
-\\renewcommand{\headrulewidth}{0pt}
+\\renewcommand{\\headrulewidth}{0pt}
 \\cfoot{\\thepage}
 %%\\lfoot{\\today}
 
@@ -177,7 +177,12 @@ def build_report_latex(sc, directory, origin, prefix='', config=None):
 
     # Loop over each StationStream and append it's page to the report
     # do not include more than three.
-    for st in sc:
+
+    # get list of streams to sort them:
+    st_list = list(sc.streams)
+    st_list.sort(key=lambda x: x.id)
+
+    for st in st_list:
         plot_path = os.path.join(
             'plots', origin.id + '_' + st.get_id() + '.png')
         SB = STREAMBLOCK.replace('[PLOTPATH]', plot_path)
