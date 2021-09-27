@@ -26,6 +26,13 @@ def compute_snr_trace(tr, bandwidth, mag=None, check=None):
         noise = tr.copy().trim(endtime=split_time)
         signal = tr.copy().trim(starttime=split_time)
 
+        tr.setCached(
+            'noise_trace', {
+                'times': noise.times(),
+                'data': noise.data
+            }
+        )
+
         noise.detrend('demean')
         signal.detrend('demean')
 
