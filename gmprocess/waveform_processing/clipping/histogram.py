@@ -277,25 +277,25 @@ class Histogram(ClipDetection):
         init_method = 'estimated'
         amp_hist, edges = np.histogram(tr.data, bins=self.num_bins)
         temp_forward_1 = ExponentialSmoothing(
-            amp_hist.astype(np.float),
+            amp_hist.astype(float),
             initialization_method=init_method
         )
         forward_1 = temp_forward_1.fit(
             smoothing_level=0.2).fittedvalues
         temp_amp_hist = ExponentialSmoothing(
-            forward_1[::-1].astype(np.float),
+            forward_1[::-1].astype(float),
             initialization_method=init_method
         )
         amp_hist = temp_amp_hist.fit(
             smoothing_level=0.2).fittedvalues[::-1]
         temp_forward_2 = ExponentialSmoothing(
-            amp_hist.astype(np.float),
+            amp_hist.astype(float),
             initialization_method=init_method
         )
         forward_2 = temp_forward_2.fit(
             smoothing_level=0.025).fittedvalues
         temp_smoothed_amp_hist = ExponentialSmoothing(
-            forward_2[::-1].astype(np.float),
+            forward_2[::-1].astype(float),
             initialization_method=init_method
         )
         smoothed_amp_hist = temp_smoothed_amp_hist.fit(
