@@ -261,7 +261,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                 try:
                     tr.remove_response(
                         inventory=inv, output=output, water_level=water_level,
-                        pre_filt=(f1, f2, f3, f4))
+                        pre_filt=(f1, f2, f3, f4), zero_mean=True, taper=False)
                     tr.stats.standard.units = output.lower()
                     tr.stats.standard.process_level = PROCESS_LEVELS['V1']
                 except BaseException as e:
@@ -307,7 +307,8 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                     else:
                         tr.remove_response(
                             inventory=inv, output=output,
-                            water_level=water_level
+                            water_level=water_level,
+                            zero_mean=True, taper=False
                         )
                         tr.data *= M_TO_CM  # Convert from m to cm
                         tr.stats.standard.units = output.lower()
