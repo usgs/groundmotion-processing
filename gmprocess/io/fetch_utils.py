@@ -312,20 +312,24 @@ def read_event_json_files(eventfiles):
         with open(eventfile, 'rt', encoding='utf-8') as f:
 
             event = json.load(f)
-            origintime = datetime.fromtimestamp\
-                (event["properties"]["time"]/1000.0)
 
-            evdict = {
-                "id": event["id"],
-                "time": origintime.strftime("%Y-%m-%dT%H:%M:%S.%f"),
-                "lat": event["geometry"]["coordinates"][1],
-                "lon": event["geometry"]["coordinates"][0],
-                "depth": event["geometry"]["coordinates"][2],
-                "magnitude": event["properties"]["mag"],
-                "magnitude_type": event["properties"]["magType"],
-            }
+            try:
+                origintime = datetime.fromtimestamp\
+                    (event["properties"]["time"]/1000.0)
+                evdict = {
+                    "id": event["id"],
+                    "time": origintime.strftime("%Y-%m-%dT%H:%M:%S.%f"),
+                    "lat": event["geometry"]["coordinates"][1],
+                    "lon": event["geometry"]["coordinates"][0],
+                    "depth": event["geometry"]["coordinates"][2],
+                    "magnitude": event["properties"]["mag"],
+                    "magnitude_type": event["properties"]["magType"],
+                }
+                event = get_event_object(evdict)
 
-            event = get_event_object(evdict)
+            except:
+                event = get_event_object(event)
+
             events.append(event)
     return events
 
