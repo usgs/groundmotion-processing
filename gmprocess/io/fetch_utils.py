@@ -5,11 +5,13 @@ import logging
 import warnings
 import glob
 import re
+import requests
 from collections import OrderedDict
 from datetime import datetime
 from setuptools_scm import get_version
 
 # third party imports
+from libcomcat.search import get_event_by_id
 from obspy.geodetics.base import locations2degrees
 from obspy.taup import TauPyModel
 import matplotlib.pyplot as plt
@@ -100,7 +102,7 @@ def download(event, event_dir, config, directory, create_workspace=True,
             config=config,
             rawdir=rawdir, 
             stream_collection=stream_collection)
-        # create an event.json file in each event directory,
+        # download an event.json file in each event directory,
         # in case user is simply downloading for now
         create_event_file(event, event_dir)
         rup_file = get_rupture_file(event_dir)
@@ -308,8 +310,22 @@ def read_event_json_files(eventfiles):
     events = []
     for eventfile in eventfiles:
         with open(eventfile, 'rt', encoding='utf-8') as f:
-            eventdict = json.load(f)
-            event = get_event_object(eventdict)
+
+            event = json.load(f)
+            origintime = datetime.fromtimestamp\
+                (event["properties"]["time"]/1000.0)
+
+            evdict = {
+                "id": event["id"],
+                "time": origintime.strftime("%Y-%m-%dT%H:%M:%S.%f"),
+                "lat": event["geometry"]["coordinates"][1],
+                "lon": event["geometry"]["coordinates"][0],
+                "depth": event["geometry"]["coordinates"][2],
+                "magnitude": event["properties"]["mag"],
+                "magnitude_type": event["properties"]["magType"],
+            }
+
+            event = get_event_object(evdict)
             events.append(event)
     return events
 
@@ -415,20 +431,17 @@ def create_event_file(event, event_dir):
         event_dir (str):
             Directory where event.json should be written.
     """
-    # create event.json file in each directory
-    edict = {
-        'id': event.id,
-        'time': event.time.strftime(TIMEFMT2),
-        'lat': event.latitude,
-        'lon': event.longitude,
-        'depth': event.depth_km,
-        'magnitude': event.magnitude,
-        'magnitude_type': event.magnitude_type
-    }
-    eventfile = os.path.join(event_dir, 'event.json')
-    with open(eventfile, 'wt', encoding='utf-8') as f:
-        json.dump(edict, f)
 
+    # download event.json for event
+    eventid = event.origins[-1].resource_id.id
+    event = get_event_by_id(eventid)
+    req = requests.get(event.detail_url)
+    data = json.loads(req.text)
+
+    # dump the event.json file to the event directory
+    eventfile = os.path.join(event_dir, 'event.json')
+    with open(eventfile, 'w') as f:
+        json.dump(data, f)
 
 def get_rawdir(event_dir):
     """Find or create raw directory if necessary.
