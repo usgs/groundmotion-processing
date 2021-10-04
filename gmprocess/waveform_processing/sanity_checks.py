@@ -8,7 +8,7 @@ This module is for waveform procesisng simple sanity checks.
 import numpy as np
 
 
-def check_tail(st, duration, max_vel_ratio=0.1, max_dis_ratio=0.1):
+def check_tail(st, duration, max_vel_ratio=0.1, max_dis_ratio=0.5):
     """Check for abnormally arge values in the tail of the stream.
 
     This QA check looks for the presence of abnomally large values in the tail
@@ -59,6 +59,7 @@ def check_tail(st, duration, max_vel_ratio=0.1, max_dis_ratio=0.1):
         tr.trim(starttime=new_start_time)
 
     for i in range(len(st)):
+        tr = st[i]
         abs_max_vel = np.max(np.abs(vel[i].data))
         abs_max_vel_trim = np.max(np.abs(vel_trim[i].data))
         abs_max_dis = np.max(np.abs(dis[i].data))

@@ -441,8 +441,8 @@ class StationTrace(Trace):
             'module': calling_module,
             'reason': reason
         })
-        logging.info(calling_module)
-        logging.info(reason)
+        trace_id = "%s" % self.id
+        logging.info('%s - %s - %s' % (calling_module, trace_id, reason))
 
     def validate(self):
         """Ensure that all required metadata fields have been set.

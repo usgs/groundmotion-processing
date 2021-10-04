@@ -395,6 +395,15 @@ processing:
         # Max stress for fit search (bars)
         max_stress: 10000
 
+    - check_tail:
+        # Tail duration in sec
+        duration: 5.0
+        # Max ratio of of the absolute velocity in the tail to the full trace.
+        max_vel_ratio: 0.1
+        # Max ratio of of the absolute displacement in the tail to the full 
+        # trace.
+        max_dis_ratio: 0.5
+
 colocated:
     # This section is for handling colocated instruments that have otherwise
     # passed tests. For reference:

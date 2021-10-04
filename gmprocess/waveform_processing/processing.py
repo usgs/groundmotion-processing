@@ -42,6 +42,7 @@ from gmprocess.waveform_processing.windows import \
     cut, trim_multiple_events  # NOQA
 from gmprocess.waveform_processing.clipping.clipping_check import \
     check_clipping  # NOQA
+from gmprocess.waveform_processing.sanity_checks import check_tail  # NOQA
 # -----------------------------------------------------------------------------
 
 M_TO_CM = 100.0
@@ -410,12 +411,14 @@ def detrend(st, detrending_method=None):
         st (StationStream):
             Stream of data.
         method (str): Method to detrend; valid options include the 'type'
-            options supported by obspy.core.trace.Trace.detrend as well as
-            'baseline_sixth_order', which is for a baseline correction method
-            that fits a sixth-order polynomial to the displacement time series,
-            and sets the zeroth- and first-order terms to be zero. The second
-            derivative of the fit polynomial is then removed from the
-            acceleration time series.
+            options supported by obspy.core.trace.Trace.detrend as well as:
+                - 'baseline_sixth_order', which is for a baseline correction
+                   method that fits a sixth-order polynomial to the
+                   displacement time series, and sets the zeroth- and
+                   first-order terms to be zero. The second derivative of the
+                   fit polynomial is then removed from the acceleration time
+                   series.
+                - 'pre', for removing the mean of the pre-event noise window.
 
     Returns:
         StationStream: Detrended stream.
@@ -427,6 +430,8 @@ def detrend(st, detrending_method=None):
     for tr in st:
         if detrending_method == 'baseline_sixth_order':
             tr = _correct_baseline(tr)
+        elif detrending_method == 'pre':
+            tr = _detrend_pre_event_mean(tr)
         else:
             tr = tr.detrend(detrending_method)
 
@@ -632,6 +637,20 @@ def max_traces(st, n_max=3):
         for tr in st:
             tr.fail('More than %s traces in stream.' % n_max)
     return st
+
+
+def _detrend_pre_event_mean(trace):
+    """
+    Subtraces the mean of the pre-event noise window from the full trace.
+
+    Args:
+        trace (obspy.core.trace.Trace):
+            Trace of strong motion data.
+
+    Returns:
+        trace: Detrended trace.
+    """
+    return trace
 
 
 def _correct_baseline(trace):
