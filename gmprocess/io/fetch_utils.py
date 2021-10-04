@@ -1,6 +1,7 @@
 # stdlib imports
 import os
 import json
+import folium
 import logging
 import warnings
 import glob
@@ -20,6 +21,7 @@ import pandas as pd
 from openpyxl import load_workbook
 import yaml
 import numpy as np
+import pandas as pd
 from impactutils.mapping.city import Cities
 from impactutils.mapping.mercatormap import MercatorMap
 from impactutils.mapping.scalebar import draw_scale
@@ -275,6 +277,29 @@ def draw_stations_map(pstreams, event, event_dir):
     plt.savefig(mapfile)
     return mapfile
 
+def draw_stations_map_interactive(pstreams, event, event_dir):
+    
+    lats = np.array([stream[0].stats.coordinates['latitude']
+                     for stream in pstreams])
+    lons = np.array([stream[0].stats.coordinates['longitude']
+                     for stream in pstreams])
+    stnames = [stream[0].stats.station 
+                     for stream in pstreams]
+
+    coords=[]
+    coords = zip(lats,lons)
+
+    station_map = folium.Map(location=[event.latitude,event.longitude], zoom_start=7)
+    station_df = pd.DataFrame({'stnames':stnames, 'coords':coords})
+
+    for i, r in station_df.iterrows():
+        folium.Marker(location=r['coords'],
+                      popup=r['stnames'],
+                      icon=folium.Icon(color="red",icon="caret-down")).add_to(station_map)
+
+    mapfile = os.path.join(event_dir, 'stations_map.html')
+    station_map.save(mapfile)
+    return station_map
 
 def get_event_files(directory):
     """Get list of event.json files found underneath a data directory.
