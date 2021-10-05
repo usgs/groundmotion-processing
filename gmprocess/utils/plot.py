@@ -9,6 +9,7 @@ from collections import Counter
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 import numpy as np
 from obspy.geodetics.base import gps2dist_azimuth
 from obspy.core.utcdatetime import UTCDateTime
@@ -591,6 +592,11 @@ def summary_plots(st, directory, origin):
         else:
             snr_conf = None
 
+        if tr.hasParameter('tail_conf'):
+            tail_conf = tr.getParameter('tail_conf')
+        else:
+            tail_conf = None
+
         trace_failed = tr.hasParameter('failure')
 
         # Note that the theoretical spectra will only be available for
@@ -653,6 +659,20 @@ def summary_plots(st, directory, origin):
         ax[j + ntrace].set_xlabel('Time (s)')
         ax[j + ntrace].set_ylabel('Velocity (cm/s)')
 
+        if tail_conf is not None:
+            utc_start = UTCDateTime(tail_conf['start_time'])
+            tail_start = utc_start - tr.stats.starttime
+            tail_end = tr.stats.endtime - tr.stats.starttime
+            abs_max_vel = np.max(np.abs(tr_vel.data))
+            vel_ratio = tail_conf['max_vel_ratio']
+            vel_threshold = abs_max_vel * vel_ratio
+            rect = patches.Rectangle(
+                (tail_start, -vel_threshold),
+                tail_end - tail_start, 2 * vel_threshold,
+                linewidth=0, edgecolor='none', facecolor='#3cfa8b')
+
+            ax[j + ntrace].add_patch(rect)
+
         # ---------------------------------------------------------------------
         # Displacement time series plot
         tr_dis = st_dis[j]
@@ -670,6 +690,20 @@ def summary_plots(st, directory, origin):
 
         ax[j + 2 * ntrace].set_xlabel('Time (s)')
         ax[j + 2 * ntrace].set_ylabel('Displacement (cm)')
+
+        if tail_conf is not None:
+            utc_start = UTCDateTime(tail_conf['start_time'])
+            tail_start = utc_start - tr.stats.starttime
+            tail_end = tr.stats.endtime - tr.stats.starttime
+            abs_max_dis = np.max(np.abs(tr_dis.data))
+            dis_ratio = tail_conf['max_dis_ratio']
+            dis_threshold = abs_max_dis * dis_ratio
+            rect = patches.Rectangle(
+                (tail_start, -dis_threshold),
+                tail_end - tail_start, 2 * dis_threshold,
+                linewidth=0, edgecolor='none', facecolor='#3cfa8b')
+
+            ax[j + 2 * ntrace].add_patch(rect)
 
         # ---------------------------------------------------------------------
         # Spectral plot

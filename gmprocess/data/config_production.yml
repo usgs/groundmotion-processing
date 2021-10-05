@@ -185,8 +185,10 @@ processing:
         threshold: 0.2
 
     - detrend:
-        # Supported obspy methods (besides the baseline described below):
+        # Supported obspy methods:
         #     constant, demean, linear, polynomial, simple, spline
+        # Also:
+        #     baseline_sixth_order, pre
         detrending_method: demean
 
     - check_zero_crossings:
@@ -216,13 +218,9 @@ processing:
         water_level: 60
 
     - detrend:
-        # Supported obspy methods (besides the baseline described below):
-        #     constant, demean, linear, polynomial, simple, spline
         detrending_method: linear
 
     - detrend:
-        # Supported obspy methods (besides the baseline described below):
-        #     constant, demean, linear, polynomial, simple, spline
         detrending_method: demean
 
     - compute_snr:
@@ -338,13 +336,15 @@ processing:
         # determined with 'corner_frequencies' section.
         filter_order: 5
         number_of_passes: 2
+    - detrend:    
+        detrending_method: pre
 
-    # - detrend:
+    - detrend:
     #     # The current baseline correction method fits a sixth-order polynomial
     #     # to the displacement time series, and sets the zeroth- and first-order
     #     # terms to be zero. The second derivative of the fit polynomial is then
     #     # removed from the acceleration time series.
-    #     detrending_method: baseline_sixth_order
+        detrending_method: baseline_sixth_order
 
     # - trim_multiple_events:
     #     pga_factor: 0.2
@@ -398,9 +398,9 @@ processing:
     - check_tail:
         # Tail duration in sec
         duration: 5.0
-        # Max ratio of of the absolute velocity in the tail to the full trace.
-        max_vel_ratio: 0.1
-        # Max ratio of of the absolute displacement in the tail to the full 
+        # Max ratio of the absolute velocity in the tail to the full trace.
+        max_vel_ratio: 0.25
+        # Max ratio of the absolute displacement in the tail to the full 
         # trace.
         max_dis_ratio: 0.5
 

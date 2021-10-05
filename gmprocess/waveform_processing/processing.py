@@ -650,6 +650,13 @@ def _detrend_pre_event_mean(trace):
     Returns:
         trace: Detrended trace.
     """
+    split_prov = trace.getParameter('signal_split')
+    if isinstance(split_prov, list):
+        split_prov = split_prov[0]
+    split_time = split_prov['split_time']
+    noise = trace.copy().trim(endtime=split_time)
+    noise_mean = np.mean(noise.data)
+    trace.data = trace.data - noise_mean
     return trace
 
 
