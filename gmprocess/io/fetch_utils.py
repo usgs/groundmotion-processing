@@ -1,7 +1,6 @@
 # stdlib imports
 import os
 import json
-import folium
 import logging
 import warnings
 import glob
@@ -12,6 +11,7 @@ from datetime import datetime
 from setuptools_scm import get_version
 
 # third party imports
+import folium
 from libcomcat.search import get_event_by_id
 from obspy.geodetics.base import locations2degrees
 from obspy.taup import TauPyModel
@@ -199,11 +199,65 @@ def parse_event_file(eventfile):
 
 
 def draw_stations_map(pstreams, event, event_dir):
-    # draw map of stations and cities and stuff
+
+    # interactive html map is created first
     lats = np.array([stream[0].stats.coordinates['latitude']
                      for stream in pstreams])
     lons = np.array([stream[0].stats.coordinates['longitude']
                      for stream in pstreams])
+    stnames = np.array([stream[0].stats.station 
+                     for stream in pstreams])
+    networks = np.array([stream[0].stats.network 
+                     for stream in pstreams])
+
+    failed = np.array([
+        np.any([trace.hasParameter("failure") for trace in stream])
+        for stream in pstreams])
+
+    failure_reasons = list(pd.Series(
+                [next(tr for tr in st if tr.hasParameter('failure')).
+                    getParameter('failure')['reason'] for st in pstreams
+                    if not st.passed], dtype=str))
+
+    station_map = folium.Map(location=[event.latitude,event.longitude], \
+        zoom_start=7, control_scale=True)
+
+    failed_coords = zip(lats[failed],lons[failed])
+    failed_stations = stnames[failed]
+    failed_networks = networks[failed]
+    failed_station_df = pd.DataFrame({'stnames':failed_stations,'network': failed_networks, \
+                                      'coords': failed_coords, 'reason':failure_reasons})
+
+    passed_coords = zip(lats[~failed],lons[~failed])
+    passed_stations = stnames[~failed]
+    passed_networks = networks[~failed]
+    passed_station_df = pd.DataFrame({'stnames':passed_stations, 'network': passed_networks,
+                                      'coords':passed_coords})
+
+    # Plot the failed first
+    for i, r in failed_station_df.iterrows():
+        station_info = 'NET: {} LAT: {:.2f} LON: {:.2f} REASON: {}'.\
+            format(r['network'], r['coords'][0], r['coords'][1], r['reason'])
+        folium.CircleMarker(location=r['coords'],
+                      tooltip=r['stnames'], popup=station_info,
+                      color=FAILED_COLOR,fill=True,radius=6).add_to(station_map)
+
+    for i, r in passed_station_df.iterrows():
+        station_info = 'NET: {}\n LAT: {:.2f} LON: {:.2f}'.\
+            format(r['network'], r['coords'][0], r['coords'][1])
+        folium.CircleMarker(location=r['coords'], tooltip=r['stnames'], popup=station_info,
+            color=PASSED_COLOR, fill=True, radius=10).add_to(station_map)
+
+    event_info = 'MAG: {} LAT: {:.2f} LON: {:.2f} DEPTH: {:.2f}'.\
+        format(event.magnitude, event.latitude, event.longitude, event.depth)
+    folium.CircleMarker([event.latitude, event.longitude], popup=event_info,
+        color='yellow', fill=True, radius=15).add_to(station_map)
+
+    mapfile = os.path.join(event_dir, 'stations_map.html')
+    station_map.save(mapfile)
+
+    # now the static map for the report is created
+    # draw map of stations and cities and stuff
     cy = event.latitude
     cx = event.longitude
     xmin = lons.min()
@@ -277,29 +331,6 @@ def draw_stations_map(pstreams, event, event_dir):
     plt.savefig(mapfile)
     return mapfile
 
-def draw_stations_map_interactive(pstreams, event, event_dir):
-    
-    lats = np.array([stream[0].stats.coordinates['latitude']
-                     for stream in pstreams])
-    lons = np.array([stream[0].stats.coordinates['longitude']
-                     for stream in pstreams])
-    stnames = [stream[0].stats.station 
-                     for stream in pstreams]
-
-    coords=[]
-    coords = zip(lats,lons)
-
-    station_map = folium.Map(location=[event.latitude,event.longitude], zoom_start=7)
-    station_df = pd.DataFrame({'stnames':stnames, 'coords':coords})
-
-    for i, r in station_df.iterrows():
-        folium.Marker(location=r['coords'],
-                      popup=r['stnames'],
-                      icon=folium.Icon(color="red",icon="caret-down")).add_to(station_map)
-
-    mapfile = os.path.join(event_dir, 'stations_map.html')
-    station_map.save(mapfile)
-    return station_map
 
 def get_event_files(directory):
     """Get list of event.json files found underneath a data directory.

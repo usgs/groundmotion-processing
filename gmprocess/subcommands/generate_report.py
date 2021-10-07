@@ -7,7 +7,7 @@ import logging
 
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.io.fetch_utils import draw_stations_map_interactive
+from gmprocess.io.fetch_utils import draw_stations_map
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.io.report import build_report_latex
 from gmprocess.utils.plot import summary_plots, plot_moveout
@@ -73,7 +73,7 @@ class GenerateReportModule(SubcommandModule):
             for stream in self.pstreams:
                 summary_plots(stream, plot_dir, event)
 
-            mapfile = draw_stations_map_interactive(self.pstreams, event, event_dir)
+            mapfile = draw_stations_map(self.pstreams, event, event_dir)
             moveoutfile = os.path.join(event_dir, 'moveout_plot.png')
             plot_moveout(self.pstreams, event.latitude, event.longitude,
                          file=moveoutfile)
