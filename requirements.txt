@@ -32,3 +32,4 @@ flake8>=3.9
 pyflakes>=2.3
 rope>=0.19
 yapf>=0.31
+folium>=0.12.0
