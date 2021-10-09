@@ -170,7 +170,7 @@ class GMrecordsApp(object):
             version='%(prog)s ' + __version__,
             help='Print program version.')
         self.parser.add_argument(
-            '--log', action='store_true', default=False,
+            '-l', '--log', action='store_true', default=False,
             help='Log all output to a file in the project data directory.')
 
         # Parsers for subcommands

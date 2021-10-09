@@ -140,7 +140,7 @@ windows:
         model: AS16
         # Number of standard deviations; if epsilon is 1.0, then the signal
         # window duration is the mean Ds + 1 standard deviation.
-        epsilon: 2.0
+        epsilon: 3.0
 
     window_checks:
         # Minimum noise duration; can be zero but this will allow for errors
@@ -310,13 +310,14 @@ processing:
     #       a: 50
 
     - cut:
-        # No required options; the presence of this key just indicates when to
+        # No required options; the presence of this step just indicates when to
         # cut the time series using the record start and signal end that were
         # configured in the windows section.
 
-        # Optionally, can specify how many seconds to include prior to the
-        # split between the noise and signal windows. If set to "Null" then
-        # the beginning of the record will be unchanged.
+        # Optionally, can specify 'sec_before_split' which shifts the start
+        # time of the signal window (relative to the estimated p-wave arrival). 
+        # If set to "Null" then the beginning of the signal window will be
+        # unchanged.
         sec_before_split: 2.0
 
     - taper:
@@ -399,10 +400,10 @@ processing:
         # Tail duration in sec
         duration: 5.0
         # Max ratio of the absolute velocity in the tail to the full trace.
-        max_vel_ratio: 0.25
+        max_vel_ratio: 0.3
         # Max ratio of the absolute displacement in the tail to the full 
         # trace.
-        max_dis_ratio: 0.5
+        max_dis_ratio: 0.6
 
 colocated:
     # This section is for handling colocated instruments that have otherwise
