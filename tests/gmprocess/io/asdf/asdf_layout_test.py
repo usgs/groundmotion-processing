@@ -80,9 +80,7 @@ def test_layout():
     with open(layout_abspath, "r", encoding='utf-8') as fin:
         lines = fin.readlines()
         for line in lines:
-            itype, item = line.split()
-            assert item in h5
-            assert isinstance(h5[item], LAYOUT_TYPES[itype])
+            assert line.strip() in h5
     h5.close()
     return
 

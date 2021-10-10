@@ -161,7 +161,7 @@ def test_trim_multiple_events():
                              {'vs30': 760}, {'rake': 0})
 
     num_failures = sum([1 if not st.passed else 0 for st in sc])
-    assert num_failures == 1
+    assert num_failures == 2
 
     failure = sc.select(station='WRV2')[0][0].getParameter('failure')
     assert failure['module'] == 'trim_multiple_events'
@@ -172,7 +172,7 @@ def test_trim_multiple_events():
     for tr in sc.select(station='JRC2')[0]:
         np.testing.assert_almost_equal(
             tr.stats.endtime,
-            UTCDateTime('2019-07-06T03:20:38.7983Z'))
+            UTCDateTime('2019-07-06T03:20:56.368300Z'))
 
 
 if __name__ == '__main__':

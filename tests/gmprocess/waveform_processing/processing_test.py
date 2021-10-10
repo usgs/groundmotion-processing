@@ -55,7 +55,7 @@ def test_process_streams():
 
     np.testing.assert_allclose(
         trace_maxes,
-        np.array([157.81975508, 240.33718094, 263.67804256]),
+        np.array([157.812449, 240.379521, 263.601519]),
         rtol=1e-5
     )
 

@@ -30,7 +30,7 @@ class ProcessWaveformsModule(SubcommandModule):
             'short_flag': '-l',
             'long_flag': '--label',
             'help': ('Processing label (single word, no spaces) to attach to '
-                     'processed files. Defaults label is \'default\'.'),
+                     'processed files. Default label is \'default\'.'),
             'type': str,
             'default': None,
         },
