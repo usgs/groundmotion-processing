@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import os
-import yaml
 import pkg_resources
 from importlib import import_module
+from ruamel.yaml import YAML
 
 from gmprocess.utils.constants import MODULE_FILE
 
@@ -22,7 +22,9 @@ def load_model(model):
     mod_file = pkg_resources.resource_filename(
         'gmprocess', os.path.join('data', MODULE_FILE))
     with open(mod_file, 'r', encoding='utf-8') as f:
-        mods = yaml.load(f, Loader=yaml.FullLoader)
+        yaml = YAML()
+        yaml.preserve_quotes = True
+        mods = yaml.load(f)
 
     # Import module
     cname, mpath = mods['modules'][model]

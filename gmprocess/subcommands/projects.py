@@ -6,8 +6,8 @@ import sys
 import re
 import logging
 import shutil
-import yaml
 import pkg_resources
+from ruamel.yaml import YAML
 
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.utils.prompt import \
@@ -267,8 +267,10 @@ def create(config, cwd=False):
     # Sart with production conf from repository, then add user info
     data_path = pkg_resources.resource_filename('gmprocess', 'data')
     current_conf = os.path.join(data_path, CONFIG_FILE_PRODUCTION)
+    yaml = YAML()
+    yaml.preserve_quotes = True
     with open(current_conf, 'rt', encoding='utf-8') as f:
-        gmrecords_conf = yaml.load(f, Loader=yaml.SafeLoader)
+        gmrecords_conf = yaml.load(f)
 
     print('Please enter your name and email. This information will be added')
     print('to the config file and reported in the provenance of the data')
@@ -285,4 +287,4 @@ def create(config, cwd=False):
     gmrecords_conf['user'] = user_info
     proj_conf_file = os.path.join(new_conf_path, 'config.yml')
     with open(proj_conf_file, 'w', encoding='utf-8') as yf:
-        yaml.dump(gmrecords_conf, yf, Dumper=yaml.SafeDumper)
+        yaml.dump(gmrecords_conf, yf)
