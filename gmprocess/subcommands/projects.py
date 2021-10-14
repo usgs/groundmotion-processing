@@ -268,6 +268,7 @@ def create(config, cwd=False):
     data_path = pkg_resources.resource_filename('gmprocess', 'data')
     current_conf = os.path.join(data_path, CONFIG_FILE_PRODUCTION)
     yaml = YAML()
+    yaml.preserve_quotes = True
     with open(current_conf, 'rt', encoding='utf-8') as f:
         gmrecords_conf = yaml.load(f)
 

@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import os
-import yaml
 import pkg_resources
 from configobj import ConfigObj
+from ruamel.yaml import YAML
+
 
 from gmprocess.utils import constants
 
@@ -99,7 +100,9 @@ def get_config(config_file=None, section=None):
         raise OSError(fmt % config_file)
     else:
         with open(config_file, 'r', encoding='utf-8') as f:
-            config = yaml.load(f, Loader=yaml.FullLoader)
+            yaml = YAML()
+            yaml.preserve_quotes = True
+            config = yaml.load(f)
 
     if section is not None:
         if section not in config:

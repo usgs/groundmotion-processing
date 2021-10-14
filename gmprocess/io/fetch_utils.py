@@ -19,7 +19,8 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 import pandas as pd
 from openpyxl import load_workbook
-import yaml
+from ruamel.yaml import YAML
+from ruamel.yaml.error import YAMLError 
 import numpy as np
 import pandas as pd
 from impactutils.mapping.city import Cities
@@ -791,9 +792,11 @@ def update_config(custom_cfg_file):
         return config
     try:
         with open(custom_cfg_file, 'rt', encoding='utf-8') as f:
-            custom_cfg = yaml.load(f, Loader=yaml.FullLoader)
+            yaml = YAML()
+            yaml.preserve_quotes = True
+            custom_cfg = yaml.load(f)
             update_dict(config, custom_cfg)
-    except yaml.parser.ParserError:
+    except YAMLError:
         return None
 
     return config
