@@ -236,6 +236,7 @@ def create(config, cwd=False):
                '-l\' to see existing projects.')
         print(msg % project)
         sys.exit(1)
+
     if not cwd:
         default_conf, default_data = get_default_project_paths(project)
         new_conf_path, new_data_path = \
@@ -247,6 +248,18 @@ def create(config, cwd=False):
         for p in [new_conf_path, new_data_path]:
             if not os.path.isdir(p):
                 os.mkdir(p)
+    print('Please enter your name and email. This information will be added')
+    print('to the config file and reported in the provenance of the data')
+    print('processed in this project.')
+    user_info = {}
+    user_info['name'] = input('\tName: ')
+    if not len(user_info['name'].strip()):
+        print('User name is required. Exiting.')
+        sys.exit(0)
+    user_info['email'] = input('\tEmail: ')
+    if not re.search(re_email, user_info['email']):
+        print("Invalid Email. Exiting.")
+        sys.exit(0)
 
     new_conf_path = os.path.abspath(new_conf_path)
     new_data_path = os.path.abspath(new_data_path)
@@ -271,19 +284,6 @@ def create(config, cwd=False):
     yaml.preserve_quotes = True
     with open(current_conf, 'rt', encoding='utf-8') as f:
         gmrecords_conf = yaml.load(f)
-
-    print('Please enter your name and email. This information will be added')
-    print('to the config file and reported in the provenance of the data')
-    print('processed in this project.')
-    user_info = {}
-    user_info['name'] = input('\tName: ')
-    if not len(user_info['name'].strip()):
-        print('User name is required. Exiting.')
-        sys.exit(0)
-    user_info['email'] = input('\tEmail: ')
-    if not re.search(re_email, user_info['email']):
-        print("Invalid Email. Exiting.")
-        sys.exit(0)
     gmrecords_conf['user'] = user_info
     proj_conf_file = os.path.join(new_conf_path, 'config.yml')
     with open(proj_conf_file, 'w', encoding='utf-8') as yf:
