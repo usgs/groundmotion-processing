@@ -20,6 +20,7 @@ from matplotlib.dates import num2date
 from gmprocess.metrics.reduction.arias import Arias
 from gmprocess.waveform_processing import spectrum
 from gmprocess.metrics.oscillators import get_spectral
+from gmprocess.utils.constants import UNIT_CONVERSIONS
 
 MIN_MAG = 4.0
 MAX_MAG = 7.0
@@ -618,6 +619,7 @@ def summary_plots(st, directory, origin):
 
         # ---------------------------------------------------------------------
         # Acceleration time series plot
+        pga = np.max(np.abs(st[j].data)) / UNIT_CONVERSIONS['g']
         if trace_failed:
             trace_status = " (failed)"
             trace_title = tr.get_id() + trace_status
@@ -629,6 +631,10 @@ def summary_plots(st, directory, origin):
         dtimes = np.linspace(
             0, tr.stats.endtime - tr.stats.starttime, tr.stats.npts)
         ax[j].plot(dtimes, tr.data, 'k', linewidth=0.5)
+        ax[j].tick_params(axis='both', which='major', labelsize=5)
+        ax[j].text(0.95, 0.95, 'PGA: %.3g g' % pga,
+                   transform=ax[j].transAxes, va='top', ha='right',
+                   color='0.5')
 
         # Show signal split as vertical dashed line
         if tr.hasParameter('signal_split'):
@@ -638,17 +644,21 @@ def summary_plots(st, directory, origin):
             ax[j].axvline(dsec,
                           color='red', linestyle='dashed')
 
-        ax[j].set_xlabel('Time (s)')
-        ax[j].set_ylabel('Acceleration (cm/s/s)')
+        if j == 0:
+            ax[j].set_ylabel('Acceleration (cm/s/s)')
 
         # ---------------------------------------------------------------------
         # Velocity time series plot
+        pgv = np.max(np.abs(st_vel[j].data))
         tr_vel = st_vel[j]
         dtimes = np.linspace(
             0, tr_vel.stats.endtime - tr_vel.stats.starttime, tr_vel.stats.npts
         )
         ax[j + ntrace].plot(dtimes, tr_vel.data, 'k', linewidth=0.5)
-
+        ax[j + ntrace].tick_params(axis='both', which='major', labelsize=5)
+        ax[j + ntrace].text(0.95, 0.95, 'PGV: %.3g cm/s' % pgv,
+                            transform=ax[j + ntrace].transAxes,
+                            va='top', ha='right', color='0.5')
         # Show signal split as vertical dashed line
         if tr.hasParameter('signal_split'):
             split_dict = tr.getParameter('signal_split')
@@ -656,8 +666,8 @@ def summary_plots(st, directory, origin):
             dsec = sptime - tr.stats.starttime
             ax[j + ntrace].axvline(dsec, color='red', linestyle='dashed')
 
-        ax[j + ntrace].set_xlabel('Time (s)')
-        ax[j + ntrace].set_ylabel('Velocity (cm/s)')
+        if j == 0:
+            ax[j + ntrace].set_ylabel('Velocity (cm/s)')
 
         if tail_conf is not None:
             utc_start = UTCDateTime(tail_conf['start_time'])
@@ -675,11 +685,16 @@ def summary_plots(st, directory, origin):
 
         # ---------------------------------------------------------------------
         # Displacement time series plot
+        pgd = np.max(np.abs(st_dis[j].data))
         tr_dis = st_dis[j]
         dtimes = np.linspace(
             0, tr_dis.stats.endtime - tr_dis.stats.starttime, tr_dis.stats.npts
         )
         ax[j + 2 * ntrace].plot(dtimes, tr_dis.data, 'k', linewidth=0.5)
+        ax[j + 2 * ntrace].tick_params(axis='both', which='major', labelsize=5)
+        ax[j + 2 * ntrace].text(0.95, 0.95, 'PGD: %.3g cm' % pgd,
+                                transform=ax[j + 2 * ntrace].transAxes,
+                                va='top', ha='right', color='0.5')
 
         # Show signal split as vertical dashed line
         if tr.hasParameter('signal_split'):
@@ -689,7 +704,8 @@ def summary_plots(st, directory, origin):
             ax[j + 2 * ntrace].axvline(dsec, color='red', linestyle='dashed')
 
         ax[j + 2 * ntrace].set_xlabel('Time (s)')
-        ax[j + 2 * ntrace].set_ylabel('Displacement (cm)')
+        if j == 0:
+            ax[j + 2 * ntrace].set_ylabel('Displacement (cm)')
 
         if tail_conf is not None:
             utc_start = UTCDateTime(tail_conf['start_time'])
@@ -753,7 +769,8 @@ def summary_plots(st, directory, origin):
                 linestyle='dashed')
 
         ax[j + 3 * ntrace].set_xlabel('Frequency (Hz)')
-        ax[j + 3 * ntrace].set_ylabel('Amplitude (cm/s)')
+        if j == 0:
+            ax[j + 3 * ntrace].set_ylabel('Amplitude (cm/s)')
 
         # ---------------------------------------------------------------------
         # Signal-to-noise ratio plot
@@ -795,7 +812,8 @@ def summary_plots(st, directory, origin):
                 snr_dict['snr'],
                 label='SNR')
 
-        ax[j + 4 * ntrace].set_ylabel('SNR')
+        if j == 0:
+            ax[j + 4 * ntrace].set_ylabel('SNR')
         ax[j + 4 * ntrace].set_xlabel('Frequency (Hz)')
 
     stream_id = st.get_id()
@@ -803,8 +821,8 @@ def summary_plots(st, directory, origin):
     # Do not save files if running tests
     file_name = None
     if 'CALLED_FROM_PYTEST' not in os.environ:
-        plt.subplots_adjust(left=0.05, right=0.97, hspace=0.25,
-                            wspace=0.2, top=0.97)
+        plt.subplots_adjust(left=0.08, right=0.97, hspace=0.3,
+                            wspace=0.25, top=0.97)
         file_name = os.path.join(
             directory,
             origin.id + '_' + stream_id + '.png')
