@@ -114,6 +114,12 @@ def get_snr(st, same_horiz=True, bandwidth=20):
                     found_valid = True
 
             if found_valid:
+                # Check to make sure that the highpass corner frequency is not
+                # less than 1 / the duration of the waveform
+                duration = tr.getParameter('signal_end')[
+                    'end_time'] - tr.stats.starttime
+                low_corner = max(1 / duration, low_corner)
+
                 tr.setParameter(
                     'corner_frequencies',
                     {

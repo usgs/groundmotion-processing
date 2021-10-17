@@ -101,7 +101,7 @@ read:
     #     nm/s/s for acceleration
     #     nm/s   for velocity
     #     nm     for displacement
-    # The following is a multiplicative factor to convert the ACTUAL data the 
+    # The following is a multiplicative factor to convert the ACTUAL data the
     # SAC files being used to cm/s/s for accel or cm/s for velocity.
     sac_conversion_factor: 1e-7      # For nm/s/s
     # sac_conversion_factor: 1e-4    # For um/s/s
@@ -189,6 +189,9 @@ processing:
         #     constant, demean, linear, polynomial, simple, spline
         # Also:
         #     baseline_sixth_order, pre
+        detrending_method: linear
+
+    - detrend:
         detrending_method: demean
 
     - check_zero_crossings:
@@ -224,8 +227,8 @@ processing:
         detrending_method: demean
 
     - compute_snr:
-        # Presense of this check says to do the signa-to-noise ratio check. 
-        # Requires minimum SNR of `threshold` between `min_freq` and `max_freq` 
+        # Presense of this check says to do the signa-to-noise ratio check.
+        # Requires minimum SNR of `threshold` between `min_freq` and `max_freq`
         # using Konno-Omachi smoothed spectra with `bandwidth` parameter.
         bandwidth: 20.0
         check:
@@ -435,7 +438,7 @@ duplicate:
     # Maximum distance tolerance (in m) for duplicate data
     max_dist_tolerance: 500
 
-    # List of preferences (in order) for handling duplicate data. 
+    # List of preferences (in order) for handling duplicate data.
     preference_order: ['process_level', 'source_format', 'starttime', 'npts',
                        'sampling_rate', 'location_code']
 
