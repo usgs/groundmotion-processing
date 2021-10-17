@@ -85,7 +85,8 @@ class GMrecordsApp(object):
                 selected_project = self.projects_conf['project']
                 proj = Project(
                     selected_project,
-                    self.projects_conf['projects'][selected_project]
+                    self.projects_conf['projects'][selected_project],
+                    self.projects_conf.filename
                 )
                 print('-' * 80)
                 print(proj)
@@ -121,8 +122,12 @@ class GMrecordsApp(object):
         self.projects_conf = ConfigObj(self.PROJECTS_FILE, encoding='utf-8')
         self.project = self.projects_conf['project']
         self.current_project = self.projects_conf['projects'][self.project]
-        self.conf_path = self.current_project['conf_path']
-        self.data_path = self.current_project['data_path']
+        self.conf_path = os.path.join(
+            os.path.abspath(os.path.join(self.PROJECTS_FILE, os.pardir)),
+            self.current_project['conf_path'])
+        self.data_path = os.path.join(
+            os.path.abspath(os.path.join(self.PROJECTS_FILE, os.pardir)),
+            self.current_project['data_path'])
         self.conf_file = os.path.join(self.conf_path, 'config.yml')
         if not os.path.isfile(self.conf_file):
             print('Config file does not exist: %s' % self.conf_file)
