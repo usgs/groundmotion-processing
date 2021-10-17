@@ -67,7 +67,6 @@ def get_config(config_file=None, section=None):
         IndexError:
             If input section name is not found.
     """
-
     if config_file is None:
         # Try not to let tests interfere with actual system:
         if os.getenv('CALLED_FROM_PYTEST') is None:
@@ -114,9 +113,16 @@ def get_config(config_file=None, section=None):
 
 
 def __proj_to_conf_file(path):
+    # We are switching from absolute to relative paths in this conf file. For
+    # backward compatibility, we're going to try to support both absolute and
+    # relative paths, which is why we need this "try" block to first assume
+    # an absolute path and if the conf does not exist then try a relative path.
     proj_conf_file = os.path.join(path, 'projects.conf')
     projects_conf = ConfigObj(proj_conf_file, encoding='utf-8')
     project = projects_conf['project']
     current_project = projects_conf['projects'][project]
     conf_path = current_project['conf_path']
-    return os.path.join(conf_path, 'config.yml')
+    conf_file = os.path.join(conf_path, 'config.yml')
+    if not os.path.isfile(conf_file):
+        conf_file = os.path.join(path, conf_path, 'config.yml')
+    return conf_file
