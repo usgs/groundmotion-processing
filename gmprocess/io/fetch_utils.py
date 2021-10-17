@@ -876,7 +876,7 @@ def plot_raw(rawdir, tcollection, event):
 
 
 def download_rupture_file(event_id, event_dir):
-    """Check comcat for rupture file and download if it exists.
+    """Downlaod rupture file from Comcat.
 
     Args:
         event_id (str):
