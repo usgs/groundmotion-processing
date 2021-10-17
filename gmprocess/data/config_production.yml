@@ -47,8 +47,8 @@ fetchers:
         time_before : 30
         # seconds after arrival time
         time_after : 420
-        # channels : ["BH?", "HH?", "BN?", "HN?"] # only get strong motion and high-gain channels
-        channels : ["?N?"] # only get strong motion/broadband accelerometer data
+        channels : ["BH?", "HH?", "BN?", "HN?"] # only get strong motion and high-gain channels
+        # channels : ["?N?"] # only get strong motion/broadband accelerometer data
 
         # List instruments that should be avoided.
         # '?' and '*' wildcards are permissible.
@@ -140,7 +140,7 @@ windows:
         model: AS16
         # Number of standard deviations; if epsilon is 1.0, then the signal
         # window duration is the mean Ds + 1 standard deviation.
-        epsilon: 2.0
+        epsilon: 3.0
 
     window_checks:
         # Minimum noise duration; can be zero but this will allow for errors
@@ -179,14 +179,19 @@ processing:
     - min_sample_rate:
         min_sps: 20.0
 
+    # Check for clipping
+    - check_clipping:
+        # Threshold probability for clipping detection.
+        threshold: 0.2
+
     - detrend:
-        # Supported obspy methods (besides the baseline described below):
+        # Supported obspy methods:
         #     constant, demean, linear, polynomial, simple, spline
+        # Also:
+        #     baseline_sixth_order, pre
         detrending_method: linear
 
     - detrend:
-        # Supported obspy methods (besides the baseline described below):
-        #     constant, demean, linear, polynomial, simple, spline
         detrending_method: demean
 
     - check_zero_crossings:
@@ -216,13 +221,9 @@ processing:
         water_level: 60
 
     - detrend:
-        # Supported obspy methods (besides the baseline described below):
-        #     constant, demean, linear, polynomial, simple, spline
         detrending_method: linear
 
     - detrend:
-        # Supported obspy methods (besides the baseline described below):
-        #     constant, demean, linear, polynomial, simple, spline
         detrending_method: demean
 
     - compute_snr:
@@ -312,13 +313,14 @@ processing:
     #       a: 50
 
     - cut:
-        # No required options; the presence of this key just indicates when to
+        # No required options; the presence of this step just indicates when to
         # cut the time series using the record start and signal end that were
         # configured in the windows section.
 
-        # Optionally, can specify how many seconds to include prior to the
-        # split between the noise and signal windows. If set to "Null" then
-        # the beginning of the record will be unchanged.
+        # Optionally, can specify 'sec_before_split' which shifts the start
+        # time of the signal window (relative to the estimated p-wave arrival). 
+        # If set to "Null" then the beginning of the signal window will be
+        # unchanged.
         sec_before_split: 2.0
 
     - taper:
@@ -338,13 +340,15 @@ processing:
         # determined with 'corner_frequencies' section.
         filter_order: 5
         number_of_passes: 2
+    - detrend:    
+        detrending_method: pre
 
-    # - detrend:
+    - detrend:
     #     # The current baseline correction method fits a sixth-order polynomial
     #     # to the displacement time series, and sets the zeroth- and first-order
     #     # terms to be zero. The second derivative of the fit polynomial is then
     #     # removed from the acceleration time series.
-    #     detrending_method: baseline_sixth_order
+        detrending_method: baseline_sixth_order
 
     # - trim_multiple_events:
     #     pga_factor: 0.2
@@ -394,6 +398,15 @@ processing:
 
         # Max stress for fit search (bars)
         max_stress: 10000
+
+    - check_tail:
+        # Tail duration in sec
+        duration: 5.0
+        # Max ratio of the absolute velocity in the tail to the full trace.
+        max_vel_ratio: 0.3
+        # Max ratio of the absolute displacement in the tail to the full 
+        # trace.
+        max_dis_ratio: 0.6
 
 colocated:
     # This section is for handling colocated instruments that have otherwise

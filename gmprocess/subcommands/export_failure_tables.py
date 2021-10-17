@@ -20,8 +20,8 @@ class ExportFailureTablesModule(SubcommandModule):
 
     arguments = [
         ARG_DICTS['eventid'],
+        ARG_DICTS['textfile'],
         ARG_DICTS['label'], {
-            'short_flag': '-t',
             'long_flag': '--type',
             'help': (
                 'Output failure information, either in short form ("short"),'
@@ -70,7 +70,7 @@ class ExportFailureTablesModule(SubcommandModule):
             self._get_pstreams()
             self.workspace.close()
 
-            if not hasattr(self, 'pstreams'):
+            if not (hasattr(self, 'pstreams') and len(self.pstreams) > 0):
                 logging.info('No processed waveforms available. No failure '
                              'tables created.')
                 continue

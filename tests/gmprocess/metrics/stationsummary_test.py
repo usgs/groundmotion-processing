@@ -164,7 +164,7 @@ def test_allow_nans():
     st = psc[0]
 
     ss = StationSummary.from_stream(
-        st, components=['quadratic_mean'], imts=['FAS(4.0)'], bandwidth=189,
+        st, components=['quadratic_mean'], imts=['FAS(4.0)'], bandwidth=300,
         allow_nans=True)
     assert np.isnan(ss.pgms.Result).all()
 

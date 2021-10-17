@@ -7,7 +7,7 @@ ARG_DICTS = {
         'long_flag': '--label',
         'help': ('Processing label. If None (default) then we will disregard '
                  'the unprocessed label, and if there is only one remaining '
-                 'label then we will it. If there are multiple remaining '
+                 'label then we will use it. If there are multiple remaining '
                  'labels then we will prmpt you to select one.'),
         'type': str,
         'default': None,
@@ -44,5 +44,14 @@ ARG_DICTS = {
         'type': int,
         'default': 0,
         'metavar': 'n'
+    },
+    'textfile': {
+        'short_flag': '-t',
+        'long_flag': '--textfile',
+        'help': (
+            'Text file containing lines of ComCat Event IDs or event '
+            'information (ID TIME LAT LON DEPTH MAG).'),
+        'type': str,
+        'default': None
     }
 }

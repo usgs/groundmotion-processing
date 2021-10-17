@@ -28,20 +28,28 @@ from gmprocess.waveform_processing.pretesting import (  # NOQA
     check_max_amplitude,
     check_sta_lta,
     check_free_field)
-from gmprocess.waveform_processing.filtering import lowpass_filter, highpass_filter  # NOQA
-from gmprocess.waveform_processing.adjust_highpass import adjust_highpass_corner  # NOQA
-from gmprocess.waveform_processing.zero_crossings import check_zero_crossings  # NOQA
-from gmprocess.waveform_processing.nn_quality_assurance import NNet_QA  # NOQA
+from gmprocess.waveform_processing.filtering import \
+    lowpass_filter, highpass_filter  # NOQA
+from gmprocess.waveform_processing.adjust_highpass import \
+    adjust_highpass_corner  # NOQA
+from gmprocess.waveform_processing.zero_crossings import \
+    check_zero_crossings  # NOQA
+from gmprocess.waveform_processing.nn_quality_assurance import \
+    NNet_QA  # NOQA
 from gmprocess.waveform_processing.snr import compute_snr  # NOQA
 from gmprocess.waveform_processing.spectrum import fit_spectra  # NOQA
-from gmprocess.waveform_processing.windows import cut, trim_multiple_events  # NOQA
+from gmprocess.waveform_processing.windows import \
+    cut, trim_multiple_events  # NOQA
+from gmprocess.waveform_processing.clipping.clipping_check import \
+    check_clipping  # NOQA
+from gmprocess.waveform_processing.sanity_checks import check_tail  # NOQA
 # -----------------------------------------------------------------------------
 
 M_TO_CM = 100.0
 
 # List of processing steps that require an origin
 # besides the arguments in the conf file.
-REQ_ORIGIN = ['fit_spectra', 'trim_multiple_events']
+REQ_ORIGIN = ['fit_spectra', 'trim_multiple_events', 'check_clipping']
 
 
 TAPER_TYPES = {
@@ -254,7 +262,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                 try:
                     tr.remove_response(
                         inventory=inv, output=output, water_level=water_level,
-                        pre_filt=(f1, f2, f3, f4))
+                        pre_filt=(f1, f2, f3, f4), zero_mean=True, taper=False)
                     tr.stats.standard.units = output.lower()
                     tr.stats.standard.process_level = PROCESS_LEVELS['V1']
                 except BaseException as e:
@@ -300,7 +308,8 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                     else:
                         tr.remove_response(
                             inventory=inv, output=output,
-                            water_level=water_level
+                            water_level=water_level,
+                            zero_mean=True, taper=False
                         )
                         tr.data *= M_TO_CM  # Convert from m to cm
                         tr.stats.standard.units = output.lower()
@@ -402,12 +411,14 @@ def detrend(st, detrending_method=None):
         st (StationStream):
             Stream of data.
         method (str): Method to detrend; valid options include the 'type'
-            options supported by obspy.core.trace.Trace.detrend as well as
-            'baseline_sixth_order', which is for a baseline correction method
-            that fits a sixth-order polynomial to the displacement time series,
-            and sets the zeroth- and first-order terms to be zero. The second
-            derivative of the fit polynomial is then removed from the
-            acceleration time series.
+            options supported by obspy.core.trace.Trace.detrend as well as:
+                - 'baseline_sixth_order', which is for a baseline correction
+                   method that fits a sixth-order polynomial to the
+                   displacement time series, and sets the zeroth- and
+                   first-order terms to be zero. The second derivative of the
+                   fit polynomial is then removed from the acceleration time
+                   series.
+                - 'pre', for removing the mean of the pre-event noise window.
 
     Returns:
         StationStream: Detrended stream.
@@ -419,6 +430,8 @@ def detrend(st, detrending_method=None):
     for tr in st:
         if detrending_method == 'baseline_sixth_order':
             tr = _correct_baseline(tr)
+        elif detrending_method == 'pre':
+            tr = _detrend_pre_event_mean(tr)
         else:
             tr = tr.detrend(detrending_method)
 
@@ -626,6 +639,27 @@ def max_traces(st, n_max=3):
     return st
 
 
+def _detrend_pre_event_mean(trace):
+    """
+    Subtraces the mean of the pre-event noise window from the full trace.
+
+    Args:
+        trace (obspy.core.trace.Trace):
+            Trace of strong motion data.
+
+    Returns:
+        trace: Detrended trace.
+    """
+    split_prov = trace.getParameter('signal_split')
+    if isinstance(split_prov, list):
+        split_prov = split_prov[0]
+    split_time = split_prov['split_time']
+    noise = trace.copy().trim(endtime=split_time)
+    noise_mean = np.mean(noise.data)
+    trace.data = trace.data - noise_mean
+    return trace
+
+
 def _correct_baseline(trace):
     """
     Performs a baseline correction following the method of Ancheta
@@ -646,7 +680,10 @@ def _correct_baseline(trace):
 
     # Fit a sixth order polynomial to displacement time series, requiring
     # that the 1st and 0th order coefficients are zero
-    time_values = np.linspace(0, trace.stats.npts - 1, trace.stats.npts)
+    time_values = np.linspace(
+        0,
+        trace.stats.npts - 1,
+        trace.stats.npts) * trace.stats.delta
     poly_cofs = list(curve_fit(_poly_func, time_values, disp_data)[0])
     poly_cofs += [0, 0]
 

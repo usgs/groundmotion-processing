@@ -27,7 +27,9 @@ class GMrecordsApp(object):
 
     To limit the number of paths specified as arguments, this app relies on
     some config options associated with "projects". Project information is
-    saved in `~/.gmprocess/projects.conf`.
+    saved in `.gmprocess/projects.conf`, either in the user's home directory
+    for "system" level projects, or in a specific directory to allow for
+    directory-specific projects.
 
     GmpApp makes use subcommands that are specified in the
     gmprocess.subcommands package.
@@ -62,9 +64,15 @@ class GMrecordsApp(object):
         self._parse_command_line()
         self._load_config()
 
-        setup_logger(self.args)
+        log_file = None
+        if self.args.log:
+            log_file = os.path.join(self.data_path, 'log.txt')
+            print('Logging output sent to: %s' % log_file)
+
+        setup_logger(self.args, log_file=log_file)
         logging.info('Logging level includes INFO.')
         logging.debug('Logging level includes DEBUG.')
+        logging.info('PROJECTS_PATH: %s' % PROJECTS_PATH)
 
     def main(self):
         if self.args.subcommand is None:
@@ -161,6 +169,9 @@ class GMrecordsApp(object):
             '-v', '--version', action='version',
             version='%(prog)s ' + __version__,
             help='Print program version.')
+        self.parser.add_argument(
+            '-l', '--log', action='store_true', default=False,
+            help='Log all output to a file in the project data directory.')
 
         # Parsers for subcommands
         subparsers = self.parser.add_subparsers(

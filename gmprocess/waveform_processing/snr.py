@@ -26,6 +26,13 @@ def compute_snr_trace(tr, bandwidth, mag=None, check=None):
         noise = tr.copy().trim(endtime=split_time)
         signal = tr.copy().trim(starttime=split_time)
 
+        tr.setCached(
+            'noise_trace', {
+                'times': noise.times(),
+                'data': noise.data
+            }
+        )
+
         noise.detrend('demean')
         signal.detrend('demean')
 
@@ -111,7 +118,7 @@ def compute_snr(st, bandwidth, mag=None, check=None):
             If None, no checks performed.
 
     Returns:
-        StationTrace with SNR dictionaries added as trace parameters.
+        StationStream with SNR dictionaries added as trace parameters.
     """
     for tr in st:
         # Do we have estimates of the signal split time?

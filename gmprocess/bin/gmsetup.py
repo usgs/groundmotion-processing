@@ -6,8 +6,8 @@ import argparse
 import sys
 
 # third party imports
-import yaml
 import pkg_resources
+from ruamel.yaml import YAML
 
 # local imports
 from gmprocess.utils.constants import CONFIG_FILE_PRODUCTION
@@ -42,10 +42,13 @@ def main():
 
     data_path = pkg_resources.resource_filename('gmprocess', 'data')
     config_file = os.path.join(data_path, CONFIG_FILE_PRODUCTION)
+           
+    yaml = YAML()
+    yaml.preserve_quotes = True
 
     if args.list_sections:
         with open(config_file, 'rt', encoding='utf-8') as f:
-            config = yaml.load(f, Loader=yaml.SafeLoader)
+            config = yaml.load(f)
             sections = list(config.keys())
             print('Supported sections:')
             for section in sections:
@@ -58,7 +61,7 @@ def main():
         os.makedirs(install_dir)
 
     with open(config_file, 'rt', encoding='utf-8') as f:
-        config = yaml.load(f, Loader=yaml.SafeLoader)
+        config = yaml.load(f)
         kill_sections = []
         if args.sections is not None:
             for section in config:
@@ -79,7 +82,7 @@ def main():
             config['user'] = userinfo
 
         fout = open(args.config_file, 'wt', encoding='utf-8')
-        yaml.dump(config, stream=fout, Dumper=yaml.SafeDumper)
+        yaml.dump(config, fout)
         fout.close()
 
 

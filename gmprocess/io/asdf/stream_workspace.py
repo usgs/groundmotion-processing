@@ -790,7 +790,7 @@ class StreamWorkspace(object):
                     have_imts.append(imt)
             have_imts.sort(key=_natural_keys)
             non_imt_cols = [
-                col for col in table.columns if col not in have_imts]
+                col for col in table.columns if col not in imtlist]
             table = table[non_imt_cols + have_imts]
             imc_tables[key] = table
             readme_dict = {}
@@ -1166,6 +1166,8 @@ def _stringify_dict(indict):
     for key, value in indict.items():
         if isinstance(value, UTCDateTime):
             indict[key] = value.strftime(TIMEFMT_MS)
+        elif isinstance(value, bytes):
+            indict[key] = value.decode('utf-8')
         elif isinstance(value, dict):
             indict[key] = _stringify_dict(value)
     return indict

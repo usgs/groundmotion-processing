@@ -7,6 +7,7 @@ import re
 
 # third party imports
 import numpy as np
+import pandas as pd
 import pkg_resources
 
 # Local imports
@@ -22,7 +23,7 @@ def test_fas():
     """
     ddir = os.path.join('data', 'testdata')
     datadir = pkg_resources.resource_filename('gmprocess', ddir)
-    fas_file = os.path.join(datadir, 'fas_quadratic_mean.txt')
+    fas_file = os.path.join(datadir, 'fas_quadratic_mean.pkl')
     p1 = os.path.join(datadir, 'peer', 'RSN763_LOMAP_GIL067.AT2')
     p2 = os.path.join(datadir, 'peer', 'RSN763_LOMAP_GIL337.AT2')
 
@@ -34,7 +35,8 @@ def test_fas():
             meta = re.findall(r'[.0-9]+', next(file_obj))
             dt = float(meta[1])
             accels = np.array(
-                [col for line in file_obj for col in line.split()])
+                [col for line in file_obj for col in line.split()],
+                dtype=float)
         trace = StationTrace(data=accels, header={
             'channel': 'H' + str(idx),
             'delta': dt,
@@ -66,23 +68,22 @@ def test_fas():
         response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
         tr.setProvenance('remove_response', response)
 
-    freqs, fas = np.loadtxt(fas_file, unpack=True,
-                            usecols=(0, 1), delimiter=',')
-    # scaling required on the test data as it was not accounted for originally
-    imts = ['fas' + str(1 / p) for p in freqs]
+    target_df = pd.read_pickle(fas_file)
+    ind_vals = target_df.index.values
+    per = np.unique([
+        float(i[0].split(')')[0].split('(')[1]) for i in ind_vals]
+    )
+    freqs = 1 / per
+    imts = ['fas' + str(p) for p in per]
     summary = StationSummary.from_stream(
         stream, ['quadratic_mean'], imts, bandwidth=30)
 
     pgms = summary.pgms
     for idx, f in enumerate(freqs):
         fstr = 'FAS(%.3f)' % (1 / f)
-        fval = pgms.loc[fstr, 'QUADRATIC_MEAN'].Result
-        np.testing.assert_allclose(
-            fval,
-            fas[idx] * stream[0].stats.delta,
-            rtol=1e-5,
-            atol=1e-5
-        )
+        fval1 = pgms.loc[fstr, 'QUADRATIC_MEAN'].Result
+        fval2 = target_df.loc[fstr, 'QUADRATIC_MEAN'].Result
+        np.testing.assert_allclose(fval1, fval2, rtol=1e-5, atol=1e-5)
 
 
 if __name__ == '__main__':

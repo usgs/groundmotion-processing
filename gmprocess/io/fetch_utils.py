@@ -5,19 +5,24 @@ import logging
 import warnings
 import glob
 import re
+import requests
 from collections import OrderedDict
 from datetime import datetime
 from setuptools_scm import get_version
 
 # third party imports
+import folium
+from libcomcat.search import get_event_by_id
 from obspy.geodetics.base import locations2degrees
 from obspy.taup import TauPyModel
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 import pandas as pd
 from openpyxl import load_workbook
-import yaml
+from ruamel.yaml import YAML
+from ruamel.yaml.error import YAMLError 
 import numpy as np
+import pandas as pd
 from impactutils.mapping.city import Cities
 from impactutils.mapping.mercatormap import MercatorMap
 from impactutils.mapping.scalebar import draw_scale
@@ -100,7 +105,7 @@ def download(event, event_dir, config, directory, create_workspace=True,
             config=config,
             rawdir=rawdir, 
             stream_collection=stream_collection)
-        # create an event.json file in each event directory,
+        # download an event.json file in each event directory,
         # in case user is simply downloading for now
         create_event_file(event, event_dir)
         rup_file = get_rupture_file(event_dir)
@@ -195,11 +200,65 @@ def parse_event_file(eventfile):
 
 
 def draw_stations_map(pstreams, event, event_dir):
-    # draw map of stations and cities and stuff
+
+    # interactive html map is created first
     lats = np.array([stream[0].stats.coordinates['latitude']
                      for stream in pstreams])
     lons = np.array([stream[0].stats.coordinates['longitude']
                      for stream in pstreams])
+    stnames = np.array([stream[0].stats.station 
+                     for stream in pstreams])
+    networks = np.array([stream[0].stats.network 
+                     for stream in pstreams])
+
+    failed = np.array([
+        np.any([trace.hasParameter("failure") for trace in stream])
+        for stream in pstreams])
+
+    failure_reasons = list(pd.Series(
+                [next(tr for tr in st if tr.hasParameter('failure')).
+                    getParameter('failure')['reason'] for st in pstreams
+                    if not st.passed], dtype=str))
+
+    station_map = folium.Map(location=[event.latitude,event.longitude], \
+        zoom_start=7, control_scale=True)
+
+    failed_coords = zip(lats[failed],lons[failed])
+    failed_stations = stnames[failed]
+    failed_networks = networks[failed]
+    failed_station_df = pd.DataFrame({'stnames':failed_stations,'network': failed_networks, \
+                                      'coords': failed_coords, 'reason':failure_reasons})
+
+    passed_coords = zip(lats[~failed],lons[~failed])
+    passed_stations = stnames[~failed]
+    passed_networks = networks[~failed]
+    passed_station_df = pd.DataFrame({'stnames':passed_stations, 'network': passed_networks,
+                                      'coords':passed_coords})
+
+    # Plot the failed first
+    for i, r in failed_station_df.iterrows():
+        station_info = 'NET: {} LAT: {:.2f} LON: {:.2f} REASON: {}'.\
+            format(r['network'], r['coords'][0], r['coords'][1], r['reason'])
+        folium.CircleMarker(location=r['coords'],
+                      tooltip=r['stnames'], popup=station_info,
+                      color=FAILED_COLOR,fill=True,radius=6).add_to(station_map)
+
+    for i, r in passed_station_df.iterrows():
+        station_info = 'NET: {}\n LAT: {:.2f} LON: {:.2f}'.\
+            format(r['network'], r['coords'][0], r['coords'][1])
+        folium.CircleMarker(location=r['coords'], tooltip=r['stnames'], popup=station_info,
+            color=PASSED_COLOR, fill=True, radius=10).add_to(station_map)
+
+    event_info = 'MAG: {} LAT: {:.2f} LON: {:.2f} DEPTH: {:.2f}'.\
+        format(event.magnitude, event.latitude, event.longitude, event.depth)
+    folium.CircleMarker([event.latitude, event.longitude], popup=event_info,
+        color='yellow', fill=True, radius=15).add_to(station_map)
+
+    mapfile = os.path.join(event_dir, 'stations_map.html')
+    station_map.save(mapfile)
+
+    # now the static map for the report is created
+    # draw map of stations and cities and stuff
     cy = event.latitude
     cx = event.longitude
     xmin = lons.min()
@@ -308,8 +367,26 @@ def read_event_json_files(eventfiles):
     events = []
     for eventfile in eventfiles:
         with open(eventfile, 'rt', encoding='utf-8') as f:
-            eventdict = json.load(f)
-            event = get_event_object(eventdict)
+
+            event = json.load(f)
+
+            try:
+                origintime = datetime.fromtimestamp\
+                    (event["properties"]["time"]/1000.0)
+                evdict = {
+                    "id": event["id"],
+                    "time": origintime.strftime("%Y-%m-%dT%H:%M:%S.%f"),
+                    "lat": event["geometry"]["coordinates"][1],
+                    "lon": event["geometry"]["coordinates"][0],
+                    "depth": event["geometry"]["coordinates"][2],
+                    "magnitude": event["properties"]["mag"],
+                    "magnitude_type": event["properties"]["magType"],
+                }
+                event = get_event_object(evdict)
+
+            except:
+                event = get_event_object(event)
+
             events.append(event)
     return events
 
@@ -415,20 +492,17 @@ def create_event_file(event, event_dir):
         event_dir (str):
             Directory where event.json should be written.
     """
-    # create event.json file in each directory
-    edict = {
-        'id': event.id,
-        'time': event.time.strftime(TIMEFMT2),
-        'lat': event.latitude,
-        'lon': event.longitude,
-        'depth': event.depth_km,
-        'magnitude': event.magnitude,
-        'magnitude_type': event.magnitude_type
-    }
-    eventfile = os.path.join(event_dir, 'event.json')
-    with open(eventfile, 'wt', encoding='utf-8') as f:
-        json.dump(edict, f)
 
+    # download event.json for event
+    eventid = event.origins[-1].resource_id.id
+    event = get_event_by_id(eventid)
+    req = requests.get(event.detail_url)
+    data = json.loads(req.text)
+
+    # dump the event.json file to the event directory
+    eventfile = os.path.join(event_dir, 'event.json')
+    with open(eventfile, 'w') as f:
+        json.dump(data, f)
 
 def get_rawdir(event_dir):
     """Find or create raw directory if necessary.
@@ -718,9 +792,11 @@ def update_config(custom_cfg_file):
         return config
     try:
         with open(custom_cfg_file, 'rt', encoding='utf-8') as f:
-            custom_cfg = yaml.load(f, Loader=yaml.FullLoader)
+            yaml = YAML()
+            yaml.preserve_quotes = True
+            custom_cfg = yaml.load(f)
             update_dict(config, custom_cfg)
-    except yaml.parser.ParserError:
+    except YAMLError:
         return None
 
     return config

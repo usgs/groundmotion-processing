@@ -38,6 +38,7 @@ class ComputeStationMetricsModule(SubcommandModule):
 
     arguments = [
         ARG_DICTS['eventid'],
+        ARG_DICTS['textfile'],
         ARG_DICTS['label'],
         ARG_DICTS['overwrite'],
         ARG_DICTS['num_processes']
@@ -101,8 +102,9 @@ class ComputeStationMetricsModule(SubcommandModule):
         self.workspace = StreamWorkspace.open(workname)
         self._get_pstreams()
 
-        if not hasattr(self, 'pstreams'):
+        if not (hasattr(self, 'pstreams') and len(self.pstreams) > 0):
             logging.info('No streams found. Nothing to do. Goodbye.')
+            self.workspace.close()
             return event.id
 
         rupture_file = get_rupture_file(event_dir)
@@ -119,12 +121,6 @@ class ComputeStationMetricsModule(SubcommandModule):
         })
         self.origin = origin
         rupture = get_rupture(origin, rupture_file)
-
-        if not hasattr(self, 'pstreams'):
-            logging.info('No processed waveforms available. No station '
-                         'metrics computed.')
-            self.workspace.close()
-            return
 
         sta_lats = []
         sta_lons = []
