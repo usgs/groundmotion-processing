@@ -20,12 +20,12 @@ import matplotlib.lines as mlines
 import pandas as pd
 from openpyxl import load_workbook
 from ruamel.yaml import YAML
-from ruamel.yaml.error import YAMLError 
+from ruamel.yaml.error import YAMLError
 import numpy as np
-import pandas as pd
 from impactutils.mapping.city import Cities
 from impactutils.mapping.mercatormap import MercatorMap
 from impactutils.mapping.scalebar import draw_scale
+from libcomcat.search import get_event_by_id
 from cartopy import feature as cfeature
 import prov.model
 
@@ -103,11 +103,12 @@ def download(event, event_dir, config, directory, create_workspace=True,
             event.depth_km,
             event.magnitude,
             config=config,
-            rawdir=rawdir, 
+            rawdir=rawdir,
             stream_collection=stream_collection)
         # download an event.json file in each event directory,
         # in case user is simply downloading for now
         create_event_file(event, event_dir)
+        download_rupture_file(event.id, event_dir)
         rup_file = get_rupture_file(event_dir)
     else:
         # Make raw directory
@@ -206,52 +207,57 @@ def draw_stations_map(pstreams, event, event_dir):
                      for stream in pstreams])
     lons = np.array([stream[0].stats.coordinates['longitude']
                      for stream in pstreams])
-    stnames = np.array([stream[0].stats.station 
-                     for stream in pstreams])
-    networks = np.array([stream[0].stats.network 
-                     for stream in pstreams])
+    stnames = np.array([stream[0].stats.station
+                        for stream in pstreams])
+    networks = np.array([stream[0].stats.network
+                         for stream in pstreams])
 
     failed = np.array([
         np.any([trace.hasParameter("failure") for trace in stream])
         for stream in pstreams])
 
     failure_reasons = list(pd.Series(
-                [next(tr for tr in st if tr.hasParameter('failure')).
-                    getParameter('failure')['reason'] for st in pstreams
-                    if not st.passed], dtype=str))
+        [next(tr for tr in st if tr.hasParameter('failure')).
+         getParameter('failure')['reason'] for st in pstreams
+         if not st.passed], dtype=str))
 
-    station_map = folium.Map(location=[event.latitude,event.longitude], \
-        zoom_start=7, control_scale=True)
+    station_map = folium.Map(location=[event.latitude, event.longitude],
+                             zoom_start=7, control_scale=True)
 
-    failed_coords = zip(lats[failed],lons[failed])
+    failed_coords = zip(lats[failed], lons[failed])
     failed_stations = stnames[failed]
     failed_networks = networks[failed]
-    failed_station_df = pd.DataFrame({'stnames':failed_stations,'network': failed_networks, \
-                                      'coords': failed_coords, 'reason':failure_reasons})
+    failed_station_df = pd.DataFrame(
+        {'stnames': failed_stations, 'network': failed_networks,
+         'coords': failed_coords, 'reason': failure_reasons})
 
-    passed_coords = zip(lats[~failed],lons[~failed])
+    passed_coords = zip(lats[~failed], lons[~failed])
     passed_stations = stnames[~failed]
     passed_networks = networks[~failed]
-    passed_station_df = pd.DataFrame({'stnames':passed_stations, 'network': passed_networks,
-                                      'coords':passed_coords})
+    passed_station_df = pd.DataFrame(
+        {'stnames': passed_stations, 'network': passed_networks,
+         'coords': passed_coords})
 
     # Plot the failed first
     for i, r in failed_station_df.iterrows():
         station_info = 'NET: {} LAT: {:.2f} LON: {:.2f} REASON: {}'.\
             format(r['network'], r['coords'][0], r['coords'][1], r['reason'])
-        folium.CircleMarker(location=r['coords'],
-                      tooltip=r['stnames'], popup=station_info,
-                      color=FAILED_COLOR,fill=True,radius=6).add_to(station_map)
+        folium.CircleMarker(
+            location=r['coords'],
+            tooltip=r['stnames'], popup=station_info,
+            color=FAILED_COLOR, fill=True, radius=6).add_to(station_map)
 
     for i, r in passed_station_df.iterrows():
         station_info = 'NET: {}\n LAT: {:.2f} LON: {:.2f}'.\
             format(r['network'], r['coords'][0], r['coords'][1])
-        folium.CircleMarker(location=r['coords'], tooltip=r['stnames'], popup=station_info,
+        folium.CircleMarker(
+            location=r['coords'], tooltip=r['stnames'], popup=station_info,
             color=PASSED_COLOR, fill=True, radius=10).add_to(station_map)
 
     event_info = 'MAG: {} LAT: {:.2f} LON: {:.2f} DEPTH: {:.2f}'.\
         format(event.magnitude, event.latitude, event.longitude, event.depth)
-    folium.CircleMarker([event.latitude, event.longitude], popup=event_info,
+    folium.CircleMarker(
+        [event.latitude, event.longitude], popup=event_info,
         color='yellow', fill=True, radius=15).add_to(station_map)
 
     mapfile = os.path.join(event_dir, 'stations_map.html')
@@ -371,8 +377,8 @@ def read_event_json_files(eventfiles):
             event = json.load(f)
 
             try:
-                origintime = datetime.fromtimestamp\
-                    (event["properties"]["time"]/1000.0)
+                origintime = datetime.fromtimestamp(
+                    event["properties"]["time"] / 1000.0)
                 evdict = {
                     "id": event["id"],
                     "time": origintime.strftime("%Y-%m-%dT%H:%M:%S.%f"),
@@ -384,7 +390,7 @@ def read_event_json_files(eventfiles):
                 }
                 event = get_event_object(evdict)
 
-            except:
+            except BaseException:
                 event = get_event_object(event)
 
             events.append(event)
@@ -503,6 +509,7 @@ def create_event_file(event, event_dir):
     eventfile = os.path.join(event_dir, 'event.json')
     with open(eventfile, 'w') as f:
         json.dump(data, f)
+
 
 def get_rawdir(event_dir):
     """Find or create raw directory if necessary.
@@ -868,11 +875,27 @@ def plot_raw(rawdir, tcollection, event):
         plt.close()
 
 
+def download_rupture_file(event_id, event_dir):
+    """Downlaod rupture file from Comcat.
+
+    Args:
+        event_id (str):
+            Event id.
+        event_dir (str):
+            Event directory.
+    """
+    event = get_event_by_id(event_id)
+    shakemap_prod = event.getProducts('shakemap')
+    shakemap_prod[0].getContent(
+        'rupture.json', os.path.join(event_dir, 'rupture.json'))
+
+
 def get_rupture_file(event_dir):
     """Get the path to the rupture file, or None if there is not rupture file.
 
     Args:
-        event_dir (str): Event directory.
+        event_dir (str):
+            Event directory.
 
     Returns:
         str: Path to the rupture file. Returns None if no rupture file exists.

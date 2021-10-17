@@ -7,7 +7,6 @@ import logging
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
 from gmprocess.io.fetch_utils import download
-from gmprocess.utils.constants import WORKSPACE_NAME
 
 
 class DownloadModule(SubcommandModule):
