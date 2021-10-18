@@ -885,8 +885,8 @@ def download_rupture_file(event_id, event_dir):
             Event directory.
     """
     event = get_event_by_id(event_id)
-    shakemap_prod = event.getProducts('shakemap')
     try:
+        shakemap_prod = event.getProducts('shakemap')
         shakemap_prod[0].getContent(
             'rupture.json', os.path.join(event_dir, 'rupture.json'))
     except BaseException:
