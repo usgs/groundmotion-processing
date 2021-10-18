@@ -886,8 +886,11 @@ def download_rupture_file(event_id, event_dir):
     """
     event = get_event_by_id(event_id)
     shakemap_prod = event.getProducts('shakemap')
-    shakemap_prod[0].getContent(
-        'rupture.json', os.path.join(event_dir, 'rupture.json'))
+    try:
+        shakemap_prod[0].getContent(
+            'rupture.json', os.path.join(event_dir, 'rupture.json'))
+    except BaseException:
+        logging.info('%s does not have a rupture.json file.' % event_id)
 
 
 def get_rupture_file(event_dir):
