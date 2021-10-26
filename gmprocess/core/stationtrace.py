@@ -339,18 +339,20 @@ class StationTrace(Trace):
             # End up here if the format was read in with ObsPy and an
             # inventory was able to be constructed (e.g., miniseed+StationXML)
             try:
-                channelid = header['channel']
-                (response, standard,
-                 coords, format_specific) = _stats_from_inventory(
-                     data, inventory, channelid)
+                seed_id = '%s.%s.%s.%s' % (
+                    header['network'], header['station'],
+                    header['location'], header['channel'])
+                start_time = header['starttime']
+                (response, standard, coords, format_specific) = \
+                    _stats_from_inventory(data, inventory, seed_id, start_time)
                 header['response'] = response
                 header['coordinates'] = coords
                 header['standard'] = standard
                 header['format_specific'] = format_specific
-            except BaseException:
+            except BaseException as e:
                 raise ValueError(
                     'Failed to construct required metadata from inventory '
-                    'and input header data.'
+                    'and input header data with exception: %s' % e
                 )
         elif inventory is None and header is not None and \
                 'standard' not in header:
@@ -828,7 +830,7 @@ class StationTrace(Trace):
         return ind_str + trace_id + out % (self.stats)
 
 
-def _stats_from_inventory(data, inventory, channelid):
+def _stats_from_inventory(data, inventory, seed_id, start_time):
     if len(inventory.source):
         if (inventory.sender is not None and
                 inventory.sender != inventory.source):
@@ -836,19 +838,25 @@ def _stats_from_inventory(data, inventory, channelid):
         else:
             source = inventory.source
 
-    # Due to pyasdf strict station merging criteria, we might actually have
-    # to search for the correct station that contains the current channelid
-    for sta in inventory.networks[0].stations:
-        if channelid in [cha.split('.')[-1] for cha in
-                         sta.get_contents()['channels']]:
-            station = sta
+    network_code, station_code, location_code, channel_code = \
+        seed_id.split(".")
 
-    coords = {'latitude': station.latitude,
-              'longitude': station.longitude,
-              'elevation': station.elevation}
-    channel_names = [ch.code for ch in station.channels]
-    channelidx = channel_names.index(channelid)
-    channel = station.channels[channelidx]
+    selected_inventory = inventory.select(
+        network=network_code,
+        station=station_code,
+        location=location_code,
+        channel=channel_code,
+        time=start_time
+    )
+
+    station = selected_inventory.networks[0].stations[0]
+    channel = station.channels[0]
+
+    coords = {
+        'latitude': channel.latitude,
+        'longitude': channel.longitude,
+        'elevation': channel.elevation
+    }
 
     standard = {}
 
@@ -869,11 +877,12 @@ def _stats_from_inventory(data, inventory, channelid):
     standard['instrument'] = ''
     standard['sensor_serial_number'] = ''
     if channel.sensor is not None:
-        standard['instrument'] = ('%s %s %s %s'
-                                  % (channel.sensor.type,
-                                     channel.sensor.manufacturer,
-                                     channel.sensor.model,
-                                     channel.sensor.description))
+        standard['instrument'] = (
+            '%s %s %s %s'
+            % (channel.sensor.type,
+               channel.sensor.manufacturer,
+               channel.sensor.model,
+               channel.sensor.description))
         if channel.sensor.serial_number is not None:
             standard['sensor_serial_number'] = channel.sensor.serial_number
         else:
@@ -881,6 +890,8 @@ def _stats_from_inventory(data, inventory, channelid):
 
     if channel.azimuth is not None:
         standard['horizontal_orientation'] = channel.azimuth
+    else:
+        standard['horizontal_orientation'] = np.nan
 
     if channel.dip is not None:
         # Note: vertical orientatin is defined here as angle from horizontal
@@ -888,11 +899,13 @@ def _stats_from_inventory(data, inventory, channelid):
     else:
         standard['vertical_orientation'] = np.nan
 
-    standard['units_type'] = get_units_type(channelid)
+    standard['units_type'] = get_units_type(channel_code)
 
     if len(channel.comments):
         comments = ' '.join(
-            channel.comments[i].value for i in range(len(channel.comments)))
+            channel.comments[i].value
+            for i in range(len(channel.comments))
+        )
         standard['comments'] = comments
     else:
         standard['comments'] = ''
