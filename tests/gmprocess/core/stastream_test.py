@@ -25,13 +25,15 @@ def test_stream():
     for channel in channels:
         chidx = channelcodes.index(channel)
         channeldata = chlist[chidx]
-        header = {'sampling_rate': channeldata.sample_rate,
-                  'npts': len(data),
-                  'network': network.code,
-                  'location': channeldata.location_code,
-                  'station': station.code,
-                  'channel': channel,
-                  'starttime': UTCDateTime(2010, 1, 1, 0, 0, 0)}
+        header = {
+            'sampling_rate': channeldata.sample_rate,
+            'npts': len(data),
+            'network': network.code,
+            'location': channeldata.location_code,
+            'station': station.code,
+            'channel': channel,
+            'starttime': UTCDateTime(2010, 1, 1, 0, 0, 0)
+        }
         trace = Trace(data=data, header=header)
         traces.append(trace)
     invstream = StationStream(traces=traces, inventory=inventory)

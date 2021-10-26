@@ -25,7 +25,6 @@ import numpy as np
 from impactutils.mapping.city import Cities
 from impactutils.mapping.mercatormap import MercatorMap
 from impactutils.mapping.scalebar import draw_scale
-from libcomcat.search import get_event_by_id
 from cartopy import feature as cfeature
 import prov.model
 

@@ -21,7 +21,8 @@ def get_inventory():
         stations=[],
         description="A test stations.",
         # Start-and end dates are optional.
-        start_date=UTCDateTime(2016, 1, 2))
+        start_date=UTCDateTime(2009, 1, 2),
+        end_date=UTCDateTime(2016, 1, 2))
 
     sta = Station(
         # This is the station code according to the SEED standard.

@@ -254,7 +254,8 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
         if f4 is None:
             f4 = f_n
         try:
-            paz = inv[0][0][0].response.get_paz()
+            resp = inv.get_response(tr.id, tr.stats.starttime)
+            paz = resp.get_paz()
             # Check if we have an instrument measuring velocity or accleration
             if tr.stats.channel[1] == 'H':
                 # Attempting to remove instrument response can cause a variety

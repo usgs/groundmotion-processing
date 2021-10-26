@@ -7,6 +7,7 @@ import json
 import pkg_resources
 
 from gmprocess.utils.event import ScalarEvent
+from gmprocess.io.fetch_utils import read_event_json_files
 
 
 def read_data_dir(file_format, eventid, files=None):
@@ -54,13 +55,6 @@ def read_data_dir(file_format, eventid, files=None):
     jsonfile = os.path.join(eventdir, 'event.json')
     if not os.path.isfile(jsonfile):
         event = None
-    with open(jsonfile, 'rt', encoding='utf-8') as f:
-        tevent = json.load(f)
-        event = ScalarEvent()
-        if 'magnitude_type' not in tevent.keys():
-            tevent['magnitude_type'] = None
-        event.fromParams(tevent['id'], tevent['time'],
-                         tevent['lat'], tevent['lon'],
-                         tevent['depth'], tevent['magnitude'],
-                         tevent['magnitude_type'])
+    event = read_event_json_files([jsonfile])[0]
+
     return (datafiles, event)
