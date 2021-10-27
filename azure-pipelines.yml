@@ -16,9 +16,6 @@ jobs:
   timeoutInMinutes: 120
   strategy:
     matrix:
-      # Linux_py37:
-      #   imageName: 'ubuntu-latest'
-      #   python.version: '3.7'
       Linux_py38:
         imageName: 'ubuntu-latest'
         python.version: '3.8'
@@ -28,21 +25,15 @@ jobs:
       Linux_py310:
         imageName: 'ubuntu-latest'
         python.version: '3.10'
-      # MacOS_py37:
-      #   imageName: 'macOS-10.15'
-      #   python.version: '3.7'
       MacOS_py38:
-        imageName: 'macOS-10.16'
+        imageName: 'macOS-latest'
         python.version: '3.8'
       MacOS_py39:
-        imageName: 'macOS-10.16'
+        imageName: 'macOS-latest'
         python.version: '3.9'
       MacOS_py310:
-        imageName: 'macOS-10.16'
+        imageName: 'macOS-latest'
         python.version: '3.10'
-      # Windows_py37:
-      #   imageName: 'windows-latest'
-      #   python.version: '3.7'
       Windows_py38:
         imageName: 'windows-latest'
         python.version: '3.8'
