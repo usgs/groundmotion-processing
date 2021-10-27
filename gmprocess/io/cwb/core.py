@@ -22,15 +22,15 @@ COLWIDTH = 10
 NCOLS = 4
 
 
-def is_cwb(filename, **kwargs):
+def is_cwb(filename, config=None):
     """Check to see if file is a Taiwan Central Weather Bureau strong motion
     file.
 
     Args:
         filename (str):
             Path to possible CWB data file.
-        kwargs (ref):
-            Other arguments will be ignored.
+        config (dict):
+            Dictionary containing configuration.
 
     Returns:
         bool: True if CWB, False otherwise.
@@ -47,12 +47,14 @@ def is_cwb(filename, **kwargs):
     return False
 
 
-def read_cwb(filename, **kwargs):
+def read_cwb(filename, config=None, **kwargs):
     """Read Taiwan Central Weather Bureau strong motion file.
 
     Args:
         filename (str):
             Path to possible CWB data file.
+        config (dict):
+            Dictionary containing configuration.
         kwargs (ref):
             Other arguments will be ignored.
 
@@ -61,7 +63,7 @@ def read_cwb(filename, **kwargs):
         data (cm/s**2).
     """
     logging.debug("Starting read_cwb.")
-    if not is_cwb(filename):
+    if not is_cwb(filename, config):
         raise Exception('%s is not a valid CWB strong motion data file.'
                         % filename)
     f = open(filename, 'rt', encoding='utf-8')

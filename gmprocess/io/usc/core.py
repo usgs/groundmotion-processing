@@ -33,17 +33,19 @@ USC_ORIENTATIONS = {
 }
 
 
-def is_usc(filename, **kwargs):
+def is_usc(filename, config=None, **kwargs):
     """Check to see if file is a USC strong motion file.
 
     Args:
         filename (str):
             Path to possible USC V1 data file.
+        config (dict):
+            Dictionary containing configuration.
         kwargs (ref):
             Other arguments will be ignored.
 
     Returns:
-        bool: True if USC , False otherwise.
+        bool: True if USC, False otherwise.
     """
     logging.debug("Checking if format is usc.")
     # USC requires unique integer values
@@ -104,12 +106,14 @@ def _check_header(start, stop, filename):
     return passing
 
 
-def read_usc(filename, **kwargs):
+def read_usc(filename, config=None, **kwargs):
     """Read USC V1 strong motion file.
 
     Args:
         filename (str):
             Path to possible USC V1 data file.
+        config (dict):
+            Dictionary containing configuration.
         kwargs (ref):
             Ignored by this function.
 
@@ -118,7 +122,7 @@ def read_usc(filename, **kwargs):
         (cm/s**2).
     """
     logging.debug("Starting read_usc.")
-    valid, alternate = is_usc(filename, return_alternate=True)
+    valid, alternate = is_usc(filename, config, return_alternate=True)
     if not valid:
         raise Exception('%s is not a valid USC file' % filename)
     # Check for Location

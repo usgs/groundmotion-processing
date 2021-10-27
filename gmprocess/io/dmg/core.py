@@ -90,14 +90,17 @@ def _get_time(line):
     return None
 
 
-def is_dmg(filename):
+def is_dmg(filename, config=None):
     """Check to see if file is a DMG strong motion file.
 
     Notes:
         CSMIP is synonymous to as DMG in this reader.
 
     Args:
-        filename (str): Path to possible COSMOS V0/V1 data file.
+        filename (str):
+            Path to possible DMG data file.
+        config (dict):
+            Dictionary containing configuration.
 
     Returns:
         bool: True if DMG , False otherwise.
@@ -111,12 +114,12 @@ def is_dmg(filename):
         f.close()
 
         # dmg/csmip both have the same markers so is_usc must be checked
-        if first_line.find(V1_MARKER) >= 0 and not is_usc(filename):
+        if first_line.find(V1_MARKER) >= 0 and not is_usc(filename, config):
             return True
-        elif first_line.find(V2_MARKER) >= 0 and not is_usc(filename):
+        elif first_line.find(V2_MARKER) >= 0 and not is_usc(filename, config):
             if second_line.find(V1_MARKER) >= 0:
                 return True
-        elif first_line.find(V3_MARKER) >= 0 and not is_usc(filename):
+        elif first_line.find(V3_MARKER) >= 0 and not is_usc(filename, config):
             if (second_line.find(V2_MARKER) >= 0
                     and third_line.find(V1_MARKER) >= 0):
                 return True
@@ -126,7 +129,7 @@ def is_dmg(filename):
         return False
 
 
-def read_dmg(filename, **kwargs):
+def read_dmg(filename, config=None, **kwargs):
     """Read DMG strong motion file.
 
     Notes:
@@ -135,6 +138,8 @@ def read_dmg(filename, **kwargs):
     Args:
         filename (str):
             Path to possible DMG data file.
+        config (dict):
+            Dictionary containing configuration.
         kwargs (ref):
             units (str): String determining which timeseries is return. Valid
                     options include 'acc', 'vel', 'disp'. Default is 'acc'.
@@ -145,7 +150,7 @@ def read_dmg(filename, **kwargs):
         (cm/s**2).
     """
     logging.debug("Starting read_dmg.")
-    if not is_dmg(filename):
+    if not is_dmg(filename, config):
         raise Exception(
             '%s is not a valid DMG strong motion data file.' % filename)
 
@@ -158,7 +163,7 @@ def read_dmg(filename, **kwargs):
 
     # Check for DMG format and determine volume type
     line = open(filename, 'rt', encoding='utf-8').readline()
-    if is_dmg(filename):
+    if is_dmg(filename, config):
         if line.lower().find('uncorrected') >= 0:
             reader = 'V1'
         elif line.lower().find('corrected') >= 0:

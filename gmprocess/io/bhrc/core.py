@@ -32,7 +32,18 @@ NETWORK = 'I1'
 LEVELS = {'VOL1DS': 'V1'}
 
 
-def is_bhrc(filename):
+def is_bhrc(filename, config=None):
+    """Check to see if file is Iran's BHRC format.
+
+    Args:
+        filename (str):
+            Path to possible BHRC format.
+        config (dict):
+            Dictionary containing configuration.
+
+    Returns:
+        bool: True if BHRC supported, otherwise False.
+    """
     try:
         with open(filename, 'rt', encoding='utf-8') as f:
             lines = [next(f) for x in range(TEXT_HDR_ROWS)]
@@ -46,11 +57,14 @@ def is_bhrc(filename):
     return False
 
 
-def read_bhrc(filename, **kwargs):
+def read_bhrc(filename, config=None, **kwargs):
     """Read the Iran BHRC strong motion data format.
 
     Args:
-        filename (str): path to BHRC data file.
+        filename (str):
+            Path to BHRC data file.
+        config (dict):
+            Dictionary containing configuration.
         kwargs (ref):
             Other arguments will be ignored.
 

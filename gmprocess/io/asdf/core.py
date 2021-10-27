@@ -7,11 +7,14 @@ from .stream_workspace import StreamWorkspace
 TIMEPAT = '[0-9]{4}-[0-9]{2}-[0-9]{2}T'
 
 
-def is_asdf(filename):
+def is_asdf(filename, config=None):
     """Verify that the input file is an ASDF file.
 
     Args:
-        filename (str): Path to candidate ASDF file.
+        filename (str):
+            Path to candidate ASDF file.
+        config (dict):
+            Dictionary containing configuration.
 
     Returns:
         bool: True if ASDF, False if not.

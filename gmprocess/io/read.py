@@ -10,16 +10,20 @@ import pkg_resources
 # third party imports
 import numpy as np
 
+from gmprocess.utils.config import get_config
+
 EXCLUDED = ['__pycache__']
 
 
-def read_data(filename, read_format=None, **kwargs):
+def read_data(filename, config=None, read_format=None, **kwargs):
     """
     Read strong motion data from a file.
 
     Args:
-        filename (str): Path to file
-        read_format (str): Format of file
+        filename (str):
+            Path to file
+        read_format (str):
+            Format of file
 
     Returns:
         list: Sequence of obspy.core.stream.Streams read from file
@@ -28,25 +32,30 @@ def read_data(filename, read_format=None, **kwargs):
     if not os.path.exists(filename):
         raise OSError('Not a file %r' % filename)
     # Get and validate format
+    if config is None:
+        config = get_config()
     if read_format is None:
-        read_format = _get_format(filename)
+        read_format = _get_format(filename, config)
     else:
-        read_format = _validate_format(filename, read_format.lower())
+        read_format = _validate_format(filename, config, read_format.lower())
     # Load reader and read file
     reader = 'gmprocess.io.' + read_format + '.core'
     reader_module = importlib.import_module(reader)
     read_name = 'read_' + read_format
     read_method = getattr(reader_module, read_name)
-    streams = read_method(filename, **kwargs)
+    streams = read_method(filename, config, **kwargs)
     return streams
 
 
-def _get_format(filename):
+def _get_format(filename, config):
     """
     Get the format of the file.
 
     Args:
-        filename (str): Path to file
+        filename (str):
+            Path to file
+        config (dict):
+            Dictionary containing configuration.
 
     Returns:
         string: Format of file.
@@ -66,7 +75,7 @@ def _get_format(filename):
         reader_module = importlib.import_module(reader)
         is_name = 'is_' + valid_format
         is_method = getattr(reader_module, is_name)
-        if is_method(filename):
+        if is_method(filename, config):
             formats += [valid_format]
     # Return the format
     formats = np.asarray(formats)
@@ -82,13 +91,17 @@ def _get_format(filename):
             'with a specified format.' % (formats.tolist(), filename))
 
 
-def _validate_format(filename, read_format):
+def _validate_format(filename, config, read_format):
     """
     Check if the specified format is valid. If not, get format.
 
     Args:
-        filename (str): Path to file
-        read_format (str): Format of file
+        filename (str):
+            Path to file.
+        config (dict):
+            Dictionary containing configuration.
+        read_format (str):
+            Format of file
 
     Returns:
         string: Format of file.
@@ -110,11 +123,11 @@ def _validate_format(filename, read_format):
     else:
         logging.warning('Not a supported format %r. '
                         'Attempting to find a supported format.' % read_format)
-        return _get_format(filename)
+        return _get_format(filename, config)
     # Check that the format passes tests
-    if is_method(filename):
+    if is_method(filename, config):
         return read_format
     else:
         logging.warning('File did not match specified format. '
                         'Attempting to find a supported format.')
-        return _get_format(filename)
+        return _get_format(filename, config)
