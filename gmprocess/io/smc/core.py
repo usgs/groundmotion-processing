@@ -110,12 +110,14 @@ DAM_LOCATIONS = {
 }
 
 
-def is_smc(filename):
+def is_smc(filename, config=None):
     """Check to see if file is a SMC (corrected, in acc.) strong motion file.
 
     Args:
         filename (str):
             Path to possible SMC corrected data file.
+        config (dict):
+            Dictionary containing configuration.
 
     Returns:
         bool: True if SMC, False otherwise.
@@ -150,12 +152,14 @@ def is_smc(filename):
         return False
 
 
-def read_smc(filename, **kwargs):
+def read_smc(filename, config=None, **kwargs):
     """Read SMC strong motion file.
 
     Args:
         filename (str):
             Path to possible SMC data file.
+        config (dict):
+            Dictionary containing configuration.
         kwargs (ref):
             any_structure (bool): Read data from any type of structure,
                 raise Exception if False and structure type is not free-field.
@@ -172,7 +176,7 @@ def read_smc(filename, **kwargs):
     accept_flagged = kwargs.get('accept_flagged', False)
     location = kwargs.get('location', '')
 
-    if not is_smc(filename):
+    if not is_smc(filename, config):
         raise Exception('%s is not a valid SMC file' % filename)
 
     with open(filename, 'rt') as f:

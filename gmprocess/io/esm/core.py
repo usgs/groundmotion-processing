@@ -26,12 +26,15 @@ HDR1 = 'EVENT_NAME:'
 HDR2 = 'EVENT_ID:'
 
 
-def is_esm(filename):
+def is_esm(filename, config=None):
     """Check to see if file is an ESM strong motion file.
 
     Args:
         filename (str):
             Path to possible ESM strong motion file.
+        config (dict):
+            Dictionary containing configuration.
+
     Returns:
         bool: True if ESM, False otherwise.
     """
@@ -52,12 +55,14 @@ def is_esm(filename):
     return False
 
 
-def read_esm(filename, **kwargs):
+def read_esm(filename, config=None, **kwargs):
     """Read European ESM strong motion file.
 
     Args:
         filename (str):
             Path to possible ESM data file.
+        config (dict):
+            Dictionary containing configuration.
         kwargs (ref):
             Other arguments will be ignored.
 
@@ -66,7 +71,7 @@ def read_esm(filename, **kwargs):
             (cm/s**2).
     """
     logging.debug("Starting read_esm.")
-    if not is_esm(filename):
+    if not is_esm(filename, config):
         raise Exception('%s is not a valid ESM file' % filename)
 
     # Parse the header portion of the file

@@ -43,7 +43,18 @@ ENCODING = 'ISO-8859-1'
 # ENCODING = 'utf-16-be'
 
 
-def is_nsmn(filename):
+def is_nsmn(filename, config=None):
+    """Check to see if file is Turkish NSMN format.
+
+    Args:
+        filename (str):
+            Path to possible Turkish NSMN format.
+        config (dict):
+            Dictionary containing configuration.
+
+    Returns:
+        bool: True if Turkish NSMN format, otherwise False.
+    """
     with open(filename, 'rt', encoding=ENCODING) as f:
         line = f.readline()
         if MARKER in line:
@@ -52,18 +63,18 @@ def is_nsmn(filename):
     return False
 
 
-def read_nsmn(filename, **kwargs):
+def read_nsmn(filename, config=None):
     """Read the Turkish NSMN strong motion data format.
 
     Args:
         filename (str):
             path to NSMN data file.
-        kwargs (ref):
-            Other arguments will be ignored.
+        config (dict):
+            Dictionary containing configuration.
 
     Returns:
-        list: Sequence of one StationStream object containing 3
-        StationTrace objects.
+        list: Sequence of one StationStream object containing 3 StationTrace
+        objects.
     """
     header = _read_header(filename)
     header1 = copy.deepcopy(header)

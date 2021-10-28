@@ -33,12 +33,14 @@ ANGLES = {'N': 0,
 # https://www.geonet.org.nz/data/supplementary/strong_motion_file_formats
 
 
-def is_geonet(filename):
+def is_geonet(filename, config=None):
     """Check to see if file is a New Zealand GNS V1 or V2 strong motion file.
 
     Args:
         filename (str):
             Path to possible GNS V1/V2 data file.
+        config (dict):
+            Dictionary containing configuration.
 
     Returns:
         bool: True if GNS V1/V2, False otherwise.
@@ -56,7 +58,7 @@ def is_geonet(filename):
         return False
 
 
-def read_geonet(filename, **kwargs):
+def read_geonet(filename, config=None, **kwargs):
     """Read New Zealand GNS V1/V2 strong motion file.
 
     There is one extra key in the Stats object for each Trace -
@@ -66,6 +68,8 @@ def read_geonet(filename, **kwargs):
     Args:
         filename (str):
             Path to possible GNS V1/V2 data file.
+        config (dict):
+            Dictionary containing configuration.
         kwargs (ref):
             Other arguments will be ignored.
 
@@ -74,7 +78,7 @@ def read_geonet(filename, **kwargs):
         (cm/s**2).
     """
     logging.debug("Starting read_geonet.")
-    if not is_geonet(filename):
+    if not is_geonet(filename, config):
         raise Exception('%s is not a valid GEONET strong motion data file.'
                         % filename)
     trace1, offset1, _ = _read_channel(filename, 0)

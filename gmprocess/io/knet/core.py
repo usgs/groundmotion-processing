@@ -26,13 +26,17 @@ SRC = ('Japan National Research Institute '
        'for Earth Science and Disaster Resilience')
 
 
-def is_knet(filename):
-    """Check to see if file is a Japanese KNET strong motion file.
+def is_knet(filename, config=None):
+    """Check to see if file is a Japanese NIED/KNET strong motion file.
 
     Args:
-        filename (str): Path to possible GNS V1 data file.
+        filename (str):
+            Path to possible NIED/KNET data file.
+        config (dict):
+            Dictionary containing configuration.
+
     Returns:
-        bool: True if GNS V1, False otherwise.
+        bool: True if NIED/KNET, False otherwise.
     """
     logging.debug("Checking if format is knet.")
     if not os.path.isfile(filename):
@@ -51,12 +55,14 @@ def is_knet(filename):
     return False
 
 
-def read_knet(filename, **kwargs):
+def read_knet(filename, config=None, **kwargs):
     """Read Japanese KNET strong motion file.
 
     Args:
         filename (str):
             Path to possible KNET data file.
+        config (dict):
+            Dictionary containing configuration.
         kwargs (ref):
             Other arguments will be ignored.
 
@@ -65,7 +71,7 @@ def read_knet(filename, **kwargs):
             (cm/s**2).
     """
     logging.debug("Starting read_knet.")
-    if not is_knet(filename):
+    if not is_knet(filename, config):
         raise Exception('%s is not a valid KNET file' % filename)
 
     # Parse the header portion of the file
