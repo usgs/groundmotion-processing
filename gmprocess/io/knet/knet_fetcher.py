@@ -165,14 +165,15 @@ class KNETFetcher(DataFetcher):
                 raise Exception(fmt)
 
         if user == 'USERNAME' or password == 'PASSWORD':
-            fmt = ('Username/password are required to retrieve KNET/KikNET\n'
-                   'data. This tool can download data from the Japanese NIED\n'
-                   'website. However, for this to work you will first need \n'
-                   'to obtain a username and password from this website:\n'
-                   'https://hinetwww11.bosai.go.jp/nied/registration/?LANG=en\n'
-                   'Then create a custom config file by running the gmsetup\n'
-                   'program, and edit the fetchers:KNETFetcher section\n'
-                   'to use your username and password.')
+            fmt = (
+                'Username/password are required to retrieve KNET/KikNET\n'
+                'data. This tool can download data from the Japanese NIED\n'
+                'website. However, for this to work you will first need \n'
+                'to obtain a username and password from this website:\n'
+                'https://hinetwww11.bosai.go.jp/nied/registration/?LANG=en\n'
+                'Then create a custom config file by running the gmsetup\n'
+                'program, and edit the fetchers:KNETFetcher section\n'
+                'to use your username and password.')
             raise Exception(fmt)
 
         # allow user to turn restrict stations on or off. Restricting saves
@@ -228,6 +229,8 @@ class KNETFetcher(DataFetcher):
         url = SEARCH_URL.replace('YEAR', jpyear)
         url = url.replace('QUARTER', jpquarter)
         req = requests.get(url)
+        logging.debug('KNET search url: %s', str(url))
+        logging.debug('KNET search response code: %s', req.status_code)
         data = req.text
         soup = BeautifulSoup(data, features="lxml")
         select = soup.find('select')
@@ -334,6 +337,8 @@ class KNETFetcher(DataFetcher):
         logging.info('Downloading Japanese data into %s...' % localfile)
         req = requests.get(url, params=payload,
                            auth=(self.user, self.password))
+        logging.debug('KNET download url: %s', str(url))
+        logging.debug('KNET download response code: %s', req.status_code)
 
         if req.status_code != URL_ERROR_CODE:
             raise urllib.error.HTTPError(req.text)

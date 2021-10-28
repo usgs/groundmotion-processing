@@ -5,6 +5,7 @@ import logging
 import glob
 
 # third party imports
+import logging
 import pytz
 from obspy.core.utcdatetime import UTCDateTime
 from obspy.clients.fdsn.header import URL_MAPPINGS, FDSNException
