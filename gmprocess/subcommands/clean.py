@@ -23,6 +23,12 @@ class CleanModule(SubcommandModule):
             'action': 'store_true'
         },
         {
+            'long_flag': '--raw',
+            'help': 'Remove all raw directories.',
+            'default': False,
+            'action': 'store_true'
+        },
+        {
             'long_flag': '--workspace',
             'help': 'Remove all workspace files.',
             'default': False,
@@ -97,6 +103,16 @@ class CleanModule(SubcommandModule):
                 # Report
                 if gmrecords.args.all or gmrecords.args.report:
                     self.__remove(event_dir, ['*_report_*.pdf'])
+
+                # Raw
+                if gmrecords.args.raw:
+                    rawdir = os.path.join(event_dir, 'raw')
+                    if os.path.isdir(rawdir):
+                        try:
+                            logging.info('Removing: %s' % rawdir)
+                            shutil.rmtree(rawdir)
+                        except BaseException as e:
+                            logging.info('Error while deleting: %s' % e)
 
                 # Plots
                 if gmrecords.args.all or gmrecords.args.plot:
