@@ -10,6 +10,7 @@ import os
 import pyasdf
 import prov.model
 import numpy as np
+import scipy.interpolate as spint
 from obspy.core.utcdatetime import UTCDateTime
 import pandas as pd
 from h5py.h5py_warnings import H5pyDeprecationWarning
@@ -131,6 +132,24 @@ FIT_SPECTRA_COLUMNS = {
         'Mean squared error between fitted and observed spectra')
 }
 
+# List of columns in the fit_spectra_parameters file, along README descriptions
+SNR_COLUMNS = {
+    'EarthquakeId': 'Event ID from Comcat',
+    'EarthquakeTime': 'Earthquake origin time (UTC)',
+    'EarthquakeLatitude': 'Earthquake latitude (decimal degrees)',
+    'EarthquakeLongitude': 'Earthquake longitude (decimal degrees)',
+    'EarthquakeDepth': 'Earthquake depth (km)',
+    'EarthquakeMagnitude': 'Earthquake magnitude',
+    'EarthquakeMagnitudeType': 'Earthquake magnitude type',
+    'TraceID': 'NET.STA.LOC.CHA',
+    'StationLatitude': 'Station latitude (decimal degrees)',
+    'StationLongitude': 'Station longitude (decimal degrees)',
+    'StationElevation': 'Station elevation (m)'
+}
+
+SNR_FREQ_COLUMNS = {
+    'SNR(X)': 'Signa-to-noise ratio at frequency X.'
+}
 
 M_PER_KM = 1000
 
@@ -878,6 +897,112 @@ class StreamWorkspace(object):
         readme.columns = ['Column header', 'Description']
 
         return (df, readme)
+
+    def getSNRTable(self, eventid, label, streams):
+        """
+        Returns a tuple of two pandas DataFrames. The first contains the
+        fit_spectra parameters for each trace in the workspace matching
+        eventid and label. The second is a README describing each column
+        in the first DataFrame.
+
+        Args:
+            eventid (str):
+                Return parameters only for the given eventid.
+            label (str):
+                Return parameters only for the given label.
+            streams (StreamCollection):
+                Optional StreamCollection object to get parameters for.
+
+        Returns:
+            pandas.DataFrame:
+                A DataFrame containing the fit_spectra parameters on a trace-
+                by-trace basis.
+        """
+        # Get list of periods in SA to interpolate SNR to.
+        wm = self.dataset.auxiliary_data.WaveFormMetrics
+        wm_tmp = wm[wm.list()[0]]
+        bytelist = wm_tmp[wm_tmp.list()[0]].data[:].tolist()
+        xml_stream = ''.join([chr(b) for b in bytelist]).encode('utf-8')
+        sm = self.dataset.auxiliary_data.StationMetrics
+        sm_tmp = sm[sm.list()[0]]
+        bytelist = sm_tmp[sm_tmp.list()[0]].data[:].tolist()
+        xml_station = ''.join([chr(b) for b in bytelist]).encode('utf-8')
+        summary = StationSummary.from_xml(xml_stream, xml_station)
+        pgms = summary.pgms
+        periods = []
+        for key, _ in pgms['Result'].keys():
+            if key.startswith('SA'):
+                periods.append(float(key[3:-1]))
+        periods = np.unique(periods)
+
+        snr_table = []
+        event = self.getEvent(eventid)
+        if streams is None:
+            streams = self.getStreams(eventid, labels=[label])
+        for st in streams:
+            if not st.passed:
+                continue
+            for tr in st:
+                if tr.hasCached('snr'):
+                    snr_dict = self.__flatten_snr_dict(tr, periods)
+                    snr_dict['EarthquakeId'] = eventid
+                    snr_dict['EarthquakeTime'] = event.time
+                    snr_dict['EarthquakeLatitude'] = event.latitude
+                    snr_dict['EarthquakeLongitude'] = event.longitude
+                    snr_dict['EarthquakeDepth'] = event.depth_km
+                    snr_dict['EarthquakeMagnitude'] = event.magnitude
+                    snr_dict['EarthquakeMagnitudeType'] = event.magnitude_type
+                    snr_dict['TraceID'] = tr.id
+                    snr_dict['StationLatitude'] = tr.stats.coordinates.latitude
+                    snr_dict['StationLongitude'] = \
+                        tr.stats.coordinates.longitude
+                    snr_dict['StationElevation'] = \
+                        tr.stats.coordinates.elevation
+                    snr_table.append(snr_dict)
+
+        if len(snr_table):
+            df = pd.DataFrame.from_dict(snr_table)
+        else:
+            df = pd.DataFrame(columns=SNR_COLUMNS.keys())
+
+        # Ensure that the DataFrame columns are ordered correctly
+        df1 = pd.DataFrame()
+        df2 = pd.DataFrame()
+        for col in df.columns:
+            if col in SNR_COLUMNS:
+                df1[col] = df[col]
+            else:
+                df2[col] = df[col]
+        df1 = df1[SNR_COLUMNS.keys()]
+        df_final = pd.concat([df1, df2], axis=1)
+
+        readme = pd.DataFrame.from_dict(
+            {**SNR_COLUMNS, **SNR_FREQ_COLUMNS},
+            orient='index'
+        )
+        readme.reset_index(level=0, inplace=True)
+        readme.columns = ['Column header', 'Description']
+
+        return (df_final, readme)
+
+    @staticmethod
+    def __flatten_snr_dict(tr, periods):
+        freq = np.sort(1 / periods)
+        tmp_dict = tr.getCached('snr')
+        interp = spint.interp1d(
+            tmp_dict['freq'],
+            np.clip(tmp_dict['snr'], 0, np.inf),
+            kind='linear',
+            copy=False,
+            bounds_error=False,
+            fill_value=np.nan,
+            assume_sorted=True)
+        snr = interp(freq)
+        snr_dict = {}
+        for f, s in zip(freq, snr):
+            key = 'SNR(%.4g)' % f
+            snr_dict[key] = s
+        return snr_dict
 
     def getStreamMetrics(self, eventid, network, station, label, streams=None,
                          stream_label=None, config=None):

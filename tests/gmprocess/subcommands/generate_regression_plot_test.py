@@ -43,7 +43,7 @@ def test_export_regression_plot(script_runner):
     finally:
         shutil.rmtree(constants.PROJECTS_PATH_TEST)
         # Remove created files
-        patterns = ['_metrics_', '_events.',
+        patterns = ['_metrics_', '_events.', '_snr',
                     '_fit_spectra_parameters', 'regression_']
         for root, _, files in os.walk(ddir):
             for file in files:
