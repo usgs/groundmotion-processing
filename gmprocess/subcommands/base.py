@@ -173,3 +173,32 @@ class SubcommandModule(ABC):
                 self.gmrecords.args.label = tmplab
         elif self.gmrecords.args.label is None:
             self.gmrecords.args.label = labels[0]
+
+    @staticmethod
+    def _waveform_to_stations(waveform):
+        stations = []
+        for stream_name, _ in waveform.get_waveform_attributes().items():
+            parts = stream_name.split('.')
+            station = parts[1]
+            if station in stations:
+                continue
+            stations.append(station)
+        return stations
+
+    def _waveform_to_stream(self, waveform, eventid):
+        stations = self._waveform_to_stations(waveform)
+        sc = self.workspace.getStreams(
+            eventid,
+            stations=stations,
+            labels=[self.gmrecords.args.label],
+            config=self.gmrecords.conf
+        )
+        if len(sc) == 1:
+            stream = sc[0]
+        elif len(sc) == 0:
+            logging.info('Empty StreamCollection for: %s' % waveform)
+        else:
+            logging.info('Multiple streams in StreamCollection for %s, '
+                         'continuing with the first one.' % waveform)
+            stream = sc[0]
+        return stream
