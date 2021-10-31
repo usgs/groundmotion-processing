@@ -100,12 +100,8 @@ class ComputeStationMetricsModule(SubcommandModule):
             return event.id
 
         self.workspace = StreamWorkspace.open(workname)
-        self._get_pstreams()
-
-        if not (hasattr(self, 'pstreams') and len(self.pstreams) > 0):
-            logging.info('No streams found. Nothing to do. Goodbye.')
-            self.workspace.close()
-            return event.id
+        ds = self.workspace.dataset
+        self._get_labels()
 
         rupture_file = get_rupture_file(event_dir)
         origin = Origin({
@@ -128,7 +124,10 @@ class ComputeStationMetricsModule(SubcommandModule):
         self.sta_repi = []
         self.sta_rhyp = []
         self.sta_baz = []
-        for st in self.pstreams:
+
+        for waveform in ds.waveforms:
+            st = self._waveform_to_stream(waveform, event.id)
+
             sta_lats.append(st[0].stats.coordinates.latitude)
             sta_lons.append(st[0].stats.coordinates.longitude)
             sta_elev.append(st[0].stats.coordinates.elevation)
@@ -191,7 +190,8 @@ class ComputeStationMetricsModule(SubcommandModule):
                         bazs.append(baz)
                 self.sta_baz.append(bazs[np.argmin(dists)])
 
-        for i, stream in enumerate(self.pstreams):
+        for i, waveform in enumerate(ds.waveforms):
+            stream = self._waveform_to_stream(waveform, event.id)
             logging.info(
                 'Calculating station metrics for %s...' % stream.get_id())
             summary = StationSummary.from_config(

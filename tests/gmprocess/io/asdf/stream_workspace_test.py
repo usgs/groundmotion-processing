@@ -17,7 +17,7 @@ from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.io.fetch_utils import get_rupture_file, update_config
 
 from h5py.h5py_warnings import H5pyDeprecationWarning
-from ruamel.yaml.error import YAMLError 
+from ruamel.yaml.error import YAMLError
 
 import numpy as np
 import pandas as pd
@@ -123,7 +123,7 @@ def _test_workspace():
             stations = workspace.getStations()
             assert sorted(stations) == ['HSES', 'THZ', 'WTMC']
 
-            stations = workspace.getStations(eventid=eventid)
+            stations = workspace.getStations()
             assert sorted(stations) == ['HSES', 'THZ', 'WTMC']
 
             # test retrieving event that doesn't exist
@@ -194,7 +194,7 @@ def _test_workspace():
             workspace = StreamWorkspace.open(tfile)
             workspace.addStreams(event, raw_streams, label='foo')
 
-            stations = workspace.getStations(eventid)
+            stations = workspace.getStations()
 
             eventids = workspace.getEventIds()
             assert eventids == ['us1000778i', 'nz2018p115908']
