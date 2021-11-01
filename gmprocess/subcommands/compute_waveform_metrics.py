@@ -75,14 +75,12 @@ class ComputeWaveformMetricsModule(SubcommandModule):
             return event.id
 
         self.workspace = StreamWorkspace.open(workname)
-        self._get_pstreams()
+        ds = self.workspace.dataset
+        self._get_labels()
 
-        if not (hasattr(self, 'pstreams') and len(self.pstreams) > 0):
-            logging.info('No streams found. Nothing to do. Goodbye.')
-            self.workspace.close()
-            return event.id
+        for waveform in ds.waveforms:
+            stream = self._waveform_to_stream(waveform, event.id)
 
-        for stream in self.pstreams:
             if stream.passed:
                 logging.info(
                     'Calculating waveform metrics for %s...'

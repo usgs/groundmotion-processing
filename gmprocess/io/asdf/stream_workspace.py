@@ -452,14 +452,14 @@ class StreamWorkspace(object):
         streams = []
 
         if stations is None:
-            stations = self.getStations(eventid)
+            stations = self.getStations()
         if labels is None:
             labels = self.getLabels()
 
         for waveform in self.dataset.ifilter(
-            self.dataset.q.station == stations,
-            self.dataset.q.tag == ['%s_%s' % (eventid, label)
-                                   for label in labels]):
+                self.dataset.q.station == stations,
+                self.dataset.q.tag == ['%s_%s' % (eventid, label)
+                                       for label in labels]):
             tags = waveform.get_waveform_tags()
             for tag in tags:
                 tstream = waveform[tag]
@@ -548,7 +548,7 @@ class StreamWorkspace(object):
             streams, handle_duplicates=False, config=config)
         return streams
 
-    def getStations(self, eventid=None):
+    def getStations(self):
         """Get list of station codes within the file.
 
         Args:
@@ -1234,7 +1234,7 @@ class StreamWorkspace(object):
 
         """
         if stations is None:
-            stations = self.getStations(eventid)
+            stations = self.getStations()
         if labels is None:
             labels = self.getLabels()
         cols = ['Record', 'Processing Step',
