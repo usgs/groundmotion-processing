@@ -226,16 +226,21 @@ def draw_stations_map(pstreams, event, event_dir):
     failed_coords = zip(lats[failed], lons[failed])
     failed_stations = stnames[failed]
     failed_networks = networks[failed]
-    failed_station_df = pd.DataFrame(
-        {'stnames': failed_stations, 'network': failed_networks,
-         'coords': failed_coords, 'reason': failure_reasons})
+    failed_station_df = pd.DataFrame({
+        'stnames': failed_stations,
+        'network': failed_networks,
+        'coords': failed_coords,
+        'reason': failure_reasons
+    })
 
     passed_coords = zip(lats[~failed], lons[~failed])
     passed_stations = stnames[~failed]
     passed_networks = networks[~failed]
-    passed_station_df = pd.DataFrame(
-        {'stnames': passed_stations, 'network': passed_networks,
-         'coords': passed_coords})
+    passed_station_df = pd.DataFrame({
+        'stnames': passed_stations,
+        'network': passed_networks,
+        'coords': passed_coords
+    })
 
     # Plot the failed first
     for i, r in failed_station_df.iterrows():

@@ -94,6 +94,11 @@ fetchers:
 # -----------------------------------------------------------------------------
 # Options for readers
 read:
+    # Look for StationXML files in this directory instead of the `<event>/raw`
+    # directory. StationXML file names must follow the convension of 
+    # `<network>.<station>.xml`.
+    metadata_directory: None
+
     # Resampling rate if times are unevenly spaced
     resample_rate: 200
 
