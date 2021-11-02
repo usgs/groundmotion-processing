@@ -76,10 +76,16 @@ class ComputeWaveformMetricsModule(SubcommandModule):
 
         self.workspace = StreamWorkspace.open(workname)
         ds = self.workspace.dataset
+        station_list = ds.waveforms.list()
         self._get_labels()
 
-        for waveform in ds.waveforms:
-            stream = self._waveform_to_stream(waveform, event.id)
+        for station_id in station_list:
+            stream = self.workspace.getStreams(
+                event.id,
+                stations=[station_id],
+                labels=[self.gmrecords.args.label],
+                config=self.gmrecords.conf
+            )[0]
 
             if stream.passed:
                 logging.info(

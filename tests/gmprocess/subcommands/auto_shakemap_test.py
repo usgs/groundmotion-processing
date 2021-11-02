@@ -24,7 +24,8 @@ def test_auto_shakemap(script_runner):
         assert ret.success
 
         ret = script_runner.run(
-            'gmrecords', 'auto_shakemap', '-e', 'ci38457511', '--skip-download')
+            'gmrecords', 'auto_shakemap', '-e', 'ci38457511',
+            '--skip-download')
         assert ret.success
 
         events = ['ci38457511']

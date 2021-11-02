@@ -125,8 +125,16 @@ class ComputeStationMetricsModule(SubcommandModule):
         self.sta_rhyp = []
         self.sta_baz = []
 
-        for waveform in ds.waveforms:
-            st = self._waveform_to_stream(waveform, event.id)
+        station_list = ds.waveforms.list()
+        self._get_labels()
+
+        for station_id in station_list:
+            st = self.workspace.getStreams(
+                event.id,
+                stations=[station_id],
+                labels=[self.gmrecords.args.label],
+                config=self.gmrecords.conf
+            )[0]
 
             sta_lats.append(st[0].stats.coordinates.latitude)
             sta_lons.append(st[0].stats.coordinates.longitude)
@@ -190,8 +198,15 @@ class ComputeStationMetricsModule(SubcommandModule):
                         bazs.append(baz)
                 self.sta_baz.append(bazs[np.argmin(dists)])
 
-        for i, waveform in enumerate(ds.waveforms):
-            stream = self._waveform_to_stream(waveform, event.id)
+        # for station_id in station_list:
+        for i, station_id in enumerate(station_list):
+            stream = self.workspace.getStreams(
+                event.id,
+                stations=[station_id],
+                labels=[self.gmrecords.args.label],
+                config=self.gmrecords.conf
+            )[0]
+
             logging.info(
                 'Calculating station metrics for %s...' % stream.get_id())
             summary = StationSummary.from_config(
