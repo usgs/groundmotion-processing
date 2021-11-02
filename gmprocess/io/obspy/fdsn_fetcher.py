@@ -3,8 +3,10 @@ import tempfile
 import os.path
 import logging
 import glob
+import sys
 
 # third party imports
+import logging
 import pytz
 from obspy.core.utcdatetime import UTCDateTime
 from obspy.clients.fdsn.header import URL_MAPPINGS, FDSNException
@@ -253,12 +255,23 @@ class FDSNFetcher(DataFetcher):
             try:
                 fdsn_config = self.config['fetchers']['FDSNFetcher']
                 if provider_str in fdsn_config:
-                    client = Client(
-                        provider_str,
-                        user=fdsn_config[provider_str]['user'],
-                        password=fdsn_config[provider_str]['password'])
+                    if logging.getLevelName(root.level) == 'DEBUG':
+                        client = Client(
+                            provider_str,
+                            user=fdsn_config[provider_str]['user'],
+                            password=fdsn_config[provider_str]['password'],
+                            debug=True)
+                    else:
+                        client = Client(
+                            provider_str,
+                            user=fdsn_config[provider_str]['user'],
+                            password=fdsn_config[provider_str]['password']) 
                 else:
-                    client = Client(provider_str)
+                    if logging.getLevelName(root.level) == 'DEBUG':
+                        client = Client(provider_str, debug=True)
+                    else:
+                        client = Client(provider_str)
+
                 client_list.append(client)
             # If the FDSN service is down, then an FDSNException is raised
             except FDSNException:
@@ -268,13 +281,20 @@ class FDSNFetcher(DataFetcher):
 
         if len(client_list):
             # Pass off the initalized clients to the Mass Downloader
-            mdl = MassDownloader(providers=client_list)
-
+            for handler in root.handlers:
+                if hasattr(handler, "baseFilename"):
+                    log_file = getattr(handler, 'baseFilename')
+            sys.stdout = open(log_file, 'a')
+            if logging.getLevelName(root.level) == 'DEBUG':
+                mdl = MassDownloader(providers=client_list, debug=True)
+            else:
+                mdl = MassDownloader(providers=client_list)
             logging.info('Downloading new MiniSEED files...')
             # The data will be downloaded to the ``./waveforms/`` and
             # ``./stations/`` folders with automatically chosen file names.
             mdl.download(domain, restrictions, mseed_storage=rawdir,
                          stationxml_storage=rawdir)
+            sys.stdout.close()
 
             if self.stream_collection:
                 seed_files = glob.glob(os.path.join(rawdir, '*.mseed'))

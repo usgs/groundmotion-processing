@@ -1,10 +1,12 @@
 # stdlib imports
+import urllib
 import zipfile
 import io
 import os.path
 from datetime import timedelta
 
 # third party imports
+import logging
 from requests import Session, Request
 from requests.exceptions import ConnectionError
 import pandas as pd
@@ -170,6 +172,8 @@ def get_metadata(eqlat=None,
     if response.status_code != 200:
         fmt = 'Could not retrieve data from url "%s": Server response %i'
         raise ConnectionError(fmt % (request.url, response.status_code))
+    logging.debug('CESMD search url: %s', str(request.url))
+    logging.debug('CESMD search response code: %s', response.status_code)
     metadata = response.json()
 
     return metadata
@@ -433,6 +437,8 @@ def get_records(output,
     request = Request('GET', URL_TEMPLATE, params=params).prepare()
     url = request.url
     response = session.get(request.url)
+    logging.debug('CESMD download url: %s', str(url))
+    logging.debug('CESMD download response code: %s', response.status_code)
 
     if not response.status_code == 200:
         fmt = 'Your url "%s" returned a status code of %i with message: "%s"'
