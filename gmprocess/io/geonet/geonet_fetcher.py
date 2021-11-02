@@ -163,8 +163,8 @@ class GeoNetFetcher(object):
                end_time.strftime(TIMEFMT))
         url = CATBASE % tpl
         req = requests.get(url)
-        logging.debug('GeoNet search URL: ', url)
-        logging.debug('GeoNet search response: ', req.status_code)
+        logging.debug('GeoNet search url: %s', str(url))
+        logging.debug('GeoNet search response code: %s', req.status_code)
         data = req.text
         f = io.StringIO(data)
         df = pd.read_csv(f, parse_dates=['origintime'])
