@@ -2,10 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import os
-import sys
 import logging
 
-from dask.distributed import Client, as_completed
+from dask.distributed import Client
 
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
@@ -55,22 +54,8 @@ class ProcessWaveformsModule(SubcommandModule):
                             "default")
         logging.info('Processing tag: %s' % self.process_tag)
 
-        if gmrecords.args.num_processes:
-            # parallelize processing on events
-            try:
-                client = Client(n_workers=gmrecords.args.num_processes)
-            except BaseException as ex:
-                print(ex)
-                print("Could not create a dask client.")
-                print("To turn off paralleization, use '--num-processes 0'.")
-                sys.exit(1)
-            futures = client.map(self._process_event, self.events)
-            for result in as_completed(futures, with_results=True):
-                print(result)
-                # print('Completed event: %s' % result)
-        else:
-            for event in self.events:
-                self._process_event(event)
+        for event in self.events:
+            self._process_event(event)
 
         self._summarize_files_created()
 
@@ -86,12 +71,18 @@ class ProcessWaveformsModule(SubcommandModule):
 
         workspace = StreamWorkspace.open(workname)
         ds = workspace.dataset
+        station_list = ds.waveforms.list()
 
-        for waveform in ds.waveforms:
-            stations = self._waveform_to_stations(waveform)
+        processed_streams = []
+        if self.gmrecords.args.num_processes > 0:
+            futures = []
+            client = Client(n_workers=self.gmrecords.args.num_processes)
+
+        for station_id in station_list:
+            # Cannot parallelize IO to ASDF file
             raw_stream = workspace.getStreams(
                 event.id,
-                stations=stations,
+                stations=[station_id],
                 labels=['unprocessed'],
                 config=self.gmrecords.conf
             )
@@ -99,10 +90,25 @@ class ProcessWaveformsModule(SubcommandModule):
             if len(raw_stream):
                 logging.info('Processing \'%s\' streams for event %s...'
                              % ('unprocessed', event.id))
-                processed_streams = process_streams(
-                    raw_stream, event, config=self.gmrecords.conf)
-                workspace.addStreams(
-                    event, processed_streams, label=self.process_tag)
+                if self.gmrecords.args.num_processes > 0:
+                    future = client.submit(
+                        process_streams, raw_stream, event,
+                        self.gmrecords.conf)
+                    futures.append(future)
+                else:
+                    processed_streams.append(
+                        process_streams(raw_stream, event, self.gmrecords.conf)
+                    )
+
+        if self.gmrecords.args.num_processes > 0:
+            # Collect the processed streams
+            processed_streams = [future.result() for future in futures]
+            client.shutdown()
+
+        # Cannot parallelize IO to ASDF file
+        for processed_stream in processed_streams:
+            workspace.addStreams(
+                event, processed_stream, label=self.process_tag)
 
         workspace.close()
         return event.id

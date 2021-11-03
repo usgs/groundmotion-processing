@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # stdlib imports
+import os
 import pathlib
 import shutil
 import tempfile
@@ -16,9 +17,10 @@ def test_get_shakemap():
     tdir = tempfile.mkdtemp()
     try:
         thisdir = pathlib.Path(__file__).parent
-        datadir = (thisdir / '..' / '..' / '..' / 'gmprocess'
-                   / 'data' / 'testdata')
-        datafile = datadir / 'workspace_ci38457511.hdf'
+        datadir = os.path.join(
+            thisdir, os.pardir, os.pardir, os.pardir, 'gmprocess', 'data',
+            'testdata')
+        datafile = os.path.join(datadir, 'workspace_ci38457511.hdf')
 
         workspace = StreamWorkspace.open(datafile)
         eventid = workspace.getEventIds()[0]

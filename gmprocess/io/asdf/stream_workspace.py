@@ -432,7 +432,7 @@ class StreamWorkspace(object):
             eventid (str):
                 Event ID corresponding to an Event in the workspace.
             stations (list):
-                List of stations to search for.
+                List of stations (<nework code>.<station code>) to search for.
             labels (list):
                 List of processing labels to search for.
             config (dict):
@@ -456,10 +456,14 @@ class StreamWorkspace(object):
         if labels is None:
             labels = self.getLabels()
 
+        net_codes = [st.split('.')[0] for st in stations]
+        sta_codes = [st.split('.')[1] for st in stations]
+
         for waveform in self.dataset.ifilter(
-                self.dataset.q.station == stations,
-                self.dataset.q.tag == ['%s_%s' % (eventid, label)
-                                       for label in labels]):
+                self.dataset.q.network == net_codes,
+                self.dataset.q.station == sta_codes,
+                self.dataset.q.tag == [
+                    '%s_%s' % (eventid, label) for label in labels]):
             tags = waveform.get_waveform_tags()
             for tag in tags:
                 tstream = waveform[tag]
@@ -551,21 +555,10 @@ class StreamWorkspace(object):
     def getStations(self):
         """Get list of station codes within the file.
 
-        Args:
-            eventid (str):
-                Event ID corresponding to an Event in the workspace.
-
         Returns:
             list: List of station codes contained in workspace.
         """
-        stations = []
-        for waveform in self.dataset.waveforms:
-            for stream_name, _ in waveform.get_waveform_attributes().items():
-                parts = stream_name.split('.')
-                station = parts[1]
-                if station in stations:
-                    continue
-                stations.append(station)
+        stations = self.dataset.waveforms.list()
         return stations
 
     def insert_aux(self, datastr, data_name, path, overwrite=False):
@@ -1039,8 +1032,9 @@ class StreamWorkspace(object):
 
         # get the stream matching the eventid, station, and label
         if streams is None:
-            streams = self.getStreams(eventid, stations=[station],
-                                      labels=[label], config=config)
+            station_id = '%s.%s' % (network, station)
+            streams = self.getStreams(
+                eventid, stations=[station_id], labels=[label], config=config)
 
         # Only get streams that passed and match network
         streams = [st for st in streams if
@@ -1048,9 +1042,9 @@ class StreamWorkspace(object):
 
         if not len(streams):
             fmt = ('Stream matching event ID %s, '
-                   'station ID %s, and processing label %s not found in '
+                   'station ID %s.%s, and processing label %s not found in '
                    'workspace.')
-            msg = fmt % (eventid, station, label)
+            msg = fmt % (eventid, network, station, label)
             logging.warning(msg)
             return None
 

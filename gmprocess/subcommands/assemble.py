@@ -53,7 +53,7 @@ class AssembleModule(SubcommandModule):
             futures = client.map(self._assemble_event, self.events)
             for result in as_completed(futures, with_results=True):
                 print(result)
-                # print('Completed event: %s' % result)
+            client.shutdown()
         else:
             for event in self.events:
                 self._assemble_event(event)
