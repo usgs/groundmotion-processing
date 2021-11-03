@@ -7,7 +7,6 @@ import logging
 import os
 
 # third party imports
-import yaml
 import pyasdf
 import prov.model
 import numpy as np
@@ -268,7 +267,7 @@ class StreamWorkspace(object):
         
         """
         config = get_config()
-        config_bytes = yaml.dump(config).encode('utf-8')
+        config_bytes = json.dumps(config).encode('utf-8')
         config_array = np.frombuffer(config_bytes, dtype=np.uint8)
         self.dataset.add_auxiliary_data(
             config_array,
