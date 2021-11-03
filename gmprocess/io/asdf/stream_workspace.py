@@ -432,7 +432,7 @@ class StreamWorkspace(object):
             eventid (str):
                 Event ID corresponding to an Event in the workspace.
             stations (list):
-                List of stations (<nework code>.(station code>) to search for.
+                List of stations (<nework code>.<station code>) to search for.
             labels (list):
                 List of processing labels to search for.
             config (dict):

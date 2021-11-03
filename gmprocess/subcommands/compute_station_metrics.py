@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-import sys
 import logging
 import numpy as np
 import scipy.interpolate as spint
@@ -15,8 +14,6 @@ from impactutils.rupture.factory import get_rupture
 from impactutils.rupture.point_rupture import PointRupture
 from ps2ff.constants import MagScaling, Mechanism
 from ps2ff.run import single_event_adjustment
-
-from dask.distributed import Client, as_completed
 
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
@@ -40,8 +37,7 @@ class ComputeStationMetricsModule(SubcommandModule):
         ARG_DICTS['eventid'],
         ARG_DICTS['textfile'],
         ARG_DICTS['label'],
-        ARG_DICTS['overwrite'],
-        ARG_DICTS['num_processes']
+        ARG_DICTS['overwrite']
     ]
 
     def main(self, gmrecords):
@@ -66,22 +62,8 @@ class ComputeStationMetricsModule(SubcommandModule):
                         vs30_grids[vs30_name]['file'])
         self.vs30_grids = vs30_grids
 
-        if gmrecords.args.num_processes:
-            # parallelize processing on events
-            try:
-                client = Client(n_workers=gmrecords.args.num_processes)
-            except BaseException as ex:
-                print(ex)
-                print("Could not create a dask client.")
-                print("To turn off paralleization, use '--num-processes 0'.")
-                sys.exit(1)
-            futures = client.map(self._event_station_metrics, self.events)
-            for result in as_completed(futures, with_results=True):
-                print(result)
-                # print('Completed event: %s' % result)
-        else:
-            for event in self.events:
-                self._event_station_metrics(event)
+        for event in self.events:
+            self._event_station_metrics(event)
 
         self._summarize_files_created()
 

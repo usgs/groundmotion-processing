@@ -2,10 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import os
-import sys
 import logging
 
-from dask.distributed import Client, as_completed
+from dask.distributed import Client
 
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
@@ -42,25 +41,12 @@ class ComputeWaveformMetricsModule(SubcommandModule):
         self._check_arguments()
         self._get_events()
 
-        if gmrecords.args.num_processes:
-            # parallelize processing on events
-            try:
-                client = Client(n_workers=gmrecords.args.num_processes)
-            except BaseException as ex:
-                print(ex)
-                print("Could not create a dask client.")
-                print("To turn off paralleization, use '--num-processes 0'.")
-                sys.exit(1)
-            futures = client.map(self._compute_event_waveforms, self.events)
-            for result in as_completed(futures, with_results=True):
-                print(result)
-        else:
-            for event in self.events:
-                self._compute_event_waveforms(event)
+        for event in self.events:
+            self._compute_event_waveform_metrics(event)
 
         self._summarize_files_created()
 
-    def _compute_event_waveforms(self, event):
+    def _compute_event_waveform_metrics(self, event):
         self.eventid = event.id
         logging.info(
             'Computing waveform metrics for event %s...' % self.eventid)
@@ -79,7 +65,14 @@ class ComputeWaveformMetricsModule(SubcommandModule):
         station_list = ds.waveforms.list()
         self._get_labels()
 
+        summaries = []
+        metricpaths = []
+        if self.gmrecords.args.num_processes > 0:
+            futures = []
+            client = Client(n_workers=self.gmrecords.args.num_processes)
+
         for station_id in station_list:
+            # Cannot parallelize IO to ASDF file
             stream = self.workspace.getStreams(
                 event.id,
                 stations=[station_id],
@@ -88,24 +81,48 @@ class ComputeWaveformMetricsModule(SubcommandModule):
             )[0]
 
             if stream.passed:
+                metricpaths.append('/'.join([
+                    format_netsta(stream[0].stats),
+                    format_nslit(
+                        stream[0].stats,
+                        stream.get_inst(),
+                        stream.tag)
+                ]))
                 logging.info(
                     'Calculating waveform metrics for %s...'
                     % stream.get_id()
                 )
-                summary = StationSummary.from_config(
-                    stream, event=event, config=self.gmrecords.conf,
-                    calc_waveform_metrics=True,
-                    calc_station_metrics=False
-                )
-                xmlstr = summary.get_metric_xml()
-                tag = stream.tag
-                metricpath = '/'.join([
-                    format_netsta(stream[0].stats),
-                    format_nslit(stream[0].stats, stream.get_inst(), tag)
-                ])
-                self.workspace.insert_aux(
-                    xmlstr, 'WaveFormMetrics', metricpath,
-                    overwrite=self.gmrecords.args.overwrite)
+                if self.gmrecords.args.num_processes > 0:
+                    future = client.submit(
+                        StationSummary.from_config,
+                        stream=stream,
+                        config=self.gmrecords.conf,
+                        event=event,
+                        calc_waveform_metrics=True,
+                        calc_station_metrics=False)
+                    futures.append(future)
+                else:
+                    summaries.append(
+                        StationSummary.from_config(
+                            stream, event=event,
+                            config=self.gmrecords.conf,
+                            calc_waveform_metrics=True,
+                            calc_station_metrics=False
+                        )
+                    )
+
+        if self.gmrecords.args.num_processes > 0:
+            # Collect the processed streams
+            summaries = [future.result() for future in futures]
+            client.shutdown()
+
+        # Cannot parallelize IO to ASDF file
+        for i, summary in enumerate(summaries):
+            xmlstr = summary.get_metric_xml()
+            metricpath = metricpaths[i]
+            self.workspace.insert_aux(
+                xmlstr, 'WaveFormMetrics', metricpath,
+                overwrite=self.gmrecords.args.overwrite)
             logging.info('Added waveform metrics to workspace files '
                          'with tag \'%s\'.' % self.gmrecords.args.label)
 
