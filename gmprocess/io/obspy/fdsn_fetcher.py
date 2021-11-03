@@ -281,11 +281,11 @@ class FDSNFetcher(DataFetcher):
 
         if len(client_list):
             # Pass off the initalized clients to the Mass Downloader
-            for handler in root.handlers:
-                if hasattr(handler, "baseFilename"):
-                    log_file = getattr(handler, 'baseFilename')
-            sys.stdout = open(log_file, 'a')
             if logging.getLevelName(root.level) == 'DEBUG':
+                for handler in root.handlers:
+                    if hasattr(handler, "baseFilename"):
+                        log_file = getattr(handler, 'baseFilename')
+                sys.stdout = open(log_file, 'a')
                 mdl = MassDownloader(providers=client_list, debug=True)
             else:
                 mdl = MassDownloader(providers=client_list)

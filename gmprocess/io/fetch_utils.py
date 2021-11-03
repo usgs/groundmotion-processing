@@ -147,6 +147,8 @@ def download(event, event_dir, config, directory, create_workspace=True,
         workspace.addStreams(event, tcollection, label='unprocessed')
         logging.debug('workspace.dataset.waveforms.list():')
         logging.debug(workspace.dataset.waveforms.list())
+        workspace.addConfig()
+        logging.debug('workspace.dataset.config')
     else:
         workspace = None
         workname = None

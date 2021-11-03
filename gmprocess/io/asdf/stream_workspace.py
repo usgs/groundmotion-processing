@@ -7,6 +7,7 @@ import logging
 import os
 
 # third party imports
+import yaml
 import pyasdf
 import prov.model
 import numpy as np
@@ -26,6 +27,7 @@ from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.metrics.station_summary import StationSummary, XML_UNITS
 from gmprocess.utils.event import ScalarEvent
 from gmprocess.utils.tables import _get_table_row
+from gmprocess.utils.config import get_config
 
 
 TIMEPAT = '[0-9]{4}-[0-9]{2}-[0-9]{2}T'
@@ -260,6 +262,20 @@ class StreamWorkspace(object):
             event (Event): Obspy event object.
         """
         self.dataset.add_quakeml(event)
+
+    def addConfig(self):
+        """Add config to an ASDF file.
+        
+        """
+        config = get_config()
+        config_bytes = yaml.dump(config).encode('utf-8')
+        config_array = np.frombuffer(config_bytes, dtype=np.uint8)
+        self.dataset.add_auxiliary_data(
+            config_array,
+            data_type='config',
+            path='config',
+            parameters={}
+        )
 
     def addStreams(self, event, streams, label=None):
         """Add a sequence of StationStream objects to an ASDF file.
