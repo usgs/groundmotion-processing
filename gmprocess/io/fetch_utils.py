@@ -6,6 +6,7 @@ import warnings
 import glob
 import re
 import requests
+import pytz
 from collections import OrderedDict
 from datetime import datetime
 from setuptools_scm import get_version
@@ -383,10 +384,11 @@ def read_event_json_files(eventfiles):
             event = json.load(f)
 
             try:
+                origintime = datetime.fromtimestamp(
+                    event["properties"]["time"] / 1000.0, pytz.utc)
                 evdict = {
                     "id": event["id"],
-                    "time": event['properties']['products']['dyfi'][0]
-                    ['properties']['eventtime'],
+                    "time": origintime.strftime("%Y-%m-%dT%H:%M:%S.%f"),
                     "lat": event["geometry"]["coordinates"][1],
                     "lon": event["geometry"]["coordinates"][0],
                     "depth": event["geometry"]["coordinates"][2],
