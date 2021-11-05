@@ -383,11 +383,10 @@ def read_event_json_files(eventfiles):
             event = json.load(f)
 
             try:
-                origintime = datetime.fromtimestamp(
-                    event["properties"]["time"] / 1000.0)
                 evdict = {
                     "id": event["id"],
-                    "time": origintime.strftime("%Y-%m-%dT%H:%M:%S.%f"),
+                    "time": event['properties']['products']['dyfi'][0]
+                    ['properties']['eventtime'],
                     "lat": event["geometry"]["coordinates"][1],
                     "lon": event["geometry"]["coordinates"][0],
                     "depth": event["geometry"]["coordinates"][2],
