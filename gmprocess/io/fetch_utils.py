@@ -6,6 +6,7 @@ import warnings
 import glob
 import re
 import requests
+import pytz
 from collections import OrderedDict
 from datetime import datetime
 from setuptools_scm import get_version
@@ -384,7 +385,7 @@ def read_event_json_files(eventfiles):
 
             try:
                 origintime = datetime.fromtimestamp(
-                    event["properties"]["time"] / 1000.0)
+                    event["properties"]["time"] / 1000.0, pytz.utc)
                 evdict = {
                     "id": event["id"],
                     "time": origintime.strftime("%Y-%m-%dT%H:%M:%S.%f"),

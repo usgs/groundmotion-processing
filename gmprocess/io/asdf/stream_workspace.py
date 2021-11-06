@@ -264,7 +264,7 @@ class StreamWorkspace(object):
 
     def addConfig(self):
         """Add config to an ASDF file.
-        
+
         """
         config = get_config()
         config_bytes = json.dumps(config).encode('utf-8')

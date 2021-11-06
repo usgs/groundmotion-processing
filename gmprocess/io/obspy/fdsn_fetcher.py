@@ -265,7 +265,7 @@ class FDSNFetcher(DataFetcher):
                         client = Client(
                             provider_str,
                             user=fdsn_config[provider_str]['user'],
-                            password=fdsn_config[provider_str]['password']) 
+                            password=fdsn_config[provider_str]['password'])
                 else:
                     if logging.getLevelName(root.level) == 'DEBUG':
                         client = Client(provider_str, debug=True)
