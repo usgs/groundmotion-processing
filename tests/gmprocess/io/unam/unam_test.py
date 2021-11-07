@@ -4,7 +4,7 @@ import os
 import numpy as np
 
 from gmprocess.io.unam.core import is_unam, read_unam
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.io.read import read_data
 
 

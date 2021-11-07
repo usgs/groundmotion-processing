@@ -6,7 +6,7 @@ import shutil
 
 from gmprocess.io.asdf.core import is_asdf, read_asdf, write_asdf
 from gmprocess.io.read import read_data
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 import tempfile
 
 

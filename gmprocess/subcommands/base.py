@@ -6,7 +6,7 @@ import sys
 from abc import ABC, abstractmethod
 import logging
 
-from gmprocess.io.fetch_utils import get_events
+from gmprocess.utils.base_utils import get_events
 
 
 class SubcommandModule(ABC):

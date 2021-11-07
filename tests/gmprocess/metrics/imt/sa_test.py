@@ -10,7 +10,7 @@ import numpy as np
 # local imports
 from gmprocess.io.geonet.core import read_geonet
 from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 
 
 def test_sa():

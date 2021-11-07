@@ -117,14 +117,14 @@ class ComputeWaveformMetricsModule(SubcommandModule):
             client.shutdown()
 
         # Cannot parallelize IO to ASDF file
+        logging.info('Adding waveform metrics to workspace files '
+                     'with tag \'%s\'.' % self.gmrecords.args.label)
         for i, summary in enumerate(summaries):
             xmlstr = summary.get_metric_xml()
             metricpath = metricpaths[i]
             self.workspace.insert_aux(
                 xmlstr, 'WaveFormMetrics', metricpath,
                 overwrite=self.gmrecords.args.overwrite)
-            logging.info('Added waveform metrics to workspace files '
-                         'with tag \'%s\'.' % self.gmrecords.args.label)
 
         self.workspace.close()
         return event.id

@@ -10,7 +10,7 @@ import pkg_resources
 
 # local imports
 from gmprocess.io.geonet.core import read_geonet
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace

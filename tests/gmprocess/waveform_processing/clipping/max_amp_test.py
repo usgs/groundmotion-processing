@@ -4,7 +4,7 @@
 import os
 import numpy as np
 from gmprocess.io.read import read_data
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.waveform_processing.clipping.max_amp import Max_Amp
 

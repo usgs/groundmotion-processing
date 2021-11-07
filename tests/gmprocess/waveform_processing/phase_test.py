@@ -8,7 +8,7 @@ from gmprocess.waveform_processing.phase import (
     create_travel_time_dataframe
 )
 from gmprocess.io.read import read_data
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.utils.config import get_config
 from gmprocess.core.streamcollection import StreamCollection
 from obspy import read, UTCDateTime

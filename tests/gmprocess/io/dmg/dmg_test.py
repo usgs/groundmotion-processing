@@ -14,7 +14,7 @@ from obspy.core.utcdatetime import UTCDateTime
 # local imports
 from gmprocess.utils.constants import UNIT_CONVERSIONS
 from gmprocess.io.dmg.core import is_dmg, read_dmg, _get_date, _get_time
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.core.stationtrace import PROCESS_LEVELS
 
 

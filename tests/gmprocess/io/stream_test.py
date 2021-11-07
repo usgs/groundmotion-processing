@@ -14,7 +14,7 @@ from gmprocess.io.knet.core import read_knet
 from gmprocess.io.read import read_data
 from gmprocess.io.stream import streams_to_dataframe
 from gmprocess.core.streamcollection import StreamCollection
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 
 
 def test():

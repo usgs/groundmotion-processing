@@ -128,6 +128,7 @@ def _get_station_file(filename, stream, metadata_directory):
         filebase, fname = os.path.split(filename)
         xmlfiles = glob.glob(os.path.join(filebase, pattern))
     else:
+        logging.info('Using \'metadata_directory\': %s' % metadata_directory)
         xmlfiles = glob.glob(os.path.join(metadata_directory, pattern))
     if len(xmlfiles) != 1:
         return 'None'

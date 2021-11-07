@@ -2,7 +2,7 @@
 
 import os.path
 from gmprocess.io.obspy.core import read_obspy
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.waveform_processing.processing import process_streams
 import numpy as np
