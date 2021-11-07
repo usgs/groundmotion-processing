@@ -7,7 +7,7 @@ import numpy as np
 
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.io.read import read_data
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.utils.config import get_config
 
 from gmprocess.waveform_processing.windows import signal_split

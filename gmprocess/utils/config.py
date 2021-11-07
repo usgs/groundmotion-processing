@@ -3,9 +3,10 @@
 
 import os
 import pkg_resources
+
 from configobj import ConfigObj
 from ruamel.yaml import YAML
-
+from ruamel.yaml.error import YAMLError
 
 from gmprocess.utils import constants
 
@@ -108,6 +109,33 @@ def get_config(config_file=None, section=None):
             raise IndexError('Section %s not found in config file.' % section)
         else:
             config = config[section]
+
+    return config
+
+
+def update_config(custom_cfg_file):
+    """Merge custom config with default.
+
+    Args:
+        custom_cfg_file (str):
+            Path to custom config.
+
+    Returns:
+        dict: Merged config dictionary.
+
+    """
+    config = get_config()
+
+    if not os.path.isfile(custom_cfg_file):
+        return config
+    try:
+        with open(custom_cfg_file, 'rt', encoding='utf-8') as f:
+            yaml = YAML()
+            yaml.preserve_quotes = True
+            custom_cfg = yaml.load(f)
+            update_dict(config, custom_cfg)
+    except YAMLError:
+        return None
 
     return config
 

@@ -6,7 +6,7 @@ from numpy.testing import assert_allclose
 
 from gmprocess.waveform_processing.processing import process_streams
 from gmprocess.core.streamcollection import StreamCollection
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 
 
 def test():

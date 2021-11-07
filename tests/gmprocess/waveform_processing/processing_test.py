@@ -14,8 +14,8 @@ from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.io.read import read_data
 from gmprocess.waveform_processing.processing import process_streams
 from gmprocess.utils.logging import setup_logger
-from gmprocess.io.test_utils import read_data_dir
-from gmprocess.io.fetch_utils import update_config
+from gmprocess.utils.test_utils import read_data_dir
+from gmprocess.utils.config import update_config
 
 datapath = os.path.join('data', 'testdata')
 datadir = pkg_resources.resource_filename('gmprocess', datapath)

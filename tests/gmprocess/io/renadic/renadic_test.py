@@ -4,7 +4,7 @@ import os
 import numpy as np
 
 from gmprocess.io.renadic.core import is_renadic, read_renadic
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 
 
 def test_renadic():

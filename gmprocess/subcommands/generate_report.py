@@ -7,7 +7,7 @@ import logging
 
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.io.fetch_utils import draw_stations_map
+from gmprocess.utils.report_utils import draw_stations_map
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.io.report import build_report_latex
 from gmprocess.utils.plot import summary_plots, plot_moveout

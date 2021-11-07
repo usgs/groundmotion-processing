@@ -11,10 +11,11 @@ from ruamel.yaml import YAML
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.io.read import read_data
 from gmprocess.waveform_processing.processing import process_streams
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.core.streamcollection import StreamCollection
-from gmprocess.io.fetch_utils import get_rupture_file, update_config
+from gmprocess.utils.rupture_utils import get_rupture_file
+from gmprocess.utils.config import update_config
 
 from h5py.h5py_warnings import H5pyDeprecationWarning
 from ruamel.yaml.error import YAMLError

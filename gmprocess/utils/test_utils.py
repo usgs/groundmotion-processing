@@ -3,11 +3,9 @@
 
 import os.path
 import glob
-import json
 import pkg_resources
 
-from gmprocess.utils.event import ScalarEvent
-from gmprocess.io.fetch_utils import read_event_json_files
+from gmprocess.utils.base_utils import read_event_json_files
 
 
 def read_data_dir(file_format, eventid, files=None):

@@ -17,7 +17,7 @@ from ps2ff.run import single_event_adjustment
 
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.io.fetch_utils import get_rupture_file
+from gmprocess.utils.rupture_utils import get_rupture_file
 from gmprocess.io.asdf.stream_workspace import \
     StreamWorkspace, format_netsta, format_nslit
 from gmprocess.metrics.station_summary import StationSummary

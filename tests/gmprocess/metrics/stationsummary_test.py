@@ -2,10 +2,8 @@
 # -*- coding: utf-8 -*-
 
 # stdlib imports
-from gmprocess.io.fetch_utils import read_event_json_files
 import os
 import warnings
-from impactutils.rupture.origin import read_event_file
 
 # third party imports
 import numpy as np
@@ -15,10 +13,10 @@ from obspy.core.event import Origin
 # local imports
 from gmprocess.io.geonet.core import read_geonet
 from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.waveform_processing.processing import process_streams
-from gmprocess.io.fetch_utils import read_event_json_files
+from gmprocess.utils.base_utils import read_event_json_files
 
 
 def cmp_dicts(adict, bdict):
@@ -35,9 +33,10 @@ def test_stationsummary():
     datafile = datafiles[0]
     origin = Origin(latitude=42.6925, longitude=173.021944)
 
-    target_imcs = np.sort(np.asarray(['GREATER_OF_TWO_HORIZONTALS',
-                                      'H1', 'H2', 'Z', 'ROTD(50.0)',
-                                      'ROTD(100.0)']))
+    target_imcs = np.sort(np.asarray([
+        'GREATER_OF_TWO_HORIZONTALS',
+        'H1', 'H2', 'Z', 'ROTD(50.0)',
+        'ROTD(100.0)']))
     target_imts = np.sort(np.asarray(['SA(1.000)', 'PGA', 'PGV']))
     stream = read_geonet(datafile)[0]
     with warnings.catch_warnings():
@@ -55,12 +54,12 @@ def test_stationsummary():
         final_stream = stream_summary.stream
         assert original_stream == final_stream
         original_code = stream_summary.station_code
-        np.testing.assert_array_equal(np.sort(stream_summary.components),
-                                      target_imcs)
-        np.testing.assert_array_equal(np.sort(stream_summary.imts),
-                                      target_imts)
-        np.testing.assert_almost_equal(stream_summary.get_pgm('PGA', 'H1'),
-                                       99.3173469387755, decimal=1)
+        np.testing.assert_array_equal(
+            np.sort(stream_summary.components), target_imcs)
+        np.testing.assert_array_equal(
+            np.sort(stream_summary.imts), target_imts)
+        np.testing.assert_almost_equal(
+            stream_summary.get_pgm('PGA', 'H1'), 99.3173469387755, decimal=1)
         target_available = np.sort(np.asarray([
             'greater_of_two_horizontals', 'geometric_mean', 'arithmetic_mean',
             'channels', 'gmrotd', 'rotd', 'quadratic_mean',
@@ -99,8 +98,8 @@ def test_stationsummary():
     for imt_str in test_pgms:
         for imc_str in test_pgms[imt_str]:
             result = pgms.loc[imt_str, imc_str].Result
-            np.testing.assert_almost_equal(result, test_pgms[imt_str][imc_str],
-                                           decimal=10)
+            np.testing.assert_almost_equal(
+                result, test_pgms[imt_str][imc_str], decimal=10)
 
     # Test with fas
     stream = read_geonet(datafile)[0]

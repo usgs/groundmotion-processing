@@ -4,7 +4,7 @@ import os.path
 import numpy as np
 from gmprocess.io.knet.core import is_knet, read_knet
 import pkg_resources
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 
 
 def test():

@@ -89,7 +89,6 @@ class CleanModule(SubcommandModule):
         events = glob(os.path.join(data_path, '*/'))
         logging.info('Number of events: %s' % len(events))
         for event in events:
-            logging.info('Event: %s' % event)
             event_dir = os.path.join(data_path, event)
             if os.path.exists(event_dir):
                 # Exported tables
@@ -106,7 +105,7 @@ class CleanModule(SubcommandModule):
 
                 # Raw
                 if gmrecords.args.raw:
-                    rawdir = os.path.join(event_dir, 'raw')
+                    rawdir = os.path.normpath(os.path.join(event_dir, 'raw'))
                     if os.path.isdir(rawdir):
                         try:
                             logging.info('Removing: %s' % rawdir)
@@ -117,7 +116,8 @@ class CleanModule(SubcommandModule):
                 # Plots
                 if gmrecords.args.all or gmrecords.args.plot:
                     self.__remove(event_dir, ['*.png'])
-                    plotsdir = os.path.join(event_dir, 'plots')
+                    plotsdir = os.path.normpath(
+                        os.path.join(event_dir, 'plots'))
                     if os.path.isdir(plotsdir):
                         try:
                             logging.info('Removing: %s' % plotsdir)
@@ -134,6 +134,7 @@ class CleanModule(SubcommandModule):
         for pattern in patterns:
             matches = glob(os.path.join(base_dir, pattern))
             for match in matches:
+                match = os.path.normpath(match)
                 try:
                     logging.info('Removing: %s' % match)
                     os.remove(match)

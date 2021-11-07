@@ -10,7 +10,7 @@ import numpy as np
 from obspy import UTCDateTime
 
 from gmprocess.utils.config import get_config
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.waveform_processing.processing import remove_response
 from gmprocess.utils.event import get_event_object

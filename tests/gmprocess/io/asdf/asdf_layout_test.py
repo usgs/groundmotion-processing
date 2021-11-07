@@ -11,11 +11,11 @@ import h5py
 
 # local imports
 from gmprocess.io.read import read_data
-from gmprocess.io.test_utils import read_data_dir
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
-from gmprocess.waveform_processing.processing import process_streams
 from gmprocess.io.asdf.core import write_asdf
-from gmprocess.io.fetch_utils import update_config
+from gmprocess.waveform_processing.processing import process_streams
+from gmprocess.utils.test_utils import read_data_dir
+from gmprocess.utils.config import update_config
 
 
 datapath = os.path.join('data', 'testdata')
