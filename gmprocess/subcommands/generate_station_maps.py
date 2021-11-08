@@ -14,7 +14,7 @@ from gmprocess.utils.report_utils import draw_stations_map
 class GenerateHTMLMapModule(SubcommandModule):
     """Generate station maps (PNG and HTML).
     """
-    command_name = 'generate_statsion_maps'
+    command_name = 'generate_station_maps'
     aliases = ('maps', )
 
     arguments = [
