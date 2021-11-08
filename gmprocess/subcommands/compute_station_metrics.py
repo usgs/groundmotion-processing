@@ -168,7 +168,7 @@ class ComputeStationMetricsModule(SubcommandModule):
             # If we don't have a point rupture, then back azimuth needs
             # to be calculated to the closest point on the rupture
             self.sta_baz = []
-            for i in range(len(self.pstreams)):
+            for i in range(len(station_list)):
                 dists = []
                 bazs = []
                 for quad in rupture._quadrilaterals:
