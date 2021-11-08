@@ -8,7 +8,6 @@ from dask.distributed import Client
 
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.utils.report_utils import draw_stations_map
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.io.report import build_report_latex
 from gmprocess.utils.plot import summary_plots, plot_moveout
@@ -94,7 +93,8 @@ class GenerateReportModule(SubcommandModule):
 
         if self.gmrecords.args.num_processes > 0:
             futures = []
-            client = Client(n_workers=self.gmrecords.args.num_processes)
+            client = Client(threads_per_worker=1,
+                            n_workers=self.gmrecords.args.num_processes)
 
         logging.info('Creating diagnostic plots for event %s...' % event.id)
         plot_dir = os.path.join(event_dir, 'plots')
@@ -122,11 +122,9 @@ class GenerateReportModule(SubcommandModule):
             results = [future.result() for future in futures]
             client.shutdown()
 
-        mapfile = draw_stations_map(pstreams, event, event_dir)
         moveoutfile = os.path.join(event_dir, 'moveout_plot.png')
         plot_moveout(pstreams, event.latitude, event.longitude,
                      file=moveoutfile)
-        self.append_file('Station map', mapfile)
         self.append_file('Moveout plot', moveoutfile)
 
         self.workspace.close()

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+
 import numpy as np
 import pandas as pd
 import folium
@@ -85,8 +86,8 @@ def draw_stations_map(pstreams, event, event_dir):
         [event.latitude, event.longitude], popup=event_info,
         color='yellow', fill=True, radius=15).add_to(station_map)
 
-    mapfile = os.path.join(event_dir, 'stations_map.html')
-    station_map.save(mapfile)
+    html_mapfile = os.path.join(event_dir, 'stations_map.html')
+    station_map.save(html_mapfile)
 
     # now the static map for the report is created
     # draw map of stations and cities and stuff
@@ -159,6 +160,6 @@ def draw_stations_map(pstreams, event, event_dir):
     ax.add_feature(land)
     ax.add_feature(ocean)
     ax.coastlines(resolution=scale, zorder=10, linewidth=1)
-    mapfile = os.path.join(event_dir, 'stations_map.png')
-    plt.savefig(mapfile)
-    return mapfile
+    png_mapfile = os.path.join(event_dir, 'stations_map.png')
+    plt.savefig(png_mapfile)
+    return (png_mapfile, html_mapfile)
