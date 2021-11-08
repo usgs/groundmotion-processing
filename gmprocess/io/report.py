@@ -122,13 +122,13 @@ moveout_page_tex = '''
 '''
 
 
-def build_report_latex(sc, directory, origin, prefix='', config=None):
+def build_report_latex(st_list, directory, origin, prefix='', config=None):
     """
     Build latex summary report.
 
     Args:
-        st (StreamCollection):
-            StreamCollection of data.
+        st_list (list):
+            List of streams.
         directory (str):
             Directory for saving report.
         origin (ScalarEvent):
@@ -178,8 +178,7 @@ def build_report_latex(sc, directory, origin, prefix='', config=None):
     # Loop over each StationStream and append it's page to the report
     # do not include more than three.
 
-    # get list of streams to sort them:
-    st_list = list(sc.streams)
+    # sort list of streams:
     st_list.sort(key=lambda x: x.id)
 
     for st in st_list:
