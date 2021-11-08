@@ -22,7 +22,7 @@ source $prof
 VENV=gmprocess
 
 developer=0
-py_ver=3.7
+py_ver=3.9
 while getopts p:d FLAG; do
   case $FLAG in
     p)
