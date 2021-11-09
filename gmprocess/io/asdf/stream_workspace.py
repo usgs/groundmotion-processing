@@ -927,6 +927,9 @@ class StreamWorkspace(object):
                 by-trace basis.
         """
         # Get list of periods in SA to interpolate SNR to.
+        if 'WaveFormMetrics' not in self.dataset.auxiliary_data:
+            logging.error('No WaveFormMetrics found. Please run '
+                          '\'compute_waverom_metrics\' subcommand.')
         wm = self.dataset.auxiliary_data.WaveFormMetrics
         wm_tmp = wm[wm.list()[0]]
         bytelist = wm_tmp[wm_tmp.list()[0]].data[:].tolist()
