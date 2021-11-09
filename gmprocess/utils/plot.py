@@ -9,6 +9,7 @@ from collections import Counter
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 import numpy as np
 from obspy.geodetics.base import gps2dist_azimuth
 from obspy.core.utcdatetime import UTCDateTime
@@ -19,6 +20,7 @@ from matplotlib.dates import num2date
 from gmprocess.metrics.reduction.arias import Arias
 from gmprocess.waveform_processing import spectrum
 from gmprocess.metrics.oscillators import get_spectral
+from gmprocess.utils.constants import UNIT_CONVERSIONS
 
 MIN_MAG = 4.0
 MAX_MAG = 7.0
@@ -518,10 +520,10 @@ def summary_plots(st, directory, origin):
         os.makedirs(directory)
 
     # Setup figure for stream
-    nrows = 4
+    nrows = 5
     ntrace = min(len(st), 3)
     fig = plt.figure(figsize=(3.9 * ntrace, 10))
-    gs = fig.add_gridspec(nrows, ntrace, height_ratios=[1, 1, 2, 2])
+    gs = fig.add_gridspec(nrows, ntrace, height_ratios=[1, 1, 1, 2, 2])
     ax = [plt.subplot(g) for g in gs]
 
     stream_id = st.get_id()
@@ -539,6 +541,10 @@ def summary_plots(st, directory, origin):
     # Compute velocity
     st_vel = st.copy()
     st_vel = st_vel.integrate()
+
+    # Compute displacement
+    st_dis = st_vel.copy()
+    st_dis = st_dis.integrate()
 
     # process channels in preferred sort order (i.e., HN1, HN2, HNZ)
     channels = [tr.stats.channel for tr in st]
@@ -587,6 +593,11 @@ def summary_plots(st, directory, origin):
         else:
             snr_conf = None
 
+        if tr.hasParameter('tail_conf'):
+            tail_conf = tr.getParameter('tail_conf')
+        else:
+            tail_conf = None
+
         trace_failed = tr.hasParameter('failure')
 
         # Note that the theoretical spectra will only be available for
@@ -608,6 +619,7 @@ def summary_plots(st, directory, origin):
 
         # ---------------------------------------------------------------------
         # Acceleration time series plot
+        pga = np.max(np.abs(st[j].data)) / UNIT_CONVERSIONS['g']
         if trace_failed:
             trace_status = " (failed)"
             trace_title = tr.get_id() + trace_status
@@ -619,6 +631,10 @@ def summary_plots(st, directory, origin):
         dtimes = np.linspace(
             0, tr.stats.endtime - tr.stats.starttime, tr.stats.npts)
         ax[j].plot(dtimes, tr.data, 'k', linewidth=0.5)
+        ax[j].tick_params(axis='both', which='major', labelsize=5)
+        ax[j].text(0.95, 0.95, 'PGA: %.3g g' % pga,
+                   transform=ax[j].transAxes, va='top', ha='right',
+                   color='0.5')
 
         # Show signal split as vertical dashed line
         if tr.hasParameter('signal_split'):
@@ -628,17 +644,21 @@ def summary_plots(st, directory, origin):
             ax[j].axvline(dsec,
                           color='red', linestyle='dashed')
 
-        ax[j].set_xlabel('Time (s)')
-        ax[j].set_ylabel('Acceleration (cm/s/s)')
+        if j == 0:
+            ax[j].set_ylabel('Acceleration (cm/s/s)')
 
         # ---------------------------------------------------------------------
         # Velocity time series plot
+        pgv = np.max(np.abs(st_vel[j].data))
         tr_vel = st_vel[j]
         dtimes = np.linspace(
             0, tr_vel.stats.endtime - tr_vel.stats.starttime, tr_vel.stats.npts
         )
         ax[j + ntrace].plot(dtimes, tr_vel.data, 'k', linewidth=0.5)
-
+        ax[j + ntrace].tick_params(axis='both', which='major', labelsize=5)
+        ax[j + ntrace].text(0.95, 0.95, 'PGV: %.3g cm/s' % pgv,
+                            transform=ax[j + ntrace].transAxes,
+                            va='top', ha='right', color='0.5')
         # Show signal split as vertical dashed line
         if tr.hasParameter('signal_split'):
             split_dict = tr.getParameter('signal_split')
@@ -646,52 +666,111 @@ def summary_plots(st, directory, origin):
             dsec = sptime - tr.stats.starttime
             ax[j + ntrace].axvline(dsec, color='red', linestyle='dashed')
 
-        ax[j + ntrace].set_xlabel('Time (s)')
-        ax[j + ntrace].set_ylabel('Velocity (cm/s)')
+        if j == 0:
+            ax[j + ntrace].set_ylabel('Velocity (cm/s)')
+
+        if tail_conf is not None:
+            utc_start = UTCDateTime(tail_conf['start_time'])
+            tail_start = utc_start - tr.stats.starttime
+            tail_end = tr.stats.endtime - tr.stats.starttime
+            abs_max_vel = np.max(np.abs(tr_vel.data))
+            vel_ratio = tail_conf['max_vel_ratio']
+            vel_threshold = abs_max_vel * vel_ratio
+            rect = patches.Rectangle(
+                (tail_start, -vel_threshold),
+                tail_end - tail_start, 2 * vel_threshold,
+                linewidth=0, edgecolor='none', facecolor='#3cfa8b')
+
+            ax[j + ntrace].add_patch(rect)
+
+        # ---------------------------------------------------------------------
+        # Displacement time series plot
+        pgd = np.max(np.abs(st_dis[j].data))
+        tr_dis = st_dis[j]
+        dtimes = np.linspace(
+            0, tr_dis.stats.endtime - tr_dis.stats.starttime, tr_dis.stats.npts
+        )
+        ax[j + 2 * ntrace].plot(dtimes, tr_dis.data, 'k', linewidth=0.5)
+        ax[j + 2 * ntrace].tick_params(axis='both', which='major', labelsize=5)
+        ax[j + 2 * ntrace].text(0.95, 0.95, 'PGD: %.3g cm' % pgd,
+                                transform=ax[j + 2 * ntrace].transAxes,
+                                va='top', ha='right', color='0.5')
+
+        # Show signal split as vertical dashed line
+        if tr.hasParameter('signal_split'):
+            split_dict = tr.getParameter('signal_split')
+            sptime = UTCDateTime(split_dict['split_time'])
+            dsec = sptime - tr.stats.starttime
+            ax[j + 2 * ntrace].axvline(dsec, color='red', linestyle='dashed')
+
+        ax[j + 2 * ntrace].set_xlabel('Time (s)')
+        if j == 0:
+            ax[j + 2 * ntrace].set_ylabel('Displacement (cm)')
+
+        if tail_conf is not None:
+            utc_start = UTCDateTime(tail_conf['start_time'])
+            tail_start = utc_start - tr.stats.starttime
+            tail_end = tr.stats.endtime - tr.stats.starttime
+            abs_max_dis = np.max(np.abs(tr_dis.data))
+            dis_ratio = tail_conf['max_dis_ratio']
+            dis_threshold = abs_max_dis * dis_ratio
+            rect = patches.Rectangle(
+                (tail_start, -dis_threshold),
+                tail_end - tail_start, 2 * dis_threshold,
+                linewidth=0, edgecolor='none', facecolor='#3cfa8b')
+
+            ax[j + 2 * ntrace].add_patch(rect)
 
         # ---------------------------------------------------------------------
         # Spectral plot
 
         # Raw signal spec
         if signal_dict is not None:
-            ax[j + 2 * ntrace].loglog(signal_dict['freq'],
-                                      signal_dict['spec'],
-                                      color='lightblue')
+            ax[j + 3 * ntrace].loglog(
+                signal_dict['freq'],
+                signal_dict['spec'],
+                color='lightblue')
 
         # Smoothed signal spec
         if smooth_signal_dict is not None:
-            ax[j + 2 * ntrace].loglog(smooth_signal_dict['freq'],
-                                      smooth_signal_dict['spec'],
-                                      color='blue',
-                                      label='Signal')
+            ax[j + 3 * ntrace].loglog(
+                smooth_signal_dict['freq'],
+                smooth_signal_dict['spec'],
+                color='blue',
+                label='Signal')
 
         # Raw noise spec
         if noise_dict is not None:
-            ax[j + 2 * ntrace].loglog(noise_dict['freq'],
-                                      noise_dict['spec'],
-                                      color='salmon')
+            ax[j + 3 * ntrace].loglog(
+                noise_dict['freq'],
+                noise_dict['spec'],
+                color='salmon')
 
         # Smoothed noise spec
         if smooth_noise_dict is not None:
-            ax[j + 2 * ntrace].loglog(smooth_noise_dict['freq'],
-                                      smooth_noise_dict['spec'],
-                                      color='red',
-                                      label='Noise')
+            ax[j + 3 * ntrace].loglog(
+                smooth_noise_dict['freq'],
+                smooth_noise_dict['spec'],
+                color='red',
+                label='Noise')
 
         if fit_spectra_dict is not None:
             # Model spec
-            ax[j + 2 * ntrace].loglog(smooth_signal_dict['freq'],
-                                      model_spec,
-                                      color='black',
-                                      linestyle='dashed')
+            ax[j + 3 * ntrace].loglog(
+                smooth_signal_dict['freq'],
+                model_spec,
+                color='black',
+                linestyle='dashed')
 
             # Corner frequency
-            ax[j + 2 * ntrace].axvline(fit_spectra_dict['f0'],
-                                       color='black',
-                                       linestyle='dashed')
+            ax[j + 3 * ntrace].axvline(
+                fit_spectra_dict['f0'],
+                color='black',
+                linestyle='dashed')
 
-        ax[j + 2 * ntrace].set_xlabel('Frequency (Hz)')
-        ax[j + 2 * ntrace].set_ylabel('Amplitude (cm/s)')
+        ax[j + 3 * ntrace].set_xlabel('Frequency (Hz)')
+        if j == 0:
+            ax[j + 3 * ntrace].set_ylabel('Amplitude (cm/s)')
 
         # ---------------------------------------------------------------------
         # Signal-to-noise ratio plot
@@ -699,44 +778,51 @@ def summary_plots(st, directory, origin):
         if 'corner_frequencies' in tr.getParameterKeys():
             hp = tr.getParameter('corner_frequencies')['highpass']
             lp = tr.getParameter('corner_frequencies')['lowpass']
-            ax[j + 3 * ntrace].axvline(hp,
-                                       color='black',
-                                       linestyle='--',
-                                       label='Highpass')
-            ax[j + 3 * ntrace].axvline(lp,
-                                       color='black',
-                                       linestyle='--',
-                                       label='Lowpass')
+            ax[j + 4 * ntrace].axvline(
+                hp,
+                color='black',
+                linestyle='--',
+                label='Highpass')
+            ax[j + 4 * ntrace].axvline(
+                lp,
+                color='black',
+                linestyle='--',
+                label='Lowpass')
 
         if snr_conf is not None:
-            ax[j + 3 * ntrace].axhline(snr_conf['threshold'],
-                                       color='0.75',
-                                       linestyle='-',
-                                       linewidth=2)
-            ax[j + 3 * ntrace].axvline(snr_conf['max_freq'],
-                                       color='0.75',
-                                       linewidth=2,
-                                       linestyle='-')
-            ax[j + 3 * ntrace].axvline(snr_conf['min_freq'],
-                                       color='0.75',
-                                       linewidth=2,
-                                       linestyle='-')
+            ax[j + 4 * ntrace].axhline(
+                snr_conf['threshold'],
+                color='0.75',
+                linestyle='-',
+                linewidth=2)
+            ax[j + 4 * ntrace].axvline(
+                snr_conf['max_freq'],
+                color='0.75',
+                linewidth=2,
+                linestyle='-')
+            ax[j + 4 * ntrace].axvline(
+                snr_conf['min_freq'],
+                color='0.75',
+                linewidth=2,
+                linestyle='-')
 
         if snr_dict is not None:
-            ax[j + 3 * ntrace].loglog(snr_dict['freq'],
-                                      snr_dict['snr'],
-                                      label='SNR')
+            ax[j + 4 * ntrace].loglog(
+                snr_dict['freq'],
+                snr_dict['snr'],
+                label='SNR')
 
-        ax[j + 3 * ntrace].set_ylabel('SNR')
-        ax[j + 3 * ntrace].set_xlabel('Frequency (Hz)')
+        if j == 0:
+            ax[j + 4 * ntrace].set_ylabel('SNR')
+        ax[j + 4 * ntrace].set_xlabel('Frequency (Hz)')
 
     stream_id = st.get_id()
 
     # Do not save files if running tests
     file_name = None
     if 'CALLED_FROM_PYTEST' not in os.environ:
-        plt.subplots_adjust(left=0.05, right=0.97, hspace=0.25,
-                            wspace=0.2, top=0.97)
+        plt.subplots_adjust(left=0.08, right=0.97, hspace=0.3,
+                            wspace=0.25, top=0.97)
         file_name = os.path.join(
             directory,
             origin.id + '_' + stream_id + '.png')

@@ -43,7 +43,6 @@ RE_NETWORK = {
     '14': {
         'description': 'Free field (water) (Towards Right Abutment)',
         'free_field': False},
-
     '20': {
         'description': 'Toe (center)',
         'free_field': False},
@@ -59,7 +58,6 @@ RE_NETWORK = {
     '24': {
         'description': 'Toe (Towards Right Abutment)',
         'free_field': False},
-
     '30': {
         'description': 'Crest (center)',
         'free_field': False},
@@ -75,7 +73,6 @@ RE_NETWORK = {
     '34': {
         'description': 'Crest (Towards Right Abutment)',
         'free_field': False},
-
     '40': {
         'description': 'Foundation (center)',
         'free_field': False},
@@ -91,7 +88,6 @@ RE_NETWORK = {
     '44': {
         'description': 'Foundation (Towards Right Abutment)',
         'free_field': False},
-
     '50': {
         'description': 'Body (center)',
         'free_field': False},
@@ -107,7 +103,6 @@ RE_NETWORK = {
     '54': {
         'description': 'Body (Towards Right Abutment)',
         'free_field': False},
-
     '60': {
         'description': 'Down Hole Upper Body',
         'free_field': False},
@@ -125,19 +120,23 @@ RE_NETWORK = {
 LOCATION_CODES = {'RE': RE_NETWORK}
 
 
-def _get_station_file(filename, stream):
-    filebase, fname = os.path.split(filename)
+def _get_station_file(filename, stream, metadata_directory):
     network = stream[0].stats.network
     station = stream[0].stats.station
     pattern = '%s.%s.xml' % (network, station)
-    xmlfiles = glob.glob(os.path.join(filebase, pattern))
+    if metadata_directory == 'None':
+        filebase, fname = os.path.split(filename)
+        xmlfiles = glob.glob(os.path.join(filebase, pattern))
+    else:
+        logging.info('Using \'metadata_directory\': %s' % metadata_directory)
+        xmlfiles = glob.glob(os.path.join(metadata_directory, pattern))
     if len(xmlfiles) != 1:
         return 'None'
     xmlfile = xmlfiles[0]
     return xmlfile
 
 
-def is_obspy(filename):
+def is_obspy(filename, config=None):
     """Check to see if file is a format supported by Obspy (not KNET).
 
     Note: Currently only SAC and Miniseed are supported.
@@ -145,10 +144,16 @@ def is_obspy(filename):
     Args:
         filename (str):
             Path to possible Obspy format.
+        config (dict):
+            Dictionary containing configuration.
+
     Returns:
         bool: True if obspy supported, otherwise False.
     """
     logging.debug("Checking if format is supported by obspy.")
+    metadir = config['read']['metadata_directory']
+    if config is None:
+        config = get_config()
     if not os.path.isfile(filename):
         return False
     try:
@@ -156,7 +161,7 @@ def is_obspy(filename):
         if stream[0].stats._format in IGNORE_FORMATS:
             return False
         if stream[0].stats._format in REQUIRES_XML:
-            xmlfile = _get_station_file(filename, stream)
+            xmlfile = _get_station_file(filename, stream, metadir)
             if not os.path.isfile(xmlfile):
                 return False
             return True
@@ -175,8 +180,8 @@ def read_obspy(filename, config=None, **kwargs):
         filename (str):
             Path to data file.
         config (dict):
-            Dictionary containing configuration.
-            If None, retrieve global config.
+            Dictionary containing configuration. If None, retrieve global
+            config.
         kwargs (ref):
             Other arguments will be ignored.
 
@@ -186,7 +191,7 @@ def read_obspy(filename, config=None, **kwargs):
     logging.debug("Starting read_obspy.")
     if config is None:
         config = get_config()
-    if not is_obspy(filename):
+    if not is_obspy(filename, config):
         raise Exception('%s is not a valid Obspy file format.' % filename)
 
     if 'exclude_patterns' in kwargs:
@@ -203,7 +208,8 @@ def read_obspy(filename, config=None, **kwargs):
     streams = []
     tstream = read(filename)
     try:
-        xmlfile = _get_station_file(filename, tstream)
+        metdir = config['read']['metadata_directory']
+        xmlfile = _get_station_file(filename, tstream, metdir)
         inventory = read_inventory(xmlfile)
     except BaseException:
         inventory = None

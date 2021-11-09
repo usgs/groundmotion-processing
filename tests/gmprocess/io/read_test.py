@@ -5,10 +5,12 @@
 import os
 
 from gmprocess.io.read import read_data, _get_format, _validate_format
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
+from gmprocess.utils.config import get_config
 
 
 def test_read():
+    config = get_config()
     cosmos_files, _ = read_data_dir(
         'cosmos', 'ci14155260', 'Cosmos12TimeSeriesTest.v1')
     cwb_files, _ = read_data_dir(
@@ -32,16 +34,16 @@ def test_read():
 
     for file_format in file_dict:
         file_path = file_dict[file_format]
-        assert _get_format(file_path) == file_format
-        assert _validate_format(file_path, file_format) == file_format
+        assert _get_format(file_path, config) == file_format
+        assert _validate_format(file_path, config, file_format) == file_format
 
-    assert _validate_format(file_dict['knet'], 'smc') == 'knet'
-    assert _validate_format(file_dict['dmg'], 'cosmos') == 'dmg'
-    assert _validate_format(file_dict['cosmos'], 'invalid') == 'cosmos'
+    assert _validate_format(file_dict['knet'], config, 'smc') == 'knet'
+    assert _validate_format(file_dict['dmg'], config, 'cosmos') == 'dmg'
+    assert _validate_format(file_dict['cosmos'], config, 'invalid') == 'cosmos'
 
     for file_format in file_dict:
         try:
-            stream = read_data(file_dict[file_format], file_format)[0]
+            stream = read_data(file_dict[file_format], config, file_format)[0]
         except Exception as e:
             pass
         assert stream[0].stats.standard['source_format'] == file_format

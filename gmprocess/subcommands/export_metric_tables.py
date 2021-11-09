@@ -67,6 +67,13 @@ class ExportMetricTablesModule(SubcommandModule):
                 self.gmrecords.args.label, streams=self.pstreams)
             ev_fit_spec, fit_readme = self.workspace.getFitSpectraTable(
                 self.eventid, self.gmrecords.args.label, self.pstreams)
+
+            # We need to have a consistent set of frequencies for reporting the
+            # SNR. For now, I'm going to take it from the SA period list, but
+            # this could be changed to something else, or even be set via the
+            # config file.
+            snr_table, snr_readme = self.workspace.getSNRTable(
+                self.eventid, self.gmrecords.args.label, self.pstreams)
             self.workspace.close()
 
             outdir = gmrecords.data_path
@@ -91,15 +98,20 @@ class ExportMetricTablesModule(SubcommandModule):
             ]
             proj_lab = (gmrecords.project, gmrecords.args.label)
 
-            event_filename = ['%s_%s_events' % proj_lab]
-            filenames = event_filename + imc_list + readme_list + [
-                '%s_%s_fit_spectra_parameters' % proj_lab,
-                '%s_%s_fit_spectra_parameters_README' % proj_lab
-            ]
+            filenames = (
+                ['%s_%s_events' % proj_lab] +
+                imc_list + readme_list +
+                ['%s_%s_fit_spectra_parameters' % proj_lab,
+                 '%s_%s_fit_spectra_parameters_README' % proj_lab] +
+                ['%s_%s_snr' % proj_lab, '%s_%s_snr_README' % proj_lab]
+            )
 
-            files = [event_table_formatted] + list(
-                imc_tables_formatted.values()) + list(
-                readmes.values()) + [df_fit_spectra_formatted, fit_readme]
+            files = (
+                [event_table_formatted] +
+                list(imc_tables_formatted.values()) + list(readmes.values()) +
+                [df_fit_spectra_formatted, fit_readme] +
+                [snr_table, snr_readme]
+            )
 
             output_format = gmrecords.args.output_format
             if output_format != 'csv':

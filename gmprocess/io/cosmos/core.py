@@ -218,11 +218,15 @@ SENSOR_TYPES = {
 }
 
 
-def is_cosmos(filename):
+def is_cosmos(filename, config=None):
     """Check to see if file is a COSMOS V0/V1 strong motion file.
 
     Args:
-        filename (str): Path to possible COSMOS V0/V1 data file.
+        filename (str):
+            Path to possible COSMOS V0/V1 data file.
+        config (dict):
+            Dictionary containing configuration.
+
     Returns:
         bool: True if COSMOS V0/V1, False otherwise.
     """
@@ -238,15 +242,17 @@ def is_cosmos(filename):
     return False
 
 
-def read_cosmos(filename, **kwargs):
+def read_cosmos(filename, config=None, **kwargs):
     """Read COSMOS V1/V2 strong motion file.
 
     There is one extra key in the Stats object for each Trace -
-    "process_level".
-    This will be set to either "V1" or "V2".
+    "process_level". This will be set to either "V1" or "V2".
 
     Args:
-        filename (str): Path to possible COSMOS V1/V2 data file.
+        filename (str):
+            Path to possible COSMOS V1/V2 data file.
+        config (dict):
+            Dictionary containing configuration.
         kwargs (ref):
             valid_station_types (list): List of valid station types. See table
                 6  in the COSMOS strong motion data format documentation for
@@ -258,7 +264,7 @@ def read_cosmos(filename, **kwargs):
         data (cm/s**2).
     """
     logging.debug("Starting read_cosmos.")
-    if not is_cosmos(filename):
+    if not is_cosmos(filename, config):
         raise Exception(
             '%s is not a valid COSMOS strong motion data file.' % filename)
     # get list of valid stations
@@ -292,8 +298,10 @@ def _read_channel(filename, line_offset, location=''):
     """Read channel data from COSMOS V1/V2 text file.
 
     Args:
-        filename (str): Input COSMOS V1/V2 filename.
-        line_offset (int): Line offset to beginning of channel text block.
+        filename (str):
+            Input COSMOS V1/V2 filename.
+        line_offset (int):
+            Line offset to beginning of channel text block.
 
     Returns:
         tuple: (obspy Trace, int line offset)
@@ -428,10 +436,14 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
       - sensor_sensitivity (float): Sensitvity in volts/g
 
     Args:
-        int_data (ndarray): Array of integer data
-        flt_data (ndarray): Array of float data
-        lines (list): List of text headers (str)
-        cmt_data (ndarray): Array of comments (str)
+        int_data (ndarray):
+            Array of integer data.
+        flt_data (ndarray):
+            Array of float data.
+        lines (list):
+            List of text headers (str).
+        cmt_data (ndarray):
+            Array of comments (str).
 
     Returns:
         dictionary: Dictionary of header/metadata information
@@ -788,8 +800,10 @@ def _read_lines(skip_rows, filename):
     """Read lines of comments and data exluding headers.
 
     Args:
-        skip_rows (int): Number of rows to skip.
-        filename (str): Path to possible COSMOS V0/V1 data file.
+        skip_rows (int):
+            Number of rows to skip.
+        filename (str):
+            Path to possible COSMOS V0/V1 data file.
     Returns:
         array-like: List of comments or array of data.
     """

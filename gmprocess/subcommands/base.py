@@ -6,7 +6,7 @@ import sys
 from abc import ABC, abstractmethod
 import logging
 
-from gmprocess.io.fetch_utils import get_events
+from gmprocess.utils.base_utils import get_events
 
 
 class SubcommandModule(ABC):
@@ -94,7 +94,7 @@ class SubcommandModule(ABC):
             for file_type, file_list in self.files_created.items():
                 print('File type: %s' % file_type)
                 for fname in file_list:
-                    print('\t%s' % fname)
+                    print('\t%s' % os.path.normpath(fname))
         else:
             print('No new files created.')
 

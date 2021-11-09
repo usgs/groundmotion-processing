@@ -7,6 +7,7 @@ import os.path
 import logging
 
 # third party imports
+import logging
 import pytz
 import numpy as np
 import requests
@@ -215,6 +216,10 @@ class TurkeyFetcher(DataFetcher):
 
         urlparts = urlparse(SEARCH_URL)
         req = requests.get(event_dict['url'])
+
+        logging.debug('TurkeyFetcher event url: %s', str(event_dict['url']))
+        logging.debug('TurkeyFetcher event response code: %s', req.status_code)
+
         data = req.text
         soup = BeautifulSoup(data, features="lxml")
         table = soup.find_all('table', 'tableType_01')[1]
@@ -227,6 +232,10 @@ class TurkeyFetcher(DataFetcher):
             station_id = col.contents[0].contents[0]
             station_url = urljoin('http://' + urlparts.netloc, href)
             req2 = requests.get(station_url)
+            logging.debug('TurkeyFetcher station url: %s', str(station_url))
+            logging.debug(
+                'TurkeyFetcher station response code: %s',
+                req2.status_code)
             data2 = req2.text
             soup2 = BeautifulSoup(data2, features="lxml")
             center = soup2.find_all('center')[0]
@@ -234,6 +243,10 @@ class TurkeyFetcher(DataFetcher):
             href2 = anchor.attrs['href']
             data_url = urljoin('http://' + urlparts.netloc, href2)
             req3 = requests.get(data_url)
+            logging.debug('TurkeyFetcher data url: %s', str(data_url))
+            logging.debug(
+                'TurkeyFetcher data response code: %s',
+                req3.status_code)
             data = req3.text
             localfile = os.path.join(rawdir, '%s.txt' % station_id)
             logging.info('Downloading Turkish data file %s...' % station_id)
@@ -286,6 +299,8 @@ def get_turkey_dataframe(time, dt):
     params['to_month'] = '%02i' % end_time.month
     params['to_day'] = '%02i' % end_time.day
     req = requests.post(url, params)
+    logging.debug('TurkeyFetcher dataframe url: %s', str(url))
+    logging.debug('TurkeyFetcher dataframe response code: %s', req.status_code)
     if req.status_code != 200:
         return None
     data = req.text

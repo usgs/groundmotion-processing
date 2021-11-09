@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-import sys
 import logging
 import numpy as np
 import scipy.interpolate as spint
@@ -16,11 +15,9 @@ from impactutils.rupture.point_rupture import PointRupture
 from ps2ff.constants import MagScaling, Mechanism
 from ps2ff.run import single_event_adjustment
 
-from dask.distributed import Client, as_completed
-
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.io.fetch_utils import get_rupture_file
+from gmprocess.utils.rupture_utils import get_rupture_file
 from gmprocess.io.asdf.stream_workspace import \
     StreamWorkspace, format_netsta, format_nslit
 from gmprocess.metrics.station_summary import StationSummary
@@ -40,8 +37,7 @@ class ComputeStationMetricsModule(SubcommandModule):
         ARG_DICTS['eventid'],
         ARG_DICTS['textfile'],
         ARG_DICTS['label'],
-        ARG_DICTS['overwrite'],
-        ARG_DICTS['num_processes']
+        ARG_DICTS['overwrite']
     ]
 
     def main(self, gmrecords):
@@ -66,22 +62,8 @@ class ComputeStationMetricsModule(SubcommandModule):
                         vs30_grids[vs30_name]['file'])
         self.vs30_grids = vs30_grids
 
-        if gmrecords.args.num_processes:
-            # parallelize processing on events
-            try:
-                client = Client(n_workers=gmrecords.args.num_processes)
-            except BaseException as ex:
-                print(ex)
-                print("Could not create a dask client.")
-                print("To turn off paralleization, use '--num-processes 0'.")
-                sys.exit(1)
-            futures = client.map(self._event_station_metrics, self.events)
-            for result in as_completed(futures, with_results=True):
-                print(result)
-                # print('Completed event: %s' % result)
-        else:
-            for event in self.events:
-                self._event_station_metrics(event)
+        for event in self.events:
+            self._event_station_metrics(event)
 
         self._summarize_files_created()
 
@@ -100,12 +82,8 @@ class ComputeStationMetricsModule(SubcommandModule):
             return event.id
 
         self.workspace = StreamWorkspace.open(workname)
-        self._get_pstreams()
-
-        if not (hasattr(self, 'pstreams') and len(self.pstreams) > 0):
-            logging.info('No streams found. Nothing to do. Goodbye.')
-            self.workspace.close()
-            return event.id
+        ds = self.workspace.dataset
+        self._get_labels()
 
         rupture_file = get_rupture_file(event_dir)
         origin = Origin({
@@ -128,7 +106,18 @@ class ComputeStationMetricsModule(SubcommandModule):
         self.sta_repi = []
         self.sta_rhyp = []
         self.sta_baz = []
-        for st in self.pstreams:
+
+        station_list = ds.waveforms.list()
+        self._get_labels()
+
+        for station_id in station_list:
+            st = self.workspace.getStreams(
+                event.id,
+                stations=[station_id],
+                labels=[self.gmrecords.args.label],
+                config=self.gmrecords.conf
+            )[0]
+
             sta_lats.append(st[0].stats.coordinates.latitude)
             sta_lons.append(st[0].stats.coordinates.longitude)
             sta_elev.append(st[0].stats.coordinates.elevation)
@@ -179,7 +168,7 @@ class ComputeStationMetricsModule(SubcommandModule):
             # If we don't have a point rupture, then back azimuth needs
             # to be calculated to the closest point on the rupture
             self.sta_baz = []
-            for i in range(len(self.pstreams)):
+            for i in range(len(station_list)):
                 dists = []
                 bazs = []
                 for quad in rupture._quadrilaterals:
@@ -191,7 +180,15 @@ class ComputeStationMetricsModule(SubcommandModule):
                         bazs.append(baz)
                 self.sta_baz.append(bazs[np.argmin(dists)])
 
-        for i, stream in enumerate(self.pstreams):
+        # for station_id in station_list:
+        for i, station_id in enumerate(station_list):
+            stream = self.workspace.getStreams(
+                event.id,
+                stations=[station_id],
+                labels=[self.gmrecords.args.label],
+                config=self.gmrecords.conf
+            )[0]
+
             logging.info(
                 'Calculating station metrics for %s...' % stream.get_id())
             summary = StationSummary.from_config(

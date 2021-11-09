@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import os
-import yaml
 import pkg_resources
+
 from configobj import ConfigObj
+from ruamel.yaml import YAML
+from ruamel.yaml.error import YAMLError
 
 from gmprocess.utils import constants
 
@@ -66,7 +68,6 @@ def get_config(config_file=None, section=None):
         IndexError:
             If input section name is not found.
     """
-
     if config_file is None:
         # Try not to let tests interfere with actual system:
         if os.getenv('CALLED_FROM_PYTEST') is None:
@@ -99,7 +100,9 @@ def get_config(config_file=None, section=None):
         raise OSError(fmt % config_file)
     else:
         with open(config_file, 'r', encoding='utf-8') as f:
-            config = yaml.load(f, Loader=yaml.FullLoader)
+            yaml = YAML()
+            yaml.preserve_quotes = True
+            config = yaml.load(f)
 
     if section is not None:
         if section not in config:
@@ -110,10 +113,44 @@ def get_config(config_file=None, section=None):
     return config
 
 
+def update_config(custom_cfg_file):
+    """Merge custom config with default.
+
+    Args:
+        custom_cfg_file (str):
+            Path to custom config.
+
+    Returns:
+        dict: Merged config dictionary.
+
+    """
+    config = get_config()
+
+    if not os.path.isfile(custom_cfg_file):
+        return config
+    try:
+        with open(custom_cfg_file, 'rt', encoding='utf-8') as f:
+            yaml = YAML()
+            yaml.preserve_quotes = True
+            custom_cfg = yaml.load(f)
+            update_dict(config, custom_cfg)
+    except YAMLError:
+        return None
+
+    return config
+
+
 def __proj_to_conf_file(path):
+    # We are switching from absolute to relative paths in this conf file. For
+    # backward compatibility, we're going to try to support both absolute and
+    # relative paths, which is why we need this "try" block to first assume
+    # an absolute path and if the conf does not exist then try a relative path.
     proj_conf_file = os.path.join(path, 'projects.conf')
     projects_conf = ConfigObj(proj_conf_file, encoding='utf-8')
     project = projects_conf['project']
     current_project = projects_conf['projects'][project]
     conf_path = current_project['conf_path']
-    return os.path.join(conf_path, 'config.yml')
+    conf_file = os.path.join(conf_path, 'config.yml')
+    if not os.path.isfile(conf_file):
+        conf_file = os.path.join(path, conf_path, 'config.yml')
+    return conf_file

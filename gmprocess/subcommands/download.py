@@ -6,8 +6,7 @@ import logging
 
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.io.fetch_utils import download
-from gmprocess.utils.constants import WORKSPACE_NAME
+from gmprocess.utils.download_utils import download
 
 
 class DownloadModule(SubcommandModule):
@@ -51,11 +50,8 @@ class DownloadModule(SubcommandModule):
             if not os.path.exists(event_dir):
                 os.makedirs(event_dir)
 
-            _ = download(
+            download(
                 event=event,
                 event_dir=event_dir,
-                config=gmrecords.conf,
-                directory=None,
-                create_workspace=False,
-                stream_collection=False
+                config=gmrecords.conf
             )

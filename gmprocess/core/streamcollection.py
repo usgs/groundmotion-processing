@@ -267,16 +267,20 @@ class StreamCollection(object):
         for 0.3 second spectral acceleration, for example.
 
         Args:
-            directory (str): Directory of ground motion files (streams).
-            origin_dict (obspy): Dictionary with the following keys:
+            directory (str):
+                Directory of ground motion files (streams).
+            origin_dict (obspy):
+                Dictionary with the following keys:
                 - id
                 - magnitude
                 - time (UTCDateTime object)
                 - lon
                 - lat
                 - depth
-            imcs (list): Strings designating desired components to create in table.
-            imts (list): Strings designating desired PGMs to create in table.
+            imcs (list):
+                Strings designating desired components to create in table.
+            imts (list):
+                Strings designating desired PGMs to create in table.
 
         Returns:
             DataFrame: Pandas dataframe containing columns:
@@ -287,14 +291,16 @@ class StreamCollection(object):
                 - NETWORK Short network code.
                 - LAT Station latitude
                 - LON Station longitude
-                - DISTANCE Epicentral distance (km) (if epicentral lat/lon provided)
+                - DISTANCE Epicentral distance (km) (if epicentral lat/lon
+                  provided)
                 - HN1 East-west channel (or H1) (multi-index with pgm columns):
                     - PGA Peak ground acceleration (%g).
                     - PGV Peak ground velocity (cm/s).
                     - SA(0.3) Pseudo-spectral acceleration at 0.3 seconds (%g).
                     - SA(1.0) Pseudo-spectral acceleration at 1.0 seconds (%g).
                     - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).
-                - HN2 North-south channel (or H2) (multi-index with pgm columns):
+                - HN2 North-south channel (or H2) (multi-index with pgm
+                  columns):
                     - PGA Peak ground acceleration (%g).
                     - PGV Peak ground velocity (cm/s).
                     - SA(0.3) Pseudo-spectral acceleration at 0.3 seconds (%g).
@@ -598,17 +604,18 @@ class StreamCollection(object):
     def get_status(self, status):
         """Returns a summary of the status of the streams in StreamCollection.
 
-        If status='short': Returns a two column table, columns are "Failure Reason" and
-            "Number of Records". Number of rows is the number of unique failure
-            reasons.
+        If status='short': Returns a two column table, columns are "Failure
+            Reason" and "Number of Records". Number of rows is the number of
+            unique failure reasons.
         If status='net': Returns a three column table, columns are "Network",
             "Number Passed", and "Number Failed"; number of rows is the number
             of unique networks.
-        If status='long': Returns a two column table, columns are "StationID" and
-            "Failure Reason".
+        If status='long': Returns a two column table, columns are "StationID"
+            and "Failure Reason".
 
         Args:
-            status (str): The status level (see description).
+            status (str):
+                The status level (see description).
 
         Returns:
             If status='net': pandas.DataFrame
@@ -663,7 +670,8 @@ def gather_stream_parameters(streams):
     and sticking the stream tag into the trace stats dictionaries.
 
     Args:
-        streams (list): list of StationStream objects.
+        streams (list):
+            list of StationStream objects.
 
     Returns:
         dict. Dictionary of the stream parameters.
@@ -697,8 +705,10 @@ def insert_stream_parameters(streams, stream_params):
     """Helper function for inserting the stream parameters back to the streams.
 
     Args:
-        streams (list): list of StationStream objects.
-        stream_params (dict): Dictionary of stream parameters.
+        streams (list):
+            list of StationStream objects.
+        stream_params (dict):
+            Dictionary of stream parameters.
 
     Returns:
         list of StationStream objects with stream parameters.

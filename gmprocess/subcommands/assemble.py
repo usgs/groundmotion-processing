@@ -9,7 +9,7 @@ from dask.distributed import Client, as_completed
 
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.io.fetch_utils import download
+from gmprocess.utils.assemble_utils import assemble
 from gmprocess.utils.constants import WORKSPACE_NAME
 
 
@@ -53,7 +53,7 @@ class AssembleModule(SubcommandModule):
             futures = client.map(self._assemble_event, self.events)
             for result in as_completed(futures, with_results=True):
                 print(result)
-                # print('Completed event: %s' % result)
+            client.shutdown()
         else:
             for event in self.events:
                 self._assemble_event(event)
@@ -79,12 +79,8 @@ class AssembleModule(SubcommandModule):
                 )
                 os.remove(workname)
 
-        # Todo: probably want to break up `download` into finer steps to
-        # call here. Also, there are files created besides workspace
-        # that are not getting tracked (e.g., raw data plots, event.json)
-        workspace, _, _, _ = download(
+        workspace = assemble(
             event=event,
-            event_dir=event_dir,
             config=self.gmrecords.conf,
             directory=self.gmrecords.data_path
         )

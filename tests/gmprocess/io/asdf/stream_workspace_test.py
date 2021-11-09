@@ -1,23 +1,24 @@
 #!/usr/bin/env python
 
 import os
-import yaml
 import shutil
 import time
 import tempfile
 import warnings
 import pkg_resources
+from ruamel.yaml import YAML
 
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.io.read import read_data
 from gmprocess.waveform_processing.processing import process_streams
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.core.streamcollection import StreamCollection
-from gmprocess.io.fetch_utils import get_rupture_file, update_config
+from gmprocess.utils.rupture_utils import get_rupture_file
+from gmprocess.utils.config import update_config
 
 from h5py.h5py_warnings import H5pyDeprecationWarning
-from yaml import YAMLLoadWarning
+from ruamel.yaml.error import YAMLError
 
 import numpy as np
 import pandas as pd
@@ -97,7 +98,7 @@ def _test_workspace():
     try:
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore", category=H5pyDeprecationWarning)
-            warnings.filterwarnings("ignore", category=YAMLLoadWarning)
+            warnings.filterwarnings("ignore", category=YAMLError)
             warnings.filterwarnings("ignore", category=FutureWarning)
             config = update_config(
                 os.path.join(datadir, 'config_min_freq_0p2.yml'))
@@ -123,7 +124,7 @@ def _test_workspace():
             stations = workspace.getStations()
             assert sorted(stations) == ['HSES', 'THZ', 'WTMC']
 
-            stations = workspace.getStations(eventid=eventid)
+            stations = workspace.getStations()
             assert sorted(stations) == ['HSES', 'THZ', 'WTMC']
 
             # test retrieving event that doesn't exist
@@ -194,7 +195,7 @@ def _test_workspace():
             workspace = StreamWorkspace.open(tfile)
             workspace.addStreams(event, raw_streams, label='foo')
 
-            stations = workspace.getStations(eventid)
+            stations = workspace.getStations()
 
             eventids = workspace.getEventIds()
             assert eventids == ['us1000778i', 'nz2018p115908']
@@ -312,7 +313,9 @@ def _test_colocated():
     raw_streams = StreamCollection.from_directory(datadir)
     config_file = os.path.join(datadir, 'test_config.yml')
     with open(config_file, 'r', encoding='utf-8') as f:
-        config = yaml.load(f, Loader=yaml.FullLoader)
+        yaml = YAML()
+        yaml.preserve_quotes = True
+        config = yaml.load(f)
     processed_streams = process_streams(raw_streams, event, config=config)
 
     tdir = tempfile.mkdtemp()

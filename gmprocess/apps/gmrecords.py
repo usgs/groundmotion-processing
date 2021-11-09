@@ -27,7 +27,9 @@ class GMrecordsApp(object):
 
     To limit the number of paths specified as arguments, this app relies on
     some config options associated with "projects". Project information is
-    saved in `~/.gmprocess/projects.conf`.
+    saved in `.gmprocess/projects.conf`, either in the user's home directory
+    for "system" level projects, or in a specific directory to allow for
+    directory-specific projects.
 
     GmpApp makes use subcommands that are specified in the
     gmprocess.subcommands package.
@@ -62,9 +64,15 @@ class GMrecordsApp(object):
         self._parse_command_line()
         self._load_config()
 
-        setup_logger(self.args)
+        log_file = None
+        if self.args.log:
+            log_file = os.path.join(self.data_path, 'log.txt')
+            print('Logging output sent to: %s' % log_file)
+
+        setup_logger(self.args, log_file=log_file)
         logging.info('Logging level includes INFO.')
         logging.debug('Logging level includes DEBUG.')
+        logging.info('PROJECTS_PATH: %s' % PROJECTS_PATH)
 
     def main(self):
         if self.args.subcommand is None:
@@ -77,7 +85,8 @@ class GMrecordsApp(object):
                 selected_project = self.projects_conf['project']
                 proj = Project(
                     selected_project,
-                    self.projects_conf['projects'][selected_project]
+                    self.projects_conf['projects'][selected_project],
+                    self.projects_conf.filename
                 )
                 print('-' * 80)
                 print(proj)
@@ -113,8 +122,14 @@ class GMrecordsApp(object):
         self.projects_conf = ConfigObj(self.PROJECTS_FILE, encoding='utf-8')
         self.project = self.projects_conf['project']
         self.current_project = self.projects_conf['projects'][self.project]
-        self.conf_path = self.current_project['conf_path']
-        self.data_path = self.current_project['data_path']
+        self.conf_path = os.path.join(
+            os.path.abspath(os.path.join(self.PROJECTS_FILE, os.pardir)),
+            self.current_project['conf_path'])
+        self.data_path = os.path.join(
+            os.path.abspath(os.path.join(self.PROJECTS_FILE, os.pardir)),
+            self.current_project['data_path'])
+        if os.getenv('CALLED_FROM_PYTEST') is not None:
+            self.conf_path = constants.PROJECTS_PATH_TEST
         self.conf_file = os.path.join(self.conf_path, 'config.yml')
         if not os.path.isfile(self.conf_file):
             print('Config file does not exist: %s' % self.conf_file)
@@ -161,6 +176,9 @@ class GMrecordsApp(object):
             '-v', '--version', action='version',
             version='%(prog)s ' + __version__,
             help='Print program version.')
+        self.parser.add_argument(
+            '-l', '--log', action='store_true', default=False,
+            help='Log all output to a file in the project data directory.')
 
         # Parsers for subcommands
         subparsers = self.parser.add_subparsers(

@@ -16,6 +16,7 @@ import pandas as pd
 from gmprocess.io.read import _get_format, read_data
 from gmprocess.utils.args import add_shared_args
 from gmprocess.core.stationtrace import REV_PROCESS_LEVELS
+from gmprocess.utils.config import get_config
 
 COLUMNS = ['Filename', 'Format', 'Process Level',
            'Start Time', 'End Time',
@@ -95,11 +96,12 @@ def render_dir(rootdir, concise=True, save=False):
 
 
 def render_verbose(files):
+    config = get_config()
     errors = pd.DataFrame(columns=ERROR_COLUMNS)
     for fname in files:
         try:
-            fmt = _get_format(fname)
-            stream = read_data(fname)[0]
+            fmt = _get_format(fname, config)
+            stream = read_data(fname, config)[0]
             stats = stream[0].stats
             tpl = (stats['coordinates']['latitude'],
                    stats['coordinates']['longitude'],

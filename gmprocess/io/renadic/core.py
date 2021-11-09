@@ -53,7 +53,18 @@ VERTICAL_CHANNELS = ['Z', 'V']
 G10_TO_GALS = 980 / 10.0
 
 
-def is_renadic(filename):
+def is_renadic(filename, config=None):
+    """Check to see if file is Chilean RENADIC format.
+
+    Args:
+        filename (str):
+            Path to file to check.
+        config (dict):
+            Dictionary containing configuration.
+
+    Returns:
+        bool: True if Chilean RENADIC supported, otherwise False.
+    """
     with open(filename, 'rt', encoding=ENCODING) as f:
         lines = [next(f) for x in range(TEXT_HDR_ROWS)]
 
@@ -63,12 +74,14 @@ def is_renadic(filename):
     return False
 
 
-def read_renadic(filename, **kwargs):
+def read_renadic(filename, config=None, **kwargs):
     """Read the Chilean RENADIC strong motion data format.
 
     Args:
         filename (str):
             path to RENADIC data file.
+        config (dict):
+            Dictionary containing configuration.
         kwargs (ref):
             Other arguments will be ignored.
 

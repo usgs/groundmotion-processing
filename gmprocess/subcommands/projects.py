@@ -3,16 +3,17 @@
 
 import os
 import sys
+import platform
 import re
 import logging
 import shutil
-import yaml
 import pkg_resources
+from ruamel.yaml import YAML
 
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.utils.prompt import \
     query_yes_no, set_project_paths, get_default_project_paths
-from gmprocess.utils.constants import CONFIG_FILE_PRODUCTION
+from gmprocess.utils import constants
 
 # Regular expression for checking valid email
 re_email = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
@@ -73,14 +74,8 @@ class ProjectsModule(SubcommandModule):
         configfile = self.gmrecords.PROJECTS_FILE
 
         if self.gmrecords.args.create:
-            if config['project'] == '__local__':
-                print(Project('__local__', config['projects']['__local__']))
-                print('You cannot create a new *system-level* project while')
-                print('using a *dirctory* project. Exiting.')
-                sys.exit(0)
-            else:
-                create(config)
-                sys.exit(0)
+            create(config)
+            sys.exit(0)
 
         config = check_project_config(config)
 
@@ -92,7 +87,7 @@ class ProjectsModule(SubcommandModule):
                 if pname == current:
                     is_current = True
                 project = Project(
-                    pname, pdict, is_current=is_current)
+                    pname, pdict, config.filename, is_current=is_current)
                 print('\n' + str(project) + '\n')
             sys.exit(0)
 
@@ -107,7 +102,7 @@ class ProjectsModule(SubcommandModule):
             config.filename = configfile
             config.write()
             sp = Project(newproject, config['projects'][newproject],
-                         is_current=True)
+                         config.filename, is_current=True)
             print('\nSwitched to project: \n%s\n' % (str(sp)))
             sys.exit(0)
 
@@ -137,7 +132,8 @@ class ProjectsModule(SubcommandModule):
                 newproject = 'None'
             else:
                 default = config['projects'].keys()[0]
-                newproject = Project(default, config['projects'][default])
+                newproject = Project(
+                    default, config['projects'][default], config.filename)
             config['project'] = default
 
             config.filename = configfile
@@ -157,7 +153,7 @@ class ProjectsModule(SubcommandModule):
                    'file to match the specification.')
             print(msg % (project, configfile))
             sys.exit(1)
-        sproj = Project(project, projects[project],
+        sproj = Project(project, projects[project], projects.filename,
                         is_current=True)
         print(sproj)
         sys.exit(0)
@@ -170,16 +166,38 @@ current_markers = {
 
 
 class Project(object):
-    def __init__(self, name, indict, is_current=False):
+    def __init__(self, name, indict, filename, is_current=False):
+        """Project class.
+
+        Args:
+            name (str):
+                Project name.
+            indict (dict):
+                Dictionary with keys 'conf_path' and 'data_path'.
+            filename (str):
+                Path to the projects conf file.
+            is_current (bool):
+                Is 'project' the currently selected project?
+        """
         self.name = name
+        self.filename = filename
         self.conf_path = indict['conf_path']
         self.data_path = indict['data_path']
         self.current_marker = current_markers[is_current]
 
     def __repr__(self):
         fmt = 'Project: %s %s\n\tConf Path: %s\n\tData Path: %s'
-        tpl = (self.name, self.current_marker, self.conf_path,
-               self.data_path)
+        base_dir = os.path.join(
+            os.path.abspath(os.path.join(self.filename, os.pardir))
+        )
+        if platform.system() != 'Windows':
+            tpl = (self.name, self.current_marker,
+                   os.path.normpath(os.path.join(base_dir, self.conf_path)),
+                   os.path.normpath(os.path.join(base_dir, self.data_path))
+                   )
+        else:
+            tpl = (self.name, self.current_marker, self.conf_path,
+                   self.data_path)
         return fmt % tpl
 
 
@@ -200,20 +218,30 @@ def check_project_config(config):
         sys.exit(1)
     # Check that the paths for each project exist
     for project in config['projects'].keys():
-        data_exists = os.path.isdir(config['projects'][project]['data_path'])
+        data_exists = os.path.isdir(
+            os.path.join(
+                os.path.abspath(os.path.join(config.filename, os.pardir)),
+                config['projects'][project]['data_path']
+            )
+        )
         delete_project = False
         if not data_exists:
             logging.warn('Data path for project %s does not exist.' % project)
             delete_project = True
         conf_exists = os.path.isdir(
-            config['projects'][project]['conf_path'])
+            os.path.join(
+                os.path.abspath(os.path.join(config.filename, os.pardir)),
+                config['projects'][project]['conf_path']
+            )
+        )
         if not conf_exists:
             logging.warn(
                 'Install path for project %s does not exist.' % project)
             delete_project = True
         if delete_project:
-            logging.warn('    Deleting project %s.' % project)
+            logging.warn('Deleting project %s.' % project)
             del config['projects'][project]
+            config['project'] = config['projects'].keys()[0]
             config.write()
     return config
 
@@ -236,39 +264,20 @@ def create(config, cwd=False):
                '-l\' to see existing projects.')
         print(msg % project)
         sys.exit(1)
+
     if not cwd:
+        proj_dir = constants.PROJECTS_PATH
         default_conf, default_data = get_default_project_paths(project)
         new_conf_path, new_data_path = \
             set_project_paths(default_conf, default_data)
     else:
         cwd = os.getcwd()
+        proj_dir = os.path.join(cwd, '.gmprocess')
         new_conf_path = os.path.join(cwd, 'conf')
         new_data_path = os.path.join(cwd, 'data')
         for p in [new_conf_path, new_data_path]:
             if not os.path.isdir(p):
                 os.mkdir(p)
-
-    new_conf_path = os.path.abspath(new_conf_path)
-    new_data_path = os.path.abspath(new_data_path)
-
-    if 'projects' not in config:
-        config['projects'] = {}
-
-    config['projects'][project] = {
-        'conf_path': new_conf_path,
-        'data_path': new_data_path
-    }
-
-    config['project'] = project
-    config.write()
-    sproj = Project(project, config['projects'][project])
-    print('\nCreated project: %s' % (sproj))
-
-    # Sart with production conf from repository, then add user info
-    data_path = pkg_resources.resource_filename('gmprocess', 'data')
-    current_conf = os.path.join(data_path, CONFIG_FILE_PRODUCTION)
-    with open(current_conf, 'rt', encoding='utf-8') as f:
-        gmrecords_conf = yaml.load(f, Loader=yaml.SafeLoader)
 
     print('Please enter your name and email. This information will be added')
     print('to the config file and reported in the provenance of the data')
@@ -282,7 +291,42 @@ def create(config, cwd=False):
     if not re.search(re_email, user_info['email']):
         print("Invalid Email. Exiting.")
         sys.exit(0)
+
+    # Apparently, relpath doesn't work for Windows, at least with the Azure
+    # CI builds
+    if platform.system() != 'Windows':
+        new_conf_path = os.path.relpath(
+            new_conf_path,
+            os.path.join(config.filename, os.pardir))
+        new_data_path = os.path.relpath(
+            new_data_path,
+            os.path.join(config.filename, os.pardir))
+
+    if 'projects' not in config:
+        config['projects'] = {}
+
+    config['projects'][project] = {
+        'conf_path': new_conf_path,
+        'data_path': new_data_path
+    }
+
+    config['project'] = project
+    config.write()
+    sproj = Project(project, config['projects'][project], config.filename)
+    print('\nCreated project: %s' % (sproj))
+
+    # Sart with production conf from repository, then add user info
+    data_path = pkg_resources.resource_filename('gmprocess', 'data')
+    current_conf = os.path.join(data_path, constants.CONFIG_FILE_PRODUCTION)
+    yaml = YAML()
+    yaml.preserve_quotes = True
+    with open(current_conf, 'rt', encoding='utf-8') as f:
+        gmrecords_conf = yaml.load(f)
     gmrecords_conf['user'] = user_info
-    proj_conf_file = os.path.join(new_conf_path, 'config.yml')
+    if os.getenv('CALLED_FROM_PYTEST') is None:
+        proj_conf_file = os.path.join(proj_dir, new_conf_path, 'config.yml')
+    else:
+        proj_dir = constants.PROJECTS_PATH_TEST
+        proj_conf_file = os.path.join(proj_dir, 'config.yml')
     with open(proj_conf_file, 'w', encoding='utf-8') as yf:
-        yaml.dump(gmrecords_conf, yf, Dumper=yaml.SafeDumper)
+        yaml.dump(gmrecords_conf, yf)

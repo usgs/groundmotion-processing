@@ -2,7 +2,7 @@
 
 import os.path
 from gmprocess.io.obspy.core import read_obspy
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.waveform_processing.processing import process_streams
 import numpy as np
@@ -136,7 +136,7 @@ def test_weird_sensitivity():
     sc = StreamCollection(streams)
     psc = process_streams(sc, origin)
     channel = psc[0].select(component='E')[0]
-    assert_almost_equal(channel.data.max(), 62900.191900393373)
+    assert_almost_equal(channel.data.max(), 62900.197618074293)
 
 
 def test():

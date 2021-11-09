@@ -10,6 +10,7 @@ import os
 import pyasdf
 import prov.model
 import numpy as np
+import scipy.interpolate as spint
 from obspy.core.utcdatetime import UTCDateTime
 import pandas as pd
 from h5py.h5py_warnings import H5pyDeprecationWarning
@@ -25,6 +26,7 @@ from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.metrics.station_summary import StationSummary, XML_UNITS
 from gmprocess.utils.event import ScalarEvent
 from gmprocess.utils.tables import _get_table_row
+from gmprocess.utils.config import get_config
 
 
 TIMEPAT = '[0-9]{4}-[0-9]{2}-[0-9]{2}T'
@@ -131,6 +133,24 @@ FIT_SPECTRA_COLUMNS = {
         'Mean squared error between fitted and observed spectra')
 }
 
+# List of columns in the fit_spectra_parameters file, along README descriptions
+SNR_COLUMNS = {
+    'EarthquakeId': 'Event ID from Comcat',
+    'EarthquakeTime': 'Earthquake origin time (UTC)',
+    'EarthquakeLatitude': 'Earthquake latitude (decimal degrees)',
+    'EarthquakeLongitude': 'Earthquake longitude (decimal degrees)',
+    'EarthquakeDepth': 'Earthquake depth (km)',
+    'EarthquakeMagnitude': 'Earthquake magnitude',
+    'EarthquakeMagnitudeType': 'Earthquake magnitude type',
+    'TraceID': 'NET.STA.LOC.CHA',
+    'StationLatitude': 'Station latitude (decimal degrees)',
+    'StationLongitude': 'Station longitude (decimal degrees)',
+    'StationElevation': 'Station elevation (m)'
+}
+
+SNR_FREQ_COLUMNS = {
+    'SNR(X)': 'Signa-to-noise ratio at frequency X.'
+}
 
 M_PER_KM = 1000
 
@@ -241,6 +261,20 @@ class StreamWorkspace(object):
             event (Event): Obspy event object.
         """
         self.dataset.add_quakeml(event)
+
+    def addConfig(self):
+        """Add config to an ASDF file.
+
+        """
+        config = get_config()
+        config_bytes = json.dumps(config).encode('utf-8')
+        config_array = np.frombuffer(config_bytes, dtype=np.uint8)
+        self.dataset.add_auxiliary_data(
+            config_array,
+            data_type='config',
+            path='config',
+            parameters={}
+        )
 
     def addStreams(self, event, streams, label=None):
         """Add a sequence of StationStream objects to an ASDF file.
@@ -413,7 +447,7 @@ class StreamWorkspace(object):
             eventid (str):
                 Event ID corresponding to an Event in the workspace.
             stations (list):
-                List of stations to search for.
+                List of stations (<nework code>.<station code>) to search for.
             labels (list):
                 List of processing labels to search for.
             config (dict):
@@ -433,14 +467,18 @@ class StreamWorkspace(object):
         streams = []
 
         if stations is None:
-            stations = self.getStations(eventid)
+            stations = self.getStations()
         if labels is None:
             labels = self.getLabels()
 
+        net_codes = [st.split('.')[0] for st in stations]
+        sta_codes = [st.split('.')[1] for st in stations]
+
         for waveform in self.dataset.ifilter(
-            self.dataset.q.station == stations,
-            self.dataset.q.tag == ['%s_%s' % (eventid, label)
-                                   for label in labels]):
+                self.dataset.q.network == net_codes,
+                self.dataset.q.station == sta_codes,
+                self.dataset.q.tag == [
+                    '%s_%s' % (eventid, label) for label in labels]):
             tags = waveform.get_waveform_tags()
             for tag in tags:
                 tstream = waveform[tag]
@@ -529,24 +567,13 @@ class StreamWorkspace(object):
             streams, handle_duplicates=False, config=config)
         return streams
 
-    def getStations(self, eventid=None):
+    def getStations(self):
         """Get list of station codes within the file.
-
-        Args:
-            eventid (str):
-                Event ID corresponding to an Event in the workspace.
 
         Returns:
             list: List of station codes contained in workspace.
         """
-        stations = []
-        for waveform in self.dataset.waveforms:
-            for stream_name, _ in waveform.get_waveform_attributes().items():
-                parts = stream_name.split('.')
-                station = parts[1]
-                if station in stations:
-                    continue
-                stations.append(station)
+        stations = self.dataset.waveforms.list()
         return stations
 
     def insert_aux(self, datastr, data_name, path, overwrite=False):
@@ -879,6 +906,115 @@ class StreamWorkspace(object):
 
         return (df, readme)
 
+    def getSNRTable(self, eventid, label, streams):
+        """
+        Returns a tuple of two pandas DataFrames. The first contains the
+        fit_spectra parameters for each trace in the workspace matching
+        eventid and label. The second is a README describing each column
+        in the first DataFrame.
+
+        Args:
+            eventid (str):
+                Return parameters only for the given eventid.
+            label (str):
+                Return parameters only for the given label.
+            streams (StreamCollection):
+                Optional StreamCollection object to get parameters for.
+
+        Returns:
+            pandas.DataFrame:
+                A DataFrame containing the fit_spectra parameters on a trace-
+                by-trace basis.
+        """
+        # Get list of periods in SA to interpolate SNR to.
+        if 'WaveFormMetrics' not in self.dataset.auxiliary_data:
+            logging.error('No WaveFormMetrics found. Please run '
+                          '\'compute_waverom_metrics\' subcommand.')
+        wm = self.dataset.auxiliary_data.WaveFormMetrics
+        wm_tmp = wm[wm.list()[0]]
+        bytelist = wm_tmp[wm_tmp.list()[0]].data[:].tolist()
+        xml_stream = ''.join([chr(b) for b in bytelist]).encode('utf-8')
+        sm = self.dataset.auxiliary_data.StationMetrics
+        sm_tmp = sm[sm.list()[0]]
+        bytelist = sm_tmp[sm_tmp.list()[0]].data[:].tolist()
+        xml_station = ''.join([chr(b) for b in bytelist]).encode('utf-8')
+        summary = StationSummary.from_xml(xml_stream, xml_station)
+        pgms = summary.pgms
+        periods = []
+        for key, _ in pgms['Result'].keys():
+            if key.startswith('SA'):
+                periods.append(float(key[3:-1]))
+        periods = np.unique(periods)
+
+        snr_table = []
+        event = self.getEvent(eventid)
+        if streams is None:
+            streams = self.getStreams(eventid, labels=[label])
+        for st in streams:
+            if not st.passed:
+                continue
+            for tr in st:
+                if tr.hasCached('snr'):
+                    snr_dict = self.__flatten_snr_dict(tr, periods)
+                    snr_dict['EarthquakeId'] = eventid
+                    snr_dict['EarthquakeTime'] = event.time
+                    snr_dict['EarthquakeLatitude'] = event.latitude
+                    snr_dict['EarthquakeLongitude'] = event.longitude
+                    snr_dict['EarthquakeDepth'] = event.depth_km
+                    snr_dict['EarthquakeMagnitude'] = event.magnitude
+                    snr_dict['EarthquakeMagnitudeType'] = event.magnitude_type
+                    snr_dict['TraceID'] = tr.id
+                    snr_dict['StationLatitude'] = tr.stats.coordinates.latitude
+                    snr_dict['StationLongitude'] = \
+                        tr.stats.coordinates.longitude
+                    snr_dict['StationElevation'] = \
+                        tr.stats.coordinates.elevation
+                    snr_table.append(snr_dict)
+
+        if len(snr_table):
+            df = pd.DataFrame.from_dict(snr_table)
+        else:
+            df = pd.DataFrame(columns=SNR_COLUMNS.keys())
+
+        # Ensure that the DataFrame columns are ordered correctly
+        df1 = pd.DataFrame()
+        df2 = pd.DataFrame()
+        for col in df.columns:
+            if col in SNR_COLUMNS:
+                df1[col] = df[col]
+            else:
+                df2[col] = df[col]
+        df1 = df1[SNR_COLUMNS.keys()]
+        df_final = pd.concat([df1, df2], axis=1)
+
+        readme = pd.DataFrame.from_dict(
+            {**SNR_COLUMNS, **SNR_FREQ_COLUMNS},
+            orient='index'
+        )
+        readme.reset_index(level=0, inplace=True)
+        readme.columns = ['Column header', 'Description']
+
+        return (df_final, readme)
+
+    @staticmethod
+    def __flatten_snr_dict(tr, periods):
+        freq = np.sort(1 / periods)
+        tmp_dict = tr.getCached('snr')
+        interp = spint.interp1d(
+            tmp_dict['freq'],
+            np.clip(tmp_dict['snr'], 0, np.inf),
+            kind='linear',
+            copy=False,
+            bounds_error=False,
+            fill_value=np.nan,
+            assume_sorted=True)
+        snr = interp(freq)
+        snr_dict = {}
+        for f, s in zip(freq, snr):
+            key = 'SNR(%.4g)' % f
+            snr_dict[key] = s
+        return snr_dict
+
     def getStreamMetrics(self, eventid, network, station, label, streams=None,
                          stream_label=None, config=None):
         """Extract a StationSummary object from the ASDF file for a given
@@ -914,8 +1050,9 @@ class StreamWorkspace(object):
 
         # get the stream matching the eventid, station, and label
         if streams is None:
-            streams = self.getStreams(eventid, stations=[station],
-                                      labels=[label], config=config)
+            station_id = '%s.%s' % (network, station)
+            streams = self.getStreams(
+                eventid, stations=[station_id], labels=[label], config=config)
 
         # Only get streams that passed and match network
         streams = [st for st in streams if
@@ -923,9 +1060,9 @@ class StreamWorkspace(object):
 
         if not len(streams):
             fmt = ('Stream matching event ID %s, '
-                   'station ID %s, and processing label %s not found in '
+                   'station ID %s.%s, and processing label %s not found in '
                    'workspace.')
-            msg = fmt % (eventid, station, label)
+            msg = fmt % (eventid, network, station, label)
             logging.warning(msg)
             return None
 
@@ -1109,7 +1246,7 @@ class StreamWorkspace(object):
 
         """
         if stations is None:
-            stations = self.getStations(eventid)
+            stations = self.getStations()
         if labels is None:
             labels = self.getLabels()
         cols = ['Record', 'Processing Step',

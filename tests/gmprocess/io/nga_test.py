@@ -5,7 +5,7 @@ import os
 import numpy as np
 from gmprocess.io.read import read_data
 from gmprocess.io.nga import get_nga_record_sequence_no
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 
 
 def test_get_nga_record_sequence_no():

@@ -42,7 +42,18 @@ MARKER = 'ARCHIVO ESTANDAR DE ACELERACION'
 MAX_TIME_DIFF = 10 * 60.0
 
 
-def is_unam(filename):
+def is_unam(filename, config=None):
+    """Check to see if file is a UNAM format.
+
+    Args:
+        filename (str):
+            Path to possible UNAM format.
+        config (dict):
+            Dictionary containing configuration.
+
+    Returns:
+        bool: True if UNAM supported, otherwise False.
+    """
     try:
         with open(filename, 'rt') as myfile:
             header = [next(myfile) for x in range(7)]
@@ -54,12 +65,14 @@ def is_unam(filename):
     return False
 
 
-def read_unam(filename, **kwargs):
+def read_unam(filename, config=None, **kwargs):
     """Read the Mexican UNAM strong motion data format.
 
     Args:
         filename (str):
             Path to UNAM data file.
+        config (dict):
+            Dictionary containing configuration.
         kwargs (ref):
             Other arguments will be ignored.
 

@@ -14,8 +14,8 @@ from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.io.read import read_data
 from gmprocess.waveform_processing.processing import process_streams
 from gmprocess.utils.logging import setup_logger
-from gmprocess.io.test_utils import read_data_dir
-from gmprocess.io.fetch_utils import update_config
+from gmprocess.utils.test_utils import read_data_dir
+from gmprocess.utils.config import update_config
 
 datapath = os.path.join('data', 'testdata')
 datadir = pkg_resources.resource_filename('gmprocess', datapath)
@@ -55,7 +55,7 @@ def test_process_streams():
 
     np.testing.assert_allclose(
         trace_maxes,
-        np.array([157.81975508, 240.33718094, 263.67804256]),
+        np.array([157.812449, 240.379521, 263.601519]),
         rtol=1e-5
     )
 

@@ -42,7 +42,7 @@ def test_compute_station_metrics(script_runner):
         assert 'Calculating station metrics for AZ.HSSP.HN' in ret.stderr
 
         ret = script_runner.run(
-            'gmrecords', 'compute_station_metrics', '-n', '2', '-o')
+            'gmrecords', 'compute_station_metrics', '-o')
         assert ret.success
 
     except Exception as ex:

@@ -18,6 +18,13 @@ GAL_TO_PCTG = 1 / sp.g
 WORKSPACE_NAME = 'workspace.h5'
 WORKSPACE_NAME_OLD = 'workspace.hdf'
 
+
+UNITS = {
+    'PGA': r'%g',
+    'PGV': r'cm/s',
+    'SA': r'%g'
+}
+
 # Converts acceleration units to cm/s/s
 # Converts velocity units to cm/s
 # Converts displacement units to cm
@@ -69,9 +76,6 @@ DEFAULT_NA_REP = 'nan'
 
 # Elevation to use for calculating fault distances (m)
 ELEVATION_FOR_DISTANCE_CALCS = 0.0
-
-# Processing tag format
-TAG_FMT = '%Y%m%d%H%M%S'
 
 # Event time format
 EVENT_TIMEFMT = '%Y-%m-%dT%H:%M:%S.%f'

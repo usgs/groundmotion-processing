@@ -5,7 +5,7 @@ import logging
 import logging.config
 
 
-def setup_logger(args=None, level='info'):
+def setup_logger(args=None, level='info', log_file=None):
     """Setup the logger options.
 
     This is written to handle a few different situations. It is called by
@@ -22,6 +22,8 @@ def setup_logger(args=None, level='info'):
         level (str):
             String indicating logging level; either 'info', 'debug', or
             'error'. Only used if args in None.
+        log_file (str):
+            Path to send logging to.
 
     """
 
@@ -34,7 +36,7 @@ def setup_logger(args=None, level='info'):
             loglevel = logging.DEBUG
         elif args.quiet:
             loglevel = logging.ERROR
-        else:  # default interactive
+        else:
             loglevel = logging.INFO
     else:
         if level == 'debug':
@@ -69,6 +71,19 @@ def setup_logger(args=None, level='info'):
             }
         }
     }
+
+    if log_file is not None:
+        logdict['handlers']['event_file'] = {}
+        logdict['handlers']['event_file']['filename'] = log_file
+        if level == 'debug':
+            logdict['handlers']['event_file']['level'] = logging.DEBUG
+        elif level == 'quiet':
+            logdict['handlers']['event_file']['level'] = logging.ERROR
+        else:
+            logdict['handlers']['event_file']['level'] = logging.INFO
+        logdict['handlers']['event_file']['formatter'] = 'standard'
+        logdict['handlers']['event_file']['class'] = 'logging.FileHandler'
+        logdict['loggers']['']['handlers'] = ['stream', 'event_file']
 
     logging.config.dictConfig(logdict)
 

@@ -4,7 +4,7 @@ import os
 import numpy as np
 
 from gmprocess.io.bhrc.core import is_bhrc, read_bhrc
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.metrics.station_summary import StationSummary
 
 

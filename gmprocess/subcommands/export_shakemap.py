@@ -6,9 +6,9 @@ import logging
 
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.io.fetch_utils import create_json
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.utils.constants import WORKSPACE_NAME
+from gmprocess.utils.export_shakemap_utils import create_json
 
 
 class ExportShakeMapModule(SubcommandModule):

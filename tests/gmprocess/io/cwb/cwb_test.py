@@ -10,7 +10,7 @@ import numpy as np
 
 # local imports
 from gmprocess.io.cwb.core import is_cwb, read_cwb, _get_header_info
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 
 
 def test():

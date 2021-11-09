@@ -7,7 +7,7 @@ import numpy as np
 
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.io.read import read_data
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.utils.config import get_config
 
 from gmprocess.waveform_processing.windows import signal_split
@@ -102,7 +102,7 @@ def test_corner_frequencies():
             hp.append(cfdict['highpass'])
     np.testing.assert_allclose(
         np.sort(hp),
-        [0.003052, 0.003052, 0.010265],
+        [0.00467919, 0.00584742, 0.01026485],
         atol=1e-6
     )
 
@@ -116,7 +116,7 @@ def test_corner_frequencies():
     )
     np.testing.assert_allclose(
         np.sort(hps),
-        [0.003052, 0.010265, 0.025275],
+        [0.00542478, 0.01026485, 0.02527502],
         atol=1e-6
     )
 
@@ -140,7 +140,7 @@ def test_corner_frequencies():
 
     np.testing.assert_allclose(
         np.sort(hp),
-        [0.003052, 0.010265, 0.017872],
+        [0.00467919, 0.01026485, 0.01787214],
         atol=1e-6
     )
 
