@@ -4,7 +4,6 @@
 import os
 import logging
 
-
 from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.arg_dicts import ARG_DICTS
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
@@ -41,7 +40,8 @@ class ExportProvenanceTablesModule(SubcommandModule):
             self.eventid = event.id
             logging.info(
                 'Creating provenance tables for event %s...' % self.eventid)
-            event_dir = os.path.join(gmrecords.data_path, self.eventid)
+            event_dir = os.path.normpath(
+                os.path.join(gmrecords.data_path, self.eventid))
             workname = os.path.join(event_dir, WORKSPACE_NAME)
             if not os.path.isfile(workname):
                 logging.info(

@@ -72,7 +72,7 @@ class ComputeStationMetricsModule(SubcommandModule):
         logging.info('Computing station metrics for event %s...'
                      % self.eventid)
         event_dir = os.path.join(self.gmrecords.data_path, self.eventid)
-        workname = os.path.join(event_dir, WORKSPACE_NAME)
+        workname = os.path.normpath(os.path.join(event_dir, WORKSPACE_NAME))
         if not os.path.isfile(workname):
             logging.info(
                 'No workspace file found for event %s. Please run '

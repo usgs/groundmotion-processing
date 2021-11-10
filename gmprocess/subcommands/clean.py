@@ -89,7 +89,7 @@ class CleanModule(SubcommandModule):
         events = glob(os.path.join(data_path, '*/'))
         logging.info('Number of events: %s' % len(events))
         for event in events:
-            event_dir = os.path.join(data_path, event)
+            event_dir = os.path.normpath(os.path.join(data_path, event))
             if os.path.exists(event_dir):
                 # Exported tables
                 if gmrecords.args.all or gmrecords.args.export:

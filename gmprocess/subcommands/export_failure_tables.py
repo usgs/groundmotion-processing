@@ -57,7 +57,8 @@ class ExportFailureTablesModule(SubcommandModule):
             logging.info(
                 'Creating failure tables for event %s...' % self.eventid)
             event_dir = os.path.join(self.gmrecords.data_path, self.eventid)
-            workname = os.path.join(event_dir, WORKSPACE_NAME)
+            workname = os.path.normpath(
+                os.path.join(event_dir, WORKSPACE_NAME))
             if not os.path.isfile(workname):
                 logging.info(
                     'No workspace file found for event %s. Please run '
@@ -78,12 +79,12 @@ class ExportFailureTablesModule(SubcommandModule):
             status_info = self.pstreams.get_status(self.gmrecords.args.type)
             failures[event.id] = status_info
 
-            base_file_name = os.path.join(
+            base_file_name = os.path.normpath(os.path.join(
                 event_dir,
                 '%s_%s_failure_reasons_%s' % (
                     gmrecords.project, gmrecords.args.label,
                     self.gmrecords.args.type)
-            )
+            ))
 
             if self.gmrecords.args.output_format == 'csv':
                 csvfile = base_file_name + '.csv'
@@ -95,9 +96,9 @@ class ExportFailureTablesModule(SubcommandModule):
                 status_info.to_excel(excelfile)
 
         if failures:
-            comp_failures_path = os.path.join(
+            comp_failures_path = os.path.normpath(os.path.join(
                 self.gmrecords.data_path, '%s_%s_complete_failures.csv' % (
-                    gmrecords.project, gmrecords.args.label))
+                    gmrecords.project, gmrecords.args.label)))
             if self.gmrecords.args.type == 'long':
                 for idx, item in enumerate(failures.items()):
                     eqid, status = item

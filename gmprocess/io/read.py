@@ -3,6 +3,7 @@
 
 # stdlib imports
 import importlib
+from collections import OrderedDict
 import os.path
 import logging
 import pkg_resources
@@ -12,7 +13,9 @@ import numpy as np
 
 from gmprocess.utils.config import get_config
 
-EXCLUDED = ['__pycache__']
+EXCLUDED_MODS = ['__pycache__']
+EXCLUDED_EXTS = [
+    '.xml', ".gif", ".csv", ".dis", ".abc", ".zip", ".rs2", ".fs1"]
 
 
 def read_data(filename, config=None, read_format=None, **kwargs):
@@ -28,6 +31,10 @@ def read_data(filename, config=None, read_format=None, **kwargs):
     Returns:
         list: Sequence of obspy.core.stream.Streams read from file
     """
+    _, file_ext = os.path.splitext(filename)
+    if file_ext in EXCLUDED_EXTS:
+        raise ValueError('Excluded extension: %s' % filename)
+
     # Check if file exists
     if not os.path.exists(filename):
         raise OSError('Not a file %r' % filename)
@@ -63,10 +70,41 @@ def _get_format(filename, config):
     # Get the valid formats
     valid_formats = []
     io_directory = pkg_resources.resource_filename('gmprocess', 'io')
+
     # Create valid list
     for module in os.listdir(io_directory):
-        if module.find('.') < 0 and module not in EXCLUDED:
+        if module.find('.') < 0 and module not in EXCLUDED_MODS:
             valid_formats += [module]
+
+    # Select most likely format to test first; use ordered dict so we can put
+    # control order in which modules are moved to the front of the line.
+    _, file_ext = os.path.splitext(filename)
+    ext_dict = OrderedDict()
+    ext_dict['obspy'] = ['.mseed', '.sac']
+    ext_dict['cwb'] = ['dat']
+    ext_dict['smc'] = ['.smc']
+    ext_dict['dmg'] = ['.raw', '.v1', '.v2']
+    ext_dict['nsmn'] = ['txt']
+    ext_dict['esm'] = ['.asc']
+    ext_dict['knet'] = ['ns', 'ew', 'ud',
+                        'ns1', 'ew1', 'ud1',
+                        'ns2', 'ew2', 'ud2']
+    ext_dict['renadic'] = ['.v1', '.v2']
+    ext_dict['bhrc'] = ['v1', 'v2']
+    ext_dict['geonet'] = ['v1', 'v2', 'v1a', 'v2a']
+    ext_dict['cosmos'] = ['v0', 'v0c', 'v1', 'v1c', 'v1', 'v1c', 'v2', 'v2c']
+
+    # List of unique extensions, so we can break out of loop.
+    unique_exts = ['.mseed', '.sac', '.dat', '.smc', '.txt', '.asc', '.raw']
+    unique_exts.extend(ext_dict['knet'])
+
+    for mod, ext_list in ext_dict.items():
+        if file_ext.lower() in ext_list:
+            valid_formats.insert(
+                0, valid_formats.pop(valid_formats.index(mod)))
+            if file_ext.lower() in unique_exts:
+                break
+
     # Test each format
     formats = []
     for valid_format in valid_formats:
@@ -77,6 +115,7 @@ def _get_format(filename, config):
         is_method = getattr(reader_module, is_name)
         if is_method(filename, config):
             formats += [valid_format]
+
     # Return the format
     formats = np.asarray(formats)
     if len(formats) == 1:
@@ -112,7 +151,7 @@ def _validate_format(filename, config, read_format):
     io_directory = os.path.abspath(os.path.join(home, '..', 'io'))
     # Create valid list
     for module in os.listdir(io_directory):
-        if module.find('.') < 0 and module not in EXCLUDED:
+        if module.find('.') < 0 and module not in EXCLUDED_MODS:
             valid_formats += [module]
     # Check for a valid format
     if read_format in valid_formats:
