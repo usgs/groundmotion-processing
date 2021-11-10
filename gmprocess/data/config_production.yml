@@ -59,6 +59,10 @@ fetchers:
         # SY is a network for synthetic data
         exclude_networks :
             - SY
+            - ZY
+            - YH
+            - YG
+            - AM
 
         # uncomment this section to add stations that should be avoided
         # exclude_stations:
