@@ -9,6 +9,7 @@ import pkgutil
 import inspect
 import argparse
 import logging
+
 from configobj import ConfigObj
 from setuptools_scm import get_version
 
@@ -18,6 +19,10 @@ from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.projects import Project, create
 from gmprocess.subcommands.init import InitModule
 from gmprocess.utils import constants
+
+VERSION = get_version(
+    root=os.path.join(os.pardir, os.pardir),
+    relative_to=__file__)
 
 
 class GMrecordsApp(object):
@@ -63,6 +68,7 @@ class GMrecordsApp(object):
 
         self._parse_command_line()
         self._load_config()
+        self.gmprocess_version = VERSION
 
         log_file = None
         if self.args.log:
@@ -169,12 +175,9 @@ class GMrecordsApp(object):
         group.add_argument(
             '-q', '--quiet', action='store_true',
             help='Print only errors.')
-        __version__ = get_version(
-            root=os.path.join(os.pardir, os.pardir),
-            relative_to=__file__)
         self.parser.add_argument(
             '-v', '--version', action='version',
-            version='%(prog)s ' + __version__,
+            version='%(prog)s ' + VERSION,
             help='Print program version.')
         self.parser.add_argument(
             '-l', '--log', action='store_true', default=False,

@@ -7,7 +7,6 @@ import json
 import logging
 from datetime import datetime
 from collections import OrderedDict
-from setuptools_scm import get_version
 
 import numpy as np
 import prov.model
@@ -21,7 +20,7 @@ from gmprocess.metrics.station_summary import XML_UNITS
 
 
 def create_json(workspace, event, event_dir, label, config=None,
-                expanded_imts=False):
+                expanded_imts=False, gmprocess_version='unknown'):
     """Create JSON file for ground motion parametric data.
 
     Args:
@@ -39,6 +38,8 @@ def create_json(workspace, event, event_dir, label, config=None,
             Use expanded IMTs. Currently this only means all the SA that have
             been computed, plus PGA and PGV (if computed). Could eventually
             expand for other IMTs also.
+        gmprocess_version (str):
+            gmprocess version.
     """
     features = []
 
@@ -59,7 +60,7 @@ def create_json(workspace, event, event_dir, label, config=None,
     base_prov = prov.model.ProvDocument()
     base_prov.add_namespace(*NS_SEIS)
     base_prov = _get_person_agent(base_prov, config)
-    base_prov = _get_software_agent(base_prov)
+    base_prov = _get_software_agent(base_prov, gmprocess_version)
 
     nfeatures = 0
     for stream in streams:
@@ -144,9 +145,7 @@ def create_json(workspace, event, event_dir, label, config=None,
         'type': 'FeatureCollection',
         'software': {
             'name': 'gmprocess',
-            'version': get_version(
-                root=os.path.join(os.pardir, os.pardir),
-                relative_to=__file__)
+            'version': gmprocess_version
         },
         'process_time': datetime.utcnow().strftime(EVENT_TIMEFMT) + 'Z',
         'event': event_dict,

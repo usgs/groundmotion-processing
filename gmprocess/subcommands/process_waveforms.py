@@ -108,7 +108,8 @@ class ProcessWaveformsModule(SubcommandModule):
         # Cannot parallelize IO to ASDF file
         for processed_stream in processed_streams:
             workspace.addStreams(
-                event, processed_stream, label=self.process_tag)
+                event, processed_stream, label=self.process_tag,
+                gmprocess_version=self.gmrecords.gmprocess_version)
 
         workspace.close()
         return event.id

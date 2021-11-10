@@ -82,8 +82,10 @@ class AssembleModule(SubcommandModule):
         workspace = assemble(
             event=event,
             config=self.gmrecords.conf,
-            directory=self.gmrecords.data_path
+            directory=self.gmrecords.data_path,
+            gmprocess_version=self.gmrecords.gmprocess_version
         )
+        workspace.getGmprocessVersion()
         workspace.close()
         self.append_file('Workspace', workname)
         return event.id
