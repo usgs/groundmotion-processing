@@ -1,10 +1,19 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import os
+
 # third party imports
 import h5py
+from setuptools_scm import get_version
 
 # local imports
 from .stream_workspace import StreamWorkspace
 
 TIMEPAT = '[0-9]{4}-[0-9]{2}-[0-9]{2}T'
+VERSION = get_version(
+    root=os.path.join(os.pardir, os.pardir, os.pardir),
+    relative_to=__file__)
 
 
 def is_asdf(filename, config=None):
@@ -52,8 +61,8 @@ def read_asdf(filename, eventid=None, stations=None, label=None):
             labels = workspace.getLabels()
         else:
             labels = [label]
-        streams = workspace.getStreams(eventid, stations=stations,
-                                       labels=labels)
+        streams = workspace.getStreams(
+            eventid, stations=stations, labels=labels)
         allstreams += streams
 
     workspace.close()
@@ -74,5 +83,6 @@ def write_asdf(filename, streams, event, label=None):
             Label to append to all streams being added to ASDF file.
     """
     workspace = StreamWorkspace(filename)
-    workspace.addStreams(event, streams, label=label)
+    workspace.addStreams(
+        event, streams, label=label, gmprocess_version=VERSION)
     workspace.close()

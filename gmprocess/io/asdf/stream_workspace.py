@@ -276,7 +276,30 @@ class StreamWorkspace(object):
             parameters={}
         )
 
-    def addStreams(self, event, streams, label=None):
+    def addGmprocessVersion(self, version):
+        """Add gmprocess version to an ASDF file.
+
+        """
+        self.insert_aux(
+            version,
+            data_name='gmprocess_version',
+            path='version'
+        )
+
+    def getGmprocessVersion(self):
+        """Get gmprocess version from ASDF file.
+
+        """
+        group_name = "%s/%s" % ('gmprocess_version', 'version')
+        data_exists = group_name in self.dataset._auxiliary_data_group
+        if not data_exists:
+            logging.error('No version for gmprocess found.')
+        bytelist = self.dataset._auxiliary_data_group[group_name][()].tolist()
+        gmprocess_version = ''.join([chr(b) for b in bytelist])
+        return gmprocess_version
+
+    def addStreams(self, event, streams, label=None,
+                   gmprocess_version='unknown'):
         """Add a sequence of StationStream objects to an ASDF file.
 
         Args:
@@ -287,6 +310,8 @@ class StreamWorkspace(object):
             label (str):
                 Label to attach to stream sequence. Cannot contain an
                 underscore.
+            gmprocess_version (str):
+                gmprocess version.
         """
         if label is not None:
             if '_' in label:
@@ -305,7 +330,7 @@ class StreamWorkspace(object):
         base_prov = prov.model.ProvDocument()
         base_prov.add_namespace(*NS_SEIS)
         base_prov = _get_person_agent(base_prov)
-        base_prov = _get_software_agent(base_prov)
+        base_prov = _get_software_agent(base_prov, gmprocess_version)
 
         logging.debug(streams)
         for stream in streams:

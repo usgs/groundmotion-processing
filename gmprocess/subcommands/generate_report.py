@@ -60,7 +60,8 @@ class GenerateReportModule(SubcommandModule):
                     event_dir,
                     event,
                     prefix="%s_%s" % (gmrecords.project, gmrecords.args.label),
-                    config=gmrecords.conf
+                    config=gmrecords.conf,
+                    gmprocess_version=gmrecords.gmprocess_version
                 )
             else:
                 report_file = ''
