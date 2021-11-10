@@ -62,10 +62,11 @@ class AssembleModule(SubcommandModule):
 
     def _assemble_event(self, event):
         logging.info('Starting event: %s' % event.id)
-        event_dir = os.path.join(self.gmrecords.data_path, event.id)
+        event_dir = os.path.normpath(
+            os.path.join(self.gmrecords.data_path, event.id))
         if not os.path.exists(event_dir):
             os.makedirs(event_dir)
-        workname = os.path.join(event_dir, WORKSPACE_NAME)
+        workname = os.path.normpath(os.path.join(event_dir, WORKSPACE_NAME))
         workspace_exists = os.path.isfile(workname)
         if workspace_exists:
             logging.info("ASDF exists: %s" % workname)

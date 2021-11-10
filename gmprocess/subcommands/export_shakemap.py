@@ -51,7 +51,8 @@ class ExportShakeMapModule(SubcommandModule):
             logging.info(
                 'Creating shakemap files for event %s...' % self.eventid)
 
-            event_dir = os.path.join(gmrecords.data_path, event.id)
+            event_dir = os.path.normpath(
+                os.path.join(gmrecords.data_path, event.id))
             workname = os.path.join(event_dir, WORKSPACE_NAME)
             if not os.path.isfile(workname):
                 logging.info(

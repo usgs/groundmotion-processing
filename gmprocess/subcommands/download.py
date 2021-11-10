@@ -46,7 +46,8 @@ class DownloadModule(SubcommandModule):
         logging.info('Number of events to download: %s' % len(self.events))
         for event in self.events:
             logging.info('Starting event: %s' % event.id)
-            event_dir = os.path.join(gmrecords.data_path, event.id)
+            event_dir = os.path.normpath(
+                os.path.join(gmrecords.data_path, event.id))
             if not os.path.exists(event_dir):
                 os.makedirs(event_dir)
 

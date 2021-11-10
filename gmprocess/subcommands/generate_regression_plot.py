@@ -41,7 +41,7 @@ class GenerateRegressionPlotModule(SubcommandModule):
         for file in imc_table_names:
             imckey = os.path.splitext(file)[0]
             imc_tables[imckey] = pd.read_csv(
-                os.path.join(self.gmrecords.data_path, file))
+                os.path.normpath(os.path.join(self.gmrecords.data_path, file)))
             if 'fit_spectra_parameters' in imc_tables:
                 del imc_tables['fit_spectra_parameters']
 
@@ -104,8 +104,8 @@ class GenerateRegressionPlotModule(SubcommandModule):
                     'regression_%s_%s.png' %
                     (found_imc, found_imt)
                 )
-                regression_file = os.path.join(
-                    self.gmrecords.data_path, pngfile)
+                regression_file = os.path.normpath(os.path.join(
+                    self.gmrecords.data_path, pngfile))
                 plot_regression(event_table, found_imc,
                                 imc_tables[tab_key_dict[found_imc]],
                                 found_imt,
