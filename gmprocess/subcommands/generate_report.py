@@ -105,18 +105,23 @@ class GenerateReportModule(SubcommandModule):
         results = []
         pstreams = []
         for station_id in station_list:
-            stream = self.workspace.getStreams(
+            streams = self.workspace.getStreams(
                 event.id,
                 stations=[station_id],
                 labels=[self.gmrecords.args.label],
                 config=self.gmrecords.conf
-            )[0]
-            pstreams.append(stream)
-            if self.gmrecords.args.num_processes > 0:
-                future = client.submit(summary_plots, stream, plot_dir, event)
-                futures.append(future)
-            else:
-                results.append(summary_plots(stream, plot_dir, event))
+            )
+            if not len(streams):
+                raise ValueError('No matching streams found.')
+
+            for stream in streams:
+                pstreams.append(stream)
+                if self.gmrecords.args.num_processes > 0:
+                    future = client.submit(
+                        summary_plots, stream, plot_dir, event)
+                    futures.append(future)
+                else:
+                    results.append(summary_plots(stream, plot_dir, event))
 
         if self.gmrecords.args.num_processes > 0:
             # Collect the results??

@@ -80,24 +80,25 @@ class ProcessWaveformsModule(SubcommandModule):
 
         for station_id in station_list:
             # Cannot parallelize IO to ASDF file
-            raw_stream = workspace.getStreams(
+            raw_streams = workspace.getStreams(
                 event.id,
                 stations=[station_id],
                 labels=['unprocessed'],
                 config=self.gmrecords.conf
             )
 
-            if len(raw_stream):
+            if len(raw_streams):
                 logging.info('Processing \'%s\' streams for event %s...'
                              % ('unprocessed', event.id))
                 if self.gmrecords.args.num_processes > 0:
                     future = client.submit(
-                        process_streams, raw_stream, event,
+                        process_streams, raw_streams, event,
                         self.gmrecords.conf)
                     futures.append(future)
                 else:
                     processed_streams.append(
-                        process_streams(raw_stream, event, self.gmrecords.conf)
+                        process_streams(
+                            raw_streams, event, self.gmrecords.conf)
                     )
 
         if self.gmrecords.args.num_processes > 0:

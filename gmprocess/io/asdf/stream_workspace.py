@@ -498,12 +498,12 @@ class StreamWorkspace(object):
 
         net_codes = [st.split('.')[0] for st in stations]
         sta_codes = [st.split('.')[1] for st in stations]
+        tag = ['%s_%s' % (eventid, label) for label in labels]
 
         for waveform in self.dataset.ifilter(
                 self.dataset.q.network == net_codes,
                 self.dataset.q.station == sta_codes,
-                self.dataset.q.tag == [
-                    '%s_%s' % (eventid, label) for label in labels]):
+                self.dataset.q.tag == tag):
             tags = waveform.get_waveform_tags()
             for tag in tags:
                 tstream = waveform[tag]
@@ -672,7 +672,7 @@ class StreamWorkspace(object):
 
         # Load the rupture file
         origin = Origin({
-            'id': event.id,
+            'id': event.resource_id.id.replace('smi:local/', ''),
             'netid': '',
             'network': '',
             'lat': event.latitude,
@@ -728,18 +728,15 @@ class StreamWorkspace(object):
                 ])
                 self.insert_aux(xmlstr, 'StationMetrics', metricpath)
 
-    def getTables(self, label, streams=None, stream_label=None):
+    def getTables(self, label, config):
         '''Retrieve dataframes containing event information and IMC/IMT
         metrics.
 
         Args:
             label (str):
                 Calculate metrics only for the given label.
-            streams (StreamCollection):
-                Optional StreamCollection object to get tables for.
-            stream_label (str):
-                Label to be used in the metrics path when providing a
-                StreamCollection.
+            config (dict):
+                Config options.
 
         Returns:
             tuple: Elements are:
@@ -786,7 +783,7 @@ class StreamWorkspace(object):
         for eventid in self.getEventIds():
             event = self.getEvent(eventid)
             event_info.append({
-                'id': event.id.replace('smi:local/', ''),
+                'id': event.resource_id.id.replace('smi:local/', ''),
                 'time': event.time,
                 'latitude': event.latitude,
                 'longitude': event.longitude,
@@ -795,55 +792,69 @@ class StreamWorkspace(object):
                 'magnitude_type': event.magnitude_type
             })
 
-            if streams is None:
-                streams = self.getStreams(eventid, labels=[label])
+            station_list = self.dataset.waveforms.list()
 
-            for stream in streams:
-                if not stream.passed:
-                    continue
+            for station_id in station_list:
+                streams = self.getStreams(
+                    event.resource_id.id.replace('smi:local/', ''),
+                    stations=[station_id],
+                    labels=[label],
+                    config=config
+                )
+                if not len(streams):
+                    raise ValueError('No matching streams found.')
 
-                station = stream[0].stats.station
-                network = stream[0].stats.network
-                summary = self.getStreamMetrics(
-                    eventid, network, station, label, streams=[stream],
-                    stream_label=stream_label)
+                for stream in streams:
+                    if not stream.passed:
+                        continue
 
-                if summary is None:
-                    continue
+                    station = stream[0].stats.station
+                    network = stream[0].stats.network
+                    summary = self.getStreamMetrics(
+                        eventid, network, station, label, streams=[stream],
+                        stream_label=label)
 
-                pgms = summary.pgms
-                imclist = pgms.index.get_level_values('IMC').unique().tolist()
-                imtlist = pgms.index.get_level_values('IMT').unique().tolist()
-                imtlist.sort(key=_natural_keys)
+                    if summary is None:
+                        continue
 
-                # Add any Vs30 columns to the list of FLATFILE_COLUMNS
-                for vs30_dict in summary._vs30.values():
-                    FLATFILE_COLUMNS[vs30_dict['column_header']] = \
-                        vs30_dict['readme_entry']
+                    pgms = summary.pgms
+                    imclist = pgms.index.get_level_values(
+                        'IMC').unique().tolist()
+                    imtlist = pgms.index.get_level_values(
+                        'IMT').unique().tolist()
+                    imtlist.sort(key=_natural_keys)
 
-                for imc in imclist:
-                    if imc not in imc_tables:
-                        row = _get_table_row(stream, summary, event, imc)
-                        if not len(row):
-                            continue
-                        imc_tables[imc] = [row]
-                    else:
-                        row = _get_table_row(stream, summary, event, imc)
-                        if not len(row):
-                            continue
-                        imc_tables[imc].append(row)
+                    # Add any Vs30 columns to the list of FLATFILE_COLUMNS
+                    for vs30_dict in summary._vs30.values():
+                        FLATFILE_COLUMNS[vs30_dict['column_header']] = \
+                            vs30_dict['readme_entry']
+
+                    for imc in imclist:
+                        if imc not in imc_tables:
+                            row = _get_table_row(stream, summary, event, imc)
+                            if not len(row):
+                                continue
+                            imc_tables[imc] = [row]
+                        else:
+                            row = _get_table_row(stream, summary, event, imc)
+                            if not len(row):
+                                continue
+                            imc_tables[imc].append(row)
 
         # Remove any empty IMT columns from the IMC tables
         for key, table in imc_tables.items():
             table = pd.DataFrame.from_dict(table)
-            have_imts = []
-            for imt in list(set(table.columns) & set(imtlist)):
-                if not pd.isna(table[imt]).all():
-                    have_imts.append(imt)
-            have_imts.sort(key=_natural_keys)
-            non_imt_cols = [
-                col for col in table.columns if col not in imtlist]
-            table = table[non_imt_cols + have_imts]
+            imt_cols = list(set(table.columns) & set(imtlist))
+
+            # Remove FAS?
+            fas_cols = [c for c in imt_cols if c.startswith('FAS(')]
+            fas_df = table[fas_cols]
+            if pd.isna(fas_df).all(axis=None):
+                imt_cols = [x for x in imt_cols if x not in fas_cols]
+            imt_cols.sort(key=_natural_keys)
+
+            non_imt_cols = [col for col in table.columns if col not in imtlist]
+            table = table[non_imt_cols + imt_cols]
             imc_tables[key] = table
             readme_dict = {}
             for col in table.columns:
@@ -868,7 +879,7 @@ class StreamWorkspace(object):
         event_table = pd.DataFrame.from_dict(event_info)
         return (event_table, imc_tables, readme_tables)
 
-    def getFitSpectraTable(self, eventid, label, streams):
+    def getFitSpectraTable(self, eventid, label, config):
         """
         Returns a tuple of two pandas DataFrames. The first contains the
         fit_spectra parameters for each trace in the workspace matching
@@ -880,8 +891,8 @@ class StreamWorkspace(object):
                 Return parameters only for the given eventid.
             label (str):
                 Return parameters only for the given label.
-            streams (StreamCollection):
-                Optional StreamCollection object to get parameters for.
+            config (dict):
+                Dictionary of config options.
 
         Returns:
             pandas.DataFrame:
@@ -890,32 +901,42 @@ class StreamWorkspace(object):
         """
         fit_table = []
         event = self.getEvent(eventid)
-        if streams is None:
-            streams = self.getStreams(eventid, labels=[label])
-        for st in streams:
-            if not st.passed:
-                continue
-            for tr in st:
-                if tr.hasParameter('fit_spectra'):
-                    fit_dict = tr.getParameter('fit_spectra')
-                    fit_dict['EarthquakeId'] = eventid
-                    fit_dict['EarthquakeTime'] = event.time
-                    fit_dict['EarthquakeLatitude'] = event.latitude
-                    fit_dict['EarthquakeLongitude'] = event.longitude
-                    fit_dict['EarthquakeDepth'] = event.depth_km
-                    fit_dict['EarthquakeMagnitude'] = event.magnitude
-                    fit_dict['EarthquakeMagnitudeType'] = event.magnitude_type
-                    fit_dict['TraceID'] = tr.id
-                    fit_dict['StationLatitude'] = tr.stats.coordinates.latitude
-                    fit_dict['StationLongitude'] = \
-                        tr.stats.coordinates.longitude
-                    fit_dict['StationElevation'] = \
-                        tr.stats.coordinates.elevation
-                    if tr.hasParameter('corner_frequencies'):
-                        freq_dict = tr.getParameter('corner_frequencies')
-                        fit_dict['fmin'] = freq_dict['highpass']
-                        fit_dict['fmax'] = freq_dict['lowpass']
-                    fit_table.append(fit_dict)
+
+        station_list = self.dataset.waveforms.list()
+        for station_id in station_list:
+            streams = self.getStreams(
+                event.resource_id.id.replace('smi:local/', ''),
+                stations=[station_id],
+                labels=[label],
+                config=config
+            )
+
+            for st in streams:
+                if not st.passed:
+                    continue
+                for tr in st:
+                    if tr.hasParameter('fit_spectra'):
+                        fit_dict = tr.getParameter('fit_spectra')
+                        fit_dict['EarthquakeId'] = eventid
+                        fit_dict['EarthquakeTime'] = event.time
+                        fit_dict['EarthquakeLatitude'] = event.latitude
+                        fit_dict['EarthquakeLongitude'] = event.longitude
+                        fit_dict['EarthquakeDepth'] = event.depth_km
+                        fit_dict['EarthquakeMagnitude'] = event.magnitude
+                        fit_dict['EarthquakeMagnitudeType'] = \
+                            event.magnitude_type
+                        fit_dict['TraceID'] = tr.id
+                        fit_dict['StationLatitude'] = \
+                            tr.stats.coordinates.latitude
+                        fit_dict['StationLongitude'] = \
+                            tr.stats.coordinates.longitude
+                        fit_dict['StationElevation'] = \
+                            tr.stats.coordinates.elevation
+                        if tr.hasParameter('corner_frequencies'):
+                            freq_dict = tr.getParameter('corner_frequencies')
+                            fit_dict['fmin'] = freq_dict['highpass']
+                            fit_dict['fmax'] = freq_dict['lowpass']
+                        fit_table.append(fit_dict)
 
         if len(fit_table):
             df = pd.DataFrame.from_dict(fit_table)
@@ -931,7 +952,7 @@ class StreamWorkspace(object):
 
         return (df, readme)
 
-    def getSNRTable(self, eventid, label, streams):
+    def getSNRTable(self, eventid, label, config):
         """
         Returns a tuple of two pandas DataFrames. The first contains the
         fit_spectra parameters for each trace in the workspace matching
@@ -943,8 +964,8 @@ class StreamWorkspace(object):
                 Return parameters only for the given eventid.
             label (str):
                 Return parameters only for the given label.
-            streams (StreamCollection):
-                Optional StreamCollection object to get parameters for.
+            config (dict)
+                Dictionary of config options.
 
         Returns:
             pandas.DataFrame:
@@ -954,7 +975,7 @@ class StreamWorkspace(object):
         # Get list of periods in SA to interpolate SNR to.
         if 'WaveFormMetrics' not in self.dataset.auxiliary_data:
             logging.error('No WaveFormMetrics found. Please run '
-                          '\'compute_waverom_metrics\' subcommand.')
+                          '\'compute_waveform_metrics\' subcommand.')
         wm = self.dataset.auxiliary_data.WaveFormMetrics
         wm_tmp = wm[wm.list()[0]]
         bytelist = wm_tmp[wm_tmp.list()[0]].data[:].tolist()
@@ -973,28 +994,38 @@ class StreamWorkspace(object):
 
         snr_table = []
         event = self.getEvent(eventid)
-        if streams is None:
-            streams = self.getStreams(eventid, labels=[label])
-        for st in streams:
-            if not st.passed:
-                continue
-            for tr in st:
-                if tr.hasCached('snr'):
-                    snr_dict = self.__flatten_snr_dict(tr, periods)
-                    snr_dict['EarthquakeId'] = eventid
-                    snr_dict['EarthquakeTime'] = event.time
-                    snr_dict['EarthquakeLatitude'] = event.latitude
-                    snr_dict['EarthquakeLongitude'] = event.longitude
-                    snr_dict['EarthquakeDepth'] = event.depth_km
-                    snr_dict['EarthquakeMagnitude'] = event.magnitude
-                    snr_dict['EarthquakeMagnitudeType'] = event.magnitude_type
-                    snr_dict['TraceID'] = tr.id
-                    snr_dict['StationLatitude'] = tr.stats.coordinates.latitude
-                    snr_dict['StationLongitude'] = \
-                        tr.stats.coordinates.longitude
-                    snr_dict['StationElevation'] = \
-                        tr.stats.coordinates.elevation
-                    snr_table.append(snr_dict)
+
+        station_list = self.dataset.waveforms.list()
+        for station_id in station_list:
+            streams = self.getStreams(
+                event.resource_id.id.replace('smi:local/', ''),
+                stations=[station_id],
+                labels=[label],
+                config=config
+            )
+
+            for st in streams:
+                if not st.passed:
+                    continue
+                for tr in st:
+                    if tr.hasCached('snr'):
+                        snr_dict = self.__flatten_snr_dict(tr, periods)
+                        snr_dict['EarthquakeId'] = eventid
+                        snr_dict['EarthquakeTime'] = event.time
+                        snr_dict['EarthquakeLatitude'] = event.latitude
+                        snr_dict['EarthquakeLongitude'] = event.longitude
+                        snr_dict['EarthquakeDepth'] = event.depth_km
+                        snr_dict['EarthquakeMagnitude'] = event.magnitude
+                        snr_dict['EarthquakeMagnitudeType'] = \
+                            event.magnitude_type
+                        snr_dict['TraceID'] = tr.id
+                        snr_dict['StationLatitude'] = \
+                            tr.stats.coordinates.latitude
+                        snr_dict['StationLongitude'] = \
+                            tr.stats.coordinates.longitude
+                        snr_dict['StationElevation'] = \
+                            tr.stats.coordinates.elevation
+                        snr_table.append(snr_dict)
 
         if len(snr_table):
             df = pd.DataFrame.from_dict(snr_table)
