@@ -64,13 +64,17 @@ class GenerateHTMLMapModule(SubcommandModule):
 
             pstreams = []
             for station_id in station_list:
-                stream = self.workspace.getStreams(
+                streams = self.workspace.getStreams(
                     event.id,
                     stations=[station_id],
                     labels=[self.gmrecords.args.label],
                     config=self.gmrecords.conf
-                )[0]
-                pstreams.append(stream)
+                )
+                if not len(streams):
+                    raise ValueError('No matching streams found.')
+
+                for stream in streams:
+                    pstreams.append(stream)
 
             mapfiles = draw_stations_map(pstreams, event, event_dir)
             for file in mapfiles:

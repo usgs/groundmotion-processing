@@ -65,7 +65,7 @@ class ExportMetricTablesModule(SubcommandModule):
                 continue
 
             event_table, imc_tables, readmes = self.workspace.getTables(
-                self.gmrecords.args.label, streams=self.pstreams)
+                self.gmrecords.args.label, self.gmrecords.conf)
             ev_fit_spec, fit_readme = self.workspace.getFitSpectraTable(
                 self.eventid, self.gmrecords.args.label, self.pstreams)
 

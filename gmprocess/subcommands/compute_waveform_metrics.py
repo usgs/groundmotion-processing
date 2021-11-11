@@ -73,43 +73,46 @@ class ComputeWaveformMetricsModule(SubcommandModule):
 
         for station_id in station_list:
             # Cannot parallelize IO to ASDF file
-            stream = self.workspace.getStreams(
+            streams = self.workspace.getStreams(
                 event.id,
                 stations=[station_id],
                 labels=[self.gmrecords.args.label],
                 config=self.gmrecords.conf
-            )[0]
+            )
+            if not len(streams):
+                raise ValueError('No matching streams found.')
 
-            if stream.passed:
-                metricpaths.append('/'.join([
-                    format_netsta(stream[0].stats),
-                    format_nslit(
-                        stream[0].stats,
-                        stream.get_inst(),
-                        stream.tag)
-                ]))
-                logging.info(
-                    'Calculating waveform metrics for %s...'
-                    % stream.get_id()
-                )
-                if self.gmrecords.args.num_processes > 0:
-                    future = client.submit(
-                        StationSummary.from_config,
-                        stream=stream,
-                        config=self.gmrecords.conf,
-                        event=event,
-                        calc_waveform_metrics=True,
-                        calc_station_metrics=False)
-                    futures.append(future)
-                else:
-                    summaries.append(
-                        StationSummary.from_config(
-                            stream, event=event,
-                            config=self.gmrecords.conf,
-                            calc_waveform_metrics=True,
-                            calc_station_metrics=False
-                        )
+            for stream in streams:
+                if stream.passed:
+                    metricpaths.append('/'.join([
+                        format_netsta(stream[0].stats),
+                        format_nslit(
+                            stream[0].stats,
+                            stream.get_inst(),
+                            stream.tag)
+                    ]))
+                    logging.info(
+                        'Calculating waveform metrics for %s...'
+                        % stream.get_id()
                     )
+                    if self.gmrecords.args.num_processes > 0:
+                        future = client.submit(
+                            StationSummary.from_config,
+                            stream=stream,
+                            config=self.gmrecords.conf,
+                            event=event,
+                            calc_waveform_metrics=True,
+                            calc_station_metrics=False)
+                        futures.append(future)
+                    else:
+                        summaries.append(
+                            StationSummary.from_config(
+                                stream, event=event,
+                                config=self.gmrecords.conf,
+                                calc_waveform_metrics=True,
+                                calc_station_metrics=False
+                            )
+                        )
 
         if self.gmrecords.args.num_processes > 0:
             # Collect the processed streams

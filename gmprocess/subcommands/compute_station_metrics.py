@@ -111,28 +111,31 @@ class ComputeStationMetricsModule(SubcommandModule):
         self._get_labels()
 
         for station_id in station_list:
-            st = self.workspace.getStreams(
+            streams = self.workspace.getStreams(
                 event.id,
                 stations=[station_id],
                 labels=[self.gmrecords.args.label],
                 config=self.gmrecords.conf
-            )[0]
-
-            sta_lats.append(st[0].stats.coordinates.latitude)
-            sta_lons.append(st[0].stats.coordinates.longitude)
-            sta_elev.append(st[0].stats.coordinates.elevation)
-            geo_tuple = gps2dist_azimuth(
-                st[0].stats.coordinates.latitude,
-                st[0].stats.coordinates.longitude,
-                origin.lat, origin.lon)
-            self.sta_repi.append(geo_tuple[0] / M_PER_KM)
-            self.sta_baz.append(geo_tuple[1])
-            self.sta_rhyp.append(
-                distance(st[0].stats.coordinates.longitude,
-                         st[0].stats.coordinates.latitude,
-                         -st[0].stats.coordinates.elevation / M_PER_KM,
-                         origin.lon, origin.lat, origin.depth)
             )
+            if not len(streams):
+                raise ValueError('No matching streams found.')
+
+            for st in streams:
+                sta_lats.append(st[0].stats.coordinates.latitude)
+                sta_lons.append(st[0].stats.coordinates.longitude)
+                sta_elev.append(st[0].stats.coordinates.elevation)
+                geo_tuple = gps2dist_azimuth(
+                    st[0].stats.coordinates.latitude,
+                    st[0].stats.coordinates.longitude,
+                    origin.lat, origin.lon)
+                self.sta_repi.append(geo_tuple[0] / M_PER_KM)
+                self.sta_baz.append(geo_tuple[1])
+                self.sta_rhyp.append(
+                    distance(st[0].stats.coordinates.longitude,
+                             st[0].stats.coordinates.latitude,
+                             -st[0].stats.coordinates.elevation / M_PER_KM,
+                             origin.lon, origin.lat, origin.depth)
+                )
 
         if isinstance(rupture, PointRupture):
             self._get_ps2ff_splines()
@@ -182,59 +185,62 @@ class ComputeStationMetricsModule(SubcommandModule):
 
         # for station_id in station_list:
         for i, station_id in enumerate(station_list):
-            stream = self.workspace.getStreams(
+            streams = self.workspace.getStreams(
                 event.id,
                 stations=[station_id],
                 labels=[self.gmrecords.args.label],
                 config=self.gmrecords.conf
-            )[0]
+            )
+            if not len(streams):
+                raise ValueError('No matching streams found.')
 
-            logging.info(
-                'Calculating station metrics for %s...' % stream.get_id())
-            summary = StationSummary.from_config(
-                stream, event=event, config=self.gmrecords.conf,
-                calc_waveform_metrics=False,
-                calc_station_metrics=False,
-                rupture=rupture, vs30_grids=self.vs30_grids)
+            for stream in streams:
+                logging.info(
+                    'Calculating station metrics for %s...' % stream.get_id())
+                summary = StationSummary.from_config(
+                    stream, event=event, config=self.gmrecords.conf,
+                    calc_waveform_metrics=False,
+                    calc_station_metrics=False,
+                    rupture=rupture, vs30_grids=self.vs30_grids)
 
-            summary._distances = {
-                'epicentral': self.sta_repi[i],
-                'hypocentral': self.sta_rhyp[i],
-                'rupture': rrup_mean[i],
-                'rupture_var': rrup_var[i],
-                'joyner_boore': rjb_mean[i],
-                'joyner_boore_var': rjb_var[i],
-                'gc2_rx': gc2_rx[i],
-                'gc2_ry': gc2_ry[i],
-                'gc2_ry0': gc2_ry0[i],
-                'gc2_U': gc2_U[i],
-                'gc2_T': gc2_T[i]
-            }
-            summary._back_azimuth = self.sta_baz[i]
-            if self.vs30_grids is not None:
-                for vs30_name in self.vs30_grids.keys():
-                    tmpgrid = self.vs30_grids[vs30_name]
-                    summary._vs30[vs30_name] = {
-                        'value': tmpgrid['grid_object'].getValue(
-                            float(sta_lats[i]), float(sta_lons[i])),
-                        'column_header': tmpgrid['column_header'],
-                        'readme_entry': tmpgrid['readme_entry'],
-                        'units': tmpgrid['units']
-                    }
+                summary._distances = {
+                    'epicentral': self.sta_repi[i],
+                    'hypocentral': self.sta_rhyp[i],
+                    'rupture': rrup_mean[i],
+                    'rupture_var': rrup_var[i],
+                    'joyner_boore': rjb_mean[i],
+                    'joyner_boore_var': rjb_var[i],
+                    'gc2_rx': gc2_rx[i],
+                    'gc2_ry': gc2_ry[i],
+                    'gc2_ry0': gc2_ry0[i],
+                    'gc2_U': gc2_U[i],
+                    'gc2_T': gc2_T[i]
+                }
+                summary._back_azimuth = self.sta_baz[i]
+                if self.vs30_grids is not None:
+                    for vs30_name in self.vs30_grids.keys():
+                        tmpgrid = self.vs30_grids[vs30_name]
+                        summary._vs30[vs30_name] = {
+                            'value': tmpgrid['grid_object'].getValue(
+                                float(sta_lats[i]), float(sta_lons[i])),
+                            'column_header': tmpgrid['column_header'],
+                            'readme_entry': tmpgrid['readme_entry'],
+                            'units': tmpgrid['units']
+                        }
 
-            xmlstr = summary.get_station_xml()
-            metricpath = '/'.join([
-                format_netsta(stream[0].stats),
-                format_nslit(
-                    stream[0].stats,
-                    stream.get_inst(),
-                    self.eventid)
-            ])
-            self.workspace.insert_aux(
-                xmlstr, 'StationMetrics', metricpath,
-                overwrite=self.gmrecords.args.overwrite)
-            logging.info('Added station metrics to workspace files '
-                         'with tag \'%s\'.' % self.gmrecords.args.label)
+                xmlstr = summary.get_station_xml()
+                metricpath = '/'.join([
+                    format_netsta(stream[0].stats),
+                    format_nslit(
+                        stream[0].stats,
+                        stream.get_inst(),
+                        self.eventid)
+                ])
+                self.workspace.insert_aux(
+                    xmlstr, 'StationMetrics', metricpath,
+                    overwrite=self.gmrecords.args.overwrite)
+                logging.info('Added station metrics to workspace files '
+                             'with tag \'%s\'.' % self.gmrecords.args.label)
 
         self.workspace.close()
         return event.id
