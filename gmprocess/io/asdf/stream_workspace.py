@@ -879,7 +879,7 @@ class StreamWorkspace(object):
         event_table = pd.DataFrame.from_dict(event_info)
         return (event_table, imc_tables, readme_tables)
 
-    def getFitSpectraTable(self, eventid, label, streams):
+    def getFitSpectraTable(self, eventid, label, config):
         """
         Returns a tuple of two pandas DataFrames. The first contains the
         fit_spectra parameters for each trace in the workspace matching
@@ -891,8 +891,8 @@ class StreamWorkspace(object):
                 Return parameters only for the given eventid.
             label (str):
                 Return parameters only for the given label.
-            streams (StreamCollection):
-                Optional StreamCollection object to get parameters for.
+            config (dict):
+                Dictionary of config options.
 
         Returns:
             pandas.DataFrame:
@@ -901,32 +901,42 @@ class StreamWorkspace(object):
         """
         fit_table = []
         event = self.getEvent(eventid)
-        if streams is None:
-            streams = self.getStreams(eventid, labels=[label])
-        for st in streams:
-            if not st.passed:
-                continue
-            for tr in st:
-                if tr.hasParameter('fit_spectra'):
-                    fit_dict = tr.getParameter('fit_spectra')
-                    fit_dict['EarthquakeId'] = eventid
-                    fit_dict['EarthquakeTime'] = event.time
-                    fit_dict['EarthquakeLatitude'] = event.latitude
-                    fit_dict['EarthquakeLongitude'] = event.longitude
-                    fit_dict['EarthquakeDepth'] = event.depth_km
-                    fit_dict['EarthquakeMagnitude'] = event.magnitude
-                    fit_dict['EarthquakeMagnitudeType'] = event.magnitude_type
-                    fit_dict['TraceID'] = tr.id
-                    fit_dict['StationLatitude'] = tr.stats.coordinates.latitude
-                    fit_dict['StationLongitude'] = \
-                        tr.stats.coordinates.longitude
-                    fit_dict['StationElevation'] = \
-                        tr.stats.coordinates.elevation
-                    if tr.hasParameter('corner_frequencies'):
-                        freq_dict = tr.getParameter('corner_frequencies')
-                        fit_dict['fmin'] = freq_dict['highpass']
-                        fit_dict['fmax'] = freq_dict['lowpass']
-                    fit_table.append(fit_dict)
+
+        station_list = self.dataset.waveforms.list()
+        for station_id in station_list:
+            streams = self.getStreams(
+                event.resource_id.id.replace('smi:local/', ''),
+                stations=[station_id],
+                labels=[label],
+                config=config
+            )
+
+            for st in streams:
+                if not st.passed:
+                    continue
+                for tr in st:
+                    if tr.hasParameter('fit_spectra'):
+                        fit_dict = tr.getParameter('fit_spectra')
+                        fit_dict['EarthquakeId'] = eventid
+                        fit_dict['EarthquakeTime'] = event.time
+                        fit_dict['EarthquakeLatitude'] = event.latitude
+                        fit_dict['EarthquakeLongitude'] = event.longitude
+                        fit_dict['EarthquakeDepth'] = event.depth_km
+                        fit_dict['EarthquakeMagnitude'] = event.magnitude
+                        fit_dict['EarthquakeMagnitudeType'] = \
+                            event.magnitude_type
+                        fit_dict['TraceID'] = tr.id
+                        fit_dict['StationLatitude'] = \
+                            tr.stats.coordinates.latitude
+                        fit_dict['StationLongitude'] = \
+                            tr.stats.coordinates.longitude
+                        fit_dict['StationElevation'] = \
+                            tr.stats.coordinates.elevation
+                        if tr.hasParameter('corner_frequencies'):
+                            freq_dict = tr.getParameter('corner_frequencies')
+                            fit_dict['fmin'] = freq_dict['highpass']
+                            fit_dict['fmax'] = freq_dict['lowpass']
+                        fit_table.append(fit_dict)
 
         if len(fit_table):
             df = pd.DataFrame.from_dict(fit_table)
@@ -942,7 +952,7 @@ class StreamWorkspace(object):
 
         return (df, readme)
 
-    def getSNRTable(self, eventid, label, streams):
+    def getSNRTable(self, eventid, label, config):
         """
         Returns a tuple of two pandas DataFrames. The first contains the
         fit_spectra parameters for each trace in the workspace matching
@@ -954,8 +964,8 @@ class StreamWorkspace(object):
                 Return parameters only for the given eventid.
             label (str):
                 Return parameters only for the given label.
-            streams (StreamCollection):
-                Optional StreamCollection object to get parameters for.
+            config (dict)
+                Dictionary of config options.
 
         Returns:
             pandas.DataFrame:
@@ -984,28 +994,38 @@ class StreamWorkspace(object):
 
         snr_table = []
         event = self.getEvent(eventid)
-        if streams is None:
-            streams = self.getStreams(eventid, labels=[label])
-        for st in streams:
-            if not st.passed:
-                continue
-            for tr in st:
-                if tr.hasCached('snr'):
-                    snr_dict = self.__flatten_snr_dict(tr, periods)
-                    snr_dict['EarthquakeId'] = eventid
-                    snr_dict['EarthquakeTime'] = event.time
-                    snr_dict['EarthquakeLatitude'] = event.latitude
-                    snr_dict['EarthquakeLongitude'] = event.longitude
-                    snr_dict['EarthquakeDepth'] = event.depth_km
-                    snr_dict['EarthquakeMagnitude'] = event.magnitude
-                    snr_dict['EarthquakeMagnitudeType'] = event.magnitude_type
-                    snr_dict['TraceID'] = tr.id
-                    snr_dict['StationLatitude'] = tr.stats.coordinates.latitude
-                    snr_dict['StationLongitude'] = \
-                        tr.stats.coordinates.longitude
-                    snr_dict['StationElevation'] = \
-                        tr.stats.coordinates.elevation
-                    snr_table.append(snr_dict)
+
+        station_list = self.dataset.waveforms.list()
+        for station_id in station_list:
+            streams = self.getStreams(
+                event.resource_id.id.replace('smi:local/', ''),
+                stations=[station_id],
+                labels=[label],
+                config=config
+            )
+
+            for st in streams:
+                if not st.passed:
+                    continue
+                for tr in st:
+                    if tr.hasCached('snr'):
+                        snr_dict = self.__flatten_snr_dict(tr, periods)
+                        snr_dict['EarthquakeId'] = eventid
+                        snr_dict['EarthquakeTime'] = event.time
+                        snr_dict['EarthquakeLatitude'] = event.latitude
+                        snr_dict['EarthquakeLongitude'] = event.longitude
+                        snr_dict['EarthquakeDepth'] = event.depth_km
+                        snr_dict['EarthquakeMagnitude'] = event.magnitude
+                        snr_dict['EarthquakeMagnitudeType'] = \
+                            event.magnitude_type
+                        snr_dict['TraceID'] = tr.id
+                        snr_dict['StationLatitude'] = \
+                            tr.stats.coordinates.latitude
+                        snr_dict['StationLongitude'] = \
+                            tr.stats.coordinates.longitude
+                        snr_dict['StationElevation'] = \
+                            tr.stats.coordinates.elevation
+                        snr_table.append(snr_dict)
 
         if len(snr_table):
             df = pd.DataFrame.from_dict(snr_table)
