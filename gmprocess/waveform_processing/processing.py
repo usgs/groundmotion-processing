@@ -201,7 +201,7 @@ def process_streams(streams, origin, config=None):
 
 
 def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
-                    output='ACC', inv=None):
+                    inv=None):
     """
     Performs instrument response correction. If the response information is
     not already attached to the stream, then an inventory object must be
@@ -224,19 +224,16 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
             Frequency 4 for pre-filter.
         water_level (float):
             Water level for deconvolution.
-        output (str):
-            Outuput units. Must be 'ACC', 'VEL', or 'DISP'.
         inv (obspy.core.inventory.inventory):
             Obspy inventory object containing response information.
 
     Returns:
         StationStream: Instrument-response-corrected stream.
     """
+    output = 'ACC'
+
     if inv is None:
         inv = st.getInventory()
-    if output not in ['ACC', 'VEL', 'DISP']:
-        raise ValueError('Output value of %s is invalid. Must be ACC, VEL, '
-                         'or DISP.' % output)
 
     # Check if the response information is already attached in the trace stats
     for tr in st:
@@ -261,9 +258,12 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                 # Attempting to remove instrument response can cause a variety
                 # errors due to bad response metadata
                 try:
+                    # Note: rater than set output to 'ACC' we are are setting
+                    # it to 'VEl" and then differentiating.
                     tr.remove_response(
-                        inventory=inv, output=output, water_level=water_level,
+                        inventory=inv, output='VEL', water_level=water_level,
                         pre_filt=(f1, f2, f3, f4), zero_mean=True, taper=False)
+                    tr.differentiate()
                     tr.stats.standard.units = output.lower()
                     tr.stats.standard.process_level = PROCESS_LEVELS['V1']
                 except BaseException as e:
