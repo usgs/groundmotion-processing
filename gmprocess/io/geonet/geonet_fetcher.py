@@ -9,7 +9,6 @@ import logging
 import shutil
 
 # third party imports
-import logging
 import pytz
 import numpy as np
 import requests

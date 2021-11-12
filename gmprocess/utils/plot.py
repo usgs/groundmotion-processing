@@ -725,14 +725,15 @@ def summary_plots(st, directory, origin):
         # Spectral plot
 
         # Raw signal spec
-        if signal_dict is not None:
+        if (signal_dict is not None) and np.any(signal_dict['spec'] > 0):
             ax[j + 3 * ntrace].loglog(
                 signal_dict['freq'],
                 signal_dict['spec'],
                 color='lightblue')
 
         # Smoothed signal spec
-        if smooth_signal_dict is not None:
+        if (smooth_signal_dict is not None) and np.any(
+                smooth_signal_dict['spec'] > 0):
             ax[j + 3 * ntrace].loglog(
                 smooth_signal_dict['freq'],
                 smooth_signal_dict['spec'],
@@ -740,14 +741,15 @@ def summary_plots(st, directory, origin):
                 label='Signal')
 
         # Raw noise spec
-        if noise_dict is not None:
+        if (noise_dict is not None) and np.any(noise_dict['spec'] > 0):
             ax[j + 3 * ntrace].loglog(
                 noise_dict['freq'],
                 noise_dict['spec'],
                 color='salmon')
 
         # Smoothed noise spec
-        if smooth_noise_dict is not None:
+        if (smooth_noise_dict is not None) and np.any(
+                smooth_noise_dict['spec'] > 0):
             ax[j + 3 * ntrace].loglog(
                 smooth_noise_dict['freq'],
                 smooth_noise_dict['spec'],
