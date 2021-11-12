@@ -201,9 +201,6 @@ processing:
     #     threshold: 3.0
 
     - remove_response:
-        # Outuput units. Must be 'ACC', 'VEL', or 'DISP'.
-        output: 'ACC'
-
         # Pre-filtering frequencies. See obspy.core.trace.Trace.remove_response
         # for details. Note: if f3 is Null it will be set to 0.9*fn, if f4 is
         # Null it will be set to fn.

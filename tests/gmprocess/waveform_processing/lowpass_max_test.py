@@ -25,7 +25,7 @@ def test_lowpass_max():
             {'detrend': {'detrending_method': 'demean'}},
             {'remove_response': {
                 'f1': 0.001, 'f2': 0.005, 'f3': None, 'f4': None,
-                'output': 'ACC', 'water_level': 60}
+                'water_level': 60}
              },
             #            {'detrend': {'detrending_method': 'linear'}},
             #            {'detrend': {'detrending_method': 'demean'}},
