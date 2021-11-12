@@ -9,9 +9,7 @@ import logging
 import numpy as np
 import pandas as pd
 
-from openquake.hazardlib.gsim.base import SitesContext
 from openquake.hazardlib.gsim.base import RuptureContext
-from openquake.hazardlib.gsim.base import DistancesContext
 from openquake.hazardlib import const
 from openquake.hazardlib import imt
 
@@ -37,6 +35,9 @@ def cut(st, sec_before_split=None):
     To trim the beginning of the record, the sec_before_split must be
     specified, which uses the noise/signal split time that was estiamted by the
     windows.signal_split mehtod.
+
+    # Recent changes to reflect major updates to how oq-hazardlib works:
+    # https://github.com/gem/oq-engine/issues/7018
 
     Args:
         st (StationStream):
@@ -260,12 +261,11 @@ def signal_end(st, event_time, event_lon, event_lat, event_mag,
 
         # Set some "conservative" inputs (in that they will tend to give
         # larger durations).
-        sctx = SitesContext()
-        sctx.vs30 = np.array([180.0])
-        sctx.z1pt0 = np.array([0.51])
         rctx = RuptureContext()
         rctx.mag = event_mag
         rctx.rake = -90.0
+        rctx.vs30 = np.array([180.0])
+        rctx.z1pt0 = np.array([0.51])
         dur_imt = imt.from_string('RSD595')
         stddev_types = [const.StdDev.TOTAL]
 
@@ -291,12 +291,12 @@ def signal_end(st, event_time, event_lon, event_lat, event_mag,
                 lon1=event_lon,
                 lat2=tr.stats['coordinates']['latitude'],
                 lon2=tr.stats['coordinates']['longitude'])[0] / 1000.0
-            dctx = DistancesContext()
             # Repi >= Rrup, so substitution here should be conservative
             # (leading to larger durations).
-            dctx.rrup = np.array([epi_dist])
+            rctx.rrup = np.array([epi_dist])
+            rctx.sids = np.array(range(np.size(rctx.rrup)))
             lnmu, lnstd = dmodel.get_mean_and_stddevs(
-                sctx, rctx, dctx, dur_imt, stddev_types)
+                rctx, rctx, rctx, dur_imt, stddev_types)
             duration = np.exp(lnmu + epsilon * lnstd[0])
             # Get split time
             split_time = tr.getParameter('signal_split')['split_time']
@@ -409,14 +409,14 @@ def trim_multiple_events(st, origin, catalog, travel_time_df, pga_factor,
     # Load the GMPE model
     gmpe = load_model(gmpe)
 
-    # Set site parameters
-    sx = SitesContext()
+    # Generic context
+    rctx = RuptureContext()
 
     # Make sure that site parameter values are converted to numpy arrays
     site_parameters_copy = site_parameters.copy()
     for k, v in site_parameters_copy.items():
         site_parameters_copy[k] = np.array([site_parameters_copy[k]])
-    sx.__dict__.update(site_parameters_copy)
+    rctx.__dict__.update(site_parameters_copy)
 
     # Filter by arrivals that have significant expected PGA using GMPE
     is_significant = []
@@ -424,23 +424,21 @@ def trim_multiple_events(st, origin, catalog, travel_time_df, pga_factor,
         event = next(event for event in catalog if event.id == eqid)
 
         # Set rupture parameters
-        rx = RuptureContext()
-        rx.__dict__.update(rupture_parameters)
-        rx.mag = event.magnitude
+        rctx.__dict__.update(rupture_parameters)
+        rctx.mag = event.magnitude
 
         # TODO: distances should be calculated when we refactor to be
         # able to import distance calculations
-        dx = DistancesContext()
-        dx.repi = np.array([
+        rctx.repi = np.array([
             gps2dist_azimuth(
                 st[0].stats.coordinates.latitude,
                 st[0].stats.coordinates.longitude,
                 event.latitude, event.longitude)[0] / 1000])
-        dx.rjb = dx.repi
-        dx.rhypo = np.sqrt(dx.repi**2 + event.depth_km**2)
-        dx.rrup = dx.rhypo
-
-        pga, sd = gmpe.get_mean_and_stddevs(sx, rx, dx, imt.PGA(), [])
+        rctx.rjb = rctx.repi
+        rctx.rhypo = np.sqrt(rctx.repi**2 + event.depth_km**2)
+        rctx.rrup = rctx.rhypo
+        rctx.sids = np.array(range(np.size(rctx.rrup)))
+        pga, sd = gmpe.get_mean_and_stddevs(rctx, rctx, rctx, imt.PGA(), [])
 
         # Convert from ln(g) to %g
         predicted_pga = 100 * np.exp(pga[0])
