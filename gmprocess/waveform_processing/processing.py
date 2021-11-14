@@ -322,7 +322,10 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
                             {
                                 'method': 'remove_response',
                                 'input_units': 'counts',
-                                'output_units': ABBREV_UNITS[output]
+                                'output_units': ABBREV_UNITS[output],
+                                'water_level': water_level,
+                                'pre_filt_freqs':
+                                    '%f, %f, %f, %f' % (f1, f2, f3, f4)
                             }
                         )
                 except BaseException as e:

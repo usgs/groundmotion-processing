@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Linear Mixed Effects Regressions" href="lme.html" /><link rel="prev" title="Command Line Interface" href="cli.html" />
 
     <meta name="generator" content="sphinx-4.3.0, furo 2021.10.09"/>
-        <title>Response Spectra Calculation and Comparison - gmprocess 1.1.11.dev117+g13e1df3.d20211114 documentation</title>
+        <title>Response Spectra Calculation and Comparison - gmprocess 1.1.11.dev124+g0b05901.d20211114 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev117+g13e1df3.d20211114 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev124+g0b05901.d20211114 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,8 +182,9 @@
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="cli.html">Command Line Interface</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Response Spectra Calculation and Comparison</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Response Spectra Calculation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lme.html">Linear Mixed Effects Regressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="asdf_to_waveforms.html">Processed Waveforms from ASDF File</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../manual/index.html">Manual</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -527,12 +528,171 @@ because we have not yet subjected them to the QA tests.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Event:	2019-07-06T03:19:53.040000Z | +35.770, -117.599 | 7.1 mw
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">folders</span><span class="o">/</span><span class="mi">00</span><span class="o">/</span><span class="n">_0gc_srn5sx936prflc1ln3c0181xj</span><span class="o">/</span><span class="n">T</span><span class="o">/</span><span class="n">ipykernel_65550</span><span class="o">/</span><span class="mf">4283541681.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> 
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="c1"># Get event object</span>
+<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">event</span> <span class="o">=</span> <span class="n">get_event_object</span><span class="p">(</span><span class="s1">'ci38457511'</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
 
-	 resource_id: ResourceIdentifier(id="ci38457511")
-	        ---------
-	     origins: 1 Elements
-	  magnitudes: 1 Elements
+<span class="nn">~/src/python/groundmotion-processing/gmprocess/utils/event.py</span> in <span class="ni">get_event_object</span><span class="nt">(dict_or_id)</span>
+<span class="g g-Whitespace">    </span><span class="mi">217</span>     <span class="sd">"""</span>
+<span class="g g-Whitespace">    </span><span class="mi">218</span><span class="sd">     if isinstance(dict_or_id, str):</span>
+<span class="ne">--&gt; </span><span class="mi">219</span><span class="sd">         event_dict = get_event_dict(dict_or_id)</span>
+<span class="g g-Whitespace">    </span><span class="mi">220</span><span class="sd">     elif isinstance(dict_or_id, dict):</span>
+<span class="g g-Whitespace">    </span><span class="mi">221</span><span class="sd">         event_dict = dict_or_id.copy()</span>
+
+<span class="nn">~/src/python/groundmotion-processing/gmprocess/utils/event.py</span> in <span class="ni">get_event_dict</span><span class="nt">(eventid)</span>
+<span class="g g-Whitespace">    </span><span class="mi">189</span><span class="sd">             - magnitude Origin magnitude.</span>
+<span class="g g-Whitespace">    </span><span class="mi">190</span><span class="sd">     """</span>
+<span class="ne">--&gt; </span><span class="mi">191</span>     <span class="n">dict_or_id</span> <span class="o">=</span> <span class="n">get_event_by_id</span><span class="p">(</span><span class="n">eventid</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">192</span>     <span class="k">if</span> <span class="n">dict_or_id</span><span class="o">.</span><span class="n">id</span> <span class="o">!=</span> <span class="n">eventid</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">193</span>         <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">'Event ID </span><span class="si">%s</span><span class="s1"> is no longer preferred. Updating with the '</span>
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/site-packages/libcomcat/search.py</span> in <span class="ni">get_event_by_id</span><span class="nt">(eventid, catalog, includedeleted, includesuperseded, scenario, host)</span>
+<span class="g g-Whitespace">    </span><span class="mi">265</span>         <span class="n">newargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+<span class="g g-Whitespace">    </span><span class="mi">266</span> 
+<span class="ne">--&gt; </span><span class="mi">267</span>     <span class="n">event</span> <span class="o">=</span> <span class="n">_search</span><span class="p">(</span><span class="o">**</span><span class="n">newargs</span><span class="p">)</span>  <span class="c1"># this should be a DetailEvent</span>
+<span class="g g-Whitespace">    </span><span class="mi">268</span>     <span class="k">return</span> <span class="n">event</span>
+<span class="g g-Whitespace">    </span><span class="mi">269</span> 
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/site-packages/libcomcat/search.py</span> in <span class="ni">_search</span><span class="nt">(**newargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">536</span>     <span class="c1"># handle the case when they're asking for an event id</span>
+<span class="g g-Whitespace">    </span><span class="mi">537</span>     <span class="k">if</span> <span class="s1">'eventid'</span> <span class="ow">in</span> <span class="n">newargs</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">538</span>         <span class="k">return</span> <span class="n">DetailEvent</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">539</span> 
+<span class="g g-Whitespace">    </span><span class="mi">540</span>     <span class="k">try</span><span class="p">:</span>
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/site-packages/libcomcat/classes.py</span> in <span class="ni">__init__</span><span class="nt">(self, url)</span>
+<span class="g g-Whitespace">    </span><span class="mi">369</span>         <span class="sd">"""</span>
+<span class="g g-Whitespace">    </span><span class="mi">370</span><span class="sd">         try:</span>
+<span class="ne">--&gt; </span><span class="mi">371</span><span class="sd">             response = requests.get(url, timeout=TIMEOUT, headers=HEADERS)</span>
+<span class="g g-Whitespace">    </span><span class="mi">372</span><span class="sd">             self._jdict = response.json()</span>
+<span class="g g-Whitespace">    </span><span class="mi">373</span><span class="sd">             self._actual_url = url</span>
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/site-packages/requests/api.py</span> in <span class="ni">get</span><span class="nt">(url, params, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">74</span><span class="sd"> </span>
+<span class="g g-Whitespace">     </span><span class="mi">75</span><span class="sd">     kwargs.setdefault('allow_redirects', True)</span>
+<span class="ne">---&gt; </span><span class="mi">76</span><span class="sd">     return request('get', url, params=params, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">77</span><span class="sd"> </span>
+<span class="g g-Whitespace">     </span><span class="mi">78</span><span class="sd"> </span>
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/site-packages/requests/api.py</span> in <span class="ni">request</span><span class="nt">(method, url, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">59</span><span class="sd">     # cases, and look like a memory leak in others.</span>
+<span class="g g-Whitespace">     </span><span class="mi">60</span><span class="sd">     with sessions.Session() as session:</span>
+<span class="ne">---&gt; </span><span class="mi">61</span><span class="sd">         return session.request(method=method, url=url, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">62</span><span class="sd"> </span>
+<span class="g g-Whitespace">     </span><span class="mi">63</span><span class="sd"> </span>
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/site-packages/requests/sessions.py</span> in <span class="ni">request</span><span class="nt">(self, method, url, params, data, headers, cookies, files, auth, timeout, allow_redirects, proxies, hooks, stream, verify, cert, json)</span>
+<span class="g g-Whitespace">    </span><span class="mi">528</span><span class="sd">         }</span>
+<span class="g g-Whitespace">    </span><span class="mi">529</span><span class="sd">         send_kwargs.update(settings)</span>
+<span class="ne">--&gt; </span><span class="mi">530</span><span class="sd">         resp = self.send(prep, **send_kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">531</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">532</span><span class="sd">         return resp</span>
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/site-packages/requests/sessions.py</span> in <span class="ni">send</span><span class="nt">(self, request, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">641</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">642</span><span class="sd">         # Send the request</span>
+<span class="ne">--&gt; </span><span class="mi">643</span><span class="sd">         r = adapter.send(request, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">644</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">645</span><span class="sd">         # Total elapsed time of the request (approximately)</span>
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/site-packages/requests/adapters.py</span> in <span class="ni">send</span><span class="nt">(self, request, stream, timeout, verify, cert, proxies)</span>
+<span class="g g-Whitespace">    </span><span class="mi">437</span><span class="sd">         try:</span>
+<span class="g g-Whitespace">    </span><span class="mi">438</span><span class="sd">             if not chunked:</span>
+<span class="ne">--&gt; </span><span class="mi">439</span><span class="sd">                 resp = conn.urlopen(</span>
+<span class="g g-Whitespace">    </span><span class="mi">440</span><span class="sd">                     method=request.method,</span>
+<span class="g g-Whitespace">    </span><span class="mi">441</span><span class="sd">                     url=url,</span>
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/site-packages/urllib3/connectionpool.py</span> in <span class="ni">urlopen</span><span class="nt">(self, method, url, body, headers, retries, redirect, assert_same_host, timeout, pool_timeout, release_conn, chunked, body_pos, **response_kw)</span>
+<span class="g g-Whitespace">    </span><span class="mi">668</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">669</span><span class="sd">             # Make the request on the httplib connection object.</span>
+<span class="ne">--&gt; </span><span class="mi">670</span><span class="sd">             httplib_response = self._make_request(</span>
+<span class="g g-Whitespace">    </span><span class="mi">671</span><span class="sd">                 conn,</span>
+<span class="g g-Whitespace">    </span><span class="mi">672</span><span class="sd">                 method,</span>
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/site-packages/urllib3/connectionpool.py</span> in <span class="ni">_make_request</span><span class="nt">(self, conn, method, url, timeout, chunked, **httplib_request_kw)</span>
+<span class="g g-Whitespace">    </span><span class="mi">424</span><span class="sd">                     # Python 3 (including for exceptions like SystemExit).</span>
+<span class="g g-Whitespace">    </span><span class="mi">425</span><span class="sd">                     # Otherwise it looks like a bug in the code.</span>
+<span class="ne">--&gt; </span><span class="mi">426</span><span class="sd">                     six.raise_from(e, None)</span>
+<span class="g g-Whitespace">    </span><span class="mi">427</span><span class="sd">         except (SocketTimeout, BaseSSLError, SocketError) as e:</span>
+<span class="g g-Whitespace">    </span><span class="mi">428</span><span class="sd">             self._raise_timeout(err=e, url=url, timeout_value=read_timeout)</span>
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/site-packages/urllib3/packages/six.py</span> in <span class="ni">raise_from</span><span class="nt">(value, from_value)</span>
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/site-packages/urllib3/connectionpool.py</span> in <span class="ni">_make_request</span><span class="nt">(self, conn, method, url, timeout, chunked, **httplib_request_kw)</span>
+<span class="g g-Whitespace">    </span><span class="mi">419</span><span class="sd">                 # Python 3</span>
+<span class="g g-Whitespace">    </span><span class="mi">420</span><span class="sd">                 try:</span>
+<span class="ne">--&gt; </span><span class="mi">421</span><span class="sd">                     httplib_response = conn.getresponse()</span>
+<span class="g g-Whitespace">    </span><span class="mi">422</span><span class="sd">                 except BaseException as e:</span>
+<span class="g g-Whitespace">    </span><span class="mi">423</span><span class="sd">                     # Remove the TypeError from the exception chain in</span>
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/http/client.py</span> in <span class="ni">getresponse</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1346</span><span class="sd">         try:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1347</span><span class="sd">             try:</span>
+<span class="ne">-&gt; </span><span class="mi">1348</span><span class="sd">                 response.begin()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1349</span><span class="sd">             except ConnectionError:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1350</span><span class="sd">                 self.close()</span>
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/http/client.py</span> in <span class="ni">begin</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">314</span><span class="sd">         # read until we get a non-100 response</span>
+<span class="g g-Whitespace">    </span><span class="mi">315</span><span class="sd">         while True:</span>
+<span class="ne">--&gt; </span><span class="mi">316</span><span class="sd">             version, status, reason = self._read_status()</span>
+<span class="g g-Whitespace">    </span><span class="mi">317</span><span class="sd">             if status != CONTINUE:</span>
+<span class="g g-Whitespace">    </span><span class="mi">318</span><span class="sd">                 break</span>
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/http/client.py</span> in <span class="ni">_read_status</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">275</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">276</span><span class="sd">     def _read_status(self):</span>
+<span class="ne">--&gt; </span><span class="mi">277</span><span class="sd">         line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")</span>
+<span class="g g-Whitespace">    </span><span class="mi">278</span><span class="sd">         if len(line) &gt; _MAXLINE:</span>
+<span class="g g-Whitespace">    </span><span class="mi">279</span><span class="sd">             raise LineTooLong("status line")</span>
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/socket.py</span> in <span class="ni">readinto</span><span class="nt">(self, b)</span>
+<span class="g g-Whitespace">    </span><span class="mi">667</span><span class="sd">         while True:</span>
+<span class="g g-Whitespace">    </span><span class="mi">668</span><span class="sd">             try:</span>
+<span class="ne">--&gt; </span><span class="mi">669</span><span class="sd">                 return self._sock.recv_into(b)</span>
+<span class="g g-Whitespace">    </span><span class="mi">670</span><span class="sd">             except timeout:</span>
+<span class="g g-Whitespace">    </span><span class="mi">671</span><span class="sd">                 self._timeout_occurred = True</span>
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/site-packages/urllib3/contrib/pyopenssl.py</span> in <span class="ni">recv_into</span><span class="nt">(self, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">323</span><span class="sd">                 raise</span>
+<span class="g g-Whitespace">    </span><span class="mi">324</span><span class="sd">         except OpenSSL.SSL.WantReadError:</span>
+<span class="ne">--&gt; </span><span class="mi">325</span><span class="sd">             if not util.wait_for_read(self.socket, self.socket.gettimeout()):</span>
+<span class="g g-Whitespace">    </span><span class="mi">326</span><span class="sd">                 raise timeout("The read operation timed out")</span>
+<span class="g g-Whitespace">    </span><span class="mi">327</span><span class="sd">             else:</span>
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/site-packages/urllib3/util/wait.py</span> in <span class="ni">wait_for_read</span><span class="nt">(sock, timeout)</span>
+<span class="g g-Whitespace">    </span><span class="mi">144</span><span class="sd">     Returns True if the socket is readable, or False if the timeout expired.</span>
+<span class="g g-Whitespace">    </span><span class="mi">145</span><span class="sd">     """</span>
+<span class="ne">--&gt; </span><span class="mi">146</span>     <span class="k">return</span> <span class="n">wait_for_socket</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">read</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">147</span> 
+<span class="g g-Whitespace">    </span><span class="mi">148</span> 
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/site-packages/urllib3/util/wait.py</span> in <span class="ni">poll_wait_for_socket</span><span class="nt">(sock, read, write, timeout)</span>
+<span class="g g-Whitespace">    </span><span class="mi">105</span>         <span class="k">return</span> <span class="n">poll_obj</span><span class="o">.</span><span class="n">poll</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">106</span> 
+<span class="ne">--&gt; </span><span class="mi">107</span>     <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">_retry_on_intr</span><span class="p">(</span><span class="n">do_poll</span><span class="p">,</span> <span class="n">timeout</span><span class="p">))</span>
+<span class="g g-Whitespace">    </span><span class="mi">108</span> 
+<span class="g g-Whitespace">    </span><span class="mi">109</span> 
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/site-packages/urllib3/util/wait.py</span> in <span class="ni">_retry_on_intr</span><span class="nt">(fn, timeout)</span>
+<span class="g g-Whitespace">     </span><span class="mi">41</span>     <span class="c1"># Modern Python, that retries syscalls by default</span>
+<span class="g g-Whitespace">     </span><span class="mi">42</span>     <span class="k">def</span> <span class="nf">_retry_on_intr</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">timeout</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">43</span>         <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">44</span> 
+<span class="g g-Whitespace">     </span><span class="mi">45</span> 
+
+<span class="nn">~/miniconda/envs/gmprocess/lib/python3.8/site-packages/urllib3/util/wait.py</span> in <span class="ni">do_poll</span><span class="nt">(t)</span>
+<span class="g g-Whitespace">    </span><span class="mi">103</span>         <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">104</span>             <span class="n">t</span> <span class="o">*=</span> <span class="mi">1000</span>
+<span class="ne">--&gt; </span><span class="mi">105</span>         <span class="k">return</span> <span class="n">poll_obj</span><span class="o">.</span><span class="n">poll</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">106</span> 
+<span class="g g-Whitespace">    </span><span class="mi">107</span>     <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">_retry_on_intr</span><span class="p">(</span><span class="n">do_poll</span><span class="p">,</span> <span class="n">timeout</span><span class="p">))</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
 </div>
 </div>
@@ -548,23 +708,6 @@ metrics, including the response spectra</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3 StationStreams(s) in StreamCollection:
-  3 StationTrace(s) in StationStream (failed):
-    CI.CLC.--.HN2 | 2019-07-06T03:19:52.680000Z - 2019-07-06T03:20:53.210000Z | 100.0 Hz, 6054 samples (passed)
-    CI.CLC.--.HN1 | 2019-07-06T03:19:52.680000Z - 2019-07-06T03:20:53.210000Z | 100.0 Hz, 6054 samples (passed)
-    CI.CLC.--.HNZ | 2019-07-06T03:19:52.680000Z - 2019-07-06T03:20:53.210000Z | 100.0 Hz, 6054 samples (failed)
-  3 StationTrace(s) in StationStream (passed):
-    CI.TOW2.--.HN2 | 2019-07-06T03:19:54.060000Z - 2019-07-06T03:21:06.850000Z | 100.0 Hz, 7280 samples (passed)
-    CI.TOW2.--.HN1 | 2019-07-06T03:19:54.060000Z - 2019-07-06T03:21:06.850000Z | 100.0 Hz, 7280 samples (passed)
-    CI.TOW2.--.HNZ | 2019-07-06T03:19:54.060000Z - 2019-07-06T03:21:06.850000Z | 100.0 Hz, 7280 samples (passed)
-  3 StationTrace(s) in StationStream (passed):
-    CI.CCC.--.HN2 | 2019-07-06T03:19:57.140000Z - 2019-07-06T03:21:29.800000Z | 100.0 Hz, 9267 samples (passed)
-    CI.CCC.--.HN1 | 2019-07-06T03:19:57.140000Z - 2019-07-06T03:21:29.800000Z | 100.0 Hz, 9267 samples (passed)
-    CI.CCC.--.HNZ | 2019-07-06T03:19:57.140000Z - 2019-07-06T03:21:29.800000Z | 100.0 Hz, 9267 samples (passed)
-</pre></div>
-</div>
-</div>
 </div>
 <p>From the <code class="docutils literal notranslate"><span class="pre">describe</span></code> output, you can see that station CI.CLC failed the QA
 checks that are applied during the <code class="docutils literal notranslate"><span class="pre">process_streams</span></code> command. You can also
@@ -573,11 +716,6 @@ caused the failure, we can look at the <code class="docutils literal notranslate
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">psc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s1">'failure'</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{'module': 'check_tail', 'reason': 'Velocity ratio is greater than 0.3'}
 </pre></div>
 </div>
 </div>
@@ -595,25 +733,6 @@ use the third stream (CI.CCC) for the rest of this tutorial.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute response spectra for one of the processed streams</span>
 <span class="n">summary</span> <span class="o">=</span> <span class="n">StationSummary</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">psc</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">event</span><span class="o">=</span><span class="n">event</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">conf</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">summary</span><span class="o">.</span><span class="n">pgms</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                            Result
-IMT          IMC                  
-SA(0.030)    ROTD(50.0)  57.038426
-             H2          72.085069
-             H1          52.134084
-             Z           59.827959
-DURATION5-95 H2          11.380000
-...                            ...
-SA(0.300)    Z           44.512070
-SA(1.500)    ROTD(50.0)  41.326347
-             H2          20.692151
-             H1          53.563236
-             Z            8.408986
-
-[101 rows x 1 columns]
 </pre></div>
 </div>
 </div>
@@ -698,9 +817,6 @@ and oscillator periods as arrays</p>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Spectral Acceleration (g)'</span><span class="p">);</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/response_spectra_19_0.png" src="../../_images/response_spectra_19_0.png"/>
 </div>
 </div>
 </section>

@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Manual" href="../manual/index.html" /><link rel="prev" title="Response Spectra Calculation and Comparison" href="response_spectra.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Processed Waveforms from ASDF File" href="asdf_to_waveforms.html" /><link rel="prev" title="Response Spectra Calculation and Comparison" href="response_spectra.html" />
 
     <meta name="generator" content="sphinx-4.3.0, furo 2021.10.09"/>
-        <title>Linear Mixed Effects Regressions - gmprocess 1.1.11.dev117+g13e1df3.d20211114 documentation</title>
+        <title>Linear Mixed Effects Regressions - gmprocess 1.1.11.dev124+g0b05901.d20211114 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev117+g13e1df3.d20211114 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev124+g0b05901.d20211114 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,8 +182,9 @@
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="cli.html">Command Line Interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="response_spectra.html">Response Spectra Calculation and Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="response_spectra.html">Response Spectra Calculation</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Linear Mixed Effects Regressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="asdf_to_waveforms.html">Processed Waveforms from ASDF File</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../manual/index.html">Manual</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -452,16 +453,20 @@
           </label>
         </div>
         <article role="main">
-          <section id="linear-mixed-effects-regressions">
+          <section class="tex2jax_ignore mathjax_ignore" id="linear-mixed-effects-regressions">
 <h1>Linear Mixed Effects Regressions<a class="headerlink" href="#linear-mixed-effects-regressions" title="Permalink to this headline">¶</a></h1>
 <p>After assembling a ground motion database with gmprocess, linear mixed effects
-models can be used to analyze trends in the data
-(<a class="reference external" href="https://www.statsmodels.org/stable/mixed_linear.html">https://www.statsmodels.org/stable/mixed_linear.html</a>). In this tutorial,
-we will read in some sample ground motion data, compute residuals relative to a
-ground motion model, and perform a linear, mixed effects regression to estimate
-the between- and within-event terms.</p>
+models can be used to analyze trends in the data. In this tutorial, we will
+read in some sample ground motion data, compute residuals relative to a ground
+motion model, and perform a linear, mixed effects regression to estimate the
+between- and within-event terms.</p>
 <p>First, we import the necessary packages:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">smf</span>
@@ -473,40 +478,46 @@ the between- and within-event terms.</p>
 <span class="kn">from</span> <span class="nn">openquake.hazardlib.gsim.abrahamson_2014</span> <span class="kn">import</span> <span class="n">AbrahamsonEtAl2014</span>
 </pre></div>
 </div>
-<p>The statsmodels package will need to be installed separately
-(<a class="reference external" href="https://www.statsmodels.org/stable/install.html">https://www.statsmodels.org/stable/install.html</a>) as it is not installed by
-default in the gmprocess environment.</p>
-<p>Next, we will read in the ground motion data. We are using a ground motion
-dataset of earthquakes from the 2019 Ridgecrest, California Earthquake
-Sequence. If you would like to follow along with this tutorial, you can
-download the data
-<a class="reference external" href="https://www.strongmotioncenter.org/specialstudies/rekoske_2019ridgecrest/SA_rotd50.0_2020.03.31.csv">here</a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'SA_rotd50.0_2020.03.31.csv'</span><span class="p">)</span>
+</div>
+</div>
+<p>This tutorial uses the <a class="reference external" href="https://www.statsmodels.org/stable/install.html">statsmodels</a> package to create a mixed effects regression from spectral accelerations
+output from <code class="docutils literal notranslate"><span class="pre">gmprocess</span></code>.</p>
+<p>We are using a ground motion dataset of earthquakes from the 2019 Ridgecrest,
+California Earthquake Sequence.</p>
+<div class="cell tag_remove-stderr docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Path to example data</span>
+<span class="n">rel_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">'data'</span><span class="p">,</span> <span class="s1">'testdata'</span><span class="p">,</span> <span class="s1">'lme'</span><span class="p">,</span> <span class="s1">'SA_rotd50.0_2020.03.31.csv'</span><span class="p">)</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s1">'gmprocess'</span><span class="p">,</span> <span class="n">rel_path</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>We then initialize the ground motion model and intensity measure type (IMT).
-For this tutorial, we will use the ASK14 ground motion model and the
-1.0-second response spectra.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gmm</span> <span class="o">=</span> <span class="n">AbrahamsonEtAl2014</span><span class="p">()</span>
+</div>
+</div>
+<p>We will use the ASK14 ground motion model (GMM) and spectral acceleration for
+an ossilator period of 1.0 seconds.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gmm</span> <span class="o">=</span> <span class="n">AbrahamsonEtAl2014</span><span class="p">()</span>
 <span class="n">imt</span> <span class="o">=</span> <span class="n">SA</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>We will then loop over all earthquakes and compute the predicted data using
-ASK14. To evaluate the GMM, we must make some assumptions regarding the rupture
+</div>
+</div>
+<p>To evaluate the GMM, we must make some simple assumptions regarding the rupture
 properties (dip, rake, width, ztor) and site properties (Vs30, Z1).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">predicted_data</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="c1"># Loop over each earthquake</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predicted_data</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">eqid</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">EarthquakeId</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
     <span class="n">df_eq</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">EarthquakeId</span> <span class="o">==</span> <span class="n">eqid</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">df_eq</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
     <span class="c1"># Create a context with all the model inputs</span>
     <span class="n">inputs</span> <span class="o">=</span> <span class="n">RuptureContext</span><span class="p">()</span>
     <span class="n">inputs</span><span class="o">.</span><span class="n">dip</span> <span class="o">=</span> <span class="mf">90.0</span>
     <span class="n">inputs</span><span class="o">.</span><span class="n">rake</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="n">inputs</span><span class="o">.</span><span class="n">mag</span> <span class="o">=</span> <span class="n">df_eq</span><span class="o">.</span><span class="n">EarthquakeMagnitude</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">inputs</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.76</span> <span class="o">+</span> <span class="mf">0.27</span> <span class="o">*</span> <span class="n">rx</span><span class="o">.</span><span class="n">mag</span><span class="p">)</span>
+    <span class="n">inputs</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.76</span> <span class="o">+</span> <span class="mf">0.27</span> <span class="o">*</span> <span class="n">inputs</span><span class="o">.</span><span class="n">mag</span><span class="p">)</span>
     <span class="n">inputs</span><span class="o">.</span><span class="n">ztor</span> <span class="o">=</span> <span class="n">df_eq</span><span class="o">.</span><span class="n">EarthquakeDepth</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">inputs</span><span class="o">.</span><span class="n">vs30</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mf">760.0</span><span class="p">)</span>
     <span class="n">inputs</span><span class="o">.</span><span class="n">vs30measured</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
@@ -517,9 +528,9 @@ properties (dip, rake, width, ztor) and site properties (Vs30, Z1).</p>
     <span class="n">inputs</span><span class="o">.</span><span class="n">ry0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">inputs</span><span class="o">.</span><span class="n">sids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
 
-    <span class="c1"># Evaluate the GMM. Note that due to a recent update, the best thing to</span>
-    <span class="c1"># do is to recycle a single context ("inputs") for all of the contexts</span>
-    <span class="c1"># (distance, rupture, and sites).</span>
+    <span class="c1"># Evaluate the GMM. Note that due to a recent update, the best practice</span>
+    <span class="c1"># is to recycle a single context ("inputs") for all of the input contexts</span>
+    <span class="c1"># for the get_mean_and_stddevs method (distance, rupture, and sites).</span>
     <span class="n">mean</span><span class="p">,</span> <span class="n">sd</span> <span class="o">=</span> <span class="n">gmm</span><span class="o">.</span><span class="n">get_mean_and_stddevs</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">imt</span><span class="p">,</span> <span class="p">[])</span>
 
     <span class="c1"># Convert from ln(g) to %g</span>
@@ -529,90 +540,103 @@ properties (dip, rake, width, ztor) and site properties (Vs30, Z1).</p>
     <span class="n">predicted_data</span> <span class="o">+=</span> <span class="n">mean</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Next, we compute the residuals between the observed and predicted data:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">resid_col</span> <span class="o">=</span> <span class="s1">'SA_1_ASK14_residuals'</span>
+</div>
+</div>
+<p>Now add the model residuals to the dataframe:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">resid_col</span> <span class="o">=</span> <span class="s1">'SA_1_ASK14_residuals'</span>
 <span class="n">df</span><span class="p">[</span><span class="n">resid_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'SA(1.000)'</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">predicted_data</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>We are now ready to perform the linear mixed effects regression. We use the
-‘EarthquakeId’ column to group the data by event to compute the between-event
-and within-event terms. We initalize and fit the linear mixed effects model
-with statsmodels using the following syntax:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mdf</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">mixedlm</span><span class="p">(</span><span class="s1">'</span><span class="si">%s</span><span class="s1"> ~ 1'</span> <span class="o">%</span> <span class="n">resid_col</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">'EarthquakeId'</span><span class="p">])</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+</div>
+</div>
+<p>For the linear mixed effects regression, we use the ‘EarthquakeId’ column to
+group the data by event to compute the between-event and within-event terms.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mdf</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">mixedlm</span><span class="p">(</span><span class="s1">'</span><span class="si">%s</span><span class="s1"> ~ 1'</span> <span class="o">%</span> <span class="n">resid_col</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">'EarthquakeId'</span><span class="p">])</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mdf</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
 </pre></div>
 </div>
-<p>We can see a quick summary of the regression results with</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">mdf</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              Mixed Linear Model Regression Results
+==================================================================
+Model:            MixedLM Dependent Variable: SA_1_ASK14_residuals
+No. Observations: 22375   Method:             REML                
+No. Groups:       131     Scale:              0.6680              
+Min. group size:  1       Log-Likelihood:     -27457.3530         
+Max. group size:  767     Converged:          Yes                 
+Mean group size:  170.8                                           
+---------------------------------------------------------------------
+             Coef.    Std.Err.      z       P&gt;|z|    [0.025    0.975]
+---------------------------------------------------------------------
+Intercept    0.828       0.046    17.899    0.000     0.737     0.919
+Group Var    0.245       0.045                                       
+==================================================================
 </pre></div>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">            Mixed Linear Model Regression Results</span>
-<span class="go">==================================================================</span>
-<span class="go">Model:            MixedLM Dependent Variable: SA_1_ASK14_residuals</span>
-<span class="go">No. Observations: 22375   Method:             REML</span>
-<span class="go">No. Groups:       131     Scale:              0.6680</span>
-<span class="go">Min. group size:  1       Log-Likelihood:     -27457.3530</span>
-<span class="go">Max. group size:  767     Converged:          Yes</span>
-<span class="go">Mean group size:  170.8</span>
-<span class="go">---------------------------------------------------------------------</span>
-<span class="go">            Coef.    Std.Err.      z       P&gt;|z|    [0.025    0.975]</span>
-<span class="go">---------------------------------------------------------------------</span>
-<span class="go">Intercept    0.828       0.046    17.899    0.000     0.737     0.919</span>
-<span class="go">Group Var    0.245       0.045</span>
-<span class="go">==================================================================</span>
-</pre></div>
+</div>
 </div>
 <p>The model yields a bias (intercept) of 0.828. We can also look at
-the between-event terms with</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">mdf</span><span class="o">.</span><span class="n">random_effects</span><span class="p">)</span>
+the between-event terms with in the <code class="docutils literal notranslate"><span class="pre">randome_effects</span></code> attribute, which is
+a dictionary with keys corresponding to the random effect grouping.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">re_array</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">re</span><span class="p">)</span> <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">re</span> <span class="ow">in</span> <span class="n">mdf</span><span class="o">.</span><span class="n">random_effects</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">re_array</span><span class="p">,</span> <span class="s1">'o'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Index'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Random effect'</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">{'ci37219172': Group   -0.243347</span>
-<span class="go">dtype: float64, 'ci37219180': Group    0.449234</span>
-<span class="go">dtype: float64, 'ci37219476': Group    0.237103</span>
-<span class="go">dtype: float64, 'ci37219516': Group   -0.57304</span>
-<span class="go">dtype: float64, 'ci37219556': Group   -0.163552</span>
-<span class="go">dtype: float64, 'ci37219580': Group    0.0437</span>
-<span class="go">...</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, 'Random effect')
 </pre></div>
 </div>
-<p>and the within-event terms with</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">mdf</span><span class="o">.</span><span class="n">resid</span><span class="p">)</span>
+<img alt="../../_images/lme_13_1.png" src="../../_images/lme_13_1.png"/>
+</div>
+</div>
+<p>and the within-event resudials</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'EpicentralDistance'</span><span class="p">],</span> <span class="n">mdf</span><span class="o">.</span><span class="n">resid</span><span class="p">,</span> <span class="s1">'o'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Epicentral Distance, km'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Within-event residual'</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">0       -0.240723</span>
-<span class="go">1       -0.563343</span>
-<span class="go">2       -0.248569</span>
-<span class="go">3        0.847873</span>
-<span class="go">4       -0.781516</span>
-<span class="go">        ...</span>
-<span class="go">22370   -1.759840</span>
-<span class="go">22371    0.187622</span>
-<span class="go">22372   -1.260160</span>
-<span class="go">22373    0.972692</span>
-<span class="go">22374    0.080163</span>
-<span class="go">Length: 22375, dtype: float64</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, 'Within-event residual')
 </pre></div>
 </div>
-<p>Now that we have computed the between- and within-event terms, we show how to
-merge the computed terms with the original database, and look at the
-between-event terms as a function of hypocentral depth, as an example.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">btw_event_terms</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mdf</span><span class="o">.</span><span class="n">random_effects</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<img alt="../../_images/lme_15_1.png" src="../../_images/lme_15_1.png"/>
+</div>
+</div>
+<p>It is useful to merge the random effect terms with the original dataframe to
+look at the between-event terms as a function of other parameters, such
+as hypocentral depth.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">btw_event_terms</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mdf</span><span class="o">.</span><span class="n">random_effects</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">btw_event_terms</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">'EarthquakeId'</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">df_events</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'EarthquakeId'</span><span class="p">])</span>
 
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<span class="n">axes</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">])</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">axes</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">])</span>
 <span class="n">axes</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df_events</span><span class="p">[</span><span class="s1">'EarthquakeDepth'</span><span class="p">],</span> <span class="n">df_events</span><span class="p">[</span><span class="s1">'Group'</span><span class="p">])</span>
 <span class="n">axes</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Hypocentral Depth (km)'</span><span class="p">)</span>
 <span class="n">axes</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Event term (T = 1 s)'</span><span class="p">)</span>
 <span class="n">axes</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'k'</span><span class="p">)</span>
-<span class="n">axes</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">'lme_example.png'</span><span class="p">,</span> <span class="n">transparent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">axes</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">);</span>
 </pre></div>
 </div>
-<figure class="align-default">
-<img alt="../../_images/lme_example.png" src="../../_images/lme_example.png"/>
-</figure>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/lme_17_0.png" src="../../_images/lme_17_0.png"/>
+</div>
+</div>
 </section>
 
         </article>
@@ -620,12 +644,12 @@ between-event terms as a function of hypocentral depth, as an example.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../manual/index.html">
+          <a class="next-page" href="asdf_to_waveforms.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Manual</div>
+                <div class="title">Processed Waveforms from ASDF File</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -648,7 +672,7 @@ between-event terms as a function of hypocentral depth, as an example.</p>
               and
               <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
               <a href="https://github.com/pradyunsg/furo">Furo theme</a>. |
-            <a class="muted-link" href="../../_sources/contents/tutorials/lme.rst.txt"
+            <a class="muted-link" href="../../_sources/contents/tutorials/lme.md.txt"
                rel="nofollow">
               Show Source
             </a>
