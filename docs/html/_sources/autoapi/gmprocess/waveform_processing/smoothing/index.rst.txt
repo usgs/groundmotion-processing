@@ -1,0 +1,6 @@
+:py:mod:`gmprocess.waveform_processing.smoothing`
+=================================================
+
+.. py:module:: gmprocess.waveform_processing.smoothing
+
+

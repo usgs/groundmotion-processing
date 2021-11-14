@@ -1,0 +1,34 @@
+:py:mod:`gmprocess.metrics.rotation.rotd`
+=========================================
+
+.. py:module:: gmprocess.metrics.rotation.rotd
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.metrics.rotation.rotd.Rotd
+
+
+
+
+.. py:class:: Rotd(rotation_data, event=None)
+
+   Bases: :py:obj:`gmprocess.metrics.rotation.rotation.Rotation`
+
+   Class for computing the ROTD rotation.
+
+   .. py:method:: get_rotd(self)
+
+      Performs GMROTD rotation.
+
+      :returns: numpy.ndarray of the rotated and combined traces.
+      :rtype: rotd
+
+
+

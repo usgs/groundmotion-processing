@@ -1,0 +1,69 @@
+\documentclass[tikz, border=2pt]{standalone}
+\usepackage{helvet}
+\renewcommand{\familydefault}{phv}
+
+\begin{document}
+\pagestyle{empty}
+
+\input{palettes/palette_general}
+\input{palettes/palette_usgs}
+
+\usetikzlibrary{shapes,positioning}
+
+\tikzstyle{diagram} = [node distance=2em]
+
+\tikzstyle{default} = [rectangle,
+text width=4em,
+minimum height=4em,
+  line width=0pt,
+  anchor=center]
+
+\tikzstyle{dark} = [default, color=white]
+\tikzstyle{light} = [default, color=black]
+
+\begin{tikzpicture}[diagram]
+
+  \node (c0) [light,fill=ltyellow] {ltyellow};
+  \node (c1) [light,fill=yellow, right=of c0] {yellow};
+  
+  \node (c2) [light,fill=ltorange, below=of c0] {ltorange};
+  \node (c3) [light,fill=orange, right=of c2] {orange};
+  
+  \node (c4) [light,fill=ltred, below=of c2] {ltred};
+  \node (c5) [dark,fill=red, right=of c4] {red};
+  
+  \node (c6) [light,fill=ltpurple, below=of c4] {ltpurple};
+  \node (c7) [dark,fill=purple, right=of c6] {purple};
+  
+  \node (c8) [light,fill=ltblue, below=of c6] {ltblue};
+  \node (c9) [dark,fill=blue, right=of c8] {blue};
+  
+  \node (c10) [light,fill=ltltgreen, below=of c8] {ltltgreen};
+  \node (c11) [light,fill=ltgreen, right=of c10] {ltgreen};
+  \node (c12) [dark,fill=green, right=of c11] {green};
+
+  \node (c100) [dark,fill=usgs_green, below=of c10] {usgs\_green};
+  \node (c101) [light,fill=usgs_ltgreen, right=of c100] {usgs\_ltgreen};
+  \node (c102) [dark,fill=usgs_dkgreen, right=of c101] {usgs\_dkgreen};
+  \node (c103) [dark,fill=usgs_dkgreen2, right=of c102] {usgs\_dkgreen2};
+
+  \node (c110) [dark,fill=usgs_teal, below=of c100] {usgs\_teal};
+
+  \node (c120) [dark,fill=usgs_blue, below=of c110] {usgs\_blue};
+  \node (c121) [dark,fill=usgs_dkblue, right=of c120] {usgs\_dkblue};
+  
+  \node (c130) [dark,fill=usgs_navy, below=of c120] {usgs\_navy};
+  \node (c131) [dark,fill=usgs_dknavy, right=of c130] {usgs\_dknavy};
+
+  \node (c140) [dark,fill=usgs_purple, below=of c130] {usgs\_purple};
+  \node (c141) [dark,fill=usgs_dkpurple, right=of c140] {usgs\_dkpurple};
+  
+  \node (c150) [light,fill=usgs_red, below=of c140] {usgs\_red};
+  \node (c151) [dark,fill=usgs_dkred, right=of c150] {usgs\_dkred};
+  
+  \node (c160) [light,fill=usgs_orange, below=of c150] {usgs\_orange};
+  \node (c161) [dark,fill=usgs_dkorange, right=of c160] {usgs\_dkorange};
+  
+\end{tikzpicture}
+
+\end{document}

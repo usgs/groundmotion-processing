@@ -1,0 +1,57 @@
+:py:mod:`gmprocess.bin.gminfo`
+==============================
+
+.. py:module:: gmprocess.bin.gminfo
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.bin.gminfo.get_dataframe
+   gmprocess.bin.gminfo.render_concise
+   gmprocess.bin.gminfo.render_dir
+   gmprocess.bin.gminfo.render_verbose
+   gmprocess.bin.gminfo.main
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.bin.gminfo.COLUMNS
+   gmprocess.bin.gminfo.ERROR_COLUMNS
+
+
+.. py:data:: COLUMNS
+   :annotation: = ['Filename', 'Format', 'Process Level', 'Start Time', 'End Time', 'Duration (s)', 'Network',...
+
+   
+
+.. py:data:: ERROR_COLUMNS
+   :annotation: = ['Filename', 'Error']
+
+   
+
+.. py:function:: get_dataframe(filename, stream)
+
+
+.. py:function:: render_concise(files, save=False)
+
+
+.. py:function:: render_dir(rootdir, concise=True, save=False)
+
+
+.. py:function:: render_verbose(files)
+
+
+.. py:function:: main()
+
+
