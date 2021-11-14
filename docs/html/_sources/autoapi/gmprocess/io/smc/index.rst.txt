@@ -1,0 +1,15 @@
+:py:mod:`gmprocess.io.smc`
+==========================
+
+.. py:module:: gmprocess.io.smc
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   core/index.rst
+
+
