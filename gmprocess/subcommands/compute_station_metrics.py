@@ -151,9 +151,6 @@ class ComputeStationMetricsModule(SubcommandModule):
             gc2_U = np.full_like(rjb_mean, np.nan)
             gc2_T = np.full_like(rjb_mean, np.nan)
         else:
-            logging.info('******************************')
-            logging.info('* Found rupture              *')
-            logging.info('******************************')
             sta_lons = np.array(sta_lons)
             sta_lats = np.array(sta_lats)
             elev = np.full_like(sta_lons, ELEVATION_FOR_DISTANCE_CALCS)

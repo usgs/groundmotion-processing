@@ -34,7 +34,6 @@ version = release
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'recommonmark',
     'sphinx.ext.autodoc',
     'autoapi.extension',
     'sphinx.ext.autosummary',
@@ -42,7 +41,9 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
     'sphinx.ext.autosectionlabel',
-    'sphinx_inline_tabs'
+    'sphinx_inline_tabs',
+    'sphinxcontrib.programoutput',
+    'myst_nb'
 ]
 
 autoapi_dirs = ['../gmprocess']

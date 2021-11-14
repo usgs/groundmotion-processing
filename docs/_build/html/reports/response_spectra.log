@@ -1,0 +1,70 @@
+Traceback (most recent call last):
+  File "/Users/emthompson/miniconda/envs/gmprocess/lib/python3.8/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/Users/emthompson/miniconda/envs/gmprocess/lib/python3.8/site-packages/nbclient/client.py", line 1093, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/Users/emthompson/miniconda/envs/gmprocess/lib/python3.8/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/Users/emthompson/miniconda/envs/gmprocess/lib/python3.8/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/Users/emthompson/miniconda/envs/gmprocess/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/Users/emthompson/miniconda/envs/gmprocess/lib/python3.8/site-packages/nbclient/client.py", line 559, in async_execute
+    await self.async_execute_cell(
+  File "/Users/emthompson/miniconda/envs/gmprocess/lib/python3.8/site-packages/nbclient/client.py", line 854, in async_execute_cell
+    self._check_raise_for_error(cell, exec_reply)
+  File "/Users/emthompson/miniconda/envs/gmprocess/lib/python3.8/site-packages/nbclient/client.py", line 756, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+# Prepare inputs for OQ GMPE
+gmpe = BooreEtAl2014()
+stddev_types = [StdDev.TOTAL]
+
+# Define rupture information
+inputs = base.RuptureContext()
+inputs.mag = rotd_dict['ROTD(50.0)']['EarthquakeMagnitude']
+inputs.rake = 90.0
+inputs.hypo_depth = rotd_dict['ROTD(50.0)']['EarthquakeDepth']
+inputs.ztor = 0.0
+inputs.rjb = np.array([5.0])
+inputs.vs30 = np.array([760.0])
+
+# Evaluate (must loop over periods since OQ takes in IMT as scalar)
+BSSA14 = {
+    'lmean': np.array([]),
+    'lsd': np.array([])
+}
+for per in period:
+    lmean, lsd = gmpe.get_mean_and_stddevs(
+        inputs, inputs, inputs, imt.SA(per), stddev_types)
+    BSSA14['lmean'] = np.append(BSSA14['lmean'], lmean[0])
+    BSSA14['lsd'] = np.append(BSSA14['lsd'], lsd[0][0])
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mAttributeError[0m                            Traceback (most recent call last)
+[0;32m/var/folders/00/_0gc_srn5sx936prflc1ln3c0181xj/T/ipykernel_44502/800207923.py[0m in [0;36m<module>[0;34m[0m
+[1;32m     18[0m }
+[1;32m     19[0m [0;32mfor[0m [0mper[0m [0;32min[0m [0mperiod[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 20[0;31m     lmean, lsd = gmpe.get_mean_and_stddevs(
+[0m[1;32m     21[0m         inputs, inputs, inputs, imt.SA(per), stddev_types)
+[1;32m     22[0m     [0mBSSA14[0m[0;34m[[0m[0;34m'lmean'[0m[0;34m][0m [0;34m=[0m [0mnp[0m[0;34m.[0m[0mappend[0m[0;34m([0m[0mBSSA14[0m[0;34m[[0m[0;34m'lmean'[0m[0;34m][0m[0;34m,[0m [0mlmean[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/miniconda/envs/gmprocess/lib/python3.8/site-packages/openquake/hazardlib/gsim/base.py[0m in [0;36mget_mean_and_stddevs[0;34m(self, sites, rup, dists, imt, stddev_types)[0m
+[1;32m    359[0m         """
+[1;32m    360[0m         [0;31m# mean and stddevs by calling the underlying .compute method[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 361[0;31m         [0mN[0m [0;34m=[0m [0mlen[0m[0;34m([0m[0msites[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    362[0m         [0mmean[0m [0;34m=[0m [0mnumpy[0m[0;34m.[0m[0mzeros[0m[0;34m([0m[0;34m([0m[0;36m1[0m[0;34m,[0m [0mN[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    363[0m         [0msig[0m [0;34m=[0m [0mnumpy[0m[0;34m.[0m[0mzeros[0m[0;34m([0m[0;34m([0m[0;36m1[0m[0;34m,[0m [0mN[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/miniconda/envs/gmprocess/lib/python3.8/site-packages/openquake/hazardlib/contexts.py[0m in [0;36m__len__[0;34m(self)[0m
+[1;32m    989[0m     [0;31m# used in acme_2019[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    990[0m     [0;32mdef[0m [0m__len__[0m[0;34m([0m[0mself[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 991[0;31m         [0;32mreturn[0m [0mlen[0m[0;34m([0m[0mself[0m[0;34m.[0m[0msids[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    992[0m [0;34m[0m[0m
+[1;32m    993[0m     [0;32mdef[0m [0mroundup[0m[0;34m([0m[0mself[0m[0;34m,[0m [0mminimum_distance[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mAttributeError[0m: 'RuptureContext' object has no attribute 'sids'
+AttributeError: 'RuptureContext' object has no attribute 'sids'
+

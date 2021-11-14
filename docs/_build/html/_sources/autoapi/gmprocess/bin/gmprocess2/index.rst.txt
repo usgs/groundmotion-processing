@@ -1,0 +1,57 @@
+:mod:`gmprocess.bin.gmprocess2`
+===============================
+
+.. py:module:: gmprocess.bin.gmprocess2
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.bin.gmprocess2.MyFormatter
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.bin.gmprocess2.format_helptext
+   gmprocess.bin.gmprocess2.append_file
+   gmprocess.bin.gmprocess2.process_event
+   gmprocess.bin.gmprocess2.find_workspace_files
+   gmprocess.bin.gmprocess2.main
+
+
+.. py:class:: MyFormatter(prog, indent_increment=2, max_help_position=24, width=None)
+
+   Bases: :class:`argparse.RawTextHelpFormatter`, :class:`argparse.ArgumentDefaultsHelpFormatter`
+
+   Help message formatter which retains formatting of all help text.
+
+   Only the name of this class is considered a public API. All the methods
+   provided by the class are considered an implementation detail.
+
+
+.. function:: format_helptext(text)
+
+   Format help text, including wrapping.
+
+
+.. function:: append_file(files_created, tag, filename)
+
+
+.. function:: process_event(event, outdir, pcommands, config, input_directory, process_tag, files_created, output_format, status, recompute_metrics, export_dir=None)
+
+
+.. function:: find_workspace_files(outdir)
+
+
+.. function:: main()
+
+

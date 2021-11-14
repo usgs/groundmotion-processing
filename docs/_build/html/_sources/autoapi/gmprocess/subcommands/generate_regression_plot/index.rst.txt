@@ -1,0 +1,49 @@
+:py:mod:`gmprocess.subcommands.generate_regression_plot`
+========================================================
+
+.. py:module:: gmprocess.subcommands.generate_regression_plot
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.subcommands.generate_regression_plot.GenerateRegressionPlotModule
+
+
+
+
+.. py:class:: GenerateRegressionPlotModule
+
+   Bases: :py:obj:`gmprocess.subcommands.base.SubcommandModule`
+
+   Generate multi-event "regression" plot.
+
+
+   .. py:attribute:: command_name
+      :annotation: = generate_regression_plot
+
+      
+
+   .. py:attribute:: aliases
+      :annotation: = ['regression']
+
+      
+
+   .. py:attribute:: arguments
+      :annotation: = []
+
+      
+
+   .. py:method:: main(self, gmrecords)
+
+      Generate multi-event "regression" plot.
+
+      :param gmrecords: GMrecordsApp instance.
+
+
+

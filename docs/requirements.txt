@@ -1,7 +1,9 @@
 sphinx>3.0.0
 requests>=2
 furo
+nbsphinx
 recommonmark
 sphinx-autoapi
 setuptools_scm
 sphinx-inline-tabs
+sphinxcontrib-programoutput
