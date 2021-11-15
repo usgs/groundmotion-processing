@@ -281,15 +281,15 @@ failed the signal-to-noise ratio test first.
 
 
 ```{tab} NC.NHC
-<img src="../../_static/nc72282711_NC.NHC.HN.png">
+<img src="../../_static/nc72282711_NC.NHC.HN.png" alt="NC.NHC.HN">
 ```
 
 ```{tab} NC.N016
-<img src="../../_static/nc72282711_NC.N016.HN.png">
+<img src="../../_static/nc72282711_NC.N016.HN.png" alt="NC.N016.HN">
 ```
 
 ```{tab} CE.68150
-<img src="../../_static/nc72282711_CE.68150.HN.png">
+<img src="../../_static/nc72282711_CE.68150.HN.png" alt="CE.68150.HN">
 ```
 
 
