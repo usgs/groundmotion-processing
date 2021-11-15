@@ -68,7 +68,7 @@ todo_include_todos = True
 html_theme = 'furo'
 html_logo = '_static/gmprocess_logo.png'
 
-base_url = 'https://gmprocess.readthedocs.io/en/latest/'
+base_url = 'https://usgs.github.io/groundmotion-processing'
 
 announcement_html = """
     <a href='https://www.usgs.gov/' style='text-decoration: none'>
