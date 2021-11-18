@@ -6,8 +6,6 @@ import glob
 import os
 import subprocess
 
-from setuptools_scm import get_version
-
 # third party imports
 import numpy as np
 import pandas as pd

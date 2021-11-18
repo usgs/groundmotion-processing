@@ -11,7 +11,6 @@ import argparse
 import logging
 
 from configobj import ConfigObj
-from setuptools_scm import get_version
 
 from gmprocess.utils.config import get_config
 from gmprocess.utils.logging import setup_logger
@@ -19,10 +18,7 @@ from gmprocess.subcommands.base import SubcommandModule
 from gmprocess.subcommands.projects import Project, create
 from gmprocess.subcommands.init import InitModule
 from gmprocess.utils import constants
-
-VERSION = get_version(
-    root=os.path.join(os.pardir, os.pardir),
-    relative_to=__file__)
+from gmprocess.version import __version__ as VERSION
 
 
 class GMrecordsApp(object):
