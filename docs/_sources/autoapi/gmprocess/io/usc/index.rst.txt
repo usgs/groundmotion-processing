@@ -1,0 +1,15 @@
+:py:mod:`gmprocess.io.usc`
+==========================
+
+.. py:module:: gmprocess.io.usc
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   core/index.rst
+
+

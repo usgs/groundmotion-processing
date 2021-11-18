@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 # stdlib imports
-import os
 import json
 import copy
 import logging
@@ -10,7 +9,6 @@ from datetime import datetime
 import getpass
 import re
 import inspect
-from setuptools_scm import get_version
 
 # third party imports
 import numpy as np
@@ -1001,21 +999,20 @@ def _stats_from_header(header, config):
     return (response, standard, coords, format_specific)
 
 
-def _get_software_agent(pr):
+def _get_software_agent(pr, gmprocess_version):
     '''Get the seis-prov entity for the gmprocess software.
 
     Args:
         pr (prov.model.ProvDocument):
             Existing ProvDocument.
+        gmprocess_version (str):
+            gmprocess version.
 
     Returns:
         prov.model.ProvDocument:
             Provenance document updated with gmprocess software name/version.
     '''
     software = 'gmprocess'
-    __version__ = get_version(
-        root=os.path.join(os.pardir, os.pardir),
-        relative_to=__file__)
     hashstr = '0000001'
     agent_id = "seis_prov:sp001_sa_%s" % hashstr
     giturl = 'https://github.com/usgs/groundmotion-processing'
@@ -1024,7 +1021,7 @@ def _get_software_agent(pr):
         ("prov:type", prov.identifier.QualifiedName(
             prov.constants.PROV, "SoftwareAgent")),
         ("seis_prov:software_name", software),
-        ("seis_prov:software_version", __version__),
+        ("seis_prov:software_version", gmprocess_version),
         ("seis_prov:website", prov.model.Literal(
             giturl,
             prov.constants.XSD_ANYURI)),

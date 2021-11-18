@@ -1,7 +1,0 @@
-sphinx>3.0.0
-requests>=2
-furo
-recommonmark
-sphinx-autoapi
-setuptools_scm
-sphinx-inline-tabs

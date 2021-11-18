@@ -21,7 +21,7 @@ Documentation
 - Please note, we are in the process of improving the documentation and that
   there are some incomplete sections.
 - The full documentation is available
-  `here <https://gmprocess.readthedocs.io/en/latest/index.html>`_.
+  `here <https://usgs.github.io/groundmotion-processing/index.html>`_.
 
 
 Reference
@@ -57,8 +57,6 @@ Build info
 |         | |AzureLP310|     | ubuntu-latest   | Python 3.10 |
 +---------+------------------+-----------------+-------------+
 | CodeCov | |CodeCov|                                        |
-+---------+--------------------------------------------------+
-| Docs    | |readthedocs|                                    +
 +---------+--------------------------------------------------+
 
 .. |CodeCov| image:: https://codecov.io/gh/usgs/groundmotion-processing/branch/master/graph/badge.svg
@@ -103,7 +101,3 @@ Build info
    :target: https://dev.azure.com/GHSC-ESI/USGS-groundmotion-processing/_build/latest?definitionId=5&branchName=master
    :alt: Build Status: ubuntu-latest, python 3.10
 
-
-.. |readthedocs| image:: https://readthedocs.org/projects/gmprocess/badge/?version=latest
-   :target: https://gmprocess.readthedocs.io/en/latest/?badge=latest
-   :alt: Documentation Status

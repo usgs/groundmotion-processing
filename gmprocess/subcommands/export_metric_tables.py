@@ -45,7 +45,8 @@ class ExportMetricTablesModule(SubcommandModule):
             logging.info(
                 'Creating tables for event %s...' % self.eventid)
             event_dir = os.path.join(gmrecords.data_path, self.eventid)
-            workname = os.path.join(event_dir, WORKSPACE_NAME)
+            workname = os.path.normpath(
+                os.path.join(event_dir, WORKSPACE_NAME))
             if not os.path.isfile(workname):
                 logging.info(
                     'No workspace file found for event %s. Please run '
@@ -55,25 +56,19 @@ class ExportMetricTablesModule(SubcommandModule):
                 continue
 
             self.workspace = StreamWorkspace.open(workname)
-            self._get_pstreams()
-
-            if not (hasattr(self, 'pstreams') and len(self.pstreams) > 0):
-                logging.info('No processed waveforms available. No metric '
-                             'tables created.')
-                self.workspace.close()
-                continue
+            self._get_labels()
 
             event_table, imc_tables, readmes = self.workspace.getTables(
-                self.gmrecords.args.label, streams=self.pstreams)
+                self.gmrecords.args.label, self.gmrecords.conf)
             ev_fit_spec, fit_readme = self.workspace.getFitSpectraTable(
-                self.eventid, self.gmrecords.args.label, self.pstreams)
+                self.eventid, self.gmrecords.args.label, self.gmrecords.conf)
 
             # We need to have a consistent set of frequencies for reporting the
             # SNR. For now, I'm going to take it from the SA period list, but
             # this could be changed to something else, or even be set via the
             # config file.
             snr_table, snr_readme = self.workspace.getSNRTable(
-                self.eventid, self.gmrecords.args.label, self.pstreams)
+                self.eventid, self.gmrecords.args.label, self.gmrecords.conf)
             self.workspace.close()
 
             outdir = gmrecords.data_path
@@ -118,8 +113,8 @@ class ExportMetricTablesModule(SubcommandModule):
                 output_format = 'xlsx'
 
             for filename, df in dict(zip(filenames, files)).items():
-                filepath = os.path.join(
-                    outdir, filename + '.%s' % output_format)
+                filepath = os.path.normpath(os.path.join(
+                    outdir, filename + '.%s' % output_format))
                 if os.path.exists(filepath):
                     if 'README' in filename:
                         continue

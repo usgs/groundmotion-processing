@@ -18,7 +18,7 @@ TIMEFMT2 = '%Y-%m-%dT%H:%M:%S.%f'
 FLOAT_PATTERN = r'[-+]?[0-9]*\.?[0-9]+'
 
 
-def assemble(event, config, directory):
+def assemble(event, config, directory, gmprocess_version):
     """Download data or load data from local directory, turn into Streams.
 
     Args:
@@ -32,6 +32,8 @@ def assemble(event, config, directory):
             example, if `directory` is 'proj_dir' and you have data for
             event id 'abc123' then the raw data to be read in should be
             located in `proj_dir/abc123/raw/`.
+        gmprocess_version (str):
+            Software version for gmprocess.
 
     Returns:
         tuple:
@@ -70,6 +72,7 @@ def assemble(event, config, directory):
     logging.debug('workspace.dataset.waveforms.list():')
     logging.debug(workspace.dataset.waveforms.list())
     workspace.addConfig()
+    workspace.addGmprocessVersion(gmprocess_version)
     logging.debug('workspace.dataset.config')
 
     return workspace

@@ -1,0 +1,71 @@
+:py:mod:`gmprocess.io.catalog`
+==============================
+
+.. py:module:: gmprocess.io.catalog
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.io.catalog.convert_ids
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.io.catalog.INGV_CATALOGS
+   gmprocess.io.catalog.VALID_CATALOGS
+
+
+.. py:data:: INGV_CATALOGS
+   :annotation: = ['INGV', 'ESM', 'CNT']
+
+   
+
+.. py:data:: VALID_CATALOGS
+   :annotation: = ['UNID', 'EMSC', 'INGV', 'USGS', 'ISC', 'CNT', 'ESM']
+
+   
+
+.. py:function:: convert_ids(source_id, source_catalog, out_catalog, collect_dloc=1.5, collect_dtime=60, misfit_dloc=105, misfit_dtime=13, misfit_dmag=0.8, preferred_only=None, include_info=None, return_json=None)
+
+   This function will convert an event ID between the UNID, EMSC, INGV,
+   USGS, and ISC catalogs.
+
+   :param source_id: Event ID from the source catalog.
+   :type source_id: str
+   :param source_catalog: Source catalog (UNID, EMSC, INGV, USGS or ISC).
+   :type source_catalog: str
+   :param out_catalog: Catalogs (str) to convert ids options include: UNID, EMSC, INGV, USGS, ISC, or ALL.
+   :type out_catalog: list
+   :param collect_dloc: dloc parameter.
+   :type collect_dloc: float
+   :param collect_dtmie: dtime parameter.
+   :type collect_dtmie: float
+   :param misfit_dloc: Misfit delta_loc parameter.
+   :type misfit_dloc: float
+   :param misit_dtime: Misfit delta_time parameter.
+   :type misit_dtime: float
+   :param misfit_dmag: Misfit delta_mag parameter.
+   :type misfit_dmag: float
+   :param preferred_only: Select only the first event by catalog if 'true'.
+   :type preferred_only: str
+   :param include_info: Return info about the event if 'true'.
+   :type include_info: str
+   :param return_json: Whether or not to return the entire JSON.
+   :type return_json: bool
+
+   :returns: Returns a dictionary mapping catalogs to event IDS if return_json is False.
+             list: Returns a list of the JSON if return_json is true.
+   :rtype: dict
+
+

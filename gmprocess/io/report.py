@@ -122,7 +122,8 @@ moveout_page_tex = '''
 '''
 
 
-def build_report_latex(st_list, directory, origin, prefix='', config=None):
+def build_report_latex(st_list, directory, origin, prefix='', config=None,
+                       gmprocess_version='unknown'):
     """
     Build latex summary report.
 
@@ -137,6 +138,8 @@ def build_report_latex(st_list, directory, origin, prefix='', config=None):
             String to prepend to report file name.
         config (dict):
             Config dictionary.
+        gmprocess_version:
+            gmprocess version.
     Returns:
         tuple:
             - Name of pdf or latex report file created.
@@ -161,11 +164,9 @@ def build_report_latex(st_list, directory, origin, prefix='', config=None):
         TB = TITLEBLOCK.replace(
             '[MAPPATH]', 'stations_map.png'
         )
-        __version__ = get_version(
-            root=os.path.join(os.pardir, os.pardir),
-            relative_to=__file__)
+
         TB = TB.replace(
-            '[VERSION]', __version__
+            '[VERSION]', gmprocess_version
         )
         moveout_file = os.path.join(directory, 'moveout_plot.png')
         if os.path.isfile(moveout_file):
