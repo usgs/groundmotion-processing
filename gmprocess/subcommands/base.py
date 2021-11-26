@@ -6,7 +6,8 @@ import sys
 from abc import ABC, abstractmethod
 import logging
 
-from gmprocess.utils.base_utils import get_events
+from gmprocess.subcommands.lazy_loader import LazyLoader
+base_utils = LazyLoader('base_utils', globals(), 'gmprocess.utils.base_utils')
 
 
 class SubcommandModule(ABC):
@@ -142,7 +143,7 @@ class SubcommandModule(ABC):
             self.gmrecords.args, 'info') else None
         tfile = self.gmrecords.args.textfile if \
             hasattr(self.gmrecords.args, 'textfile') else None
-        self.events = get_events(
+        self.events = base_utils.get_events(
             eventids=self.gmrecords.args.eventid,
             textfile=tfile,
             eventinfo=info,

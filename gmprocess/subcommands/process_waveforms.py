@@ -4,16 +4,19 @@
 import os
 import logging
 
-from dask.distributed import Client
+from gmprocess.subcommands.lazy_loader import LazyLoader
+distributed = LazyLoader('distributed', globals(), 'dask.distributed')
 
-from gmprocess.subcommands.base import SubcommandModule
-from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.waveform_processing.processing import process_streams
-from gmprocess.io.asdf.stream_workspace import StreamWorkspace
-from gmprocess.utils.constants import WORKSPACE_NAME
+arg_dicts = LazyLoader(
+    'arg_dicts', globals(), 'gmprocess.subcommands.arg_dicts')
+base = LazyLoader('base', globals(), 'gmprocess.subcommands.base')
+const = LazyLoader('const', globals(), 'gmprocess.utils.constants')
+ws = LazyLoader('ws', globals(), 'gmprocess.io.asdf.stream_workspace')
+processing = LazyLoader(
+    'processing', globals(), 'gmprocess.waveform_processing.processing')
 
 
-class ProcessWaveformsModule(SubcommandModule):
+class ProcessWaveformsModule(base.SubcommandModule):
     """Process waveform data.
     """
     command_name = 'process_waveforms'
@@ -24,8 +27,8 @@ class ProcessWaveformsModule(SubcommandModule):
     # the date/time, but in subsequent subcommands it is used for selecting
     # from existing labels.
     arguments = [
-        ARG_DICTS['eventid'],
-        ARG_DICTS['textfile'], {
+        arg_dicts.ARG_DICTS['eventid'],
+        arg_dicts.ARG_DICTS['textfile'], {
             'short_flag': '-l',
             'long_flag': '--label',
             'help': ('Processing label (single word, no spaces) to attach to '
@@ -33,7 +36,7 @@ class ProcessWaveformsModule(SubcommandModule):
             'type': str,
             'default': None,
         },
-        ARG_DICTS['num_processes']
+        arg_dicts.ARG_DICTS['num_processes']
     ]
 
     def main(self, gmrecords):
@@ -61,7 +64,7 @@ class ProcessWaveformsModule(SubcommandModule):
 
     def _process_event(self, event):
         event_dir = os.path.join(self.gmrecords.data_path, event.id)
-        workname = os.path.join(event_dir, WORKSPACE_NAME)
+        workname = os.path.join(event_dir, const.WORKSPACE_NAME)
         if not os.path.isfile(workname):
             logging.info(
                 'No workspace file found for event %s. Please run '
@@ -69,14 +72,15 @@ class ProcessWaveformsModule(SubcommandModule):
             logging.info('Continuing to next event.')
             return event.id
 
-        workspace = StreamWorkspace.open(workname)
+        workspace = ws.StreamWorkspace.open(workname)
         ds = workspace.dataset
         station_list = ds.waveforms.list()
 
         processed_streams = []
         if self.gmrecords.args.num_processes > 0:
             futures = []
-            client = Client(n_workers=self.gmrecords.args.num_processes)
+            client = distributed.Client(
+                n_workers=self.gmrecords.args.num_processes)
 
         for station_id in station_list:
             # Cannot parallelize IO to ASDF file
@@ -92,12 +96,12 @@ class ProcessWaveformsModule(SubcommandModule):
                              % ('unprocessed', event.id))
                 if self.gmrecords.args.num_processes > 0:
                     future = client.submit(
-                        process_streams, raw_streams, event,
+                        processing.process_streams, raw_streams, event,
                         self.gmrecords.conf)
                     futures.append(future)
                 else:
                     processed_streams.append(
-                        process_streams(
+                        processing.process_streams(
                             raw_streams, event, self.gmrecords.conf)
                     )
 

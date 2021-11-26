@@ -4,23 +4,26 @@
 import os
 import logging
 
-from gmprocess.subcommands.base import SubcommandModule
-from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.io.asdf.stream_workspace import StreamWorkspace
-from gmprocess.utils.constants import WORKSPACE_NAME
-from gmprocess.utils.export_shakemap_utils import create_json
+from gmprocess.subcommands.lazy_loader import LazyLoader
+arg_dicts = LazyLoader(
+    'arg_dicts', globals(), 'gmprocess.subcommands.arg_dicts')
+base = LazyLoader('base', globals(), 'gmprocess.subcommands.base')
+ws = LazyLoader('ws', globals(), 'gmprocess.io.asdf.stream_workspace')
+const = LazyLoader('const', globals(), 'gmprocess.utils.constants')
+sm_utils = LazyLoader(
+    'sm_utils', globals(), 'gmprocess.utils.export_shakemap_utils')
 
 
-class ExportShakeMapModule(SubcommandModule):
+class ExportShakeMapModule(base.SubcommandModule):
     """Export files for ShakeMap input.
     """
     command_name = 'export_shakemap'
     aliases = ('shakemap', )
 
     arguments = [
-        ARG_DICTS['eventid'],
-        ARG_DICTS['textfile'],
-        ARG_DICTS['label'],
+        arg_dicts.ARG_DICTS['eventid'],
+        arg_dicts.ARG_DICTS['textfile'],
+        arg_dicts.ARG_DICTS['label'],
         {
             'short_flag': '-x',
             'long_flag': '--expand-imts',
@@ -53,7 +56,7 @@ class ExportShakeMapModule(SubcommandModule):
 
             event_dir = os.path.normpath(
                 os.path.join(gmrecords.data_path, event.id))
-            workname = os.path.join(event_dir, WORKSPACE_NAME)
+            workname = os.path.join(event_dir, const.WORKSPACE_NAME)
             if not os.path.isfile(workname):
                 logging.info(
                     'No workspace file found for event %s. Please run '
@@ -62,11 +65,11 @@ class ExportShakeMapModule(SubcommandModule):
                 logging.info('Continuing to next event.')
                 continue
 
-            self.workspace = StreamWorkspace.open(workname)
+            self.workspace = ws.StreamWorkspace.open(workname)
             self._get_labels()
 
             expanded_imts = self.gmrecords.args.expand_imts
-            jsonfile, stationfile, _ = create_json(
+            jsonfile, stationfile, _ = sm_utils.create_json(
                 self.workspace, event, event_dir, self.gmrecords.args.label,
                 config=self.gmrecords.conf, expanded_imts=expanded_imts)
 

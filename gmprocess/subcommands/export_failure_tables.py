@@ -4,24 +4,26 @@
 import os
 import logging
 
-import pandas as pd
+from gmprocess.subcommands.lazy_loader import LazyLoader
+pd = LazyLoader('pd', globals(), 'pandas')
 
-from gmprocess.subcommands.base import SubcommandModule
-from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.io.asdf.stream_workspace import StreamWorkspace
-from gmprocess.utils.constants import WORKSPACE_NAME
+arg_dicts = LazyLoader(
+    'arg_dicts', globals(), 'gmprocess.subcommands.arg_dicts')
+base = LazyLoader('base', globals(), 'gmprocess.subcommands.base')
+ws = LazyLoader('ws', globals(), 'gmprocess.io.asdf.stream_workspace')
+const = LazyLoader('const', globals(), 'gmprocess.utils.constants')
 
 
-class ExportFailureTablesModule(SubcommandModule):
+class ExportFailureTablesModule(base.SubcommandModule):
     """Export failure tables.
     """
     command_name = 'export_failure_tables'
     aliases = ('ftables', )
 
     arguments = [
-        ARG_DICTS['eventid'],
-        ARG_DICTS['textfile'],
-        ARG_DICTS['label'], {
+        arg_dicts.ARG_DICTS['eventid'],
+        arg_dicts.ARG_DICTS['textfile'],
+        arg_dicts.ARG_DICTS['label'], {
             'long_flag': '--type',
             'help': (
                 'Output failure information, either in short form ("short"),'
@@ -35,7 +37,7 @@ class ExportFailureTablesModule(SubcommandModule):
             'default': 'short',
             'choices': ['short', 'long', 'net']
         },
-        ARG_DICTS['output_format']
+        arg_dicts.ARG_DICTS['output_format']
     ]
 
     def main(self, gmrecords):
@@ -58,7 +60,7 @@ class ExportFailureTablesModule(SubcommandModule):
                 'Creating failure tables for event %s...' % self.eventid)
             event_dir = os.path.join(self.gmrecords.data_path, self.eventid)
             workname = os.path.normpath(
-                os.path.join(event_dir, WORKSPACE_NAME))
+                os.path.join(event_dir, const.WORKSPACE_NAME))
             if not os.path.isfile(workname):
                 logging.info(
                     'No workspace file found for event %s. Please run '
@@ -67,7 +69,7 @@ class ExportFailureTablesModule(SubcommandModule):
                 logging.info('Continuing to next event.')
                 continue
 
-            self.workspace = StreamWorkspace.open(workname)
+            self.workspace = ws.StreamWorkspace.open(workname)
             self._get_pstreams()
             self.workspace.close()
 

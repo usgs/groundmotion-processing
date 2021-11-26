@@ -4,19 +4,22 @@
 import os
 import logging
 
-from gmprocess.subcommands.base import SubcommandModule
-from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.utils.download_utils import download
+from gmprocess.subcommands.lazy_loader import LazyLoader
+arg_dicts = LazyLoader(
+    'arg_dicts', globals(), 'gmprocess.subcommands.arg_dicts')
+base = LazyLoader('base', globals(), 'gmprocess.subcommands.base')
+download_utils = LazyLoader(
+    'download_utils', globals(), 'gmprocess.utils.download_utils')
 
 
-class DownloadModule(SubcommandModule):
+class DownloadModule(base.SubcommandModule):
     """Download data and organize it in the project data directory.
     """
     command_name = 'download'
 
     arguments = [
-        ARG_DICTS['eventid'],
-        ARG_DICTS['textfile'],
+        arg_dicts.ARG_DICTS['eventid'],
+        arg_dicts.ARG_DICTS['textfile'],
         {
             'long_flag': '--info',
             'help': (
@@ -51,7 +54,7 @@ class DownloadModule(SubcommandModule):
             if not os.path.exists(event_dir):
                 os.makedirs(event_dir)
 
-            download(
+            download_utils.download(
                 event=event,
                 event_dir=event_dir,
                 config=gmrecords.conf
