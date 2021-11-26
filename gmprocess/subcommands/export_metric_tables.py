@@ -4,27 +4,27 @@
 import os
 import logging
 
+from gmprocess.subcommands.lazy_loader import LazyLoader
+arg_dicts = LazyLoader(
+    'arg_dicts', globals(), 'gmprocess.subcommands.arg_dicts')
+base = LazyLoader('base', globals(), 'gmprocess.subcommands.base')
+ws = LazyLoader('ws', globals(), 'gmprocess.io.asdf.stream_workspace')
+const = LazyLoader('const', globals(), 'gmprocess.utils.constants')
+tables = LazyLoader('tables', globals(), 'gmprocess.utils.tables')
 
-from gmprocess.subcommands.base import SubcommandModule
-from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.io.asdf.stream_workspace import StreamWorkspace
-from gmprocess.utils.tables import set_precisions
-from gmprocess.utils.constants import DEFAULT_FLOAT_FORMAT, DEFAULT_NA_REP
-from gmprocess.utils.constants import WORKSPACE_NAME
 
-
-class ExportMetricTablesModule(SubcommandModule):
+class ExportMetricTablesModule(base.SubcommandModule):
     """Export metric tables.
     """
     command_name = 'export_metric_tables'
     aliases = ('mtables', )
 
     arguments = [
-        ARG_DICTS['eventid'],
-        ARG_DICTS['textfile'],
-        ARG_DICTS['label'],
-        ARG_DICTS['output_format'],
-        ARG_DICTS['overwrite']
+        arg_dicts.ARG_DICTS['eventid'],
+        arg_dicts.ARG_DICTS['textfile'],
+        arg_dicts.ARG_DICTS['label'],
+        arg_dicts.ARG_DICTS['output_format'],
+        arg_dicts.ARG_DICTS['overwrite']
     ]
 
     def main(self, gmrecords):
@@ -46,7 +46,7 @@ class ExportMetricTablesModule(SubcommandModule):
                 'Creating tables for event %s...' % self.eventid)
             event_dir = os.path.join(gmrecords.data_path, self.eventid)
             workname = os.path.normpath(
-                os.path.join(event_dir, WORKSPACE_NAME))
+                os.path.join(event_dir, const.WORKSPACE_NAME))
             if not os.path.isfile(workname):
                 logging.info(
                     'No workspace file found for event %s. Please run '
@@ -55,7 +55,7 @@ class ExportMetricTablesModule(SubcommandModule):
                 logging.info('Continuing to next event.')
                 continue
 
-            self.workspace = StreamWorkspace.open(workname)
+            self.workspace = ws.StreamWorkspace.open(workname)
             self._get_labels()
 
             event_table, imc_tables, readmes = self.workspace.getTables(
@@ -77,9 +77,9 @@ class ExportMetricTablesModule(SubcommandModule):
             # fit_spectra table before writing
             imc_tables_formatted = {}
             for imc, imc_table in imc_tables.items():
-                imc_tables_formatted[imc] = set_precisions(imc_table)
-            event_table_formatted = set_precisions(event_table)
-            df_fit_spectra_formatted = set_precisions(ev_fit_spec)
+                imc_tables_formatted[imc] = tables.set_precisions(imc_table)
+            event_table_formatted = tables.set_precisions(event_table)
+            df_fit_spectra_formatted = tables.set_precisions(ev_fit_spec)
 
             imc_list = [
                 '%s_%s_metrics_%s' %
@@ -134,15 +134,15 @@ class ExportMetricTablesModule(SubcommandModule):
                     header = True
                 if output_format == 'csv':
                     df.to_csv(filepath, index=False,
-                              float_format=DEFAULT_FLOAT_FORMAT,
-                              na_rep=DEFAULT_NA_REP,
+                              float_format=const.DEFAULT_FLOAT_FORMAT,
+                              na_rep=const.DEFAULT_NA_REP,
                               mode=mode, header=header)
                     if mode == "w":
                         self.append_file('Metric tables', filepath)
                 else:
                     df.to_excel(filepath, index=False,
-                                float_format=DEFAULT_FLOAT_FORMAT,
-                                na_rep=DEFAULT_NA_REP,
+                                float_format=const.DEFAULT_FLOAT_FORMAT,
+                                na_rep=const.DEFAULT_NA_REP,
                                 mode=mode, header=header)
                     if mode == "w":
                         self.append_file('Metric tables', filepath)

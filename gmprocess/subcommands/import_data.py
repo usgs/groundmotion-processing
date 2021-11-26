@@ -8,17 +8,19 @@ import logging
 import zipfile
 import tarfile
 
-from gmprocess.subcommands.base import SubcommandModule
-from gmprocess.subcommands.arg_dicts import ARG_DICTS
+from gmprocess.subcommands.lazy_loader import LazyLoader
+arg_dicts = LazyLoader(
+    'arg_dicts', globals(), 'gmprocess.subcommands.arg_dicts')
+base = LazyLoader('base', globals(), 'gmprocess.subcommands.base')
 
 
-class ImportModule(SubcommandModule):
+class ImportModule(base.SubcommandModule):
     """Import data for an event into the project data directory.
     """
     command_name = 'import'
 
     arguments = [
-        ARG_DICTS['eventid'],
+        arg_dicts.ARG_DICTS['eventid'],
         {
             'short_flag': '-p',
             'long_flag': '--path',

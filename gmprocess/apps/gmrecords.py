@@ -10,17 +10,19 @@ import inspect
 import argparse
 import logging
 
-from configobj import ConfigObj
-from setuptools_scm import get_version
+from gmprocess.subcommands.lazy_loader import LazyLoader
+configobj = LazyLoader('configobj', globals(), 'configobj')
+setuptools_scm = LazyLoader('setuptools_scm', globals(), 'setuptools_scm')
 
-from gmprocess.utils.config import get_config
-from gmprocess.utils.logging import setup_logger
-from gmprocess.subcommands.base import SubcommandModule
-from gmprocess.subcommands.projects import Project, create
-from gmprocess.subcommands.init import InitModule
-from gmprocess.utils import constants
+base = LazyLoader('base', globals(), 'gmprocess.subcommands.base')
+config = LazyLoader('config', globals(), 'gmprocess.utils.config')
+const = LazyLoader('const', globals(), 'gmprocess.utils.constants')
+log_utils = LazyLoader('log_utils', globals(), 'gmprocess.utils.logging')
+projmod = LazyLoader('projmod', globals(), 'gmprocess.subcommands.projects')
+init = LazyLoader('init', globals(), 'gmprocess.subcommands.init')
 
-VERSION = get_version(
+
+VERSION = setuptools_scm.get_version(
     root=os.path.join(os.pardir, os.pardir),
     relative_to=__file__)
 
@@ -54,14 +56,14 @@ class GMrecordsApp(object):
         # Try not to let tests interfere with actual system:
         if os.getenv('CALLED_FROM_PYTEST') is None:
             # Not called from pytest
-            local_proj = os.path.join(os.getcwd(), constants.PROJ_CONF_DIR)
+            local_proj = os.path.join(os.getcwd(), const.PROJ_CONF_DIR)
             local_proj_conf = os.path.join(local_proj, 'projects.conf')
             if os.path.isdir(local_proj) and os.path.isfile(local_proj_conf):
                 PROJECTS_PATH = local_proj
             else:
-                PROJECTS_PATH = constants.PROJECTS_PATH
+                PROJECTS_PATH = const.PROJECTS_PATH
         else:
-            PROJECTS_PATH = constants.PROJECTS_PATH_TEST
+            PROJECTS_PATH = const.PROJECTS_PATH_TEST
 
         self.PROJECTS_PATH = PROJECTS_PATH
         self.PROJECTS_FILE = os.path.join(PROJECTS_PATH, 'projects.conf')
@@ -75,7 +77,7 @@ class GMrecordsApp(object):
             log_file = os.path.join(self.data_path, 'log.txt')
             print('Logging output sent to: %s' % log_file)
 
-        setup_logger(self.args, log_file=log_file)
+        log_utils.setup_logger(self.args, log_file=log_file)
         logging.info('Logging level includes INFO.')
         logging.debug('Logging level includes DEBUG.')
         logging.info('PROJECTS_PATH: %s' % PROJECTS_PATH)
@@ -89,7 +91,7 @@ class GMrecordsApp(object):
                 # Print the current project information to try to avoid
                 # confusion
                 selected_project = self.projects_conf['project']
-                proj = Project(
+                proj = projmod.Project(
                     selected_project,
                     self.projects_conf['projects'][selected_project],
                     self.projects_conf.filename
@@ -120,12 +122,13 @@ class GMrecordsApp(object):
                 print('Not a valid response. Exiting.')
                 sys.exit(0)
             elif response == 1:
-                InitModule().main(self)
+                init.InitModule().main(self)
                 sys.exit(0)
             else:
                 self._initial_setup()
 
-        self.projects_conf = ConfigObj(self.PROJECTS_FILE, encoding='utf-8')
+        self.projects_conf = configobj.ConfigObj(
+            self.PROJECTS_FILE, encoding='utf-8')
         self.project = self.projects_conf['project']
         self.current_project = self.projects_conf['projects'][self.project]
         self.conf_path = os.path.join(
@@ -135,13 +138,13 @@ class GMrecordsApp(object):
             os.path.abspath(os.path.join(self.PROJECTS_FILE, os.pardir)),
             self.current_project['data_path'])
         if os.getenv('CALLED_FROM_PYTEST') is not None:
-            self.conf_path = constants.PROJECTS_PATH_TEST
+            self.conf_path = const.PROJECTS_PATH_TEST
         self.conf_file = os.path.join(self.conf_path, 'config.yml')
         if not os.path.isfile(self.conf_file):
             print('Config file does not exist: %s' % self.conf_file)
             print('Exiting.')
             sys.exit(1)
-        self.conf = get_config(self.conf_file)
+        self.conf = config.get_config(self.conf_file)
 
     def _initial_setup(self):
         """
@@ -150,9 +153,9 @@ class GMrecordsApp(object):
         """
         if not os.path.isdir(self.PROJECTS_PATH):
             os.mkdir(self.PROJECTS_PATH)
-        empty_conf = ConfigObj(encoding='utf-8')
+        empty_conf = configobj.ConfigObj(encoding='utf-8')
         empty_conf.filename = self.PROJECTS_FILE
-        create(empty_conf)
+        projmod.create(empty_conf)
         # Need to exit here because if gmp projects -c is called when there is
         # no prior setup, the user would otherwise be forced to setup two
         # projects.
@@ -203,7 +206,7 @@ class GMrecordsApp(object):
                     # Check that core_class is a SubcommandModule becuase it is
                     # possible that other classes will be defined in the
                     # module.
-                    if not issubclass(core_class, SubcommandModule):
+                    if not issubclass(core_class, base.SubcommandModule):
                         continue
                     # Check that command_name is a string because we want to
                     # skip the SubcommandModule base class.

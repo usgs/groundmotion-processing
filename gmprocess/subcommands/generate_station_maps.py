@@ -4,23 +4,26 @@
 import os
 import logging
 
-from gmprocess.subcommands.base import SubcommandModule
-from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.io.asdf.stream_workspace import StreamWorkspace
-from gmprocess.utils.constants import WORKSPACE_NAME
-from gmprocess.utils.report_utils import draw_stations_map
+from gmprocess.subcommands.lazy_loader import LazyLoader
+arg_dicts = LazyLoader(
+    'arg_dicts', globals(), 'gmprocess.subcommands.arg_dicts')
+base = LazyLoader('base', globals(), 'gmprocess.subcommands.base')
+ws = LazyLoader('ws', globals(), 'gmprocess.io.asdf.stream_workspace')
+const = LazyLoader('const', globals(), 'gmprocess.utils.constants')
+report_utils = LazyLoader(
+    'report_utils', globals(), 'gmprocess.utils.report_utils')
 
 
-class GenerateHTMLMapModule(SubcommandModule):
+class GenerateHTMLMapModule(base.SubcommandModule):
     """Generate station maps (PNG and HTML).
     """
     command_name = 'generate_station_maps'
     aliases = ('maps', )
 
     arguments = [
-        ARG_DICTS['eventid'],
-        ARG_DICTS['textfile'],
-        ARG_DICTS['label']
+        arg_dicts.ARG_DICTS['eventid'],
+        arg_dicts.ARG_DICTS['textfile'],
+        arg_dicts.ARG_DICTS['label']
     ]
 
     def main(self, gmrecords):
@@ -40,7 +43,7 @@ class GenerateHTMLMapModule(SubcommandModule):
 
         for event in self.events:
             event_dir = os.path.join(self.gmrecords.data_path, event.id)
-            workname = os.path.join(event_dir, WORKSPACE_NAME)
+            workname = os.path.join(event_dir, const.WORKSPACE_NAME)
             if not os.path.isfile(workname):
                 logging.info(
                     'No workspace file found for event %s. Please run '
@@ -49,7 +52,7 @@ class GenerateHTMLMapModule(SubcommandModule):
                 logging.info('Continuing to next event.')
                 return False
 
-            self.workspace = StreamWorkspace.open(workname)
+            self.workspace = ws.StreamWorkspace.open(workname)
             ds = self.workspace.dataset
             station_list = ds.waveforms.list()
             self._get_labels()
@@ -76,7 +79,8 @@ class GenerateHTMLMapModule(SubcommandModule):
                 for stream in streams:
                     pstreams.append(stream)
 
-            mapfiles = draw_stations_map(pstreams, event, event_dir)
+            mapfiles = report_utils.draw_stations_map(
+                pstreams, event, event_dir)
             for file in mapfiles:
                 self.append_file('Station map', file)
 

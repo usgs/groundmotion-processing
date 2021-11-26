@@ -7,19 +7,22 @@ import platform
 import re
 import logging
 import shutil
-import pkg_resources
-from ruamel.yaml import YAML
 
-from gmprocess.subcommands.base import SubcommandModule
-from gmprocess.utils.prompt import \
-    query_yes_no, set_project_paths, get_default_project_paths
-from gmprocess.utils import constants
+from gmprocess.subcommands.lazy_loader import LazyLoader
+distributed = LazyLoader('distributed', globals(), 'dask.distributed')
+ryaml = LazyLoader('yaml', globals(), 'ruamel.yaml')
+pkg_resources = LazyLoader('pkg_resources', globals(), 'pkg_resources')
+
+base = LazyLoader('base', globals(), 'gmprocess.subcommands.base')
+constants = LazyLoader('constants', globals(), 'gmprocess.utils.constants')
+prompt = LazyLoader('prompt', globals(), 'gmprocess.utils.prompt')
+
 
 # Regular expression for checking valid email
 re_email = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
 
 
-class ProjectsModule(SubcommandModule):
+class ProjectsModule(base.SubcommandModule):
     """
     Manage gmrecords projects.
     """
@@ -119,7 +122,7 @@ class ProjectsModule(SubcommandModule):
 
             question = ('Are you sure you want to delete everything in:\n'
                         '%s\n--and--\n%s?\n' % (conf_path, data_path))
-            if not query_yes_no(question, default='yes'):
+            if not prompt.query_yes_no(question, default='yes'):
                 sys.exit(0)
             shutil.rmtree(conf_path, ignore_errors=True)
             shutil.rmtree(data_path, ignore_errors=True)
@@ -267,9 +270,9 @@ def create(config, cwd=False):
 
     if not cwd:
         proj_dir = constants.PROJECTS_PATH
-        default_conf, default_data = get_default_project_paths(project)
+        default_conf, default_data = prompt.get_default_project_paths(project)
         new_conf_path, new_data_path = \
-            set_project_paths(default_conf, default_data)
+            prompt.set_project_paths(default_conf, default_data)
     else:
         cwd = os.getcwd()
         proj_dir = os.path.join(cwd, '.gmprocess')
@@ -318,7 +321,7 @@ def create(config, cwd=False):
     # Sart with production conf from repository, then add user info
     data_path = pkg_resources.resource_filename('gmprocess', 'data')
     current_conf = os.path.join(data_path, constants.CONFIG_FILE_PRODUCTION)
-    yaml = YAML()
+    yaml = ryaml.YAML()
     yaml.preserve_quotes = True
     with open(current_conf, 'rt', encoding='utf-8') as f:
         gmrecords_conf = yaml.load(f)

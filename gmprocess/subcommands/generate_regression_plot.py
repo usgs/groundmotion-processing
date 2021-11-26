@@ -6,14 +6,15 @@ import sys
 import logging
 import glob
 
-import pandas as pd
+from gmprocess.subcommands.lazy_loader import LazyLoader
+pd = LazyLoader('pd', globals(), 'pandas')
 
-from gmprocess.subcommands.base import SubcommandModule
-from gmprocess.utils.plot import plot_regression
-from gmprocess.utils.constants import NON_IMT_COLS
+base = LazyLoader('base', globals(), 'gmprocess.subcommands.base')
+plot = LazyLoader('plot', globals(), 'gmprocess.utils.plot')
+const = LazyLoader('const', globals(), 'gmprocess.utils.constants')
 
 
-class GenerateRegressionPlotModule(SubcommandModule):
+class GenerateRegressionPlotModule(base.SubcommandModule):
     """Generate multi-event \"regression\" plot.
     """
     command_name = 'generate_regression_plot'
@@ -96,7 +97,7 @@ class GenerateRegressionPlotModule(SubcommandModule):
             if imc_tables and not found_imc:
                 found_imc = list(imc_tables.keys())[0]
                 table_cols = set(imc_tables[found_imc].columns)
-                imtlist = list(table_cols - NON_IMT_COLS)
+                imtlist = list(table_cols - const.NON_IMT_COLS)
                 found_imt = imtlist[0]
 
             if found_imc and found_imt:
@@ -106,12 +107,13 @@ class GenerateRegressionPlotModule(SubcommandModule):
                 )
                 regression_file = os.path.normpath(os.path.join(
                     self.gmrecords.data_path, pngfile))
-                plot_regression(event_table, found_imc,
-                                imc_tables[tab_key_dict[found_imc]],
-                                found_imt,
-                                regression_file,
-                                distance_metric='EpicentralDistance',
-                                colormap='viridis_r')
+                plot.plot_regression(
+                    event_table, found_imc,
+                    imc_tables[tab_key_dict[found_imc]],
+                    found_imt,
+                    regression_file,
+                    distance_metric='EpicentralDistance',
+                    colormap='viridis_r')
                 self.append_file(
                     'Multi-event regression plot', regression_file)
 

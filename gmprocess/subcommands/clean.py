@@ -6,10 +6,11 @@ import logging
 import shutil
 from glob import glob
 
-from gmprocess.subcommands.base import SubcommandModule
+from gmprocess.subcommands.lazy_loader import LazyLoader
+base = LazyLoader('base', globals(), 'gmprocess.subcommands.base')
 
 
-class CleanModule(SubcommandModule):
+class CleanModule(base.SubcommandModule):
     """Clean (i.e., remove) project data.
     """
     command_name = 'clean'
@@ -93,7 +94,12 @@ class CleanModule(SubcommandModule):
             if os.path.exists(event_dir):
                 # Exported tables
                 if gmrecords.args.all or gmrecords.args.export:
-                    self.__remove(event_dir, ['*.xlsx', '*.csv'])
+                    patterns = [
+                        '*.xlsx',
+                        '*.csv',
+                        '*_groundmotions_dat.json',
+                        '*_metrics.json']
+                    self.__remove(event_dir, patterns)
 
                 # Workspace
                 if gmrecords.args.all or gmrecords.args.workspace:
