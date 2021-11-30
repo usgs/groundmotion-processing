@@ -34,17 +34,20 @@ version = release
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
     'autoapi.extension',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.autosectionlabel',
     'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
-    'sphinx.ext.autosectionlabel',
-    'sphinx_inline_tabs',
     'sphinxcontrib.programoutput',
-    'myst_nb'
+    'myst_nb',
+    'sphinx_copybutton',
+    'sphinx_inline_tabs',
 ]
+
+myst_enable_extensions = ["colon_fence", 'deflist', ]
 
 autoapi_dirs = ['../gmprocess']
 autoapi_add_toctree_entry = False

@@ -16,8 +16,8 @@ First clone this repository and go into the root directory with
 
 .. code-block::
 
-   $ git clone https://github.com/usgs/groundmotion-processing.git
-   $ cd groundmotion-processing
+   git clone https://github.com/usgs/groundmotion-processing.git
+   cd groundmotion-processing
 
 
 The ``install.sh`` script in the root directory of the package installs this 
@@ -26,7 +26,7 @@ libraries. It is regularly tested on OSX and Linux systems.
 
 .. code-block::
 
-   $ bash install.sh
+   bash install.sh
 
 Installing from source (Windows)
 --------------------------------------
@@ -47,22 +47,22 @@ First clone this repository and go into the root directory with
 
 .. code-block::
 
-   $ git clone https://github.com/usgs/groundmotion-processing.git
-   $ cd groundmotion-processing
+   git clone https://github.com/usgs/groundmotion-processing.git
+   cd groundmotion-processing
 
 Then install the ``gmprocess`` virtual environment and all of the dependencies
 and activate the environment
 
 .. code-block::
 
-   $ conda create --name gmprocess  python=3.7 --file requirements.txt --strict-channel-priority -c conda-forge -y -v
-   $ call activate gmprocess
+   conda create --name gmprocess  python=3.7 --file requirements.txt --strict-channel-priority -c conda-forge -y -v
+   call activate gmprocess
 
 And install the gmprocess code in the ``gmprocess`` virtual environment
 
 .. code-block::
 
-   $ pip install -e . --no-deps --force-reinstall
+   pip install -e . --no-deps --force-reinstall
 
 Installing via conda
 --------------------
@@ -73,7 +73,7 @@ described above at this time.
 
 .. code-block::
 
-   $ conda create -n gmprocess gmprocess
+   conda create -n gmprocess gmprocess
 
 See the 
 `conda docs <https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>`_ 
@@ -89,7 +89,7 @@ In the root directory of this repositry, you can run our unit tests with
 
 .. code-block::
 
-   $ py.test .
+   py.test .
 
 
 This will be followed by a lot of terminal output. Warnings are expected to 

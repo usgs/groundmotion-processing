@@ -17,9 +17,52 @@ Classes
 
 
 
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.subcommands.compute_waveform_metrics.arg_dicts
+   gmprocess.subcommands.compute_waveform_metrics.base
+   gmprocess.subcommands.compute_waveform_metrics.distributed
+   gmprocess.subcommands.compute_waveform_metrics.ws
+   gmprocess.subcommands.compute_waveform_metrics.station_summary
+   gmprocess.subcommands.compute_waveform_metrics.const
+
+
+.. py:data:: arg_dicts
+   
+
+   
+
+.. py:data:: base
+   
+
+   
+
+.. py:data:: distributed
+   
+
+   
+
+.. py:data:: ws
+   
+
+   
+
+.. py:data:: station_summary
+   
+
+   
+
+.. py:data:: const
+   
+
+   
+
 .. py:class:: ComputeWaveformMetricsModule
 
-   Bases: :py:obj:`gmprocess.subcommands.base.SubcommandModule`
+   Bases: :py:obj:`base`
 
    Compute waveform metrics.
 

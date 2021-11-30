@@ -17,9 +17,46 @@ Classes
 
 
 
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.subcommands.export_metric_tables.arg_dicts
+   gmprocess.subcommands.export_metric_tables.base
+   gmprocess.subcommands.export_metric_tables.ws
+   gmprocess.subcommands.export_metric_tables.const
+   gmprocess.subcommands.export_metric_tables.tables
+
+
+.. py:data:: arg_dicts
+   
+
+   
+
+.. py:data:: base
+   
+
+   
+
+.. py:data:: ws
+   
+
+   
+
+.. py:data:: const
+   
+
+   
+
+.. py:data:: tables
+   
+
+   
+
 .. py:class:: ExportMetricTablesModule
 
-   Bases: :py:obj:`gmprocess.subcommands.base.SubcommandModule`
+   Bases: :py:obj:`base`
 
    Export metric tables.
 

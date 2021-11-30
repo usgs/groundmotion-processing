@@ -17,9 +17,22 @@ Classes
 
 
 
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.subcommands.clean.base
+
+
+.. py:data:: base
+   
+
+   
+
 .. py:class:: CleanModule
 
-   Bases: :py:obj:`gmprocess.subcommands.base.SubcommandModule`
+   Bases: :py:obj:`base`
 
    Clean (i.e., remove) project data.
 
