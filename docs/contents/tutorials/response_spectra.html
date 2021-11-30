@@ -5,14 +5,15 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Linear Mixed Effects Regressions" href="lme.html" /><link rel="prev" title="Command Line Interface" href="cli.html" />
 
-    <meta name="generator" content="sphinx-4.3.0, furo 2021.10.09"/>
-        <title>Response Spectra Calculation and Comparison - gmprocess 1.1.11.dev129+g2383d0f.d20211115 documentation</title>
+    <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
+        <title>Response Spectra Calculation and Comparison - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=16fb25fabf47304eee183a5e9af80b1ba98259b1" />
     
@@ -139,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev129+g2383d0f.d20211115 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -176,8 +177,8 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../overview/index.html">Overview</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../getting-started/index.html">Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../getting-started/install.html">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting-started/initial_setup.html">Initial Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/install.html">   Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/initial_setup.html">   Initial Setup</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
@@ -188,17 +189,18 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../manual/index.html">Manual</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../manual/data_structures.html">Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../manual/workspace.html">Workspace</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../manual/config_file.html">Configuration File</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../manual/processing.html">Processing Steps</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../manual/utilities.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../manual/data_structures.html">   Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../manual/workspace.html">   Workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../manual/config_file.html">   Configuration File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../manual/processing.html">   Processing Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../manual/utilities.html">   Utilities</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../developer/index.html">Developer Resources</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html">Contributing Guidelines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../developer/new_readers.html">Adding New Data Readers</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../autoapi/gmprocess/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../developer/contributing.html">   Contributing Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/new_readers.html">   Adding New Data Readers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../developer/build_docs.html">   Building the Documentation</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../autoapi/gmprocess/index.html">   API</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/gmprocess/apps/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.apps</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/apps/gmrecords/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.apps.gmrecords</span></code></a></li>
 </ul>
@@ -380,6 +382,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/subcommands/generate_station_maps/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.generate_station_maps</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/subcommands/import_data/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.import_data</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/subcommands/init/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.init</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/subcommands/lazy_loader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.lazy_loader</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/subcommands/process_waveforms/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.process_waveforms</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/subcommands/projects/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.projects</span></code></a></li>
 </ul>
@@ -551,42 +554,42 @@ metrics, including the response spectra</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3 StationStreams(s) in StreamCollection:
+  3 StationTrace(s) in StationStream (passed):
+    CI.CLC.--.HN2 | 2019-07-06T03:19:52.680000Z - 2019-07-06T03:20:33.980000Z | 100.0 Hz, 4131 samples (passed)
+    CI.CLC.--.HN1 | 2019-07-06T03:19:52.680000Z - 2019-07-06T03:20:33.980000Z | 100.0 Hz, 4131 samples (passed)
+    CI.CLC.--.HNZ | 2019-07-06T03:19:52.680000Z - 2019-07-06T03:20:33.980000Z | 100.0 Hz, 4131 samples (passed)
   3 StationTrace(s) in StationStream (failed):
-    CI.CLC.--.HN2 | 2019-07-06T03:19:52.680000Z - 2019-07-06T03:20:53.210000Z | 100.0 Hz, 6054 samples (passed)
-    CI.CLC.--.HN1 | 2019-07-06T03:19:52.680000Z - 2019-07-06T03:20:53.210000Z | 100.0 Hz, 6054 samples (passed)
-    CI.CLC.--.HNZ | 2019-07-06T03:19:52.680000Z - 2019-07-06T03:20:53.210000Z | 100.0 Hz, 6054 samples (failed)
+    CI.TOW2.--.HN2 | 2019-07-06T03:19:54.060000Z - 2019-07-06T03:20:43.600000Z | 100.0 Hz, 4955 samples (passed)
+    CI.TOW2.--.HN1 | 2019-07-06T03:19:54.060000Z - 2019-07-06T03:20:43.600000Z | 100.0 Hz, 4955 samples (passed)
+    CI.TOW2.--.HNZ | 2019-07-06T03:19:54.060000Z - 2019-07-06T03:20:43.600000Z | 100.0 Hz, 4955 samples (failed)
   3 StationTrace(s) in StationStream (passed):
-    CI.TOW2.--.HN2 | 2019-07-06T03:19:54.060000Z - 2019-07-06T03:21:06.850000Z | 100.0 Hz, 7280 samples (passed)
-    CI.TOW2.--.HN1 | 2019-07-06T03:19:54.060000Z - 2019-07-06T03:21:06.850000Z | 100.0 Hz, 7280 samples (passed)
-    CI.TOW2.--.HNZ | 2019-07-06T03:19:54.060000Z - 2019-07-06T03:21:06.850000Z | 100.0 Hz, 7280 samples (passed)
-  3 StationTrace(s) in StationStream (passed):
-    CI.CCC.--.HN2 | 2019-07-06T03:19:57.140000Z - 2019-07-06T03:21:29.800000Z | 100.0 Hz, 9267 samples (passed)
-    CI.CCC.--.HN1 | 2019-07-06T03:19:57.140000Z - 2019-07-06T03:21:29.800000Z | 100.0 Hz, 9267 samples (passed)
-    CI.CCC.--.HNZ | 2019-07-06T03:19:57.140000Z - 2019-07-06T03:21:29.800000Z | 100.0 Hz, 9267 samples (passed)
+    CI.CCC.--.HN2 | 2019-07-06T03:19:57.140000Z - 2019-07-06T03:21:00.020000Z | 100.0 Hz, 6289 samples (passed)
+    CI.CCC.--.HN1 | 2019-07-06T03:19:57.140000Z - 2019-07-06T03:21:00.020000Z | 100.0 Hz, 6289 samples (passed)
+    CI.CCC.--.HNZ | 2019-07-06T03:19:57.140000Z - 2019-07-06T03:21:00.020000Z | 100.0 Hz, 6289 samples (passed)
 </pre></div>
 </div>
 </div>
 </div>
-<p>From the <code class="docutils literal notranslate"><span class="pre">describe</span></code> output, you can see that station CI.CLC failed the QA
+<p>From the <code class="docutils literal notranslate"><span class="pre">describe</span></code> output, you can see that station CI.TOW2 failed the QA
 checks that are applied during the <code class="docutils literal notranslate"><span class="pre">process_streams</span></code> command. You can also
 see that it is because of a failure on the Z component. To investigate what
 caused the failure, we can look at the <code class="docutils literal notranslate"><span class="pre">failure</span></code> trace parameter</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">psc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s1">'failure'</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">psc</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s1">'failure'</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{'module': 'check_tail', 'reason': 'Velocity ratio is greater than 0.3'}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{'module': 'check_tail', 'reason': 'Velocity ratio is greater than 0.25'}
 </pre></div>
 </div>
 </div>
 </div>
-<p>Note that the first index is to select the CI.CLC stream, and the second is to
+<p>Note that the first index is to select the CI.TOW2 stream, and the second is to
 select the Z trace.</p>
 <p>The output shows that the trace failed in the <code class="docutils literal notranslate"><span class="pre">check_tail</span></code> module with the
-reason being that the tail velocity ratio is great than 0.3. This is a simple
+reason being that the tail velocity ratio is great than 0.25. This is a simple
 “sanity” check that is designed to avoid records with unphysical drifts.
 Although the record is probably still usable in this case, we will continue
 use the third stream (CI.CCC) for the rest of this tutorial.</p>
@@ -600,21 +603,21 @@ use the third stream (CI.CCC) for the rest of this tutorial.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                             Result
-IMT          IMC                   
-SA(5.000)    H2           14.464494
-             H1           11.974087
-             Z             1.494579
-             ROTD(50.0)   13.444710
-DURATION5-95 H2           11.380000
-...                             ...
-SA(0.150)    ROTD(50.0)  111.538488
-SA(0.200)    H2           78.271889
-             H1          102.929359
-             Z            49.077275
-             ROTD(50.0)   81.076614
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                              Result
+IMT        IMC                      
+SA(10.000) ROTD(50.0)       1.895743
+           QUADRATIC_MEAN   1.918344
+           H2               2.313106
+           H1               1.417614
+           Z                0.261904
+...                              ...
+PGV        ROTD(50.0)      61.178334
+           QUADRATIC_MEAN  62.692706
+           H2              41.079966
+           H1              78.569632
+           Z               16.950932
 
-[101 rows x 1 columns]
+[211 rows x 1 columns]
 </pre></div>
 </div>
 </div>
@@ -758,8 +761,10 @@ and oscillator periods as arrays</p>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/scripts/main.js"></script>
-    <script src="../../_static/tabs.js"></script>
     <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/tabs.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     </body>
 </html>

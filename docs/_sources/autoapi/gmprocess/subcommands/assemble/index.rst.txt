@@ -17,9 +17,46 @@ Classes
 
 
 
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.subcommands.assemble.distributed
+   gmprocess.subcommands.assemble.arg_dicts
+   gmprocess.subcommands.assemble.base
+   gmprocess.subcommands.assemble.constants
+   gmprocess.subcommands.assemble.assemble_utils
+
+
+.. py:data:: distributed
+   
+
+   
+
+.. py:data:: arg_dicts
+   
+
+   
+
+.. py:data:: base
+   
+
+   
+
+.. py:data:: constants
+   
+
+   
+
+.. py:data:: assemble_utils
+   
+
+   
+
 .. py:class:: AssembleModule
 
-   Bases: :py:obj:`gmprocess.subcommands.base.SubcommandModule`
+   Bases: :py:obj:`base`
 
    Assemble raw data and organize it into an ASDF file.
 

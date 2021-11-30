@@ -32,9 +32,45 @@ Attributes
 
 .. autoapisummary::
 
+   gmprocess.subcommands.projects.distributed
+   gmprocess.subcommands.projects.ryaml
+   gmprocess.subcommands.projects.pkg_resources
+   gmprocess.subcommands.projects.base
+   gmprocess.subcommands.projects.constants
+   gmprocess.subcommands.projects.prompt
    gmprocess.subcommands.projects.re_email
    gmprocess.subcommands.projects.current_markers
 
+
+.. py:data:: distributed
+   
+
+   
+
+.. py:data:: ryaml
+   
+
+   
+
+.. py:data:: pkg_resources
+   
+
+   
+
+.. py:data:: base
+   
+
+   
+
+.. py:data:: constants
+   
+
+   
+
+.. py:data:: prompt
+   
+
+   
 
 .. py:data:: re_email
    :annotation: = ^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$
@@ -43,7 +79,7 @@ Attributes
 
 .. py:class:: ProjectsModule
 
-   Bases: :py:obj:`gmprocess.subcommands.base.SubcommandModule`
+   Bases: :py:obj:`base`
 
    Manage gmrecords projects.
 

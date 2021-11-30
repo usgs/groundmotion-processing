@@ -7,8 +7,166 @@ import pkg_resources
 from configobj import ConfigObj
 from ruamel.yaml import YAML
 from ruamel.yaml.error import YAMLError
+from schema import Schema, Or, Optional
 
 from gmprocess.utils import constants
+
+
+CONF_SCHEMA = Schema({
+    'user': {
+        'name': str,
+        'email': str
+    },
+    'fetchers': {
+        Optional('KNETFetcher'): {
+            'user': str,
+            'password': str,
+            'radius': float,
+            'dt': float,
+            'ddepth': float,
+            'dmag': float,
+            'restrict_stations': bool
+        },
+        Optional('CESMDFetcher'): {
+            'email': str,
+            'process_type': Or("raw", "processed"),
+            'station_type': Or(
+                "Any", "Array", "Ground", "Building", "Bridge", "Dam",
+                "Tunnel", "Warf", "Other"),
+            'eq_radius': float,
+            'eq_dt': float,
+            'station_radius': float
+        },
+        Optional('TurkeyFetcher'): {
+            'radius': float,
+            'dt': float,
+            'ddepth': float,
+            'dmag': float
+        },
+        Optional('FDSNFetcher'): {
+            'radius': float,
+            'time_before': float,
+            'time_after': float,
+            'channels': list,
+            'exclude_patterns': list,
+            'network': str,
+            'exclude_networks': list,
+            'reject_channels_with_gaps': bool,
+            'minimum_length': float,
+            'sanitize': bool,
+            'minimum_interstation_distance_in_m': float
+        }
+    },
+    'read': {
+        'metadata_directory': str,
+        'resample_rate': float,
+        'sac_conversion_factor': float,
+        'sac_source': str
+    },
+    'windows': {
+        'signal_end': {
+            'method': str,
+            'vmin': float,
+            'floor': float,
+            'model': str,
+            'epsilon': float
+        },
+        'window_checks': {
+            'do_check': bool,
+            'min_noise_duration': float,
+            'min_signal_duration': float
+        }
+    },
+    'processing': list,
+    'colocated': {
+        'preference': list
+    },
+    'duplicate': {
+        'max_dist_tolerance': float,
+        'preference_order': list,
+        'process_level_preference': list,
+        'format_preference': list
+    },
+    'build_report': {
+        'format': 'latex'
+    },
+    'metrics': {
+        'output_imcs': list,
+        'output_imts': list,
+        'sa': {
+            'damping': float,
+            'periods': {
+                'start': float,
+                'stop': float,
+                'num': int,
+                'spacing': str,
+                'use_array': bool,
+                'defined_periods': list
+            }
+        },
+        'fas': {
+            'smoothing': str,
+            'bandwidth': float,
+            'allow_nans': bool,
+            'periods': {
+                'start': float,
+                'stop': float,
+                'num': int,
+                'spacing': str,
+                'use_array': bool,
+                'defined_periods': list
+            }
+        },
+        'duration': {
+            'intervals': list
+        }
+    },
+    'pickers': {
+        'p_arrival_shift': float,
+        Optional('ar'): {
+            'f1': float,
+            'f2': float,
+            'lta_p': float,
+            'sta_p': float,
+            'lta_s': float,
+            'sta_s': float,
+            'm_p': int,
+            'm_s': int,
+            'l_p': float,
+            'l_s': float,
+            's_pick': bool
+        },
+        Optional('baer'): {
+            'tdownmax': float,
+            'tupevent': int,
+            'thr1': float,
+            'thr2': float,
+            'preset_len': int,
+            'p_dur': float
+        },
+        Optional('kalkan'): {
+            'period': Or("None", float),
+            'damping': float,
+            'nbins': Or("None", float),
+            'peak_selection': bool
+        },
+        Optional('power'): {
+            'highpass': float,
+            'lowpass': float,
+            'order': int,
+            'sta': float,
+            'sta2': float,
+            'lta': float,
+            'hanningWindow': float,
+            'threshDetect': float,
+            'threshDetect2': float,
+            'threshRestart': float
+        },
+        'travel_time': {
+            'model': str
+        }
+    }
+})
 
 
 def update_dict(target, source):
@@ -103,6 +261,8 @@ def get_config(config_file=None, section=None):
             yaml = YAML()
             yaml.preserve_quotes = True
             config = yaml.load(f)
+
+    CONF_SCHEMA.validate(config)
 
     if section is not None:
         if section not in config:

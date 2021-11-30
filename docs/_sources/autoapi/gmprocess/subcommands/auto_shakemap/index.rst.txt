@@ -17,9 +17,88 @@ Classes
 
 
 
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.subcommands.auto_shakemap.arg_dicts
+   gmprocess.subcommands.auto_shakemap.base
+   gmprocess.subcommands.auto_shakemap.download
+   gmprocess.subcommands.auto_shakemap.import_data
+   gmprocess.subcommands.auto_shakemap.assemble
+   gmprocess.subcommands.auto_shakemap.process_waveforms
+   gmprocess.subcommands.auto_shakemap.compute_station_metrics
+   gmprocess.subcommands.auto_shakemap.compute_waveform_metrics
+   gmprocess.subcommands.auto_shakemap.export_metric_tables
+   gmprocess.subcommands.auto_shakemap.export_shakemap
+   gmprocess.subcommands.auto_shakemap.generate_regression_plot
+   gmprocess.subcommands.auto_shakemap.generate_report
+
+
+.. py:data:: arg_dicts
+   
+
+   
+
+.. py:data:: base
+   
+
+   
+
+.. py:data:: download
+   
+
+   
+
+.. py:data:: import_data
+   
+
+   
+
+.. py:data:: assemble
+   
+
+   
+
+.. py:data:: process_waveforms
+   
+
+   
+
+.. py:data:: compute_station_metrics
+   
+
+   
+
+.. py:data:: compute_waveform_metrics
+   
+
+   
+
+.. py:data:: export_metric_tables
+   
+
+   
+
+.. py:data:: export_shakemap
+   
+
+   
+
+.. py:data:: generate_regression_plot
+   
+
+   
+
+.. py:data:: generate_report
+   
+
+   
+
 .. py:class:: AutoShakemapModule
 
-   Bases: :py:obj:`gmprocess.subcommands.base.SubcommandModule`
+   Bases: :py:obj:`base`
 
    Chain together subcommands to get shakemap ground motion file.
 
