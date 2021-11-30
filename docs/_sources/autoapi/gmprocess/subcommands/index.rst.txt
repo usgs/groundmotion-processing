@@ -27,6 +27,7 @@ Submodules
    generate_station_maps/index.rst
    import_data/index.rst
    init/index.rst
+   lazy_loader/index.rst
    process_waveforms/index.rst
    projects/index.rst
 

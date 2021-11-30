@@ -21,6 +21,19 @@ Functions
 
 
 
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.utils.config.CONF_SCHEMA
+
+
+.. py:data:: CONF_SCHEMA
+   
+
+   
+
 .. py:function:: update_dict(target, source)
 
    Merge values from source dictionary into target dictionary.

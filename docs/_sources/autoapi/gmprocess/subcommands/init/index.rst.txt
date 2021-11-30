@@ -17,9 +17,40 @@ Classes
 
 
 
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.subcommands.init.configobj
+   gmprocess.subcommands.init.base
+   gmprocess.subcommands.init.const
+   gmprocess.subcommands.init.projects
+
+
+.. py:data:: configobj
+   
+
+   
+
+.. py:data:: base
+   
+
+   
+
+.. py:data:: const
+   
+
+   
+
+.. py:data:: projects
+   
+
+   
+
 .. py:class:: InitModule
 
-   Bases: :py:obj:`gmprocess.subcommands.base.SubcommandModule`
+   Bases: :py:obj:`base`
 
    Initialize the current directory as a gmprocess project directory.
 
