@@ -77,7 +77,7 @@ class GenerateRegressionPlotModule(base.SubcommandModule):
             pref_imcs = ['rotd50.0',
                          'greater_of_two_horizontals',
                          'h1', 'h2', ]
-            pref_imts = ['PGA', 'PGV', 'SA(1.0)']
+            pref_imts = ['PGA', 'PGV', 'SA(1.000)']
             found_imc = None
             found_imt = None
             tab_key_list = list(imc_tables.keys())
