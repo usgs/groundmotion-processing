@@ -142,10 +142,11 @@ class StreamCollection(object):
             raise ValueError(
                 'Only one label allowed within a StreamCollection.')
 
-    def select_colocated(self, preference=["HN?", "BN?", "HH?", "BH?"]):
+    def select_colocated(self, preference=["HN?", "BN?", "HH?", "BH?"],
+                         large_dist=None, origin=None):
         """Detect colocated instruments, return preferred instrument type.
 
-        This uses the a list of the first two channel characters, given as
+        This uses the list of the first two channel characters, given as
         'preference' in the 'colocated' section of the config. The algorithm
         is:
 
@@ -162,7 +163,29 @@ class StreamCollection(object):
         Args:
             preference (list):
                 List of strings indicating preferred instrument types.
+            large_dist (dict):
+                A dictionary with keys "preference", "mag", and "dist";
+                "preference" is the same as the "preference" argument to this
+                function, but will replace it when the distance is exceeded
+                for a given magnitude. The distance threshold is computed as:
+
+                    ```
+                    dist_thresh = dist[0]
+                    for m, d in zip(mag, dist):
+                        if eqmag > m:
+                            dist_thresh = d
+                    ```
+
+            origin (Origin):
+                Origin object.
         """
+        # Do we have a different large-distnce preference?
+        if large_dist:
+            dist_thresh = large_dist["dist"][0]
+            for m, d in zip(large_dist["mag"], large_dist["dist"]):
+                if origin.magnitude > m:
+                    dist_thresh = d
+
         # Create a list of streams with matching id (combo of net and station).
         all_matches = []
         match_list = []
@@ -188,6 +211,17 @@ class StreamCollection(object):
             if len(group) > 1:
                 # If so, loop over list of preferred instruments
                 group_insts = [self[g].get_inst() for g in group]
+
+                if large_dist:
+                    tr = self[group[0]][0]
+                    distance = gps2dist_azimuth(
+                        tr.stats.coordinates.latitude,
+                        tr.stats.coordinates.longitude,
+                        origin.latitude,
+                        origin.longitude)[0] / 1000.0
+
+                    if distance > dist_thresh:
+                        preference = large_dist["preference"]
 
                 # Loop over preferred instruments
                 no_match = True
@@ -789,7 +823,7 @@ def are_duplicates(tr1, tr2, max_dist_tolerance):
 
 def choose_preferred(tr1, tr2, preference_order, process_level_preference,
                      format_preference):
-    """Determines which trace is preferred. Returns the preferred the trace.
+    """Determines which trace is preferred. Returns the preferred trace.
 
     Args:
         tr1 (StationTrace):

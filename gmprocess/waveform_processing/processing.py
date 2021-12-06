@@ -190,7 +190,7 @@ def process_streams(streams, origin, config=None):
     # -------------------------------------------------------------------------
     # Begin colocated instrument selection
     colocated_conf = config['colocated']
-    streams.select_colocated(**colocated_conf)
+    streams.select_colocated(**colocated_conf, origin=origin)
 
     for st in streams:
         for tr in st:

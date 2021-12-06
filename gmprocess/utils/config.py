@@ -79,7 +79,12 @@ CONF_SCHEMA = Schema({
     },
     'processing': list,
     'colocated': {
-        'preference': list
+        'preference': list,
+        Optional('large_dist'): {
+            'preference': list,
+            'mag': list,
+            'dist': list
+        }
     },
     'duplicate': {
         'max_dist_tolerance': float,
