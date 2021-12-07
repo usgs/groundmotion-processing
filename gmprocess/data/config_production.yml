@@ -496,6 +496,17 @@ metrics:
         # predefined by the array of periods
         defined_periods: [0.01, 0.02, 0.03, 0.05, 0.075, 0.1, 0.15, 0.2, 0.25,
           0.3, 0.4, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0, 7.5, 10.0]
+        # Options for upsampling time series for high-frequency SA calcs.
+        # upsamping:
+            # According to Boore and Goulet (2014) it is best to
+            #   1) Use Whittaker-Shannon interpolation (i.e., frequency domain)
+            #      but this can be approximated with Lanczos interpolation.
+            #   2) 
+            # New sample rate is computed as
+            # ns = (int)(ns_factor * new_dt / period - 0.01) + 1
+            # DOI 10.1007/s10518-013-9574-9
+            # ns_factor: 10.0
+            # method: 
   fas:
       smoothing: konno_ohmachi
       bandwidth: 20.0

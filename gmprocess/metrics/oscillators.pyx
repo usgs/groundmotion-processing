@@ -41,30 +41,37 @@ cpdef list calculate_spectrals(trace, period, damping):
     cdef double new_sample_rate = trace.stats.sampling_rate
     # The time length of the trace in seconds
     cdef double tlen = (new_np - 1) * new_dt
-    cdef int ns
+    cdef int interp_factor
 
     # This is the resample factor for low-sample-rate/high-frequency
-    ns = (int)(10. * new_dt / period - 0.01) + 1
-    if ns > 1:
-        # Increase the number of samples as necessary
-        new_np = new_np * ns
-        # Make the new number of samples a power of two
-        # leaving this out for now; it slows things down but doesn't
-        # appear to affect the results. YMMV.
-        # new_np = 1 if new_np == 0 else 2**(new_np - 1).bit_length()
-        # The new sample interval
-        new_dt = tlen / (new_np - 1)
-        # The new sample rate
-        new_sample_rate = 1.0 / new_dt
-        # Make a copy because resampling happens in place
-        trace = trace.copy()
-        # Resample the trace
-        trace.resample(new_sample_rate, window=None)
+    interp_factor = (int)(10.0 * new_dt / period - 0.01) + 1
+    if interp_factor > 1:
+        if tr.hasCached('upsampled'):
+            upsampled_dict = tr.getCached('upsampled')
+            trdata = upsampled_dict['data']
+            new_dt = upsampled_dict['dt']
+            new_np = upsampled_dict['np']
+        else:
+            # Increase the number of samples as necessary
+            new_np = new_np * interp_factor
+            # Make the new number of samples a power of two
+            # leaving this out for now; it slows things down but doesn't
+            # appear to affect the results. YMMV.
+            # new_np = 1 if new_np == 0 else 2**(new_np - 1).bit_length()
+            # The new sample interval
+            new_dt = tlen / (new_np - 1)
+            # The new sample rate
+            new_sample_rate = 1.0 / new_dt
+            # Make a copy because resampling happens in place
+            trace = trace.copy()
+            # Resample the trace
+            trace.resample(new_sample_rate, window=None)
+            trdata = trace.data
 
     cdef ndarray[double, ndim=1] spectral_acc = np.zeros(new_np)
     cdef ndarray[double, ndim=1] spectral_vel = np.zeros(new_np)
     cdef ndarray[double, ndim=1] spectral_dis = np.zeros(new_np)
-    cdef ndarray[double, ndim=1] acc = trace.data
+    cdef ndarray[double, ndim=1] acc = trdata
 
     calculate_spectrals_c(<double *>acc.data, new_np, new_dt,
                           period, damping,

@@ -85,9 +85,13 @@ class MetricsController(object):
             raise PGMException('MetricsController: Event is required for '
                                'radial_transverse imc')
 
-        self.channel_dict = {}  # dictionary to serve as translator between
+        # dictionary to serve as translator between
+        self.channel_dict = {}
+
+        # self.timeseries is the StationStream
         self.timeseries = timeseries
         self.validate_stream()
+        self.add_upsampled_traces()
         self.event = event
         self.damping = damping
         self.smooth_type = smooth_type
@@ -495,6 +499,32 @@ class MetricsController(object):
                     raise PGMException("MetricsController: Traces must all "
                                        "be the same length.")
 
+    def add_upsampled_traces(self):
+        """Convenience method for adding upsampled waveform to traces.
+
+        This adds a *single* upsampled version of the waveform to each trace
+        for the smallest requested oscillator period.
+        """
+        st = self.timeseries
+        min_period = self._get_min_period()
+        dt = st[0].stats.delta
+        interp_factor = int(10.0 * dt / min_period - 0.01) + 1
+        if interp_factor > 1:
+            tlen = (st[0].stats.npts - 1) * dt
+            new_np = st[0].stats.npts * interp_factor
+            new_dt = tlen / (new_np - 1)
+            new_sample_rate = 1.0 / new_dt
+            for tr in st:
+                rtr = tr.copy()
+                # resampling happens in place
+                rtr.resample(new_sample_rate, window=None)
+                upsampled_dict = {
+                    'data': rtr.data,
+                    'dt': rtr.stats.delta,
+                    'np': new_np
+                }
+                tr.setCached('upsampled', upsampled_dict)
+
     def _format(self, result, steps):
         """
         Creates a dataframe row(rows) structured as:
@@ -695,6 +725,17 @@ class MetricsController(object):
                 periods.append(float(period))
         if periods:
             return max(periods)
+        else:
+            return None
+
+    def _get_min_period(self):
+        periods = []
+        for imt in self.imts:
+            period = self._parse_period(imt)
+            if period is not None:
+                periods.append(float(period))
+        if periods:
+            return min(periods)
         else:
             return None
 
