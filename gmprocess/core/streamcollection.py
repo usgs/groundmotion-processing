@@ -190,14 +190,19 @@ class StreamCollection(object):
         all_matches = []
         match_list = []
         for idx1, stream1 in enumerate(self):
-            if idx1 in all_matches:
+            cond1 = idx1 in all_matches
+            cond2 = not stream1.passed
+            if cond1 or cond2:
                 continue
             matches = [idx1]
             net_sta = stream1.get_net_sta()
             for idx2, stream2 in enumerate(self):
-                if idx1 != idx2 and idx1 not in all_matches:
-                    if (net_sta == stream2.get_net_sta()):
-                        matches.append(idx2)
+                cond1 = idx1 != idx2
+                cond2 = idx1 not in all_matches
+                cond3 = net_sta == stream2.get_net_sta()
+                cond4 = stream2.passed
+                if cond1 and cond2 and cond3 and cond4:
+                    matches.append(idx2)
             if len(matches) > 1:
                 match_list.append(matches)
                 all_matches.extend(matches)
