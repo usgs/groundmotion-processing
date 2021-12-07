@@ -13,6 +13,7 @@ from gmprocess.io.seedname import get_channel_name, get_units_type
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.io.utils import is_evenly_spaced, resample_uneven_trace
+from gmprocess.io.utils import is_binary
 
 VOLUMES = {
     'V1': {
@@ -48,6 +49,8 @@ def is_usc(filename, config=None, **kwargs):
         bool: True if USC, False otherwise.
     """
     logging.debug("Checking if format is usc.")
+    if is_binary(filename):
+        return False
     # USC requires unique integer values
     # in column 73-74 on all text header lines
     # excluding the first file line

@@ -15,6 +15,7 @@ from scipy import constants
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.io.seedname import get_channel_name, get_units_type
+from gmprocess.io.utils import is_binary
 
 
 TIMEFMT = '%d/%m/%Y %H:%M:%S.%f'
@@ -55,6 +56,8 @@ def is_nsmn(filename, config=None):
     Returns:
         bool: True if Turkish NSMN format, otherwise False.
     """
+    if is_binary(filename):
+        return False
     with open(filename, 'rt', encoding=ENCODING) as f:
         line = f.readline()
         if MARKER in line:

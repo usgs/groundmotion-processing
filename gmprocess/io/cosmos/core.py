@@ -17,6 +17,7 @@ from gmprocess.utils.constants import UNIT_CONVERSIONS
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
 from gmprocess.io.seedname import get_channel_name, get_units_type
+from gmprocess.io.utils import is_binary
 
 MICRO_TO_VOLT = 1e6  # convert microvolts to volts
 MSEC_TO_SEC = 1 / 1000.0
@@ -231,6 +232,8 @@ def is_cosmos(filename, config=None):
         bool: True if COSMOS V0/V1, False otherwise.
     """
     logging.debug("Checking if format is cosmos.")
+    if is_binary(filename):
+        return False
     try:
         line = open(filename, 'rt', encoding='utf-8').readline()
         for marker in VALID_MARKERS:

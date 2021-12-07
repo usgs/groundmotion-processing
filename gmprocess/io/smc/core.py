@@ -12,6 +12,7 @@ import numpy as np
 from gmprocess.io.seedname import get_channel_name, get_units_type
 from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.core.stationstream import StationStream
+from gmprocess.io.utils import is_binary
 
 ASCII_HEADER_LINES = 11
 INTEGER_HEADER_LINES = 6
@@ -123,6 +124,8 @@ def is_smc(filename, config=None):
         bool: True if SMC, False otherwise.
     """
     logging.debug("Checking if format is smc.")
+    if is_binary(filename):
+        return False
     try:
         with open(filename, 'rt') as f:
             lines = f.readlines()

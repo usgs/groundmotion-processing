@@ -13,6 +13,7 @@ from gmprocess.utils.constants import UNIT_CONVERSIONS
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.io.seedname import get_channel_name, get_units_type
+from gmprocess.io.utils import is_binary
 
 
 INTIMEFMT = '%Y/%m/%d %H:%M:%S'
@@ -44,6 +45,8 @@ def is_bhrc(filename, config=None):
     Returns:
         bool: True if BHRC supported, otherwise False.
     """
+    if is_binary(filename):
+        return False
     try:
         with open(filename, 'rt', encoding='utf-8') as f:
             lines = [next(f) for x in range(TEXT_HDR_ROWS)]

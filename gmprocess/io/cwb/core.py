@@ -12,6 +12,7 @@ from obspy.core.trace import Stats
 from gmprocess.io.seedname import get_channel_name, get_units_type
 from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.core.stationstream import StationStream
+from gmprocess.io.utils import is_binary
 
 DATE_FMT = '%Y/%m/%d-%H:%M:%S.%f'
 
@@ -36,6 +37,8 @@ def is_cwb(filename, config=None):
         bool: True if CWB, False otherwise.
     """
     logging.debug("Checking if format is cwb.")
+    if is_binary(filename):
+        return False
     try:
         f = open(filename, 'rt', encoding='utf-8')
         line = f.readline()
