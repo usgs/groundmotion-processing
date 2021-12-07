@@ -14,6 +14,24 @@ CONFIG = get_config()
 DUPLICATE_MARKER = '1'
 
 
+def is_binary(filename):
+    """Check if file is binary.
+
+    Args:
+        filename (str):
+            File to check.
+
+    Returns:
+        bool: Is this a binary file?
+    """
+    # quick check to see if this is a binary or text file
+    textchars = bytearray({7, 8, 9, 10, 12, 13, 27} |
+                          set(range(0x20, 0x100)) - {0x7F})
+
+    def is_binary_string(bytes): return bool(bytes.translate(None, textchars))
+    return is_binary_string(open(filename, "rb").read(1024))
+
+
 def is_evenly_spaced(times, rtol=1e-6, atol=1e-8):
     """
     Checks whether times are evenly spaced.

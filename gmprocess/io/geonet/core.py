@@ -14,6 +14,8 @@ import numpy as np
 from gmprocess.io.seedname import get_channel_name, get_units_type
 from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.core.stationstream import StationStream
+from gmprocess.io.utils import is_binary
+
 
 NZCATWINDOW = 5 * 60  # number of seconds to search around in GeoNet EQ catalog
 
@@ -46,6 +48,8 @@ def is_geonet(filename, config=None):
         bool: True if GNS V1/V2, False otherwise.
     """
     logging.debug("Checking if format is geonet.")
+    if is_binary(filename):
+        return False
     try:
         line = open(filename, 'rt').readline()
         if line.find('GNS Science') >= 0:

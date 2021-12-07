@@ -12,6 +12,8 @@ import numpy as np
 # local imports
 from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.core.stationstream import StationStream
+from gmprocess.io.utils import is_binary
+
 
 TEXT_HDR_ROWS = 64
 # 20190728_160919.870
@@ -39,6 +41,9 @@ def is_esm(filename, config=None):
         bool: True if ESM, False otherwise.
     """
     logging.debug("Checking if format is esm.")
+    if is_binary(filename):
+        return False
+
     if not os.path.isfile(filename):
         return False
     try:

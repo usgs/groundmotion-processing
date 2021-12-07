@@ -14,6 +14,8 @@ import numpy as np
 from gmprocess.io.seedname import get_channel_name, get_units_type
 from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.core.stationstream import StationStream
+from gmprocess.io.utils import is_binary
+
 
 TEXT_HDR_ROWS = 17
 TIMEFMT = '%Y/%m/%d %H:%M:%S'
@@ -39,6 +41,8 @@ def is_knet(filename, config=None):
         bool: True if NIED/KNET, False otherwise.
     """
     logging.debug("Checking if format is knet.")
+    if is_binary(filename):
+        return False
     if not os.path.isfile(filename):
         return False
     try:

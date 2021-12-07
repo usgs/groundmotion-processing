@@ -19,6 +19,8 @@ from gmprocess.io.seedname import get_channel_name, get_units_type
 from gmprocess.core.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
 from gmprocess.core.stationstream import StationStream
 from gmprocess.io.utils import is_evenly_spaced, resample_uneven_trace
+from gmprocess.io.utils import is_binary
+
 
 V1_TEXT_HDR_ROWS = 13
 V1_INT_HDR_ROWS = 7
@@ -106,6 +108,8 @@ def is_dmg(filename, config=None):
         bool: True if DMG , False otherwise.
     """
     logging.debug("Checking if format is dmg.")
+    if is_binary(filename):
+        return False
     try:
         f = open(filename, 'rt', encoding='utf-8')
         first_line = f.readline().upper()

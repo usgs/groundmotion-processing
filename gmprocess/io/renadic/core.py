@@ -16,6 +16,7 @@ import pkg_resources
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.io.seedname import get_channel_name
+from gmprocess.io.utils import is_binary
 
 
 TIMEFMT = '%m/%d/%Y %H:%M:%S.%f'
@@ -65,12 +66,9 @@ def is_renadic(filename, config=None):
     Returns:
         bool: True if Chilean RENADIC supported, otherwise False.
     """
-    # quick check to see if this is a binary or text file
-    textchars = bytearray({7, 8, 9, 10, 12, 13, 27} | set(range(0x20, 0x100)) - {0x7F})
-    is_binary_string = lambda bytes: bool(bytes.translate(None, textchars))
-    is_binary = is_binary_string(open(filename, "rb").read(1024))
-    if is_binary:
+    if is_binary(filename):
         return False
+
     with open(filename, 'rt', encoding=ENCODING) as f:
         lines = [next(f) for x in range(TEXT_HDR_ROWS)]
 

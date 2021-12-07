@@ -12,6 +12,7 @@ import numpy as np
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.io.seedname import (get_channel_name, is_channel_north)
+from gmprocess.io.utils import is_binary
 
 
 TIMEFMT1 = '%Y/%m/%d %H:%M:%S.%f'
@@ -54,6 +55,8 @@ def is_unam(filename, config=None):
     Returns:
         bool: True if UNAM supported, otherwise False.
     """
+    if is_binary(filename):
+        return False
     try:
         with open(filename, 'rt') as myfile:
             header = [next(myfile) for x in range(7)]
