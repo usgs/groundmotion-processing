@@ -25,9 +25,12 @@ class Rotd(Rotation):
         Performs ROTD rotation.
 
         Returns:
-            rotd: numpy.ndarray of the rotated and combined traces.
+            StationStreams with rotated data added to stream parameters with
+            id "rotd".
         """
+        streams = self.rotation_data.copy()
         horizontals = self._get_horizontals()
         osc1, osc2 = horizontals[0].data, horizontals[1].data
         rotd = [self.rotate(osc1, osc2, combine=True)]
-        return rotd
+        streams.setStreamParam('rotd', rotd)
+        return streams
