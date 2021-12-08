@@ -8,7 +8,7 @@ class Reduction(object):
                  period=None, smoothing=None, interval=[5, 95]):
         """
         Args:
-            reduction_data (obspy.core.stream.Stream or numpy.ndarray):
+            reduction_data (StationStream):
                 Intensity measurement component.
             bandwidth (float):
                 Bandwidth for the smoothing operation. Default is None.

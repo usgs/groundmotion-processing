@@ -17,7 +17,7 @@ from obspy import read
 from gmprocess.utils.constants import GAL_TO_PCTG
 
 cdef extern from "cfuncs.h":
-    void calculate_spectrals_c(double *acc, int np, double dt,
+    void calculate_spectrals_c(double *acc, int npoints, double dt,
                                double period, double damping, double *sacc,
                                double *svel, double *sdis);
 
@@ -32,7 +32,6 @@ cpdef list calculate_spectrals(trace, period, damping):
             Period in seconds.
         damping (float):
             Fraction of critical damping.
-
     Returns:
         list: List of spectral responses (np.ndarray).
     """
@@ -41,37 +40,30 @@ cpdef list calculate_spectrals(trace, period, damping):
     cdef double new_sample_rate = trace.stats.sampling_rate
     # The time length of the trace in seconds
     cdef double tlen = (new_np - 1) * new_dt
-    cdef int interp_factor
+    cdef int ns
 
     # This is the resample factor for low-sample-rate/high-frequency
-    interp_factor = (int)(10.0 * new_dt / period - 0.01) + 1
-    if interp_factor > 1:
-        if tr.hasCached('upsampled'):
-            upsampled_dict = tr.getCached('upsampled')
-            trdata = upsampled_dict['data']
-            new_dt = upsampled_dict['dt']
-            new_np = upsampled_dict['np']
-        else:
-            # Increase the number of samples as necessary
-            new_np = new_np * interp_factor
-            # Make the new number of samples a power of two
-            # leaving this out for now; it slows things down but doesn't
-            # appear to affect the results. YMMV.
-            # new_np = 1 if new_np == 0 else 2**(new_np - 1).bit_length()
-            # The new sample interval
-            new_dt = tlen / (new_np - 1)
-            # The new sample rate
-            new_sample_rate = 1.0 / new_dt
-            # Make a copy because resampling happens in place
-            trace = trace.copy()
-            # Resample the trace
-            trace.resample(new_sample_rate, window=None)
-            trdata = trace.data
+    ns = (int)(10. * new_dt / period - 0.01) + 1
+    if ns > 1:
+        # Increase the number of samples as necessary
+        new_np = new_np * ns
+        # Make the new number of samples a power of two
+        # leaving this out for now; it slows things down but doesn't
+        # appear to affect the results. YMMV.
+        # new_np = 1 if new_np == 0 else 2**(new_np - 1).bit_length()
+        # The new sample interval
+        new_dt = tlen / (new_np - 1)
+        # The new sample rate
+        new_sample_rate = 1.0 / new_dt
+        # Make a copy because resampling happens in place
+        trace = trace.copy()
+        # Resample the trace
+        trace.resample(new_sample_rate, window=None)
 
     cdef ndarray[double, ndim=1] spectral_acc = np.zeros(new_np)
     cdef ndarray[double, ndim=1] spectral_vel = np.zeros(new_np)
     cdef ndarray[double, ndim=1] spectral_dis = np.zeros(new_np)
-    cdef ndarray[double, ndim=1] acc = trdata
+    cdef ndarray[double, ndim=1] acc = trace.data
 
     calculate_spectrals_c(<double *>acc.data, new_np, new_dt,
                           period, damping,
@@ -120,23 +112,24 @@ def get_spectral(period, stream, damping=0.05, times=None, config=None):
     Args:
         period (float):
             Period for spectral response.
-        stream (obspy.core.stream.Stream):
+        stream (StationStream):
             Strong motion timeseries for one station.
         damping (float):
             Damping of oscillator.
         times (np.ndarray):
             Array of times for the horizontal channels. Default is None.
         config (dict):
-            Configuraiton options.
+            StationStream.
 
     Returns:
-        obpsy.core.stream.Stream or numpy.ndarray: stream of spectral response.
+        obpsy.core.stream.Stream.
     """
     traces = []
     num_trace_range = range(len(stream))
     cdef int len_data = stream[0].data.shape[0]
 
-    if isinstance(stream, (StationStream, Stream)):
+    if isinstance(stream, StationStream):
+        # For anything but ROTD and GMROTD
         for idx in num_trace_range:
             trace = stream[idx]
             sa_list = calculate_spectrals(trace, period, damping)
@@ -152,8 +145,9 @@ def get_spectral(period, stream, damping=0.05, times=None, config=None):
         spect_stream = StationStream(traces)
         return spect_stream
     else:
-        rotated = []
-        for idx in range(0, len(stream)):
+        # For ROTD and GMROTD
+        # rotated = []
+        for idx, tr in enumerate(stream):
             rot_matrix = stream[idx]
             rotated_spectrals = []
             for idy in range(0, len(rot_matrix)):
@@ -167,8 +161,13 @@ def get_spectral(period, stream, damping=0.05, times=None, config=None):
                 acc_sa = sa_list[0]
                 acc_sa *= GAL_TO_PCTG
                 rotated_spectrals.append(acc_sa)
-            rotated += [rotated_spectrals]
-        return rotated
+            # rotated += [rotated_spectrals]
+            # Add rotated data to trace cache
+            rotated_dict = {
+                'data': rotated_spectrals
+            }
+            tr.setCached('rotated', rotated_dict)
+        return stream
 
 
 def get_velocity(stream):

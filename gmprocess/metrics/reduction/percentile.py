@@ -14,7 +14,7 @@ class Percentile(Reduction):
                  period=None, smoothing=None, interval=[5, 95]):
         """
         Args:
-            reduction_data (obspy.core.stream.Stream or numpy.ndarray):
+            reduction_data (StationStream):
                 Intensity measurement component.
             bandwidth (float):
                 Bandwidth for the smoothing operation. Default is None.
@@ -47,12 +47,23 @@ class Percentile(Reduction):
         Returns:
             percentiles: Dictionary of percentiles for each channel.
         """
+        streams = self.reduction_data
+        for tr in streams:
+            if not tr.hasCached('rotated'):
+                raise ValueError(
+                    'Percentile reduction can only be applied after a '
+                    'rotation has been applied to the data.')
+
+        rotated_data = []
+        for tr in streams:
+            rotated_data += tr.getCached('rotated')['data']
+
         percentiles = {}
         if len(self.reduction_data) == 3:
             for tr in self.reduction_data:
                 percentiles[tr.channel] = np.percentile(
                     tr.data, self.percentile)
-        elif len(self.reduction_data) == 1:
+        elif len(rotated_data) == 1:
             maximums = np.amax(np.abs(self.reduction_data[0]), 1)
             percentiles[''] = np.percentile(maximums, self.percentile)
         else:

@@ -507,6 +507,8 @@ class MetricsController(object):
         """
         st = self.timeseries
         min_period = self._get_min_period()
+        if min_period is None:
+            return
         dt = st[0].stats.delta
         interp_factor = int(10.0 * dt / min_period - 0.01) + 1
         if interp_factor > 1:

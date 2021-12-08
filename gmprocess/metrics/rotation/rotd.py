@@ -22,7 +22,7 @@ class Rotd(Rotation):
 
     def get_rotd(self):
         """
-        Performs GMROTD rotation.
+        Performs ROTD rotation.
 
         Returns:
             rotd: numpy.ndarray of the rotated and combined traces.

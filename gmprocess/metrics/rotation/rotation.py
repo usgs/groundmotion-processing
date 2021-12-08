@@ -28,11 +28,11 @@ class Rotation(object):
 
         Returns:
             horizontal_channels: list of horizontal channels
-                    (obspy.core.trac.Trace).
+            (obspy.core.trac.Trace).
 
         Raises:
             PGMException: if there are less than or greater than two
-                    horizontal channels.
+                horizontal channels.
         """
         horizontal_channels = []
         for trace in self.rotation_data:
@@ -79,8 +79,8 @@ class Rotation(object):
                     - "gm" for geometric mean
                     - "am" for arithmetic mean
                     - "max" for maximum
-            percentiles (list): percentile(s) to return the requested values.
-                Default is 50.
+            percentiles (list):
+                Percentile(s) to return the requested values. Default is 50.
 
         Returns:
             If 1D input:

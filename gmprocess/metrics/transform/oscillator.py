@@ -14,7 +14,7 @@ class oscillator(Transform):
                  allow_nans, bandwidth, config):
         """
         Args:
-            transform_data (obspy.core.stream.Stream or numpy.ndarray):
+            transform_data (StationStream):
                 Intensity measurement component.
             damping (float):
                 Damping for spectral amplitude calculations.
