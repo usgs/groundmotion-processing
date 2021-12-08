@@ -26,7 +26,7 @@ cpdef list calculate_spectrals(trace, period, damping):
     Returns a list of spectral responses for acceleration, velocity,
             and displacement.
     Args:
-        trace (obspy Trace object):
+        trace (StationTrace):
             The trace to be acted upon
         period (float):
             Period in seconds.
@@ -156,7 +156,7 @@ def get_spectral(period, stream, damping=0.05, times=None, config=None):
                     'delta': times[1] - times[0],
                     'sampling_rate': 1.0 / (times[1] - times[0])
                 }
-                new_trace = Trace(data=rot_matrix[idy], header=stats)
+                new_trace = StationTrace(data=rot_matrix[idy], header=stats)
                 sa_list = calculate_spectrals(new_trace, period, damping)
                 acc_sa = sa_list[0]
                 acc_sa *= GAL_TO_PCTG

@@ -438,10 +438,11 @@ class MetricsController(object):
                     c2_mod, inspect.isclass), 'Combination')
                 c2 = c2_cls(red).result
             except BaseException as e:
-                msg = ('Error in calculation of %r: %r.\nResult '
-                       'cell will be set to np.nan.' % (imt_imc, str(e)))
-                logging.warning(msg)
-                c2 = {'': np.nan}
+                raise e
+                # msg = ('Error in calculation of %r: %r.\nResult '
+                #        'cell will be set to np.nan.' % (imt_imc, str(e)))
+                # logging.warning(msg)
+                # c2 = {'': np.nan}
 
             # we don't want to have separate columns for 'HN1' and 'HNN' and
             # 'BHN'. Instead we want all of these to be considered as simply
