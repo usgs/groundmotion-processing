@@ -78,9 +78,10 @@ class MetricsController(object):
             imts = [imts]
         if not isinstance(imcs, (list, np.ndarray)):
             imcs = [imcs]
-        self.imts = set(np.sort([imt.lower() for imt in imts]))
+        self.imts = set([imt.lower() for imt in imts])
         self.clean_imts()
-        self.imcs = set(np.sort([imc.lower() for imc in imcs]))
+        self.imts = np.sort(list(self.imts))
+        self.imcs = np.sort(list(set([imc.lower() for imc in imcs])))
         if 'radial_transverse' in self.imcs and event is None:
             raise PGMException('MetricsController: Event is required for '
                                'radial_transverse imc')
@@ -438,11 +439,11 @@ class MetricsController(object):
                     c2_mod, inspect.isclass), 'Combination')
                 c2 = c2_cls(red).result
             except BaseException as e:
-                raise e
-                # msg = ('Error in calculation of %r: %r.\nResult '
-                #        'cell will be set to np.nan.' % (imt_imc, str(e)))
-                # logging.warning(msg)
-                # c2 = {'': np.nan}
+                # raise e
+                msg = ('Error in calculation of %r: %r. Result '
+                       'cell will be set to np.nan.' % (imt_imc, str(e)))
+                logging.warning(msg)
+                c2 = {'': np.nan}
 
             # we don't want to have separate columns for 'HN1' and 'HNN' and
             # 'BHN'. Instead we want all of these to be considered as simply
@@ -749,14 +750,18 @@ class MetricsController(object):
                 period = self._parse_period(imt)
                 if period is None:
                     continue
-                cleaned_imts.add('fas(%s)' % METRICS_XML_FLOAT_STRING_FORMAT[
-                    'period'] % float(period))
+                cleaned_imts.add(
+                    'fas(%s)' %
+                    METRICS_XML_FLOAT_STRING_FORMAT['period'] %
+                    float(period))
             elif imt.startswith('sa'):
                 period = self._parse_period(imt)
                 if period is None:
                     continue
-                cleaned_imts.add('sa(%s)' % METRICS_XML_FLOAT_STRING_FORMAT[
-                    'period'] % float(period))
+                cleaned_imts.add(
+                    'sa(%s)' %
+                    METRICS_XML_FLOAT_STRING_FORMAT['period'] %
+                    float(period))
             else:
                 cleaned_imts.add(imt)
         self.imts = cleaned_imts

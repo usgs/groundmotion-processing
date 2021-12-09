@@ -32,5 +32,5 @@ class Rotd(Rotation):
         horizontals = self._get_horizontals()
         osc1, osc2 = horizontals[0].data, horizontals[1].data
         rotd = [self.rotate(osc1, osc2, combine=True)]
-        streams.setStreamParam('rotd', rotd)
+        streams.setStreamParam('rotated', rotd)
         return streams

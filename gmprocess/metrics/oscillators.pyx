@@ -122,15 +122,36 @@ def get_spectral(period, stream, damping=0.05, times=None, config=None):
             StationStream.
 
     Returns:
-        obpsy.core.stream.Stream.
+        StationStream.
     """
-    traces = []
-    num_trace_range = range(len(stream))
     cdef int len_data = stream[0].data.shape[0]
 
-    if isinstance(stream, StationStream):
+    if 'rotated' in stream.getStreamParamKeys():
+        # For ROTD and GMROTD
+        rotated = []
+        rotated_data = stream.getStreamParam('rotated')
+        for idx in range(len(rotated_data)):
+            rot_matrix = rotated_data[idx]
+            rotated_spectrals = []
+            for idy in range(0, len(rot_matrix)):
+                stats = {
+                    'npts': len(rot_matrix[idy]),
+                    'delta': times[1] - times[0],
+                    'sampling_rate': 1.0 / (times[1] - times[0])
+                }
+                new_trace = Trace(data=rot_matrix[idy], header=stats)
+                sa_list = calculate_spectrals(new_trace, period, damping)
+                acc_sa = sa_list[0]
+                acc_sa *= GAL_TO_PCTG
+                rotated_spectrals.append(acc_sa)
+            rotated += [rotated_spectrals]
+        # Add rotated data to stream parameters
+        stream.setStreamParam('rotated', rotated)
+        return stream
+    else:
+        traces = []
         # For anything but ROTD and GMROTD
-        for idx in num_trace_range:
+        for idx in range(len(stream)):
             trace = stream[idx]
             sa_list = calculate_spectrals(trace, period, damping)
             acc_sa = sa_list[0]
@@ -144,30 +165,6 @@ def get_spectral(period, stream, damping=0.05, times=None, config=None):
             traces += [spect_trace]
         spect_stream = StationStream(traces)
         return spect_stream
-    else:
-        # For ROTD and GMROTD
-        # rotated = []
-        for idx, tr in enumerate(stream):
-            rot_matrix = stream[idx]
-            rotated_spectrals = []
-            for idy in range(0, len(rot_matrix)):
-                stats = {
-                    'npts': len(rot_matrix[idy]),
-                    'delta': times[1] - times[0],
-                    'sampling_rate': 1.0 / (times[1] - times[0])
-                }
-                new_trace = StationTrace(data=rot_matrix[idy], header=stats)
-                sa_list = calculate_spectrals(new_trace, period, damping)
-                acc_sa = sa_list[0]
-                acc_sa *= GAL_TO_PCTG
-                rotated_spectrals.append(acc_sa)
-            # rotated += [rotated_spectrals]
-            # Add rotated data to trace cache
-            rotated_dict = {
-                'data': rotated_spectrals
-            }
-            tr.setCached('rotated', rotated_dict)
-        return stream
 
 
 def get_velocity(stream):

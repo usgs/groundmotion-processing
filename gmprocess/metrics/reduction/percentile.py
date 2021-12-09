@@ -47,26 +47,22 @@ class Percentile(Reduction):
         Returns:
             percentiles: Dictionary of percentiles for each channel.
         """
-        streams = self.reduction_data
-        for tr in streams:
-            if not tr.hasCached('rotated'):
-                raise ValueError(
-                    'Percentile reduction can only be applied after a '
-                    'rotation has been applied to the data.')
+        stream = self.reduction_data
+        if 'rotated' not in stream.getStreamParamKeys():
+            raise ValueError(
+                'Percentile reduction can only be applied after a rotation '
+                'has been applied to the data.')
 
-        rotated_data = []
-        for tr in streams:
-            rotated_data += tr.getCached('rotated')['data']
+        rdata = stream.getStreamParam('rotated')
 
         percentiles = {}
-        if len(self.reduction_data) == 3:
-            for tr in self.reduction_data:
+        if len(rdata) == 3:
+            for tr in rdata:
                 percentiles[tr.channel] = np.percentile(
                     tr.data, self.percentile)
-        elif len(rotated_data) == 1:
-            maximums = np.amax(np.abs(self.reduction_data[0]), 1)
+        elif len(rdata) == 1:
+            maximums = np.amax(np.abs(rdata[0]), 1)
             percentiles[''] = np.percentile(maximums, self.percentile)
         else:
-            percentiles[''] = np.percentile(
-                self.reduction_data, self.percentile)
+            percentiles[''] = np.percentile(rdata, self.percentile)
         return percentiles
