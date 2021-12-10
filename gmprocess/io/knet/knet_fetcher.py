@@ -171,9 +171,8 @@ class KNETFetcher(DataFetcher):
                 'website. However, for this to work you will first need \n'
                 'to obtain a username and password from this website:\n'
                 'https://hinetwww11.bosai.go.jp/nied/registration/?LANG=en\n'
-                'Then create a custom config file by running the gmsetup\n'
-                'program, and edit the fetchers:KNETFetcher section\n'
-                'to use your username and password.')
+                'Then edit project config file in section \n'
+                'fetchers:KNETFetcher to use your username and password.')
             raise Exception(fmt)
 
         # allow user to turn restrict stations on or off. Restricting saves
