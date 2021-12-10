@@ -137,9 +137,8 @@ class CESMDFetcher(DataFetcher):
                    'website. However, for this to work you will first need \n'
                    'to register your email address using this website:\n'
                    'https://strongmotioncenter.org/cgi-bin/CESMD/register.pl\n'
-                   'Then create a custom config file by running the gmsetup\n'
-                   'program, and edit the fetchers:CESMDFetcher section\n'
-                   'to use your email address.')
+                   'Then edit the config file in the fetchers:CESMDFetcher \n'
+                   'section to use your email address.')
             raise Exception(fmt)
 
         self.metadata = None
