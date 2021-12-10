@@ -114,6 +114,7 @@ class MetricsController(object):
         else:
             self._times = None
         self.max_period = self._get_max_period()
+        self.first_steps = None
         self.pgms = self.execute_steps()
 
     @classmethod
@@ -340,7 +341,7 @@ class MetricsController(object):
         rotation_path = 'gmprocess.metrics.rotation.'
         combination_path = 'gmprocess.metrics.combination.'
         reduction_path = 'gmprocess.metrics.reduction.'
-
+        
         # Initialize dictionary for storing the results
         result_dict = None
         for idx, imt_imc in enumerate(self.step_sets):
@@ -352,37 +353,14 @@ class MetricsController(object):
                 period = float(period)
             if percentile is not None:
                 percentile = float(percentile)
-
+            
             try:
-                # -------------------------------------------------------------
-                # Transform 1
-                t1_mod = importlib.import_module(
-                    transform_path + step_set['Transform1'])
-                t1_cls = self._get_subclass(inspect.getmembers(
-                    t1_mod, inspect.isclass), 'Transform')
-                t1 = t1_cls(
-                    self.timeseries, self.damping, period, self._times,
-                    self.max_period, self.allow_nans, self.bandwidth,
-                    self.config).result
-
-                # -------------------------------------------------------------
-                # Transform 2
-                t2_mod = importlib.import_module(
-                    transform_path + step_set['Transform2'])
-                t2_cls = self._get_subclass(inspect.getmembers(
-                    t2_mod, inspect.isclass), 'Transform')
-                t2 = t2_cls(
-                    t1, self.damping, period, self._times, self.max_period,
-                    self.allow_nans, self.bandwidth, self.config).result
-
-                # -------------------------------------------------------------
-                # Rotation
-                rot_mod = importlib.import_module(
-                    rotation_path + step_set['Rotation'])
-                rot_cls = self._get_subclass(inspect.getmembers(
-                    rot_mod, inspect.isclass), 'Rotation')
-                rot = rot_cls(t2, self.event).result
-
+                s1 = step_set['Transform1']
+                s2 = step_set['Transform2']
+                s3 = step_set['Rotation'] 
+                step_str = f"{s1}-{s2}-{s3}"
+                self.perform_first_steps(period, percentile, s1, s2, s3, transform_path, rotation_path)
+                rot = self.first_steps[step_str][str(period)][str(percentile)]
                 # -------------------------------------------------------------
                 # Transform 3
                 t3_mod = importlib.import_module(
@@ -473,6 +451,72 @@ class MetricsController(object):
             return df
         else:
             return df.set_index(['IMT', 'IMC'])
+
+    def perform_first_steps(self, period, percentile, s1, s2, s3, transform_path, rotation_path):
+        """Perform the first three metric steps.
+
+        To reduce reduncy in the calculations, we save the results of the
+        first three steps. 
+
+        Args:
+            transform_path (str): The path to the transformation calculations.
+            rotation_path (str): The path to the rotation calculations.
+        """
+        if self.first_steps is None:
+            step_streams = {}
+        else:
+            step_streams = self.first_steps
+        # We need to do this to know if there is a percentile and/or period associated
+        # with the first three steps since the percentile affects the rotd rotation calculation
+        # and the period affects the oscillator transformation calculation
+        if period is not None:
+            period = float(period)
+        if percentile is not None:
+            percentile = float(percentile)
+        # get the first three steps
+        step = f"{s1}-{s2}-{s3}" 
+        # If the first three steps (for this percentile and period) are already available
+        # do not recalculate (continue)
+        if (step in step_streams 
+            and str(period) in step_streams[step] 
+            and str(percentile) in step_streams[step][str(period)]):
+            ## Comment used for testing to make sure steps are skipped
+            #print(f"The first three steps ({step}) have already been calculated. Skipping...")
+            return
+        ## The first three steps (for this percentile and period) have not been calculated, so begin the steps:
+        # -------------------------------------------------------------
+        # Transform 1
+        t1_mod = importlib.import_module(
+            transform_path + s1)
+        t1_cls = self._get_subclass(inspect.getmembers(
+            t1_mod, inspect.isclass), 'Transform')
+        t1 = t1_cls(
+            self.timeseries, self.damping, period, self._times,
+            self.max_period, self.allow_nans, self.bandwidth,
+            self.config).result
+        # -------------------------------------------------------------
+        # Transform 2
+        t2_mod = importlib.import_module(
+            transform_path + s2)
+        t2_cls = self._get_subclass(inspect.getmembers(
+            t2_mod, inspect.isclass), 'Transform')
+        t2 = t2_cls(
+            t1, self.damping, period, self._times, self.max_period,
+            self.allow_nans, self.bandwidth, self.config).result
+        # -------------------------------------------------------------
+        # Rotation
+        rot_mod = importlib.import_module(
+            rotation_path + s3)
+        rot_cls = self._get_subclass(inspect.getmembers(
+            rot_mod, inspect.isclass), 'Rotation')
+        rot = rot_cls(t2, self.event).result
+        if step not in step_streams:
+            step_streams[step] = {}
+        if str(period) not in step_streams[step]:
+            step_streams[step][str(period)] = {}
+        ## store the stream for this step/period/percentile combinatiion
+        step_streams[step][str(period)][str(percentile)]= rot
+        self.first_steps = step_streams
 
     def validate_stream(self):
         """

@@ -22,8 +22,7 @@ def test_pga():
         warnings.simplefilter("ignore")
         station_summary = StationSummary.from_stream(
             stream_v2,
-            ['channels', 'greater_of_two_horizontals', 'gmrotd50',
-             'gmrotd100', 'gmrotd0', 'rotd50', 'geometric_mean',
+            ['channels', 'greater_of_two_horizontals', 'rotd50', 'geometric_mean',
              'arithmetic_mean'],
             ['pga', 'sa1.0', 'saincorrect'])
     pga_df = station_summary.pgms.loc['PGA']

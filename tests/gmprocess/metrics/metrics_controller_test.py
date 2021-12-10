@@ -69,7 +69,7 @@ def test_controller():
     datafile = datafiles[0]
     input_imts = ['pgv', 'pga', 'sa2', 'sa1.0', 'sa0.3',
                   'fas2', 'fas1.0', 'fas0.3', 'arias', 'invalid']
-    input_imcs = ['rotd50', 'rotd100.0', 'gmrotd50', 'gmrotd100.0',
+    input_imcs = ['rotd50', 'rotd100.0',
                   'radial_transverse', 'geometric_mean', 'arithmetic_mean',
                   'channels', 'greater_of_two_horizontals', 'invalid',
                   'quadratic_mean']
@@ -81,8 +81,7 @@ def test_controller():
     pgms = m1.pgms
 
     # testing for pga, pgv, sa
-    target_imcs = ['ROTD(50.0)', 'ROTD(100.0)', 'GMROTD(50.0)',
-                   'GMROTD(100.0)', 'HNR', 'HNT', 'GEOMETRIC_MEAN',
+    target_imcs = ['ROTD(50.0)', 'ROTD(100.0)', 'HNR', 'HNT', 'GEOMETRIC_MEAN',
                    'ARITHMETIC_MEAN', 'H1', 'H2', 'Z',
                    'GREATER_OF_TWO_HORIZONTALS', 'QUADRATIC_MEAN']
     for col in ['PGA', 'PGV', 'SA(1.000)', 'SA(2.000)', 'SA(0.300)']:
@@ -118,8 +117,7 @@ def test_controller():
     pgms = m.pgms
 
     # testing for pga, pgv, sa
-    target_imcs = ['ROTD(50.0)', 'ROTD(100.0)', 'GMROTD(50.0)',
-                   'GMROTD(100.0)', 'HNR', 'HNT', 'GEOMETRIC_MEAN',
+    target_imcs = ['ROTD(50.0)', 'ROTD(100.0)', 'HNR', 'HNT', 'GEOMETRIC_MEAN',
                    'ARITHMETIC_MEAN', 'QUADRATIC_MEAN', 'H1', 'H2',
                    'Z', 'GREATER_OF_TWO_HORIZONTALS']
     for col in ['PGA', 'PGV', 'SA(1.000)', 'SA(2.000)', 'SA(0.300)']:
