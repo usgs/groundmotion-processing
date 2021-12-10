@@ -111,5 +111,5 @@ def test_exceptions():
 
 
 if __name__ == '__main__':
-    test_rotd()
+    #test_rotd()
     test_exceptions()
