@@ -14,7 +14,7 @@ import logging
 from gmprocess.io.read import read_data
 from gmprocess.io.utils import flatten_directory
 
-EXT_IGNORE = [".gif", ".csv", ".dis", ".abc", ".zip", ".rs2", ".fs1"]
+EXT_IGNORE = [".gif", ".csv", ".dis", ".abc", ".zip", ".rs2", ".fs1", ".xml"]
 
 
 def directory_to_streams(directory, config=None):
@@ -56,12 +56,14 @@ def directory_to_streams(directory, config=None):
         unprocessed_files = []
         unprocessed_file_errors = []
         for file_path in glob.glob(os.path.join(temp_dir, "*")):
-            file_ext = os.path.splitext(file_path)[1].lower()
+            file_name = os.path.basename(file_path)
+            file_ext = os.path.splitext(file_name)[1].lower()
             if file_ext not in EXT_IGNORE:
                 try:
                     logging.debug('Attempting to read: %s' % file_path)
                     streams += read_data(file_path, config=config)
                 except BaseException as ex:
+                    logging.info('Failed to read file: %s' % file_name)
                     unprocessed_files += [file_path]
                     unprocessed_file_errors += [ex]
 
