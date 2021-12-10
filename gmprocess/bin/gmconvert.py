@@ -6,12 +6,16 @@ import os.path
 import argparse
 import logging
 
+from gmprocess.subcommands.lazy_loader import LazyLoader
+
 # local imports
-from gmprocess.utils.logging import setup_logger
-from gmprocess.utils.args import add_shared_args
-from gmprocess.core.streamcollection import StreamCollection
-from gmprocess.io.read import read_data
-from gmprocess.io.read_directory import directory_to_streams
+log = LazyLoader('log', globals(), 'gmprocess.utils.logging')
+argmod = LazyLoader('argmod', globals(), 'gmprocess.utils.args')
+streamcollection = LazyLoader(
+    'streamcollection', globals(), 'gmprocess.core.streamcollection')
+readmod = LazyLoader('readmod', globals(), 'gmprocess.io.read')
+read_directory = LazyLoader(
+    'read_directory', globals(), 'gmprocess.io.read_directory')
 
 
 class CustomFormatter(
@@ -85,11 +89,11 @@ https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supp
                         choices=FORMATS, default='MSEED')
 
     # Shared arguments
-    parser = add_shared_args(parser)
+    parser = argmod.add_shared_args(parser)
 
     args = parser.parse_args()
 
-    setup_logger(args)
+    log.setup_logger(args)
     logging.info("Running gmconvert.")
 
     # gather arguments
@@ -117,17 +121,18 @@ https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supp
         for dfile in args.files:
             logging.info('Parsing %s...' % dfile)
             try:
-                streams = read_data(dfile)
+                streams = readmod.read_data(dfile)
             except BaseException as e:
                 error_dict[dfile] = str(e)
                 continue
             allstreams += streams
     else:
         # grab all the files in the input directory
-        allstreams, unprocessed, errors = directory_to_streams(indir)
+        allstreams, unprocessed, errors = \
+            read_directory.directory_to_streams(indir)
         error_dict = dict(zip(unprocessed, errors))
 
-    sc = StreamCollection(allstreams)
+    sc = streamcollection.StreamCollection(allstreams)
 
     for stream in sc:
         streamid = stream.get_id()

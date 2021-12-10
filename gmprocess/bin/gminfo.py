@@ -9,14 +9,18 @@ import warnings
 import textwrap
 import logging
 
+from gmprocess.subcommands.lazy_loader import LazyLoader
+
 # third party imports
-import pandas as pd
+pd = LazyLoader('pd', globals(), 'pandas')
 
 # local imports
-from gmprocess.io.read import _get_format, read_data
-from gmprocess.utils.args import add_shared_args
-from gmprocess.core.stationtrace import REV_PROCESS_LEVELS
-from gmprocess.utils.config import get_config
+readmod = LazyLoader('readmod', globals(), 'gmprocess.io.read')
+argmod = LazyLoader('argmod', globals(), 'gmprocess.utils.args')
+stationtrace = LazyLoader(
+    'stationtrace', globals(), 'gmprocess.core.stationtrace')
+confmod = LazyLoader('confmod', globals(), 'gmprocess.utils.config')
+
 
 COLUMNS = ['Filename', 'Format', 'Process Level',
            'Start Time', 'End Time',
@@ -34,7 +38,7 @@ def get_dataframe(filename, stream):
         row['Filename'] = filename
         row['Format'] = trace.stats['standard']['source_format']
         plevel = trace.stats['standard']['process_level']
-        row['Process Level'] = REV_PROCESS_LEVELS[plevel]
+        row['Process Level'] = stationtrace.REV_PROCESS_LEVELS[plevel]
         row['Start Time'] = trace.stats.starttime
         row['End Time'] = trace.stats.endtime
         dt = trace.stats.endtime - trace.stats.starttime
@@ -60,7 +64,7 @@ def render_concise(files, save=False):
             sys.stderr.write('Parsing files from subfolder %s...\n' % fpath)
             folders.append(fpath)
         try:
-            streams = read_data(filename)
+            streams = readmod.read_data(filename)
             for stream in streams:
                 tdf = get_dataframe(filename, stream)
                 df = pd.concat([df, tdf], axis=0)
@@ -96,12 +100,12 @@ def render_dir(rootdir, concise=True, save=False):
 
 
 def render_verbose(files):
-    config = get_config()
+    config = confmod.get_config()
     errors = pd.DataFrame(columns=ERROR_COLUMNS)
     for fname in files:
         try:
-            fmt = _get_format(fname, config)
-            stream = read_data(fname, config)[0]
+            fmt = readmod._get_format(fname, config)
+            stream = readmod.read_data(fname, config)[0]
             stats = stream[0].stats
             tpl = (stats['coordinates']['latitude'],
                    stats['coordinates']['longitude'],
@@ -179,7 +183,7 @@ def main():
     parser.add_argument('--quiet-errors', action='store_true',
                         help=phelp)
     # Shared arguments
-    parser = add_shared_args(parser)
+    parser = argmod.add_shared_args(parser)
     args = parser.parse_args()
 
     if not args.concise and args.save:
