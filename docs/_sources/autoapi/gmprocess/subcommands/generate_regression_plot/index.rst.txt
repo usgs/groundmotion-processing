@@ -54,7 +54,6 @@ Attributes
 
    Generate multi-event "regression" plot.
 
-
    .. py:attribute:: command_name
       :annotation: = generate_regression_plot
 

@@ -27,10 +27,8 @@ Classes
 
       Gets the two horizontal components.
 
-      :returns:
-
-                list of horizontal channels
-                        (obspy.core.trac.Trace).
+      :returns: list of horizontal channels
+                (obspy.core.trac.Trace).
       :rtype: horizontal_channels
 
       :raises PGMException: if there are less than or greater than two
@@ -65,8 +63,7 @@ Classes
                             - "am" for arithmetic mean
                             - "max" for maximum
       :type pick_peak: str
-      :param percentiles: percentile(s) to return the requested values.
-                          Default is 50.
+      :param percentiles: Percentile(s) to return the requested values. Default is 50.
       :type percentiles: list
 
       :returns:     Returns a singular,  scalar value for the requested pick_peak.
@@ -81,10 +78,10 @@ Classes
       Rotates a trace through 180 degrees to obtain the
       data at each degree.
 
-      :param tr1: Trace 1 of strong motion data.
-      :type tr1: obspy.core.trace.Trace
-      :param tr2: Trace 2 of strong motion data.
-      :type tr2: obspy.core.trace.Trace
+      :param tr1: Array of trace data.
+      :type tr1: ndarray
+      :param tr2: Array of trace data.
+      :type tr2: ndarray
       :param combine: Whether rotated traces should be combined. Default is False.
       :type combine: bool
       :param delta: Delta degrees which will determine the number of rows

@@ -50,13 +50,11 @@ Attributes
    Format help text, including wrapping.
 
 
-
 .. py:class:: WorkspaceApp
 
    Bases: :py:obj:`object`
 
    Application for simple queries of the workspace.
-
 
    .. py:method:: main(self, **kwargs)
 
@@ -81,7 +79,6 @@ Attributes
    .. py:method:: compute_storage(self)
 
       Compute the storage of items in a workspace.
-
 
 
    .. py:method:: _parse_command_line()

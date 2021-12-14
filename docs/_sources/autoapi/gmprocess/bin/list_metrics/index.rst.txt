@@ -24,7 +24,6 @@ Functions
    Return class (not instance) corresponding to imc string.
 
 
-
 .. py:function:: get_combinations()
 
 

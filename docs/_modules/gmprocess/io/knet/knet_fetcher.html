@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.io.knet.knet_fetcher - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.io.knet.knet_fetcher - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -484,30 +484,40 @@
 
 
 <span class="n">JST_OFFSET</span> <span class="o">=</span> <span class="mi">9</span> <span class="o">*</span> <span class="mi">3600</span>  <span class="c1"># Japan standard time is UTC + 9</span>
-<span class="n">SEARCH_URL</span> <span class="o">=</span> <span class="s1">'http://www.kyoshin.bosai.go.jp/cgi-bin/kyoshin/quick/list_eqid_en.cgi?1+YEAR+QUARTER'</span>
-<span class="n">RETRIEVE_URL</span> <span class="o">=</span> <span class="s1">'http://www.kyoshin.bosai.go.jp/cgi-bin/kyoshin/auth/makearc'</span>
+<span class="n">SEARCH_URL</span> <span class="o">=</span> <span class="s2">"http://www.kyoshin.bosai.go.jp/cgi-bin/kyoshin/quick/list_eqid_en.cgi?1+YEAR+QUARTER"</span>
+<span class="n">RETRIEVE_URL</span> <span class="o">=</span> <span class="s2">"http://www.kyoshin.bosai.go.jp/cgi-bin/kyoshin/auth/makearc"</span>
 
 <span class="c1"># http://www.kyoshin.bosai.go.jp/cgi-bin/kyoshin/auth/makearc?formattype=A&amp;eqidlist=20180330081700%2C20180330000145%2C20180330081728%2C1%2C%2Fkyoshin%2Fpubdata%2Fall%2F1comp%2F2018%2F03%2F20180330081700%2F20180330081700.all_acmap.png%2C%2Fkyoshin%2Fpubdata%2Fknet%2F1comp%2F2018%2F03%2F20180330081700%2F20180330081700.knt_acmap.png%2C%2Fkyoshin%2Fpubdata%2Fkik%2F1comp%2F2018%2F03%2F20180330081700%2F20180330081700.kik_acmap.png%2CHPRL&amp;datanames=20180330081700%3Balldata&amp;datakind=all</span>
 
 <span class="n">CGIPARAMS</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-<span class="n">CGIPARAMS</span><span class="p">[</span><span class="s1">'formattype'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'A'</span>
-<span class="n">CGIPARAMS</span><span class="p">[</span><span class="s1">'eqidlist'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">''</span>
-<span class="n">CGIPARAMS</span><span class="p">[</span><span class="s1">'datanames'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">''</span>
-<span class="n">CGIPARAMS</span><span class="p">[</span><span class="s1">'alldata'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">CGIPARAMS</span><span class="p">[</span><span class="s1">'datakind'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'all'</span>
+<span class="n">CGIPARAMS</span><span class="p">[</span><span class="s2">"formattype"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"A"</span>
+<span class="n">CGIPARAMS</span><span class="p">[</span><span class="s2">"eqidlist"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
+<span class="n">CGIPARAMS</span><span class="p">[</span><span class="s2">"datanames"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
+<span class="n">CGIPARAMS</span><span class="p">[</span><span class="s2">"alldata"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">CGIPARAMS</span><span class="p">[</span><span class="s2">"datakind"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"all"</span>
 
-<span class="n">QUARTERS</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="mi">4</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-            <span class="mi">7</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
-            <span class="mi">10</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span> <span class="mi">10</span><span class="p">}</span>
+<span class="n">QUARTERS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+    <span class="mi">10</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="mi">11</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="mi">12</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+<span class="p">}</span>
 
 <span class="c1"># 2019/03/13-13:48:00.00</span>
-<span class="n">TIMEPAT</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'[0-9]</span><span class="si">{4}</span><span class="s1">/[0-9]</span><span class="si">{2}</span><span class="s1">/[0-9]</span><span class="si">{2}</span><span class="s1">-[0-9]</span><span class="si">{2}</span><span class="s1">:[0-9]</span><span class="si">{2}</span><span class="s1">:[0-9]</span><span class="si">{2}</span><span class="s1">\.[0-9]</span><span class="si">{2}</span><span class="s1">'</span>
-<span class="n">LATPAT</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'[0-9]</span><span class="si">{2}</span><span class="s1">\.[0-9]</span><span class="si">{2}</span><span class="s1">N'</span>
-<span class="n">LONPAT</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'[0-9]</span><span class="si">{3}</span><span class="s1">\.[0-9]</span><span class="si">{2}</span><span class="s1">E'</span>
-<span class="n">DEPPAT</span> <span class="o">=</span> <span class="s1">'[0-9]</span><span class="si">{3}</span><span class="s1">km'</span>
-<span class="n">MAGPAT</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'M[0-9]</span><span class="si">{1}</span><span class="s1">\.[0-9]</span><span class="si">{1}</span><span class="s1">'</span>
-<span class="n">TIMEFMT</span> <span class="o">=</span> <span class="s1">'%Y/%m/</span><span class="si">%d</span><span class="s1">-%H:%M:%S.</span><span class="si">%f</span><span class="s1">'</span>
+<span class="n">TIMEPAT</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"[0-9]</span><span class="si">{4}</span><span class="s2">/[0-9]</span><span class="si">{2}</span><span class="s2">/[0-9]</span><span class="si">{2}</span><span class="s2">-[0-9]</span><span class="si">{2}</span><span class="s2">:[0-9]</span><span class="si">{2}</span><span class="s2">:[0-9]</span><span class="si">{2}</span><span class="s2">\.[0-9]</span><span class="si">{2}</span><span class="s2">"</span>
+<span class="n">LATPAT</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"[0-9]</span><span class="si">{2}</span><span class="s2">\.[0-9]</span><span class="si">{2}</span><span class="s2">N"</span>
+<span class="n">LONPAT</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"[0-9]</span><span class="si">{3}</span><span class="s2">\.[0-9]</span><span class="si">{2}</span><span class="s2">E"</span>
+<span class="n">DEPPAT</span> <span class="o">=</span> <span class="s2">"[0-9]</span><span class="si">{3}</span><span class="s2">km"</span>
+<span class="n">MAGPAT</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"M[0-9]</span><span class="si">{1}</span><span class="s2">\.[0-9]</span><span class="si">{1}</span><span class="s2">"</span>
+<span class="n">TIMEFMT</span> <span class="o">=</span> <span class="s2">"%Y/%m/</span><span class="si">%d</span><span class="s2">-%H:%M:%S.</span><span class="si">%f</span><span class="s2">"</span>
 
 <span class="c1"># default values for this fetcher</span>
 <span class="c1"># if None specified in constructor, AND no parameters specified in</span>
@@ -532,10 +542,24 @@
 
 
 <div class="viewcode-block" id="KNETFetcher"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/knet/knet_fetcher/index.html#gmprocess.io.knet.knet_fetcher.KNETFetcher">[docs]</a><span class="k">class</span> <span class="nc">KNETFetcher</span><span class="p">(</span><span class="n">DataFetcher</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">magnitude</span><span class="p">,</span>
-                 <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ddepth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">dmag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rawdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">drop_non_free</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stream_collection</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">time</span><span class="p">,</span>
+        <span class="n">lat</span><span class="p">,</span>
+        <span class="n">lon</span><span class="p">,</span>
+        <span class="n">depth</span><span class="p">,</span>
+        <span class="n">magnitude</span><span class="p">,</span>
+        <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ddepth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dmag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">rawdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">drop_non_free</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">stream_collection</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">"""Create a KNETFetcher instance.</span>
 
 <span class="sd">        Download KNET/KikNet data from the Japanese NIED site:</span>
@@ -590,21 +614,21 @@
         <span class="n">cfg_dmag</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">cfg_user</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">cfg_password</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="s1">'fetchers'</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">'KNETFetcher'</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">'fetchers'</span><span class="p">]:</span>
-                <span class="n">fetch_cfg</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">'fetchers'</span><span class="p">][</span><span class="s1">'KNETFetcher'</span><span class="p">]</span>
-                <span class="k">if</span> <span class="s1">'radius'</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s1">'radius'</span><span class="p">])</span>
-                <span class="k">if</span> <span class="s1">'dt'</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_dt</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s1">'dt'</span><span class="p">])</span>
-                <span class="k">if</span> <span class="s1">'ddepth'</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_ddepth</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s1">'ddepth'</span><span class="p">])</span>
-                <span class="k">if</span> <span class="s1">'dmag'</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_dmag</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s1">'dmag'</span><span class="p">])</span>
-                <span class="k">if</span> <span class="s1">'user'</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_user</span> <span class="o">=</span> <span class="n">fetch_cfg</span><span class="p">[</span><span class="s1">'user'</span><span class="p">]</span>
-                <span class="k">if</span> <span class="s1">'password'</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_password</span> <span class="o">=</span> <span class="n">fetch_cfg</span><span class="p">[</span><span class="s1">'password'</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">"fetchers"</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"KNETFetcher"</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">"fetchers"</span><span class="p">]:</span>
+                <span class="n">fetch_cfg</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"fetchers"</span><span class="p">][</span><span class="s2">"KNETFetcher"</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">"radius"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"radius"</span><span class="p">])</span>
+                <span class="k">if</span> <span class="s2">"dt"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_dt</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"dt"</span><span class="p">])</span>
+                <span class="k">if</span> <span class="s2">"ddepth"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_ddepth</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"ddepth"</span><span class="p">])</span>
+                <span class="k">if</span> <span class="s2">"dmag"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_dmag</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"dmag"</span><span class="p">])</span>
+                <span class="k">if</span> <span class="s2">"user"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_user</span> <span class="o">=</span> <span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"user"</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">"password"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_password</span> <span class="o">=</span> <span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"password"</span><span class="p">]</span>
 
         <span class="n">radius</span> <span class="o">=</span> <span class="n">_get_first_value</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="n">cfg_radius</span><span class="p">,</span> <span class="n">RADIUS</span><span class="p">)</span>
         <span class="n">dt</span> <span class="o">=</span> <span class="n">_get_first_value</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">cfg_dt</span><span class="p">,</span> <span class="n">DT</span><span class="p">)</span>
@@ -618,26 +642,25 @@
                 <span class="n">user</span> <span class="o">=</span> <span class="n">cfg_user</span>
                 <span class="n">password</span> <span class="o">=</span> <span class="n">cfg_password</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">fmt</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'Username/password are required to retrieve '</span>
-                       <span class="s1">'KNET/KikNET data.'</span><span class="p">)</span>
+                <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"Username/password are required to retrieve "</span> <span class="s2">"KNET/KikNET data."</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">user</span> <span class="o">==</span> <span class="s1">'USERNAME'</span> <span class="ow">or</span> <span class="n">password</span> <span class="o">==</span> <span class="s1">'PASSWORD'</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">user</span> <span class="o">==</span> <span class="s2">"USERNAME"</span> <span class="ow">or</span> <span class="n">password</span> <span class="o">==</span> <span class="s2">"PASSWORD"</span><span class="p">:</span>
             <span class="n">fmt</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s1">'Username/password are required to retrieve KNET/KikNET</span><span class="se">\n</span><span class="s1">'</span>
-                <span class="s1">'data. This tool can download data from the Japanese NIED</span><span class="se">\n</span><span class="s1">'</span>
-                <span class="s1">'website. However, for this to work you will first need </span><span class="se">\n</span><span class="s1">'</span>
-                <span class="s1">'to obtain a username and password from this website:</span><span class="se">\n</span><span class="s1">'</span>
-                <span class="s1">'https://hinetwww11.bosai.go.jp/nied/registration/?LANG=en</span><span class="se">\n</span><span class="s1">'</span>
-                <span class="s1">'Then create a custom config file by running the gmsetup</span><span class="se">\n</span><span class="s1">'</span>
-                <span class="s1">'program, and edit the fetchers:KNETFetcher section</span><span class="se">\n</span><span class="s1">'</span>
-                <span class="s1">'to use your username and password.'</span><span class="p">)</span>
+                <span class="s2">"Username/password are required to retrieve KNET/KikNET</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="s2">"data. This tool can download data from the Japanese NIED</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="s2">"website. However, for this to work you will first need </span><span class="se">\n</span><span class="s2">"</span>
+                <span class="s2">"to obtain a username and password from this website:</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="s2">"https://hinetwww11.bosai.go.jp/nied/registration/?LANG=en</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="s2">"Then create a custom config file by running the gmsetup</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="s2">"program, and edit the fetchers:KNETFetcher section</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="s2">"to use your username and password."</span>
+            <span class="p">)</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
 
         <span class="c1"># allow user to turn restrict stations on or off. Restricting saves</span>
         <span class="c1"># time, probably will not ignore significant data.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">restrict_stations</span> <span class="o">=</span> \
-            <span class="n">config</span><span class="p">[</span><span class="s1">'fetchers'</span><span class="p">][</span><span class="s1">'KNETFetcher'</span><span class="p">][</span><span class="s1">'restrict_stations'</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">restrict_stations</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"fetchers"</span><span class="p">][</span><span class="s2">"KNETFetcher"</span><span class="p">][</span><span class="s2">"restrict_stations"</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
@@ -683,16 +706,16 @@
         <span class="n">jpyear</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jptime</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
         <span class="n">jpquarter</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">QUARTERS</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">jptime</span><span class="o">.</span><span class="n">month</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">jpquarter</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">jpquarter</span> <span class="o">=</span> <span class="s1">'0'</span> <span class="o">+</span> <span class="n">jpquarter</span>
-        <span class="n">url</span> <span class="o">=</span> <span class="n">SEARCH_URL</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'YEAR'</span><span class="p">,</span> <span class="n">jpyear</span><span class="p">)</span>
-        <span class="n">url</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'QUARTER'</span><span class="p">,</span> <span class="n">jpquarter</span><span class="p">)</span>
+            <span class="n">jpquarter</span> <span class="o">=</span> <span class="s2">"0"</span> <span class="o">+</span> <span class="n">jpquarter</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">SEARCH_URL</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"YEAR"</span><span class="p">,</span> <span class="n">jpyear</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"QUARTER"</span><span class="p">,</span> <span class="n">jpquarter</span><span class="p">)</span>
         <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">'KNET search url: </span><span class="si">%s</span><span class="s1">'</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">'KNET search response code: </span><span class="si">%s</span><span class="s1">'</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"KNET search url: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"KNET search response code: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">text</span>
         <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="s2">"lxml"</span><span class="p">)</span>
-        <span class="n">select</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'select'</span><span class="p">)</span>
-        <span class="n">options</span> <span class="o">=</span> <span class="n">select</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">'option'</span><span class="p">)</span>
+        <span class="n">select</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"select"</span><span class="p">)</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">select</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">"option"</span><span class="p">)</span>
         <span class="n">times</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">lats</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">lons</span> <span class="o">=</span> <span class="p">[]</span>
@@ -700,7 +723,7 @@
         <span class="n">mags</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">'Data not found'</span> <span class="ow">in</span> <span class="n">option</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"Data not found"</span> <span class="ow">in</span> <span class="n">option</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
                 <span class="k">break</span>
             <span class="n">eventstr</span> <span class="o">=</span> <span class="n">option</span><span class="o">.</span><span class="n">contents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">timestr</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">TIMEPAT</span><span class="p">,</span> <span class="n">eventstr</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
@@ -708,17 +731,17 @@
             <span class="n">lonstr</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">LONPAT</span><span class="p">,</span> <span class="n">eventstr</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
             <span class="n">depstr</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">DEPPAT</span><span class="p">,</span> <span class="n">eventstr</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
             <span class="n">magstr</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">MAGPAT</span><span class="p">,</span> <span class="n">eventstr</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
-            <span class="n">lat</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">latstr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'N'</span><span class="p">,</span> <span class="s1">''</span><span class="p">))</span>
-            <span class="n">lon</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lonstr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'E'</span><span class="p">,</span> <span class="s1">''</span><span class="p">))</span>
-            <span class="n">depth</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">depstr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'km'</span><span class="p">,</span> <span class="s1">''</span><span class="p">))</span>
-            <span class="n">mag</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">magstr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'M'</span><span class="p">,</span> <span class="s1">''</span><span class="p">))</span>
+            <span class="n">lat</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">latstr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"N"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span>
+            <span class="n">lon</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lonstr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"E"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span>
+            <span class="n">depth</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">depstr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"km"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span>
+            <span class="n">mag</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">magstr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"M"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span>
             <span class="n">etime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">timestr</span><span class="p">,</span> <span class="n">TIMEFMT</span><span class="p">)</span>
             <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="n">etime</span><span class="p">))</span>
             <span class="n">lats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
             <span class="n">lons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span>
             <span class="n">depths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">depth</span><span class="p">)</span>
             <span class="n">mags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mag</span><span class="p">)</span>
-            <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">option</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'value'</span><span class="p">))</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">option</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"value"</span><span class="p">))</span>
 
         <span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">):</span>
@@ -735,7 +758,7 @@
         <span class="n">jptime</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jptime</span><span class="p">)</span>
         <span class="c1"># dtimes is in microseconds</span>
         <span class="n">dtimes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">jptime</span> <span class="o">-</span> <span class="n">times</span><span class="p">)</span>
-        <span class="n">tidx</span> <span class="o">=</span> <span class="n">dtimes</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">),</span> <span class="s1">'s'</span><span class="p">)</span>
+        <span class="n">tidx</span> <span class="o">=</span> <span class="n">dtimes</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">),</span> <span class="s2">"s"</span><span class="p">)</span>
         <span class="n">etimes</span> <span class="o">=</span> <span class="n">times</span><span class="p">[</span><span class="n">didx</span> <span class="o">&amp;</span> <span class="n">tidx</span><span class="p">]</span>
         <span class="n">elats</span> <span class="o">=</span> <span class="n">lats</span><span class="p">[</span><span class="n">didx</span> <span class="o">&amp;</span> <span class="n">tidx</span><span class="p">]</span>
         <span class="n">elons</span> <span class="o">=</span> <span class="n">lons</span><span class="p">[</span><span class="n">didx</span> <span class="o">&amp;</span> <span class="n">tidx</span><span class="p">]</span>
@@ -743,17 +766,19 @@
         <span class="n">emags</span> <span class="o">=</span> <span class="n">mags</span><span class="p">[</span><span class="n">didx</span> <span class="o">&amp;</span> <span class="n">tidx</span><span class="p">]</span>
         <span class="n">evalues</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="n">didx</span> <span class="o">&amp;</span> <span class="n">tidx</span><span class="p">]</span>
 
-        <span class="k">for</span> <span class="n">etime</span><span class="p">,</span> <span class="n">elat</span><span class="p">,</span> <span class="n">elon</span><span class="p">,</span> <span class="n">edep</span><span class="p">,</span> <span class="n">emag</span><span class="p">,</span> <span class="n">evalue</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">etimes</span><span class="p">,</span> <span class="n">elats</span><span class="p">,</span>
-                                                         <span class="n">elons</span><span class="p">,</span> <span class="n">edepths</span><span class="p">,</span>
-                                                         <span class="n">emags</span><span class="p">,</span> <span class="n">evalues</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">etime</span><span class="p">,</span> <span class="n">elat</span><span class="p">,</span> <span class="n">elon</span><span class="p">,</span> <span class="n">edep</span><span class="p">,</span> <span class="n">emag</span><span class="p">,</span> <span class="n">evalue</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="n">etimes</span><span class="p">,</span> <span class="n">elats</span><span class="p">,</span> <span class="n">elons</span><span class="p">,</span> <span class="n">edepths</span><span class="p">,</span> <span class="n">emags</span><span class="p">,</span> <span class="n">evalues</span>
+        <span class="p">):</span>
             <span class="n">jtime</span> <span class="o">=</span> <span class="n">UTCDateTime</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">etime</span><span class="p">))</span>
             <span class="n">utime</span> <span class="o">=</span> <span class="n">jtime</span> <span class="o">-</span> <span class="n">JST_OFFSET</span>
-            <span class="n">edict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'time'</span><span class="p">:</span> <span class="n">utime</span><span class="p">,</span>
-                     <span class="s1">'lat'</span><span class="p">:</span> <span class="n">elat</span><span class="p">,</span>
-                     <span class="s1">'lon'</span><span class="p">:</span> <span class="n">elon</span><span class="p">,</span>
-                     <span class="s1">'depth'</span><span class="p">:</span> <span class="n">edep</span><span class="p">,</span>
-                     <span class="s1">'mag'</span><span class="p">:</span> <span class="n">emag</span><span class="p">,</span>
-                     <span class="s1">'cgi_value'</span><span class="p">:</span> <span class="n">evalue</span><span class="p">}</span>
+            <span class="n">edict</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">"time"</span><span class="p">:</span> <span class="n">utime</span><span class="p">,</span>
+                <span class="s2">"lat"</span><span class="p">:</span> <span class="n">elat</span><span class="p">,</span>
+                <span class="s2">"lon"</span><span class="p">:</span> <span class="n">elon</span><span class="p">,</span>
+                <span class="s2">"depth"</span><span class="p">:</span> <span class="n">edep</span><span class="p">,</span>
+                <span class="s2">"mag"</span><span class="p">:</span> <span class="n">emag</span><span class="p">,</span>
+                <span class="s2">"cgi_value"</span><span class="p">:</span> <span class="n">evalue</span><span class="p">,</span>
+            <span class="p">}</span>
             <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">edict</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">solve</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -780,38 +805,39 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">rawdir</span><span class="p">):</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">rawdir</span><span class="p">)</span>
 
-        <span class="n">cgi_value</span> <span class="o">=</span> <span class="n">event_dict</span><span class="p">[</span><span class="s1">'cgi_value'</span><span class="p">]</span>
-        <span class="n">firstid</span> <span class="o">=</span> <span class="n">cgi_value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">','</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">dtime</span> <span class="o">=</span> <span class="n">event_dict</span><span class="p">[</span><span class="s1">'time'</span><span class="p">]</span>
-        <span class="n">fname</span> <span class="o">=</span> <span class="n">dtime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y%m</span><span class="si">%d</span><span class="s1">%H%M%S'</span><span class="p">)</span> <span class="o">+</span> <span class="s1">'.tar'</span>
+        <span class="n">cgi_value</span> <span class="o">=</span> <span class="n">event_dict</span><span class="p">[</span><span class="s2">"cgi_value"</span><span class="p">]</span>
+        <span class="n">firstid</span> <span class="o">=</span> <span class="n">cgi_value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">dtime</span> <span class="o">=</span> <span class="n">event_dict</span><span class="p">[</span><span class="s2">"time"</span><span class="p">]</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">dtime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y%m</span><span class="si">%d</span><span class="s2">%H%M%S"</span><span class="p">)</span> <span class="o">+</span> <span class="s2">".tar"</span>
 
         <span class="n">localfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rawdir</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
 
         <span class="n">url</span> <span class="o">=</span> <span class="n">RETRIEVE_URL</span>
-        <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'formattype'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'A'</span><span class="p">],</span>
-                   <span class="s1">'eqidlist'</span><span class="p">:</span> <span class="n">cgi_value</span><span class="p">,</span>
-                   <span class="s1">'datanames'</span><span class="p">:</span> <span class="s1">'</span><span class="si">%s</span><span class="s1">;alldata'</span> <span class="o">%</span> <span class="n">firstid</span><span class="p">,</span>
-                   <span class="s1">'datakind'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'all'</span><span class="p">]}</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Downloading Japanese data into </span><span class="si">%s</span><span class="s1">...'</span> <span class="o">%</span> <span class="n">localfile</span><span class="p">)</span>
-        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span>
-                           <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">))</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">'KNET download url: </span><span class="si">%s</span><span class="s1">'</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">'KNET download response code: </span><span class="si">%s</span><span class="s1">'</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"formattype"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"A"</span><span class="p">],</span>
+            <span class="s2">"eqidlist"</span><span class="p">:</span> <span class="n">cgi_value</span><span class="p">,</span>
+            <span class="s2">"datanames"</span><span class="p">:</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">;alldata"</span> <span class="o">%</span> <span class="n">firstid</span><span class="p">,</span>
+            <span class="s2">"datakind"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"all"</span><span class="p">],</span>
+        <span class="p">}</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Downloading Japanese data into </span><span class="si">%s</span><span class="s2">..."</span> <span class="o">%</span> <span class="n">localfile</span><span class="p">)</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"KNET download url: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"KNET download response code: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="n">URL_ERROR_CODE</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">urllib</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">localfile</span><span class="p">,</span> <span class="s1">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">localfile</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">req</span><span class="p">:</span>
                     <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Finished downloading into </span><span class="si">%s</span><span class="s1">...'</span> <span class="o">%</span> <span class="n">localfile</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Finished downloading into </span><span class="si">%s</span><span class="s2">..."</span> <span class="o">%</span> <span class="n">localfile</span><span class="p">)</span>
 
         <span class="c1"># open the tarball, extract the kiknet/knet gzipped tarballs</span>
         <span class="n">tar</span> <span class="o">=</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">localfile</span><span class="p">)</span>
         <span class="n">names</span> <span class="o">=</span> <span class="n">tar</span><span class="o">.</span><span class="n">getnames</span><span class="p">()</span>
         <span class="n">tarballs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">'img'</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"img"</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">ppath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rawdir</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
             <span class="n">tarballs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ppath</span><span class="p">)</span>
@@ -823,27 +849,27 @@
 
         <span class="n">subdirs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">tarball</span> <span class="ow">in</span> <span class="n">tarballs</span><span class="p">:</span>
-            <span class="n">tar</span> <span class="o">=</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">tarball</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'r:gz'</span><span class="p">)</span>
-            <span class="k">if</span> <span class="s1">'kik'</span> <span class="ow">in</span> <span class="n">tarball</span><span class="p">:</span>
-                <span class="n">subdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rawdir</span><span class="p">,</span> <span class="s1">'kiknet'</span><span class="p">)</span>
+            <span class="n">tar</span> <span class="o">=</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">tarball</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"r:gz"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">"kik"</span> <span class="ow">in</span> <span class="n">tarball</span><span class="p">:</span>
+                <span class="n">subdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rawdir</span><span class="p">,</span> <span class="s2">"kiknet"</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">subdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rawdir</span><span class="p">,</span> <span class="s1">'knet'</span><span class="p">)</span>
+                <span class="n">subdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rawdir</span><span class="p">,</span> <span class="s2">"knet"</span><span class="p">)</span>
             <span class="n">subdirs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">subdir</span><span class="p">)</span>
             <span class="n">tar</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">subdir</span><span class="p">)</span>
             <span class="n">tar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tarball</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">subdir</span> <span class="ow">in</span> <span class="n">subdirs</span><span class="p">:</span>
-            <span class="n">gzfiles</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subdir</span><span class="p">,</span> <span class="s1">'*.gz'</span><span class="p">))</span>
+            <span class="n">gzfiles</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subdir</span><span class="p">,</span> <span class="s2">"*.gz"</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">gzfile</span> <span class="ow">in</span> <span class="n">gzfiles</span><span class="p">:</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">gzfile</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_collection</span><span class="p">:</span>
             <span class="n">streams</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">subdir</span> <span class="ow">in</span> <span class="n">subdirs</span><span class="p">:</span>
-                <span class="n">datafiles</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subdir</span><span class="p">,</span> <span class="s1">'*.*'</span><span class="p">))</span>
+                <span class="n">datafiles</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subdir</span><span class="p">,</span> <span class="s2">"*.*"</span><span class="p">))</span>
                 <span class="k">for</span> <span class="n">dfile</span> <span class="ow">in</span> <span class="n">datafiles</span><span class="p">:</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Reading KNET/KikNet file </span><span class="si">%s</span><span class="s1">...'</span> <span class="o">%</span> <span class="n">dfile</span><span class="p">)</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Reading KNET/KikNet file </span><span class="si">%s</span><span class="s2">..."</span> <span class="o">%</span> <span class="n">dfile</span><span class="p">)</span>
                     <span class="n">streams</span> <span class="o">+=</span> <span class="n">read_knet</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rawdir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -869,7 +895,8 @@
                     <span class="n">newstreams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
 
             <span class="n">stream_collection</span> <span class="o">=</span> <span class="n">StreamCollection</span><span class="p">(</span>
-                <span class="n">streams</span><span class="o">=</span><span class="n">newstreams</span><span class="p">,</span> <span class="n">drop_non_free</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">drop_non_free</span><span class="p">)</span>
+                <span class="n">streams</span><span class="o">=</span><span class="n">newstreams</span><span class="p">,</span> <span class="n">drop_non_free</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">drop_non_free</span>
+            <span class="p">)</span>
             <span class="k">return</span> <span class="n">stream_collection</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span></div></div>

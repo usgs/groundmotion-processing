@@ -16,7 +16,12 @@ from openquake.hazardlib import imt
 from obspy.geodetics.base import gps2dist_azimuth
 
 from gmprocess.waveform_processing.phase import (
-    pick_power, pick_ar, pick_baer, pick_kalkan, pick_travel)
+    pick_power,
+    pick_ar,
+    pick_baer,
+    pick_kalkan,
+    pick_travel,
+)
 from gmprocess.utils.config import get_config
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.utils.models import load_model
@@ -53,26 +58,25 @@ def cut(st, sec_before_split=None):
         return st
 
     for tr in st:
-        logging.debug('Before cut end time: %s ' % tr.stats.endtime)
-        etime = tr.getParameter('signal_end')['end_time']
+        logging.debug("Before cut end time: %s " % tr.stats.endtime)
+        etime = tr.getParameter("signal_end")["end_time"]
         tr.trim(endtime=etime)
-        logging.debug('After cut end time: %s ' % tr.stats.endtime)
+        logging.debug("After cut end time: %s " % tr.stats.endtime)
         if sec_before_split is not None:
-            split_time = tr.getParameter('signal_split')['split_time']
+            split_time = tr.getParameter("signal_split")["split_time"]
             stime = split_time - sec_before_split
-            logging.debug('Before cut start time: %s ' % tr.stats.starttime)
+            logging.debug("Before cut start time: %s " % tr.stats.starttime)
             if stime < etime:
                 tr.trim(starttime=stime)
             else:
-                tr.fail('The \'cut\' processing step resulting in '
-                        'incompatible start and end times.')
-            logging.debug('After cut start time: %s ' % tr.stats.starttime)
+                tr.fail(
+                    "The 'cut' processing step resulting in "
+                    "incompatible start and end times."
+                )
+            logging.debug("After cut start time: %s " % tr.stats.starttime)
         tr.setProvenance(
-            'cut',
-            {
-                'new_start_time': tr.stats.starttime,
-                'new_end_time': tr.stats.endtime
-            }
+            "cut",
+            {"new_start_time": tr.stats.starttime, "new_end_time": tr.stats.endtime},
         )
     return st
 
@@ -93,29 +97,26 @@ def window_checks(st, min_noise_duration=0.5, min_signal_duration=5.0):
 
     """
     for tr in st:
-        if not tr.hasParameter('signal_split'):
+        if not tr.hasParameter("signal_split"):
             if st.passed:
-                tr.fail('Cannot check window because no split time available.')
+                tr.fail("Cannot check window because no split time available.")
             continue
         # Split the noise and signal into two separate traces
-        split_prov = tr.getParameter('signal_split')
+        split_prov = tr.getParameter("signal_split")
         if isinstance(split_prov, list):
             split_prov = split_prov[0]
-        split_time = split_prov['split_time']
+        split_time = split_prov["split_time"]
         noise_duration = split_time - tr.stats.starttime
         signal_duration = tr.stats.endtime - split_time
         if noise_duration < min_noise_duration:
-            tr.fail('Failed noise window duration check.')
+            tr.fail("Failed noise window duration check.")
         if signal_duration < min_signal_duration:
-            tr.fail('Failed signal window duration check.')
+            tr.fail("Failed signal window duration check.")
 
     return st
 
 
-def signal_split(
-        st, origin, model=None,
-        picker_config=None,
-        config=None):
+def signal_split(st, origin, model=None, picker_config=None, config=None):
     """
     This method tries to identifies the boundary between the noise and signal
     for the waveform. The split time is placed inside the
@@ -143,51 +144,54 @@ def signal_split(
         stats['processing_parameters']['signal_split'] dictionary.
     """
     if picker_config is None:
-        picker_config = get_config(section='pickers')
+        picker_config = get_config(section="pickers")
     if config is None:
         config = get_config()
 
     loc, mean_snr = pick_travel(st, origin, model)
     if loc > 0:
         tsplit = st[0].stats.starttime + loc
-        preferred_picker = 'travel_time'
+        preferred_picker = "travel_time"
     else:
-        pick_methods = ['ar', 'baer', 'power', 'kalkan']
-        columns = ['Stream', 'Method', 'Pick_Time', 'Mean_SNR']
+        pick_methods = ["ar", "baer", "power", "kalkan"]
+        columns = ["Stream", "Method", "Pick_Time", "Mean_SNR"]
         df = pd.DataFrame(columns=columns)
         for pick_method in pick_methods:
             try:
-                if pick_method == 'ar':
+                if pick_method == "ar":
                     loc, mean_snr = pick_ar(
-                        st, picker_config=picker_config, config=config)
-                elif pick_method == 'baer':
+                        st, picker_config=picker_config, config=config
+                    )
+                elif pick_method == "baer":
                     loc, mean_snr = pick_baer(
-                        st, picker_config=picker_config, config=config)
-                elif pick_method == 'power':
+                        st, picker_config=picker_config, config=config
+                    )
+                elif pick_method == "power":
                     loc, mean_snr = pick_power(
-                        st, picker_config=picker_config, config=config)
-                elif pick_method == 'kalkan':
-                    loc, mean_snr = pick_kalkan(st,
-                                                picker_config=picker_config,
-                                                config=config)
-                elif pick_method == 'yeck':
+                        st, picker_config=picker_config, config=config
+                    )
+                elif pick_method == "kalkan":
+                    loc, mean_snr = pick_kalkan(
+                        st, picker_config=picker_config, config=config
+                    )
+                elif pick_method == "yeck":
                     loc, mean_snr = pick_kalkan(st)
             except BaseException:
                 loc = -1
                 mean_snr = np.nan
             row = {
-                'Stream': st.get_id(),
-                'Method': pick_method,
-                'Pick_Time': loc,
-                'Mean_SNR': mean_snr
+                "Stream": st.get_id(),
+                "Method": pick_method,
+                "Pick_Time": loc,
+                "Mean_SNR": mean_snr,
             }
             df = df.append(row, ignore_index=True)
 
-        max_snr = df['Mean_SNR'].max()
+        max_snr = df["Mean_SNR"].max()
         if not np.isnan(max_snr):
-            maxrow = df[df['Mean_SNR'] == max_snr].iloc[0]
-            tsplit = st[0].stats.starttime + maxrow['Pick_Time']
-            preferred_picker = maxrow['Method']
+            maxrow = df[df["Mean_SNR"] == max_snr].iloc[0]
+            tsplit = st[0].stats.starttime + maxrow["Pick_Time"]
+            preferred_picker = maxrow["Method"]
         else:
             tsplit = -1
 
@@ -195,27 +199,36 @@ def signal_split(
     # this is used to shift the P arrival time (i.e., the break between the
     # noise and signal windows).
     shift = 0.0
-    if 'p_arrival_shift' in picker_config:
-        shift = picker_config['p_arrival_shift']
+    if "p_arrival_shift" in picker_config:
+        shift = picker_config["p_arrival_shift"]
         if tsplit + shift >= st[0].stats.starttime:
             tsplit += shift
 
     if tsplit >= st[0].stats.starttime:
         # Update trace params
         split_params = {
-            'split_time': tsplit,
-            'method': 'p_arrival',
-            'picker_type': preferred_picker
+            "split_time": tsplit,
+            "method": "p_arrival",
+            "picker_type": preferred_picker,
         }
         for tr in st:
-            tr.setParameter('signal_split', split_params)
+            tr.setParameter("signal_split", split_params)
 
     return st
 
 
-def signal_end(st, event_time, event_lon, event_lat, event_mag,
-               method=None, vmin=None, floor=None,
-               model=None, epsilon=2.0):
+def signal_end(
+    st,
+    event_time,
+    event_lon,
+    event_lat,
+    event_mag,
+    method=None,
+    vmin=None,
+    floor=None,
+    model=None,
+    epsilon=2.0,
+):
     """
     Estimate end of signal by using a model of the 5-95% significant
     duration, and adding this value to the "signal_split" time. This probably
@@ -266,60 +279,77 @@ def signal_end(st, event_time, event_lon, event_lat, event_mag,
         rctx.rake = -90.0
         rctx.vs30 = np.array([180.0])
         rctx.z1pt0 = np.array([0.51])
-        dur_imt = imt.from_string('RSD595')
+        dur_imt = imt.from_string("RSD595")
         stddev_types = [const.StdDev.TOTAL]
 
     for tr in st:
-        if not tr.hasParameter('signal_split'):
+        if not tr.hasParameter("signal_split"):
             continue
         if method == "velocity":
             if vmin is None:
                 raise ValueError('Must specify vmin if method is "velocity".')
             if floor is None:
                 raise ValueError('Must specify floor if method is "velocity".')
-            epi_dist = gps2dist_azimuth(
-                lat1=event_lat,
-                lon1=event_lon,
-                lat2=tr.stats['coordinates']['latitude'],
-                lon2=tr.stats['coordinates']['longitude'])[0] / 1000.0
+            epi_dist = (
+                gps2dist_azimuth(
+                    lat1=event_lat,
+                    lon1=event_lon,
+                    lat2=tr.stats["coordinates"]["latitude"],
+                    lon2=tr.stats["coordinates"]["longitude"],
+                )[0]
+                / 1000.0
+            )
             end_time = event_time + max(floor, epi_dist / vmin)
         elif method == "model":
             if model is None:
                 raise ValueError('Must specify model if method is "model".')
-            epi_dist = gps2dist_azimuth(
-                lat1=event_lat,
-                lon1=event_lon,
-                lat2=tr.stats['coordinates']['latitude'],
-                lon2=tr.stats['coordinates']['longitude'])[0] / 1000.0
+            epi_dist = (
+                gps2dist_azimuth(
+                    lat1=event_lat,
+                    lon1=event_lon,
+                    lat2=tr.stats["coordinates"]["latitude"],
+                    lon2=tr.stats["coordinates"]["longitude"],
+                )[0]
+                / 1000.0
+            )
             # Repi >= Rrup, so substitution here should be conservative
             # (leading to larger durations).
             rctx.rrup = np.array([epi_dist])
             rctx.sids = np.array(range(np.size(rctx.rrup)))
             lnmu, lnstd = dmodel.get_mean_and_stddevs(
-                rctx, rctx, rctx, dur_imt, stddev_types)
+                rctx, rctx, rctx, dur_imt, stddev_types
+            )
             duration = np.exp(lnmu + epsilon * lnstd[0])
             # Get split time
-            split_time = tr.getParameter('signal_split')['split_time']
+            split_time = tr.getParameter("signal_split")["split_time"]
             end_time = split_time + float(duration)
         else:
             raise ValueError('method must be either "velocity" or "model".')
         # Update trace params
         end_params = {
-            'end_time': end_time,
-            'method': method,
-            'vsplit': vmin,
-            'floor': floor,
-            'model': model,
-            'epsilon': epsilon
+            "end_time": end_time,
+            "method": method,
+            "vsplit": vmin,
+            "floor": floor,
+            "model": model,
+            "epsilon": epsilon,
         }
-        tr.setParameter('signal_end', end_params)
+        tr.setParameter("signal_end", end_params)
 
     return st
 
 
-def trim_multiple_events(st, origin, catalog, travel_time_df, pga_factor,
-                         pct_window_reject, gmpe, site_parameters,
-                         rupture_parameters):
+def trim_multiple_events(
+    st,
+    origin,
+    catalog,
+    travel_time_df,
+    pga_factor,
+    pct_window_reject,
+    gmpe,
+    site_parameters,
+    rupture_parameters,
+):
     """
     Uses a catalog (list of ScalarEvents) to handle cases where a trace might
     contain signals from multiple events. The catalog should contain events
@@ -382,18 +412,18 @@ def trim_multiple_events(st, origin, catalog, travel_time_df, pga_factor,
 
     # Check that we know the signal split for each trace in the stream
     for tr in st:
-        if not tr.hasParameter('signal_split'):
+        if not tr.hasParameter("signal_split"):
             return st
 
-    signal_window_starttime = st[0].getParameter('signal_split')['split_time']
+    signal_window_starttime = st[0].getParameter("signal_split")["split_time"]
 
-    arrivals = travel_time_df[st[0].stats.network + '.' + st[0].stats.station]
+    arrivals = travel_time_df[st[0].stats.network + "." + st[0].stats.station]
     arrivals = arrivals.sort_values()
 
     # Filter by any arrival times that appear in the signal window
     arrivals = arrivals[
-        (arrivals > signal_window_starttime) &
-        (arrivals < st[0].stats.endtime)]
+        (arrivals > signal_window_starttime) & (arrivals < st[0].stats.endtime)
+    ]
 
     # Make sure we remove the arrival that corresponds to the event of interest
     if origin.id in arrivals.index:
@@ -403,8 +433,8 @@ def trim_multiple_events(st, origin, catalog, travel_time_df, pga_factor,
         return st
 
     # Calculate the recorded PGA for this record
-    stasum = StationSummary.from_stream(st, ['ROTD(50.0)'], ['PGA'])
-    recorded_pga = stasum.get_pgm('PGA', 'ROTD(50.0)')
+    stasum = StationSummary.from_stream(st, ["ROTD(50.0)"], ["PGA"])
+    recorded_pga = stasum.get_pgm("PGA", "ROTD(50.0)")
 
     # Load the GMPE model
     gmpe = load_model(gmpe)
@@ -429,13 +459,19 @@ def trim_multiple_events(st, origin, catalog, travel_time_df, pga_factor,
 
         # TODO: distances should be calculated when we refactor to be
         # able to import distance calculations
-        rctx.repi = np.array([
-            gps2dist_azimuth(
-                st[0].stats.coordinates.latitude,
-                st[0].stats.coordinates.longitude,
-                event.latitude, event.longitude)[0] / 1000])
+        rctx.repi = np.array(
+            [
+                gps2dist_azimuth(
+                    st[0].stats.coordinates.latitude,
+                    st[0].stats.coordinates.longitude,
+                    event.latitude,
+                    event.longitude,
+                )[0]
+                / 1000
+            ]
+        )
         rctx.rjb = rctx.repi
-        rctx.rhypo = np.sqrt(rctx.repi**2 + event.depth_km**2)
+        rctx.rhypo = np.sqrt(rctx.repi ** 2 + event.depth_km ** 2)
         rctx.rrup = rctx.rhypo
         rctx.sids = np.array(range(np.size(rctx.rrup)))
         pga, sd = gmpe.get_mean_and_stddevs(rctx, rctx, rctx, imt.PGA(), [])
@@ -456,17 +492,18 @@ def trim_multiple_events(st, origin, catalog, travel_time_df, pga_factor,
     cutoff_time = signal_window_starttime + pct_window_reject * (signal_length)
     if (significant_arrivals < cutoff_time).any():
         for tr in st:
-            tr.fail('A significant arrival from another event occurs within '
-                    'the first %s percent of the signal window' %
-                    (100 * pct_window_reject))
+            tr.fail(
+                "A significant arrival from another event occurs within "
+                "the first %s percent of the signal window" % (100 * pct_window_reject)
+            )
 
     # Otherwise, trim the stream at the first significant arrival
     else:
         for tr in st:
-            signal_end = tr.getParameter('signal_end')
-            signal_end['end_time'] = significant_arrivals[0]
-            signal_end['method'] = ('Trimming before right another event')
-            tr.setParameter('signal_end', signal_end)
+            signal_end = tr.getParameter("signal_end")
+            signal_end["end_time"] = significant_arrivals[0]
+            signal_end["method"] = "Trimming before right another event"
+            tr.setParameter("signal_end", signal_end)
         cut(st)
 
     return st

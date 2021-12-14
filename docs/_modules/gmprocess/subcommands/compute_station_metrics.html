@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.subcommands.compute_station_metrics - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.subcommands.compute_station_metrics - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -463,38 +463,38 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">from</span> <span class="nn">gmprocess.subcommands.lazy_loader</span> <span class="kn">import</span> <span class="n">LazyLoader</span>
-<span class="n">np</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'np'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'numpy'</span><span class="p">)</span>
-<span class="n">spint</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'spint'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'scipy.interpolate'</span><span class="p">)</span>
-<span class="n">gmt</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'gmt'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'mapio.gmt'</span><span class="p">)</span>
-<span class="n">ob</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'ob'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'obspy.geodetics.base'</span><span class="p">)</span>
-<span class="n">oqgeo</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'oqgeo'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'openquake.hazardlib.geo.geodetic'</span><span class="p">)</span>
-<span class="n">rupt</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'rupt'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'impactutils.rupture'</span><span class="p">)</span>
-<span class="n">ps2ff</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'ps2ff'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'ps2ff'</span><span class="p">)</span>
 
-<span class="n">arg_dicts</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span>
-    <span class="s1">'arg_dicts'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.arg_dicts'</span><span class="p">)</span>
-<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'base'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.base'</span><span class="p">)</span>
-<span class="n">utils</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'utils'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.utils'</span><span class="p">)</span>
-<span class="n">rupt_utils</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span>
-    <span class="s1">'rupt_utils'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.utils.rupture_utils'</span><span class="p">)</span>
-<span class="n">ws</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'ws'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.io.asdf.stream_workspace'</span><span class="p">)</span>
+<span class="n">np</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"np"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"numpy"</span><span class="p">)</span>
+<span class="n">spint</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"spint"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"scipy.interpolate"</span><span class="p">)</span>
+<span class="n">gmt</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"gmt"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"mapio.gmt"</span><span class="p">)</span>
+<span class="n">ob</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"ob"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"obspy.geodetics.base"</span><span class="p">)</span>
+<span class="n">oqgeo</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"oqgeo"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"openquake.hazardlib.geo.geodetic"</span><span class="p">)</span>
+<span class="n">rupt</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"rupt"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"impactutils.rupture"</span><span class="p">)</span>
+<span class="n">ps2ff</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"ps2ff"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"ps2ff"</span><span class="p">)</span>
+
+<span class="n">arg_dicts</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"arg_dicts"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.arg_dicts"</span><span class="p">)</span>
+<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"base"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.base"</span><span class="p">)</span>
+<span class="n">utils</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"utils"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils"</span><span class="p">)</span>
+<span class="n">rupt_utils</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"rupt_utils"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.rupture_utils"</span><span class="p">)</span>
+<span class="n">ws</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"ws"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.io.asdf.stream_workspace"</span><span class="p">)</span>
 <span class="n">station_summary</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span>
-    <span class="s1">'station_summary'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.metrics.station_summary'</span><span class="p">)</span>
+    <span class="s2">"station_summary"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.metrics.station_summary"</span>
+<span class="p">)</span>
 
 <span class="n">M_PER_KM</span> <span class="o">=</span> <span class="mi">1000</span>
 
 
 <div class="viewcode-block" id="ComputeStationMetricsModule"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/compute_station_metrics/index.html#gmprocess.subcommands.compute_station_metrics.ComputeStationMetricsModule">[docs]</a><span class="k">class</span> <span class="nc">ComputeStationMetricsModule</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">SubcommandModule</span><span class="p">):</span>
-    <span class="sd">"""Compute station metrics.</span>
-<span class="sd">    """</span>
-    <span class="n">command_name</span> <span class="o">=</span> <span class="s1">'compute_station_metrics'</span>
-    <span class="n">aliases</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'sm'</span><span class="p">,</span> <span class="p">)</span>
+    <span class="sd">"""Compute station metrics."""</span>
+
+    <span class="n">command_name</span> <span class="o">=</span> <span class="s2">"compute_station_metrics"</span>
+    <span class="n">aliases</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"sm"</span><span class="p">,)</span>
 
     <span class="n">arguments</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s1">'eventid'</span><span class="p">],</span>
-        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s1">'textfile'</span><span class="p">],</span>
-        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s1">'label'</span><span class="p">],</span>
-        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s1">'overwrite'</span><span class="p">]</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"eventid"</span><span class="p">],</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"textfile"</span><span class="p">],</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"label"</span><span class="p">],</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"overwrite"</span><span class="p">],</span>
     <span class="p">]</span>
 
 <div class="viewcode-block" id="ComputeStationMetricsModule.main"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/compute_station_metrics/index.html#gmprocess.subcommands.compute_station_metrics.ComputeStationMetricsModule.main">[docs]</a>    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gmrecords</span><span class="p">):</span>
@@ -504,7 +504,7 @@
 <span class="sd">            gmrecords:</span>
 <span class="sd">                GMrecordsApp instance.</span>
 <span class="sd">        """</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Running subcommand </span><span class="se">\'</span><span class="si">%s</span><span class="se">\'</span><span class="s1">'</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Running subcommand '</span><span class="si">%s</span><span class="s2">'"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span> <span class="o">=</span> <span class="n">gmrecords</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_arguments</span><span class="p">()</span>
@@ -512,11 +512,12 @@
 
         <span class="n">vs30_grids</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">'vs30'</span> <span class="ow">in</span> <span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span><span class="p">[</span><span class="s1">'metrics'</span><span class="p">]:</span>
-                <span class="n">vs30_grids</span> <span class="o">=</span> <span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span><span class="p">[</span><span class="s1">'metrics'</span><span class="p">][</span><span class="s1">'vs30'</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">"vs30"</span> <span class="ow">in</span> <span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span><span class="p">[</span><span class="s2">"metrics"</span><span class="p">]:</span>
+                <span class="n">vs30_grids</span> <span class="o">=</span> <span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span><span class="p">[</span><span class="s2">"metrics"</span><span class="p">][</span><span class="s2">"vs30"</span><span class="p">]</span>
                 <span class="k">for</span> <span class="n">vs30_name</span> <span class="ow">in</span> <span class="n">vs30_grids</span><span class="p">:</span>
-                    <span class="n">vs30_grids</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">][</span><span class="s1">'grid_object'</span><span class="p">]</span> <span class="o">=</span> <span class="n">gmt</span><span class="o">.</span><span class="n">GMTGrid</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
-                        <span class="n">vs30_grids</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">][</span><span class="s1">'file'</span><span class="p">])</span>
+                    <span class="n">vs30_grids</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">][</span><span class="s2">"grid_object"</span><span class="p">]</span> <span class="o">=</span> <span class="n">gmt</span><span class="o">.</span><span class="n">GMTGrid</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+                        <span class="n">vs30_grids</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">][</span><span class="s2">"file"</span><span class="p">]</span>
+                    <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vs30_grids</span> <span class="o">=</span> <span class="n">vs30_grids</span>
 
         <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
@@ -526,17 +527,17 @@
 
 <div class="viewcode-block" id="ComputeStationMetricsModule._event_station_metrics"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/compute_station_metrics/index.html#gmprocess.subcommands.compute_station_metrics.ComputeStationMetricsModule._event_station_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">_event_station_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Computing station metrics for event </span><span class="si">%s</span><span class="s1">...'</span>
-                     <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Computing station metrics for event </span><span class="si">%s</span><span class="s2">..."</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span><span class="p">)</span>
         <span class="n">event_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span><span class="p">)</span>
         <span class="n">workname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="n">utils</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">WORKSPACE_NAME</span><span class="p">))</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="n">utils</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">WORKSPACE_NAME</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">workname</span><span class="p">):</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="s1">'No workspace file found for event </span><span class="si">%s</span><span class="s1">. Please run '</span>
-                <span class="s1">'subcommand </span><span class="se">\'</span><span class="s1">assemble</span><span class="se">\'</span><span class="s1"> to generate workspace file.'</span>
-                <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span><span class="p">)</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Continuing to next event.'</span><span class="p">)</span>
+                <span class="s2">"No workspace file found for event </span><span class="si">%s</span><span class="s2">. Please run "</span>
+                <span class="s2">"subcommand 'assemble' to generate workspace file."</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span>
+            <span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Continuing to next event."</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span> <span class="o">=</span> <span class="n">ws</span><span class="o">.</span><span class="n">StreamWorkspace</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">workname</span><span class="p">)</span>
@@ -544,17 +545,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
 
         <span class="n">rupture_file</span> <span class="o">=</span> <span class="n">rupt_utils</span><span class="o">.</span><span class="n">get_rupture_file</span><span class="p">(</span><span class="n">event_dir</span><span class="p">)</span>
-        <span class="n">origin</span> <span class="o">=</span> <span class="n">rupt</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">Origin</span><span class="p">({</span>
-            <span class="s1">'id'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span><span class="p">,</span>
-            <span class="s1">'netid'</span><span class="p">:</span> <span class="s1">''</span><span class="p">,</span>
-            <span class="s1">'network'</span><span class="p">:</span> <span class="s1">''</span><span class="p">,</span>
-            <span class="s1">'lat'</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
-            <span class="s1">'lon'</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
-            <span class="s1">'depth'</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">depth_km</span><span class="p">,</span>
-            <span class="s1">'locstring'</span><span class="p">:</span> <span class="s1">''</span><span class="p">,</span>
-            <span class="s1">'mag'</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="s1">'time'</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">time</span>
-        <span class="p">})</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="n">rupt</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">Origin</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">"id"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span><span class="p">,</span>
+                <span class="s2">"netid"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+                <span class="s2">"network"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+                <span class="s2">"lat"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+                <span class="s2">"lon"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+                <span class="s2">"depth"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">depth_km</span><span class="p">,</span>
+                <span class="s2">"locstring"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+                <span class="s2">"mag"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                <span class="s2">"time"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">time</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span>
         <span class="n">rupture</span> <span class="o">=</span> <span class="n">rupt</span><span class="o">.</span><span class="n">factory</span><span class="o">.</span><span class="n">get_rupture</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">rupture_file</span><span class="p">)</span>
 
@@ -573,10 +576,10 @@
                 <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
                 <span class="n">stations</span><span class="o">=</span><span class="p">[</span><span class="n">station_id</span><span class="p">],</span>
                 <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">label</span><span class="p">],</span>
-                <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span>
+                <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">streams</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'No matching streams found.'</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No matching streams found."</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">:</span>
                 <span class="n">sta_lats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span>
@@ -585,7 +588,9 @@
                 <span class="n">geo_tuple</span> <span class="o">=</span> <span class="n">ob</span><span class="o">.</span><span class="n">gps2dist_azimuth</span><span class="p">(</span>
                     <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
                     <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
-                    <span class="n">origin</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">origin</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span>
+                    <span class="n">origin</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span>
+                    <span class="n">origin</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span>
+                <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">sta_repi</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">geo_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">M_PER_KM</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">sta_baz</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">geo_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">sta_rhyp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -593,7 +598,10 @@
                         <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
                         <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
                         <span class="o">-</span><span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">elevation</span> <span class="o">/</span> <span class="n">M_PER_KM</span><span class="p">,</span>
-                        <span class="n">origin</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">origin</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">origin</span><span class="o">.</span><span class="n">depth</span><span class="p">)</span>
+                        <span class="n">origin</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span>
+                        <span class="n">origin</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span>
+                        <span class="n">origin</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span>
+                    <span class="p">)</span>
                 <span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rupture</span><span class="p">,</span> <span class="n">rupt</span><span class="o">.</span><span class="n">point_rupture</span><span class="o">.</span><span class="n">PointRupture</span><span class="p">):</span>
@@ -612,18 +620,17 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">sta_lons</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sta_lons</span><span class="p">)</span>
             <span class="n">sta_lats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sta_lats</span><span class="p">)</span>
-            <span class="n">elev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span>
-                <span class="n">sta_lons</span><span class="p">,</span> <span class="n">utils</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">ELEVATION_FOR_DISTANCE_CALCS</span><span class="p">)</span>
+            <span class="n">elev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">sta_lons</span><span class="p">,</span> <span class="n">utils</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">ELEVATION_FOR_DISTANCE_CALCS</span><span class="p">)</span>
             <span class="n">rrup_mean</span><span class="p">,</span> <span class="n">rrup_var</span> <span class="o">=</span> <span class="n">rupture</span><span class="o">.</span><span class="n">computeRrup</span><span class="p">(</span><span class="n">sta_lons</span><span class="p">,</span> <span class="n">sta_lats</span><span class="p">,</span> <span class="n">elev</span><span class="p">)</span>
             <span class="n">rjb_mean</span><span class="p">,</span> <span class="n">rjb_var</span> <span class="o">=</span> <span class="n">rupture</span><span class="o">.</span><span class="n">computeRjb</span><span class="p">(</span><span class="n">sta_lons</span><span class="p">,</span> <span class="n">sta_lats</span><span class="p">,</span> <span class="n">elev</span><span class="p">)</span>
             <span class="n">rrup_var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">rrup_mean</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
             <span class="n">rjb_var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">rjb_mean</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
             <span class="n">gc2_dict</span> <span class="o">=</span> <span class="n">rupture</span><span class="o">.</span><span class="n">computeGC2</span><span class="p">(</span><span class="n">sta_lons</span><span class="p">,</span> <span class="n">sta_lats</span><span class="p">,</span> <span class="n">elev</span><span class="p">)</span>
-            <span class="n">gc2_rx</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s1">'rx'</span><span class="p">]</span>
-            <span class="n">gc2_ry</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s1">'ry'</span><span class="p">]</span>
-            <span class="n">gc2_ry0</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s1">'ry0'</span><span class="p">]</span>
-            <span class="n">gc2_U</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s1">'U'</span><span class="p">]</span>
-            <span class="n">gc2_T</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s1">'T'</span><span class="p">]</span>
+            <span class="n">gc2_rx</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">"rx"</span><span class="p">]</span>
+            <span class="n">gc2_ry</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">"ry"</span><span class="p">]</span>
+            <span class="n">gc2_ry0</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">"ry0"</span><span class="p">]</span>
+            <span class="n">gc2_U</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">"U"</span><span class="p">]</span>
+            <span class="n">gc2_T</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">"T"</span><span class="p">]</span>
 
             <span class="c1"># If we don't have a point rupture, then back azimuth needs</span>
             <span class="c1"># to be calculated to the closest point on the rupture</span>
@@ -635,7 +642,8 @@
                     <span class="n">P0</span><span class="p">,</span> <span class="n">P1</span><span class="p">,</span> <span class="n">P2</span><span class="p">,</span> <span class="n">P3</span> <span class="o">=</span> <span class="n">quad</span>
                     <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="p">[</span><span class="n">P0</span><span class="p">,</span> <span class="n">P1</span><span class="p">]:</span>
                         <span class="n">dist</span><span class="p">,</span> <span class="n">az</span><span class="p">,</span> <span class="n">baz</span> <span class="o">=</span> <span class="n">ob</span><span class="o">.</span><span class="n">gps2dist_azimuth</span><span class="p">(</span>
-                            <span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">sta_lats</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">sta_lons</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                            <span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">sta_lats</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">sta_lons</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                        <span class="p">)</span>
                         <span class="n">dists</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span>
                         <span class="n">bazs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">baz</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">sta_baz</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bazs</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">dists</span><span class="p">)])</span>
@@ -646,58 +654,68 @@
                 <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
                 <span class="n">stations</span><span class="o">=</span><span class="p">[</span><span class="n">station_id</span><span class="p">],</span>
                 <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">label</span><span class="p">],</span>
-                <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span>
+                <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">streams</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'No matching streams found.'</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No matching streams found."</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                    <span class="s1">'Calculating station metrics for </span><span class="si">%s</span><span class="s1">...'</span> <span class="o">%</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Calculating station metrics for </span><span class="si">%s</span><span class="s2">..."</span> <span class="o">%</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
                 <span class="n">summary</span> <span class="o">=</span> <span class="n">station_summary</span><span class="o">.</span><span class="n">StationSummary</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span>
-                    <span class="n">stream</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="n">event</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span><span class="p">,</span>
+                    <span class="n">stream</span><span class="p">,</span>
+                    <span class="n">event</span><span class="o">=</span><span class="n">event</span><span class="p">,</span>
+                    <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span><span class="p">,</span>
                     <span class="n">calc_waveform_metrics</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                     <span class="n">calc_station_metrics</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                    <span class="n">rupture</span><span class="o">=</span><span class="n">rupture</span><span class="p">,</span> <span class="n">vs30_grids</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vs30_grids</span><span class="p">)</span>
+                    <span class="n">rupture</span><span class="o">=</span><span class="n">rupture</span><span class="p">,</span>
+                    <span class="n">vs30_grids</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vs30_grids</span><span class="p">,</span>
+                <span class="p">)</span>
 
                 <span class="n">summary</span><span class="o">.</span><span class="n">_distances</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s1">'epicentral'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sta_repi</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                    <span class="s1">'hypocentral'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sta_rhyp</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                    <span class="s1">'rupture'</span><span class="p">:</span> <span class="n">rrup_mean</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                    <span class="s1">'rupture_var'</span><span class="p">:</span> <span class="n">rrup_var</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                    <span class="s1">'joyner_boore'</span><span class="p">:</span> <span class="n">rjb_mean</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                    <span class="s1">'joyner_boore_var'</span><span class="p">:</span> <span class="n">rjb_var</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                    <span class="s1">'gc2_rx'</span><span class="p">:</span> <span class="n">gc2_rx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                    <span class="s1">'gc2_ry'</span><span class="p">:</span> <span class="n">gc2_ry</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                    <span class="s1">'gc2_ry0'</span><span class="p">:</span> <span class="n">gc2_ry0</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                    <span class="s1">'gc2_U'</span><span class="p">:</span> <span class="n">gc2_U</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-                    <span class="s1">'gc2_T'</span><span class="p">:</span> <span class="n">gc2_T</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="s2">"epicentral"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sta_repi</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="s2">"hypocentral"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sta_rhyp</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="s2">"rupture"</span><span class="p">:</span> <span class="n">rrup_mean</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="s2">"rupture_var"</span><span class="p">:</span> <span class="n">rrup_var</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="s2">"joyner_boore"</span><span class="p">:</span> <span class="n">rjb_mean</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="s2">"joyner_boore_var"</span><span class="p">:</span> <span class="n">rjb_var</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="s2">"gc2_rx"</span><span class="p">:</span> <span class="n">gc2_rx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="s2">"gc2_ry"</span><span class="p">:</span> <span class="n">gc2_ry</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="s2">"gc2_ry0"</span><span class="p">:</span> <span class="n">gc2_ry0</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="s2">"gc2_U"</span><span class="p">:</span> <span class="n">gc2_U</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="s2">"gc2_T"</span><span class="p">:</span> <span class="n">gc2_T</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
                 <span class="p">}</span>
                 <span class="n">summary</span><span class="o">.</span><span class="n">_back_azimuth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sta_baz</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vs30_grids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">vs30_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vs30_grids</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                         <span class="n">tmpgrid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vs30_grids</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">]</span>
                         <span class="n">summary</span><span class="o">.</span><span class="n">_vs30</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                            <span class="s1">'value'</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s1">'grid_object'</span><span class="p">]</span><span class="o">.</span><span class="n">getValue</span><span class="p">(</span>
-                                <span class="nb">float</span><span class="p">(</span><span class="n">sta_lats</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">sta_lons</span><span class="p">[</span><span class="n">i</span><span class="p">])),</span>
-                            <span class="s1">'column_header'</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s1">'column_header'</span><span class="p">],</span>
-                            <span class="s1">'readme_entry'</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s1">'readme_entry'</span><span class="p">],</span>
-                            <span class="s1">'units'</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s1">'units'</span><span class="p">]</span>
+                            <span class="s2">"value"</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">"grid_object"</span><span class="p">]</span><span class="o">.</span><span class="n">getValue</span><span class="p">(</span>
+                                <span class="nb">float</span><span class="p">(</span><span class="n">sta_lats</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">sta_lons</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                            <span class="p">),</span>
+                            <span class="s2">"column_header"</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">"column_header"</span><span class="p">],</span>
+                            <span class="s2">"readme_entry"</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">"readme_entry"</span><span class="p">],</span>
+                            <span class="s2">"units"</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">"units"</span><span class="p">],</span>
                         <span class="p">}</span>
 
                 <span class="n">xmlstr</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">get_station_xml</span><span class="p">()</span>
-                <span class="n">metricpath</span> <span class="o">=</span> <span class="s1">'/'</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
-                    <span class="n">ws</span><span class="o">.</span><span class="n">format_netsta</span><span class="p">(</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="p">),</span>
-                    <span class="n">ws</span><span class="o">.</span><span class="n">format_nslit</span><span class="p">(</span>
-                        <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span>
-                        <span class="n">stream</span><span class="o">.</span><span class="n">get_inst</span><span class="p">(),</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span><span class="p">)</span>
-                <span class="p">])</span>
+                <span class="n">metricpath</span> <span class="o">=</span> <span class="s2">"/"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="n">ws</span><span class="o">.</span><span class="n">format_netsta</span><span class="p">(</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="p">),</span>
+                        <span class="n">ws</span><span class="o">.</span><span class="n">format_nslit</span><span class="p">(</span>
+                            <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_inst</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span>
+                        <span class="p">),</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">insert_aux</span><span class="p">(</span>
-                    <span class="n">xmlstr</span><span class="p">,</span> <span class="s1">'StationMetrics'</span><span class="p">,</span> <span class="n">metricpath</span><span class="p">,</span>
-                    <span class="n">overwrite</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">overwrite</span><span class="p">)</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Added station metrics to workspace files '</span>
-                             <span class="s1">'with tag </span><span class="se">\'</span><span class="si">%s</span><span class="se">\'</span><span class="s1">.'</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+                    <span class="n">xmlstr</span><span class="p">,</span>
+                    <span class="s2">"StationMetrics"</span><span class="p">,</span>
+                    <span class="n">metricpath</span><span class="p">,</span>
+                    <span class="n">overwrite</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">overwrite</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="s2">"Added station metrics to workspace files "</span>
+                    <span class="s2">"with tag '</span><span class="si">%s</span><span class="s2">'."</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">label</span>
+                <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span></div>
@@ -711,24 +729,37 @@
         <span class="n">maxdip_deg</span> <span class="o">=</span> <span class="mf">90.0</span>
         <span class="n">mindip</span> <span class="o">=</span> <span class="n">mindip_deg</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span>
         <span class="n">maxdip</span> <span class="o">=</span> <span class="n">maxdip_deg</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span>
-        <span class="n">repi</span><span class="p">,</span> <span class="n">Rjb_hat</span><span class="p">,</span> <span class="n">Rrup_hat</span><span class="p">,</span> <span class="n">Rjb_var</span><span class="p">,</span> <span class="n">Rrup_var</span> <span class="o">=</span> \
-            <span class="n">ps2ff</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">single_event_adjustment</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">mag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span> <span class="n">ar</span><span class="o">=</span><span class="n">aspect</span><span class="p">,</span>
-                <span class="n">mechanism</span><span class="o">=</span><span class="n">smech</span><span class="p">,</span> <span class="n">mag_scaling</span><span class="o">=</span><span class="n">mscale</span><span class="p">,</span>
-                <span class="n">n_repi</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
-                <span class="n">min_repi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sta_repi</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1e-5</span><span class="p">,</span>
-                <span class="n">max_repi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sta_repi</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">,</span>
-                <span class="n">nxny</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">n_theta</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span>
-                <span class="n">n_dip</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">min_dip</span><span class="o">=</span><span class="n">mindip</span><span class="p">,</span> <span class="n">max_dip</span><span class="o">=</span><span class="n">maxdip</span><span class="p">,</span>
-                <span class="n">n_eps</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">trunc</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">repi</span><span class="p">,</span> <span class="n">Rjb_hat</span><span class="p">,</span> <span class="n">Rrup_hat</span><span class="p">,</span> <span class="n">Rjb_var</span><span class="p">,</span> <span class="n">Rrup_var</span> <span class="o">=</span> <span class="n">ps2ff</span><span class="o">.</span><span class="n">run</span><span class="o">.</span><span class="n">single_event_adjustment</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">mag</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span>
+            <span class="n">ar</span><span class="o">=</span><span class="n">aspect</span><span class="p">,</span>
+            <span class="n">mechanism</span><span class="o">=</span><span class="n">smech</span><span class="p">,</span>
+            <span class="n">mag_scaling</span><span class="o">=</span><span class="n">mscale</span><span class="p">,</span>
+            <span class="n">n_repi</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
+            <span class="n">min_repi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sta_repi</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1e-5</span><span class="p">,</span>
+            <span class="n">max_repi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sta_repi</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="n">nxny</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+            <span class="n">n_theta</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span>
+            <span class="n">n_dip</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <span class="n">min_dip</span><span class="o">=</span><span class="n">mindip</span><span class="p">,</span>
+            <span class="n">max_dip</span><span class="o">=</span><span class="n">maxdip</span><span class="p">,</span>
+            <span class="n">n_eps</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">trunc</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rjb_spline</span> <span class="o">=</span> <span class="n">spint</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span>
-            <span class="n">repi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">Rjb_hat</span><span class="p">,</span> <span class="n">Rjb_var</span><span class="p">)),</span>
-            <span class="n">kind</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">assume_sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">repi</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">Rjb_hat</span><span class="p">,</span> <span class="n">Rjb_var</span><span class="p">)),</span>
+            <span class="n">kind</span><span class="o">=</span><span class="s2">"linear"</span><span class="p">,</span>
+            <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">assume_sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rrup_spline</span> <span class="o">=</span> <span class="n">spint</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span>
-            <span class="n">repi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">Rrup_hat</span><span class="p">,</span> <span class="n">Rrup_var</span><span class="p">)),</span>
-            <span class="n">kind</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">assume_sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div></div>
+            <span class="n">repi</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">Rrup_hat</span><span class="p">,</span> <span class="n">Rrup_var</span><span class="p">)),</span>
+            <span class="n">kind</span><span class="o">=</span><span class="s2">"linear"</span><span class="p">,</span>
+            <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">assume_sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
 </pre></div>
         </article>
       </div>

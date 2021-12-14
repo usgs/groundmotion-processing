@@ -14,9 +14,8 @@ def geonet():
     eqlon = 179.185
     eqdepth = 10.0
     eqmag = 5.1
-    rawdir = os.path.join(os.path.expanduser('~'), 'tmp', 'geonet')
-    streams = fetch_data(utime, eqlat, eqlon, eqdepth, eqmag,
-                         rawdir=rawdir)
+    rawdir = os.path.join(os.path.expanduser("~"), "tmp", "geonet")
+    streams = fetch_data(utime, eqlat, eqlon, eqdepth, eqmag, rawdir=rawdir)
     assert len(streams) == 6
 
 
@@ -28,9 +27,8 @@ def knet():
     eqlon = 142.368
     eqdepth = 14.7
     eqmag = 5.8
-    rawdir = os.path.join(os.path.expanduser('~'), 'tmp', 'knet')
-    streams = fetch_data(utime, eqlat, eqlon, eqdepth, eqmag,
-                         rawdir=rawdir)
+    rawdir = os.path.join(os.path.expanduser("~"), "tmp", "knet")
+    streams = fetch_data(utime, eqlat, eqlon, eqdepth, eqmag, rawdir=rawdir)
     assert len(streams) == 139
 
 
@@ -42,27 +40,25 @@ def turkey():
     eqlon = 38.042
     eqdepth = 10.0
     eqmag = 4.4
-    rawdir = os.path.join(os.path.expanduser('~'), 'tmp', 'turkey')
-    streams = fetch_data(utime, eqlat, eqlon, eqdepth, eqmag,
-                         rawdir=rawdir)
+    rawdir = os.path.join(os.path.expanduser("~"), "tmp", "turkey")
+    streams = fetch_data(utime, eqlat, eqlon, eqdepth, eqmag, rawdir=rawdir)
     assert len(streams) == 27
 
 
 def fdsn():
     # 2014-08-24 10:20:44
-    eid = 'nc72282711'
+    eid = "nc72282711"
     utime = datetime(2014, 8, 24, 10, 20, 44)
     eqlat = 38.215
     eqlon = -122.312
     eqdepth = 11.1
     eqmag = 6.0
-    rawdir = os.path.join(os.path.expanduser('~'), 'tmp', eid, 'raw')
-    stream_collection = fetch_data(utime, eqlat, eqlon, eqdepth, eqmag,
-                                   rawdir=rawdir)
+    rawdir = os.path.join(os.path.expanduser("~"), "tmp", eid, "raw")
+    stream_collection = fetch_data(utime, eqlat, eqlon, eqdepth, eqmag, rawdir=rawdir)
     assert len(stream_collection) == 15
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # os.environ['CALLED_FROM_PYTEST'] = 'True'
     fdsn()
     knet()

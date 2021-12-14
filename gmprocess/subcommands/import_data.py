@@ -9,26 +9,25 @@ import zipfile
 import tarfile
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
-arg_dicts = LazyLoader(
-    'arg_dicts', globals(), 'gmprocess.subcommands.arg_dicts')
-base = LazyLoader('base', globals(), 'gmprocess.subcommands.base')
+
+arg_dicts = LazyLoader("arg_dicts", globals(), "gmprocess.subcommands.arg_dicts")
+base = LazyLoader("base", globals(), "gmprocess.subcommands.base")
 
 
 class ImportModule(base.SubcommandModule):
-    """Import data for an event into the project data directory.
-    """
-    command_name = 'import'
+    """Import data for an event into the project data directory."""
+
+    command_name = "import"
 
     arguments = [
-        arg_dicts.ARG_DICTS['eventid'],
+        arg_dicts.ARG_DICTS["eventid"],
         {
-            'short_flag': '-p',
-            'long_flag': '--path',
-            'help': (
-                'Path to file or directory containing data to import.'),
-            'type': str,
-            'default': None
-        }
+            "short_flag": "-p",
+            "long_flag": "--path",
+            "help": ("Path to file or directory containing data to import."),
+            "type": str,
+            "default": None,
+        },
     ]
 
     def main(self, gmrecords):
@@ -39,7 +38,7 @@ class ImportModule(base.SubcommandModule):
             gmrecords:
                 GMrecordsApp instance.
         """
-        logging.info('Running subcommand \'%s\'' % self.command_name)
+        logging.info("Running subcommand '%s'" % self.command_name)
         self.gmrecords = gmrecords
         self._check_arguments()
 
@@ -48,19 +47,19 @@ class ImportModule(base.SubcommandModule):
         self._get_events()
 
         if self.events is None:
-            raise ValueError('Please provide a valid event id.')
+            raise ValueError("Please provide a valid event id.")
 
         if len(self.events) > 1:
-            raise ValueError('Can only import data for one event at a time.')
+            raise ValueError("Can only import data for one event at a time.")
 
-        logging.info('Number of events to download: %s' % len(self.events))
+        logging.info("Number of events to download: %s" % len(self.events))
         for event in self.events:
-            logging.info('Starting event: %s' % event.id)
+            logging.info("Starting event: %s" % event.id)
             event_dir = os.path.join(gmrecords.data_path, event.id)
             if not os.path.exists(event_dir):
                 os.makedirs(event_dir)
 
-            raw_dir = os.path.join(event_dir, 'raw')
+            raw_dir = os.path.join(event_dir, "raw")
             if not os.path.exists(raw_dir):
                 os.makedirs(raw_dir)
 
@@ -68,17 +67,17 @@ class ImportModule(base.SubcommandModule):
                 _, import_file = os.path.split(import_path)
                 src = import_path
                 dst = os.path.join(raw_dir, import_file)
-                logging.info('Importing %s' % src)
+                logging.info("Importing %s" % src)
                 shutil.copy(src, dst)
                 # Is this a zip or tar file? If so, extract
                 if zipfile.is_zipfile(dst):
-                    logging.info('Extracting %s' % dst)
-                    with zipfile.ZipFile(dst, 'r') as zfile:
+                    logging.info("Extracting %s" % dst)
+                    with zipfile.ZipFile(dst, "r") as zfile:
                         zfile.extractall(raw_dir)
                     os.remove(dst)
                 elif tarfile.is_tarfile(dst):
-                    logging.info('Extracting %s' % dst)
-                    with tarfile.open(dst, 'r') as tar_file:
+                    logging.info("Extracting %s" % dst)
+                    with tarfile.open(dst, "r") as tar_file:
                         tar_file.extractall(raw_dir)
                     os.remove(dst)
             elif os.path.isdir(import_path):
@@ -86,6 +85,5 @@ class ImportModule(base.SubcommandModule):
                 dst = raw_dir
                 copy_tree(src, dst)
             else:
-                raise ValueError(
-                    'Please provide a valid path to a file or directory')
-            logging.info('Event %s complete.' % event.id)
+                raise ValueError("Please provide a valid path to a file or directory")
+            logging.info("Event %s complete." % event.id)

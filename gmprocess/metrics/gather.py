@@ -1,12 +1,12 @@
 import os
 
-EXCLUDED_MODULES = ['__init__.py', 'imt.py', 'imc.py']
+EXCLUDED_MODULES = ["__init__.py", "imt.py", "imc.py"]
 BASE = os.path.dirname(os.path.abspath(__file__))
 
 
 def gather_pgms():
-    imt_directory = os.path.join(BASE, 'imt')
-    imc_directory = imt_directory.replace('imt', 'imc')
+    imt_directory = os.path.join(BASE, "imt")
+    imc_directory = imt_directory.replace("imt", "imc")
     # Create list
     imt_classes = []
     imc_classes = []

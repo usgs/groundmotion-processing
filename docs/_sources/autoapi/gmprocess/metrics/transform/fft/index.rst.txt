@@ -23,7 +23,6 @@ Classes
 
    Class for computing the fast fourier transform.
 
-
    .. py:method:: get_fft(self)
 
       Calculated the fft of each trace's data.

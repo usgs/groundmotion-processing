@@ -126,18 +126,30 @@ def get_spectral(period, stream, damping=0.05, times=None, config=None):
     """
     cdef int len_data = stream[0].data.shape[0]
 
+    # Use as-recorded or upsampled record?
+    use_upsampled = False
+    dt = stream[0].stats.delta
+    ns = (int)(10. * dt / period - 0.01) + 1
+    if ns > 1:
+        use_upsampled = True
+        dt = stream[0].getCached('upsampled')['dt']
+
     if 'rotated' in stream.getStreamParamKeys():
         # For ROTD and GMROTD
         rotated = []
-        rotated_data = stream.getStreamParam('rotated')
+        if use_upsampled:
+            rotated_data = stream.getStreamParam('upsampled_rotated')
+        else:
+            rotated_data = stream.getStreamParam('rotated')
+
         for idx in range(len(rotated_data)):
             rot_matrix = rotated_data[idx]
             rotated_spectrals = []
             for idy in range(0, len(rot_matrix)):
                 stats = {
                     'npts': len(rot_matrix[idy]),
-                    'delta': times[1] - times[0],
-                    'sampling_rate': 1.0 / (times[1] - times[0])
+                    'delta': dt,
+                    'sampling_rate': 1.0 / dt
                 }
                 new_trace = Trace(data=rot_matrix[idy], header=stats)
                 sa_list = calculate_spectrals(new_trace, period, damping)
@@ -145,6 +157,7 @@ def get_spectral(period, stream, damping=0.05, times=None, config=None):
                 acc_sa *= GAL_TO_PCTG
                 rotated_spectrals.append(acc_sa)
             rotated += [rotated_spectrals]
+
         # Add rotated data to stream parameters
         stream.setStreamParam('rotated', rotated)
         return stream

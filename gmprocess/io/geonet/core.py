@@ -26,10 +26,7 @@ MMPS_TO_CMPS = 1 / 10.0
 
 COLS_PER_ROW = 10
 
-ANGLES = {'N': 0,
-          'E': 90,
-          'S': 180,
-          'W': 270}
+ANGLES = {"N": 0, "E": 90, "S": 180, "W": 270}
 
 # These formats are described here:
 # https://www.geonet.org.nz/data/supplementary/strong_motion_file_formats
@@ -51,10 +48,10 @@ def is_geonet(filename, config=None):
     if is_binary(filename):
         return False
     try:
-        line = open(filename, 'rt').readline()
-        if line.find('GNS Science') >= 0:
-            c1 = line.find('Corrected accelerogram') >= 0
-            c2 = line.find('Uncorrected accelerogram') >= 0
+        line = open(filename, "rt").readline()
+        if line.find("GNS Science") >= 0:
+            c1 = line.find("Corrected accelerogram") >= 0
+            c2 = line.find("Uncorrected accelerogram") >= 0
             if c1 or c2:
                 return True
         return False
@@ -83,8 +80,7 @@ def read_geonet(filename, config=None, **kwargs):
     """
     logging.debug("Starting read_geonet.")
     if not is_geonet(filename, config):
-        raise Exception('%s is not a valid GEONET strong motion data file.'
-                        % filename)
+        raise Exception("%s is not a valid GEONET strong motion data file." % filename)
     trace1, offset1, _ = _read_channel(filename, 0)
     trace2, offset2, _ = _read_channel(filename, offset1)
     trace3, _, _ = _read_channel(filename, offset2)
@@ -92,27 +88,29 @@ def read_geonet(filename, config=None, **kwargs):
     # occasionally, geonet horizontal components are
     # identical.  To handle this, we'll set the second
     # channel to whatever isn't the first one.
-    channel1 = trace1.stats['channel']
-    channel2 = trace2.stats['channel']
-    channel3 = trace3.stats['channel']
+    channel1 = trace1.stats["channel"]
+    channel2 = trace2.stats["channel"]
+    channel3 = trace3.stats["channel"]
     if channel1 == channel2:
-        if channel1.endswith('1'):
-            trace2.stats['channel'] = trace2.stats['channel'][0:2] + '2'
-        elif channel1.endswith('2'):
-            trace2.stats['channel'] = trace2.stats['channel'][0:2] + '1'
+        if channel1.endswith("1"):
+            trace2.stats["channel"] = trace2.stats["channel"][0:2] + "2"
+        elif channel1.endswith("2"):
+            trace2.stats["channel"] = trace2.stats["channel"][0:2] + "1"
         else:
             raise Exception(
-                'GEONET: Could not resolve duplicate channels in %s'
-                % trace1.stats['station'])
+                "GEONET: Could not resolve duplicate channels in %s"
+                % trace1.stats["station"]
+            )
     if channel2 == channel3:
-        if channel2.endswith('2'):
-            trace3.stats['channel'] = trace2.stats['channel'][0:2] + '1'
-        elif channel2.endswith('1'):
-            trace3.stats['channel'] = trace2.stats['channel'][0:2] + '2'
+        if channel2.endswith("2"):
+            trace3.stats["channel"] = trace2.stats["channel"][0:2] + "1"
+        elif channel2.endswith("1"):
+            trace3.stats["channel"] = trace2.stats["channel"][0:2] + "2"
         else:
             raise Exception(
-                'GEONET: Could not resolve duplicate channels in %s'
-                % trace1.stats['station'])
+                "GEONET: Could not resolve duplicate channels in %s"
+                % trace1.stats["station"]
+            )
 
     traces = [trace1, trace2, trace3]
     stream = StationStream(traces)
@@ -133,21 +131,21 @@ def _read_channel(filename, line_offset):
         tuple: (obspy Trace, int line offset)
     """
     # read station and location strings from text header
-    with open(filename, 'rt', encoding='utf-8') as f:
+    with open(filename, "rt", encoding="utf-8") as f:
         for _ in range(line_offset):
             next(f)
         lines = [next(f) for x in range(TEXT_HDR_ROWS)]
 
     # this code supports V1 and V2 format files.  Which one is this?
-    data_format = 'V2'
-    if lines[0].lower().find('uncorrected') >= 0:
-        data_format = 'V1'
+    data_format = "V2"
+    if lines[0].lower().find("uncorrected") >= 0:
+        data_format = "V1"
 
     # parse out the station code, name, and component string
     # from text header
     station = lines[1].split()[1]
-    logging.debug('station: %s' % station)
-    name = lines[2].replace(' ', '_').strip()
+    logging.debug("station: %s" % station)
+    name = lines[2].replace(" ", "_").strip()
     component = lines[12].split()[1]
 
     # parse the instrument type from the text header
@@ -159,29 +157,32 @@ def _read_channel(filename, line_offset):
 
     # read floating point header array
     skip_header = line_offset + TEXT_HDR_ROWS
-    hdr_data = np.genfromtxt(filename, skip_header=skip_header,
-                             max_rows=FP_HDR_ROWS)
+    hdr_data = np.genfromtxt(filename, skip_header=skip_header, max_rows=FP_HDR_ROWS)
 
     # parse header dictionary from float header array
-    hdr = _read_header(hdr_data, station, name,
-                       component, data_format,
-                       instrument, resolution)
+    hdr = _read_header(
+        hdr_data, station, name, component, data_format, instrument, resolution
+    )
     head, tail = os.path.split(filename)
-    hdr['standard']['source_file'] = tail or os.path.basename(head)
+    hdr["standard"]["source_file"] = tail or os.path.basename(head)
 
     # according to the powers that defined the Network.Station.Channel.Location
     # "standard", Location is a two character field.  Most data providers,
     # including GeoNet here, don't provide this.  We'll flag it as "--".
-    hdr['location'] = '--'
+    hdr["location"] = "--"
 
     skip_header2 = line_offset + TEXT_HDR_ROWS + FP_HDR_ROWS
     widths = [8] * COLS_PER_ROW
-    nrows = int(np.ceil(hdr['npts'] / COLS_PER_ROW))
-    data = np.genfromtxt(filename, skip_header=skip_header2,
-                         max_rows=nrows, filling_values=np.nan,
-                         delimiter=widths)
+    nrows = int(np.ceil(hdr["npts"] / COLS_PER_ROW))
+    data = np.genfromtxt(
+        filename,
+        skip_header=skip_header2,
+        max_rows=nrows,
+        filling_values=np.nan,
+        delimiter=widths,
+    )
     data = data.flatten()
-    data = data[0:hdr['npts']]
+    data = data[0 : hdr["npts"]]
 
     # for debugging, read in the velocity data
     nvel = hdr_data[3, 4]
@@ -192,9 +193,13 @@ def _read_channel(filename, line_offset):
             nvel_rows = int(np.ceil(nvel / COLS_PER_ROW))
         skip_header_vel = line_offset + TEXT_HDR_ROWS + FP_HDR_ROWS + nrows
         widths = [8] * COLS_PER_ROW
-        velocity = np.genfromtxt(filename, skip_header=skip_header_vel,
-                                 max_rows=nvel_rows, filling_values=np.nan,
-                                 delimiter=widths)
+        velocity = np.genfromtxt(
+            filename,
+            skip_header=skip_header_vel,
+            max_rows=nvel_rows,
+            filling_values=np.nan,
+            delimiter=widths,
+        )
         velocity = velocity.flatten()
         velocity *= MMPS_TO_CMPS
     else:
@@ -202,7 +207,7 @@ def _read_channel(filename, line_offset):
 
     # for V2 files, there are extra blocks of data we need to skip containing
     # velocity and displacement data
-    if data_format == 'V2':
+    if data_format == "V2":
         velrows = int(np.ceil(hdr_data[3, 4] / COLS_PER_ROW))
         disrows = int(np.ceil(hdr_data[3, 5] / COLS_PER_ROW))
         nrows = nrows + velrows + disrows
@@ -210,16 +215,17 @@ def _read_channel(filename, line_offset):
     data *= MMPS_TO_CMPS  # convert to cm/s**2
     trace = StationTrace(data, Stats(hdr))
 
-    response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
-    trace.setProvenance('remove_response', response)
+    response = {"input_units": "counts", "output_units": "cm/s^2"}
+    trace.setProvenance("remove_response", response)
 
     offset = skip_header2 + nrows
 
     return (trace, offset, velocity)
 
 
-def _read_header(hdr_data, station, name, component, data_format,
-                 instrument, resolution):
+def _read_header(
+    hdr_data, station, name, component, data_format, instrument, resolution
+):
     """Construct stats dictionary from header lines.
 
     Args:
@@ -271,52 +277,45 @@ def _read_header(hdr_data, station, name, component, data_format,
     standard = {}
     coordinates = {}
     format_specific = {}
-    hdr['station'] = station
-    standard['station_name'] = name
+    hdr["station"] = station
+    standard["station_name"] = name
 
     # Note: Original sample interval (s): hdr_data[6, 4]
 
     # Sample inverval (s)
-    hdr['delta'] = hdr_data[6, 5]
-    hdr['sampling_rate'] = 1 / hdr['delta']
+    hdr["delta"] = hdr_data[6, 5]
+    hdr["sampling_rate"] = 1 / hdr["delta"]
 
-    hdr['calib'] = 1.0
-    if data_format == 'V1':
-        hdr['npts'] = int(hdr_data[3, 0])
+    hdr["calib"] = 1.0
+    if data_format == "V1":
+        hdr["npts"] = int(hdr_data[3, 0])
     else:
-        hdr['npts'] = int(hdr_data[3, 3])
-    hdr['network'] = 'NZ'
-    standard['units'] = 'acc'
-    standard['source'] = ('New Zealand Institute of Geological and '
-                          'Nuclear Science')
-    logging.debug('component: %s' % component)
-    standard['vertical_orientation'] = np.nan
-    if component.lower() in ['up', 'down']:
-        standard['horizontal_orientation'] = np.nan
-        hdr['channel'] = get_channel_name(
-            hdr['delta'],
-            is_acceleration=True,
-            is_vertical=True,
-            is_north=False)
+        hdr["npts"] = int(hdr_data[3, 3])
+    hdr["network"] = "NZ"
+    standard["units"] = "acc"
+    standard["source"] = "New Zealand Institute of Geological and Nuclear Science"
+    logging.debug("component: %s" % component)
+    standard["vertical_orientation"] = np.nan
+    if component.lower() in ["up", "down"]:
+        standard["horizontal_orientation"] = np.nan
+        hdr["channel"] = get_channel_name(
+            hdr["delta"], is_acceleration=True, is_vertical=True, is_north=False
+        )
     else:
         angle = _get_channel(component)
-        logging.debug('angle: %s' % angle)
-        standard['horizontal_orientation'] = float(angle)
+        logging.debug("angle: %s" % angle)
+        standard["horizontal_orientation"] = float(angle)
         if (angle > 315 or angle < 45) or (angle > 135 and angle < 225):
-            hdr['channel'] = get_channel_name(
-                hdr['delta'],
-                is_acceleration=True,
-                is_vertical=False,
-                is_north=True)
+            hdr["channel"] = get_channel_name(
+                hdr["delta"], is_acceleration=True, is_vertical=False, is_north=True
+            )
         else:
-            hdr['channel'] = get_channel_name(
-                hdr['delta'],
-                is_acceleration=True,
-                is_vertical=False,
-                is_north=False)
+            hdr["channel"] = get_channel_name(
+                hdr["delta"], is_acceleration=True, is_vertical=False, is_north=False
+            )
 
-    logging.debug('channel: %s' % hdr['channel'])
-    hdr['location'] = '--'
+    logging.debug("channel: %s" % hdr["channel"])
+    hdr["location"] = "--"
 
     # figure out the start time
     milliseconds = hdr_data[3, 9]
@@ -327,45 +326,44 @@ def _read_header(hdr_data, station, name, component, data_format,
     day = int(hdr_data[1, 8])
     hour = int(hdr_data[1, 9])
     minute = int(hdr_data[3, 8])
-    hdr['starttime'] = datetime(
-        year, month, day, hour, minute, seconds, microseconds)
+    hdr["starttime"] = datetime(year, month, day, hour, minute, seconds, microseconds)
 
     # figure out station coordinates
     latdg = hdr_data[2, 0]
     latmn = hdr_data[2, 1]
     latsc = hdr_data[2, 2]
-    coordinates['latitude'] = _dms_to_dd(latdg, latmn, latsc) * -1
+    coordinates["latitude"] = _dms_to_dd(latdg, latmn, latsc) * -1
     londg = hdr_data[2, 3]
     lonmn = hdr_data[2, 4]
     lonsc = hdr_data[2, 5]
-    coordinates['longitude'] = _dms_to_dd(londg, lonmn, lonsc)
-    logging.warning('Setting elevation to 0.0')
-    coordinates['elevation'] = 0.0
+    coordinates["longitude"] = _dms_to_dd(londg, lonmn, lonsc)
+    logging.warning("Setting elevation to 0.0")
+    coordinates["elevation"] = 0.0
 
     # get other standard metadata
-    standard['units_type'] = get_units_type(hdr['channel'])
-    standard['instrument_period'] = 1 / hdr_data[4, 0]
-    standard['instrument_damping'] = hdr_data[4, 1]
-    standard['process_time'] = ''
-    standard['process_level'] = PROCESS_LEVELS[data_format]
+    standard["units_type"] = get_units_type(hdr["channel"])
+    standard["instrument_period"] = 1 / hdr_data[4, 0]
+    standard["instrument_damping"] = hdr_data[4, 1]
+    standard["process_time"] = ""
+    standard["process_level"] = PROCESS_LEVELS[data_format]
     logging.debug("process_level: %s" % data_format)
-    standard['sensor_serial_number'] = ''
-    standard['instrument'] = instrument
-    standard['comments'] = ''
-    standard['structure_type'] = ''
-    standard['corner_frequency'] = np.nan
-    standard['source_format'] = 'geonet'
+    standard["sensor_serial_number"] = ""
+    standard["instrument"] = instrument
+    standard["comments"] = ""
+    standard["structure_type"] = ""
+    standard["corner_frequency"] = np.nan
+    standard["source_format"] = "geonet"
 
     # this field can be used for instrument correction
     # when data is in counts
-    standard['instrument_sensitivity'] = np.nan
+    standard["instrument_sensitivity"] = np.nan
 
     # get format specific metadata
-    format_specific['sensor_bit_resolution'] = resolution
+    format_specific["sensor_bit_resolution"] = resolution
 
-    hdr['coordinates'] = coordinates
-    hdr['standard'] = standard
-    hdr['format_specific'] = format_specific
+    hdr["coordinates"] = coordinates
+    hdr["standard"] = standard
+    hdr["format_specific"] = format_specific
 
     return hdr
 
@@ -386,13 +384,13 @@ def _get_channel(component):
         comp_angle = ANGLES[component]
     else:
         angle = int(re.search("\\d+", component).group())
-        if start_direction == 'N':
-            if end_direction == 'E':
+        if start_direction == "N":
+            if end_direction == "E":
                 comp_angle = angle
             else:
                 comp_angle = 360 - angle
         else:
-            if end_direction == 'E':
+            if end_direction == "E":
                 comp_angle = 180 - angle
             else:
                 comp_angle = 180 + angle

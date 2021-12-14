@@ -10,8 +10,15 @@ from gmprocess.metrics.reduction.reduction import Reduction
 
 
 class Percentile(Reduction):
-    def __init__(self, reduction_data, bandwidth=None, percentile=None,
-                 period=None, smoothing=None, interval=[5, 95]):
+    def __init__(
+        self,
+        reduction_data,
+        bandwidth=None,
+        percentile=None,
+        period=None,
+        smoothing=None,
+        interval=[5, 95],
+    ):
         """
         Args:
             reduction_data (StationStream):
@@ -32,11 +39,14 @@ class Percentile(Reduction):
         Raises:
             PGMException: if the percentile value is None.
         """
-        super().__init__(reduction_data, bandwidth=None, percentile=None,
-                         period=None, smoothing=None)
+        super().__init__(
+            reduction_data, bandwidth=None, percentile=None, period=None, smoothing=None
+        )
         if percentile is None:
-            raise PGMException('Percentile: The percentile value must '
-                               'be defined and of type float or int.')
+            raise PGMException(
+                "Percentile: The percentile value must "
+                "be defined and of type float or int."
+            )
         self.percentile = percentile
         self.result = self.get_percentile()
 
@@ -48,21 +58,21 @@ class Percentile(Reduction):
             percentiles: Dictionary of percentiles for each channel.
         """
         stream = self.reduction_data
-        if 'rotated' not in stream.getStreamParamKeys():
+        if "rotated" not in stream.getStreamParamKeys():
             raise ValueError(
-                'Percentile reduction can only be applied after a rotation '
-                'has been applied to the data.')
+                "Percentile reduction can only be applied after a rotation "
+                "has been applied to the data."
+            )
 
-        rdata = stream.getStreamParam('rotated')
+        rdata = stream.getStreamParam("rotated")
 
         percentiles = {}
         if len(rdata) == 3:
             for tr in rdata:
-                percentiles[tr.channel] = np.percentile(
-                    tr.data, self.percentile)
+                percentiles[tr.channel] = np.percentile(tr.data, self.percentile)
         elif len(rdata) == 1:
             maximums = np.amax(np.abs(rdata[0]), 1)
-            percentiles[''] = np.percentile(maximums, self.percentile)
+            percentiles[""] = np.percentile(maximums, self.percentile)
         else:
-            percentiles[''] = np.percentile(rdata, self.percentile)
+            percentiles[""] = np.percentile(rdata, self.percentile)
         return percentiles

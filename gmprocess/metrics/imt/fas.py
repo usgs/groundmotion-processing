@@ -15,7 +15,7 @@ class FAS(IMT):
     # 1) it doesn't change with instances
     # 2) information can now be retrieved without
     #    instantiating first
-    _invalid_imcs = ['gmrotd', 'rotd']
+    _invalid_imcs = ["gmrotd", "rotd"]
 
     def __init__(self, imt, imc, period):
         """
@@ -30,7 +30,7 @@ class FAS(IMT):
         """
         super().__init__(imt, imc, period=None)
         self._steps = {
-            'Transform2': 'null_transform',
-            'Transform3': 'fft',
-            'Reduction': 'smooth_select',
+            "Transform2": "null_transform",
+            "Transform3": "fft",
+            "Reduction": "smooth_select",
         }

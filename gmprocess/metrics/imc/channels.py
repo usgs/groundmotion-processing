@@ -30,7 +30,7 @@ class Channels(IMC):
         """
         super().__init__(imc, imt, percentile=None, period=None)
         self._steps = {
-            'Rotation': 'null_rotation',
-            'Combination1': 'null_combination',
-            'Combination2': 'null_combination',
+            "Rotation": "null_rotation",
+            "Combination1": "null_combination",
+            "Combination2": "null_combination",
         }

@@ -22,8 +22,15 @@ class SortedDuration(Reduction):
     2/2/2021.
     """
 
-    def __init__(self, reduction_data, bandwidth=None, percentile=None,
-                 period=None, smoothing=None, interval=[5, 95]):
+    def __init__(
+        self,
+        reduction_data,
+        bandwidth=None,
+        percentile=None,
+        period=None,
+        smoothing=None,
+        interval=[5, 95],
+    ):
         """
         Args:
             reduction_data (obspy.core.stream.Stream or numpy.ndarray):
@@ -41,8 +48,14 @@ class SortedDuration(Reduction):
                 List of length 2 with the quantiles (0-1) for duration interval
                 calculation.
         """
-        super().__init__(reduction_data, bandwidth=None, percentile=None,
-                         period=None, smoothing=None, interval=[5, 95])
+        super().__init__(
+            reduction_data,
+            bandwidth=None,
+            percentile=None,
+            period=None,
+            smoothing=None,
+            interval=[5, 95],
+        )
         self.result = self.get_sorted_duration()
 
     def get_sorted_duration(self):
@@ -54,7 +67,7 @@ class SortedDuration(Reduction):
         """
         sorted_durations = {}
         for trace in self.reduction_data:
-            dt = trace.stats['delta']
+            dt = trace.stats["delta"]
             # convert from cm/s/s to m/s/s
             acc = trace.data * 0.01
 
@@ -67,9 +80,9 @@ class SortedDuration(Reduction):
 
             # Binned intervals
             ai_norm_levels = np.linspace(0, 1, NBINS + 1)
-            index = np.searchsorted(ai_norm, ai_norm_levels, side='right')
+            index = np.searchsorted(ai_norm, ai_norm_levels, side="right")
             dindex = index[1:] - index[:-1]
-            D5_75_sorted = sum(np.sort(dindex)[:int(P_END * NBINS)]) * dt
+            D5_75_sorted = sum(np.sort(dindex)[: int(P_END * NBINS)]) * dt
 
             channel = trace.stats.channel
             sorted_durations[channel] = D5_75_sorted

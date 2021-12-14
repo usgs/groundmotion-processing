@@ -27,10 +27,10 @@ from gmprocess.utils.config import get_config
 
 INDENT = 2
 
-DEFAULT_IMTS = ['PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
-DEFAULT_IMCS = ['GREATER_OF_TWO_HORIZONTALS', 'CHANNELS']
+DEFAULT_IMTS = ["PGA", "PGV", "SA(0.3)", "SA(1.0)", "SA(3.0)"]
+DEFAULT_IMCS = ["GREATER_OF_TWO_HORIZONTALS", "CHANNELS"]
 
-NETWORKS_USING_LOCATION = ['RE']
+NETWORKS_USING_LOCATION = ["RE"]
 
 
 class StreamCollection(object):
@@ -48,10 +48,17 @@ class StreamCollection(object):
         - Check units
     """
 
-    def __init__(self, streams=None, drop_non_free=True,
-                 handle_duplicates=True, max_dist_tolerance=None,
-                 preference_order=None, process_level_preference=None,
-                 format_preference=None, config=None):
+    def __init__(
+        self,
+        streams=None,
+        drop_non_free=True,
+        handle_duplicates=True,
+        max_dist_tolerance=None,
+        preference_order=None,
+        process_level_preference=None,
+        format_preference=None,
+        config=None,
+    ):
         """Initialize StreamCollection.
 
         Args:
@@ -83,13 +90,11 @@ class StreamCollection(object):
         self.config = config
         # Some initial checks of input streams
         if not isinstance(streams, list):
-            raise TypeError(
-                'streams must be a list of StationStream objects.')
+            raise TypeError("streams must be a list of StationStream objects.")
         newstreams = []
         for s in streams:
             if not isinstance(s, StationStream):
-                raise TypeError(
-                    'streams must be a list of StationStream objects.')
+                raise TypeError("streams must be a list of StationStream objects.")
 
             logging.debug(s.get_id())
 
@@ -106,7 +111,8 @@ class StreamCollection(object):
                     max_dist_tolerance,
                     preference_order,
                     process_level_preference,
-                    format_preference)
+                    format_preference,
+                )
         self.__group_by_net_sta_inst()
         self.validate()
 
@@ -128,22 +134,22 @@ class StreamCollection(object):
         # If tag exists, it should be consistent across StationStreams
         all_labels = []
         for stream in self:
-            if hasattr(stream, 'tag'):
-                parts = stream.tag.split('_')
+            if hasattr(stream, "tag"):
+                parts = stream.tag.split("_")
                 if len(parts) > 2:
                     label = parts[-1]
-                    eventid = '_'.join(parts[0:-1])
+                    eventid = "_".join(parts[0:-1])
                 else:
-                    eventid, label = stream.tag.split('_')
+                    eventid, label = stream.tag.split("_")
                 all_labels.append(label)
             else:
                 all_labels.append("")
         if len(set(all_labels)) > 1:
-            raise ValueError(
-                'Only one label allowed within a StreamCollection.')
+            raise ValueError("Only one label allowed within a StreamCollection.")
 
-    def select_colocated(self, preference=["HN?", "BN?", "HH?", "BH?"],
-                         large_dist=None, origin=None):
+    def select_colocated(
+        self, preference=["HN?", "BN?", "HH?", "BH?"], large_dist=None, origin=None
+    ):
         """Detect colocated instruments, return preferred instrument type.
 
         This uses the list of the first two channel characters, given as
@@ -219,11 +225,15 @@ class StreamCollection(object):
 
                 if large_dist:
                     tr = self[group[0]][0]
-                    distance = gps2dist_azimuth(
-                        tr.stats.coordinates.latitude,
-                        tr.stats.coordinates.longitude,
-                        origin.latitude,
-                        origin.longitude)[0] / 1000.0
+                    distance = (
+                        gps2dist_azimuth(
+                            tr.stats.coordinates.latitude,
+                            tr.stats.coordinates.longitude,
+                            origin.latitude,
+                            origin.longitude,
+                        )[0]
+                        / 1000.0
+                    )
 
                     if distance > dist_thresh:
                         preference = large_dist["preference"]
@@ -245,13 +255,12 @@ class StreamCollection(object):
                         to_fail.remove(keep)
                         for tf in to_fail:
                             for st in self.select(
-                                    network=self[group[0]][0].stats.network,
-                                    station=self[group[0]][0].stats.station,
-                                    instrument=tf):
+                                network=self[group[0]][0].stats.network,
+                                station=self[group[0]][0].stats.station,
+                                instrument=tf,
+                            ):
                                 for tr in st:
-                                    tr.fail(
-                                        'Colocated with %s instrument.' % keep
-                                    )
+                                    tr.fail("Colocated with %s instrument." % keep)
 
                         break
                 if no_match:
@@ -259,9 +268,9 @@ class StreamCollection(object):
                     for g in group:
                         for tr in self[g]:
                             tr.fail(
-                                'No instruments match entries in the '
-                                'colocated instrument preference list for '
-                                'this station.'
+                                "No instruments match entries in the "
+                                "colocated instrument preference list for "
+                                "this station."
                             )
 
     @classmethod
@@ -360,9 +369,13 @@ class StreamCollection(object):
         """
         streams = self.streams
         # dept for an origin object should be stored in meters
-        origin = Origin(resource_id=origin['id'], latitude=origin['lat'],
-                        longitude=origin['lon'], time=origin['time'],
-                        depth=origin['depth'] * 1000)
+        origin = Origin(
+            resource_id=origin["id"],
+            latitude=origin["lat"],
+            longitude=origin["lon"],
+            time=origin["time"],
+            depth=origin["depth"] * 1000,
+        )
 
         if imcs is None:
             station_summary_imcs = DEFAULT_IMCS
@@ -389,7 +402,8 @@ class StreamCollection(object):
             if len(stream) < 3:
                 continue
             stream_summary = StationSummary.from_stream(
-                stream, station_summary_imcs, station_summary_imts, origin)
+                stream, station_summary_imcs, station_summary_imts, origin
+            )
             summary = stream_summary.summary
             subdfs += [summary]
         dataframe = pd.concat(subdfs, axis=0).reset_index(drop=True)
@@ -398,20 +412,19 @@ class StreamCollection(object):
 
     def __str__(self):
         """String summary of the StreamCollection."""
-        summary = ''
+        summary = ""
         n = len(self.streams)
-        summary += '%s StationStreams(s) in StreamCollection:\n' % n
-        summary += '    %s StationStreams(s) passed checks.\n' % self.n_passed
-        summary += '    %s StationStreams(s) failed checks.\n' % self.n_failed
+        summary += "%s StationStreams(s) in StreamCollection:\n" % n
+        summary += "    %s StationStreams(s) passed checks.\n" % self.n_passed
+        summary += "    %s StationStreams(s) failed checks.\n" % self.n_failed
         return summary
 
     def describe(self):
         """More verbose description of StreamCollection."""
-        summary = ''
-        summary += str(len(self.streams)) + \
-            ' StationStreams(s) in StreamCollection:\n'
+        summary = ""
+        summary += str(len(self.streams)) + " StationStreams(s) in StreamCollection:\n"
         for stream in self:
-            summary += stream.__str__(indent=INDENT) + '\n'
+            summary += stream.__str__(indent=INDENT) + "\n"
         print(summary)
 
     def __len__(self):
@@ -444,7 +457,7 @@ class StreamCollection(object):
         return self.streams.__delitem__(index)
 
     def __getslice__(self, i, j, k=1):
-        return self.__class__(streams=self.streams[max(0, i):max(0, j):k])
+        return self.__class__(streams=self.streams[max(0, i) : max(0, j) : k])
 
     def append(self, stream):
         """Append a single StationStream object.
@@ -457,8 +470,7 @@ class StreamCollection(object):
             streams = self.streams + [stream]
             return self.__class__(streams)
         else:
-            raise TypeError(
-                'Append only uspports adding a single StationStream.')
+            raise TypeError("Append only uspports adding a single StationStream.")
 
     def pop(self, index=(-1)):
         """Remove and return item at index (default last)."""
@@ -489,8 +501,8 @@ class StreamCollection(object):
         for st in self:
             inst = st.get_inst()
             net_sta = st.get_net_sta()
-            net = net_sta.split('.')[0]
-            sta = net_sta.split('.')[1]
+            net = net_sta.split(".")[0]
+            sta = net_sta.split(".")[1]
             if network is not None:
                 if not fnmatch.fnmatch(net.upper(), network.upper()):
                     continue
@@ -517,18 +529,18 @@ class StreamCollection(object):
             if idx1 in all_matches:
                 continue
             matches = [idx1]
-            network = trace1.stats['network']
-            station = trace1.stats['station']
+            network = trace1.stats["network"]
+            station = trace1.stats["station"]
             free_field = trace1.free_field
             # For instrument, use first two characters of the channel
-            inst = trace1.stats['channel'][0:2]
+            inst = trace1.stats["channel"][0:2]
             for idx2, trace2 in enumerate(trace_list):
                 if idx1 != idx2 and idx1 not in all_matches:
                     if (
-                        network == trace2.stats['network'] and
-                        station == trace2.stats['station'] and
-                        inst == trace2.stats['channel'][0:2] and
-                        free_field == trace2.free_field
+                        network == trace2.stats["network"]
+                        and station == trace2.stats["station"]
+                        and inst == trace2.stats["channel"][0:2]
+                        and free_field == trace2.free_field
                     ):
                         matches.append(idx2)
             if len(matches) > 1:
@@ -543,9 +555,7 @@ class StreamCollection(object):
         for groups in match_list:
             grouped_trace_list = []
             for i in groups:
-                grouped_trace_list.append(
-                    trace_list[i]
-                )
+                grouped_trace_list.append(trace_list[i])
             # some networks (e.g., Bureau of Reclamation, at the time of this
             # writing) use the location field to indicate different sensors at
             # (roughly) the same location. If we know this (as in the case of
@@ -559,8 +569,13 @@ class StreamCollection(object):
 
         self.streams = grouped_streams
 
-    def __handle_duplicates(self, max_dist_tolerance, preference_order,
-                            process_level_preference, format_preference):
+    def __handle_duplicates(
+        self,
+        max_dist_tolerance,
+        preference_order,
+        process_level_preference,
+        format_preference,
+    ):
         """
         Removes duplicate data from the StreamCollection, based on the
         process level and format preferences.
@@ -587,17 +602,17 @@ class StreamCollection(object):
         # If arguments are None, check the config
         # If not in the config, use the default values at top of the file
         preferences = {
-            'max_dist_tolerance': max_dist_tolerance,
-            'preference_order': preference_order,
-            'process_level_preference': process_level_preference,
-            'format_preference': format_preference
+            "max_dist_tolerance": max_dist_tolerance,
+            "preference_order": preference_order,
+            "process_level_preference": process_level_preference,
+            "format_preference": format_preference,
         }
 
         for key, val in preferences.items():
             if val is None:
                 if self.config is None:
                     self.config = get_config()
-                preferences[key] = self.config['duplicate'][key]
+                preferences[key] = self.config["duplicate"][key]
 
         stream_params = gather_stream_parameters(self.streams)
 
@@ -610,28 +625,36 @@ class StreamCollection(object):
         for tr_to_add in traces:
             is_duplicate = False
             for tr_pref in preferred_traces:
-                if are_duplicates(tr_to_add, tr_pref,
-                                  preferences['max_dist_tolerance']):
+                if are_duplicates(
+                    tr_to_add, tr_pref, preferences["max_dist_tolerance"]
+                ):
                     is_duplicate = True
                     break
 
             if is_duplicate:
-                if choose_preferred(
-                        tr_to_add, tr_pref,
-                        preferences['preference_order'],
-                        preferences['process_level_preference'],
-                        preferences['format_preference']) == tr_to_add:
+                if (
+                    choose_preferred(
+                        tr_to_add,
+                        tr_pref,
+                        preferences["preference_order"],
+                        preferences["process_level_preference"],
+                        preferences["format_preference"],
+                    )
+                    == tr_to_add
+                ):
                     preferred_traces.remove(tr_pref)
-                    logging.info('Trace %s (%s) is a duplicate and '
-                                 'has been removed from the StreamCollection.'
-                                 % (tr_pref.id,
-                                    tr_pref.stats.standard.source_file))
+                    logging.info(
+                        "Trace %s (%s) is a duplicate and "
+                        "has been removed from the StreamCollection."
+                        % (tr_pref.id, tr_pref.stats.standard.source_file)
+                    )
                     preferred_traces.append(tr_to_add)
                 else:
-                    logging.info('Trace %s (%s) is a duplicate and '
-                                 'has been removed from the StreamCollection.'
-                                 % (tr_to_add.id,
-                                    tr_to_add.stats.standard.source_file))
+                    logging.info(
+                        "Trace %s (%s) is a duplicate and "
+                        "has been removed from the StreamCollection."
+                        % (tr_to_add.id, tr_to_add.stats.standard.source_file)
+                    )
 
             else:
                 preferred_traces.append(tr_to_add)
@@ -661,43 +684,49 @@ class StreamCollection(object):
             If status='short' or status='long': pandas.Series
         """
 
-        if status == 'short':
+        if status == "short":
             failure_reasons = pd.Series(
-                [next(tr for tr in st if tr.hasParameter('failure')).
-                    getParameter('failure')['reason'] for st in self.streams
-                    if not st.passed], dtype=str)
+                [
+                    next(tr for tr in st if tr.hasParameter("failure")).getParameter(
+                        "failure"
+                    )["reason"]
+                    for st in self.streams
+                    if not st.passed
+                ],
+                dtype=str,
+            )
             failure_counts = failure_reasons.value_counts()
-            failure_counts.name = 'Number of Records'
-            failure_counts.index.name = 'Failure Reason'
+            failure_counts.name = "Number of Records"
+            failure_counts.index.name = "Failure Reason"
             return failure_counts
-        elif status == 'net':
+        elif status == "net":
             failure_dict = {}
             for st in self.streams:
                 net = st[0].stats.network
                 if net not in failure_dict:
-                    failure_dict[net] = {'Number Passed': 0,
-                                         'Number Failed': 0}
+                    failure_dict[net] = {"Number Passed": 0, "Number Failed": 0}
                 if st.passed:
-                    failure_dict[net]['Number Passed'] += 1
+                    failure_dict[net]["Number Passed"] += 1
                 else:
-                    failure_dict[net]['Number Failed'] += 1
+                    failure_dict[net]["Number Failed"] += 1
             df = pd.DataFrame.from_dict(failure_dict).transpose()
-            df.index.name = 'Network'
+            df.index.name = "Network"
             return df
-        elif status == 'long':
+        elif status == "long":
             failure_reasons = []
             for st in self.streams:
                 if not st.passed:
-                    first_failure = next(
-                        tr for tr in st if tr.hasParameter('failure'))
+                    first_failure = next(tr for tr in st if tr.hasParameter("failure"))
                     failure_reasons.append(
-                        first_failure.getParameter('failure')['reason'])
+                        first_failure.getParameter("failure")["reason"]
+                    )
                 else:
-                    failure_reasons.append('')
+                    failure_reasons.append("")
             sta_ids = [st.id for st in self.streams]
             failure_srs = pd.Series(
-                index=sta_ids, data=failure_reasons, name='Failure reason')
-            failure_srs.index.name = 'StationID'
+                index=sta_ids, data=failure_reasons, name="Failure reason"
+            )
+            failure_srs.index.name = "StationID"
             return failure_srs
         else:
             raise ValueError('Status must be "short", "net", or "long".')
@@ -727,7 +756,7 @@ def gather_stream_parameters(streams):
 
         # Tag is a StationStream attribute; If it does not exist, make it
         # an empty string
-        if hasattr(stream, 'tag'):
+        if hasattr(stream, "tag"):
             tag = stream.tag
         else:
             tag = ""
@@ -774,8 +803,7 @@ def split_station(grouped_trace_list):
             if trace.stats.location in streams_dict:
                 streams_dict[trace.stats.location] += trace
             else:
-                streams_dict[trace.stats.location] = \
-                    StationStream(traces=[trace])
+                streams_dict[trace.stats.location] = StationStream(traces=[trace])
         streams = list(streams_dict.values())
     else:
         streams = [StationStream(traces=grouped_trace_list)]
@@ -802,32 +830,38 @@ def are_duplicates(tr1, tr2, max_dist_tolerance):
     """
     orientation_codes = set()
     for tr in [tr1, tr2]:
-        if tr.stats.channel[2] in ['1', 'N']:
-            orientation_codes.add('1')
-        elif tr.stats.channel[2] in ['2', 'E']:
-            orientation_codes.add('2')
+        if tr.stats.channel[2] in ["1", "N"]:
+            orientation_codes.add("1")
+        elif tr.stats.channel[2] in ["2", "E"]:
+            orientation_codes.add("2")
         else:
-            orientation_codes.add('Z')
+            orientation_codes.add("Z")
 
     # First, check if the ids match (net.sta.loc.cha)
-    if (tr1.id[:-1] == tr2.id[:-1] and len(orientation_codes) == 1):
+    if tr1.id[:-1] == tr2.id[:-1] and len(orientation_codes) == 1:
         return True
     # If not matching IDs, check the station, instrument code, and distance
     else:
         distance = gps2dist_azimuth(
-            tr1.stats.coordinates.latitude, tr1.stats.coordinates.longitude,
-            tr2.stats.coordinates.latitude, tr2.stats.coordinates.longitude)[0]
-        if (tr1.stats.station == tr2.stats.station
+            tr1.stats.coordinates.latitude,
+            tr1.stats.coordinates.longitude,
+            tr2.stats.coordinates.latitude,
+            tr2.stats.coordinates.longitude,
+        )[0]
+        if (
+            tr1.stats.station == tr2.stats.station
             and tr1.stats.channel[:2] == tr2.stats.channel[:2]
             and len(orientation_codes) == 1
-                and distance < max_dist_tolerance):
+            and distance < max_dist_tolerance
+        ):
             return True
         else:
             return False
 
 
-def choose_preferred(tr1, tr2, preference_order, process_level_preference,
-                     format_preference):
+def choose_preferred(
+    tr1, tr2, preference_order, process_level_preference, format_preference
+):
     """Determines which trace is preferred. Returns the preferred trace.
 
     Args:
@@ -854,28 +888,37 @@ def choose_preferred(tr1, tr2, preference_order, process_level_preference,
     """
     traces = [tr1, tr2]
     for pref in preference_order:
-        if pref == 'process_level':
-            tr_prefs = [process_level_preference.index(
-                REV_PROCESS_LEVELS[tr.stats.standard.process_level])
-                for tr in traces]
-        elif pref == 'source_format':
-            if all([tr.stats.standard.source_format in format_preference
-                    for tr in traces]):
-                tr_prefs = [format_preference.index(
-                    tr.stats.standard.source_format) for tr in traces]
+        if pref == "process_level":
+            tr_prefs = [
+                process_level_preference.index(
+                    REV_PROCESS_LEVELS[tr.stats.standard.process_level]
+                )
+                for tr in traces
+            ]
+        elif pref == "source_format":
+            if all(
+                [tr.stats.standard.source_format in format_preference for tr in traces]
+            ):
+                tr_prefs = [
+                    format_preference.index(tr.stats.standard.source_format)
+                    for tr in traces
+                ]
             else:
                 continue
-        elif pref == 'starttime':
+        elif pref == "starttime":
             tr_prefs = [tr.stats.starttime == UTCDateTime(0) for tr in traces]
-        elif pref == 'npts':
+        elif pref == "npts":
             tr_prefs = [1 / tr.stats.npts for tr in traces]
-        elif pref == 'sampling_rate':
+        elif pref == "sampling_rate":
             tr_prefs = [1 / tr.stats.sampling_rate for tr in traces]
-        elif pref == 'location_code':
+        elif pref == "location_code":
             sorted_codes = sorted([tr.stats.location for tr in traces])
-            tr_prefs = [sorted_codes.index(
-                tr.stats.location) if tr.stats.location != '--' else np.nan
-                for tr in traces]
+            tr_prefs = [
+                sorted_codes.index(tr.stats.location)
+                if tr.stats.location != "--"
+                else np.nan
+                for tr in traces
+            ]
 
         if len(set(tr_prefs)) != 1:
             return traces[np.nanargmin(tr_prefs)]

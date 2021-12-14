@@ -1,11 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
 class Reduction(object):
     """Base class for reduction calculations."""
 
-    def __init__(self, reduction_data, bandwidth=None, percentile=None,
-                 period=None, smoothing=None, interval=[5, 95]):
+    def __init__(
+        self,
+        reduction_data,
+        bandwidth=None,
+        percentile=None,
+        period=None,
+        smoothing=None,
+        interval=[5, 95],
+    ):
         """
         Args:
             reduction_data (StationStream):

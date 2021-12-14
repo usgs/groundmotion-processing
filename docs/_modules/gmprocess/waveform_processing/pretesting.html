@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.waveform_processing.pretesting - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.waveform_processing.pretesting - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -484,13 +484,13 @@
 
     <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">trace</span><span class="o">.</span><span class="n">free_field</span> <span class="ow">and</span> <span class="n">reject_non_free_field</span><span class="p">:</span>
-            <span class="n">trace</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s1">'Failed free field sensor check.'</span><span class="p">)</span>
+            <span class="n">trace</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"Failed free field sensor check."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 
 
 <div class="viewcode-block" id="check_sta_lta"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/pretesting/index.html#gmprocess.waveform_processing.pretesting.check_sta_lta">[docs]</a><span class="k">def</span> <span class="nf">check_sta_lta</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">sta_length</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">lta_length</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">5.0</span><span class="p">):</span>
-    <span class="sd">'''</span>
+    <span class="sd">"""</span>
 <span class="sd">    Checks that the maximum STA/LTA ratio for AT LEAST ONE of the stream's</span>
 <span class="sd">    traces is above a certain threshold.</span>
 
@@ -506,7 +506,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Stream that has been checked for sta/lta requirements.</span>
-<span class="sd">    '''</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">st</span>
 
@@ -516,11 +516,14 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">nlta</span><span class="p">:</span>
             <span class="n">sta_lta</span> <span class="o">=</span> <span class="n">classic_sta_lta</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">sta_length</span> <span class="o">*</span> <span class="n">sr</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nlta</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">sta_lta</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">:</span>
-                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s1">'Failed sta/lta check because threshold sta/lta '</span>
-                        <span class="s1">'is not exceeded.'</span><span class="p">)</span>
+                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span>
+                    <span class="s2">"Failed sta/lta check because threshold sta/lta "</span> <span class="s2">"is not exceeded."</span>
+                <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s1">'Failed sta/lta check because record length is shorter '</span>
-                    <span class="s1">'than lta length.'</span><span class="p">)</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span>
+                <span class="s2">"Failed sta/lta check because record length is shorter "</span>
+                <span class="s2">"than lta length."</span>
+            <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 
@@ -547,10 +550,9 @@
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
         <span class="c1"># Only perform amplitude/clipping check if data has not been converted</span>
         <span class="c1"># to physical units</span>
-        <span class="k">if</span> <span class="s1">'remove_response'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tr</span><span class="o">.</span><span class="n">getProvenanceKeys</span><span class="p">():</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="nb">min</span><span class="p">)</span> <span class="ow">or</span>
-                    <span class="nb">abs</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="o">&gt;</span> <span class="nb">float</span><span class="p">(</span><span class="nb">max</span><span class="p">)):</span>
-                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s1">'Failed max amplitude check.'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"remove_response"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tr</span><span class="o">.</span><span class="n">getProvenanceKeys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="nb">min</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="o">&gt;</span> <span class="nb">float</span><span class="p">(</span><span class="nb">max</span><span class="p">):</span>
+                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"Failed max amplitude check."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 </pre></div>

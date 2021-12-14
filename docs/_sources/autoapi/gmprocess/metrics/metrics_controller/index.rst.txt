@@ -125,6 +125,19 @@ Functions
       filled with a np.nan value.
 
 
+   .. py:method:: perform_first_steps(self, period, percentile, s1, s2, s3, transform_path, rotation_path)
+
+      Perform the first three metric steps.
+
+      To reduce reduncy in the calculations, we save the results of the
+      first three steps.
+
+      :param transform_path: The path to the transformation calculations.
+      :type transform_path: str
+      :param rotation_path: The path to the rotation calculations.
+      :type rotation_path: str
+
+
    .. py:method:: validate_stream(self)
 
       Validates that the input is a StationStream, the units are either
@@ -134,6 +147,14 @@ Functions
           1. The input is not a StationStream.
           2. The units are not velocity or acceleration.
           3. The length of the traces are not equal.
+
+
+   .. py:method:: add_upsampled_traces(self)
+
+      Convenience method for adding upsampled waveform to traces.
+
+      This adds a *single* upsampled version of the waveform to each trace
+      for the smallest requested oscillator period.
 
 
    .. py:method:: _format(self, result, steps)
@@ -245,6 +266,9 @@ Functions
 
 
    .. py:method:: _get_max_period(self)
+
+
+   .. py:method:: _get_min_period(self)
 
 
    .. py:method:: clean_imts(self)

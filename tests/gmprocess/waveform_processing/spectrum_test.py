@@ -17,13 +17,13 @@ from gmprocess.waveform_processing.processing import get_corner_frequencies
 
 def test_fit_spectra():
     config = get_config()
-    datapath = os.path.join('data', 'testdata', 'demo', 'ci38457511', 'raw')
-    datadir = pkg_resources.resource_filename('gmprocess', datapath)
-    event = get_event_object('ci38457511')
+    datapath = os.path.join("data", "testdata", "demo", "ci38457511", "raw")
+    datadir = pkg_resources.resource_filename("gmprocess", datapath)
+    event = get_event_object("ci38457511")
     sc = StreamCollection.from_directory(datadir)
     for st in sc:
         st = signal_split(st, event)
-        end_conf = config['windows']['signal_end']
+        end_conf = config["windows"]["signal_end"]
         st = signal_end(
             st,
             event_time=event.time,
@@ -34,11 +34,7 @@ def test_fit_spectra():
         )
         st = compute_snr(st, 30)
         st = get_corner_frequencies(
-            st, method='constant',
-            constant={
-                'highpass': 0.08,
-                'lowpass': 20.0
-            }
+            st, method="constant", constant={"highpass": 0.08, "lowpass": 20.0}
         )
 
     for st in sc:
@@ -62,8 +58,8 @@ def test_fff():
     np.testing.assert_allclose(h[-1], 29.844204, atol=1e-5)
 
 
-if __name__ == '__main__':
-    os.environ['CALLED_FROM_PYTEST'] = 'True'
+if __name__ == "__main__":
+    os.environ["CALLED_FROM_PYTEST"] = "True"
     test_fit_spectra()
     test_spectrum()
     test_fff()

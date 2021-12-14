@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.io.obspy.core - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.io.obspy.core - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -474,9 +474,9 @@
 <span class="kn">from</span> <span class="nn">gmprocess.core.stationstream</span> <span class="kn">import</span> <span class="n">StationStream</span>
 <span class="kn">from</span> <span class="nn">gmprocess.utils.config</span> <span class="kn">import</span> <span class="n">get_config</span>
 
-<span class="n">IGNORE_FORMATS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'KNET'</span><span class="p">]</span>
-<span class="n">EXCLUDE_PATTERNS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'*.*.??.LN?'</span><span class="p">]</span>
-<span class="n">REQUIRES_XML</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'MSEED'</span><span class="p">]</span>
+<span class="n">IGNORE_FORMATS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"KNET"</span><span class="p">]</span>
+<span class="n">EXCLUDE_PATTERNS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"*.*.??.LN?"</span><span class="p">]</span>
+<span class="n">REQUIRES_XML</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"MSEED"</span><span class="p">]</span>
 
 
 <span class="c1"># Bureau of Reclamation has provided a table of location codes with</span>
@@ -486,110 +486,67 @@
 <span class="c1"># code we have marked as *not* free field, since borehole sensors do not match</span>
 <span class="c1"># our definition of "free field".</span>
 <span class="n">RE_NETWORK</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">'10'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Free field (rock) in vicinity of crest/toe area'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
-    <span class="s1">'11'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Free field (Left Abutment) either crest or toe'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
-    <span class="s1">'12'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Free field (Right Abutment) either crest or toe'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
-    <span class="s1">'13'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Free field (water) (Towards Left Abutment)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'14'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Free field (water) (Towards Right Abutment)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'20'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Toe (center)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'21'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Toe (Left Abutment)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'22'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Toe (Right Abutment)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'23'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Toe (Towards Left Abutment)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'24'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Toe (Towards Right Abutment)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'30'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Crest (center)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'31'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Crest (Left Abutment)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'32'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Crest (Right Abutment)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'33'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Crest (Towards Left Abutment)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'34'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Crest (Towards Right Abutment)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'40'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Foundation (center)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'41'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Foundation (Left Abutment)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'42'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Foundation (Right Abutment)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'43'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Foundation (Towards Left Abutment)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'44'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Foundation (Towards Right Abutment)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'50'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Body (center)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'51'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Body (Left Abutment)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'52'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Body (Right Abutment)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'53'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Body (Towards Left Abutment)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'54'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Body (Towards Right Abutment)'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'60'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Down Hole Upper Body'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'61'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Down Hole Mid Body'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'62'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Down Hole Foundation'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-    <span class="s1">'63'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'Down Hole Free Field'</span><span class="p">,</span>
-        <span class="s1">'free_field'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"10"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Free field (rock) in vicinity of crest/toe area"</span><span class="p">,</span>
+        <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">"11"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Free field (Left Abutment) either crest or toe"</span><span class="p">,</span>
+        <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">"12"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Free field (Right Abutment) either crest or toe"</span><span class="p">,</span>
+        <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">"13"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Free field (water) (Towards Left Abutment)"</span><span class="p">,</span>
+        <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">"14"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Free field (water) (Towards Right Abutment)"</span><span class="p">,</span>
+        <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">"20"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Toe (center)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"21"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Toe (Left Abutment)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"22"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Toe (Right Abutment)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"23"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Toe (Towards Left Abutment)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"24"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Toe (Towards Right Abutment)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"30"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Crest (center)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"31"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Crest (Left Abutment)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"32"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Crest (Right Abutment)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"33"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Crest (Towards Left Abutment)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"34"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Crest (Towards Right Abutment)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"40"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Foundation (center)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"41"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Foundation (Left Abutment)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"42"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Foundation (Right Abutment)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"43"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Foundation (Towards Left Abutment)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"44"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Foundation (Towards Right Abutment)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"50"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Body (center)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"51"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Body (Left Abutment)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"52"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Body (Right Abutment)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"53"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Body (Towards Left Abutment)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"54"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Body (Towards Right Abutment)"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"60"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Down Hole Upper Body"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"61"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Down Hole Mid Body"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"62"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Down Hole Foundation"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+    <span class="s2">"63"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Down Hole Free Field"</span><span class="p">,</span> <span class="s2">"free_field"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
 <span class="p">}</span>
 
-<span class="n">LOCATION_CODES</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'RE'</span><span class="p">:</span> <span class="n">RE_NETWORK</span><span class="p">}</span>
+<span class="n">LOCATION_CODES</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"RE"</span><span class="p">:</span> <span class="n">RE_NETWORK</span><span class="p">}</span>
 
 
 <div class="viewcode-block" id="_get_station_file"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/obspy/core/index.html#gmprocess.io.obspy.core._get_station_file">[docs]</a><span class="k">def</span> <span class="nf">_get_station_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">metadata_directory</span><span class="p">):</span>
     <span class="n">network</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span>
     <span class="n">station</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span>
-    <span class="n">pattern</span> <span class="o">=</span> <span class="s1">'</span><span class="si">%s</span><span class="s1">.</span><span class="si">%s</span><span class="s1">.xml'</span> <span class="o">%</span> <span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">station</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">metadata_directory</span> <span class="o">==</span> <span class="s1">'None'</span><span class="p">:</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">.xml"</span> <span class="o">%</span> <span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">station</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">metadata_directory</span> <span class="o">==</span> <span class="s2">"None"</span><span class="p">:</span>
         <span class="n">filebase</span><span class="p">,</span> <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">xmlfiles</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filebase</span><span class="p">,</span> <span class="n">pattern</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Using </span><span class="se">\'</span><span class="s1">metadata_directory</span><span class="se">\'</span><span class="s1">: </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">metadata_directory</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Using 'metadata_directory': </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">metadata_directory</span><span class="p">)</span>
         <span class="n">xmlfiles</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">metadata_directory</span><span class="p">,</span> <span class="n">pattern</span><span class="p">))</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xmlfiles</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">'None'</span>
+        <span class="k">return</span> <span class="s2">"None"</span>
     <span class="n">xmlfile</span> <span class="o">=</span> <span class="n">xmlfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">xmlfile</span></div>
 
@@ -609,7 +566,7 @@
 <span class="sd">        bool: True if obspy supported, otherwise False.</span>
 <span class="sd">    """</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Checking if format is supported by obspy."</span><span class="p">)</span>
-    <span class="n">metadir</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">'read'</span><span class="p">][</span><span class="s1">'metadata_directory'</span><span class="p">]</span>
+    <span class="n">metadir</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"read"</span><span class="p">][</span><span class="s2">"metadata_directory"</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
@@ -650,23 +607,23 @@
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_obspy</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'</span><span class="si">%s</span><span class="s1"> is not a valid Obspy file format.'</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> is not a valid Obspy file format."</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="s1">'exclude_patterns'</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-        <span class="n">exclude_patterns</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'exclude_patterns'</span><span class="p">,</span> <span class="n">EXCLUDE_PATTERNS</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">"exclude_patterns"</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">exclude_patterns</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"exclude_patterns"</span><span class="p">,</span> <span class="n">EXCLUDE_PATTERNS</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">fetch_cfg</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">'fetchers'</span><span class="p">]</span>
-            <span class="n">fdsn_cfg</span> <span class="o">=</span> <span class="n">fetch_cfg</span><span class="p">[</span><span class="s1">'FDSNFetcher'</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s1">'exclude_patterns'</span> <span class="ow">in</span> <span class="n">fdsn_cfg</span><span class="p">:</span>
-                <span class="n">exclude_patterns</span> <span class="o">=</span> <span class="n">fdsn_cfg</span><span class="p">[</span><span class="s1">'exclude_patterns'</span><span class="p">]</span>
+            <span class="n">fetch_cfg</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"fetchers"</span><span class="p">]</span>
+            <span class="n">fdsn_cfg</span> <span class="o">=</span> <span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"FDSNFetcher"</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">"exclude_patterns"</span> <span class="ow">in</span> <span class="n">fdsn_cfg</span><span class="p">:</span>
+                <span class="n">exclude_patterns</span> <span class="o">=</span> <span class="n">fdsn_cfg</span><span class="p">[</span><span class="s2">"exclude_patterns"</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
             <span class="n">exclude_patterns</span> <span class="o">=</span> <span class="n">EXCLUDE_PATTERNS</span>
 
     <span class="n">streams</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">tstream</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">metdir</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">'read'</span><span class="p">][</span><span class="s1">'metadata_directory'</span><span class="p">]</span>
+        <span class="n">metdir</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"read"</span><span class="p">][</span><span class="s2">"metadata_directory"</span><span class="p">]</span>
         <span class="n">xmlfile</span> <span class="o">=</span> <span class="n">_get_station_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">tstream</span><span class="p">,</span> <span class="n">metdir</span><span class="p">)</span>
         <span class="n">inventory</span> <span class="o">=</span> <span class="n">read_inventory</span><span class="p">(</span><span class="n">xmlfile</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
@@ -675,41 +632,40 @@
 
     <span class="k">for</span> <span class="n">ttrace</span> <span class="ow">in</span> <span class="n">tstream</span><span class="p">:</span>
         <span class="n">trace</span> <span class="o">=</span> <span class="n">StationTrace</span><span class="p">(</span>
-            <span class="n">data</span><span class="o">=</span><span class="n">ttrace</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
-            <span class="n">header</span><span class="o">=</span><span class="n">ttrace</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span>
-            <span class="n">inventory</span><span class="o">=</span><span class="n">inventory</span><span class="p">,</span>
-            <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">ttrace</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">ttrace</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span> <span class="n">inventory</span><span class="o">=</span><span class="n">inventory</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span>
+        <span class="p">)</span>
         <span class="n">network</span> <span class="o">=</span> <span class="n">ttrace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span>
         <span class="n">station</span> <span class="o">=</span> <span class="n">ttrace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span>
         <span class="n">channel</span> <span class="o">=</span> <span class="n">ttrace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span>
 
-        <span class="k">if</span> <span class="n">ttrace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span> <span class="o">==</span> <span class="s1">''</span><span class="p">:</span>
-            <span class="n">ttrace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="s1">'--'</span>
+        <span class="k">if</span> <span class="n">ttrace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
+            <span class="n">ttrace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="s2">"--"</span>
         <span class="n">location</span> <span class="o">=</span> <span class="n">ttrace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span>
 
         <span class="c1"># full instrument name for matching purposes</span>
-        <span class="n">instrument</span> <span class="o">=</span> <span class="s1">'</span><span class="si">%s</span><span class="s1">.</span><span class="si">%s</span><span class="s1">.</span><span class="si">%s</span><span class="s1">.</span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">station</span><span class="p">,</span>
-                                      <span class="n">location</span><span class="p">,</span> <span class="n">channel</span><span class="p">)</span>
+        <span class="n">instrument</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">station</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">channel</span><span class="p">)</span>
 
         <span class="c1"># Search for a match using regular expressions.</span>
         <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">exclude_patterns</span><span class="p">:</span>
 
             <span class="c1"># Split each string into components. Check if</span>
             <span class="c1"># components are of equal length.</span>
-            <span class="n">pparts</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">)</span>
-            <span class="n">instparts</span> <span class="o">=</span> <span class="n">instrument</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">)</span>
+            <span class="n">pparts</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
+            <span class="n">instparts</span> <span class="o">=</span> <span class="n">instrument</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pparts</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">instparts</span><span class="p">):</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'There are too many fields in the '</span>
-                             <span class="s1">'exclude_pattern element. Ensure '</span>
-                             <span class="s1">'that you have 4 fields: Network, '</span>
-                             <span class="s1">'Station ID, Location Code, and Channel.'</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="s2">"There are too many fields in the "</span>
+                    <span class="s2">"exclude_pattern element. Ensure "</span>
+                    <span class="s2">"that you have 4 fields: Network, "</span>
+                    <span class="s2">"Station ID, Location Code, and Channel."</span>
+                <span class="p">)</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="c1"># Loop over each component, convert the pattern's field</span>
             <span class="c1"># into its regular expression form, and see if the</span>
             <span class="c1"># pattern is in the instrument's component.</span>
             <span class="n">no_match</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">for</span> <span class="n">pat</span><span class="p">,</span> <span class="n">instfield</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pparts</span><span class="p">,</span> <span class="n">instparts</span><span class="p">):</span>
-                <span class="n">pat</span> <span class="o">=</span> <span class="n">pat</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'*'</span><span class="p">,</span> <span class="s1">'.*'</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'?'</span><span class="p">,</span> <span class="s1">'.'</span><span class="p">)</span>
+                <span class="n">pat</span> <span class="o">=</span> <span class="n">pat</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"*"</span><span class="p">,</span> <span class="s2">".*"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"?"</span><span class="p">,</span> <span class="s2">"."</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pat</span><span class="p">,</span> <span class="n">instfield</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">no_match</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">break</span>
@@ -717,21 +673,21 @@
                 <span class="k">continue</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                    <span class="s1">'</span><span class="si">%s</span><span class="s1"> is an instrument that should be excluded. '</span>
-                    <span class="s1">'The station is not going into the station stream.'</span>
-                    <span class="o">%</span> <span class="n">instrument</span><span class="p">)</span>
+                    <span class="s2">"</span><span class="si">%s</span><span class="s2"> is an instrument that should be excluded. "</span>
+                    <span class="s2">"The station is not going into the station stream."</span> <span class="o">%</span> <span class="n">instrument</span>
+                <span class="p">)</span>
                 <span class="k">break</span>
 
         <span class="k">if</span> <span class="n">network</span> <span class="ow">in</span> <span class="n">LOCATION_CODES</span><span class="p">:</span>
             <span class="n">codes</span> <span class="o">=</span> <span class="n">LOCATION_CODES</span><span class="p">[</span><span class="n">network</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">location</span> <span class="ow">in</span> <span class="n">codes</span><span class="p">:</span>
                 <span class="n">sdict</span> <span class="o">=</span> <span class="n">codes</span><span class="p">[</span><span class="n">location</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">sdict</span><span class="p">[</span><span class="s1">'free_field'</span><span class="p">]:</span>
-                    <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">structure_type</span> <span class="o">=</span> <span class="s1">'free_field'</span>
+                <span class="k">if</span> <span class="n">sdict</span><span class="p">[</span><span class="s2">"free_field"</span><span class="p">]:</span>
+                    <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">structure_type</span> <span class="o">=</span> <span class="s2">"free_field"</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">structure_type</span> <span class="o">=</span> <span class="n">sdict</span><span class="p">[</span><span class="s1">'description'</span><span class="p">]</span>
+                    <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">structure_type</span> <span class="o">=</span> <span class="n">sdict</span><span class="p">[</span><span class="s2">"description"</span><span class="p">]</span>
         <span class="n">head</span><span class="p">,</span> <span class="n">tail</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-        <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s1">'standard'</span><span class="p">][</span><span class="s1">'source_file'</span><span class="p">]</span> <span class="o">=</span> <span class="n">tail</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
+        <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"source_file"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tail</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
         <span class="n">traces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">no_match</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">stream</span> <span class="o">=</span> <span class="n">StationStream</span><span class="p">(</span><span class="n">traces</span><span class="o">=</span><span class="n">traces</span><span class="p">)</span>

@@ -99,11 +99,11 @@ Attributes
       Some validation checks across streams.
 
 
-   .. py:method:: select_colocated(self, preference=['HN?', 'BN?', 'HH?', 'BH?'])
+   .. py:method:: select_colocated(self, preference=['HN?', 'BN?', 'HH?', 'BH?'], large_dist=None, origin=None)
 
       Detect colocated instruments, return preferred instrument type.
 
-      This uses the a list of the first two channel characters, given as
+      This uses the list of the first two channel characters, given as
       'preference' in the 'colocated' section of the config. The algorithm
       is:
 
@@ -119,6 +119,20 @@ Attributes
 
       :param preference: List of strings indicating preferred instrument types.
       :type preference: list
+      :param large_dist: A dictionary with keys "preference", "mag", and "dist";
+                         "preference" is the same as the "preference" argument to this
+                         function, but will replace it when the distance is exceeded
+                         for a given magnitude. The distance threshold is computed as:
+
+                             ```
+                             dist_thresh = dist[0]
+                             for m, d in zip(mag, dist):
+                                 if eqmag > m:
+                                     dist_thresh = d
+                             ```
+      :type large_dist: dict
+      :param origin: Origin object.
+      :type origin: Origin
 
 
    .. py:method:: from_directory(cls, directory)
@@ -375,7 +389,7 @@ Attributes
 
 .. py:function:: choose_preferred(tr1, tr2, preference_order, process_level_preference, format_preference)
 
-   Determines which trace is preferred. Returns the preferred the trace.
+   Determines which trace is preferred. Returns the preferred trace.
 
    :param tr1: 1st trace.
    :type tr1: StationTrace

@@ -7,11 +7,19 @@ from gmprocess.metrics.transform.transform import Transform
 
 
 class oscillator(Transform):
-    """Class for computing the oscillator for a given period.
-    """
+    """Class for computing the oscillator for a given period."""
 
-    def __init__(self, transform_data, damping, period, times, max_period,
-                 allow_nans, bandwidth, config):
+    def __init__(
+        self,
+        transform_data,
+        damping,
+        period,
+        times,
+        max_period,
+        allow_nans,
+        bandwidth,
+        config,
+    ):
         """
         Args:
             transform_data (StationStream):
@@ -30,9 +38,16 @@ class oscillator(Transform):
                 Configuration options.
 
         """
-        super().__init__(transform_data, damping=None, period=None, times=None,
-                         max_period=None, allow_nans=None, bandwidth=None,
-                         config=None)
+        super().__init__(
+            transform_data,
+            damping=None,
+            period=None,
+            times=None,
+            max_period=None,
+            allow_nans=None,
+            bandwidth=None,
+            config=None,
+        )
         self.period = period
         self.damping = damping
         self.times = times
@@ -54,6 +69,6 @@ class oscillator(Transform):
             self.transform_data,
             damping=self.damping,
             times=self.times,
-            config=config
+            config=config,
         )
         return spectrals

@@ -37,10 +37,13 @@ def get_nga_record_sequence_no(st, eq_name, distance_tolerance=50):
 
     """
 
-    df_nga = pd.read_csv(pkg_resources.resource_filename(
-        'gmprocess', os.path.join('data', 'nga_w2_selected.csv')))
+    df_nga = pd.read_csv(
+        pkg_resources.resource_filename(
+            "gmprocess", os.path.join("data", "nga_w2_selected.csv")
+        )
+    )
 
-    nga_event = df_nga.loc[df_nga['Earthquake Name'] == eq_name]
+    nga_event = df_nga.loc[df_nga["Earthquake Name"] == eq_name]
 
     lat = st[0].stats.coordinates.latitude
     lon = st[0].stats.coordinates.longitude
@@ -48,16 +51,16 @@ def get_nga_record_sequence_no(st, eq_name, distance_tolerance=50):
     matched_records_nos = []
     for record_idx, record in nga_event.iterrows():
         dist = gps2dist_azimuth(
-            lat, lon, record['Station Latitude'],
-            record['Station Longitude'])[0]
+            lat, lon, record["Station Latitude"], record["Station Longitude"]
+        )[0]
         if dist < distance_tolerance:
-            matched_records_nos.append(record['Record Sequence Number'])
+            matched_records_nos.append(record["Record Sequence Number"])
 
     if len(matched_records_nos) > 1:
-        logging.warning('Found multiple matching records.')
+        logging.warning("Found multiple matching records.")
         return np.nan
     elif len(matched_records_nos) < 1:
-        logging.warning('Did not find any matching records.')
+        logging.warning("Did not find any matching records.")
         return np.nan
     else:
         return matched_records_nos[0]

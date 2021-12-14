@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.subcommands.init - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.subcommands.init - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -464,18 +464,20 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">from</span> <span class="nn">gmprocess.subcommands.lazy_loader</span> <span class="kn">import</span> <span class="n">LazyLoader</span>
-<span class="n">configobj</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'configobj'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'configobj'</span><span class="p">)</span>
 
-<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'base'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.base'</span><span class="p">)</span>
-<span class="n">const</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'const'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.utils.constants'</span><span class="p">)</span>
-<span class="n">projects</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'projects'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.projects'</span><span class="p">)</span>
+<span class="n">configobj</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"configobj"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"configobj"</span><span class="p">)</span>
+
+<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"base"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.base"</span><span class="p">)</span>
+<span class="n">const</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"const"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.constants"</span><span class="p">)</span>
+<span class="n">projects</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"projects"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.projects"</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="InitModule"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/init/index.html#gmprocess.subcommands.init.InitModule">[docs]</a><span class="k">class</span> <span class="nc">InitModule</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">SubcommandModule</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Initialize the current directory as a gmprocess project directory.</span>
 <span class="sd">    """</span>
-    <span class="n">command_name</span> <span class="o">=</span> <span class="s1">'init'</span>
+
+    <span class="n">command_name</span> <span class="o">=</span> <span class="s2">"init"</span>
 
     <span class="n">arguments</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -487,14 +489,14 @@
 <span class="sd">            gmrecords:</span>
 <span class="sd">                GMrecordsApp instance.</span>
 <span class="sd">        """</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Running subcommand </span><span class="se">\'</span><span class="si">%s</span><span class="se">\'</span><span class="s1">'</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Running subcommand '</span><span class="si">%s</span><span class="s2">'"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="p">)</span>
 
-        <span class="n">config</span> <span class="o">=</span> <span class="n">configobj</span><span class="o">.</span><span class="n">ConfigObj</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">configobj</span><span class="o">.</span><span class="n">ConfigObj</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
         <span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
         <span class="n">local_proj_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">const</span><span class="o">.</span><span class="n">PROJ_CONF_DIR</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">local_proj_path</span><span class="p">):</span>
             <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">local_proj_path</span><span class="p">)</span>
-        <span class="n">conf_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_proj_path</span><span class="p">,</span> <span class="s1">'projects.conf'</span><span class="p">)</span>
+        <span class="n">conf_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_proj_path</span><span class="p">,</span> <span class="s2">"projects.conf"</span><span class="p">)</span>
         <span class="n">config</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">conf_file</span>
 
         <span class="n">projects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>

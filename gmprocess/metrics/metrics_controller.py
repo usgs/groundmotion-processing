@@ -25,10 +25,10 @@ def _get_channel_dict(channel_names):
     reverse_dict = {}
     channel_number = 1
     for channel_name in channel_names:
-        if channel_name.endswith('Z'):
-            channel_dict['Z'] = channel_name
+        if channel_name.endswith("Z"):
+            channel_dict["Z"] = channel_name
         else:
-            cname = 'H%i' % channel_number
+            cname = "H%i" % channel_number
             channel_number += 1
             channel_dict[cname] = channel_name
 
@@ -41,8 +41,18 @@ class MetricsController(object):
     Class for compiling metrics.
     """
 
-    def __init__(self, imts, imcs, timeseries, bandwidth=None, damping=None,
-                 event=None, smooth_type=None, allow_nans=None, config=None):
+    def __init__(
+        self,
+        imts,
+        imcs,
+        timeseries,
+        bandwidth=None,
+        damping=None,
+        event=None,
+        smooth_type=None,
+        allow_nans=None,
+        config=None,
+    ):
         """Initialize MetricsController class.
 
         Args:
@@ -82,9 +92,10 @@ class MetricsController(object):
         self.clean_imts()
         self.imts = np.sort(list(self.imts))
         self.imcs = np.sort(list(set([imc.lower() for imc in imcs])))
-        if 'radial_transverse' in self.imcs and event is None:
-            raise PGMException('MetricsController: Event is required for '
-                               'radial_transverse imc')
+        if "radial_transverse" in self.imcs and event is None:
+            raise PGMException(
+                "MetricsController: Event is required for radial_transverse imc"
+            )
 
         # dictionary to serve as translator between
         self.channel_dict = {}
@@ -99,17 +110,17 @@ class MetricsController(object):
         self.bandwidth = bandwidth
         self.allow_nans = allow_nans
         if damping is None:
-            self.damping = self.config['metrics']['sa']['damping']
+            self.damping = self.config["metrics"]["sa"]["damping"]
         if smooth_type is None:
-            self.smooth_type = self.config['metrics']['fas']['smoothing']
+            self.smooth_type = self.config["metrics"]["fas"]["smoothing"]
         if bandwidth is None:
-            self.bandwidth = self.config['metrics']['fas']['bandwidth']
+            self.bandwidth = self.config["metrics"]["fas"]["bandwidth"]
         if allow_nans is None:
-            self.allow_nans = self.config['metrics']['fas']['allow_nans']
+            self.allow_nans = self.config["metrics"]["fas"]["allow_nans"]
         self._available_imts, self._available_imcs = gather_pgms()
         self._step_sets = self.get_steps()
-        imtstr = '_'.join(imts)
-        if '_sa' in imtstr or imtstr.startswith('sa'):
+        imtstr = "_".join(imts)
+        if "_sa" in imtstr or imtstr.startswith("sa"):
             self._times = self._get_horizontal_time()
         else:
             self._times = None
@@ -175,52 +186,60 @@ class MetricsController(object):
         """
         if config is None:
             config = get_config()
-        metrics = config['metrics']
-        config_imts = [imt.lower() for imt in metrics['output_imts']]
-        imcs = [imc.lower() for imc in metrics['output_imcs']]
+        metrics = config["metrics"]
+        config_imts = [imt.lower() for imt in metrics["output_imts"]]
+        imcs = [imc.lower() for imc in metrics["output_imcs"]]
         # append periods for sa and fas, interval for duration
         imts = []
         for imt in config_imts:
-            if imt == 'sa':
-                if metrics['sa']['periods']['use_array']:
-                    start = metrics['sa']['periods']['start']
-                    stop = metrics['sa']['periods']['stop']
-                    num = metrics['sa']['periods']['num']
-                    if metrics['sa']['periods']['spacing'] == 'logspace':
+            if imt == "sa":
+                if metrics["sa"]["periods"]["use_array"]:
+                    start = metrics["sa"]["periods"]["start"]
+                    stop = metrics["sa"]["periods"]["stop"]
+                    num = metrics["sa"]["periods"]["num"]
+                    if metrics["sa"]["periods"]["spacing"] == "logspace":
                         periods = np.logspace(start, stop, num=num)
                     else:
                         periods = np.linspace(start, stop, num=num)
                     for period in periods:
-                        imts += ['sa' + str(period)]
+                        imts += ["sa" + str(period)]
                 else:
-                    for period in metrics['sa']['periods']['defined_periods']:
-                        imts += ['sa' + str(period)]
-            elif imt == 'fas':
-                if metrics['fas']['periods']['use_array']:
-                    start = metrics['fas']['periods']['start']
-                    stop = metrics['fas']['periods']['stop']
-                    num = metrics['fas']['periods']['num']
-                    if metrics['fas']['periods']['spacing'] == 'logspace':
+                    for period in metrics["sa"]["periods"]["defined_periods"]:
+                        imts += ["sa" + str(period)]
+            elif imt == "fas":
+                if metrics["fas"]["periods"]["use_array"]:
+                    start = metrics["fas"]["periods"]["start"]
+                    stop = metrics["fas"]["periods"]["stop"]
+                    num = metrics["fas"]["periods"]["num"]
+                    if metrics["fas"]["periods"]["spacing"] == "logspace":
                         periods = np.logspace(start, stop, num=num)
                     else:
                         periods = np.linspace(start, stop, num=num)
                     for period in periods:
-                        imts += ['fas' + str(period)]
+                        imts += ["fas" + str(period)]
                 else:
-                    for period in metrics['fas']['periods']['defined_periods']:
-                        imts += ['fas' + str(period)]
-            elif imt == 'duration':
-                for interval in metrics['duration']['intervals']:
-                    imts += ['duration' + interval]
+                    for period in metrics["fas"]["periods"]["defined_periods"]:
+                        imts += ["fas" + str(period)]
+            elif imt == "duration":
+                for interval in metrics["duration"]["intervals"]:
+                    imts += ["duration" + interval]
             else:
                 imts += [imt]
-        damping = metrics['sa']['damping']
-        smoothing = metrics['fas']['smoothing']
-        bandwidth = metrics['fas']['bandwidth']
-        allow_nans = metrics['fas']['allow_nans']
-        controller = cls(imts, imcs, timeseries, bandwidth=bandwidth,
-                         damping=damping, event=event, smooth_type=smoothing,
-                         allow_nans=allow_nans, config=config)
+        damping = metrics["sa"]["damping"]
+        smoothing = metrics["fas"]["smoothing"]
+        bandwidth = metrics["fas"]["bandwidth"]
+        allow_nans = metrics["fas"]["allow_nans"]
+        controller = cls(
+            imts,
+            imcs,
+            timeseries,
+            bandwidth=bandwidth,
+            damping=damping,
+            event=event,
+            smooth_type=smoothing,
+            allow_nans=allow_nans,
+            config=config,
+        )
 
         return controller
 
@@ -253,29 +272,27 @@ class MetricsController(object):
             baseimt = imt
             # Determine whether an integration/differentiation step is
             # necessary
-            if (imt == 'pgv' and
-                    self.timeseries[0].stats.standard.units == 'acc'):
+            if imt == "pgv" and self.timeseries[0].stats.standard.units == "acc":
                 integrate = True
-            elif (imt != 'pgv' and
-                  self.timeseries[0].stats.standard.units == 'vel'):
+            elif imt != "pgv" and self.timeseries[0].stats.standard.units == "vel":
                 differentiate = True
             # SA and FAS imts include a period which must be parsed from
             # the imt string
-            if imt.startswith('sa'):
+            if imt.startswith("sa"):
                 period = self._parse_period(imt)
                 if period is None:
                     continue
-                imt = 'sa'
-            elif imt.startswith('fas'):
+                imt = "sa"
+            elif imt.startswith("fas"):
                 period = self._parse_period(imt)
                 if period is None:
                     continue
-                imt = 'fas'
-            elif imt.startswith('duration'):
+                imt = "fas"
+            elif imt.startswith("duration"):
                 interval = self._parse_interval(imt)
                 if interval is None:
                     continue
-                imt = 'duration'
+                imt = "duration"
             if imt not in self._available_imts:
                 continue
             for imc in self.imcs:
@@ -283,23 +300,25 @@ class MetricsController(object):
                 baseimc = imc
                 # ROTD and GMROTD imcs include a period which must be parsed
                 # from the imc string
-                if 'rot' in imc:
+                if "rot" in imc:
                     percentile = self._parse_percentile(imc)
-                    if imc.startswith('gm'):
-                        imc = 'gmrotd'
+                    if imc.startswith("gm"):
+                        imc = "gmrotd"
                     else:
-                        imc = 'rotd'
+                        imc = "rotd"
                 if imc not in self._available_imcs:
                     continue
                 # Import
-                imt_path = 'gmprocess.metrics.imt.'
-                imc_path = 'gmprocess.metrics.imc.'
+                imt_path = "gmprocess.metrics.imt."
+                imc_path = "gmprocess.metrics.imc."
                 imt_mod = importlib.import_module(imt_path + imt)
                 imc_mod = importlib.import_module(imc_path + imc)
                 imt_class = self._get_subclass(
-                    inspect.getmembers(imt_mod, inspect.isclass), 'IMT')
+                    inspect.getmembers(imt_mod, inspect.isclass), "IMT"
+                )
                 imc_class = self._get_subclass(
-                    inspect.getmembers(imc_mod, inspect.isclass), 'IMC')
+                    inspect.getmembers(imc_mod, inspect.isclass), "IMC"
+                )
                 imt_class_instance = imt_class(imt, imc, period)
                 if not imt_class_instance.valid_combination(imc):
                     continue
@@ -307,21 +326,21 @@ class MetricsController(object):
                 # Get Steps
                 steps = OrderedDict()
                 if differentiate:
-                    steps['Transform1'] = 'differentiate'
+                    steps["Transform1"] = "differentiate"
                 elif integrate:
-                    steps['Transform1'] = 'integrate'
+                    steps["Transform1"] = "integrate"
                 else:
-                    steps['Transform1'] = 'null_transform'
+                    steps["Transform1"] = "null_transform"
                 imt_steps = imt_class_instance.steps
                 imc_steps = imc_class_instance.steps
                 steps.update(imt_steps)
                 steps.update(imc_steps)
-                steps['period'] = period
-                steps['interval'] = interval
-                steps['percentile'] = percentile
-                steps['imc'] = imc
-                steps['imt'] = imt
-                pgm_steps[baseimt + '_' + baseimc] = steps
+                steps["period"] = period
+                steps["interval"] = interval
+                steps["percentile"] = percentile
+                steps["imc"] = imc
+                steps["imt"] = imt
+                pgm_steps[baseimt + "_" + baseimc] = steps
         return pgm_steps
 
     def execute_steps(self):
@@ -337,46 +356,59 @@ class MetricsController(object):
             filled with a np.nan value.
         """
         # paths
-        transform_path = 'gmprocess.metrics.transform.'
-        rotation_path = 'gmprocess.metrics.rotation.'
-        combination_path = 'gmprocess.metrics.combination.'
-        reduction_path = 'gmprocess.metrics.reduction.'
-        
+        transform_path = "gmprocess.metrics.transform."
+        rotation_path = "gmprocess.metrics.rotation."
+        combination_path = "gmprocess.metrics.combination."
+        reduction_path = "gmprocess.metrics.reduction."
+
         # Initialize dictionary for storing the results
         result_dict = None
         for idx, imt_imc in enumerate(self.step_sets):
             step_set = self.step_sets[imt_imc]
-            period = step_set['period']
-            interval = step_set['interval']
-            percentile = step_set['percentile']
+            period = step_set["period"]
+            interval = step_set["interval"]
+            percentile = step_set["percentile"]
             if period is not None:
                 period = float(period)
             if percentile is not None:
                 percentile = float(percentile)
-            
+
             try:
-                s1 = step_set['Transform1']
-                s2 = step_set['Transform2']
-                s3 = step_set['Rotation'] 
+                s1 = step_set["Transform1"]
+                s2 = step_set["Transform2"]
+                s3 = step_set["Rotation"]
                 step_str = f"{s1}-{s2}-{s3}"
-                self.perform_first_steps(period, percentile, s1, s2, s3, transform_path, rotation_path)
+                self.perform_first_steps(
+                    period, percentile, s1, s2, s3, transform_path, rotation_path
+                )
                 rot = self.first_steps[step_str][str(period)][str(percentile)]
                 # -------------------------------------------------------------
                 # Transform 3
                 t3_mod = importlib.import_module(
-                    transform_path + step_set['Transform3'])
-                t3_cls = self._get_subclass(inspect.getmembers(
-                    t3_mod, inspect.isclass), 'Transform')
+                    transform_path + step_set["Transform3"]
+                )
+                t3_cls = self._get_subclass(
+                    inspect.getmembers(t3_mod, inspect.isclass), "Transform"
+                )
                 t3 = t3_cls(
-                    rot, self.damping, period, self._times, self.max_period,
-                    self.allow_nans, self.bandwidth, self.config).result
+                    rot,
+                    self.damping,
+                    period,
+                    self._times,
+                    self.max_period,
+                    self.allow_nans,
+                    self.bandwidth,
+                    self.config,
+                ).result
 
                 # -------------------------------------------------------------
                 # Combination 1
                 c1_mod = importlib.import_module(
-                    combination_path + step_set['Combination1'])
-                c1_cls = self._get_subclass(inspect.getmembers(
-                    c1_mod, inspect.isclass), 'Combination')
+                    combination_path + step_set["Combination1"]
+                )
+                c1_cls = self._get_subclass(
+                    inspect.getmembers(c1_mod, inspect.isclass), "Combination"
+                )
                 c1 = c1_cls(t3).result
 
                 # -------------------------------------------------------------
@@ -392,44 +424,51 @@ class MetricsController(object):
                 #   of c1 to decide if it needs to take the max of the
                 #   data before applying the reduction.
                 red_mod = importlib.import_module(
-                    reduction_path + step_set['Reduction'])
-                red_cls = self._get_subclass(inspect.getmembers(
-                    red_mod, inspect.isclass), 'Reduction')
-                red = red_cls(c1, self.bandwidth, percentile,
-                              period, self.smooth_type, interval).result
+                    reduction_path + step_set["Reduction"]
+                )
+                red_cls = self._get_subclass(
+                    inspect.getmembers(red_mod, inspect.isclass), "Reduction"
+                )
+                red = red_cls(
+                    c1, self.bandwidth, percentile, period, self.smooth_type, interval
+                ).result
 
-                if (step_set['Reduction'] == 'max' and
-                        isinstance(c1, (Stream, StationStream))):
+                if step_set["Reduction"] == "max" and isinstance(
+                    c1, (Stream, StationStream)
+                ):
                     times = red[1]
-                    if imt_imc.split('_')[-1] == 'channels':
+                    if imt_imc.split("_")[-1] == "channels":
                         for chan in times:
                             for key in times[chan]:
-                                self.timeseries.select(
-                                    channel=chan)[0].stats[key] = \
-                                    times[chan][key]
+                                self.timeseries.select(channel=chan)[0].stats[
+                                    key
+                                ] = times[chan][key]
                     red = red[0]
 
                 # -------------------------------------------------------------
                 # Combination 2
                 c2_mod = importlib.import_module(
-                    combination_path + step_set['Combination2'])
-                c2_cls = self._get_subclass(inspect.getmembers(
-                    c2_mod, inspect.isclass), 'Combination')
+                    combination_path + step_set["Combination2"]
+                )
+                c2_cls = self._get_subclass(
+                    inspect.getmembers(c2_mod, inspect.isclass), "Combination"
+                )
                 c2 = c2_cls(red).result
             except BaseException as e:
                 # raise e
-                msg = ('Error in calculation of %r: %r. Result '
-                       'cell will be set to np.nan.' % (imt_imc, str(e)))
+                msg = (
+                    "Error in calculation of %r: %r. Result "
+                    "cell will be set to np.nan." % (imt_imc, str(e))
+                )
                 logging.warning(msg)
-                c2 = {'': np.nan}
+                c2 = {"": np.nan}
 
             # we don't want to have separate columns for 'HN1' and 'HNN' and
             # 'BHN'. Instead we want all of these to be considered as simply
             # the "first horizontal channel".
-            if 'channels' in imt_imc:
+            if "channels" in imt_imc:
                 channel_names = list(c2.keys())
-                (self.channel_dict,
-                 reverse_dict) = _get_channel_dict(channel_names)
+                (self.channel_dict, reverse_dict) = _get_channel_dict(channel_names)
                 new_c2 = {}
                 for channel, value in c2.items():
                     newchannel = reverse_dict[channel]
@@ -450,13 +489,15 @@ class MetricsController(object):
         if df.empty:
             return df
         else:
-            return df.set_index(['IMT', 'IMC'])
+            return df.set_index(["IMT", "IMC"])
 
-    def perform_first_steps(self, period, percentile, s1, s2, s3, transform_path, rotation_path):
+    def perform_first_steps(
+        self, period, percentile, s1, s2, s3, transform_path, rotation_path
+    ):
         """Perform the first three metric steps.
 
         To reduce reduncy in the calculations, we save the results of the
-        first three steps. 
+        first three steps.
 
         Args:
             transform_path (str): The path to the transformation calculations.
@@ -466,56 +507,71 @@ class MetricsController(object):
             step_streams = {}
         else:
             step_streams = self.first_steps
-        # We need to do this to know if there is a percentile and/or period associated
-        # with the first three steps since the percentile affects the rotd rotation calculation
-        # and the period affects the oscillator transformation calculation
+        # We need to do this to know if there is a percentile and/or period
+        # associated with the first three steps since the percentile affects
+        # the rotd rotation calculation and the period affects the oscillator
+        # transformation calculation
         if period is not None:
             period = float(period)
         if percentile is not None:
             percentile = float(percentile)
         # get the first three steps
-        step = f"{s1}-{s2}-{s3}" 
-        # If the first three steps (for this percentile and period) are already available
-        # do not recalculate (continue)
-        if (step in step_streams 
-            and str(period) in step_streams[step] 
-            and str(percentile) in step_streams[step][str(period)]):
-            ## Comment used for testing to make sure steps are skipped
-            #print(f"The first three steps ({step}) have already been calculated. Skipping...")
+        step = f"{s1}-{s2}-{s3}"
+        # If the first three steps (for this percentile and period) are already
+        # available do not recalculate (continue)
+        if (
+            step in step_streams
+            and str(period) in step_streams[step]
+            and str(percentile) in step_streams[step][str(period)]
+        ):
             return
-        ## The first three steps (for this percentile and period) have not been calculated, so begin the steps:
+        # The first three steps (for this percentile and period) have not been
+        # calculated, so begin the steps:
         # -------------------------------------------------------------
         # Transform 1
-        t1_mod = importlib.import_module(
-            transform_path + s1)
-        t1_cls = self._get_subclass(inspect.getmembers(
-            t1_mod, inspect.isclass), 'Transform')
+        t1_mod = importlib.import_module(transform_path + s1)
+        t1_cls = self._get_subclass(
+            inspect.getmembers(t1_mod, inspect.isclass), "Transform"
+        )
         t1 = t1_cls(
-            self.timeseries, self.damping, period, self._times,
-            self.max_period, self.allow_nans, self.bandwidth,
-            self.config).result
+            self.timeseries,
+            self.damping,
+            period,
+            self._times,
+            self.max_period,
+            self.allow_nans,
+            self.bandwidth,
+            self.config,
+        ).result
         # -------------------------------------------------------------
         # Transform 2
-        t2_mod = importlib.import_module(
-            transform_path + s2)
-        t2_cls = self._get_subclass(inspect.getmembers(
-            t2_mod, inspect.isclass), 'Transform')
+        t2_mod = importlib.import_module(transform_path + s2)
+        t2_cls = self._get_subclass(
+            inspect.getmembers(t2_mod, inspect.isclass), "Transform"
+        )
         t2 = t2_cls(
-            t1, self.damping, period, self._times, self.max_period,
-            self.allow_nans, self.bandwidth, self.config).result
+            t1,
+            self.damping,
+            period,
+            self._times,
+            self.max_period,
+            self.allow_nans,
+            self.bandwidth,
+            self.config,
+        ).result
         # -------------------------------------------------------------
         # Rotation
-        rot_mod = importlib.import_module(
-            rotation_path + s3)
-        rot_cls = self._get_subclass(inspect.getmembers(
-            rot_mod, inspect.isclass), 'Rotation')
+        rot_mod = importlib.import_module(rotation_path + s3)
+        rot_cls = self._get_subclass(
+            inspect.getmembers(rot_mod, inspect.isclass), "Rotation"
+        )
         rot = rot_cls(t2, self.event).result
         if step not in step_streams:
             step_streams[step] = {}
         if str(period) not in step_streams[step]:
             step_streams[step][str(period)] = {}
-        ## store the stream for this step/period/percentile combinatiion
-        step_streams[step][str(period)][str(percentile)]= rot
+        # store the stream for this step/period/percentile combinatiion
+        step_streams[step][str(period)][str(percentile)] = rot
         self.first_steps = step_streams
 
     def validate_stream(self):
@@ -530,20 +586,23 @@ class MetricsController(object):
                     3. The length of the traces are not equal.
         """
         if not isinstance(self.timeseries, StationStream):
-            raise PGMException("MetricsController: Input timeseries must be "
-                               "a StationStream.")
+            raise PGMException(
+                "MetricsController: Input timeseries must be a StationStream."
+            )
         for idx, trace in enumerate(self.timeseries):
             units = trace.stats.standard.units
             trace_length = len(trace.data)
-            if units.lower() != 'vel' and units.lower() != 'acc':
-                raise PGMException("MetricsController: Trace units must be "
-                                   "either 'vel' or 'acc'.")
+            if units.lower() != "vel" and units.lower() != "acc":
+                raise PGMException(
+                    "MetricsController: Trace units must be either 'vel' or 'acc'."
+                )
             if idx == 0:
                 standard_length = trace_length
             else:
                 if trace_length != standard_length:
-                    raise PGMException("MetricsController: Traces must all "
-                                       "be the same length.")
+                    raise PGMException(
+                        "MetricsController: Traces must all be the same length."
+                    )
 
     def add_upsampled_traces(self):
         """Convenience method for adding upsampled waveform to traces.
@@ -566,12 +625,8 @@ class MetricsController(object):
                 rtr = tr.copy()
                 # resampling happens in place
                 rtr.resample(new_sample_rate, window=None)
-                upsampled_dict = {
-                    'data': rtr.data,
-                    'dt': rtr.stats.delta,
-                    'np': new_np
-                }
-                tr.setCached('upsampled', upsampled_dict)
+                upsampled_dict = {"data": rtr.data, "dt": rtr.stats.delta, "np": new_np}
+                tr.setCached("upsampled", upsampled_dict)
 
     def _format(self, result, steps):
         """
@@ -592,56 +647,56 @@ class MetricsController(object):
                     |   <imt>   |   <imc>   |    <value>   |
         """
         dfdict = OrderedDict()
-        dfdict['IMT'] = []
-        dfdict['IMC'] = []
-        dfdict['Result'] = []
+        dfdict["IMT"] = []
+        dfdict["IMC"] = []
+        dfdict["Result"] = []
 
         # We need the information about the type of imc/imt to
         # generate the appropirate strings that append period or percentile
-        imc = steps['imc']
-        imt = steps['imt']
-        period = steps['period']
-        percentile = steps['percentile']
-        interval = steps['interval']
+        imc = steps["imc"]
+        imt = steps["imt"]
+        period = steps["period"]
+        percentile = steps["percentile"]
+        interval = steps["interval"]
         if period is not None:
-            sfmt = METRICS_XML_FLOAT_STRING_FORMAT['period']
-            tmp_imt_str = '%s(%s)' % (imt.upper(), sfmt)
+            sfmt = METRICS_XML_FLOAT_STRING_FORMAT["period"]
+            tmp_imt_str = "%s(%s)" % (imt.upper(), sfmt)
             imt_str = tmp_imt_str % float(period)
         elif interval is not None:
-            imt_str = '%s%i-%i' % (imt.upper(), interval[0], interval[1])
+            imt_str = "%s%i-%i" % (imt.upper(), interval[0], interval[1])
         else:
             imt_str = imt.upper()
         if percentile is not None:
-            imc_str = '%s(%s)' % (imc.upper(), float(percentile))
+            imc_str = "%s(%s)" % (imc.upper(), float(percentile))
         else:
             imc_str = imc.upper()
 
         # For the cases such as channels or radial_transverse, where multiple
         # components are returned
-        if imt == 'pga':
+        if imt == "pga":
             multiplier = GAL_TO_PCTG
         else:
             multiplier = 1
         if len(result) > 1:
             for r in result:
-                dfdict['IMT'] += [imt_str]
-                dfdict['IMC'] += [r]
-                dfdict['Result'] += [result[r] * multiplier]
+                dfdict["IMT"] += [imt_str]
+                dfdict["IMC"] += [r]
+                dfdict["Result"] += [result[r] * multiplier]
         else:
             # Deal with nan values for channels and radial transverse
-            if imc == 'radial_transverse' and '' in result:
-                dfdict['IMT'] += [imt_str, imt_str]
-                dfdict['IMC'] += ['HNR', 'HNT']
-                dfdict['Result'] += [np.nan, np.nan]
-            elif imc == 'channels' and '' in result:
-                dfdict['IMT'] += [imt_str, imt_str, imt_str]
-                dfdict['IMC'] += ['HN1', 'HN2', 'HNZ']
-                dfdict['Result'] += [np.nan, np.nan, np.nan]
+            if imc == "radial_transverse" and "" in result:
+                dfdict["IMT"] += [imt_str, imt_str]
+                dfdict["IMC"] += ["HNR", "HNT"]
+                dfdict["Result"] += [np.nan, np.nan]
+            elif imc == "channels" and "" in result:
+                dfdict["IMT"] += [imt_str, imt_str, imt_str]
+                dfdict["IMC"] += ["HN1", "HN2", "HNZ"]
+                dfdict["Result"] += [np.nan, np.nan, np.nan]
             else:
-                dfdict['IMT'] += [imt_str]
-                dfdict['IMC'] += [imc_str]
+                dfdict["IMT"] += [imt_str]
+                dfdict["IMC"] += [imc_str]
                 for r in result:
-                    dfdict['Result'] += [result[r] * multiplier]
+                    dfdict["Result"] += [result[r] * multiplier]
         return dfdict
 
     def _get_horizontal_time(self):
@@ -656,15 +711,15 @@ class MetricsController(object):
             PGMException: if there are no horizontal channels.
         """
         for trace in self.timeseries:
-            if 'Z' not in trace.stats['channel'].upper():
+            if "Z" not in trace.stats["channel"].upper():
                 # times = trace.times()
                 times = np.linspace(
-                    0.0, trace.stats.endtime - trace.stats.starttime,
-                    trace.stats.npts)
+                    0.0, trace.stats.endtime - trace.stats.starttime, trace.stats.npts
+                )
                 return times
         raise PGMException(
-            'MetricsController: At least one horizontal '
-            'channel is required for calculations of SA, ROTD, GMROTD, GM.'
+            "MetricsController: At least one horizontal "
+            "channel is required for calculations of SA, ROTD, GMROTD, GM."
         )
 
     def _get_subclass(self, classes, base_class):
@@ -682,7 +737,7 @@ class MetricsController(object):
         # The first item in the list is the string representation of the class
         # the second item is the class itself
         for cls_tupple in classes:
-            if cls_tupple[0] != base_class and cls_tupple[0] != 'PGMException':
+            if cls_tupple[0] != base_class and cls_tupple[0] != "PGMException":
                 return cls_tupple[1]
 
     @staticmethod
@@ -704,10 +759,10 @@ class MetricsController(object):
         Notes:
             Can be either a float or integer.
         """
-        period = re.findall(r'\d+', imt)
+        period = re.findall(r"\d+", imt)
 
         if len(period) > 1:
-            period = '.'.join(period)
+            period = ".".join(period)
         elif len(period) == 1:
             period = period[0]
         else:
@@ -730,9 +785,9 @@ class MetricsController(object):
         Notes:
             Can be either a float or integer.
         """
-        tmpstr = imt.replace('duration', '')
+        tmpstr = imt.replace("duration", "")
         if tmpstr:
-            return [int(p) for p in tmpstr.split('-')]
+            return [int(p) for p in tmpstr.split("-")]
         else:
             return None
 
@@ -756,9 +811,9 @@ class MetricsController(object):
         Notes:
             Can be either a float or integer.
         """
-        percentile = re.findall(r'\d+', imc)
+        percentile = re.findall(r"\d+", imc)
         if len(percentile) > 1:
-            percentile = '.'.join(percentile)
+            percentile = ".".join(percentile)
         elif len(percentile) == 1:
             percentile = percentile[0]
         else:
@@ -790,22 +845,22 @@ class MetricsController(object):
     def clean_imts(self):
         cleaned_imts = set()
         for idx, imt in enumerate(self.imts):
-            if imt.startswith('fas'):
+            if imt.startswith("fas"):
                 period = self._parse_period(imt)
                 if period is None:
                     continue
                 cleaned_imts.add(
-                    'fas(%s)' %
-                    METRICS_XML_FLOAT_STRING_FORMAT['period'] %
-                    float(period))
-            elif imt.startswith('sa'):
+                    "fas(%s)"
+                    % METRICS_XML_FLOAT_STRING_FORMAT["period"]
+                    % float(period)
+                )
+            elif imt.startswith("sa"):
                 period = self._parse_period(imt)
                 if period is None:
                     continue
                 cleaned_imts.add(
-                    'sa(%s)' %
-                    METRICS_XML_FLOAT_STRING_FORMAT['period'] %
-                    float(period))
+                    "sa(%s)" % METRICS_XML_FLOAT_STRING_FORMAT["period"] % float(period)
+                )
             else:
                 cleaned_imts.add(imt)
         self.imts = cleaned_imts

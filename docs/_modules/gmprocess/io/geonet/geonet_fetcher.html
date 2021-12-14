@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.io.geonet.geonet_fetcher - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.io.geonet.geonet_fetcher - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -481,9 +481,9 @@
 <span class="kn">from</span> <span class="nn">gmprocess.utils.config</span> <span class="kn">import</span> <span class="n">get_config</span>
 
 
-<span class="n">CATBASE</span> <span class="o">=</span> <span class="s1">'https://quakesearch.geonet.org.nz/csv?bbox=163.95996,-49.18170,182.63672,-32.28713&amp;startdate=</span><span class="si">%s</span><span class="s1">&amp;enddate=</span><span class="si">%s</span><span class="s1">'</span>
-<span class="n">GEOBASE</span> <span class="o">=</span> <span class="s1">'ftp://ftp.geonet.org.nz/strong/processed/[YEAR]/[MONTH]/'</span>
-<span class="n">TIMEFMT</span> <span class="o">=</span> <span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%S'</span>
+<span class="n">CATBASE</span> <span class="o">=</span> <span class="s2">"https://quakesearch.geonet.org.nz/csv?bbox=163.95996,-49.18170,182.63672,-32.28713&amp;startdate=</span><span class="si">%s</span><span class="s2">&amp;enddate=</span><span class="si">%s</span><span class="s2">"</span>
+<span class="n">GEOBASE</span> <span class="o">=</span> <span class="s2">"ftp://ftp.geonet.org.nz/strong/processed/[YEAR]/[MONTH]/"</span>
+<span class="n">TIMEFMT</span> <span class="o">=</span> <span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S"</span>
 <span class="n">NZTIMEDELTA</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># number of seconds allowed between GeoNet catalog time and</span>
 <span class="c1"># event timestamp on FTP site</span>
 <span class="n">NZCATWINDOW</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">60</span>  <span class="c1"># number of seconds to search around in GeoNet EQ catalog</span>
@@ -505,10 +505,24 @@
 
 
 <div class="viewcode-block" id="GeoNetFetcher"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/geonet/geonet_fetcher/index.html#gmprocess.io.geonet.geonet_fetcher.GeoNetFetcher">[docs]</a><span class="k">class</span> <span class="nc">GeoNetFetcher</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">magnitude</span><span class="p">,</span>
-                 <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ddepth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">dmag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rawdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">drop_non_free</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                 <span class="n">stream_collection</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">time</span><span class="p">,</span>
+        <span class="n">lat</span><span class="p">,</span>
+        <span class="n">lon</span><span class="p">,</span>
+        <span class="n">depth</span><span class="p">,</span>
+        <span class="n">magnitude</span><span class="p">,</span>
+        <span class="n">user</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ddepth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">dmag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">rawdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">drop_non_free</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">stream_collection</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">"""Create a GeoNetFetcher instance.</span>
 
 <span class="sd">        Args:</span>
@@ -558,17 +572,17 @@
         <span class="n">cfg_ddepth</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">cfg_dmag</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="k">if</span> <span class="s1">'fetchers'</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s1">'GeoNetFetcher'</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">'fetchers'</span><span class="p">]:</span>
-                <span class="n">fetch_cfg</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">'fetchers'</span><span class="p">][</span><span class="s1">'GeoNetFetcher'</span><span class="p">]</span>
-                <span class="k">if</span> <span class="s1">'radius'</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s1">'radius'</span><span class="p">])</span>
-                <span class="k">if</span> <span class="s1">'dt'</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_dt</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s1">'dt'</span><span class="p">])</span>
-                <span class="k">if</span> <span class="s1">'ddepth'</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_ddepth</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s1">'ddepth'</span><span class="p">])</span>
-                <span class="k">if</span> <span class="s1">'dmag'</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_dmag</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s1">'dmag'</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s2">"fetchers"</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"GeoNetFetcher"</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">"fetchers"</span><span class="p">]:</span>
+                <span class="n">fetch_cfg</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"fetchers"</span><span class="p">][</span><span class="s2">"GeoNetFetcher"</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">"radius"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"radius"</span><span class="p">])</span>
+                <span class="k">if</span> <span class="s2">"dt"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_dt</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"dt"</span><span class="p">])</span>
+                <span class="k">if</span> <span class="s2">"ddepth"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_ddepth</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"ddepth"</span><span class="p">])</span>
+                <span class="k">if</span> <span class="s2">"dmag"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_dmag</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"dmag"</span><span class="p">])</span>
 
         <span class="n">radius</span> <span class="o">=</span> <span class="n">_get_first_value</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="n">cfg_radius</span><span class="p">,</span> <span class="n">RADIUS</span><span class="p">)</span>
         <span class="n">dt</span> <span class="o">=</span> <span class="n">_get_first_value</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">cfg_dt</span><span class="p">,</span> <span class="n">DT</span><span class="p">)</span>
@@ -616,15 +630,14 @@
         <span class="n">start_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">3600</span><span class="p">)</span>
         <span class="n">end_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">3600</span><span class="p">)</span>
 
-        <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="n">start_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">TIMEFMT</span><span class="p">),</span>
-               <span class="n">end_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">TIMEFMT</span><span class="p">))</span>
+        <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="n">start_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">TIMEFMT</span><span class="p">),</span> <span class="n">end_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">TIMEFMT</span><span class="p">))</span>
         <span class="n">url</span> <span class="o">=</span> <span class="n">CATBASE</span> <span class="o">%</span> <span class="n">tpl</span>
         <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">'GeoNet search url: </span><span class="si">%s</span><span class="s1">'</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">'GeoNet search response code: </span><span class="si">%s</span><span class="s1">'</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"GeoNet search url: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"GeoNet search response code: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">text</span>
         <span class="n">f</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'origintime'</span><span class="p">])</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">"origintime"</span><span class="p">])</span>
         <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="c1"># some of the column names have spaces in them</span>
         <span class="n">cols</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
@@ -633,21 +646,23 @@
             <span class="n">newcol</span> <span class="o">=</span> <span class="n">col</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
             <span class="n">newcols</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">newcol</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">newcols</span><span class="p">)</span>
-        <span class="n">lats</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'latitude'</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
-        <span class="n">lons</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'longitude'</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="n">lats</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"latitude"</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="n">lons</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"longitude"</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
         <span class="n">etime</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
-        <span class="n">dtimes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'origintime'</span><span class="p">]</span> <span class="o">-</span> <span class="n">etime</span><span class="p">)</span>
+        <span class="n">dtimes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"origintime"</span><span class="p">]</span> <span class="o">-</span> <span class="n">etime</span><span class="p">)</span>
         <span class="n">distances</span> <span class="o">=</span> <span class="n">geodetic_distance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">)</span>
         <span class="n">didx</span> <span class="o">=</span> <span class="n">distances</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span>
-        <span class="n">tidx</span> <span class="o">=</span> <span class="p">(</span><span class="n">dtimes</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">),</span> <span class="s1">'s'</span><span class="p">))</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="n">tidx</span> <span class="o">=</span> <span class="p">(</span><span class="n">dtimes</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">),</span> <span class="s2">"s"</span><span class="p">))</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
         <span class="n">newdf</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">didx</span> <span class="o">&amp;</span> <span class="n">tidx</span><span class="p">]</span>
         <span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">newdf</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-            <span class="n">eventdict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'time'</span><span class="p">:</span> <span class="n">UTCDateTime</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">'origintime'</span><span class="p">]),</span>
-                         <span class="s1">'lat'</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">'latitude'</span><span class="p">],</span>
-                         <span class="s1">'lon'</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">'longitude'</span><span class="p">],</span>
-                         <span class="s1">'depth'</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">'depth'</span><span class="p">],</span>
-                         <span class="s1">'mag'</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s1">'magnitude'</span><span class="p">]}</span>
+            <span class="n">eventdict</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">"time"</span><span class="p">:</span> <span class="n">UTCDateTime</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"origintime"</span><span class="p">]),</span>
+                <span class="s2">"lat"</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">"latitude"</span><span class="p">],</span>
+                <span class="s2">"lon"</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">"longitude"</span><span class="p">],</span>
+                <span class="s2">"depth"</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">],</span>
+                <span class="s2">"mag"</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">"magnitude"</span><span class="p">],</span>
+            <span class="p">}</span>
             <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eventdict</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">solve</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -673,14 +688,14 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">rawdir</span><span class="p">):</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">rawdir</span><span class="p">)</span>
-        <span class="n">etime</span> <span class="o">=</span> <span class="n">event_dict</span><span class="p">[</span><span class="s1">'time'</span><span class="p">]</span>
-        <span class="n">neturl</span> <span class="o">=</span> <span class="n">GEOBASE</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'[YEAR]'</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">etime</span><span class="o">.</span><span class="n">year</span><span class="p">))</span>
-        <span class="n">monthstr</span> <span class="o">=</span> <span class="n">etime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%m_%b'</span><span class="p">)</span>
-        <span class="n">neturl</span> <span class="o">=</span> <span class="n">neturl</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'[MONTH]'</span><span class="p">,</span> <span class="n">monthstr</span><span class="p">)</span>
+        <span class="n">etime</span> <span class="o">=</span> <span class="n">event_dict</span><span class="p">[</span><span class="s2">"time"</span><span class="p">]</span>
+        <span class="n">neturl</span> <span class="o">=</span> <span class="n">GEOBASE</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"[YEAR]"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">etime</span><span class="o">.</span><span class="n">year</span><span class="p">))</span>
+        <span class="n">monthstr</span> <span class="o">=</span> <span class="n">etime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%m_%b"</span><span class="p">)</span>
+        <span class="n">neturl</span> <span class="o">=</span> <span class="n">neturl</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"[MONTH]"</span><span class="p">,</span> <span class="n">monthstr</span><span class="p">)</span>
         <span class="n">urlparts</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urlparse</span><span class="p">(</span><span class="n">neturl</span><span class="p">)</span>
         <span class="n">ftp</span> <span class="o">=</span> <span class="n">ftplib</span><span class="o">.</span><span class="n">FTP</span><span class="p">(</span><span class="n">urlparts</span><span class="o">.</span><span class="n">netloc</span><span class="p">)</span>
         <span class="n">ftp</span><span class="o">.</span><span class="n">login</span><span class="p">()</span>  <span class="c1"># anonymous</span>
-        <span class="n">dirparts</span> <span class="o">=</span> <span class="n">urlparts</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">'/'</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'/'</span><span class="p">)</span>
+        <span class="n">dirparts</span> <span class="o">=</span> <span class="n">urlparts</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dirparts</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">ftp</span><span class="o">.</span><span class="n">cwd</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
@@ -703,45 +718,47 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">ftp</span><span class="o">.</span><span class="n">cwd</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">ftplib</span><span class="o">.</span><span class="n">error_perm</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'Could not find an FTP data folder called "</span><span class="si">%s</span><span class="s1">". Returning.'</span>
-                   <span class="o">%</span> <span class="p">(</span><span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">neturl</span><span class="p">,</span> <span class="n">fname</span><span class="p">)))</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">'Could not find an FTP data folder called "</span><span class="si">%s</span><span class="s1">". Returning.'</span> <span class="o">%</span> <span class="p">(</span>
+                <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">neturl</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+            <span class="p">)</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="n">dirlist</span> <span class="o">=</span> <span class="n">ftp</span><span class="o">.</span><span class="n">nlst</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">volume</span> <span class="ow">in</span> <span class="n">dirlist</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">volume</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'Vol1'</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">volume</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"Vol1"</span><span class="p">):</span>
                 <span class="n">ftp</span><span class="o">.</span><span class="n">cwd</span><span class="p">(</span><span class="n">volume</span><span class="p">)</span>
-                <span class="k">if</span> <span class="s1">'data'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ftp</span><span class="o">.</span><span class="n">nlst</span><span class="p">():</span>
-                    <span class="n">ftp</span><span class="o">.</span><span class="n">cwd</span><span class="p">(</span><span class="s1">'..'</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s2">"data"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ftp</span><span class="o">.</span><span class="n">nlst</span><span class="p">():</span>
+                    <span class="n">ftp</span><span class="o">.</span><span class="n">cwd</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>
                     <span class="k">continue</span>
 
-                <span class="n">ftp</span><span class="o">.</span><span class="n">cwd</span><span class="p">(</span><span class="s1">'data'</span><span class="p">)</span>
+                <span class="n">ftp</span><span class="o">.</span><span class="n">cwd</span><span class="p">(</span><span class="s2">"data"</span><span class="p">)</span>
                 <span class="n">flist</span> <span class="o">=</span> <span class="n">ftp</span><span class="o">.</span><span class="n">nlst</span><span class="p">()</span>
                 <span class="k">for</span> <span class="n">ftpfile</span> <span class="ow">in</span> <span class="n">flist</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">ftpfile</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">'V1A'</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">ftpfile</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"V1A"</span><span class="p">):</span>
 
                         <span class="k">continue</span>
                     <span class="n">localfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">ftpfile</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">localfile</span> <span class="ow">in</span> <span class="n">datafiles</span><span class="p">:</span>
                         <span class="k">continue</span>
                     <span class="n">datafiles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">localfile</span><span class="p">)</span>
-                    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">localfile</span><span class="p">,</span> <span class="s1">'wb'</span><span class="p">)</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Retrieving remote file </span><span class="si">%s</span><span class="s1">...</span><span class="se">\n</span><span class="s1">'</span> <span class="o">%</span> <span class="n">ftpfile</span><span class="p">)</span>
-                    <span class="n">ftp</span><span class="o">.</span><span class="n">retrbinary</span><span class="p">(</span><span class="s1">'RETR </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">ftpfile</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">)</span>
+                    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">localfile</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Retrieving remote file </span><span class="si">%s</span><span class="s2">...</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="n">ftpfile</span><span class="p">)</span>
+                    <span class="n">ftp</span><span class="o">.</span><span class="n">retrbinary</span><span class="p">(</span><span class="s2">"RETR </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">ftpfile</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">)</span>
                     <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-                <span class="n">ftp</span><span class="o">.</span><span class="n">cwd</span><span class="p">(</span><span class="s1">'..'</span><span class="p">)</span>
-                <span class="n">ftp</span><span class="o">.</span><span class="n">cwd</span><span class="p">(</span><span class="s1">'..'</span><span class="p">)</span>
+                <span class="n">ftp</span><span class="o">.</span><span class="n">cwd</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>
+                <span class="n">ftp</span><span class="o">.</span><span class="n">cwd</span><span class="p">(</span><span class="s2">".."</span><span class="p">)</span>
 
         <span class="n">ftp</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
         <span class="n">streams</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">dfile</span> <span class="ow">in</span> <span class="n">datafiles</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Reading GeoNet file </span><span class="si">%s</span><span class="s1">...'</span> <span class="o">%</span> <span class="n">dfile</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Reading GeoNet file </span><span class="si">%s</span><span class="s2">..."</span> <span class="o">%</span> <span class="n">dfile</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">tstreams</span> <span class="o">=</span> <span class="n">read_geonet</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
                 <span class="n">streams</span> <span class="o">+=</span> <span class="n">tstreams</span>
             <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">fmt</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'Failed to read GeoNet file "</span><span class="si">%s</span><span class="s1">" due to error "</span><span class="si">%s</span><span class="s1">". '</span>
-                       <span class="s1">'Continuing.'</span><span class="p">)</span>
+                <span class="n">fmt</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s1">'Failed to read GeoNet file "</span><span class="si">%s</span><span class="s1">" due to error "</span><span class="si">%s</span><span class="s1">". '</span> <span class="s2">"Continuing."</span>
+                <span class="p">)</span>
                 <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="n">dfile</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="n">tpl</span><span class="p">)</span>
 
@@ -750,22 +767,22 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_collection</span><span class="p">:</span>
             <span class="n">stream_collection</span> <span class="o">=</span> <span class="n">StreamCollection</span><span class="p">(</span>
-                <span class="n">streams</span><span class="o">=</span><span class="n">streams</span><span class="p">,</span> <span class="n">drop_non_free</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">drop_non_free</span><span class="p">)</span>
+                <span class="n">streams</span><span class="o">=</span><span class="n">streams</span><span class="p">,</span> <span class="n">drop_non_free</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">drop_non_free</span>
+            <span class="p">)</span>
             <span class="k">return</span> <span class="n">stream_collection</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span></div></div>
 
 
 <div class="viewcode-block" id="_match_closest_time"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/geonet/geonet_fetcher/index.html#gmprocess.io.geonet.geonet_fetcher._match_closest_time">[docs]</a><span class="k">def</span> <span class="nf">_match_closest_time</span><span class="p">(</span><span class="n">etime</span><span class="p">,</span> <span class="n">dirlist</span><span class="p">):</span>
-    <span class="n">timefmt</span> <span class="o">=</span> <span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">_%H%M%S'</span>
-    <span class="n">etimes</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">timefmt</span><span class="p">))</span>
-              <span class="k">for</span> <span class="n">dirname</span> <span class="ow">in</span> <span class="n">dirlist</span><span class="p">]</span>
+    <span class="n">timefmt</span> <span class="o">=</span> <span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">_%H%M%S"</span>
+    <span class="n">etimes</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">timefmt</span><span class="p">))</span> <span class="k">for</span> <span class="n">dirname</span> <span class="ow">in</span> <span class="n">dirlist</span><span class="p">]</span>
     <span class="n">etime</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">(</span><span class="n">etime</span><span class="p">)</span>
     <span class="n">dtimes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">etimes</span> <span class="o">-</span> <span class="n">etime</span><span class="p">)</span>
 
     <span class="n">new_etime</span> <span class="o">=</span> <span class="n">etimes</span><span class="p">[</span><span class="n">dtimes</span><span class="o">.</span><span class="n">argmin</span><span class="p">()]</span>
     <span class="n">newtime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">new_etime</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">19</span><span class="p">],</span> <span class="n">TIMEFMT</span><span class="p">)</span>
-    <span class="n">fname</span> <span class="o">=</span> <span class="n">newtime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">_%H%M%S'</span><span class="p">)</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="n">newtime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">_%H%M%S"</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">fname</span></div>
 </pre></div>
         </article>

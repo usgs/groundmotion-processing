@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.io.esm.core - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.io.esm.core - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -470,18 +470,20 @@
 <span class="c1"># local imports</span>
 <span class="kn">from</span> <span class="nn">gmprocess.core.stationtrace</span> <span class="kn">import</span> <span class="n">StationTrace</span><span class="p">,</span> <span class="n">PROCESS_LEVELS</span>
 <span class="kn">from</span> <span class="nn">gmprocess.core.stationstream</span> <span class="kn">import</span> <span class="n">StationStream</span>
+<span class="kn">from</span> <span class="nn">gmprocess.io.utils</span> <span class="kn">import</span> <span class="n">is_binary</span>
+
 
 <span class="n">TEXT_HDR_ROWS</span> <span class="o">=</span> <span class="mi">64</span>
 <span class="c1"># 20190728_160919.870</span>
-<span class="n">TIMEFMT</span> <span class="o">=</span> <span class="s1">'%Y%m</span><span class="si">%d</span><span class="s1">_%H%M%S.</span><span class="si">%f</span><span class="s1">'</span>
-<span class="n">TIMEFMT2</span> <span class="o">=</span> <span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%S.</span><span class="si">%f</span><span class="s1">'</span>
+<span class="n">TIMEFMT</span> <span class="o">=</span> <span class="s2">"%Y%m</span><span class="si">%d</span><span class="s2">_%H%M%S.</span><span class="si">%f</span><span class="s2">"</span>
+<span class="n">TIMEFMT2</span> <span class="o">=</span> <span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S.</span><span class="si">%f</span><span class="s2">"</span>
 
 
-<span class="n">SRC</span> <span class="o">=</span> <span class="s1">'ORFEUS Engineering Strong Motion Database'</span>
-<span class="n">FORMAT</span> <span class="o">=</span> <span class="s1">'ESM'</span>
+<span class="n">SRC</span> <span class="o">=</span> <span class="s2">"ORFEUS Engineering Strong Motion Database"</span>
+<span class="n">FORMAT</span> <span class="o">=</span> <span class="s2">"ESM"</span>
 
-<span class="n">HDR1</span> <span class="o">=</span> <span class="s1">'EVENT_NAME:'</span>
-<span class="n">HDR2</span> <span class="o">=</span> <span class="s1">'EVENT_ID:'</span>
+<span class="n">HDR1</span> <span class="o">=</span> <span class="s2">"EVENT_NAME:"</span>
+<span class="n">HDR2</span> <span class="o">=</span> <span class="s2">"EVENT_ID:"</span>
 
 
 <div class="viewcode-block" id="is_esm"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/esm/core/index.html#gmprocess.io.esm.core.is_esm">[docs]</a><span class="k">def</span> <span class="nf">is_esm</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -497,14 +499,17 @@
 <span class="sd">        bool: True if ESM, False otherwise.</span>
 <span class="sd">    """</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Checking if format is esm."</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">is_binary</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">'rt'</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">st_size</span><span class="p">)</span>
+        <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"rt"</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">st_size</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">'rt'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"rt"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">TEXT_HDR_ROWS</span><span class="p">)]</span>
             <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">HDR1</span><span class="p">)</span> <span class="ow">and</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">HDR2</span><span class="p">):</span>
                 <span class="k">return</span> <span class="kc">True</span>
@@ -530,17 +535,17 @@
 <span class="sd">    """</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Starting read_esm."</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_esm</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'</span><span class="si">%s</span><span class="s1"> is not a valid ESM file'</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> is not a valid ESM file"</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
 
     <span class="c1"># Parse the header portion of the file</span>
     <span class="n">header</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">'rt'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"rt"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">TEXT_HDR_ROWS</span><span class="p">)]</span>
 
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
-        <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">':'</span><span class="p">)</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="s1">':'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="s2">":"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">header</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="n">stats</span> <span class="o">=</span> <span class="p">{}</span>
@@ -548,96 +553,90 @@
     <span class="n">coordinates</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="c1"># fill in all known stats header fields</span>
-    <span class="n">stats</span><span class="p">[</span><span class="s1">'network'</span><span class="p">]</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s1">'NETWORK'</span><span class="p">]</span>
-    <span class="n">stats</span><span class="p">[</span><span class="s1">'station'</span><span class="p">]</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s1">'STATION_CODE'</span><span class="p">]</span>
-    <span class="n">stats</span><span class="p">[</span><span class="s1">'channel'</span><span class="p">]</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s1">'STREAM'</span><span class="p">]</span>
-    <span class="n">stats</span><span class="p">[</span><span class="s1">'location'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'--'</span>
-    <span class="n">stats</span><span class="p">[</span><span class="s1">'delta'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s1">'SAMPLING_INTERVAL_S'</span><span class="p">])</span>
-    <span class="n">stats</span><span class="p">[</span><span class="s1">'sampling_rate'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">stats</span><span class="p">[</span><span class="s1">'delta'</span><span class="p">]</span>
-    <span class="n">stats</span><span class="p">[</span><span class="s1">'calib'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="n">stats</span><span class="p">[</span><span class="s1">'npts'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s1">'NDATA'</span><span class="p">])</span>
-    <span class="n">stimestr</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s1">'DATE_TIME_FIRST_SAMPLE_YYYYMMDD_HHMMSS'</span><span class="p">]</span>
-    <span class="n">stats</span><span class="p">[</span><span class="s1">'starttime'</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">stimestr</span><span class="p">,</span> <span class="n">TIMEFMT</span><span class="p">)</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"network"</span><span class="p">]</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s2">"NETWORK"</span><span class="p">]</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"station"</span><span class="p">]</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s2">"STATION_CODE"</span><span class="p">]</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">]</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s2">"STREAM"</span><span class="p">]</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"location"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"--"</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"delta"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"SAMPLING_INTERVAL_S"</span><span class="p">])</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"sampling_rate"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">stats</span><span class="p">[</span><span class="s2">"delta"</span><span class="p">]</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"calib"</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"NDATA"</span><span class="p">])</span>
+    <span class="n">stimestr</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s2">"DATE_TIME_FIRST_SAMPLE_YYYYMMDD_HHMMSS"</span><span class="p">]</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"starttime"</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">stimestr</span><span class="p">,</span> <span class="n">TIMEFMT</span><span class="p">)</span>
 
     <span class="c1"># fill in standard fields</span>
     <span class="n">head</span><span class="p">,</span> <span class="n">tail</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s1">'source_file'</span><span class="p">]</span> <span class="o">=</span> <span class="n">tail</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s1">'source'</span><span class="p">]</span> <span class="o">=</span> <span class="n">SRC</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s1">'source_format'</span><span class="p">]</span> <span class="o">=</span> <span class="n">FORMAT</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s1">'horizontal_orientation'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s1">'vertical_orientation'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s1">'station_name'</span><span class="p">]</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s1">'STATION_NAME'</span><span class="p">]</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"source_file"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tail</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span> <span class="o">=</span> <span class="n">SRC</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"source_format"</span><span class="p">]</span> <span class="o">=</span> <span class="n">FORMAT</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"horizontal_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"vertical_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"station_name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s2">"STATION_NAME"</span><span class="p">]</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s1">'instrument_period'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> \
-            <span class="nb">float</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s1">'INSTRUMENTAL_FREQUENCY_HZ'</span><span class="p">])</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument_period"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"INSTRUMENTAL_FREQUENCY_HZ"</span><span class="p">])</span>
     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s1">'instrument_period'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument_period"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s1">'instrument_damping'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> \
-            <span class="nb">float</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s1">'INSTRUMENTAL_DAMPING'</span><span class="p">])</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument_damping"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"INSTRUMENTAL_DAMPING"</span><span class="p">])</span>
     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s1">'instrument_damping'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument_damping"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
-    <span class="n">ptimestr</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s1">'DATA_TIMESTAMP_YYYYMMDD_HHMMSS'</span><span class="p">]</span>
+    <span class="n">ptimestr</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s2">"DATA_TIMESTAMP_YYYYMMDD_HHMMSS"</span><span class="p">]</span>
     <span class="n">ptime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">ptimestr</span><span class="p">,</span> <span class="n">TIMEFMT</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">TIMEFMT2</span><span class="p">)</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s1">'process_time'</span><span class="p">]</span> <span class="o">=</span> <span class="n">ptime</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s1">'process_level'</span><span class="p">]</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="s1">'V1'</span><span class="p">]</span>
-    <span class="n">instr_str</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s1">'INSTRUMENT'</span><span class="p">]</span>
-    <span class="n">parts</span> <span class="o">=</span> <span class="n">instr_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'|'</span><span class="p">)</span>
-    <span class="n">sensor_str</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'='</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s1">'sensor_serial_number'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">''</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s1">'instrument'</span><span class="p">]</span> <span class="o">=</span> <span class="n">sensor_str</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s1">'comments'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">''</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s1">'structure_type'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">''</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s1">'units'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'cm/s^2'</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s1">'units_type'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'acc'</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s1">'instrument_sensitivity'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s1">'corner_frequency'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"process_time"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ptime</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"process_level"</span><span class="p">]</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="s2">"V1"</span><span class="p">]</span>
+    <span class="n">instr_str</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s2">"INSTRUMENT"</span><span class="p">]</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">instr_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"|"</span><span class="p">)</span>
+    <span class="n">sensor_str</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"="</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"sensor_serial_number"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument"</span><span class="p">]</span> <span class="o">=</span> <span class="n">sensor_str</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"comments"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"structure_type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"units"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"cm/s^2"</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"units_type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"acc"</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument_sensitivity"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"corner_frequency"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
-    <span class="n">coordinates</span><span class="p">[</span><span class="s1">'latitude'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s1">'STATION_LATITUDE_DEGREE'</span><span class="p">])</span>
-    <span class="n">coordinates</span><span class="p">[</span><span class="s1">'longitude'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s1">'STATION_LONGITUDE_DEGREE'</span><span class="p">])</span>
-    <span class="n">coordinates</span><span class="p">[</span><span class="s1">'elevation'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s1">'STATION_ELEVATION_M'</span><span class="p">])</span>
+    <span class="n">coordinates</span><span class="p">[</span><span class="s2">"latitude"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"STATION_LATITUDE_DEGREE"</span><span class="p">])</span>
+    <span class="n">coordinates</span><span class="p">[</span><span class="s2">"longitude"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"STATION_LONGITUDE_DEGREE"</span><span class="p">])</span>
+    <span class="n">coordinates</span><span class="p">[</span><span class="s2">"elevation"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"STATION_ELEVATION_M"</span><span class="p">])</span>
 
     <span class="c1"># read in the data</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="n">TEXT_HDR_ROWS</span><span class="p">)</span>
 
     <span class="c1"># create a Trace from the data and metadata</span>
-    <span class="n">stats</span><span class="p">[</span><span class="s1">'standard'</span><span class="p">]</span> <span class="o">=</span> <span class="n">standard</span>
-    <span class="n">stats</span><span class="p">[</span><span class="s1">'coordinates'</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinates</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">]</span> <span class="o">=</span> <span class="n">standard</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"coordinates"</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinates</span>
     <span class="n">trace</span> <span class="o">=</span> <span class="n">StationTrace</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">Stats</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">copy</span><span class="p">()))</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'input_units'</span><span class="p">:</span> <span class="s1">'counts'</span><span class="p">,</span> <span class="s1">'output_units'</span><span class="p">:</span> <span class="s1">'cm/s^2'</span><span class="p">}</span>
-    <span class="n">trace</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s1">'remove_response'</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
-    <span class="n">ftype</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s1">'FILTER_TYPE'</span><span class="p">]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"input_units"</span><span class="p">:</span> <span class="s2">"counts"</span><span class="p">,</span> <span class="s2">"output_units"</span><span class="p">:</span> <span class="s2">"cm/s^2"</span><span class="p">}</span>
+    <span class="n">trace</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s2">"remove_response"</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+    <span class="n">ftype</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s2">"FILTER_TYPE"</span><span class="p">]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">forder</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s1">'FILTER_ORDER'</span><span class="p">])</span>
+        <span class="n">forder</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"FILTER_ORDER"</span><span class="p">])</span>
     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
         <span class="n">forder</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">lowfreq</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s1">'LOW_CUT_FREQUENCY_HZ'</span><span class="p">])</span>
+        <span class="n">lowfreq</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"LOW_CUT_FREQUENCY_HZ"</span><span class="p">])</span>
     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
         <span class="n">lowfreq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">highfreq</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s1">'LOW_CUT_FREQUENCY_HZ'</span><span class="p">])</span>
+        <span class="n">highfreq</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"LOW_CUT_FREQUENCY_HZ"</span><span class="p">])</span>
     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
         <span class="n">highfreq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">lowfreq</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">lowfreq</span><span class="p">):</span>
         <span class="n">filter_att</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">'bandpass_filter'</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">'filter_type'</span><span class="p">:</span> <span class="n">ftype</span><span class="p">,</span>
-                <span class="s1">'lower_corner_frequency'</span><span class="p">:</span> <span class="n">lowfreq</span><span class="p">,</span>
-                <span class="s1">'higher_corner_frequency'</span><span class="p">:</span> <span class="n">highfreq</span><span class="p">,</span>
-                <span class="s1">'filter_order'</span><span class="p">:</span> <span class="n">forder</span>
+            <span class="s2">"bandpass_filter"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"filter_type"</span><span class="p">:</span> <span class="n">ftype</span><span class="p">,</span>
+                <span class="s2">"lower_corner_frequency"</span><span class="p">:</span> <span class="n">lowfreq</span><span class="p">,</span>
+                <span class="s2">"higher_corner_frequency"</span><span class="p">:</span> <span class="n">highfreq</span><span class="p">,</span>
+                <span class="s2">"filter_order"</span><span class="p">:</span> <span class="n">forder</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="p">}</span>
-        <span class="n">trace</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s1">'lowpass_filter'</span><span class="p">,</span> <span class="n">filter_att</span><span class="p">)</span>
-    <span class="n">detrend_att</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">'detrend'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">'detrending_method'</span><span class="p">:</span> <span class="s1">'baseline'</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="s1">'NOT REMOVED'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">header</span><span class="p">[</span><span class="s1">'BASELINE_CORRECTION'</span><span class="p">]:</span>
-        <span class="n">trace</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s1">'detrend'</span><span class="p">,</span> <span class="n">detrend_att</span><span class="p">)</span>
+        <span class="n">trace</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s2">"lowpass_filter"</span><span class="p">,</span> <span class="n">filter_att</span><span class="p">)</span>
+    <span class="n">detrend_att</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"detrend"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"detrending_method"</span><span class="p">:</span> <span class="s2">"baseline"</span><span class="p">}}</span>
+    <span class="k">if</span> <span class="s2">"NOT REMOVED"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">header</span><span class="p">[</span><span class="s2">"BASELINE_CORRECTION"</span><span class="p">]:</span>
+        <span class="n">trace</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s2">"detrend"</span><span class="p">,</span> <span class="n">detrend_att</span><span class="p">)</span>
     <span class="n">stream</span> <span class="o">=</span> <span class="n">StationStream</span><span class="p">(</span><span class="n">traces</span><span class="o">=</span><span class="p">[</span><span class="n">trace</span><span class="p">])</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">stream</span><span class="p">]</span></div>
 </pre></div>

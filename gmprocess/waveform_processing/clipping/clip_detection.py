@@ -7,8 +7,8 @@ called by clipping_check.py module.
 """
 
 
-class ClipDetection():
-    '''
+class ClipDetection:
+    """
     Parent class for clipping detection algorithms.
 
     Attributes:
@@ -26,10 +26,10 @@ class ClipDetection():
             Trim and normalize a trace.
         _get_results():
             Iterates through and runs _detect() on each trace in the stream.
-    '''
+    """
 
     def __init__(self, st, test_all=False):
-        '''
+        """
         Constructs all neccessary attributes for the ClipDetection method
         object.
 
@@ -38,13 +38,13 @@ class ClipDetection():
                 Stream of data.
             test_all (bool, default=False):
                 If true, compute test values for all traces.
-        '''
+        """
         self.st = st.copy()
         self.is_clipped = False
         self.test_all = test_all
 
     def _clean_trace(self, tr):
-        '''
+        """
         Pre-processing steps.
 
         Args:
@@ -54,11 +54,11 @@ class ClipDetection():
         Returns:
             clean_tr (StationTrace):
                 Cleaned trace.
-        '''
+        """
         return tr
 
     def _detect(self, clip_tr):
-        '''
+        """
         Clipping detection algorithm for the individual child class
 
         Args:
@@ -68,11 +68,11 @@ class ClipDetection():
         Returns:
             bool:
                 Did the trace pass the test?
-        '''
+        """
         pass
 
     def _get_results(self):
-        '''
+        """
         Iterates through and runs _detect() on each trace in the stream to
         determine if the record is clipped or not.
 
@@ -81,7 +81,7 @@ class ClipDetection():
 
         Returns:
             None
-        '''
+        """
         for tr in self.st:
             tr = self._clean_trace(tr)
             temp_is_clipped = self._detect(tr)

@@ -24,5 +24,5 @@ def test_nnet():
     np.testing.assert_allclose(prob_clip, 0.9898910827653756)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_nnet()

@@ -26,30 +26,40 @@ from gmprocess.utils.config import get_config
 
 
 JST_OFFSET = 9 * 3600  # Japan standard time is UTC + 9
-SEARCH_URL = 'http://www.kyoshin.bosai.go.jp/cgi-bin/kyoshin/quick/list_eqid_en.cgi?1+YEAR+QUARTER'
-RETRIEVE_URL = 'http://www.kyoshin.bosai.go.jp/cgi-bin/kyoshin/auth/makearc'
+SEARCH_URL = "http://www.kyoshin.bosai.go.jp/cgi-bin/kyoshin/quick/list_eqid_en.cgi?1+YEAR+QUARTER"
+RETRIEVE_URL = "http://www.kyoshin.bosai.go.jp/cgi-bin/kyoshin/auth/makearc"
 
 # http://www.kyoshin.bosai.go.jp/cgi-bin/kyoshin/auth/makearc?formattype=A&eqidlist=20180330081700%2C20180330000145%2C20180330081728%2C1%2C%2Fkyoshin%2Fpubdata%2Fall%2F1comp%2F2018%2F03%2F20180330081700%2F20180330081700.all_acmap.png%2C%2Fkyoshin%2Fpubdata%2Fknet%2F1comp%2F2018%2F03%2F20180330081700%2F20180330081700.knt_acmap.png%2C%2Fkyoshin%2Fpubdata%2Fkik%2F1comp%2F2018%2F03%2F20180330081700%2F20180330081700.kik_acmap.png%2CHPRL&datanames=20180330081700%3Balldata&datakind=all
 
 CGIPARAMS = OrderedDict()
-CGIPARAMS['formattype'] = 'A'
-CGIPARAMS['eqidlist'] = ''
-CGIPARAMS['datanames'] = ''
-CGIPARAMS['alldata'] = None
-CGIPARAMS['datakind'] = 'all'
+CGIPARAMS["formattype"] = "A"
+CGIPARAMS["eqidlist"] = ""
+CGIPARAMS["datanames"] = ""
+CGIPARAMS["alldata"] = None
+CGIPARAMS["datakind"] = "all"
 
-QUARTERS = {1: 1, 2: 1, 3: 1,
-            4: 4, 5: 4, 6: 4,
-            7: 7, 8: 7, 9: 7,
-            10: 10, 11: 10, 12: 10}
+QUARTERS = {
+    1: 1,
+    2: 1,
+    3: 1,
+    4: 4,
+    5: 4,
+    6: 4,
+    7: 7,
+    8: 7,
+    9: 7,
+    10: 10,
+    11: 10,
+    12: 10,
+}
 
 # 2019/03/13-13:48:00.00
-TIMEPAT = r'[0-9]{4}/[0-9]{2}/[0-9]{2}-[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{2}'
-LATPAT = r'[0-9]{2}\.[0-9]{2}N'
-LONPAT = r'[0-9]{3}\.[0-9]{2}E'
-DEPPAT = '[0-9]{3}km'
-MAGPAT = r'M[0-9]{1}\.[0-9]{1}'
-TIMEFMT = '%Y/%m/%d-%H:%M:%S.%f'
+TIMEPAT = r"[0-9]{4}/[0-9]{2}/[0-9]{2}-[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{2}"
+LATPAT = r"[0-9]{2}\.[0-9]{2}N"
+LONPAT = r"[0-9]{3}\.[0-9]{2}E"
+DEPPAT = "[0-9]{3}km"
+MAGPAT = r"M[0-9]{1}\.[0-9]{1}"
+TIMEFMT = "%Y/%m/%d-%H:%M:%S.%f"
 
 # default values for this fetcher
 # if None specified in constructor, AND no parameters specified in
@@ -74,10 +84,24 @@ MAGS[9.9] = 1065
 
 
 class KNETFetcher(DataFetcher):
-    def __init__(self, time, lat, lon, depth, magnitude,
-                 user=None, password=None, radius=None, dt=None, ddepth=None,
-                 dmag=None, rawdir=None, config=None,
-                 drop_non_free=True, stream_collection=True):
+    def __init__(
+        self,
+        time,
+        lat,
+        lon,
+        depth,
+        magnitude,
+        user=None,
+        password=None,
+        radius=None,
+        dt=None,
+        ddepth=None,
+        dmag=None,
+        rawdir=None,
+        config=None,
+        drop_non_free=True,
+        stream_collection=True,
+    ):
         """Create a KNETFetcher instance.
 
         Download KNET/KikNet data from the Japanese NIED site:
@@ -132,21 +156,21 @@ class KNETFetcher(DataFetcher):
         cfg_dmag = None
         cfg_user = None
         cfg_password = None
-        if 'fetchers' in config:
-            if 'KNETFetcher' in config['fetchers']:
-                fetch_cfg = config['fetchers']['KNETFetcher']
-                if 'radius' in fetch_cfg:
-                    cfg_radius = float(fetch_cfg['radius'])
-                if 'dt' in fetch_cfg:
-                    cfg_dt = float(fetch_cfg['dt'])
-                if 'ddepth' in fetch_cfg:
-                    cfg_ddepth = float(fetch_cfg['ddepth'])
-                if 'dmag' in fetch_cfg:
-                    cfg_dmag = float(fetch_cfg['dmag'])
-                if 'user' in fetch_cfg:
-                    cfg_user = fetch_cfg['user']
-                if 'password' in fetch_cfg:
-                    cfg_password = fetch_cfg['password']
+        if "fetchers" in config:
+            if "KNETFetcher" in config["fetchers"]:
+                fetch_cfg = config["fetchers"]["KNETFetcher"]
+                if "radius" in fetch_cfg:
+                    cfg_radius = float(fetch_cfg["radius"])
+                if "dt" in fetch_cfg:
+                    cfg_dt = float(fetch_cfg["dt"])
+                if "ddepth" in fetch_cfg:
+                    cfg_ddepth = float(fetch_cfg["ddepth"])
+                if "dmag" in fetch_cfg:
+                    cfg_dmag = float(fetch_cfg["dmag"])
+                if "user" in fetch_cfg:
+                    cfg_user = fetch_cfg["user"]
+                if "password" in fetch_cfg:
+                    cfg_password = fetch_cfg["password"]
 
         radius = _get_first_value(radius, cfg_radius, RADIUS)
         dt = _get_first_value(dt, cfg_dt, DT)
@@ -160,26 +184,25 @@ class KNETFetcher(DataFetcher):
                 user = cfg_user
                 password = cfg_password
             else:
-                fmt = ('Username/password are required to retrieve '
-                       'KNET/KikNET data.')
+                fmt = "Username/password are required to retrieve KNET/KikNET data."
                 raise Exception(fmt)
 
-        if user == 'USERNAME' or password == 'PASSWORD':
+        if user == "USERNAME" or password == "PASSWORD":
             fmt = (
-                'Username/password are required to retrieve KNET/KikNET\n'
-                'data. This tool can download data from the Japanese NIED\n'
-                'website. However, for this to work you will first need \n'
-                'to obtain a username and password from this website:\n'
-                'https://hinetwww11.bosai.go.jp/nied/registration/?LANG=en\n'
-                'Then create a custom config file by running the gmsetup\n'
-                'program, and edit the fetchers:KNETFetcher section\n'
-                'to use your username and password.')
+                "Username/password are required to retrieve KNET/KikNET\n"
+                "data. This tool can download data from the Japanese NIED\n"
+                "website. However, for this to work you will first need \n"
+                "to obtain a username and password from this website:\n"
+                "https://hinetwww11.bosai.go.jp/nied/registration/?LANG=en\n"
+                "Then create a custom config file by running the gmsetup\n"
+                "program, and edit the fetchers:KNETFetcher section\n"
+                "to use your username and password."
+            )
             raise Exception(fmt)
 
         # allow user to turn restrict stations on or off. Restricting saves
         # time, probably will not ignore significant data.
-        self.restrict_stations = \
-            config['fetchers']['KNETFetcher']['restrict_stations']
+        self.restrict_stations = config["fetchers"]["KNETFetcher"]["restrict_stations"]
 
         self.user = user
         self.password = password
@@ -225,16 +248,16 @@ class KNETFetcher(DataFetcher):
         jpyear = str(self.jptime.year)
         jpquarter = str(QUARTERS[self.jptime.month])
         if len(jpquarter) == 1:
-            jpquarter = '0' + jpquarter
-        url = SEARCH_URL.replace('YEAR', jpyear)
-        url = url.replace('QUARTER', jpquarter)
+            jpquarter = "0" + jpquarter
+        url = SEARCH_URL.replace("YEAR", jpyear)
+        url = url.replace("QUARTER", jpquarter)
         req = requests.get(url)
-        logging.debug('KNET search url: %s', str(url))
-        logging.debug('KNET search response code: %s', req.status_code)
+        logging.debug("KNET search url: %s", str(url))
+        logging.debug("KNET search response code: %s", req.status_code)
         data = req.text
         soup = BeautifulSoup(data, features="lxml")
-        select = soup.find('select')
-        options = select.find_all('option')
+        select = soup.find("select")
+        options = select.find_all("option")
         times = []
         lats = []
         lons = []
@@ -242,7 +265,7 @@ class KNETFetcher(DataFetcher):
         mags = []
         values = []
         for option in options:
-            if 'Data not found' in option.text:
+            if "Data not found" in option.text:
                 break
             eventstr = option.contents[0]
             timestr = re.search(TIMEPAT, eventstr).group()
@@ -250,17 +273,17 @@ class KNETFetcher(DataFetcher):
             lonstr = re.search(LONPAT, eventstr).group()
             depstr = re.search(DEPPAT, eventstr).group()
             magstr = re.search(MAGPAT, eventstr).group()
-            lat = float(latstr.replace('N', ''))
-            lon = float(lonstr.replace('E', ''))
-            depth = float(depstr.replace('km', ''))
-            mag = float(magstr.replace('M', ''))
+            lat = float(latstr.replace("N", ""))
+            lon = float(lonstr.replace("E", ""))
+            depth = float(depstr.replace("km", ""))
+            mag = float(magstr.replace("M", ""))
             etime = datetime.strptime(timestr, TIMEFMT)
             times.append(np.datetime64(etime))
             lats.append(lat)
             lons.append(lon)
             depths.append(depth)
             mags.append(mag)
-            values.append(option.get('value'))
+            values.append(option.get("value"))
 
         events = []
         if not len(times):
@@ -277,7 +300,7 @@ class KNETFetcher(DataFetcher):
         jptime = np.datetime64(self.jptime)
         # dtimes is in microseconds
         dtimes = np.abs(jptime - times)
-        tidx = dtimes <= np.timedelta64(int(self.dt), 's')
+        tidx = dtimes <= np.timedelta64(int(self.dt), "s")
         etimes = times[didx & tidx]
         elats = lats[didx & tidx]
         elons = lons[didx & tidx]
@@ -285,17 +308,19 @@ class KNETFetcher(DataFetcher):
         emags = mags[didx & tidx]
         evalues = values[didx & tidx]
 
-        for etime, elat, elon, edep, emag, evalue in zip(etimes, elats,
-                                                         elons, edepths,
-                                                         emags, evalues):
+        for etime, elat, elon, edep, emag, evalue in zip(
+            etimes, elats, elons, edepths, emags, evalues
+        ):
             jtime = UTCDateTime(str(etime))
             utime = jtime - JST_OFFSET
-            edict = {'time': utime,
-                     'lat': elat,
-                     'lon': elon,
-                     'depth': edep,
-                     'mag': emag,
-                     'cgi_value': evalue}
+            edict = {
+                "time": utime,
+                "lat": elat,
+                "lon": elon,
+                "depth": edep,
+                "mag": emag,
+                "cgi_value": evalue,
+            }
             events.append(edict)
 
         if solve and len(events) > 1:
@@ -322,38 +347,39 @@ class KNETFetcher(DataFetcher):
             if not os.path.isdir(rawdir):
                 os.makedirs(rawdir)
 
-        cgi_value = event_dict['cgi_value']
-        firstid = cgi_value.split(',')[0]
-        dtime = event_dict['time']
-        fname = dtime.strftime('%Y%m%d%H%M%S') + '.tar'
+        cgi_value = event_dict["cgi_value"]
+        firstid = cgi_value.split(",")[0]
+        dtime = event_dict["time"]
+        fname = dtime.strftime("%Y%m%d%H%M%S") + ".tar"
 
         localfile = os.path.join(rawdir, fname)
 
         url = RETRIEVE_URL
-        payload = {'formattype': ['A'],
-                   'eqidlist': cgi_value,
-                   'datanames': '%s;alldata' % firstid,
-                   'datakind': ['all']}
-        logging.info('Downloading Japanese data into %s...' % localfile)
-        req = requests.get(url, params=payload,
-                           auth=(self.user, self.password))
-        logging.debug('KNET download url: %s', str(url))
-        logging.debug('KNET download response code: %s', req.status_code)
+        payload = {
+            "formattype": ["A"],
+            "eqidlist": cgi_value,
+            "datanames": "%s;alldata" % firstid,
+            "datakind": ["all"],
+        }
+        logging.info("Downloading Japanese data into %s..." % localfile)
+        req = requests.get(url, params=payload, auth=(self.user, self.password))
+        logging.debug("KNET download url: %s", str(url))
+        logging.debug("KNET download response code: %s", req.status_code)
 
         if req.status_code != URL_ERROR_CODE:
             raise urllib.error.HTTPError(req.text)
         else:
-            with open(localfile, 'wb') as f:
+            with open(localfile, "wb") as f:
                 for chunk in req:
                     f.write(chunk)
-        logging.info('Finished downloading into %s...' % localfile)
+        logging.info("Finished downloading into %s..." % localfile)
 
         # open the tarball, extract the kiknet/knet gzipped tarballs
         tar = tarfile.open(localfile)
         names = tar.getnames()
         tarballs = []
         for name in names:
-            if 'img' in name:
+            if "img" in name:
                 continue
             ppath = os.path.join(rawdir, name)
             tarballs.append(ppath)
@@ -365,27 +391,27 @@ class KNETFetcher(DataFetcher):
 
         subdirs = []
         for tarball in tarballs:
-            tar = tarfile.open(tarball, mode='r:gz')
-            if 'kik' in tarball:
-                subdir = os.path.join(rawdir, 'kiknet')
+            tar = tarfile.open(tarball, mode="r:gz")
+            if "kik" in tarball:
+                subdir = os.path.join(rawdir, "kiknet")
             else:
-                subdir = os.path.join(rawdir, 'knet')
+                subdir = os.path.join(rawdir, "knet")
             subdirs.append(subdir)
             tar.extractall(path=subdir)
             tar.close()
             os.remove(tarball)
 
         for subdir in subdirs:
-            gzfiles = glob.glob(os.path.join(subdir, '*.gz'))
+            gzfiles = glob.glob(os.path.join(subdir, "*.gz"))
             for gzfile in gzfiles:
                 os.remove(gzfile)
 
         if self.stream_collection:
             streams = []
             for subdir in subdirs:
-                datafiles = glob.glob(os.path.join(subdir, '*.*'))
+                datafiles = glob.glob(os.path.join(subdir, "*.*"))
                 for dfile in datafiles:
-                    logging.info('Reading KNET/KikNet file %s...' % dfile)
+                    logging.info("Reading KNET/KikNet file %s..." % dfile)
                     streams += read_knet(dfile)
 
             if self.rawdir is None:
@@ -411,7 +437,8 @@ class KNETFetcher(DataFetcher):
                     newstreams.append(stream)
 
             stream_collection = StreamCollection(
-                streams=newstreams, drop_non_free=self.drop_non_free)
+                streams=newstreams, drop_non_free=self.drop_non_free
+            )
             return stream_collection
         else:
             return None

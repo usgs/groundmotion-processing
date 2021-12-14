@@ -36,7 +36,6 @@ Attributes
 
    Clean (i.e., remove) project data.
 
-
    .. py:attribute:: command_name
       :annotation: = clean
 

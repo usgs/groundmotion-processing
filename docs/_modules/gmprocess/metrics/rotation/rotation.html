@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.metrics.rotation.rotation - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.metrics.rotation.rotation - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -486,27 +486,25 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            horizontal_channels: list of horizontal channels</span>
-<span class="sd">                    (obspy.core.trac.Trace).</span>
+<span class="sd">            (obspy.core.trac.Trace).</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            PGMException: if there are less than or greater than two</span>
-<span class="sd">                    horizontal channels.</span>
+<span class="sd">                horizontal channels.</span>
 <span class="sd">        """</span>
         <span class="n">horizontal_channels</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotation_data</span><span class="p">:</span>
             <span class="c1"># Group all of the max values from traces without</span>
             <span class="c1"># Z in the channel name</span>
-            <span class="k">if</span> <span class="s1">'Z'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s1">'channel'</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
+            <span class="k">if</span> <span class="s2">"Z"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
                 <span class="n">horizontal_channels</span> <span class="o">+=</span> <span class="p">[</span><span class="n">trace</span><span class="p">]</span>
         <span class="c1"># Test the horizontals</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">horizontal_channels</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s1">'Rotation: More than two horizontal channels.'</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s2">"Rotation: More than two horizontal channels."</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">horizontal_channels</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s1">'Rotation: Less than two horizontal channels.'</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">horizontal_channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span>
-              <span class="nb">len</span><span class="p">(</span><span class="n">horizontal_channels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)):</span>
-            <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span>
-                <span class="s1">'Rotation: Horizontal channels have different lengths.'</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s2">"Rotation: Less than two horizontal channels."</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">horizontal_channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">horizontal_channels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s2">"Rotation: Horizontal channels have different lengths."</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">horizontal_channels</span></div>
 
 <div class="viewcode-block" id="Rotation.get_max"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/rotation/rotation/index.html#gmprocess.metrics.rotation.rotation.Rotation.get_max">[docs]</a>    <span class="k">def</span> <span class="nf">get_max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tr1</span><span class="p">,</span> <span class="n">pick_peak</span><span class="p">,</span> <span class="n">tr2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">percentiles</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
@@ -537,8 +535,8 @@
 <span class="sd">                    - "gm" for geometric mean</span>
 <span class="sd">                    - "am" for arithmetic mean</span>
 <span class="sd">                    - "max" for maximum</span>
-<span class="sd">            percentiles (list): percentile(s) to return the requested values.</span>
-<span class="sd">                Default is 50.</span>
+<span class="sd">            percentiles (list):</span>
+<span class="sd">                Percentile(s) to return the requested values. Default is 50.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            If 1D input:</span>
@@ -552,63 +550,63 @@
         <span class="c1"># working with 1D or 2D traces. Trace 1 and Trace 2 must have the same</span>
         <span class="c1"># dimension (either both 1D or 2D).</span>
         <span class="k">if</span> <span class="n">tr2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tr1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="n">input_dim</span> <span class="o">=</span> <span class="s1">'1D'</span>
-            <span class="k">elif</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tr1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
-                <span class="n">input_dim</span> <span class="o">=</span> <span class="s1">'2D'</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">input_dim</span> <span class="o">=</span> <span class="s2">"1D"</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">input_dim</span> <span class="o">=</span> <span class="s2">"2D"</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s1">'Trace one must be either 1D or 2D.'</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s2">"Trace one must be either 1D or 2D."</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tr1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr2</span><span class="o">.</span><span class="n">shape</span><span class="p">)):</span>
-                <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s1">'Traces must have the same dimensions.'</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tr1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="n">input_dim</span> <span class="o">=</span> <span class="s1">'1D'</span>
-            <span class="k">elif</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tr1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
-                <span class="n">input_dim</span> <span class="o">=</span> <span class="s1">'2D'</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr2</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s2">"Traces must have the same dimensions."</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">input_dim</span> <span class="o">=</span> <span class="s2">"1D"</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">input_dim</span> <span class="o">=</span> <span class="s2">"2D"</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s1">'Traces must be either 1D or 2D.'</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s2">"Traces must be either 1D or 2D."</span><span class="p">)</span>
 
         <span class="c1"># Set the axis from which to pull the maximums based on</span>
         <span class="c1"># the input dimension.</span>
-        <span class="k">if</span> <span class="n">input_dim</span> <span class="o">==</span> <span class="s1">'1D'</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">input_dim</span> <span class="o">==</span> <span class="s2">"1D"</span><span class="p">:</span>
             <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span>
 
         <span class="c1"># Geometric mean</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">pick_peak</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'gm'</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">pick_peak</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"gm"</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">tr2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s1">'Two traces must be provided to find mean.'</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s2">"Two traces must be provided to find mean."</span><span class="p">)</span>
             <span class="n">tr1_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">tr1</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
             <span class="n">tr2_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">tr2</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
             <span class="n">geo_means</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tr1_max</span> <span class="o">*</span> <span class="n">tr2_max</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="p">(</span><span class="n">input_dim</span> <span class="o">==</span> <span class="s1">'1D'</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">input_dim</span> <span class="o">==</span> <span class="s2">"1D"</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">geo_means</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">geo_means</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">geo_means</span><span class="p">,</span> <span class="n">percentiles</span><span class="p">)</span>
 
         <span class="c1"># Arithmetic mean</span>
-        <span class="k">elif</span> <span class="p">(</span><span class="n">pick_peak</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'am'</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="n">pick_peak</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"am"</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">tr2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s1">'Two traces must be provided to find mean.'</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s2">"Two traces must be provided to find mean."</span><span class="p">)</span>
             <span class="n">tr1_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">tr1</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
             <span class="n">tr2_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">tr2</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
             <span class="n">arith_means</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">tr1_max</span> <span class="o">+</span> <span class="n">tr2_max</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="p">(</span><span class="n">input_dim</span> <span class="o">==</span> <span class="s1">'1D'</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">input_dim</span> <span class="o">==</span> <span class="s2">"1D"</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">arith_means</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">arith_means</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">arith_means</span><span class="p">,</span> <span class="n">percentiles</span><span class="p">)</span>
 
         <span class="c1"># Maximum</span>
-        <span class="k">elif</span> <span class="p">(</span><span class="n">pick_peak</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">'max'</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="n">pick_peak</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"max"</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">tr2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">tr1_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tr1</span><span class="p">),</span> <span class="n">axis</span><span class="p">)</span>
                 <span class="n">tr2_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tr2</span><span class="p">),</span> <span class="n">axis</span><span class="p">)</span>
 
                 <span class="c1"># Maximum of two horizontals</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">input_dim</span> <span class="o">==</span> <span class="s1">'1D'</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">input_dim</span> <span class="o">==</span> <span class="s2">"1D"</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">([</span><span class="n">tr1_max</span><span class="p">,</span> <span class="n">tr2_max</span><span class="p">])</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">maximums</span> <span class="o">=</span> <span class="p">[]</span>
@@ -618,12 +616,12 @@
                     <span class="k">return</span> <span class="n">maximums</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">maximums</span><span class="p">,</span> <span class="n">percentiles</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">maximums</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">tr1</span><span class="p">),</span> <span class="n">axis</span><span class="p">)</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">input_dim</span> <span class="o">==</span> <span class="s1">'1D'</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">input_dim</span> <span class="o">==</span> <span class="s2">"1D"</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">maximums</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">maximums</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">maximums</span><span class="p">,</span> <span class="n">percentiles</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s1">'Not a valid pick for the peak.'</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s2">"Not a valid pick for the peak."</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Rotation.rotate"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/rotation/rotation/index.html#gmprocess.metrics.rotation.rotation.Rotation.rotate">[docs]</a>    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tr1</span><span class="p">,</span> <span class="n">tr2</span><span class="p">,</span> <span class="n">combine</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
         <span class="sd">"""</span>
@@ -631,10 +629,10 @@
 <span class="sd">        data at each degree.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            tr1 (obspy.core.trace.Trace):</span>
-<span class="sd">                Trace 1 of strong motion data.</span>
-<span class="sd">            tr2 (obspy.core.trace.Trace):</span>
-<span class="sd">                Trace 2 of strong motion data.</span>
+<span class="sd">            tr1 (ndarray):</span>
+<span class="sd">                Array of trace data.</span>
+<span class="sd">            tr2 (ndarray):</span>
+<span class="sd">                Array of trace data.</span>
 <span class="sd">            combine (bool):</span>
 <span class="sd">                Whether rotated traces should be combined. Default is False.</span>
 <span class="sd">            delta (float):</span>
@@ -652,8 +650,7 @@
             <span class="n">max_deg</span> <span class="o">=</span> <span class="mi">90</span>
 
         <span class="n">num_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_deg</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">delta</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">degrees</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
-            <span class="mi">0</span><span class="p">,</span> <span class="n">max_deg</span><span class="p">,</span> <span class="n">num_rows</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">degrees</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_deg</span><span class="p">,</span> <span class="n">num_rows</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
         <span class="n">cos_deg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">degrees</span><span class="p">)</span>
         <span class="n">sin_deg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">degrees</span><span class="p">)</span>
 

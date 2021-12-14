@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.core.streamcollection - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.core.streamcollection - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -485,10 +485,10 @@
 
 <span class="n">INDENT</span> <span class="o">=</span> <span class="mi">2</span>
 
-<span class="n">DEFAULT_IMTS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'PGA'</span><span class="p">,</span> <span class="s1">'PGV'</span><span class="p">,</span> <span class="s1">'SA(0.3)'</span><span class="p">,</span> <span class="s1">'SA(1.0)'</span><span class="p">,</span> <span class="s1">'SA(3.0)'</span><span class="p">]</span>
-<span class="n">DEFAULT_IMCS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'GREATER_OF_TWO_HORIZONTALS'</span><span class="p">,</span> <span class="s1">'CHANNELS'</span><span class="p">]</span>
+<span class="n">DEFAULT_IMTS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"PGA"</span><span class="p">,</span> <span class="s2">"PGV"</span><span class="p">,</span> <span class="s2">"SA(0.3)"</span><span class="p">,</span> <span class="s2">"SA(1.0)"</span><span class="p">,</span> <span class="s2">"SA(3.0)"</span><span class="p">]</span>
+<span class="n">DEFAULT_IMCS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"GREATER_OF_TWO_HORIZONTALS"</span><span class="p">,</span> <span class="s2">"CHANNELS"</span><span class="p">]</span>
 
-<span class="n">NETWORKS_USING_LOCATION</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'RE'</span><span class="p">]</span>
+<span class="n">NETWORKS_USING_LOCATION</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"RE"</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="StreamCollection"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/streamcollection/index.html#gmprocess.core.streamcollection.StreamCollection">[docs]</a><span class="k">class</span> <span class="nc">StreamCollection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -506,10 +506,17 @@
 <span class="sd">        - Check units</span>
 <span class="sd">    """</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">streams</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">drop_non_free</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                 <span class="n">handle_duplicates</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_dist_tolerance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">preference_order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">process_level_preference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">format_preference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">streams</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">drop_non_free</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">handle_duplicates</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">max_dist_tolerance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">preference_order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">process_level_preference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">format_preference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">"""Initialize StreamCollection.</span>
 
 <span class="sd">        Args:</span>
@@ -541,13 +548,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
         <span class="c1"># Some initial checks of input streams</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">streams</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="s1">'streams must be a list of StationStream objects.'</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"streams must be a list of StationStream objects."</span><span class="p">)</span>
         <span class="n">newstreams</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">StationStream</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                    <span class="s1">'streams must be a list of StationStream objects.'</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"streams must be a list of StationStream objects."</span><span class="p">)</span>
 
             <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
 
@@ -564,7 +569,8 @@
                     <span class="n">max_dist_tolerance</span><span class="p">,</span>
                     <span class="n">preference_order</span><span class="p">,</span>
                     <span class="n">process_level_preference</span><span class="p">,</span>
-                    <span class="n">format_preference</span><span class="p">)</span>
+                    <span class="n">format_preference</span><span class="p">,</span>
+                <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__group_by_net_sta_inst</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
 
@@ -586,24 +592,25 @@
         <span class="c1"># If tag exists, it should be consistent across StationStreams</span>
         <span class="n">all_labels</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="s1">'tag'</span><span class="p">):</span>
-                <span class="n">parts</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="s2">"tag"</span><span class="p">):</span>
+                <span class="n">parts</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
                     <span class="n">label</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-                    <span class="n">eventid</span> <span class="o">=</span> <span class="s1">'_'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">eventid</span> <span class="o">=</span> <span class="s2">"_"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">eventid</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)</span>
+                    <span class="n">eventid</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)</span>
                 <span class="n">all_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">all_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">all_labels</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">'Only one label allowed within a StreamCollection.'</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Only one label allowed within a StreamCollection."</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamCollection.select_colocated"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/streamcollection/index.html#gmprocess.core.streamcollection.StreamCollection.select_colocated">[docs]</a>    <span class="k">def</span> <span class="nf">select_colocated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">preference</span><span class="o">=</span><span class="p">[</span><span class="s2">"HN?"</span><span class="p">,</span> <span class="s2">"BN?"</span><span class="p">,</span> <span class="s2">"HH?"</span><span class="p">,</span> <span class="s2">"BH?"</span><span class="p">]):</span>
+<div class="viewcode-block" id="StreamCollection.select_colocated"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/streamcollection/index.html#gmprocess.core.streamcollection.StreamCollection.select_colocated">[docs]</a>    <span class="k">def</span> <span class="nf">select_colocated</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">preference</span><span class="o">=</span><span class="p">[</span><span class="s2">"HN?"</span><span class="p">,</span> <span class="s2">"BN?"</span><span class="p">,</span> <span class="s2">"HH?"</span><span class="p">,</span> <span class="s2">"BH?"</span><span class="p">],</span> <span class="n">large_dist</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
         <span class="sd">"""Detect colocated instruments, return preferred instrument type.</span>
 
-<span class="sd">        This uses the a list of the first two channel characters, given as</span>
+<span class="sd">        This uses the list of the first two channel characters, given as</span>
 <span class="sd">        'preference' in the 'colocated' section of the config. The algorithm</span>
 <span class="sd">        is:</span>
 
@@ -620,19 +627,46 @@
 <span class="sd">        Args:</span>
 <span class="sd">            preference (list):</span>
 <span class="sd">                List of strings indicating preferred instrument types.</span>
+<span class="sd">            large_dist (dict):</span>
+<span class="sd">                A dictionary with keys "preference", "mag", and "dist";</span>
+<span class="sd">                "preference" is the same as the "preference" argument to this</span>
+<span class="sd">                function, but will replace it when the distance is exceeded</span>
+<span class="sd">                for a given magnitude. The distance threshold is computed as:</span>
+
+<span class="sd">                    ```</span>
+<span class="sd">                    dist_thresh = dist[0]</span>
+<span class="sd">                    for m, d in zip(mag, dist):</span>
+<span class="sd">                        if eqmag &gt; m:</span>
+<span class="sd">                            dist_thresh = d</span>
+<span class="sd">                    ```</span>
+
+<span class="sd">            origin (Origin):</span>
+<span class="sd">                Origin object.</span>
 <span class="sd">        """</span>
+        <span class="c1"># Do we have a different large-distnce preference?</span>
+        <span class="k">if</span> <span class="n">large_dist</span><span class="p">:</span>
+            <span class="n">dist_thresh</span> <span class="o">=</span> <span class="n">large_dist</span><span class="p">[</span><span class="s2">"dist"</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">large_dist</span><span class="p">[</span><span class="s2">"mag"</span><span class="p">],</span> <span class="n">large_dist</span><span class="p">[</span><span class="s2">"dist"</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">origin</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&gt;</span> <span class="n">m</span><span class="p">:</span>
+                    <span class="n">dist_thresh</span> <span class="o">=</span> <span class="n">d</span>
+
         <span class="c1"># Create a list of streams with matching id (combo of net and station).</span>
         <span class="n">all_matches</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">match_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">idx1</span><span class="p">,</span> <span class="n">stream1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">idx1</span> <span class="ow">in</span> <span class="n">all_matches</span><span class="p">:</span>
+            <span class="n">cond1</span> <span class="o">=</span> <span class="n">idx1</span> <span class="ow">in</span> <span class="n">all_matches</span>
+            <span class="n">cond2</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">stream1</span><span class="o">.</span><span class="n">passed</span>
+            <span class="k">if</span> <span class="n">cond1</span> <span class="ow">or</span> <span class="n">cond2</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx1</span><span class="p">]</span>
             <span class="n">net_sta</span> <span class="o">=</span> <span class="n">stream1</span><span class="o">.</span><span class="n">get_net_sta</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">idx2</span><span class="p">,</span> <span class="n">stream2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">idx1</span> <span class="o">!=</span> <span class="n">idx2</span> <span class="ow">and</span> <span class="n">idx1</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_matches</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="n">net_sta</span> <span class="o">==</span> <span class="n">stream2</span><span class="o">.</span><span class="n">get_net_sta</span><span class="p">()):</span>
-                        <span class="n">matches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx2</span><span class="p">)</span>
+                <span class="n">cond1</span> <span class="o">=</span> <span class="n">idx1</span> <span class="o">!=</span> <span class="n">idx2</span>
+                <span class="n">cond2</span> <span class="o">=</span> <span class="n">idx1</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_matches</span>
+                <span class="n">cond3</span> <span class="o">=</span> <span class="n">net_sta</span> <span class="o">==</span> <span class="n">stream2</span><span class="o">.</span><span class="n">get_net_sta</span><span class="p">()</span>
+                <span class="n">cond4</span> <span class="o">=</span> <span class="n">stream2</span><span class="o">.</span><span class="n">passed</span>
+                <span class="k">if</span> <span class="n">cond1</span> <span class="ow">and</span> <span class="n">cond2</span> <span class="ow">and</span> <span class="n">cond3</span> <span class="ow">and</span> <span class="n">cond4</span><span class="p">:</span>
+                    <span class="n">matches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx2</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">match_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>
                 <span class="n">all_matches</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span>
@@ -646,6 +680,21 @@
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="c1"># If so, loop over list of preferred instruments</span>
                 <span class="n">group_insts</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="p">[</span><span class="n">g</span><span class="p">]</span><span class="o">.</span><span class="n">get_inst</span><span class="p">()</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">group</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">large_dist</span><span class="p">:</span>
+                    <span class="n">tr</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">distance</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">gps2dist_azimuth</span><span class="p">(</span>
+                            <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+                            <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+                            <span class="n">origin</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+                            <span class="n">origin</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+                        <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="o">/</span> <span class="mf">1000.0</span>
+                    <span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">distance</span> <span class="o">&gt;</span> <span class="n">dist_thresh</span><span class="p">:</span>
+                        <span class="n">preference</span> <span class="o">=</span> <span class="n">large_dist</span><span class="p">[</span><span class="s2">"preference"</span><span class="p">]</span>
 
                 <span class="c1"># Loop over preferred instruments</span>
                 <span class="n">no_match</span> <span class="o">=</span> <span class="kc">True</span>
@@ -664,13 +713,12 @@
                         <span class="n">to_fail</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">keep</span><span class="p">)</span>
                         <span class="k">for</span> <span class="n">tf</span> <span class="ow">in</span> <span class="n">to_fail</span><span class="p">:</span>
                             <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
-                                    <span class="n">network</span><span class="o">=</span><span class="bp">self</span><span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span><span class="p">,</span>
-                                    <span class="n">station</span><span class="o">=</span><span class="bp">self</span><span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span><span class="p">,</span>
-                                    <span class="n">instrument</span><span class="o">=</span><span class="n">tf</span><span class="p">):</span>
+                                <span class="n">network</span><span class="o">=</span><span class="bp">self</span><span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span><span class="p">,</span>
+                                <span class="n">station</span><span class="o">=</span><span class="bp">self</span><span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span><span class="p">,</span>
+                                <span class="n">instrument</span><span class="o">=</span><span class="n">tf</span><span class="p">,</span>
+                            <span class="p">):</span>
                                 <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-                                    <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span>
-                                        <span class="s1">'Colocated with </span><span class="si">%s</span><span class="s1"> instrument.'</span> <span class="o">%</span> <span class="n">keep</span>
-                                    <span class="p">)</span>
+                                    <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"Colocated with </span><span class="si">%s</span><span class="s2"> instrument."</span> <span class="o">%</span> <span class="n">keep</span><span class="p">)</span>
 
                         <span class="k">break</span>
                 <span class="k">if</span> <span class="n">no_match</span><span class="p">:</span>
@@ -678,9 +726,9 @@
                     <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">group</span><span class="p">:</span>
                         <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">[</span><span class="n">g</span><span class="p">]:</span>
                             <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span>
-                                <span class="s1">'No instruments match entries in the '</span>
-                                <span class="s1">'colocated instrument preference list for '</span>
-                                <span class="s1">'this station.'</span>
+                                <span class="s2">"No instruments match entries in the "</span>
+                                <span class="s2">"colocated instrument preference list for "</span>
+                                <span class="s2">"this station."</span>
                             <span class="p">)</span></div>
 
 <div class="viewcode-block" id="StreamCollection.from_directory"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/streamcollection/index.html#gmprocess.core.streamcollection.StreamCollection.from_directory">[docs]</a>    <span class="nd">@classmethod</span>
@@ -779,9 +827,13 @@
 <span class="sd">        """</span>
         <span class="n">streams</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">streams</span>
         <span class="c1"># dept for an origin object should be stored in meters</span>
-        <span class="n">origin</span> <span class="o">=</span> <span class="n">Origin</span><span class="p">(</span><span class="n">resource_id</span><span class="o">=</span><span class="n">origin</span><span class="p">[</span><span class="s1">'id'</span><span class="p">],</span> <span class="n">latitude</span><span class="o">=</span><span class="n">origin</span><span class="p">[</span><span class="s1">'lat'</span><span class="p">],</span>
-                        <span class="n">longitude</span><span class="o">=</span><span class="n">origin</span><span class="p">[</span><span class="s1">'lon'</span><span class="p">],</span> <span class="n">time</span><span class="o">=</span><span class="n">origin</span><span class="p">[</span><span class="s1">'time'</span><span class="p">],</span>
-                        <span class="n">depth</span><span class="o">=</span><span class="n">origin</span><span class="p">[</span><span class="s1">'depth'</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="n">Origin</span><span class="p">(</span>
+            <span class="n">resource_id</span><span class="o">=</span><span class="n">origin</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span>
+            <span class="n">latitude</span><span class="o">=</span><span class="n">origin</span><span class="p">[</span><span class="s2">"lat"</span><span class="p">],</span>
+            <span class="n">longitude</span><span class="o">=</span><span class="n">origin</span><span class="p">[</span><span class="s2">"lon"</span><span class="p">],</span>
+            <span class="n">time</span><span class="o">=</span><span class="n">origin</span><span class="p">[</span><span class="s2">"time"</span><span class="p">],</span>
+            <span class="n">depth</span><span class="o">=</span><span class="n">origin</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">imcs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">station_summary_imcs</span> <span class="o">=</span> <span class="n">DEFAULT_IMCS</span>
@@ -808,7 +860,8 @@
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">stream_summary</span> <span class="o">=</span> <span class="n">StationSummary</span><span class="o">.</span><span class="n">from_stream</span><span class="p">(</span>
-                <span class="n">stream</span><span class="p">,</span> <span class="n">station_summary_imcs</span><span class="p">,</span> <span class="n">station_summary_imts</span><span class="p">,</span> <span class="n">origin</span><span class="p">)</span>
+                <span class="n">stream</span><span class="p">,</span> <span class="n">station_summary_imcs</span><span class="p">,</span> <span class="n">station_summary_imts</span><span class="p">,</span> <span class="n">origin</span>
+            <span class="p">)</span>
             <span class="n">summary</span> <span class="o">=</span> <span class="n">stream_summary</span><span class="o">.</span><span class="n">summary</span>
             <span class="n">subdfs</span> <span class="o">+=</span> <span class="p">[</span><span class="n">summary</span><span class="p">]</span>
         <span class="n">dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">subdfs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -817,20 +870,19 @@
 
 <div class="viewcode-block" id="StreamCollection.__str__"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/streamcollection/index.html#gmprocess.core.streamcollection.StreamCollection.__str__">[docs]</a>    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""String summary of the StreamCollection."""</span>
-        <span class="n">summary</span> <span class="o">=</span> <span class="s1">''</span>
+        <span class="n">summary</span> <span class="o">=</span> <span class="s2">""</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">streams</span><span class="p">)</span>
-        <span class="n">summary</span> <span class="o">+=</span> <span class="s1">'</span><span class="si">%s</span><span class="s1"> StationStreams(s) in StreamCollection:</span><span class="se">\n</span><span class="s1">'</span> <span class="o">%</span> <span class="n">n</span>
-        <span class="n">summary</span> <span class="o">+=</span> <span class="s1">'    </span><span class="si">%s</span><span class="s1"> StationStreams(s) passed checks.</span><span class="se">\n</span><span class="s1">'</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_passed</span>
-        <span class="n">summary</span> <span class="o">+=</span> <span class="s1">'    </span><span class="si">%s</span><span class="s1"> StationStreams(s) failed checks.</span><span class="se">\n</span><span class="s1">'</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_failed</span>
+        <span class="n">summary</span> <span class="o">+=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2"> StationStreams(s) in StreamCollection:</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="n">n</span>
+        <span class="n">summary</span> <span class="o">+=</span> <span class="s2">"    </span><span class="si">%s</span><span class="s2"> StationStreams(s) passed checks.</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_passed</span>
+        <span class="n">summary</span> <span class="o">+=</span> <span class="s2">"    </span><span class="si">%s</span><span class="s2"> StationStreams(s) failed checks.</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_failed</span>
         <span class="k">return</span> <span class="n">summary</span></div>
 
 <div class="viewcode-block" id="StreamCollection.describe"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/streamcollection/index.html#gmprocess.core.streamcollection.StreamCollection.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""More verbose description of StreamCollection."""</span>
-        <span class="n">summary</span> <span class="o">=</span> <span class="s1">''</span>
-        <span class="n">summary</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">streams</span><span class="p">))</span> <span class="o">+</span> \
-            <span class="s1">' StationStreams(s) in StreamCollection:</span><span class="se">\n</span><span class="s1">'</span>
+        <span class="n">summary</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="n">summary</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">streams</span><span class="p">))</span> <span class="o">+</span> <span class="s2">" StationStreams(s) in StreamCollection:</span><span class="se">\n</span><span class="s2">"</span>
         <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
-            <span class="n">summary</span> <span class="o">+=</span> <span class="n">stream</span><span class="o">.</span><span class="fm">__str__</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="n">INDENT</span><span class="p">)</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span>
+            <span class="n">summary</span> <span class="o">+=</span> <span class="n">stream</span><span class="o">.</span><span class="fm">__str__</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="n">INDENT</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="StreamCollection.__len__"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/streamcollection/index.html#gmprocess.core.streamcollection.StreamCollection.__len__">[docs]</a>    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -863,7 +915,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">streams</span><span class="o">.</span><span class="fm">__delitem__</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="StreamCollection.__getslice__"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/streamcollection/index.html#gmprocess.core.streamcollection.StreamCollection.__getslice__">[docs]</a>    <span class="k">def</span> <span class="nf">__getslice__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">streams</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span><span class="n">k</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">streams</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">streams</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="p">:</span> <span class="n">k</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="StreamCollection.append"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/streamcollection/index.html#gmprocess.core.streamcollection.StreamCollection.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream</span><span class="p">):</span>
         <span class="sd">"""Append a single StationStream object.</span>
@@ -876,8 +928,7 @@
             <span class="n">streams</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">streams</span> <span class="o">+</span> <span class="p">[</span><span class="n">stream</span><span class="p">]</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">streams</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="s1">'Append only uspports adding a single StationStream.'</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"Append only uspports adding a single StationStream."</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="StreamCollection.pop"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/streamcollection/index.html#gmprocess.core.streamcollection.StreamCollection.pop">[docs]</a>    <span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)):</span>
         <span class="sd">"""Remove and return item at index (default last)."""</span>
@@ -908,8 +959,8 @@
         <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
             <span class="n">inst</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">get_inst</span><span class="p">()</span>
             <span class="n">net_sta</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">get_net_sta</span><span class="p">()</span>
-            <span class="n">net</span> <span class="o">=</span> <span class="n">net_sta</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">sta</span> <span class="o">=</span> <span class="n">net_sta</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">net</span> <span class="o">=</span> <span class="n">net_sta</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">sta</span> <span class="o">=</span> <span class="n">net_sta</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">network</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">network</span><span class="o">.</span><span class="n">upper</span><span class="p">()):</span>
                     <span class="k">continue</span>
@@ -936,18 +987,18 @@
             <span class="k">if</span> <span class="n">idx1</span> <span class="ow">in</span> <span class="n">all_matches</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx1</span><span class="p">]</span>
-            <span class="n">network</span> <span class="o">=</span> <span class="n">trace1</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s1">'network'</span><span class="p">]</span>
-            <span class="n">station</span> <span class="o">=</span> <span class="n">trace1</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s1">'station'</span><span class="p">]</span>
+            <span class="n">network</span> <span class="o">=</span> <span class="n">trace1</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"network"</span><span class="p">]</span>
+            <span class="n">station</span> <span class="o">=</span> <span class="n">trace1</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"station"</span><span class="p">]</span>
             <span class="n">free_field</span> <span class="o">=</span> <span class="n">trace1</span><span class="o">.</span><span class="n">free_field</span>
             <span class="c1"># For instrument, use first two characters of the channel</span>
-            <span class="n">inst</span> <span class="o">=</span> <span class="n">trace1</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s1">'channel'</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">inst</span> <span class="o">=</span> <span class="n">trace1</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">idx2</span><span class="p">,</span> <span class="n">trace2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">trace_list</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">idx1</span> <span class="o">!=</span> <span class="n">idx2</span> <span class="ow">and</span> <span class="n">idx1</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_matches</span><span class="p">:</span>
                     <span class="k">if</span> <span class="p">(</span>
-                        <span class="n">network</span> <span class="o">==</span> <span class="n">trace2</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s1">'network'</span><span class="p">]</span> <span class="ow">and</span>
-                        <span class="n">station</span> <span class="o">==</span> <span class="n">trace2</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s1">'station'</span><span class="p">]</span> <span class="ow">and</span>
-                        <span class="n">inst</span> <span class="o">==</span> <span class="n">trace2</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s1">'channel'</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="ow">and</span>
-                        <span class="n">free_field</span> <span class="o">==</span> <span class="n">trace2</span><span class="o">.</span><span class="n">free_field</span>
+                        <span class="n">network</span> <span class="o">==</span> <span class="n">trace2</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"network"</span><span class="p">]</span>
+                        <span class="ow">and</span> <span class="n">station</span> <span class="o">==</span> <span class="n">trace2</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"station"</span><span class="p">]</span>
+                        <span class="ow">and</span> <span class="n">inst</span> <span class="o">==</span> <span class="n">trace2</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+                        <span class="ow">and</span> <span class="n">free_field</span> <span class="o">==</span> <span class="n">trace2</span><span class="o">.</span><span class="n">free_field</span>
                     <span class="p">):</span>
                         <span class="n">matches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx2</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -962,9 +1013,7 @@
         <span class="k">for</span> <span class="n">groups</span> <span class="ow">in</span> <span class="n">match_list</span><span class="p">:</span>
             <span class="n">grouped_trace_list</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
-                <span class="n">grouped_trace_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="n">trace_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                <span class="p">)</span>
+                <span class="n">grouped_trace_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">trace_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="c1"># some networks (e.g., Bureau of Reclamation, at the time of this</span>
             <span class="c1"># writing) use the location field to indicate different sensors at</span>
             <span class="c1"># (roughly) the same location. If we know this (as in the case of</span>
@@ -978,8 +1027,13 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">streams</span> <span class="o">=</span> <span class="n">grouped_streams</span>
 
-    <span class="k">def</span> <span class="nf">__handle_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_dist_tolerance</span><span class="p">,</span> <span class="n">preference_order</span><span class="p">,</span>
-                            <span class="n">process_level_preference</span><span class="p">,</span> <span class="n">format_preference</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__handle_duplicates</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">max_dist_tolerance</span><span class="p">,</span>
+        <span class="n">preference_order</span><span class="p">,</span>
+        <span class="n">process_level_preference</span><span class="p">,</span>
+        <span class="n">format_preference</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">"""</span>
 <span class="sd">        Removes duplicate data from the StreamCollection, based on the</span>
 <span class="sd">        process level and format preferences.</span>
@@ -1006,17 +1060,17 @@
         <span class="c1"># If arguments are None, check the config</span>
         <span class="c1"># If not in the config, use the default values at top of the file</span>
         <span class="n">preferences</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">'max_dist_tolerance'</span><span class="p">:</span> <span class="n">max_dist_tolerance</span><span class="p">,</span>
-            <span class="s1">'preference_order'</span><span class="p">:</span> <span class="n">preference_order</span><span class="p">,</span>
-            <span class="s1">'process_level_preference'</span><span class="p">:</span> <span class="n">process_level_preference</span><span class="p">,</span>
-            <span class="s1">'format_preference'</span><span class="p">:</span> <span class="n">format_preference</span>
+            <span class="s2">"max_dist_tolerance"</span><span class="p">:</span> <span class="n">max_dist_tolerance</span><span class="p">,</span>
+            <span class="s2">"preference_order"</span><span class="p">:</span> <span class="n">preference_order</span><span class="p">,</span>
+            <span class="s2">"process_level_preference"</span><span class="p">:</span> <span class="n">process_level_preference</span><span class="p">,</span>
+            <span class="s2">"format_preference"</span><span class="p">:</span> <span class="n">format_preference</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">preferences</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
-                <span class="n">preferences</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">'duplicate'</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
+                <span class="n">preferences</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">"duplicate"</span><span class="p">][</span><span class="n">key</span><span class="p">]</span>
 
         <span class="n">stream_params</span> <span class="o">=</span> <span class="n">gather_stream_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">streams</span><span class="p">)</span>
 
@@ -1029,28 +1083,36 @@
         <span class="k">for</span> <span class="n">tr_to_add</span> <span class="ow">in</span> <span class="n">traces</span><span class="p">:</span>
             <span class="n">is_duplicate</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">for</span> <span class="n">tr_pref</span> <span class="ow">in</span> <span class="n">preferred_traces</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">are_duplicates</span><span class="p">(</span><span class="n">tr_to_add</span><span class="p">,</span> <span class="n">tr_pref</span><span class="p">,</span>
-                                  <span class="n">preferences</span><span class="p">[</span><span class="s1">'max_dist_tolerance'</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">are_duplicates</span><span class="p">(</span>
+                    <span class="n">tr_to_add</span><span class="p">,</span> <span class="n">tr_pref</span><span class="p">,</span> <span class="n">preferences</span><span class="p">[</span><span class="s2">"max_dist_tolerance"</span><span class="p">]</span>
+                <span class="p">):</span>
                     <span class="n">is_duplicate</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">break</span>
 
             <span class="k">if</span> <span class="n">is_duplicate</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">choose_preferred</span><span class="p">(</span>
-                        <span class="n">tr_to_add</span><span class="p">,</span> <span class="n">tr_pref</span><span class="p">,</span>
-                        <span class="n">preferences</span><span class="p">[</span><span class="s1">'preference_order'</span><span class="p">],</span>
-                        <span class="n">preferences</span><span class="p">[</span><span class="s1">'process_level_preference'</span><span class="p">],</span>
-                        <span class="n">preferences</span><span class="p">[</span><span class="s1">'format_preference'</span><span class="p">])</span> <span class="o">==</span> <span class="n">tr_to_add</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">choose_preferred</span><span class="p">(</span>
+                        <span class="n">tr_to_add</span><span class="p">,</span>
+                        <span class="n">tr_pref</span><span class="p">,</span>
+                        <span class="n">preferences</span><span class="p">[</span><span class="s2">"preference_order"</span><span class="p">],</span>
+                        <span class="n">preferences</span><span class="p">[</span><span class="s2">"process_level_preference"</span><span class="p">],</span>
+                        <span class="n">preferences</span><span class="p">[</span><span class="s2">"format_preference"</span><span class="p">],</span>
+                    <span class="p">)</span>
+                    <span class="o">==</span> <span class="n">tr_to_add</span>
+                <span class="p">):</span>
                     <span class="n">preferred_traces</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tr_pref</span><span class="p">)</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Trace </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">) is a duplicate and '</span>
-                                 <span class="s1">'has been removed from the StreamCollection.'</span>
-                                 <span class="o">%</span> <span class="p">(</span><span class="n">tr_pref</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-                                    <span class="n">tr_pref</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">source_file</span><span class="p">))</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                        <span class="s2">"Trace </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">) is a duplicate and "</span>
+                        <span class="s2">"has been removed from the StreamCollection."</span>
+                        <span class="o">%</span> <span class="p">(</span><span class="n">tr_pref</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">tr_pref</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">source_file</span><span class="p">)</span>
+                    <span class="p">)</span>
                     <span class="n">preferred_traces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tr_to_add</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Trace </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">) is a duplicate and '</span>
-                                 <span class="s1">'has been removed from the StreamCollection.'</span>
-                                 <span class="o">%</span> <span class="p">(</span><span class="n">tr_to_add</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-                                    <span class="n">tr_to_add</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">source_file</span><span class="p">))</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                        <span class="s2">"Trace </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">) is a duplicate and "</span>
+                        <span class="s2">"has been removed from the StreamCollection."</span>
+                        <span class="o">%</span> <span class="p">(</span><span class="n">tr_to_add</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">tr_to_add</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">source_file</span><span class="p">)</span>
+                    <span class="p">)</span>
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">preferred_traces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tr_to_add</span><span class="p">)</span>
@@ -1080,43 +1142,49 @@
 <span class="sd">            If status='short' or status='long': pandas.Series</span>
 <span class="sd">        """</span>
 
-        <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="s1">'short'</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">"short"</span><span class="p">:</span>
             <span class="n">failure_reasons</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
-                <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">tr</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span> <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s1">'failure'</span><span class="p">))</span><span class="o">.</span>
-                    <span class="n">getParameter</span><span class="p">(</span><span class="s1">'failure'</span><span class="p">)[</span><span class="s1">'reason'</span><span class="p">]</span> <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">streams</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+                <span class="p">[</span>
+                    <span class="nb">next</span><span class="p">(</span><span class="n">tr</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span> <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">"failure"</span><span class="p">))</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span>
+                        <span class="s2">"failure"</span>
+                    <span class="p">)[</span><span class="s2">"reason"</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">streams</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span>
+                <span class="p">],</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="n">failure_counts</span> <span class="o">=</span> <span class="n">failure_reasons</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
-            <span class="n">failure_counts</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'Number of Records'</span>
-            <span class="n">failure_counts</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'Failure Reason'</span>
+            <span class="n">failure_counts</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"Number of Records"</span>
+            <span class="n">failure_counts</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"Failure Reason"</span>
             <span class="k">return</span> <span class="n">failure_counts</span>
-        <span class="k">elif</span> <span class="n">status</span> <span class="o">==</span> <span class="s1">'net'</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">"net"</span><span class="p">:</span>
             <span class="n">failure_dict</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">streams</span><span class="p">:</span>
                 <span class="n">net</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span>
                 <span class="k">if</span> <span class="n">net</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">failure_dict</span><span class="p">:</span>
-                    <span class="n">failure_dict</span><span class="p">[</span><span class="n">net</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Number Passed'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                                         <span class="s1">'Number Failed'</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+                    <span class="n">failure_dict</span><span class="p">[</span><span class="n">net</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"Number Passed"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"Number Failed"</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
                 <span class="k">if</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
-                    <span class="n">failure_dict</span><span class="p">[</span><span class="n">net</span><span class="p">][</span><span class="s1">'Number Passed'</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">failure_dict</span><span class="p">[</span><span class="n">net</span><span class="p">][</span><span class="s2">"Number Passed"</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">failure_dict</span><span class="p">[</span><span class="n">net</span><span class="p">][</span><span class="s1">'Number Failed'</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">failure_dict</span><span class="p">[</span><span class="n">net</span><span class="p">][</span><span class="s2">"Number Failed"</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">failure_dict</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
-            <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'Network'</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"Network"</span>
             <span class="k">return</span> <span class="n">df</span>
-        <span class="k">elif</span> <span class="n">status</span> <span class="o">==</span> <span class="s1">'long'</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">"long"</span><span class="p">:</span>
             <span class="n">failure_reasons</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">streams</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
-                    <span class="n">first_failure</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
-                        <span class="n">tr</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span> <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s1">'failure'</span><span class="p">))</span>
+                    <span class="n">first_failure</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tr</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span> <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">"failure"</span><span class="p">))</span>
                     <span class="n">failure_reasons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="n">first_failure</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s1">'failure'</span><span class="p">)[</span><span class="s1">'reason'</span><span class="p">])</span>
+                        <span class="n">first_failure</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"failure"</span><span class="p">)[</span><span class="s2">"reason"</span><span class="p">]</span>
+                    <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">failure_reasons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">''</span><span class="p">)</span>
+                    <span class="n">failure_reasons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
             <span class="n">sta_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">st</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">streams</span><span class="p">]</span>
             <span class="n">failure_srs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
-                <span class="n">index</span><span class="o">=</span><span class="n">sta_ids</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">failure_reasons</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'Failure reason'</span><span class="p">)</span>
-            <span class="n">failure_srs</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">'StationID'</span>
+                <span class="n">index</span><span class="o">=</span><span class="n">sta_ids</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">failure_reasons</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"Failure reason"</span>
+            <span class="p">)</span>
+            <span class="n">failure_srs</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"StationID"</span>
             <span class="k">return</span> <span class="n">failure_srs</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Status must be "short", "net", or "long".'</span><span class="p">)</span></div></div>
@@ -1146,7 +1214,7 @@
 
         <span class="c1"># Tag is a StationStream attribute; If it does not exist, make it</span>
         <span class="c1"># an empty string</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="s1">'tag'</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="s2">"tag"</span><span class="p">):</span>
             <span class="n">tag</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">tag</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">tag</span> <span class="o">=</span> <span class="s2">""</span>
@@ -1193,8 +1261,7 @@
             <span class="k">if</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span> <span class="ow">in</span> <span class="n">streams_dict</span><span class="p">:</span>
                 <span class="n">streams_dict</span><span class="p">[</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span><span class="p">]</span> <span class="o">+=</span> <span class="n">trace</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">streams_dict</span><span class="p">[</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span><span class="p">]</span> <span class="o">=</span> \
-                    <span class="n">StationStream</span><span class="p">(</span><span class="n">traces</span><span class="o">=</span><span class="p">[</span><span class="n">trace</span><span class="p">])</span>
+                <span class="n">streams_dict</span><span class="p">[</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span><span class="p">]</span> <span class="o">=</span> <span class="n">StationStream</span><span class="p">(</span><span class="n">traces</span><span class="o">=</span><span class="p">[</span><span class="n">trace</span><span class="p">])</span>
         <span class="n">streams</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">streams_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">streams</span> <span class="o">=</span> <span class="p">[</span><span class="n">StationStream</span><span class="p">(</span><span class="n">traces</span><span class="o">=</span><span class="n">grouped_trace_list</span><span class="p">)]</span>
@@ -1221,33 +1288,39 @@
 <span class="sd">    """</span>
     <span class="n">orientation_codes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="p">[</span><span class="n">tr1</span><span class="p">,</span> <span class="n">tr2</span><span class="p">]:</span>
-        <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'1'</span><span class="p">,</span> <span class="s1">'N'</span><span class="p">]:</span>
-            <span class="n">orientation_codes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">'1'</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'2'</span><span class="p">,</span> <span class="s1">'E'</span><span class="p">]:</span>
-            <span class="n">orientation_codes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">'2'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"1"</span><span class="p">,</span> <span class="s2">"N"</span><span class="p">]:</span>
+            <span class="n">orientation_codes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"1"</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"2"</span><span class="p">,</span> <span class="s2">"E"</span><span class="p">]:</span>
+            <span class="n">orientation_codes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"2"</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">orientation_codes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s1">'Z'</span><span class="p">)</span>
+            <span class="n">orientation_codes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"Z"</span><span class="p">)</span>
 
     <span class="c1"># First, check if the ids match (net.sta.loc.cha)</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">tr1</span><span class="o">.</span><span class="n">id</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">tr2</span><span class="o">.</span><span class="n">id</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">orientation_codes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">tr1</span><span class="o">.</span><span class="n">id</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">tr2</span><span class="o">.</span><span class="n">id</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">orientation_codes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="c1"># If not matching IDs, check the station, instrument code, and distance</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">distance</span> <span class="o">=</span> <span class="n">gps2dist_azimuth</span><span class="p">(</span>
-            <span class="n">tr1</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">tr1</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
-            <span class="n">tr2</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">tr2</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">tr1</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span> <span class="o">==</span> <span class="n">tr2</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span>
+            <span class="n">tr1</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+            <span class="n">tr1</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+            <span class="n">tr2</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+            <span class="n">tr2</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">tr1</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span> <span class="o">==</span> <span class="n">tr2</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span>
             <span class="ow">and</span> <span class="n">tr1</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">tr2</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
             <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">orientation_codes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-                <span class="ow">and</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="n">max_dist_tolerance</span><span class="p">):</span>
+            <span class="ow">and</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="n">max_dist_tolerance</span>
+        <span class="p">):</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span></div>
 
 
-<div class="viewcode-block" id="choose_preferred"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/streamcollection/index.html#gmprocess.core.streamcollection.choose_preferred">[docs]</a><span class="k">def</span> <span class="nf">choose_preferred</span><span class="p">(</span><span class="n">tr1</span><span class="p">,</span> <span class="n">tr2</span><span class="p">,</span> <span class="n">preference_order</span><span class="p">,</span> <span class="n">process_level_preference</span><span class="p">,</span>
-                     <span class="n">format_preference</span><span class="p">):</span>
-    <span class="sd">"""Determines which trace is preferred. Returns the preferred the trace.</span>
+<div class="viewcode-block" id="choose_preferred"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/streamcollection/index.html#gmprocess.core.streamcollection.choose_preferred">[docs]</a><span class="k">def</span> <span class="nf">choose_preferred</span><span class="p">(</span>
+    <span class="n">tr1</span><span class="p">,</span> <span class="n">tr2</span><span class="p">,</span> <span class="n">preference_order</span><span class="p">,</span> <span class="n">process_level_preference</span><span class="p">,</span> <span class="n">format_preference</span>
+<span class="p">):</span>
+    <span class="sd">"""Determines which trace is preferred. Returns the preferred trace.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        tr1 (StationTrace):</span>
@@ -1273,28 +1346,37 @@
 <span class="sd">    """</span>
     <span class="n">traces</span> <span class="o">=</span> <span class="p">[</span><span class="n">tr1</span><span class="p">,</span> <span class="n">tr2</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">pref</span> <span class="ow">in</span> <span class="n">preference_order</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">pref</span> <span class="o">==</span> <span class="s1">'process_level'</span><span class="p">:</span>
-            <span class="n">tr_prefs</span> <span class="o">=</span> <span class="p">[</span><span class="n">process_level_preference</span><span class="o">.</span><span class="n">index</span><span class="p">(</span>
-                <span class="n">REV_PROCESS_LEVELS</span><span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">process_level</span><span class="p">])</span>
-                <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">traces</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">pref</span> <span class="o">==</span> <span class="s1">'source_format'</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">source_format</span> <span class="ow">in</span> <span class="n">format_preference</span>
-                    <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">traces</span><span class="p">]):</span>
-                <span class="n">tr_prefs</span> <span class="o">=</span> <span class="p">[</span><span class="n">format_preference</span><span class="o">.</span><span class="n">index</span><span class="p">(</span>
-                    <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">source_format</span><span class="p">)</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">traces</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">pref</span> <span class="o">==</span> <span class="s2">"process_level"</span><span class="p">:</span>
+            <span class="n">tr_prefs</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">process_level_preference</span><span class="o">.</span><span class="n">index</span><span class="p">(</span>
+                    <span class="n">REV_PROCESS_LEVELS</span><span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">process_level</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">traces</span>
+            <span class="p">]</span>
+        <span class="k">elif</span> <span class="n">pref</span> <span class="o">==</span> <span class="s2">"source_format"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">all</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">source_format</span> <span class="ow">in</span> <span class="n">format_preference</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">traces</span><span class="p">]</span>
+            <span class="p">):</span>
+                <span class="n">tr_prefs</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">format_preference</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">source_format</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">traces</span>
+                <span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">continue</span>
-        <span class="k">elif</span> <span class="n">pref</span> <span class="o">==</span> <span class="s1">'starttime'</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">pref</span> <span class="o">==</span> <span class="s2">"starttime"</span><span class="p">:</span>
             <span class="n">tr_prefs</span> <span class="o">=</span> <span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span> <span class="o">==</span> <span class="n">UTCDateTime</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">traces</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">pref</span> <span class="o">==</span> <span class="s1">'npts'</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">pref</span> <span class="o">==</span> <span class="s2">"npts"</span><span class="p">:</span>
             <span class="n">tr_prefs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="o">/</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">traces</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">pref</span> <span class="o">==</span> <span class="s1">'sampling_rate'</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">pref</span> <span class="o">==</span> <span class="s2">"sampling_rate"</span><span class="p">:</span>
             <span class="n">tr_prefs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="o">/</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">traces</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">pref</span> <span class="o">==</span> <span class="s1">'location_code'</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">pref</span> <span class="o">==</span> <span class="s2">"location_code"</span><span class="p">:</span>
             <span class="n">sorted_codes</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">traces</span><span class="p">])</span>
-            <span class="n">tr_prefs</span> <span class="o">=</span> <span class="p">[</span><span class="n">sorted_codes</span><span class="o">.</span><span class="n">index</span><span class="p">(</span>
-                <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span><span class="p">)</span> <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span> <span class="o">!=</span> <span class="s1">'--'</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-                <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">traces</span><span class="p">]</span>
+            <span class="n">tr_prefs</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">sorted_codes</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span> <span class="o">!=</span> <span class="s2">"--"</span>
+                <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">traces</span>
+            <span class="p">]</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">tr_prefs</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">traces</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nanargmin</span><span class="p">(</span><span class="n">tr_prefs</span><span class="p">)]</span>

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.waveform_processing.corner_frequencies - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.waveform_processing.corner_frequencies - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -467,8 +467,8 @@
 
 <span class="c1"># Options for tapering noise/signal windows</span>
 <span class="n">TAPER_WIDTH</span> <span class="o">=</span> <span class="mf">0.05</span>
-<span class="n">TAPER_TYPE</span> <span class="o">=</span> <span class="s1">'hann'</span>
-<span class="n">TAPER_SIDE</span> <span class="o">=</span> <span class="s1">'both'</span>
+<span class="n">TAPER_TYPE</span> <span class="o">=</span> <span class="s2">"hann"</span>
+<span class="n">TAPER_SIDE</span> <span class="o">=</span> <span class="s2">"both"</span>
 
 
 <div class="viewcode-block" id="get_constant"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/corner_frequencies/index.html#gmprocess.waveform_processing.corner_frequencies.get_constant">[docs]</a><span class="k">def</span> <span class="nf">get_constant</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">highpass</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">lowpass</span><span class="o">=</span><span class="mf">20.0</span><span class="p">):</span>
@@ -487,12 +487,8 @@
 <span class="sd">    """</span>
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
         <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span>
-            <span class="s1">'corner_frequencies'</span><span class="p">,</span>
-            <span class="p">{</span>
-                <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'constant'</span><span class="p">,</span>
-                <span class="s1">'highpass'</span><span class="p">:</span> <span class="n">highpass</span><span class="p">,</span>
-                <span class="s1">'lowpass'</span><span class="p">:</span> <span class="n">lowpass</span>
-            <span class="p">}</span>
+            <span class="s2">"corner_frequencies"</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"constant"</span><span class="p">,</span> <span class="s2">"highpass"</span><span class="p">:</span> <span class="n">highpass</span><span class="p">,</span> <span class="s2">"lowpass"</span><span class="p">:</span> <span class="n">lowpass</span><span class="p">},</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">st</span></div>
 
@@ -514,26 +510,28 @@
 <span class="sd">    """</span>
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
         <span class="c1"># Check for prior calculation of 'snr'</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasCached</span><span class="p">(</span><span class="s1">'snr'</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasCached</span><span class="p">(</span><span class="s2">"snr"</span><span class="p">):</span>
             <span class="n">tr</span> <span class="o">=</span> <span class="n">compute_snr_trace</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">)</span>
 
         <span class="c1"># If the SNR doesn't exist then it must have failed because it didn't</span>
         <span class="c1"># have nough points in the noise or signal windows</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s1">'failure'</span><span class="p">):</span>
-            <span class="n">snr_conf</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s1">'snr_conf'</span><span class="p">)</span>
-            <span class="n">threshold</span> <span class="o">=</span> <span class="n">snr_conf</span><span class="p">[</span><span class="s1">'threshold'</span><span class="p">]</span>
-            <span class="n">min_freq</span> <span class="o">=</span> <span class="n">snr_conf</span><span class="p">[</span><span class="s1">'min_freq'</span><span class="p">]</span>
-            <span class="n">max_freq</span> <span class="o">=</span> <span class="n">snr_conf</span><span class="p">[</span><span class="s1">'max_freq'</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">"failure"</span><span class="p">):</span>
+            <span class="n">snr_conf</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"snr_conf"</span><span class="p">)</span>
+            <span class="n">threshold</span> <span class="o">=</span> <span class="n">snr_conf</span><span class="p">[</span><span class="s2">"threshold"</span><span class="p">]</span>
+            <span class="n">min_freq</span> <span class="o">=</span> <span class="n">snr_conf</span><span class="p">[</span><span class="s2">"min_freq"</span><span class="p">]</span>
+            <span class="n">max_freq</span> <span class="o">=</span> <span class="n">snr_conf</span><span class="p">[</span><span class="s2">"max_freq"</span><span class="p">]</span>
 
-            <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasCached</span><span class="p">(</span><span class="s1">'snr'</span><span class="p">):</span>
-                <span class="n">snr_dict</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s1">'snr'</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasCached</span><span class="p">(</span><span class="s2">"snr"</span><span class="p">):</span>
+                <span class="n">snr_dict</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">"snr"</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s1">'Cannot use SNR to pick corners because SNR could not '</span>
-                        <span class="s1">'be calculated.'</span><span class="p">)</span>
+                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span>
+                    <span class="s2">"Cannot use SNR to pick corners because SNR could not "</span>
+                    <span class="s2">"be calculated."</span>
+                <span class="p">)</span>
                 <span class="k">continue</span>
 
-            <span class="n">snr</span> <span class="o">=</span> <span class="n">snr_dict</span><span class="p">[</span><span class="s1">'snr'</span><span class="p">]</span>
-            <span class="n">freq</span> <span class="o">=</span> <span class="n">snr_dict</span><span class="p">[</span><span class="s1">'freq'</span><span class="p">]</span>
+            <span class="n">snr</span> <span class="o">=</span> <span class="n">snr_dict</span><span class="p">[</span><span class="s2">"snr"</span><span class="p">]</span>
+            <span class="n">freq</span> <span class="o">=</span> <span class="n">snr_dict</span><span class="p">[</span><span class="s2">"freq"</span><span class="p">]</span>
 
             <span class="c1"># Loop through frequencies to find low corner and high corner</span>
             <span class="n">lows</span> <span class="o">=</span> <span class="p">[]</span>
@@ -541,7 +539,7 @@
             <span class="n">have_low</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">freq</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">have_low</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="n">snr</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">threshold</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">snr</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">threshold</span><span class="p">:</span>
                         <span class="n">lows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
                         <span class="n">have_low</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">else</span><span class="p">:</span>
@@ -555,7 +553,7 @@
 
             <span class="c1"># If we didn't find any corners</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">lows</span><span class="p">:</span>
-                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s1">'SNR not greater than required threshold.'</span><span class="p">)</span>
+                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"SNR not greater than required threshold."</span><span class="p">)</span>
                 <span class="k">continue</span>
 
             <span class="c1"># If we find an extra low, add another high for the maximum</span>
@@ -566,7 +564,7 @@
             <span class="c1"># Check if any of the low/high pairs are valid</span>
             <span class="n">found_valid</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lows</span><span class="p">):</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">&lt;=</span> <span class="n">min_freq</span> <span class="ow">and</span> <span class="n">highs</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_freq</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">val</span> <span class="o">&lt;=</span> <span class="n">min_freq</span> <span class="ow">and</span> <span class="n">highs</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_freq</span><span class="p">:</span>
                     <span class="n">low_corner</span> <span class="o">=</span> <span class="n">val</span>
                     <span class="n">high_corner</span> <span class="o">=</span> <span class="n">highs</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
                     <span class="n">found_valid</span> <span class="o">=</span> <span class="kc">True</span>
@@ -574,20 +572,17 @@
             <span class="k">if</span> <span class="n">found_valid</span><span class="p">:</span>
                 <span class="c1"># Check to make sure that the highpass corner frequency is not</span>
                 <span class="c1"># less than 1 / the duration of the waveform</span>
-                <span class="n">duration</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s1">'signal_end'</span><span class="p">)[</span>
-                    <span class="s1">'end_time'</span><span class="p">]</span> <span class="o">-</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span>
+                <span class="n">duration</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"signal_end"</span><span class="p">)[</span><span class="s2">"end_time"</span><span class="p">]</span> <span class="o">-</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span>
+                <span class="p">)</span>
                 <span class="n">low_corner</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">duration</span><span class="p">,</span> <span class="n">low_corner</span><span class="p">)</span>
 
                 <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span>
-                    <span class="s1">'corner_frequencies'</span><span class="p">,</span>
-                    <span class="p">{</span>
-                        <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'snr'</span><span class="p">,</span>
-                        <span class="s1">'highpass'</span><span class="p">:</span> <span class="n">low_corner</span><span class="p">,</span>
-                        <span class="s1">'lowpass'</span><span class="p">:</span> <span class="n">high_corner</span>
-                    <span class="p">}</span>
+                    <span class="s2">"corner_frequencies"</span><span class="p">,</span>
+                    <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"snr"</span><span class="p">,</span> <span class="s2">"highpass"</span><span class="p">:</span> <span class="n">low_corner</span><span class="p">,</span> <span class="s2">"lowpass"</span><span class="p">:</span> <span class="n">high_corner</span><span class="p">},</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s1">'SNR not met within the required bandwidth.'</span><span class="p">)</span>
+                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"SNR not met within the required bandwidth."</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">st</span></div>
 </pre></div>
         </article>
