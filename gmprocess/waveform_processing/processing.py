@@ -30,15 +30,17 @@ from gmprocess.waveform_processing import corner_frequencies
 from gmprocess.waveform_processing.pretesting import (  # NOQA
     check_max_amplitude,
     check_sta_lta,
-    check_free_field,
-)
-from gmprocess.waveform_processing.filtering import (
-    lowpass_filter,
-    highpass_filter,
-)  # NOQA
-from gmprocess.waveform_processing.adjust_highpass import adjust_highpass_corner  # NOQA
-from gmprocess.waveform_processing.zero_crossings import check_zero_crossings  # NOQA
-from gmprocess.waveform_processing.nn_quality_assurance import NNet_QA  # NOQA
+    check_free_field)
+from gmprocess.waveform_processing.filtering import \
+    lowpass_filter, highpass_filter  # NOQA
+from gmprocess.waveform_processing.adjust_highpass import \
+    adjust_highpass_corner  # NOQA
+    from gmprocess.waveform_processing.PolynomialFit_SJB import \
+    PolynomialFit_SJB  # NOQA
+from gmprocess.waveform_processing.zero_crossings import \
+    check_zero_crossings  # NOQA
+from gmprocess.waveform_processing.nn_quality_assurance import \
+    NNet_QA  # NOQA
 from gmprocess.waveform_processing.snr import compute_snr  # NOQA
 from gmprocess.waveform_processing.spectrum import fit_spectra  # NOQA
 from gmprocess.waveform_processing.windows import cut, trim_multiple_events  # NOQA
