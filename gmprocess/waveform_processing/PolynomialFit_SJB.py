@@ -10,7 +10,7 @@ from gmprocess.waveform_processing.filtering import \
     lowpass_filter_trace, highpass_filter_trace
 
 
-def PolynomialFit_SJB(st, target = 0.02, tol = 0.001,
+def PolynomialFit_SJB(st, target = 0.02, tol = 0.001, polynomial_order = 6,
                            maxiter = 30, maxfc = 0.5):
     """Search for highpass corner using Ridder's method such that
         it satisfies the criterion that the ratio between the maximum of a third order polynomial
@@ -62,7 +62,7 @@ def PolynomialFit_SJB(st, target = 0.02, tol = 0.001,
     return st
 
 def __ridder_log(tr,f_hp,
-               target = 0.02, tol = 0.001,
+               target = 0.02, tol = 0.001,polynomial_order = 6,
                maxiter = 30, maxfc = 0.5):
     logging.debug("Ridder activated")
     output = {}
@@ -79,14 +79,14 @@ def __ridder_log(tr,f_hp,
     freq = np.fft.rfftfreq(len(acc), acc.stats.delta)
     fc0 = f_hp
     Facc0 = Facc
-    #disp0 = get_disp(freq,Facc,len(acc))
-    disp0 = get_disp_timedomain(Facc,acc.stats.delta,len(acc))
+    disp0 = get_disp(freq,Facc,len(acc))
+    #disp0 = get_disp_timedomain(Facc,acc.stats.delta,len(acc))
     R0 = get_residual(time, disp0, target)
     
     fc2 = maxfc
     Facc2 = filtered_Facc(Facc, freq, fc2, order = 5)
-    #disp2 = get_disp(freq,Facc2,len(acc))
-    disp2 = get_disp_timedomain(Facc2,acc.stats.delta,len(acc))
+    disp2 = get_disp(freq,Facc2,len(acc))
+    #disp2 = get_disp_timedomain(Facc2,acc.stats.delta,len(acc))
 
     R2 = get_residual(time, disp2, target)
     if ((np.sign(R0) < 0) and (np.sign(R2) < 0)):
@@ -101,14 +101,14 @@ def __ridder_log(tr,f_hp,
         logging.debug("Ridder iteration = %s" % i)
         fc1 = np.exp(0.5 * (np.log(fc0) + np.log(fc2)))
         Facc1 = filtered_Facc(Facc, freq, fc1, order = 5)
-        #disp = get_disp(freq,Facc1,len(acc))
-        disp = get_disp_timedomain(Facc1,acc.stats.delta,len(acc))
+        disp = get_disp(freq,Facc1,len(acc))
+        #disp = get_disp_timedomain(Facc1,acc.stats.delta,len(acc))
         R1 = get_residual(time, disp, target)
         fc3 = np.exp(np.log(fc1) + (np.log(fc1) - np.log(fc0)) * np.sign(R0) * R1 / (np.sqrt(R1 ** 2 - R0 * R2)))
         fc3 = np.min([maxfc, fc3])
         Facc3 = filtered_Facc(Facc, freq, fc3, order = 5)
-        #disp = get_disp(freq,Facc3,len(acc))
-        disp = get_disp_timedomain(Facc3, acc.stats.delta,len(acc))
+        disp = get_disp(freq,Facc3,len(acc))
+        #disp = get_disp_timedomain(Facc3, acc.stats.delta,len(acc))
         R3 = get_residual(time, disp, target)
         if ((np.abs(R3) <= tol) or (i == maxiter - 1)):
             output = [True, fc3, np.abs(R3)]
@@ -158,8 +158,8 @@ def get_disp_timedomain(Facc,delta,N):
                          dx=delta, initial=0)
     return(disp)
 
-def get_residual(time, disp, target):
-    coef = np.polyfit(time[0:len(disp)], disp, 6)
+def get_residual(time, disp, target, polynomial_order):
+    coef = np.polyfit(time[0:len(disp)], disp, polynomial_order)
     fit = []
     for t in time:
         fit.append(np.polyval(coef, t))
