@@ -1,19 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# stdlib imports
-import os.path
-
 # third party imports
 import numpy as np
 
 # local imports
 from gmprocess.io.geonet.core import read_geonet
 from gmprocess.utils.test_utils import read_data_dir
-from gmprocess.metrics.exception import PGMException
 from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.core.stationstream import StationStream
-from gmprocess.core.stationtrace import StationTrace
 
 
 def test_gmrotd():

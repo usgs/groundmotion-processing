@@ -82,6 +82,8 @@ def test_controller():
     input_imcs = [
         "rotd50",
         "rotd100.0",
+        "gmrotd50",
+        "gmrotd100.0",
         "radial_transverse",
         "geometric_mean",
         "arithmetic_mean",
@@ -102,6 +104,8 @@ def test_controller():
     target_imcs = [
         "ROTD(50.0)",
         "ROTD(100.0)",
+        "GMROTD(50.0)",
+        "GMROTD(100.0)",
         "HNR",
         "HNT",
         "GEOMETRIC_MEAN",
@@ -165,6 +169,8 @@ def test_controller():
     target_imcs = [
         "ROTD(50.0)",
         "ROTD(100.0)",
+        "GMROTD(50.0)",
+        "GMROTD(100.0)",
         "HNR",
         "HNT",
         "GEOMETRIC_MEAN",

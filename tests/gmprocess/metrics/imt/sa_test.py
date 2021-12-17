@@ -35,7 +35,7 @@ def test_sa():
                 "gmrotd50",
                 "channels",
             ],
-            ["sa1.0", "saincorrect"],
+            ["sa1.0", "sa0.01", "saincorrect"],
         )
     pgms = station_summary.pgms
     assert "SA(1.000)" in pgms.index.get_level_values(0)
@@ -51,6 +51,12 @@ def test_sa():
     np.testing.assert_allclose(
         pgms.loc["SA(1.000)", "ROTD(100.0)"].Result, 146.90233501240979
     )
+    # Check high frequency SA
+    np.testing.assert_allclose(pgms.loc["SA(0.010)", "ROTD(100.0)"].Result, 120.187153)
+    np.testing.assert_allclose(pgms.loc["SA(0.010)", "GMROTD(50.0)"].Result, 95.355300)
+    np.testing.assert_allclose(pgms.loc["SA(0.010)", "H1"].Result, 106.716122)
+    np.testing.assert_allclose(pgms.loc["SA(0.010)", "H2"].Result, 90.497883)
+    np.testing.assert_allclose(pgms.loc["SA(0.010)", "GMROTD(50.0)"].Result, 95.355300)
 
 
 if __name__ == "__main__":

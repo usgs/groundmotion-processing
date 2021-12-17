@@ -21,7 +21,7 @@ class Percentile(Reduction):
     ):
         """
         Args:
-            reduction_data (StationStream):
+            reduction_data (StationStream or ndarray):
                 Intensity measurement component.
             bandwidth (float):
                 Bandwidth for the smoothing operation. Default is None.
@@ -47,6 +47,7 @@ class Percentile(Reduction):
                 "Percentile: The percentile value must "
                 "be defined and of type float or int."
             )
+        self.period = period
         self.percentile = percentile
         self.result = self.get_percentile()
 
@@ -58,13 +59,20 @@ class Percentile(Reduction):
             percentiles: Dictionary of percentiles for each channel.
         """
         stream = self.reduction_data
-        if "rotated" not in stream.getStreamParamKeys():
+        if isinstance(stream, np.ndarray):
+            rdata = stream
+        elif self.period is not None:
+            if "rotated_oscillator" in stream.getStreamParamKeys():
+                rdata = stream.getStreamParam("rotated_oscillator")
+            else:
+                raise ValueError("Missing rotated oscillator response.")
+        elif "rotated" in stream.getStreamParamKeys():
+            rdata = stream.getStreamParam("rotated")
+        else:
             raise ValueError(
                 "Percentile reduction can only be applied after a rotation "
                 "has been applied to the data."
             )
-
-        rdata = stream.getStreamParam("rotated")
 
         percentiles = {}
         if len(rdata) == 3:

@@ -31,4 +31,5 @@ class Reduction(object):
                 List of length 2 with the quantiles (0-1) for duration interval
                 calculation.
         """
+        self.period = period
         self.reduction_data = reduction_data

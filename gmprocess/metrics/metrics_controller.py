@@ -381,7 +381,12 @@ class MetricsController(object):
                 self.perform_first_steps(
                     period, percentile, s1, s2, s3, transform_path, rotation_path
                 )
-                rot = self.first_steps[step_str][str(period)][str(percentile)]
+                # if True:
+                if s2 == "oscillator":
+                    rot = self.first_steps[step_str][str(period)][str(percentile)]
+                else:
+                    rot = self.first_steps[step_str]
+
                 # -------------------------------------------------------------
                 # Transform 3
                 t3_mod = importlib.import_module(
@@ -484,6 +489,7 @@ class MetricsController(object):
                 for key in subdict:
                     for val in subdict[key]:
                         result_dict[key].append(val)
+
         # Convert the dictionary to a dataframe and set the IMT, IMC indices
         df = pd.DataFrame(result_dict)
         if df.empty:
@@ -519,12 +525,26 @@ class MetricsController(object):
         step = f"{s1}-{s2}-{s3}"
         # If the first three steps (for this percentile and period) are already
         # available do not recalculate (continue)
-        if (
-            step in step_streams
-            and str(period) in step_streams[step]
-            and str(percentile) in step_streams[step][str(period)]
-        ):
-            return
+
+        ## this is where we need to fix things
+        ## check if transform 2 is oscillator, if not then no need to check period
+        ## also, I don't think there's a need to check percentile.
+
+        s2_osc = s2 == "oscillator"
+        # s2_osc = True
+        if s2_osc:
+            if (
+                step in step_streams
+                and str(period) in step_streams[step]
+                and str(percentile) in step_streams[step][str(period)]
+            ):
+                return
+        else:
+            if step in step_streams:
+                # and str(period) in step_streams[step]
+                # and str(percentile) in step_streams[step][str(period)]
+                return
+
         # The first three steps (for this percentile and period) have not been
         # calculated, so begin the steps:
         # -------------------------------------------------------------
@@ -566,12 +586,19 @@ class MetricsController(object):
             inspect.getmembers(rot_mod, inspect.isclass), "Rotation"
         )
         rot = rot_cls(t2, self.event).result
+
         if step not in step_streams:
             step_streams[step] = {}
+
         if str(period) not in step_streams[step]:
             step_streams[step][str(period)] = {}
+
         # store the stream for this step/period/percentile combinatiion
-        step_streams[step][str(period)][str(percentile)] = rot
+        if s2_osc:
+            step_streams[step][str(period)][str(percentile)] = rot
+        else:
+            step_streams[step] = rot
+
         self.first_steps = step_streams
 
     def validate_stream(self):

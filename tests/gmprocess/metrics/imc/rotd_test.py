@@ -86,11 +86,11 @@ def test_rotd():
         response = {"input_units": "counts", "output_units": "cm/s^2"}
         tr.setProvenance("remove_response", response)
 
-    target_pga50 = 4.12528265306
-    target_sa1050 = 10.7362857143
-    target_pgv50 = 6.239364
-    target_sa0350 = 10.1434159021
-    target_sa3050 = 1.12614169215
+    target_pga50 = 4.1221200279448444
+    target_sa1050 = 10.716249471749395
+    target_pgv50 = 6.2243050413999645
+    target_sa0350 = 10.091461811808575
+    target_sa3050 = 1.1232860465386469
     station = StationSummary.from_stream(
         st, ["rotd50"], ["pga", "pgv", "sa0.3", "sa1.0", "sa3.0"]
     )
@@ -101,11 +101,11 @@ def test_rotd():
     SA10 = pgms.loc["SA(1.000)", "ROTD(50.0)"].Result
     SA03 = pgms.loc["SA(0.300)", "ROTD(50.0)"].Result
     SA30 = pgms.loc["SA(3.000)", "ROTD(50.0)"].Result
-    np.testing.assert_allclose(pga, target_pga50, atol=0.1)
-    np.testing.assert_allclose(SA10, target_sa1050, atol=0.1)
-    np.testing.assert_allclose(pgv, target_pgv50, atol=0.1)
-    np.testing.assert_allclose(SA03, target_sa0350, atol=0.1)
-    np.testing.assert_allclose(SA30, target_sa3050, atol=0.1)
+    np.testing.assert_allclose(pga, target_pga50)
+    np.testing.assert_allclose(SA10, target_sa1050)
+    np.testing.assert_allclose(pgv, target_pgv50)
+    np.testing.assert_allclose(SA03, target_sa0350)
+    np.testing.assert_allclose(SA30, target_sa3050)
 
 
 def test_exceptions():
@@ -118,5 +118,5 @@ def test_exceptions():
 
 
 if __name__ == "__main__":
-    # test_rotd()
+    test_rotd()
     test_exceptions()

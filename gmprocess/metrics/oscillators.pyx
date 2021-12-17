@@ -145,6 +145,7 @@ def get_spectral(period, stream, damping=0.05, times=None, config=None):
         for idx in range(len(rotated_data)):
             rot_matrix = rotated_data[idx]
             rotated_spectrals = []
+            # This is the loop over rotation angles
             for idy in range(0, len(rot_matrix)):
                 stats = {
                     'npts': len(rot_matrix[idy]),
@@ -159,14 +160,24 @@ def get_spectral(period, stream, damping=0.05, times=None, config=None):
             rotated += [rotated_spectrals]
 
         # Add rotated data to stream parameters
-        stream.setStreamParam('rotated', rotated)
+        stream.setStreamParam('rotated_oscillator', rotated)
         return stream
     else:
         traces = []
         # For anything but ROTD and GMROTD
         for idx in range(len(stream)):
             trace = stream[idx]
-            sa_list = calculate_spectrals(trace, period, damping)
+            if use_upsampled:
+                trace_dict = stream[idx].getCached('upsampled')
+                stats = {
+                    'npts': trace_dict['np'],
+                    'delta': dt,
+                    'sampling_rate': 1.0 / dt
+                }
+                temp_trace = Trace(data=trace_dict['data'], header=stats)
+            else:
+                temp_trace = trace
+            sa_list = calculate_spectrals(temp_trace, period, damping)
             acc_sa = sa_list[0]
             acc_sa *= GAL_TO_PCTG
             stats = trace.stats.copy()

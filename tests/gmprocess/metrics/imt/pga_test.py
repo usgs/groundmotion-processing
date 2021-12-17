@@ -24,6 +24,9 @@ def test_pga():
             [
                 "channels",
                 "greater_of_two_horizontals",
+                "gmrotd0",
+                "gmrotd50",
+                "gmrotd100",
                 "rotd50",
                 "geometric_mean",
                 "arithmetic_mean",
@@ -36,13 +39,22 @@ def test_pga():
     HN1 = pga_df.loc["H1"].Result
     HN2 = pga_df.loc["H2"].Result
     HNZ = pga_df.loc["Z"].Result
+    gmrotd0 = pga_df.loc["GMROTD(0.0)"].Result
+    gmrotd50 = pga_df.loc["GMROTD(50.0)"].Result
+    gmrotd100 = pga_df.loc["GMROTD(100.0)"].Result
+    rotd50 = pga_df.loc["ROTD(50.0)"].Result
     greater = pga_df.loc["GREATER_OF_TWO_HORIZONTALS"].Result
-    np.testing.assert_allclose(AM, 90.242335558014219, rtol=1e-3)
-    np.testing.assert_allclose(GM, 89.791654017670112, rtol=1e-3)
-    np.testing.assert_allclose(HN2, 81.234672390673683, rtol=1e-3)
-    np.testing.assert_allclose(HN1, 99.249998725354743, rtol=1e-3)
-    np.testing.assert_almost_equal(HNZ, 183.77223618666929, decimal=1)
-    np.testing.assert_allclose(greater, 99.249998725354743, rtol=1e-3)
+    np.testing.assert_allclose(AM, 90.242335558014219)
+    np.testing.assert_allclose(GM, 89.791654017670112)
+    np.testing.assert_allclose(HN2, 81.234672390673683)
+    np.testing.assert_allclose(HN1, 99.249998725354743)
+    np.testing.assert_almost_equal(HNZ, 183.77223618666929)
+    np.testing.assert_allclose(greater, 99.249998725354743)
+
+    np.testing.assert_allclose(gmrotd0, 83.487703753812113)
+    np.testing.assert_allclose(gmrotd50, 86.758642638162982)
+    np.testing.assert_allclose(gmrotd100, 89.791654017670112)
+    np.testing.assert_allclose(rotd50, 91.401785419354567)
 
 
 if __name__ == "__main__":
