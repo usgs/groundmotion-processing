@@ -189,15 +189,6 @@ class KNETFetcher(DataFetcher):
 
         if user == "USERNAME" or password == "PASSWORD":
             fmt = (
-<<<<<<< HEAD
-                'Username/password are required to retrieve KNET/KikNET\n'
-                'data. This tool can download data from the Japanese NIED\n'
-                'website. However, for this to work you will first need \n'
-                'to obtain a username and password from this website:\n'
-                'https://hinetwww11.bosai.go.jp/nied/registration/?LANG=en\n'
-                'Then edit project config file in section \n'
-                'fetchers:KNETFetcher to use your username and password.')
-=======
                 "Username/password are required to retrieve KNET/KikNET\n"
                 "data. This tool can download data from the Japanese NIED\n"
                 "website. However, for this to work you will first need \n"
@@ -207,7 +198,6 @@ class KNETFetcher(DataFetcher):
                 "program, and edit the fetchers:KNETFetcher section\n"
                 "to use your username and password."
             )
->>>>>>> metrics
             raise Exception(fmt)
 
         # allow user to turn restrict stations on or off. Restricting saves

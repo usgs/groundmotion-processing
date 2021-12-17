@@ -12,14 +12,13 @@ import logging
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
 # third party imports
-pd = LazyLoader('pd', globals(), 'pandas')
+pd = LazyLoader("pd", globals(), "pandas")
 
 # local imports
-readmod = LazyLoader('readmod', globals(), 'gmprocess.io.read')
-argmod = LazyLoader('argmod', globals(), 'gmprocess.utils.args')
-stationtrace = LazyLoader(
-    'stationtrace', globals(), 'gmprocess.core.stationtrace')
-confmod = LazyLoader('confmod', globals(), 'gmprocess.utils.config')
+readmod = LazyLoader("readmod", globals(), "gmprocess.io.read")
+argmod = LazyLoader("argmod", globals(), "gmprocess.utils.args")
+stationtrace = LazyLoader("stationtrace", globals(), "gmprocess.core.stationtrace")
+confmod = LazyLoader("confmod", globals(), "gmprocess.utils.config")
 
 
 COLUMNS = [
@@ -45,21 +44,12 @@ def get_dataframe(filename, stream):
     row = pd.Series(index=COLUMNS)
     fpath, fname = os.path.split(filename)
     for trace in stream:
-<<<<<<< HEAD
-        row['Filename'] = filename
-        row['Format'] = trace.stats['standard']['source_format']
-        plevel = trace.stats['standard']['process_level']
-        row['Process Level'] = stationtrace.REV_PROCESS_LEVELS[plevel]
-        row['Start Time'] = trace.stats.starttime
-        row['End Time'] = trace.stats.endtime
-=======
         row["Filename"] = filename
         row["Format"] = trace.stats["standard"]["source_format"]
         plevel = trace.stats["standard"]["process_level"]
         row["Process Level"] = REV_PROCESS_LEVELS[plevel]
         row["Start Time"] = trace.stats.starttime
         row["End Time"] = trace.stats.endtime
->>>>>>> metrics
         dt = trace.stats.endtime - trace.stats.starttime
         row["Duration (s)"] = dt
         row["Network"] = trace.stats.network
