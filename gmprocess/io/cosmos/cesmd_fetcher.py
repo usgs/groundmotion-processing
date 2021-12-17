@@ -145,16 +145,6 @@ class CESMDFetcher(DataFetcher):
                 fmt = "Email address is required to retrieve CESMD data."
                 raise Exception(fmt)
 
-<<<<<<< HEAD
-        if email == 'EMAIL':
-            fmt = ('Email address is required to retrieve CESMD\n'
-                   'data. This tool can download data from the CESMD\n'
-                   'website. However, for this to work you will first need \n'
-                   'to register your email address using this website:\n'
-                   'https://strongmotioncenter.org/cgi-bin/CESMD/register.pl\n'
-                   'Then edit the config file in the fetchers:CESMDFetcher \n'
-                   'section to use your email address.')
-=======
         if email == "EMAIL":
             fmt = (
                 "Email address is required to retrieve CESMD\n"
@@ -166,7 +156,6 @@ class CESMDFetcher(DataFetcher):
                 "program, and edit the fetchers:CESMDFetcher section\n"
                 "to use your email address."
             )
->>>>>>> metrics
             raise Exception(fmt)
 
         self.metadata = None
