@@ -34,11 +34,11 @@ class Geometric_Mean(Combination):
             if isinstance(h1, dict):
                 # this is the case where IMT is FAS
                 gm = {
-                    'freqs': h1['freqs'],
-                    'spectra': np.sqrt(h1['spectra'] * h2['spectra'])
+                    "freqs": h1["freqs"],
+                    "spectra": np.sqrt(h1["spectra"] * h2["spectra"]),
                 }
             else:
-                gm = {'': np.sqrt(h1 * h2)}
+                gm = {"": np.sqrt(h1 * h2)}
         else:
             # Just for tests?
             horizontals = self.combination_data

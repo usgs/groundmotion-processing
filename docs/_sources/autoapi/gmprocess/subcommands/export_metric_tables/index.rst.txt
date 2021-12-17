@@ -60,7 +60,6 @@ Attributes
 
    Export metric tables.
 
-
    .. py:attribute:: command_name
       :annotation: = export_metric_tables
 

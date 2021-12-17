@@ -19,29 +19,30 @@ read_directory = LazyLoader(
 
 
 class CustomFormatter(
-        argparse.ArgumentDefaultsHelpFormatter,
-        argparse.RawDescriptionHelpFormatter):
+    argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter
+):
     pass
 
 
 FORMATS = [
-    'AH',
-    'GSE2',
-    'MSEED',
-    'PICKLE',
-    'Q',
-    'SAC',
-    'SACXY',
-    'SEGY',
-    'SH_ASC',
-    'SLIST',
-    'SU',
-    'TSPAIR',
-    'WAV']
+    "AH",
+    "GSE2",
+    "MSEED",
+    "PICKLE",
+    "Q",
+    "SAC",
+    "SACXY",
+    "SEGY",
+    "SH_ASC",
+    "SLIST",
+    "SU",
+    "TSPAIR",
+    "WAV",
+]
 
 
 def main():
-    desc = '''Convert a directory of strong motion data files into any ObsPy
+    desc = """Convert a directory of strong motion data files into any ObsPy
     supported format.
 
 https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supported-formats
@@ -74,19 +75,22 @@ https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supp
     Note: The data files in "indatadir" can be distributed through
     subdirectories and gmconvert will find them.
 
-    '''
-    parser = argparse.ArgumentParser(
-        description=desc,
-        formatter_class=CustomFormatter)
-    parser.add_argument('files', help='List of files to convert.',
-                        nargs='*', default=None)
-    parser.add_argument('-i', '--indir',
-                        help='Directory containing input files to convert.')
-    parser.add_argument('-o', '--outdir',
-                        help='Output directory.', default=os.getcwd())
-    parser.add_argument('-f', '--format',
-                        help='Output strong motion data format.',
-                        choices=FORMATS, default='MSEED')
+    """
+    parser = argparse.ArgumentParser(description=desc, formatter_class=CustomFormatter)
+    parser.add_argument(
+        "files", help="List of files to convert.", nargs="*", default=None
+    )
+    parser.add_argument(
+        "-i", "--indir", help="Directory containing input files to convert."
+    )
+    parser.add_argument("-o", "--outdir", help="Output directory.", default=os.getcwd())
+    parser.add_argument(
+        "-f",
+        "--format",
+        help="Output strong motion data format.",
+        choices=FORMATS,
+        default="MSEED",
+    )
 
     # Shared arguments
     parser = argmod.add_shared_args(parser)
@@ -104,11 +108,11 @@ https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supp
     has_files = args.files is not None and len(args.files)
 
     if has_files and args.indir is not None:
-        print('Specify input files or an input directory, not both.')
+        print("Specify input files or an input directory, not both.")
         sys.exit(1)
 
     if args.files is None and args.indir is None:
-        print('You must specify input files or an input directory.')
+        print("You must specify input files or an input directory.")
         sys.exit(1)
 
     if not os.path.isdir(outdir):
@@ -119,7 +123,7 @@ https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supp
         allstreams = []
         error_dict = {}
         for dfile in args.files:
-            logging.info('Parsing %s...' % dfile)
+            logging.info("Parsing %s..." % dfile)
             try:
                 streams = readmod.read_data(dfile)
             except BaseException as e:
@@ -138,21 +142,21 @@ https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supp
         streamid = stream.get_id()
         if len(stream) == 1:
             streamid = stream[0].get_id()
-        outfile = os.path.join(outdir, '%s.%s' % (streamid, oformat.lower()))
-        invfile = os.path.join(outdir, '%s.xml' % (streamid))
-        inv_format = 'STATIONXML'
+        outfile = os.path.join(outdir, "%s.%s" % (streamid, oformat.lower()))
+        invfile = os.path.join(outdir, "%s.xml" % (streamid))
+        inv_format = "STATIONXML"
         inv = stream.getInventory()
-        logging.info('Writing data file %s...' % outfile)
+        logging.info("Writing data file %s..." % outfile)
         stream.write(outfile, format=oformat)
-        logging.info('Writing inventory file %s...' % invfile)
+        logging.info("Writing inventory file %s..." % invfile)
         inv.write(invfile, format=inv_format)
 
-    print('Wrote %i streams to %s' % (len(sc), outdir))
+    print("Wrote %i streams to %s" % (len(sc), outdir))
     if len(error_dict):
-        print('\nThe following files could not be read:')
+        print("\nThe following files could not be read:")
         for fname, error in error_dict.items():
             print('\t%s - "%s"' % (fname, error))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

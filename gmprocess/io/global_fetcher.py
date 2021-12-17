@@ -13,8 +13,17 @@ from .fetcher import DataFetcher
 from gmprocess.utils.config import get_config
 
 
-def fetch_data(time, lat, lon, depth, magnitude, config=None, rawdir=None,
-               drop_non_free=True, stream_collection=True):
+def fetch_data(
+    time,
+    lat,
+    lon,
+    depth,
+    magnitude,
+    config=None,
+    rawdir=None,
+    drop_non_free=True,
+    stream_collection=True,
+):
     """Retrieve data using any DataFetcher subclass.
 
     Args:
@@ -53,10 +62,10 @@ def fetch_data(time, lat, lon, depth, magnitude, config=None, rawdir=None,
     tfetchers = find_fetchers(lat, lon)
 
     # Remove fetchers if they are not present in the conf file
-    fetchers = {k: v for k, v in tfetchers.items() if k in config['fetchers']}
+    fetchers = {k: v for k, v in tfetchers.items() if k in config["fetchers"]}
 
     for fname in fetchers.keys():
-        if fname not in config['fetchers']:
+        if fname not in config["fetchers"]:
             del fetchers[fname]
 
     instances = []
@@ -64,9 +73,16 @@ def fetch_data(time, lat, lon, depth, magnitude, config=None, rawdir=None,
     for fetchname, fetcher in fetchers.items():
         try:
             fetchinst = fetcher(
-                time, lat, lon, depth, magnitude, config=config,
-                rawdir=rawdir, drop_non_free=drop_non_free,
-                stream_collection=stream_collection)
+                time,
+                lat,
+                lon,
+                depth,
+                magnitude,
+                config=config,
+                rawdir=rawdir,
+                drop_non_free=drop_non_free,
+                stream_collection=stream_collection,
+            )
         except BaseException as e:
             fmt = 'Could not instantiate Fetcher %s, due to error\n "%s"'
             tpl = (fetchname, str(e))
@@ -78,12 +94,12 @@ def fetch_data(time, lat, lon, depth, magnitude, config=None, rawdir=None,
         if (xmin < lon < xmax) and (ymin < lat < ymax):
             instances.append(fetchinst)
 
-    efmt = '%s M%.1f (%.4f,%.4f)'
+    efmt = "%s M%.1f (%.4f,%.4f)"
     etpl = (time, magnitude, lat, lon)
     esummary = efmt % etpl
     streams = []
     for fetcher in instances:
-        if 'FDSN' in str(fetcher):
+        if "FDSN" in str(fetcher):
             tstreams = fetcher.retrieveData()
             if streams:
                 streams = streams + tstreams
@@ -93,7 +109,7 @@ def fetch_data(time, lat, lon, depth, magnitude, config=None, rawdir=None,
         else:
             events = fetcher.getMatchingEvents(solve=True)
             if not len(events):
-                msg = 'No event matching %s found by class %s'
+                msg = "No event matching %s found by class %s"
                 logging.warn(msg % (esummary, str(fetcher)))
                 continue
             tstreams = fetcher.retrieveData(events[0])
@@ -123,21 +139,19 @@ def find_fetchers(lat, lon):
     """
 
     fetchers = {}
-    root = os.path.abspath(
-        pkg_resources.resource_filename('gmprocess', 'io'))
+    root = os.path.abspath(pkg_resources.resource_filename("gmprocess", "io"))
     for (rootdir, dirs, files) in os.walk(root):
         if rootdir == root:
             continue
         for tfile in files:
             modfile = os.path.join(rootdir, tfile)
-            modname = modfile[modfile.rfind(
-                'gmprocess'):].replace('.py', '')
-            modname = modname.replace(os.path.sep, '.')
-            if modname.find('__') >= 0:
+            modname = modfile[modfile.rfind("gmprocess") :].replace(".py", "")
+            modname = modname.replace(os.path.sep, ".")
+            if modname.find("__") >= 0:
                 continue
             mod = importlib.import_module(modname)
             for name, obj in inspect.getmembers(mod):
-                if name == 'DataFetcher':
+                if name == "DataFetcher":
                     continue
                 if inspect.isclass(obj) and issubclass(obj, DataFetcher):
                     fetchers[name] = obj

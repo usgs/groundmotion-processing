@@ -60,7 +60,6 @@ Attributes
 
    Export failure tables.
 
-
    .. py:attribute:: command_name
       :annotation: = export_failure_tables
 

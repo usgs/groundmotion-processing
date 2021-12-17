@@ -5,26 +5,26 @@ import os
 import logging
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
-arg_dicts = LazyLoader(
-    'arg_dicts', globals(), 'gmprocess.subcommands.arg_dicts')
-base = LazyLoader('base', globals(), 'gmprocess.subcommands.base')
-ws = LazyLoader('ws', globals(), 'gmprocess.io.asdf.stream_workspace')
-const = LazyLoader('const', globals(), 'gmprocess.utils.constants')
-tables = LazyLoader('tables', globals(), 'gmprocess.utils.tables')
+
+arg_dicts = LazyLoader("arg_dicts", globals(), "gmprocess.subcommands.arg_dicts")
+base = LazyLoader("base", globals(), "gmprocess.subcommands.base")
+ws = LazyLoader("ws", globals(), "gmprocess.io.asdf.stream_workspace")
+const = LazyLoader("const", globals(), "gmprocess.utils.constants")
+tables = LazyLoader("tables", globals(), "gmprocess.utils.tables")
 
 
 class ExportMetricTablesModule(base.SubcommandModule):
-    """Export metric tables.
-    """
-    command_name = 'export_metric_tables'
-    aliases = ('mtables', )
+    """Export metric tables."""
+
+    command_name = "export_metric_tables"
+    aliases = ("mtables",)
 
     arguments = [
-        arg_dicts.ARG_DICTS['eventid'],
-        arg_dicts.ARG_DICTS['textfile'],
-        arg_dicts.ARG_DICTS['label'],
-        arg_dicts.ARG_DICTS['output_format'],
-        arg_dicts.ARG_DICTS['overwrite']
+        arg_dicts.ARG_DICTS["eventid"],
+        arg_dicts.ARG_DICTS["textfile"],
+        arg_dicts.ARG_DICTS["label"],
+        arg_dicts.ARG_DICTS["output_format"],
+        arg_dicts.ARG_DICTS["overwrite"],
     ]
 
     def main(self, gmrecords):
@@ -34,7 +34,7 @@ class ExportMetricTablesModule(base.SubcommandModule):
             gmrecords:
                 GMrecordsApp instance.
         """
-        logging.info('Running subcommand \'%s\'' % self.command_name)
+        logging.info("Running subcommand '%s'" % self.command_name)
 
         self.gmrecords = gmrecords
         self._check_arguments()
@@ -42,33 +42,34 @@ class ExportMetricTablesModule(base.SubcommandModule):
 
         for event in self.events:
             self.eventid = event.id
-            logging.info(
-                'Creating tables for event %s...' % self.eventid)
+            logging.info("Creating tables for event %s..." % self.eventid)
             event_dir = os.path.join(gmrecords.data_path, self.eventid)
-            workname = os.path.normpath(
-                os.path.join(event_dir, const.WORKSPACE_NAME))
+            workname = os.path.normpath(os.path.join(event_dir, const.WORKSPACE_NAME))
             if not os.path.isfile(workname):
                 logging.info(
-                    'No workspace file found for event %s. Please run '
-                    'subcommand \'assemble\' to generate workspace file.'
-                    % self.eventid)
-                logging.info('Continuing to next event.')
+                    "No workspace file found for event %s. Please run "
+                    "subcommand 'assemble' to generate workspace file." % self.eventid
+                )
+                logging.info("Continuing to next event.")
                 continue
 
             self.workspace = ws.StreamWorkspace.open(workname)
             self._get_labels()
 
             event_table, imc_tables, readmes = self.workspace.getTables(
-                self.gmrecords.args.label, self.gmrecords.conf)
+                self.gmrecords.args.label, self.gmrecords.conf
+            )
             ev_fit_spec, fit_readme = self.workspace.getFitSpectraTable(
-                self.eventid, self.gmrecords.args.label, self.gmrecords.conf)
+                self.eventid, self.gmrecords.args.label, self.gmrecords.conf
+            )
 
             # We need to have a consistent set of frequencies for reporting the
             # SNR. For now, I'm going to take it from the SA period list, but
             # this could be changed to something else, or even be set via the
             # config file.
             snr_table, snr_readme = self.workspace.getSNRTable(
-                self.eventid, self.gmrecords.args.label, self.gmrecords.conf)
+                self.eventid, self.gmrecords.args.label, self.gmrecords.conf
+            )
             self.workspace.close()
 
             outdir = gmrecords.data_path
@@ -82,69 +83,82 @@ class ExportMetricTablesModule(base.SubcommandModule):
             df_fit_spectra_formatted = tables.set_precisions(ev_fit_spec)
 
             imc_list = [
-                '%s_%s_metrics_%s' %
-                (gmrecords.project, gmrecords.args.label, imc.lower())
+                "%s_%s_metrics_%s"
+                % (gmrecords.project, gmrecords.args.label, imc.lower())
                 for imc in imc_tables_formatted.keys()
             ]
             readme_list = [
-                '%s_%s_metrics_%s_README' %
-                (gmrecords.project, gmrecords.args.label, imc.lower())
+                "%s_%s_metrics_%s_README"
+                % (gmrecords.project, gmrecords.args.label, imc.lower())
                 for imc in readmes.keys()
             ]
             proj_lab = (gmrecords.project, gmrecords.args.label)
 
             filenames = (
-                ['%s_%s_events' % proj_lab] +
-                imc_list + readme_list +
-                ['%s_%s_fit_spectra_parameters' % proj_lab,
-                 '%s_%s_fit_spectra_parameters_README' % proj_lab] +
-                ['%s_%s_snr' % proj_lab, '%s_%s_snr_README' % proj_lab]
+                ["%s_%s_events" % proj_lab]
+                + imc_list
+                + readme_list
+                + [
+                    "%s_%s_fit_spectra_parameters" % proj_lab,
+                    "%s_%s_fit_spectra_parameters_README" % proj_lab,
+                ]
+                + ["%s_%s_snr" % proj_lab, "%s_%s_snr_README" % proj_lab]
             )
 
             files = (
-                [event_table_formatted] +
-                list(imc_tables_formatted.values()) + list(readmes.values()) +
-                [df_fit_spectra_formatted, fit_readme] +
-                [snr_table, snr_readme]
+                [event_table_formatted]
+                + list(imc_tables_formatted.values())
+                + list(readmes.values())
+                + [df_fit_spectra_formatted, fit_readme]
+                + [snr_table, snr_readme]
             )
 
             output_format = gmrecords.args.output_format
-            if output_format != 'csv':
-                output_format = 'xlsx'
+            if output_format != "csv":
+                output_format = "xlsx"
 
             for filename, df in dict(zip(filenames, files)).items():
-                filepath = os.path.normpath(os.path.join(
-                    outdir, filename + '.%s' % output_format))
+                filepath = os.path.normpath(
+                    os.path.join(outdir, filename + ".%s" % output_format)
+                )
                 if os.path.exists(filepath):
-                    if 'README' in filename:
+                    if "README" in filename:
                         continue
                     else:
                         if self.gmrecords.args.overwrite:
-                            logging.warning('File exists: %s' % filename)
-                            logging.warning('Overwriting file: %s' % filename)
-                            mode = 'w'
+                            logging.warning("File exists: %s" % filename)
+                            logging.warning("Overwriting file: %s" % filename)
+                            mode = "w"
                             header = True
                         else:
-                            logging.warning('File exists: %s' % filename)
-                            logging.warning('Appending to file: %s' % filename)
-                            mode = 'a'
+                            logging.warning("File exists: %s" % filename)
+                            logging.warning("Appending to file: %s" % filename)
+                            mode = "a"
                             header = False
                 else:
-                    mode = 'w'
+                    mode = "w"
                     header = True
-                if output_format == 'csv':
-                    df.to_csv(filepath, index=False,
-                              float_format=const.DEFAULT_FLOAT_FORMAT,
-                              na_rep=const.DEFAULT_NA_REP,
-                              mode=mode, header=header)
+                if output_format == "csv":
+                    df.to_csv(
+                        filepath,
+                        index=False,
+                        float_format=const.DEFAULT_FLOAT_FORMAT,
+                        na_rep=const.DEFAULT_NA_REP,
+                        mode=mode,
+                        header=header,
+                    )
                     if mode == "w":
-                        self.append_file('Metric tables', filepath)
+                        self.append_file("Metric tables", filepath)
                 else:
-                    df.to_excel(filepath, index=False,
-                                float_format=const.DEFAULT_FLOAT_FORMAT,
-                                na_rep=const.DEFAULT_NA_REP,
-                                mode=mode, header=header)
+                    df.to_excel(
+                        filepath,
+                        index=False,
+                        float_format=const.DEFAULT_FLOAT_FORMAT,
+                        na_rep=const.DEFAULT_NA_REP,
+                        mode=mode,
+                        header=header,
+                    )
                     if mode == "w":
-                        self.append_file('Metric tables', filepath)
+                        self.append_file("Metric tables", filepath)
 
         self._summarize_files_created()

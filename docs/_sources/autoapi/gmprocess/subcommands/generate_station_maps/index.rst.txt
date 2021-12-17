@@ -60,7 +60,6 @@ Attributes
 
    Generate station maps (PNG and HTML).
 
-
    .. py:attribute:: command_name
       :annotation: = generate_station_maps
 

@@ -13,8 +13,15 @@ from gmprocess.metrics.reduction.reduction import Reduction
 class Duration(Reduction):
     """Class for calculation of duration."""
 
-    def __init__(self, reduction_data, bandwidth=None, percentile=None,
-                 period=None, smoothing=None, interval=None):
+    def __init__(
+        self,
+        reduction_data,
+        bandwidth=None,
+        percentile=None,
+        period=None,
+        smoothing=None,
+        interval=None,
+    ):
         """
         Args:
             reduction_data (obspy.core.stream.Stream or numpy.ndarray):
@@ -32,8 +39,14 @@ class Duration(Reduction):
                 List of length 2 with the quantiles (0-1) for duration interval
                 calculation.
         """
-        super().__init__(reduction_data, bandwidth=None, percentile=None,
-                         period=None, smoothing=None, interval=None)
+        super().__init__(
+            reduction_data,
+            bandwidth=None,
+            percentile=None,
+            period=None,
+            smoothing=None,
+            interval=None,
+        )
         self.interval = interval
         self.result = self.get_duration()
 
@@ -46,13 +59,13 @@ class Duration(Reduction):
         """
         durations = {}
         for trace in self.reduction_data:
-            dt = trace.stats['delta']
+            dt = trace.stats["delta"]
             # convert from cm/s/s to m/s/s
             acc = trace.data * 0.01
             # times = trace.times()
             times = np.linspace(
-                0.0, trace.stats.endtime - trace.stats.starttime,
-                trace.stats.npts)
+                0.0, trace.stats.endtime - trace.stats.starttime, trace.stats.npts
+            )
 
             # Calculate Arias Intensity
             integrated_acc2 = integrate.cumtrapz(acc * acc, dx=dt)

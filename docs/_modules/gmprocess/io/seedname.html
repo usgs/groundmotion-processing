@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.io.seedname - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.io.seedname - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -459,8 +459,10 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
-<div class="viewcode-block" id="get_channel_name"><a class="viewcode-back" href="../../../autoapi/gmprocess/io/seedname/index.html#gmprocess.io.seedname.get_channel_name">[docs]</a><span class="k">def</span> <span class="nf">get_channel_name</span><span class="p">(</span><span class="n">sample_rate</span><span class="p">,</span> <span class="n">is_acceleration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                     <span class="n">is_vertical</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_north</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+<div class="viewcode-block" id="get_channel_name"><a class="viewcode-back" href="../../../autoapi/gmprocess/io/seedname/index.html#gmprocess.io.seedname.get_channel_name">[docs]</a><span class="k">def</span> <span class="nf">get_channel_name</span><span class="p">(</span>
+    <span class="n">sample_rate</span><span class="p">,</span> <span class="n">is_acceleration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_vertical</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_north</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">):</span>
     <span class="sd">"""Create a SEED compliant channel name.</span>
 
 <span class="sd">    SEED spec: http://www.fdsn.org/seed_manual/SEEDManual_V2.4_Appendix-A.pdf</span>
@@ -475,20 +477,20 @@
 <span class="sd">        str: Three character channel name according to SEED spec.</span>
 
 <span class="sd">    """</span>
-    <span class="n">band</span> <span class="o">=</span> <span class="s1">'H'</span>  <span class="c1"># High Broad Band</span>
+    <span class="n">band</span> <span class="o">=</span> <span class="s2">"H"</span>  <span class="c1"># High Broad Band</span>
     <span class="k">if</span> <span class="n">sample_rate</span> <span class="o">&lt;</span> <span class="mi">80</span> <span class="ow">and</span> <span class="n">sample_rate</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
-        <span class="n">band</span> <span class="o">=</span> <span class="s1">'B'</span>
+        <span class="n">band</span> <span class="o">=</span> <span class="s2">"B"</span>
 
-    <span class="n">code</span> <span class="o">=</span> <span class="s1">'N'</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="s2">"N"</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_acceleration</span><span class="p">:</span>
-        <span class="n">code</span> <span class="o">=</span> <span class="s1">'H'</span>  <span class="c1"># low-gain velocity sensors are very rare</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="s2">"H"</span>  <span class="c1"># low-gain velocity sensors are very rare</span>
 
     <span class="k">if</span> <span class="n">is_vertical</span><span class="p">:</span>
-        <span class="n">number</span> <span class="o">=</span> <span class="s1">'Z'</span>
+        <span class="n">number</span> <span class="o">=</span> <span class="s2">"Z"</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">number</span> <span class="o">=</span> <span class="s1">'2'</span>
+        <span class="n">number</span> <span class="o">=</span> <span class="s2">"2"</span>
         <span class="k">if</span> <span class="n">is_north</span><span class="p">:</span>
-            <span class="n">number</span> <span class="o">=</span> <span class="s1">'1'</span>
+            <span class="n">number</span> <span class="o">=</span> <span class="s2">"1"</span>
 
     <span class="n">channel</span> <span class="o">=</span> <span class="n">band</span> <span class="o">+</span> <span class="n">code</span> <span class="o">+</span> <span class="n">number</span>
     <span class="k">return</span> <span class="n">channel</span></div>
@@ -501,14 +503,14 @@
 <span class="sd">    measures acceleration or velocity.</span>
 <span class="sd">    """</span>
 
-    <span class="k">if</span> <span class="n">channel</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'N'</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">'acc'</span>
+    <span class="k">if</span> <span class="n">channel</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"N"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"acc"</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">'vel'</span></div>
+        <span class="k">return</span> <span class="s2">"vel"</span></div>
 
 
 <div class="viewcode-block" id="is_channel_north"><a class="viewcode-back" href="../../../autoapi/gmprocess/io/seedname/index.html#gmprocess.io.seedname.is_channel_north">[docs]</a><span class="k">def</span> <span class="nf">is_channel_north</span><span class="p">(</span><span class="n">angle</span><span class="p">):</span>
-    <span class="sd">'''Determine whether horizontal angle is closer to North/South than</span>
+    <span class="sd">"""Determine whether horizontal angle is closer to North/South than</span>
 <span class="sd">    East/West.</span>
 
 <span class="sd">    Args:</span>
@@ -518,7 +520,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        bool:</span>
 <span class="sd">            True if closer to North/South than East/West, False otherwise.</span>
-<span class="sd">    '''</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">angle</span> <span class="o">&gt;</span> <span class="mi">315</span> <span class="ow">or</span> <span class="n">angle</span> <span class="o">&lt;</span> <span class="mi">45</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">angle</span> <span class="o">&gt;</span> <span class="mi">135</span> <span class="ow">and</span> <span class="n">angle</span> <span class="o">&lt;</span> <span class="mi">225</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">else</span><span class="p">:</span>

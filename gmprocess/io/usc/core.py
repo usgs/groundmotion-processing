@@ -16,21 +16,21 @@ from gmprocess.io.utils import is_evenly_spaced, resample_uneven_trace
 from gmprocess.io.utils import is_binary
 
 VOLUMES = {
-    'V1': {
-        'TEXT_HDR_ROWS': 13,
-        'INT_HDR_ROWS': 7,
-        'INT_FMT': 16 * [5],
-        'FLT_HDR_ROWS': 7,
-        'FLT_FMT': 8 * [10],
-        'COL_FMT': [8, 7, 7, 7, 7, 7, 7, 7, 7, 7]
+    "V1": {
+        "TEXT_HDR_ROWS": 13,
+        "INT_HDR_ROWS": 7,
+        "INT_FMT": 16 * [5],
+        "FLT_HDR_ROWS": 7,
+        "FLT_FMT": 8 * [10],
+        "COL_FMT": [8, 7, 7, 7, 7, 7, 7, 7, 7, 7],
     }
 }
 USC_ORIENTATIONS = {
-    400: ('Vertical', 'Vert'),
-    500: ('Up', 'Up'),
-    600: ('Down', 'Down'),
-    700: ('Longitudinal (relative to structure)', 'Long'),
-    800: ('', 'Tran')
+    400: ("Vertical", "Vert"),
+    500: ("Up", "Up"),
+    600: ("Down", "Down"),
+    700: ("Longitudinal (relative to structure)", "Long"),
+    800: ("", "Tran"),
 }
 
 
@@ -54,27 +54,28 @@ def is_usc(filename, config=None, **kwargs):
     # USC requires unique integer values
     # in column 73-74 on all text header lines
     # excluding the first file line
-    return_alternate = kwargs.get('return_alternate', False)
+    return_alternate = kwargs.get("return_alternate", False)
 
     try:
-        f = open(filename, 'rt')
+        f = open(filename, "rt")
         first_line = f.readline()
-        if first_line.find('OF UNCORRECTED ACCELEROGRAM DATA OF') >= 0:
-            volume = 'V1'
+        if first_line.find("OF UNCORRECTED ACCELEROGRAM DATA OF") >= 0:
+            volume = "V1"
             start = 1
             stop = 12
             alternate_start = start + 2
             alternate_stop = stop - 2
-        elif first_line.find('CORRECTED ACCELEROGRAM') >= 0:
-            volume = 'V2'
+        elif first_line.find("CORRECTED ACCELEROGRAM") >= 0:
+            volume = "V2"
             start = 2
             stop = 12
             alternate_start = start + 2
             alternate_stop = stop - 2
-        elif first_line.find('RESPONSE') >= 0:
+        elif first_line.find("RESPONSE") >= 0:
             raise ValueError(
-                'USC: Derived response spectra and fourier '
-                'amplitude spectra not supported: %s' % filename)
+                "USC: Derived response spectra and fourier "
+                "amplitude spectra not supported: %s" % filename
+            )
         else:
             f.close()
             return False
@@ -97,7 +98,7 @@ def is_usc(filename, config=None, **kwargs):
 
 def _check_header(start, stop, filename):
     passing = True
-    with open(filename, 'r') as f:
+    with open(filename, "r") as f:
         for i in range(start):
             f.readline()
         for i in range(stop):
@@ -127,13 +128,13 @@ def read_usc(filename, config=None, **kwargs):
     logging.debug("Starting read_usc.")
     valid, alternate = is_usc(filename, config, return_alternate=True)
     if not valid:
-        raise Exception('%s is not a valid USC file' % filename)
+        raise Exception("%s is not a valid USC file" % filename)
     # Check for Location
-    location = kwargs.get('location', '')
+    location = kwargs.get("location", "")
 
     f = None
     try:
-        f = open(filename, 'rt')
+        f = open(filename, "rt")
         first_line = f.readline()
     except BaseException:
         pass
@@ -141,16 +142,15 @@ def read_usc(filename, config=None, **kwargs):
         if f is not None:
             f.close()
 
-    if first_line.find('OF UNCORRECTED ACCELEROGRAM DATA OF') >= 0:
-        stream = read_volume_one(
-            filename, location=location, alternate=alternate)
+    if first_line.find("OF UNCORRECTED ACCELEROGRAM DATA OF") >= 0:
+        stream = read_volume_one(filename, location=location, alternate=alternate)
     else:
-        raise ValueError('USC: Not a supported volume.')
+        raise ValueError("USC: Not a supported volume.")
 
     return stream
 
 
-def read_volume_one(filename, location='', alternate=False):
+def read_volume_one(filename, location="", alternate=False):
     """Read channel data from USC volume 1 text file.
 
     Args:
@@ -160,7 +160,7 @@ def read_volume_one(filename, location='', alternate=False):
     Returns:
         tuple: (list of obspy Trace, int line offset)
     """
-    volume = VOLUMES['V1']
+    volume = VOLUMES["V1"]
     # count the number of lines in the file
     with open(filename) as f:
         line_count = sum(1 for _ in f)
@@ -169,8 +169,8 @@ def read_volume_one(filename, location='', alternate=False):
     stream = StationStream([])
     while line_offset < line_count:
         trace, line_offset = _read_channel(
-            filename, line_offset, volume, location=location,
-            alternate=alternate)
+            filename, line_offset, volume, location=location, alternate=alternate
+        )
         # store the trace if the station type is in the valid_station_types
         # list or store the trace if there is no valid_station_types list
         if trace is not None:
@@ -179,7 +179,7 @@ def read_volume_one(filename, location='', alternate=False):
     return [stream]
 
 
-def _read_channel(filename, line_offset, volume, location='', alternate=False):
+def _read_channel(filename, line_offset, volume, location="", alternate=False):
     """Read channel data from USC V1 text file.
 
     Args:
@@ -198,61 +198,73 @@ def _read_channel(filename, line_offset, volume, location='', alternate=False):
         int_fmt = 20 * [4]
         data_cols = 8
     else:
-        int_rows = volume['INT_HDR_ROWS']
-        int_fmt = volume['INT_FMT']
+        int_rows = volume["INT_HDR_ROWS"]
+        int_fmt = volume["INT_FMT"]
         data_cols = 10
     # Parse the header portion of the file
     try:
-        with open(filename, 'rt') as f:
+        with open(filename, "rt") as f:
             for _ in range(line_offset):
                 next(f)
-            lines = [next(f) for x in range(volume['TEXT_HDR_ROWS'])]
+            lines = [next(f) for x in range(volume["TEXT_HDR_ROWS"])]
     # Accounts for blank lines at end of files
     except StopIteration:
         return (None, 1 + line_offset)
     # read in lines of integer data
-    skiprows = line_offset + volume['TEXT_HDR_ROWS']
-    int_data = np.genfromtxt(filename, skip_header=skiprows,
-                             max_rows=int_rows, dtype=np.int32,
-                             delimiter=int_fmt).flatten()
+    skiprows = line_offset + volume["TEXT_HDR_ROWS"]
+    int_data = np.genfromtxt(
+        filename,
+        skip_header=skiprows,
+        max_rows=int_rows,
+        dtype=np.int32,
+        delimiter=int_fmt,
+    ).flatten()
 
     # read in lines of float data
     skiprows += int_rows
-    flt_data = np.genfromtxt(filename, skip_header=skiprows,
-                             max_rows=volume['FLT_HDR_ROWS'], dtype=np.float64,
-                             delimiter=volume['FLT_FMT']).flatten()
-    hdr = _get_header_info(int_data, flt_data, lines, 'V1', location=location)
-    skiprows += volume['FLT_HDR_ROWS']
+    flt_data = np.genfromtxt(
+        filename,
+        skip_header=skiprows,
+        max_rows=volume["FLT_HDR_ROWS"],
+        dtype=np.float64,
+        delimiter=volume["FLT_FMT"],
+    ).flatten()
+    hdr = _get_header_info(int_data, flt_data, lines, "V1", location=location)
+    skiprows += volume["FLT_HDR_ROWS"]
     # read in the data
-    nrows = int(np.floor(hdr['npts'] * 2 / data_cols))
-    all_data = np.genfromtxt(filename, skip_header=skiprows,
-                             max_rows=nrows, dtype=np.float64,
-                             delimiter=volume['COL_FMT'])
+    nrows = int(np.floor(hdr["npts"] * 2 / data_cols))
+    all_data = np.genfromtxt(
+        filename,
+        skip_header=skiprows,
+        max_rows=nrows,
+        dtype=np.float64,
+        delimiter=volume["COL_FMT"],
+    )
     data = all_data.flatten()[1::2]
     times = all_data.flatten()[0::2]
 
-    frac = hdr['format_specific']['fractional_unit']
+    frac = hdr["format_specific"]["fractional_unit"]
     if frac > 0:
-        data *= UNIT_CONVERSIONS['g'] * frac
-        logging.debug('Data converted from g * %s to cm/s/s' % (frac))
+        data *= UNIT_CONVERSIONS["g"] * frac
+        logging.debug("Data converted from g * %s to cm/s/s" % (frac))
     else:
         unit = _get_units(lines[11])
         if unit in UNIT_CONVERSIONS:
             data *= UNIT_CONVERSIONS[unit]
-            logging.debug('Data converted from %s to cm/s/s' % (unit))
+            logging.debug("Data converted from %s to cm/s/s" % (unit))
         else:
-            raise ValueError('USC: %s is not a supported unit.' % unit)
+            raise ValueError("USC: %s is not a supported unit." % unit)
 
     # Put file name into dictionary
     head, tail = os.path.split(filename)
-    hdr['standard']['source_file'] = tail or os.path.basename(head)
+    hdr["standard"]["source_file"] = tail or os.path.basename(head)
 
     trace = StationTrace(data.copy(), Stats(hdr.copy()))
     if not is_evenly_spaced(times):
         trace = resample_uneven_trace(trace, times, data)
 
-    response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
-    trace.setProvenance('remove_response', response)
+    response = {"input_units": "counts", "output_units": "cm/s^2"}
+    trace.setProvenance("remove_response", response)
 
     # set new offset
     new_offset = skiprows + nrows
@@ -261,7 +273,7 @@ def _read_channel(filename, line_offset, volume, location='', alternate=False):
     return (trace, new_offset)
 
 
-def _get_header_info(int_data, flt_data, lines, volume, location=''):
+def _get_header_info(int_data, flt_data, lines, volume, location=""):
     """Return stats structure from various headers.
 
     Output is a dictionary like this:
@@ -308,63 +320,69 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
     coordinates = {}
     standard = {}
     format_specific = {}
-    if volume == 'V1':
-        hdr['duration'] = flt_data[2]
-        hdr['npts'] = int_data[27]
-        hdr['sampling_rate'] = (hdr['npts'] - 1) / hdr['duration']
+    if volume == "V1":
+        hdr["duration"] = flt_data[2]
+        hdr["npts"] = int_data[27]
+        hdr["sampling_rate"] = (hdr["npts"] - 1) / hdr["duration"]
 
         # Get required parameter number
-        hdr['network'] = 'LA'
-        hdr['station'] = str(int_data[8])
-        logging.debug('station: %s' % hdr['station'])
+        hdr["network"] = "LA"
+        hdr["station"] = str(int_data[8])
+        logging.debug("station: %s" % hdr["station"])
         horizontal_angle = int_data[26]
-        logging.debug('horizontal: %s' % horizontal_angle)
-        if (horizontal_angle in USC_ORIENTATIONS or
-                (horizontal_angle >= 0 and horizontal_angle <= 360)):
+        logging.debug("horizontal: %s" % horizontal_angle)
+        if horizontal_angle in USC_ORIENTATIONS or (
+            horizontal_angle >= 0 and horizontal_angle <= 360
+        ):
             if horizontal_angle in USC_ORIENTATIONS:
                 channel = USC_ORIENTATIONS[horizontal_angle][1].upper()
-                if channel == 'UP' or channel == 'DOWN' or channel == 'VERT':
+                if channel == "UP" or channel == "DOWN" or channel == "VERT":
                     channel = get_channel_name(
-                        hdr['sampling_rate'],
+                        hdr["sampling_rate"],
                         is_acceleration=True,
                         is_vertical=True,
-                        is_north=False)
+                        is_north=False,
+                    )
                 horizontal_angle = 0.0
             elif (
-                horizontal_angle > 315 or
-                horizontal_angle < 45 or
-                (horizontal_angle > 135 and horizontal_angle < 225)
+                horizontal_angle > 315
+                or horizontal_angle < 45
+                or (horizontal_angle > 135 and horizontal_angle < 225)
             ):
                 channel = get_channel_name(
-                    hdr['sampling_rate'],
+                    hdr["sampling_rate"],
                     is_acceleration=True,
                     is_vertical=False,
-                    is_north=True)
+                    is_north=True,
+                )
             else:
                 channel = get_channel_name(
-                    hdr['sampling_rate'],
+                    hdr["sampling_rate"],
                     is_acceleration=True,
                     is_vertical=False,
-                    is_north=False)
+                    is_north=False,
+                )
             horizontal_orientation = horizontal_angle
-            hdr['channel'] = channel
-            logging.debug('channel: %s' % hdr['channel'])
+            hdr["channel"] = channel
+            logging.debug("channel: %s" % hdr["channel"])
         else:
-            errstr = ('USC: Not enough information to distinguish horizontal '
-                      'from vertical channels.')
+            errstr = (
+                "USC: Not enough information to distinguish horizontal "
+                "from vertical channels."
+            )
             raise BaseException(errstr)
 
-        if location == '':
-            hdr['location'] = '--'
+        if location == "":
+            hdr["location"] = "--"
         else:
-            hdr['location'] = location
+            hdr["location"] = location
         month = str(int_data[21])
         day = str(int_data[22])
         year = str(int_data[23])
         time = str(int_data[24])
-        tstr = month + '/' + day + '/' + year + '_' + time
-        starttime = datetime.strptime(tstr, '%m/%d/%Y_%H%M')
-        hdr['starttime'] = starttime
+        tstr = month + "/" + day + "/" + year + "_" + time
+        starttime = datetime.strptime(tstr, "%m/%d/%Y_%H%M")
+        hdr["starttime"] = starttime
 
         # Get coordinates
         lat_deg = int_data[9]
@@ -374,18 +392,18 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
         lon_min = int_data[13]
         lon_sec = int_data[14]
         # Check for southern hemisphere, default is northern
-        if lines[4].find('STATION USC#') >= 0:
-            idx = lines[4].find('STATION USC#') + 12
-            if 'S' in lines[4][idx:]:
+        if lines[4].find("STATION USC#") >= 0:
+            idx = lines[4].find("STATION USC#") + 12
+            if "S" in lines[4][idx:]:
                 lat_sign = -1
             else:
                 lat_sign = 1
         else:
             lat_sign = 1
         # Check for western hemisphere, default is western
-        if lines[4].find('STATION USC#') >= 0:
-            idx = lines[4].find('STATION USC#') + 12
-            if 'W' in lines[4][idx:]:
+        if lines[4].find("STATION USC#") >= 0:
+            idx = lines[4].find("STATION USC#") + 12
+            if "W" in lines[4][idx:]:
                 lon_sign = -1
             else:
                 lon_sign = 1
@@ -398,43 +416,44 @@ def _get_header_info(int_data, flt_data, lines, volume, location=''):
         # eastern hemisphere uses this format!
         if longitude > 0:
             longitude = -longitude
-        coordinates['latitude'] = latitude
-        coordinates['longitude'] = longitude
-        logging.warning('Setting elevation to 0.0')
-        coordinates['elevation'] = 0.0
+        coordinates["latitude"] = latitude
+        coordinates["longitude"] = longitude
+        logging.warning("Setting elevation to 0.0")
+        coordinates["elevation"] = 0.0
         # Get standard paramaters
-        standard['units_type'] = get_units_type(hdr['channel'])
-        standard['horizontal_orientation'] = float(horizontal_orientation)
-        standard['vertical_orientation'] = np.nan
-        standard['instrument_period'] = flt_data[0]
-        standard['instrument_damping'] = flt_data[1]
-        standard['process_time'] = ''
+        standard["units_type"] = get_units_type(hdr["channel"])
+        standard["horizontal_orientation"] = float(horizontal_orientation)
+        standard["vertical_orientation"] = np.nan
+        standard["instrument_period"] = flt_data[0]
+        standard["instrument_damping"] = flt_data[1]
+        standard["process_time"] = ""
         station_line = lines[5]
         station_length = int(lines[5][72:74])
         name = station_line[:station_length]
-        standard['station_name'] = name
-        standard['sensor_serial_number'] = ''
-        standard['instrument'] = ''
-        standard['comments'] = ''
-        standard['units'] = 'acc'
-        standard['structure_type'] = ''
-        standard['process_level'] = PROCESS_LEVELS['V1']
-        standard['corner_frequency'] = np.nan
-        standard['source'] = ('Los Angeles Basin Seismic Network, University '
-                              'of Southern California')
-        standard['source_format'] = 'usc'
+        standard["station_name"] = name
+        standard["sensor_serial_number"] = ""
+        standard["instrument"] = ""
+        standard["comments"] = ""
+        standard["units"] = "acc"
+        standard["structure_type"] = ""
+        standard["process_level"] = PROCESS_LEVELS["V1"]
+        standard["corner_frequency"] = np.nan
+        standard[
+            "source"
+        ] = "Los Angeles Basin Seismic Network, University of Southern California"
+        standard["source_format"] = "usc"
 
         # this field can be used for instrument correction
         # when data is in counts
-        standard['instrument_sensitivity'] = np.nan
+        standard["instrument_sensitivity"] = np.nan
 
         # Get format specific
-        format_specific['fractional_unit'] = flt_data[4]
+        format_specific["fractional_unit"] = flt_data[4]
 
     # Set dictionary
-    hdr['standard'] = standard
-    hdr['coordinates'] = coordinates
-    hdr['format_specific'] = format_specific
+    hdr["standard"] = standard
+    hdr["coordinates"] = coordinates
+    hdr["format_specific"] = format_specific
     return hdr
 
 
@@ -465,37 +484,46 @@ def _get_units(line):
             Text line which should contain units.
     """
     line = line.lower()
-    if line.find('in units of') >= 0:
-        units_start = line.find('in units of')
-    elif line.find('units of') >= 0:
-        units_start = line.find('units of')
-    elif line.find('in') >= 0:
-        units_start = line.find('in')
+    if line.find("in units of") >= 0:
+        units_start = line.find("in units of")
+    elif line.find("units of") >= 0:
+        units_start = line.find("units of")
+    elif line.find("in") >= 0:
+        units_start = line.find("in")
 
-    units_section = line[units_start:].replace('.', ' ')
-    if 'g/10' in units_section:
-        physical_units = 'g/10'
-    elif ('10g' in units_section or '10*g' in units_section or
-            'g10' in units_section or 'g*10' in units_section):
-        physical_units = 'g*10'
-    elif 'gal' in units_section:
-        physical_units = 'cm/s/s'
-    elif 'g' in units_section and 'g/' not in units_section:
-        physical_units = 'g'
-    elif ('cm/s/s' in units_section or 'cm/sec/sec' in units_section or
-            'cm/s^2' in units_section or 'cm/s2' in units_section or
-            'cm/sec^2' in units_section or 'cm/sec2' in units_section):
-        physical_units = 'cm/s/s'
-    elif 'cm/s' in units_section or 'cm/sec' in units_section:
-        physical_units = 'cm/s'
-    elif 'cm' in units_section:
-        physical_units = 'cm'
-    elif 'in/s/s' in units_section or 'in/sec/sec' in units_section:
-        physical_units = 'in/s/s'
-    elif 'in/s' in units_section or 'in/sec' in units_section:
-        physical_units = 'in/s'
-    elif 'in' in units_section:
-        physical_units = 'in'
+    units_section = line[units_start:].replace(".", " ")
+    if "g/10" in units_section:
+        physical_units = "g/10"
+    elif (
+        "10g" in units_section
+        or "10*g" in units_section
+        or "g10" in units_section
+        or "g*10" in units_section
+    ):
+        physical_units = "g*10"
+    elif "gal" in units_section:
+        physical_units = "cm/s/s"
+    elif "g" in units_section and "g/" not in units_section:
+        physical_units = "g"
+    elif (
+        "cm/s/s" in units_section
+        or "cm/sec/sec" in units_section
+        or "cm/s^2" in units_section
+        or "cm/s2" in units_section
+        or "cm/sec^2" in units_section
+        or "cm/sec2" in units_section
+    ):
+        physical_units = "cm/s/s"
+    elif "cm/s" in units_section or "cm/sec" in units_section:
+        physical_units = "cm/s"
+    elif "cm" in units_section:
+        physical_units = "cm"
+    elif "in/s/s" in units_section or "in/sec/sec" in units_section:
+        physical_units = "in/s/s"
+    elif "in/s" in units_section or "in/sec" in units_section:
+        physical_units = "in/s"
+    elif "in" in units_section:
+        physical_units = "in"
     else:
         physical_units = units_section
     return physical_units

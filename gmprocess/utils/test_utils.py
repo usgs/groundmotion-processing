@@ -29,15 +29,15 @@ def read_data_dir(file_format, eventid, files=None):
             - List of data files.
             - Event dictionary.
     """
-    datapath = os.path.join('data', 'testdata')
-    testroot = pkg_resources.resource_filename('gmprocess', datapath)
+    datapath = os.path.join("data", "testdata")
+    testroot = pkg_resources.resource_filename("gmprocess", datapath)
     eventdir = os.path.join(testroot, file_format, eventid)
     if not os.path.isdir(eventdir):
         return (None, None)
     datafiles = []
     if files is None:
         allfiles = os.listdir(eventdir)
-        allfiles.remove('event.json')
+        allfiles.remove("event.json")
         for dfile in allfiles:
             datafile = os.path.join(eventdir, dfile)
             datafiles.append(datafile)
@@ -50,7 +50,7 @@ def read_data_dir(file_format, eventid, files=None):
                 datafiles.append(fullfile)
 
     # read the event.json file
-    jsonfile = os.path.join(eventdir, 'event.json')
+    jsonfile = os.path.join(eventdir, "event.json")
     if not os.path.isfile(jsonfile):
         event = None
     event = read_event_json_files([jsonfile])[0]

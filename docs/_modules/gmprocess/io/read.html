@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.io.read - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.io.read - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -471,9 +471,8 @@
 
 <span class="kn">from</span> <span class="nn">gmprocess.utils.config</span> <span class="kn">import</span> <span class="n">get_config</span>
 
-<span class="n">EXCLUDED_MODS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'__pycache__'</span><span class="p">]</span>
-<span class="n">EXCLUDED_EXTS</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">'.xml'</span><span class="p">,</span> <span class="s2">".gif"</span><span class="p">,</span> <span class="s2">".csv"</span><span class="p">,</span> <span class="s2">".dis"</span><span class="p">,</span> <span class="s2">".abc"</span><span class="p">,</span> <span class="s2">".zip"</span><span class="p">,</span> <span class="s2">".rs2"</span><span class="p">,</span> <span class="s2">".fs1"</span><span class="p">]</span>
+<span class="n">EXCLUDED_MODS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"__pycache__"</span><span class="p">]</span>
+<span class="n">EXCLUDED_EXTS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">".xml"</span><span class="p">,</span> <span class="s2">".gif"</span><span class="p">,</span> <span class="s2">".csv"</span><span class="p">,</span> <span class="s2">".dis"</span><span class="p">,</span> <span class="s2">".abc"</span><span class="p">,</span> <span class="s2">".zip"</span><span class="p">,</span> <span class="s2">".rs2"</span><span class="p">,</span> <span class="s2">".fs1"</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="read_data"><a class="viewcode-back" href="../../../autoapi/gmprocess/io/read/index.html#gmprocess.io.read.read_data">[docs]</a><span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">read_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -491,11 +490,11 @@
 <span class="sd">    """</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">file_ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">file_ext</span> <span class="ow">in</span> <span class="n">EXCLUDED_EXTS</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Excluded extension: </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Excluded extension: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
 
     <span class="c1"># Check if file exists</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="s1">'Not a file </span><span class="si">%r</span><span class="s1">'</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="s2">"Not a file </span><span class="si">%r</span><span class="s2">"</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
     <span class="c1"># Get and validate format</span>
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
@@ -504,9 +503,9 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">read_format</span> <span class="o">=</span> <span class="n">_validate_format</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">read_format</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
     <span class="c1"># Load reader and read file</span>
-    <span class="n">reader</span> <span class="o">=</span> <span class="s1">'gmprocess.io.'</span> <span class="o">+</span> <span class="n">read_format</span> <span class="o">+</span> <span class="s1">'.core'</span>
+    <span class="n">reader</span> <span class="o">=</span> <span class="s2">"gmprocess.io."</span> <span class="o">+</span> <span class="n">read_format</span> <span class="o">+</span> <span class="s2">".core"</span>
     <span class="n">reader_module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
-    <span class="n">read_name</span> <span class="o">=</span> <span class="s1">'read_'</span> <span class="o">+</span> <span class="n">read_format</span>
+    <span class="n">read_name</span> <span class="o">=</span> <span class="s2">"read_"</span> <span class="o">+</span> <span class="n">read_format</span>
     <span class="n">read_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">reader_module</span><span class="p">,</span> <span class="n">read_name</span><span class="p">)</span>
     <span class="n">streams</span> <span class="o">=</span> <span class="n">read_method</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">streams</span></div>
@@ -527,39 +526,36 @@
 <span class="sd">    """</span>
     <span class="c1"># Get the valid formats</span>
     <span class="n">valid_formats</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">io_directory</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s1">'gmprocess'</span><span class="p">,</span> <span class="s1">'io'</span><span class="p">)</span>
+    <span class="n">io_directory</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">"gmprocess"</span><span class="p">,</span> <span class="s2">"io"</span><span class="p">)</span>
 
     <span class="c1"># Create valid list</span>
     <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">io_directory</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'.'</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">module</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">EXCLUDED_MODS</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">module</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">EXCLUDED_MODS</span><span class="p">:</span>
             <span class="n">valid_formats</span> <span class="o">+=</span> <span class="p">[</span><span class="n">module</span><span class="p">]</span>
 
     <span class="c1"># Select most likely format to test first; use ordered dict so we can put</span>
     <span class="c1"># control order in which modules are moved to the front of the line.</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">file_ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
     <span class="n">ext_dict</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-    <span class="n">ext_dict</span><span class="p">[</span><span class="s1">'obspy'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'.mseed'</span><span class="p">,</span> <span class="s1">'.sac'</span><span class="p">]</span>
-    <span class="n">ext_dict</span><span class="p">[</span><span class="s1">'cwb'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'dat'</span><span class="p">]</span>
-    <span class="n">ext_dict</span><span class="p">[</span><span class="s1">'smc'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'.smc'</span><span class="p">]</span>
-    <span class="n">ext_dict</span><span class="p">[</span><span class="s1">'dmg'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'.raw'</span><span class="p">,</span> <span class="s1">'.v1'</span><span class="p">,</span> <span class="s1">'.v2'</span><span class="p">]</span>
-    <span class="n">ext_dict</span><span class="p">[</span><span class="s1">'nsmn'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'txt'</span><span class="p">]</span>
-    <span class="n">ext_dict</span><span class="p">[</span><span class="s1">'esm'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'.asc'</span><span class="p">]</span>
-    <span class="n">ext_dict</span><span class="p">[</span><span class="s1">'knet'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'ns'</span><span class="p">,</span> <span class="s1">'ew'</span><span class="p">,</span> <span class="s1">'ud'</span><span class="p">,</span>
-                        <span class="s1">'ns1'</span><span class="p">,</span> <span class="s1">'ew1'</span><span class="p">,</span> <span class="s1">'ud1'</span><span class="p">,</span>
-                        <span class="s1">'ns2'</span><span class="p">,</span> <span class="s1">'ew2'</span><span class="p">,</span> <span class="s1">'ud2'</span><span class="p">]</span>
-    <span class="n">ext_dict</span><span class="p">[</span><span class="s1">'renadic'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'.v1'</span><span class="p">,</span> <span class="s1">'.v2'</span><span class="p">]</span>
-    <span class="n">ext_dict</span><span class="p">[</span><span class="s1">'bhrc'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'v1'</span><span class="p">,</span> <span class="s1">'v2'</span><span class="p">]</span>
-    <span class="n">ext_dict</span><span class="p">[</span><span class="s1">'geonet'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'v1'</span><span class="p">,</span> <span class="s1">'v2'</span><span class="p">,</span> <span class="s1">'v1a'</span><span class="p">,</span> <span class="s1">'v2a'</span><span class="p">]</span>
-    <span class="n">ext_dict</span><span class="p">[</span><span class="s1">'cosmos'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'v0'</span><span class="p">,</span> <span class="s1">'v0c'</span><span class="p">,</span> <span class="s1">'v1'</span><span class="p">,</span> <span class="s1">'v1c'</span><span class="p">,</span> <span class="s1">'v1'</span><span class="p">,</span> <span class="s1">'v1c'</span><span class="p">,</span> <span class="s1">'v2'</span><span class="p">,</span> <span class="s1">'v2c'</span><span class="p">]</span>
+    <span class="n">ext_dict</span><span class="p">[</span><span class="s2">"obspy"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">".mseed"</span><span class="p">,</span> <span class="s2">".sac"</span><span class="p">]</span>
+    <span class="n">ext_dict</span><span class="p">[</span><span class="s2">"cwb"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"dat"</span><span class="p">]</span>
+    <span class="n">ext_dict</span><span class="p">[</span><span class="s2">"smc"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">".smc"</span><span class="p">]</span>
+    <span class="n">ext_dict</span><span class="p">[</span><span class="s2">"dmg"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">".raw"</span><span class="p">,</span> <span class="s2">".v1"</span><span class="p">,</span> <span class="s2">".v2"</span><span class="p">]</span>
+    <span class="n">ext_dict</span><span class="p">[</span><span class="s2">"nsmn"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"txt"</span><span class="p">]</span>
+    <span class="n">ext_dict</span><span class="p">[</span><span class="s2">"esm"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">".asc"</span><span class="p">]</span>
+    <span class="n">ext_dict</span><span class="p">[</span><span class="s2">"knet"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"ns"</span><span class="p">,</span> <span class="s2">"ew"</span><span class="p">,</span> <span class="s2">"ud"</span><span class="p">,</span> <span class="s2">"ns1"</span><span class="p">,</span> <span class="s2">"ew1"</span><span class="p">,</span> <span class="s2">"ud1"</span><span class="p">,</span> <span class="s2">"ns2"</span><span class="p">,</span> <span class="s2">"ew2"</span><span class="p">,</span> <span class="s2">"ud2"</span><span class="p">]</span>
+    <span class="n">ext_dict</span><span class="p">[</span><span class="s2">"renadic"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">".v1"</span><span class="p">,</span> <span class="s2">".v2"</span><span class="p">]</span>
+    <span class="n">ext_dict</span><span class="p">[</span><span class="s2">"bhrc"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"v1"</span><span class="p">,</span> <span class="s2">"v2"</span><span class="p">]</span>
+    <span class="n">ext_dict</span><span class="p">[</span><span class="s2">"geonet"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"v1"</span><span class="p">,</span> <span class="s2">"v2"</span><span class="p">,</span> <span class="s2">"v1a"</span><span class="p">,</span> <span class="s2">"v2a"</span><span class="p">]</span>
+    <span class="n">ext_dict</span><span class="p">[</span><span class="s2">"cosmos"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"v0"</span><span class="p">,</span> <span class="s2">"v0c"</span><span class="p">,</span> <span class="s2">"v1"</span><span class="p">,</span> <span class="s2">"v1c"</span><span class="p">,</span> <span class="s2">"v1"</span><span class="p">,</span> <span class="s2">"v1c"</span><span class="p">,</span> <span class="s2">"v2"</span><span class="p">,</span> <span class="s2">"v2c"</span><span class="p">]</span>
 
     <span class="c1"># List of unique extensions, so we can break out of loop.</span>
-    <span class="n">unique_exts</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'.mseed'</span><span class="p">,</span> <span class="s1">'.sac'</span><span class="p">,</span> <span class="s1">'.dat'</span><span class="p">,</span> <span class="s1">'.smc'</span><span class="p">,</span> <span class="s1">'.txt'</span><span class="p">,</span> <span class="s1">'.asc'</span><span class="p">,</span> <span class="s1">'.raw'</span><span class="p">]</span>
-    <span class="n">unique_exts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ext_dict</span><span class="p">[</span><span class="s1">'knet'</span><span class="p">])</span>
+    <span class="n">unique_exts</span> <span class="o">=</span> <span class="p">[</span><span class="s2">".mseed"</span><span class="p">,</span> <span class="s2">".sac"</span><span class="p">,</span> <span class="s2">".dat"</span><span class="p">,</span> <span class="s2">".smc"</span><span class="p">,</span> <span class="s2">".txt"</span><span class="p">,</span> <span class="s2">".asc"</span><span class="p">,</span> <span class="s2">".raw"</span><span class="p">]</span>
+    <span class="n">unique_exts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ext_dict</span><span class="p">[</span><span class="s2">"knet"</span><span class="p">])</span>
 
     <span class="k">for</span> <span class="n">mod</span><span class="p">,</span> <span class="n">ext_list</span> <span class="ow">in</span> <span class="n">ext_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">file_ext</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">ext_list</span><span class="p">:</span>
-            <span class="n">valid_formats</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
-                <span class="mi">0</span><span class="p">,</span> <span class="n">valid_formats</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">valid_formats</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">mod</span><span class="p">)))</span>
+            <span class="n">valid_formats</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">valid_formats</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">valid_formats</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">mod</span><span class="p">)))</span>
             <span class="k">if</span> <span class="n">file_ext</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">unique_exts</span><span class="p">:</span>
                 <span class="k">break</span>
 
@@ -567,9 +563,9 @@
     <span class="n">formats</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">valid_format</span> <span class="ow">in</span> <span class="n">valid_formats</span><span class="p">:</span>
         <span class="c1"># Create the module and function name from the request</span>
-        <span class="n">reader</span> <span class="o">=</span> <span class="s1">'gmprocess.io.'</span> <span class="o">+</span> <span class="n">valid_format</span> <span class="o">+</span> <span class="s1">'.core'</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="s2">"gmprocess.io."</span> <span class="o">+</span> <span class="n">valid_format</span> <span class="o">+</span> <span class="s2">".core"</span>
         <span class="n">reader_module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
-        <span class="n">is_name</span> <span class="o">=</span> <span class="s1">'is_'</span> <span class="o">+</span> <span class="n">valid_format</span>
+        <span class="n">is_name</span> <span class="o">=</span> <span class="s2">"is_"</span> <span class="o">+</span> <span class="n">valid_format</span>
         <span class="n">is_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">reader_module</span><span class="p">,</span> <span class="n">is_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">is_method</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
             <span class="n">formats</span> <span class="o">+=</span> <span class="p">[</span><span class="n">valid_format</span><span class="p">]</span>
@@ -578,14 +574,15 @@
     <span class="n">formats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">formats</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">formats</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">formats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">formats</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="s1">'gmobspy'</span> <span class="ow">in</span> <span class="n">formats</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">formats</span><span class="p">[</span><span class="n">formats</span> <span class="o">!=</span> <span class="s1">'gmobspy'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">formats</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="s2">"gmobspy"</span> <span class="ow">in</span> <span class="n">formats</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">formats</span><span class="p">[</span><span class="n">formats</span> <span class="o">!=</span> <span class="s2">"gmobspy"</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">formats</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'No format found for file </span><span class="si">%r</span><span class="s1">.'</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"No format found for file </span><span class="si">%r</span><span class="s2">."</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-            <span class="s1">'Multiple formats passing: </span><span class="si">%r</span><span class="s1">. Please retry file </span><span class="si">%r</span><span class="s1"> '</span>
-            <span class="s1">'with a specified format.'</span> <span class="o">%</span> <span class="p">(</span><span class="n">formats</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">filename</span><span class="p">))</span></div>
+            <span class="s2">"Multiple formats passing: </span><span class="si">%r</span><span class="s2">. Please retry file </span><span class="si">%r</span><span class="s2"> "</span>
+            <span class="s2">"with a specified format."</span> <span class="o">%</span> <span class="p">(</span><span class="n">formats</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="_validate_format"><a class="viewcode-back" href="../../../autoapi/gmprocess/io/read/index.html#gmprocess.io.read._validate_format">[docs]</a><span class="k">def</span> <span class="nf">_validate_format</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">read_format</span><span class="p">):</span>
@@ -606,27 +603,31 @@
     <span class="c1"># Get the valid formats</span>
     <span class="n">valid_formats</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">home</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
-    <span class="n">io_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">home</span><span class="p">,</span> <span class="s1">'..'</span><span class="p">,</span> <span class="s1">'io'</span><span class="p">))</span>
+    <span class="n">io_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">home</span><span class="p">,</span> <span class="s2">".."</span><span class="p">,</span> <span class="s2">"io"</span><span class="p">))</span>
     <span class="c1"># Create valid list</span>
     <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">io_directory</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">'.'</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">module</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">EXCLUDED_MODS</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">module</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">EXCLUDED_MODS</span><span class="p">:</span>
             <span class="n">valid_formats</span> <span class="o">+=</span> <span class="p">[</span><span class="n">module</span><span class="p">]</span>
     <span class="c1"># Check for a valid format</span>
     <span class="k">if</span> <span class="n">read_format</span> <span class="ow">in</span> <span class="n">valid_formats</span><span class="p">:</span>
-        <span class="n">reader</span> <span class="o">=</span> <span class="s1">'gmprocess.io.'</span> <span class="o">+</span> <span class="n">read_format</span> <span class="o">+</span> <span class="s1">'.core'</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="s2">"gmprocess.io."</span> <span class="o">+</span> <span class="n">read_format</span> <span class="o">+</span> <span class="s2">".core"</span>
         <span class="n">reader_module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
-        <span class="n">is_name</span> <span class="o">=</span> <span class="s1">'is_'</span> <span class="o">+</span> <span class="n">read_format</span>
+        <span class="n">is_name</span> <span class="o">=</span> <span class="s2">"is_"</span> <span class="o">+</span> <span class="n">read_format</span>
         <span class="n">is_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">reader_module</span><span class="p">,</span> <span class="n">is_name</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">'Not a supported format </span><span class="si">%r</span><span class="s1">. '</span>
-                        <span class="s1">'Attempting to find a supported format.'</span> <span class="o">%</span> <span class="n">read_format</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s2">"Not a supported format </span><span class="si">%r</span><span class="s2">. "</span>
+            <span class="s2">"Attempting to find a supported format."</span> <span class="o">%</span> <span class="n">read_format</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">_get_format</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
     <span class="c1"># Check that the format passes tests</span>
     <span class="k">if</span> <span class="n">is_method</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">read_format</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">'File did not match specified format. '</span>
-                        <span class="s1">'Attempting to find a supported format.'</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s2">"File did not match specified format. "</span>
+            <span class="s2">"Attempting to find a supported format."</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">_get_format</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span></div>
 </pre></div>
         </article>

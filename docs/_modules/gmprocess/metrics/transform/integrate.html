@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.metrics.transform.integrate - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.metrics.transform.integrate - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -467,9 +467,17 @@
 <div class="viewcode-block" id="Integrate"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/transform/integrate/index.html#gmprocess.metrics.transform.integrate.Integrate">[docs]</a><span class="k">class</span> <span class="nc">Integrate</span><span class="p">(</span><span class="n">Transform</span><span class="p">):</span>
     <span class="sd">"""Class for computing the integral."""</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transform_data</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">max_period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_nans</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">transform_data</span><span class="p">,</span>
+        <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">allow_nans</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">bandwidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">"""</span>
 <span class="sd">        Args:</span>
 <span class="sd">            transform_data (obspy.core.stream.Stream or numpy.ndarray):</span>
@@ -486,10 +494,17 @@
 <span class="sd">                that nans will not result in the smoothed spectra.</span>
 <span class="sd">            config (dict):</span>
 <span class="sd">                Configuration options.</span>
-<span class="sd">            """</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">transform_data</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">max_period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_nans</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                         <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="sd">        """</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">transform_data</span><span class="p">,</span>
+            <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">max_period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">allow_nans</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">bandwidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_integral</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Integrate.get_integral"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/transform/integrate/index.html#gmprocess.metrics.transform.integrate.Integrate.get_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -502,10 +517,10 @@
         <span class="n">stream</span> <span class="o">=</span> <span class="n">StationStream</span><span class="p">([])</span>
         <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform_data</span><span class="p">:</span>
             <span class="n">integrated_trace</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">integrate</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">integrated_trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="s1">'acc'</span><span class="p">:</span>
-                <span class="n">integrated_trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">'vel'</span>
-            <span class="k">elif</span> <span class="n">integrated_trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="s1">'vel'</span><span class="p">:</span>
-                <span class="n">integrated_trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">'disp'</span>
+            <span class="k">if</span> <span class="n">integrated_trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="s2">"acc"</span><span class="p">:</span>
+                <span class="n">integrated_trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s2">"vel"</span>
+            <span class="k">elif</span> <span class="n">integrated_trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units</span> <span class="o">==</span> <span class="s2">"vel"</span><span class="p">:</span>
+                <span class="n">integrated_trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s2">"disp"</span>
             <span class="n">stream</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">integrated_trace</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">stream</span></div></div>
 </pre></div>

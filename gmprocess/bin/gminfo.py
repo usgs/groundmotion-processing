@@ -22,12 +22,22 @@ stationtrace = LazyLoader(
 confmod = LazyLoader('confmod', globals(), 'gmprocess.utils.config')
 
 
-COLUMNS = ['Filename', 'Format', 'Process Level',
-           'Start Time', 'End Time',
-           'Duration (s)', 'Network', 'Station', 'Channel',
-           'Sampling Rate (Hz)', 'Latitude', 'Longitude']
+COLUMNS = [
+    "Filename",
+    "Format",
+    "Process Level",
+    "Start Time",
+    "End Time",
+    "Duration (s)",
+    "Network",
+    "Station",
+    "Channel",
+    "Sampling Rate (Hz)",
+    "Latitude",
+    "Longitude",
+]
 
-ERROR_COLUMNS = ['Filename', 'Error']
+ERROR_COLUMNS = ["Filename", "Error"]
 
 
 def get_dataframe(filename, stream):
@@ -35,20 +45,29 @@ def get_dataframe(filename, stream):
     row = pd.Series(index=COLUMNS)
     fpath, fname = os.path.split(filename)
     for trace in stream:
+<<<<<<< HEAD
         row['Filename'] = filename
         row['Format'] = trace.stats['standard']['source_format']
         plevel = trace.stats['standard']['process_level']
         row['Process Level'] = stationtrace.REV_PROCESS_LEVELS[plevel]
         row['Start Time'] = trace.stats.starttime
         row['End Time'] = trace.stats.endtime
+=======
+        row["Filename"] = filename
+        row["Format"] = trace.stats["standard"]["source_format"]
+        plevel = trace.stats["standard"]["process_level"]
+        row["Process Level"] = REV_PROCESS_LEVELS[plevel]
+        row["Start Time"] = trace.stats.starttime
+        row["End Time"] = trace.stats.endtime
+>>>>>>> metrics
         dt = trace.stats.endtime - trace.stats.starttime
-        row['Duration (s)'] = dt
-        row['Network'] = trace.stats.network
-        row['Station'] = trace.stats.station
-        row['Channel'] = trace.stats.channel
-        row['Sampling Rate (Hz)'] = trace.stats.sampling_rate
-        row['Latitude'] = trace.stats.coordinates['latitude']
-        row['Longitude'] = trace.stats.coordinates['longitude']
+        row["Duration (s)"] = dt
+        row["Network"] = trace.stats.network
+        row["Station"] = trace.stats.station
+        row["Channel"] = trace.stats.channel
+        row["Sampling Rate (Hz)"] = trace.stats.sampling_rate
+        row["Latitude"] = trace.stats.coordinates["latitude"]
+        row["Longitude"] = trace.stats.coordinates["longitude"]
         df = df.append(row, ignore_index=True)
 
     return df
@@ -61,7 +80,7 @@ def render_concise(files, save=False):
     for filename in files:
         fpath, fname = os.path.split(filename)
         if fpath not in folders:
-            sys.stderr.write('Parsing files from subfolder %s...\n' % fpath)
+            sys.stderr.write("Parsing files from subfolder %s...\n" % fpath)
             folders.append(fpath)
         try:
             streams = readmod.read_data(filename)
@@ -70,13 +89,13 @@ def render_concise(files, save=False):
                 df = pd.concat([df, tdf], axis=0)
         except BaseException as e:
             row = pd.Series(index=ERROR_COLUMNS)
-            row['Filename'] = os.path.abspath(filename)
-            row['Error'] = str(e)
+            row["Filename"] = os.path.abspath(filename)
+            row["Error"] = str(e)
             errors = errors.append(row, ignore_index=True)
             continue
 
     # organize dataframe by network, station, and channel
-    df = df.sort_values(['Network', 'Station', 'Channel'])
+    df = df.sort_values(["Network", "Station", "Channel"])
     if not save:
         print(df.to_string(index=False))
 
@@ -107,57 +126,61 @@ def render_verbose(files):
             fmt = readmod._get_format(fname, config)
             stream = readmod.read_data(fname, config)[0]
             stats = stream[0].stats
-            tpl = (stats['coordinates']['latitude'],
-                   stats['coordinates']['longitude'],
-                   stats['coordinates']['elevation'])
-            locstr = 'Lat: %.4f Lon: %.4f Elev: %.1f' % tpl
+            tpl = (
+                stats["coordinates"]["latitude"],
+                stats["coordinates"]["longitude"],
+                stats["coordinates"]["elevation"],
+            )
+            locstr = "Lat: %.4f Lon: %.4f Elev: %.1f" % tpl
             mydict = OrderedDict(
-                [('Filename', fname),
-                 ('Format', fmt),
-                 ('Station', stats['station']),
-                 ('Network', stats['network']),
-                 ('Source', stats['standard']['source']),
-                 ('Location', stats['location']),
-                 ('Coordinates', locstr),
-                 ])
+                [
+                    ("Filename", fname),
+                    ("Format", fmt),
+                    ("Station", stats["station"]),
+                    ("Network", stats["network"]),
+                    ("Source", stats["standard"]["source"]),
+                    ("Location", stats["location"]),
+                    ("Coordinates", locstr),
+                ]
+            )
             print()
 
             print(pd.Series(mydict).to_string())
             for trace in stream:
                 channel = OrderedDict()
                 stats = trace.stats
-                channel['Channel'] = stats['channel']
-                channel['Start Time'] = stats['starttime']
-                channel['End Time'] = stats['endtime']
-                channel['Number of Points'] = stats['npts']
-                channel['Units'] = stats['standard']['units']
-                channel['Peak Value'] = trace.max()
+                channel["Channel"] = stats["channel"]
+                channel["Start Time"] = stats["starttime"]
+                channel["End Time"] = stats["endtime"]
+                channel["Number of Points"] = stats["npts"]
+                channel["Units"] = stats["standard"]["units"]
+                channel["Peak Value"] = trace.max()
                 print()
                 chstr = pd.Series(channel).to_string()
-                parts = ['\t' + line for line in chstr.split('\n')]
-                chstr = '\n'.join(parts)
+                parts = ["\t" + line for line in chstr.split("\n")]
+                chstr = "\n".join(parts)
                 print(chstr)
         except BaseException as e:
             row = pd.Series(index=ERROR_COLUMNS)
-            row['Filename'] = os.path.abspath(fname)
-            row['Error'] = str(e)
+            row["Filename"] = os.path.abspath(fname)
+            row["Error"] = str(e)
             errors = errors.append(row, ignore_index=True)
             continue
     return errors
 
 
 def main():
-    description = '''Display summary information about a file, multiple files,
+    description = """Display summary information about a file, multiple files,
     or directories of files containing strong motion data in the supported
     formats.
     Use the -p option to print errors for files that could not be read.
     Use the -s option to save summary data AND errors to Excel/CSV format.
-    .'''
+    ."""
     parser = argparse.ArgumentParser(description=description)
-    parser.add_argument('files_or_dir', nargs='+',
-                        help='Files or directory to inspect.',
-                        type=str)
-    chelp = '''Print out results in concise CSV form. Columns are:
+    parser.add_argument(
+        "files_or_dir", nargs="+", help="Files or directory to inspect.", type=str
+    )
+    chelp = """Print out results in concise CSV form. Columns are:
     Filename
     Format
     Process Level
@@ -171,29 +194,26 @@ def main():
     Sampling rate
     Latitude
     Longitude
-    '''
-    parser.add_argument('-c', '--concise', action='store_true',
-                        help=chelp)
-    shelp = '''Save concise results to CSV/Excel file
+    """
+    parser.add_argument("-c", "--concise", action="store_true", help=chelp)
+    shelp = """Save concise results to CSV/Excel file
     (format determined by extension (.xlsx for Excel, anything else for CSV.))
-    '''
-    parser.add_argument('-s', '--save', metavar='OUTFILE',
-                        help=shelp)
-    phelp = 'Print error log containing files that could not be parsed.'
-    parser.add_argument('--quiet-errors', action='store_true',
-                        help=phelp)
+    """
+    parser.add_argument("-s", "--save", metavar="OUTFILE", help=shelp)
+    phelp = "Print error log containing files that could not be parsed."
+    parser.add_argument("--quiet-errors", action="store_true", help=phelp)
     # Shared arguments
     parser = argmod.add_shared_args(parser)
     args = parser.parse_args()
 
     if not args.concise and args.save:
-        msg = '''
+        msg = """
         ****************************************************************
         Saving verbose output is not supported. Use -c and -s
         options together to save tabular summary/error information about
         the data.
         ****************************************************************
-        '''
+        """
         print(textwrap.dedent(msg))
         parser.print_help()
         sys.exit(1)
@@ -201,7 +221,7 @@ def main():
     logger = logging.getLogger()
     logger.setLevel(logging.CRITICAL)
     warnings.filterwarnings("ignore")
-    pd.set_option('display.max_columns', 10000)
+    pd.set_option("display.max_columns", 10000)
     pd.set_option("display.max_colwidth", 10000)
     pd.set_option("display.expand_frame_repr", False)
 
@@ -210,15 +230,13 @@ def main():
     if len(files) == 1:
         # is this a file or a directory?
         if os.path.isdir(files[0]):
-            df, errors = render_dir(files[0],
-                                    concise=args.concise,
-                                    save=do_save)
+            df, errors = render_dir(files[0], concise=args.concise, save=do_save)
             if args.save is not None and args.concise:
                 fbase, fext = os.path.splitext(args.save)
-                errfile = fbase + '_errors' + fext
-                print('Catalog written to %s.' % args.save)
-                print('Errors written to %s.' % errfile)
-                if fext == '.xlsx':
+                errfile = fbase + "_errors" + fext
+                print("Catalog written to %s." % args.save)
+                print("Errors written to %s." % errfile)
+                if fext == ".xlsx":
                     df.to_excel(args.save, index=False)
                     errors.to_excel(errfile, index=False)
                 else:
@@ -231,7 +249,7 @@ def main():
         df, errors = render_concise(files, save=do_save)
         if args.save is not None:
             fbase, fext = os.path.splitext(args.save)
-            if fext == '.xlsx':
+            if fext == ".xlsx":
                 df.to_excel(args.save, index=False)
             else:
                 df.to_csv(args.save, index=False)
@@ -242,5 +260,5 @@ def main():
         print(errors.to_string(index=False))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

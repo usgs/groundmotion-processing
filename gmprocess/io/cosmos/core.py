@@ -23,16 +23,21 @@ MICRO_TO_VOLT = 1e6  # convert microvolts to volts
 MSEC_TO_SEC = 1 / 1000.0
 TEXT_HDR_ROWS = 14
 VALID_MARKERS = [
-    'CORRECTED ACCELERATION',
-    'UNCORRECTED ACCELERATION',
-    'RAW ACCELERATION COUNTS'
+    "CORRECTED ACCELERATION",
+    "UNCORRECTED ACCELERATION",
+    "RAW ACCELERATION COUNTS",
 ]
 
-code_file = pkg_resources.resource_filename('gmprocess', 'data/fdsn_codes.csv')
+code_file = pkg_resources.resource_filename("gmprocess", "data/fdsn_codes.csv")
 
 CODES, SOURCES1, SOURCES2 = np.genfromtxt(
-    code_file, skip_header=1, usecols=(0, 1, 2),
-    encoding='latin-1', unpack=True, dtype=bytes, delimiter=','
+    code_file,
+    skip_header=1,
+    usecols=(0, 1, 2),
+    encoding="latin-1",
+    unpack=True,
+    dtype=bytes,
+    delimiter=",",
 )
 
 # Updated tables:
@@ -40,182 +45,183 @@ CODES, SOURCES1, SOURCES2 = np.genfromtxt(
 
 CODES = CODES.astype(str)
 BUILDING_TYPES = {
-    1: 'Small fiberglass shelter',
-    2: 'Small prefabricated metal bldg',
-    3: 'Sensors buried/set in ground',
-    4: 'Reference station',
-    5: 'Base of building',
-    6: 'Freefield, Unspecified',
-    7: 'Ocean-bottom sensors',
-    8: 'Sensors in small near-surface vault (1-2m deep)',
-    9: 'Sensors in underground observatory or large vault (~3 m^3 or larger)',
-    10: 'Building',
-    11: 'Bridge',
-    12: 'Dam',
-    13: 'Wharf',
-    14: 'Tunnel or mine adit (3m or more from surface)',
-    15: 'Other lifeline structure',
-    20: 'Other structure',
-    50: 'Geotechnical array',
-    51: 'Other array',
-    999: 'Unspecified'
+    1: "Small fiberglass shelter",
+    2: "Small prefabricated metal bldg",
+    3: "Sensors buried/set in ground",
+    4: "Reference station",
+    5: "Base of building",
+    6: "Freefield, Unspecified",
+    7: "Ocean-bottom sensors",
+    8: "Sensors in small near-surface vault (1-2m deep)",
+    9: "Sensors in underground observatory or large vault (~3 m^3 or larger)",
+    10: "Building",
+    11: "Bridge",
+    12: "Dam",
+    13: "Wharf",
+    14: "Tunnel or mine adit (3m or more from surface)",
+    15: "Other lifeline structure",
+    20: "Other structure",
+    50: "Geotechnical array",
+    51: "Other array",
+    999: "Unspecified",
 }
 
 COSMOS_NETWORKS = {
-    1: ('C_', 'U.S. Coast and Geodetic Survey', 'C&GS'),
-    2: ('NP', 'U.S. Geological Survey', 'USGS'),
-    3: ('RE', 'U.S. Bureau of Reclamation', 'USBR'),
-    4: ('A_', 'U.S. Army Corps of Engineers', 'ACOE'),
-    5: ('CE', 'California Geological Survey', 'CGS'),
-    6: ('CI', 'California Institute of Technology', 'SCSN'),
-    7: ('BK', 'UC Berkeley', 'BDSN'),
-    8: ('NC', 'USGS - Northern Calif Regional Network', 'NCSN'),
-    9: ('SB', 'UC Santa Barbara', 'UCSB'),
-    10: ('AZ', 'UC San Diego - ANZA', 'ANZA'),
-    14: ('NN', 'UNR - W. Great Basin/E. Sierra Nevada', 'UNR'),
-    15: ('UW', 'UW - Pacific NW Regional Network', 'PNSN'),
-    16: ('TO', 'Caltech - Tectonics Observatory', 'CTO'),
-    17: ('AA', 'UA - Anchorage Strong Motion Network', 'AEIC'),
-    20: ('WR', ' Calif. Dept. Water Resources', 'CDWR'),
-    21: ('PG', 'Pacific Gas & Electric', 'PG&E'),
-    30: ('US', 'USGS - National Seismic Network', 'NEIC'),
-    31: ('GS', 'US Geological Survey Networks', 'USGS'),
-    32: ('IU', 'IRIS/USGS Network', 'IRGS'),
-    33: ('CU', 'Caribbean USGS Network', 'CUGS'),
-    34: ('NQ', 'NetQuakes', 'NQGS'),
-    35: ('US', 'US National Seismic Network (USNSN)', 'USGS'),
-    36: ('AG', 'Arkansas Seismic Network', 'ASN'),
-    37: ('AK', 'Alaska Regional Network', 'UAGI'),
-    38: ('AO', 'Arkansas Seismic Observatory, UALR', 'ASO'),
-    39: ('AV', 'Alaska Volcano Observatory', 'AVO'),
-    40: ('ET', 'Southern Appalachian Seismic Network', 'CERI'),
-    46: ('LD', 'Lamont-Doherty Coop. Seism. Network', 'LCSN'),
-    47: ('LL', 'LLNL NTS Network', 'LLNL'),
-    48: ('MB', 'Montana Regional Seismic Network', 'MRSN'),
-    49: ('NE', 'New England Seismic Network', 'NUSN'),
-    50: ('NM', 'Coop New Madrid Seismc Network, St Louis Univ', 'CNMSN'),
-    51: ('UW', 'Pacific Northwest Regional Sesmic Network', 'PNSN'),
-    52: ('UU', 'Univ of Utah Seismograph Stations', 'UUSS'),
-    53: ('WY', 'Yellowstone Wyoming Seismic Network', 'YWSN'),
-    54: ('PR', 'Puerto Rico Strong Motion Program', 'UPRM'),
-    55: ('CO', 'South Carolina Seismic Network', 'SCSN'),
-    56: ('HV', 'Hawaiian Volcano Observatory Network', 'HVO'),
-    57: ('IC', 'New China Digital Seismograph Network', 'USGS'),
-    58: ('II', 'IRIS/IDA Seismic Network', 'SIO'),
-    59: ('IW', ' Intermountain West Seismic Network', 'USGS'),
-    60: ('NA', 'Central and Eastern US Network', 'UCSD'),
-    61: ('TA', ' USArray Transportable Array (EarthScope_TA)', 'IRIS'),
-    62: ('TR', 'Eastern Caribbean Seismograph Network', 'SRTC'),
-    63: ('C', 'Univ Chile, Dept of Geophysics', 'CNSN'),
-    64: ('SN', 'Southern Great Basin Network', 'SGBN'),
-    100: ('TW', 'Taiwan Weather Bureau', 'CWB'),
-    107: ('BG', 'UC Berkeley - Geysers Seismic Network', 'BGSN'),
-    110: ('BO', ' Bosai-Ken (NIED), Japan', 'NIED'),
-    111: ('UO', 'Univ. of Oregon Regional Network', 'UO'),
-    199: ('Unspecified', '--'),
-    200: ('KD', 'Kandilli Observatory', 'KOER')
+    1: ("C_", "U.S. Coast and Geodetic Survey", "C&GS"),
+    2: ("NP", "U.S. Geological Survey", "USGS"),
+    3: ("RE", "U.S. Bureau of Reclamation", "USBR"),
+    4: ("A_", "U.S. Army Corps of Engineers", "ACOE"),
+    5: ("CE", "California Geological Survey", "CGS"),
+    6: ("CI", "California Institute of Technology", "SCSN"),
+    7: ("BK", "UC Berkeley", "BDSN"),
+    8: ("NC", "USGS - Northern Calif Regional Network", "NCSN"),
+    9: ("SB", "UC Santa Barbara", "UCSB"),
+    10: ("AZ", "UC San Diego - ANZA", "ANZA"),
+    14: ("NN", "UNR - W. Great Basin/E. Sierra Nevada", "UNR"),
+    15: ("UW", "UW - Pacific NW Regional Network", "PNSN"),
+    16: ("TO", "Caltech - Tectonics Observatory", "CTO"),
+    17: ("AA", "UA - Anchorage Strong Motion Network", "AEIC"),
+    20: ("WR", " Calif. Dept. Water Resources", "CDWR"),
+    21: ("PG", "Pacific Gas & Electric", "PG&E"),
+    30: ("US", "USGS - National Seismic Network", "NEIC"),
+    31: ("GS", "US Geological Survey Networks", "USGS"),
+    32: ("IU", "IRIS/USGS Network", "IRGS"),
+    33: ("CU", "Caribbean USGS Network", "CUGS"),
+    34: ("NQ", "NetQuakes", "NQGS"),
+    35: ("US", "US National Seismic Network (USNSN)", "USGS"),
+    36: ("AG", "Arkansas Seismic Network", "ASN"),
+    37: ("AK", "Alaska Regional Network", "UAGI"),
+    38: ("AO", "Arkansas Seismic Observatory, UALR", "ASO"),
+    39: ("AV", "Alaska Volcano Observatory", "AVO"),
+    40: ("ET", "Southern Appalachian Seismic Network", "CERI"),
+    46: ("LD", "Lamont-Doherty Coop. Seism. Network", "LCSN"),
+    47: ("LL", "LLNL NTS Network", "LLNL"),
+    48: ("MB", "Montana Regional Seismic Network", "MRSN"),
+    49: ("NE", "New England Seismic Network", "NUSN"),
+    50: ("NM", "Coop New Madrid Seismc Network, St Louis Univ", "CNMSN"),
+    51: ("UW", "Pacific Northwest Regional Sesmic Network", "PNSN"),
+    52: ("UU", "Univ of Utah Seismograph Stations", "UUSS"),
+    53: ("WY", "Yellowstone Wyoming Seismic Network", "YWSN"),
+    54: ("PR", "Puerto Rico Strong Motion Program", "UPRM"),
+    55: ("CO", "South Carolina Seismic Network", "SCSN"),
+    56: ("HV", "Hawaiian Volcano Observatory Network", "HVO"),
+    57: ("IC", "New China Digital Seismograph Network", "USGS"),
+    58: ("II", "IRIS/IDA Seismic Network", "SIO"),
+    59: ("IW", " Intermountain West Seismic Network", "USGS"),
+    60: ("NA", "Central and Eastern US Network", "UCSD"),
+    61: ("TA", " USArray Transportable Array (EarthScope_TA)", "IRIS"),
+    62: ("TR", "Eastern Caribbean Seismograph Network", "SRTC"),
+    63: ("C", "Univ Chile, Dept of Geophysics", "CNSN"),
+    64: ("SN", "Southern Great Basin Network", "SGBN"),
+    100: ("TW", "Taiwan Weather Bureau", "CWB"),
+    107: ("BG", "UC Berkeley - Geysers Seismic Network", "BGSN"),
+    110: ("BO", " Bosai-Ken (NIED), Japan", "NIED"),
+    111: ("UO", "Univ. of Oregon Regional Network", "UO"),
+    199: ("Unspecified", "--"),
+    200: ("KD", "Kandilli Observatory", "KOER"),
 }
 
 COSMOS_ORIENTATIONS = {
-    400: ('Up', 'Up'),
-    401: ('Down', 'Down'),
-    402: ('Vertical. sense not indicated', 'Vert'),
-    500: ('Radial, inward', 'Radl'),
-    501: ('Transverse, 90 deg CW from radial', 'Tran'),
-    600: ('Longitudinal (relative to structure)', 'Long'),
-    601: ('Tangential (relative to structure)', 'Tang'),
-    700: ('H1 (horiz. sensor, azimuth unknown)', 'H1'),
-    701: ('H2 (horiz. sensor, azimuth unknown)', 'H2'),
-    2000: ('Other (described in comments)', 'Othr')
+    400: ("Up", "Up"),
+    401: ("Down", "Down"),
+    402: ("Vertical. sense not indicated", "Vert"),
+    500: ("Radial, inward", "Radl"),
+    501: ("Transverse, 90 deg CW from radial", "Tran"),
+    600: ("Longitudinal (relative to structure)", "Long"),
+    601: ("Tangential (relative to structure)", "Tang"),
+    700: ("H1 (horiz. sensor, azimuth unknown)", "H1"),
+    701: ("H2 (horiz. sensor, azimuth unknown)", "H2"),
+    2000: ("Other (described in comments)", "Othr"),
 }
 
-VALID_AZIMUTH_INTS = np.concatenate(
-    [np.arange(1, 361), list(COSMOS_ORIENTATIONS)]
-)
+VALID_AZIMUTH_INTS = np.concatenate([np.arange(1, 361), list(COSMOS_ORIENTATIONS)])
 
 
 FILTERS = {
-    0: 'None',
-    1: 'Rectangular',
-    2: 'Cosine bell',
-    3: 'Ormsby',
-    4: 'Butterworth single direction',
-    5: 'Butterworth bi-directional',
-    6: 'Bessel'
+    0: "None",
+    1: "Rectangular",
+    2: "Cosine bell",
+    3: "Ormsby",
+    4: "Butterworth single direction",
+    5: "Butterworth bi-directional",
+    6: "Bessel",
 }
 
 PHYSICAL_UNITS = {
-    1: ('s', np.nan, ),
-    2: ('g', 980.665),
-    3: ('ss & g', np.nan),
-    4: ('cm/s/s', 1.0),
-    5: ('cm/s', 1.0),
-    6: ('cm', 1.0),
-    7: ('in/s/s', 2.54),
-    8: ('in/s', 2.54),
-    9: ('in', 2.54),
-    10: ('gal', 1.0),
-    11: ('mg', 0.980665),
-    12: ('micro g', np.nan),
-    23: ('deg/s/s', np.nan),
-    24: ('deg/s', np.nan),
-    25: ('deg', np.nan),
-    50: ('counts', np.nan),
-    51: ('volts', np.nan),
-    22: ('mvolts', np.nan),
-    60: ('psi', np.nan),
-    80: ('micro strain', np.nan)
+    1: (
+        "s",
+        np.nan,
+    ),
+    2: ("g", 980.665),
+    3: ("ss & g", np.nan),
+    4: ("cm/s/s", 1.0),
+    5: ("cm/s", 1.0),
+    6: ("cm", 1.0),
+    7: ("in/s/s", 2.54),
+    8: ("in/s", 2.54),
+    9: ("in", 2.54),
+    10: ("gal", 1.0),
+    11: ("mg", 0.980665),
+    12: ("micro g", np.nan),
+    23: ("deg/s/s", np.nan),
+    24: ("deg/s", np.nan),
+    25: ("deg", np.nan),
+    50: ("counts", np.nan),
+    51: ("volts", np.nan),
+    22: ("mvolts", np.nan),
+    60: ("psi", np.nan),
+    80: ("micro strain", np.nan),
 }
 
 UNITS = {
-    1: 'acc',
-    2: 'vel',
-    3: 'disp',
-    4: 'Relative Displacement',
-    10: 'Angular Acceleration',
-    11: 'Angular Velocity',
-    12: 'Angular Displacement',
-    20: 'Absolute Pressure',
-    21: 'Relative Pressure (gage)',
-    30: 'Volumetric Strain',
-    31: 'Linear Strain',
+    1: "acc",
+    2: "vel",
+    3: "disp",
+    4: "Relative Displacement",
+    10: "Angular Acceleration",
+    11: "Angular Velocity",
+    12: "Angular Displacement",
+    20: "Absolute Pressure",
+    21: "Relative Pressure (gage)",
+    30: "Volumetric Strain",
+    31: "Linear Strain",
 }
 
 SENSOR_TYPES = {
-    1: 'Optical-mechanical accelerometer',
-    2: 'Kinemetrics FBA-1 accelerometer',
-    3: 'Kinemetrics FBA-3 accelerometer',
-    4: 'Kinemetrics FBA-11 accelerometer',
-    5: 'Kinemetrics FBA-13 accelerometer',
-    6: 'Kinemetrics FBA-13DH accelerometer',
-    7: 'Kinemetrics FBA-23 accelerometer',
-    8: 'Kinemetrics FBA-23DH accelerometer',
-    20: 'Kinemetrics Episensor accelerometer',
-    21: 'Kinemetrics Episensor ES-U accelerometer',
-    50: 'Sprengnether FBX-23 accelerometer',
-    51: 'Sprengnether FBX-26 accelerometer',
-    100: 'Terratech SSA 120 accelerometer',
-    101: 'Terratech SSA 220 accelerometer',
-    102: 'Terratech SSA 320 accelerometer',
-    150: 'Wilcoxson 731A accelerometer',
-    200: 'Guralp CMG-5 accelerometer',
-    900: 'Other accelerometer',
-    1001: 'Kinemetrics SS-1 Ranger velocity sensor',
-    1050: 'Sprengnether S-3000 velocity sensor',
-    1201: 'Guralp CMG-1 velocity sensor',
-    1202: 'Guralp CMG-3T velocity sensor',
-    1203: 'Guralp CMG-3ESP velocity sensor',
-    1204: 'Guralp CMG-40 velocity sensor',
-    1250: 'Strecheisen STS-1 velocity sensor',
-    1251: 'Strecheisen STS-2 velocity sensor',
-    1300: 'Mark Products L4 velocity sensor',
-    1301: 'Mark Products L22D velocity sensor',
-    1900: 'Other velocity sensor',
-    3000: 'Other pressure series',
-    3500: 'Other Dilatometer series',
-    4000: 'Other Relative displacement series',
-    4500: 'Other Rotational series',
-    9000: 'Other Other series'
+    1: "Optical-mechanical accelerometer",
+    2: "Kinemetrics FBA-1 accelerometer",
+    3: "Kinemetrics FBA-3 accelerometer",
+    4: "Kinemetrics FBA-11 accelerometer",
+    5: "Kinemetrics FBA-13 accelerometer",
+    6: "Kinemetrics FBA-13DH accelerometer",
+    7: "Kinemetrics FBA-23 accelerometer",
+    8: "Kinemetrics FBA-23DH accelerometer",
+    20: "Kinemetrics Episensor accelerometer",
+    21: "Kinemetrics Episensor ES-U accelerometer",
+    50: "Sprengnether FBX-23 accelerometer",
+    51: "Sprengnether FBX-26 accelerometer",
+    100: "Terratech SSA 120 accelerometer",
+    101: "Terratech SSA 220 accelerometer",
+    102: "Terratech SSA 320 accelerometer",
+    150: "Wilcoxson 731A accelerometer",
+    200: "Guralp CMG-5 accelerometer",
+    900: "Other accelerometer",
+    1001: "Kinemetrics SS-1 Ranger velocity sensor",
+    1050: "Sprengnether S-3000 velocity sensor",
+    1201: "Guralp CMG-1 velocity sensor",
+    1202: "Guralp CMG-3T velocity sensor",
+    1203: "Guralp CMG-3ESP velocity sensor",
+    1204: "Guralp CMG-40 velocity sensor",
+    1250: "Strecheisen STS-1 velocity sensor",
+    1251: "Strecheisen STS-2 velocity sensor",
+    1300: "Mark Products L4 velocity sensor",
+    1301: "Mark Products L22D velocity sensor",
+    1900: "Other velocity sensor",
+    3000: "Other pressure series",
+    3500: "Other Dilatometer series",
+    4000: "Other Relative displacement series",
+    4500: "Other Rotational series",
+    9000: "Other Other series",
 }
 
 
@@ -235,10 +241,10 @@ def is_cosmos(filename, config=None):
     if is_binary(filename):
         return False
     try:
-        line = open(filename, 'rt', encoding='utf-8').readline()
+        line = open(filename, "rt", encoding="utf-8").readline()
         for marker in VALID_MARKERS:
             if line.lower().find(marker.lower()) >= 0:
-                if line.lower().find('(format v') >= 0:
+                if line.lower().find("(format v") >= 0:
                     return True
     except UnicodeDecodeError:
         return False
@@ -268,27 +274,25 @@ def read_cosmos(filename, config=None, **kwargs):
     """
     logging.debug("Starting read_cosmos.")
     if not is_cosmos(filename, config):
-        raise Exception(
-            '%s is not a valid COSMOS strong motion data file.' % filename)
+        raise Exception("%s is not a valid COSMOS strong motion data file." % filename)
     # get list of valid stations
-    valid_station_types = kwargs.get('valid_station_types', None)
+    valid_station_types = kwargs.get("valid_station_types", None)
     # get list of valid stations
-    location = kwargs.get('location', '')
+    location = kwargs.get("location", "")
 
     # count the number of lines in the file
-    with open(filename, encoding='utf-8') as f:
+    with open(filename, encoding="utf-8") as f:
         line_count = sum(1 for _ in f)
 
     # read as many channels as are present in the file
     line_offset = 0
     stream = StationStream([])
     while line_offset < line_count:
-        trace, line_offset = _read_channel(
-            filename, line_offset, location=location)
+        trace, line_offset = _read_channel(filename, line_offset, location=location)
         # store the trace if the station type is in the valid_station_types
         # list or store the trace if there is no valid_station_types list
         if valid_station_types is not None:
-            scode = trace.stats['format_specific']['station_code']
+            scode = trace.stats["format_specific"]["station_code"]
             if scode in valid_station_types:
                 stream.append(trace)
         else:
@@ -297,7 +301,7 @@ def read_cosmos(filename, config=None, **kwargs):
     return [stream]
 
 
-def _read_channel(filename, line_offset, location=''):
+def _read_channel(filename, line_offset, location=""):
     """Read channel data from COSMOS V1/V2 text file.
 
     Args:
@@ -310,7 +314,7 @@ def _read_channel(filename, line_offset, location=''):
         tuple: (obspy Trace, int line offset)
     """
     # read station, location, and process level from text header
-    with open(filename, 'rt', encoding='utf-8') as f:
+    with open(filename, "rt", encoding="utf-8") as f:
         for _ in range(line_offset):
             next(f)
         lines = [next(f) for x in range(TEXT_HDR_ROWS)]
@@ -332,10 +336,9 @@ def _read_channel(filename, line_offset, location=''):
     # according to the powers that defined the Network.Station.Channel.Location
     # "standard", Location is a two character field.  Most data providers,
     # including cosmos here, don't provide this.  We'll flag it as "--".
-    hdr = _get_header_info(int_data, flt_data, lines,
-                           cmt_data, location=location)
+    hdr = _get_header_info(int_data, flt_data, lines, cmt_data, location=location)
     head, tail = os.path.split(filename)
-    hdr['standard']['source_file'] = tail or os.path.basename(head)
+    hdr["standard"]["source_file"] = tail or os.path.basename(head)
 
     # read in the data
     nrows, data = _read_lines(skiprows, filename)
@@ -349,29 +352,28 @@ def _read_channel(filename, line_offset, location=''):
     #       different convention is used where the "length" of the record is
     #       actually is actuation (npts-1)*dt. In this case, we need to
     #       recompute duration and npts
-    if hdr['npts'] == (len(data) - 1):
-        hdr['npts'] = len(data)
-        hdr['duration'] = (hdr['npts'] - 1) * hdr['delta']
+    if hdr["npts"] == (len(data) - 1):
+        hdr["npts"] = len(data)
+        hdr["duration"] = (hdr["npts"] - 1) * hdr["delta"]
 
     # check units
-    unit = hdr['format_specific']['physical_units']
+    unit = hdr["format_specific"]["physical_units"]
     if unit in UNIT_CONVERSIONS:
         data *= UNIT_CONVERSIONS[unit]
-        logging.debug('Data converted from %s to cm/s/s' % (unit))
+        logging.debug("Data converted from %s to cm/s/s" % (unit))
     else:
-        if unit != 'counts':
-            raise ValueError(
-                'COSMOS: %s is not a supported unit.' % unit)
+        if unit != "counts":
+            raise ValueError("COSMOS: %s is not a supported unit." % unit)
 
-    if hdr['standard']['units'] != 'acc':
-        raise ValueError('COSMOS: Only acceleration data accepted.')
+    if hdr["standard"]["units"] != "acc":
+        raise ValueError("COSMOS: Only acceleration data accepted.")
 
     trace = StationTrace(data.copy(), Stats(hdr.copy()))
 
     # record that this data has been converted to g, if it has
-    if hdr['standard']['process_level'] != PROCESS_LEVELS['V0']:
-        response = {'input_units': 'counts', 'output_units': 'cm/s^2'}
-        trace.setProvenance('remove_response', response)
+    if hdr["standard"]["process_level"] != PROCESS_LEVELS["V0"]:
+        response = {"input_units": "counts", "output_units": "cm/s^2"}
+        trace.setProvenance("remove_response", response)
 
     # set new offset
     new_offset = skiprows + nrows
@@ -380,7 +382,7 @@ def _read_channel(filename, line_offset, location=''):
     return (trace, new_offset)
 
 
-def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
+def _get_header_info(int_data, flt_data, lines, cmt_data, location=""):
     """Return stats structure from various headers.
 
     Output is a dictionary like this:
@@ -466,27 +468,28 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     if network_num in COSMOS_NETWORKS:
         network = COSMOS_NETWORKS[network_num][0]
         source = COSMOS_NETWORKS[network_num][1]
-        if network == '':
+        if network == "":
             network = COSMOS_NETWORKS[network_num][2]
     else:
         network_code = lines[4][25:27].upper()
         if network_code in CODES:
             network = network_code
             idx = np.argwhere(CODES == network_code)[0][0]
-            source = SOURCES1[idx].decode(
-                'utf-8') + ', ' + SOURCES2[idx].decode('utf-8')
+            source = (
+                SOURCES1[idx].decode("utf-8") + ", " + SOURCES2[idx].decode("utf-8")
+            )
         else:
-            network = '--'
-            source = ''
-    hdr['network'] = network
-    logging.debug('network: %s' % network)
-    hdr['station'] = lines[4][28:34].strip()
-    logging.debug('station: %s' % hdr['station'])
+            network = "--"
+            source = ""
+    hdr["network"] = network
+    logging.debug("network: %s" % network)
+    hdr["station"] = lines[4][28:34].strip()
+    logging.debug("station: %s" % hdr["station"])
 
     # the channel orientation can be either relative to true north (idx 53)
     # or relative to sensor orientation (idx 54).
     horizontal_angle = int(int_data[53])
-    logging.debug('horizontal_angle: %s' % horizontal_angle)
+    logging.debug("horizontal_angle: %s" % horizontal_angle)
     if horizontal_angle not in VALID_AZIMUTH_INTS:
         angles = np.array(int_data[19:21]).astype(np.float32)
         angles[angles == unknown] = np.nan
@@ -496,8 +499,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
             ref = angles[~np.isnan(angles)][0]
             horizontal_angle = int(int_data[54])
             if horizontal_angle not in VALID_AZIMUTH_INTS:
-                logging.warning(
-                    "Horizontal_angle in COSMOS header is not valid.")
+                logging.warning("Horizontal_angle in COSMOS header is not valid.")
             else:
                 horizontal_angle += ref
                 if horizontal_angle > 360:
@@ -513,8 +515,8 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
 
     delta = float(flt_data[61]) * MSEC_TO_SEC
     if delta != unknown:
-        hdr['delta'] = delta
-        hdr['sampling_rate'] = 1 / delta
+        hdr["delta"] = delta
+        hdr["sampling_rate"] = 1 / delta
 
     # Determine the angle based upon the cosmos table
     # Set horizontal angles other than N,S,E,W to H1 and H2
@@ -522,29 +524,32 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     if horizontal_angle != unknown:
         if horizontal_angle in COSMOS_ORIENTATIONS:
             channel = COSMOS_ORIENTATIONS[horizontal_angle][1].upper()
-            if channel == 'UP' or channel == 'DOWN' or channel == 'VERT':
+            if channel == "UP" or channel == "DOWN" or channel == "VERT":
                 channel = get_channel_name(
-                    hdr['sampling_rate'],
+                    hdr["sampling_rate"],
                     is_acceleration=True,
                     is_vertical=True,
-                    is_north=False)
+                    is_north=False,
+                )
                 horizontal_angle = 360.0
-            elif channel == 'RADL' or channel == 'LONG' or channel == 'H1':
+            elif channel == "RADL" or channel == "LONG" or channel == "H1":
                 channel = get_channel_name(
-                    hdr['sampling_rate'],
+                    hdr["sampling_rate"],
                     is_acceleration=True,
                     is_vertical=False,
-                    is_north=True)
+                    is_north=True,
+                )
                 horizontal_angle = 0.0
-            elif channel == 'TRAN' or channel == 'TANG' or channel == 'H2':
+            elif channel == "TRAN" or channel == "TANG" or channel == "H2":
                 channel = get_channel_name(
-                    hdr['sampling_rate'],
+                    hdr["sampling_rate"],
                     is_acceleration=True,
                     is_vertical=False,
-                    is_north=False)
+                    is_north=False,
+                )
                 horizontal_angle = 90.0
             else:  # For the occassional 'OTHR' channel
-                raise ValueError('Channel name is not valid.')
+                raise ValueError("Channel name is not valid.")
 
         elif horizontal_angle >= 0 and horizontal_angle <= 360:
             if (
@@ -553,31 +558,35 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
                 or (horizontal_angle > 135 and horizontal_angle < 225)
             ):
                 channel = get_channel_name(
-                    hdr['sampling_rate'],
+                    hdr["sampling_rate"],
                     is_acceleration=True,
                     is_vertical=False,
-                    is_north=True)
+                    is_north=True,
+                )
             else:
                 channel = get_channel_name(
-                    hdr['sampling_rate'],
+                    hdr["sampling_rate"],
                     is_acceleration=True,
                     is_vertical=False,
-                    is_north=False)
+                    is_north=False,
+                )
         horizontal_orientation = horizontal_angle
     else:
-        errstr = ('Not enough information to distinguish horizontal from '
-                  'vertical channels.')
-        raise BaseException('COSMOS: ' + errstr)
-    hdr['channel'] = channel
-    logging.debug('channel: %s' % hdr['channel'])
-    if location == '':
+        errstr = (
+            "Not enough information to distinguish horizontal from "
+            "vertical channels."
+        )
+        raise BaseException("COSMOS: " + errstr)
+    hdr["channel"] = channel
+    logging.debug("channel: %s" % hdr["channel"])
+    if location == "":
         location = int(int_data[55])
-        location = str(_check_assign(location, unknown, '--'))
+        location = str(_check_assign(location, unknown, "--"))
         if len(location) < 2:
             location = location.zfill(2)
-        hdr['location'] = location
+        hdr["location"] = location
     else:
-        hdr['location'] = location
+        hdr["location"] = location
     year = int(int_data[39])
     month = int(int_data[41])
     day = int(int_data[42])
@@ -588,206 +597,202 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=''):
     # It is considered inadequate time information
     if second == unknown:
         try:
-            hdr['starttime'] = datetime(
-                year, month, day, hour, minute)
+            hdr["starttime"] = datetime(year, month, day, hour, minute)
         except BaseException:
-            raise BaseException(
-                'COSMOS: Inadequate start time information.')
+            raise BaseException("COSMOS: Inadequate start time information.")
     else:
         second = second
         microsecond = int((second - int(second)) * 1e6)
         try:
-            hdr['starttime'] = datetime(
-                year, month, day, hour, minute, int(second), microsecond)
+            hdr["starttime"] = datetime(
+                year, month, day, hour, minute, int(second), microsecond
+            )
         except BaseException:
-            raise BaseException(
-                'COSMOS: Inadequate start time information.')
+            raise BaseException("COSMOS: Inadequate start time information.")
 
     if flt_data[62] != unknown:
         # COSMOS **defines** "length" as npts*dt (note this is a bit unusual)
         cosmos_length = flt_data[62]
         npts = int(cosmos_length / delta)
-        hdr['duration'] = (npts - 1) * delta
-        hdr['npts'] = npts
+        hdr["duration"] = (npts - 1) * delta
+        hdr["npts"] = npts
     else:
-        raise ValueError('COSMOS file does not specify length.')
+        raise ValueError("COSMOS file does not specify length.")
 
     # coordinate information
-    coordinates['latitude'] = float(flt_data[0])
-    coordinates['longitude'] = float(flt_data[1])
-    coordinates['elevation'] = float(flt_data[2])
+    coordinates["latitude"] = float(flt_data[0])
+    coordinates["longitude"] = float(flt_data[1])
+    coordinates["elevation"] = float(flt_data[2])
     for key in coordinates:
         if coordinates[key] == unknown:
-            if key != 'elevation':
-                logging.warning(
-                    'Missing %r. Setting to np.nan.' % key, Warning)
+            if key != "elevation":
+                logging.warning("Missing %r. Setting to np.nan." % key, Warning)
                 coordinates[key] = np.nan
             else:
-                logging.warning('Missing %r. Setting to 0.0.' % key, Warning)
+                logging.warning("Missing %r. Setting to 0.0." % key, Warning)
                 coordinates[key] = 0.0
 
-    hdr['coordinates'] = coordinates
+    hdr["coordinates"] = coordinates
 
     # standard metadata
-    standard['units_type'] = get_units_type(channel)
-    standard['source'] = source
-    standard['horizontal_orientation'] = horizontal_orientation
-    standard['vertical_orientation'] = np.nan
+    standard["units_type"] = get_units_type(channel)
+    standard["source"] = source
+    standard["horizontal_orientation"] = horizontal_orientation
+    standard["vertical_orientation"] = np.nan
     station_name = lines[4][40:-1].strip()
-    standard['station_name'] = station_name
+    standard["station_name"] = station_name
     instrument_frequency = float(flt_data[39])
     if instrument_frequency == 0:
-        standard['instrument_period'] = np.nan
-        logging.warning('Instrument Frequency == 0')
+        standard["instrument_period"] = np.nan
+        logging.warning("Instrument Frequency == 0")
     else:
         inst_freq = _check_assign(instrument_frequency, unknown, np.nan)
-        standard['instrument_period'] = 1.0 / inst_freq
+        standard["instrument_period"] = 1.0 / inst_freq
     instrument_damping = float(flt_data[40])
-    standard['instrument_damping'] = _check_assign(instrument_damping,
-                                                   unknown, np.nan)
+    standard["instrument_damping"] = _check_assign(instrument_damping, unknown, np.nan)
     process_line = lines[10][10:40]
-    if process_line.find('-') >= 0 or process_line.find('/') >= 0:
-        if process_line.find('-') >= 0:
-            delimeter = '-'
-        elif process_line.find('/') >= 0:
-            delimeter = '/'
+    if process_line.find("-") >= 0 or process_line.find("/") >= 0:
+        if process_line.find("-") >= 0:
+            delimeter = "-"
+        elif process_line.find("/") >= 0:
+            delimeter = "/"
         try:
             date = process_line.split(delimeter)
             month = int(date[0][-2:])
             day = int(date[1])
             year = int(date[2][:4])
-            time = process_line.split(':')
+            time = process_line.split(":")
             hour = int(time[0][-2:])
             minute = int(time[1])
             second = float(time[2][:2])
             microsecond = int((second - int(second)) * 1e6)
-            etime = datetime(year, month, day, hour, minute,
-                             int(second), microsecond)
-            standard['process_time'] = etime.strftime(TIMEFMT)
+            etime = datetime(year, month, day, hour, minute, int(second), microsecond)
+            standard["process_time"] = etime.strftime(TIMEFMT)
         except BaseException:
-            standard['process_time'] = ''
+            standard["process_time"] = ""
     else:
-        standard['process_time'] = ''
+        standard["process_time"] = ""
     process_level = int(int_data[0])
     if process_level == 0:
-        standard['process_level'] = PROCESS_LEVELS['V0']
+        standard["process_level"] = PROCESS_LEVELS["V0"]
     elif process_level == 1:
-        standard['process_level'] = PROCESS_LEVELS['V1']
+        standard["process_level"] = PROCESS_LEVELS["V1"]
     elif process_level == 2:
-        standard['process_level'] = PROCESS_LEVELS['V2']
+        standard["process_level"] = PROCESS_LEVELS["V2"]
     elif process_level == 3:
-        standard['process_level'] = PROCESS_LEVELS['V3']
+        standard["process_level"] = PROCESS_LEVELS["V3"]
     else:
-        standard['process_level'] = PROCESS_LEVELS['V1']
+        standard["process_level"] = PROCESS_LEVELS["V1"]
     logging.debug("process_level: %s" % process_level)
     serial = int(int_data[52])
     if serial != unknown:
-        standard['sensor_serial_number'] = str(_check_assign(
-            serial, unknown, ''))
+        standard["sensor_serial_number"] = str(_check_assign(serial, unknown, ""))
     else:
-        standard['sensor_serial_number'] = ''
+        standard["sensor_serial_number"] = ""
     instrument = int(int_data[51])
     if instrument != unknown and instrument in SENSOR_TYPES:
-        standard['instrument'] = SENSOR_TYPES[instrument]
+        standard["instrument"] = SENSOR_TYPES[instrument]
     else:
-        standard['instrument'] = lines[6][57:-1].strip()
+        standard["instrument"] = lines[6][57:-1].strip()
     structure_type = int(int_data[18])
     if structure_type != unknown and structure_type in BUILDING_TYPES:
-        standard['structure_type'] = BUILDING_TYPES[structure_type]
+        standard["structure_type"] = BUILDING_TYPES[structure_type]
     else:
-        standard['structure_type'] = ''
+        standard["structure_type"] = ""
     frequency = float(flt_data[25])
-    standard['corner_frequency'] = _check_assign(frequency, unknown, np.nan)
+    standard["corner_frequency"] = _check_assign(frequency, unknown, np.nan)
     physical_parameter = int(int_data[2])
     units = int(int_data[1])
     if units != unknown and units in UNITS:
-        standard['units'] = UNITS[units]
+        standard["units"] = UNITS[units]
     else:
         if physical_parameter in [2, 4, 7, 10, 11, 12, 23]:
-            standard['units'] = 'acc'
+            standard["units"] = "acc"
         elif physical_parameter in [5, 8, 24]:
-            standard['units'] = 'vel'
+            standard["units"] = "vel"
         elif physical_parameter in [6, 9, 25]:
-            standard['units'] = 'disp'
-    standard['source_format'] = 'cosmos'
-    standard['comments'] = ', '.join(cmt_data)
+            standard["units"] = "disp"
+    standard["source_format"] = "cosmos"
+    standard["comments"] = ", ".join(cmt_data)
 
     # format specific metadata
     if physical_parameter in PHYSICAL_UNITS:
         physical_parameter = PHYSICAL_UNITS[physical_parameter][0]
-    format_specific['physical_units'] = physical_parameter
+    format_specific["physical_units"] = physical_parameter
     v30 = float(flt_data[3])
-    format_specific['v30'] = _check_assign(v30, unknown, np.nan)
+    format_specific["v30"] = _check_assign(v30, unknown, np.nan)
     least_significant_bit = float(flt_data[21])
-    format_specific['least_significant_bit'] = _check_assign(
-        least_significant_bit, unknown, np.nan)
+    format_specific["least_significant_bit"] = _check_assign(
+        least_significant_bit, unknown, np.nan
+    )
     gain = float(flt_data[46])
-    format_specific['gain'] = _check_assign(gain,
-                                            unknown, np.nan)
+    format_specific["gain"] = _check_assign(gain, unknown, np.nan)
     low_filter_type = int(int_data[60])
     if low_filter_type in FILTERS:
-        format_specific['low_filter_type'] = FILTERS[low_filter_type]
+        format_specific["low_filter_type"] = FILTERS[low_filter_type]
     else:
-        format_specific['low_filter_type'] = ''
+        format_specific["low_filter_type"] = ""
     low_filter_corner = float(flt_data[53])
-    format_specific['low_filter_corner'] = _check_assign(
-        low_filter_corner, unknown, np.nan)
+    format_specific["low_filter_corner"] = _check_assign(
+        low_filter_corner, unknown, np.nan
+    )
     low_filter_decay = float(flt_data[54])
-    format_specific['low_filter_decay'] = _check_assign(
-        low_filter_decay, unknown, np.nan)
+    format_specific["low_filter_decay"] = _check_assign(
+        low_filter_decay, unknown, np.nan
+    )
     high_filter_type = int(int_data[61])
     if high_filter_type in FILTERS:
-        format_specific['high_filter_type'] = FILTERS[high_filter_type]
+        format_specific["high_filter_type"] = FILTERS[high_filter_type]
     else:
-        format_specific['high_filter_type'] = ''
+        format_specific["high_filter_type"] = ""
     high_filter_corner = float(flt_data[56])
-    format_specific['high_filter_corner'] = _check_assign(
-        high_filter_corner, unknown, np.nan)
+    format_specific["high_filter_corner"] = _check_assign(
+        high_filter_corner, unknown, np.nan
+    )
     high_filter_decay = float(flt_data[57])
-    format_specific['high_filter_decay'] = _check_assign(
-        high_filter_decay, unknown, np.nan)
+    format_specific["high_filter_decay"] = _check_assign(
+        high_filter_decay, unknown, np.nan
+    )
     maximum = float(flt_data[63])
-    format_specific['maximum'] = _check_assign(maximum, unknown, np.nan)
+    format_specific["maximum"] = _check_assign(maximum, unknown, np.nan)
     maximum_time = float(flt_data[64])
-    format_specific['maximum_time'] = _check_assign(
-        maximum_time, unknown, np.nan)
-    format_specific['station_code'] = _check_assign(
-        structure_type, unknown, np.nan)
+    format_specific["maximum_time"] = _check_assign(maximum_time, unknown, np.nan)
+    format_specific["station_code"] = _check_assign(structure_type, unknown, np.nan)
     record_flag = int(int_data[75])
     if record_flag == 0:
-        format_specific['record_flag'] = 'No problem'
+        format_specific["record_flag"] = "No problem"
     elif record_flag == 1:
-        format_specific['record_flag'] = 'Fixed'
+        format_specific["record_flag"] = "Fixed"
     elif record_flag == 2:
-        format_specific['record_flag'] = 'Unfixed problem'
+        format_specific["record_flag"] = "Unfixed problem"
     else:
-        format_specific['record_flag'] = ''
+        format_specific["record_flag"] = ""
     scaling_factor = float(flt_data[87])
-    format_specific['scaling_factor'] = _check_assign(
-        scaling_factor, unknown, np.nan)
+    format_specific["scaling_factor"] = _check_assign(scaling_factor, unknown, np.nan)
     scaling_factor = float(flt_data[41])
-    format_specific['sensor_sensitivity'] = _check_assign(
-        scaling_factor, unknown, np.nan)
+    format_specific["sensor_sensitivity"] = _check_assign(
+        scaling_factor, unknown, np.nan
+    )
 
     # for V0 files, set a standard field called instrument_sensitivity
     ctov = least_significant_bit / MICRO_TO_VOLT
-    vtog = 1 / format_specific['sensor_sensitivity']
-    if not np.isnan(format_specific['gain']):
-        gain = format_specific['gain']
+    vtog = 1 / format_specific["sensor_sensitivity"]
+    if not np.isnan(format_specific["gain"]):
+        gain = format_specific["gain"]
     else:
         gain = 1.0
     if gain == 0:
-        fmt = '%s.%s.%s.%s'
-        tpl = (hdr['network'], hdr['station'], hdr['channel'], hdr['location'])
+        fmt = "%s.%s.%s.%s"
+        tpl = (hdr["network"], hdr["station"], hdr["channel"], hdr["location"])
         nscl = fmt % tpl
-        raise ValueError('Gain of 0 discovered for NSCL: %s' % nscl)
+        raise ValueError("Gain of 0 discovered for NSCL: %s" % nscl)
     denom = ctov * vtog * (1.0 / gain) * sp.g
-    standard['instrument_sensitivity'] = 1 / denom
+    standard["instrument_sensitivity"] = 1 / denom
 
     # Set dictionary
-    hdr['standard'] = standard
-    hdr['coordinates'] = coordinates
-    hdr['format_specific'] = format_specific
+    hdr["standard"] = standard
+    hdr["coordinates"] = coordinates
+    hdr["format_specific"] = format_specific
     return hdr
 
 
@@ -811,22 +816,18 @@ def _read_lines(skip_rows, filename):
         array-like: List of comments or array of data.
     """
     # read the headers
-    header = np.genfromtxt(filename,
-                           skip_header=skip_rows - 1,
-                           max_rows=1,
-                           dtype='str')
+    header = np.genfromtxt(filename, skip_header=skip_rows - 1, max_rows=1, dtype="str")
 
     # parse the number of points and convert the header to a string
     npts = int(header[0])
-    header = np.array_str(header).lower().replace(
-        "'", '').replace(' ', '').lower()
+    header = np.array_str(header).lower().replace("'", "").replace(" ", "").lower()
 
     # determine whether the following lines are comments or data
-    if header.lower().find('comment') >= 0:
+    if header.lower().find("comment") >= 0:
         num_lines = npts
 
         # read and store comment lines
-        with open(filename, 'rt', encoding='utf-8') as f:
+        with open(filename, "rt", encoding="utf-8") as f:
             file = f.readlines()
         max_lines = skip_rows + num_lines
         comment = [file[idx] for idx in range(skip_rows, max_lines)]
@@ -834,17 +835,21 @@ def _read_lines(skip_rows, filename):
     else:
         # parse out the format of the data
         # sometimes header has newline characters in it...
-        header = header.replace('\n', '')
-        format_data = re.findall(r"\d+", header[header.find('format=') + 8:])
+        header = header.replace("\n", "")
+        format_data = re.findall(r"\d+", header[header.find("format=") + 8 :])
         cols = int(format_data[0])
         fmt = int(format_data[1])
         num_lines = int(np.ceil(npts / cols))
         widths = [fmt] * cols
 
         # read data
-        data_arr = np.genfromtxt(filename, skip_header=skip_rows,
-                                 max_rows=num_lines, dtype=np.float64,
-                                 delimiter=widths).flatten()
+        data_arr = np.genfromtxt(
+            filename,
+            skip_header=skip_rows,
+            max_rows=num_lines,
+            dtype=np.float64,
+            delimiter=widths,
+        ).flatten()
         # Strip off nans that are created by genfromtxt when the last
         # row is incomplete
         data_arr = data_arr[~np.isnan(data_arr)]

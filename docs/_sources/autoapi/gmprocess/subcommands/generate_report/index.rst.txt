@@ -72,7 +72,6 @@ Attributes
 
    Generate summary report (latex required).
 
-
    .. py:attribute:: command_name
       :annotation: = generate_report
 

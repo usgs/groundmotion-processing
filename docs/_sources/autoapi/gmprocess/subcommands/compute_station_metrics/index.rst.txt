@@ -114,7 +114,6 @@ Attributes
 
    Compute station metrics.
 
-
    .. py:attribute:: command_name
       :annotation: = compute_station_metrics
 

@@ -60,7 +60,6 @@ Attributes
 
    Assemble raw data and organize it into an ASDF file.
 
-
    .. py:attribute:: command_name
       :annotation: = assemble
 

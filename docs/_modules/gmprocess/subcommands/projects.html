@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.subcommands.projects - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.subcommands.projects - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -467,53 +467,58 @@
 <span class="kn">import</span> <span class="nn">shutil</span>
 
 <span class="kn">from</span> <span class="nn">gmprocess.subcommands.lazy_loader</span> <span class="kn">import</span> <span class="n">LazyLoader</span>
-<span class="n">distributed</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'distributed'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'dask.distributed'</span><span class="p">)</span>
-<span class="n">ryaml</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'yaml'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'ruamel.yaml'</span><span class="p">)</span>
-<span class="n">pkg_resources</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'pkg_resources'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'pkg_resources'</span><span class="p">)</span>
 
-<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'base'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.base'</span><span class="p">)</span>
-<span class="n">constants</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'constants'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.utils.constants'</span><span class="p">)</span>
-<span class="n">prompt</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'prompt'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.utils.prompt'</span><span class="p">)</span>
+<span class="n">distributed</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"distributed"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"dask.distributed"</span><span class="p">)</span>
+<span class="n">ryaml</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"yaml"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"ruamel.yaml"</span><span class="p">)</span>
+<span class="n">pkg_resources</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"pkg_resources"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"pkg_resources"</span><span class="p">)</span>
+
+<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"base"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.base"</span><span class="p">)</span>
+<span class="n">constants</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"constants"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.constants"</span><span class="p">)</span>
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"prompt"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.prompt"</span><span class="p">)</span>
 
 
 <span class="c1"># Regular expression for checking valid email</span>
-<span class="n">re_email</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'</span>
+<span class="n">re_email</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$"</span>
 
 
 <div class="viewcode-block" id="ProjectsModule"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/projects/index.html#gmprocess.subcommands.projects.ProjectsModule">[docs]</a><span class="k">class</span> <span class="nc">ProjectsModule</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">SubcommandModule</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Manage gmrecords projects.</span>
 <span class="sd">    """</span>
-    <span class="n">command_name</span> <span class="o">=</span> <span class="s1">'projects'</span>
-    <span class="n">aliases</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'proj'</span><span class="p">,</span> <span class="p">)</span>
+
+    <span class="n">command_name</span> <span class="o">=</span> <span class="s2">"projects"</span>
+    <span class="n">aliases</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"proj"</span><span class="p">,)</span>
 
     <span class="n">arguments</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="s1">'short_flag'</span><span class="p">:</span> <span class="s1">'-l'</span><span class="p">,</span>
-            <span class="s1">'long_flag'</span><span class="p">:</span> <span class="s1">'--list'</span><span class="p">,</span>
-            <span class="s1">'help'</span><span class="p">:</span> <span class="s1">'List all configured gmrecords projects.'</span><span class="p">,</span>
-            <span class="s1">'default'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">'action'</span><span class="p">:</span> <span class="s1">'store_true'</span>
-        <span class="p">},</span> <span class="p">{</span>
-            <span class="s1">'short_flag'</span><span class="p">:</span> <span class="s1">'-s'</span><span class="p">,</span>
-            <span class="s1">'long_flag'</span><span class="p">:</span> <span class="s1">'--switch'</span><span class="p">,</span>
-            <span class="s1">'help'</span><span class="p">:</span> <span class="s1">'Switch from current project to PROJECT.'</span><span class="p">,</span>
-            <span class="s1">'type'</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-            <span class="s1">'metavar'</span><span class="p">:</span> <span class="s1">'PROJECT'</span><span class="p">,</span>
-            <span class="s1">'default'</span><span class="p">:</span> <span class="kc">None</span>
-        <span class="p">},</span> <span class="p">{</span>
-            <span class="s1">'short_flag'</span><span class="p">:</span> <span class="s1">'-c'</span><span class="p">,</span>
-            <span class="s1">'long_flag'</span><span class="p">:</span> <span class="s1">'--create'</span><span class="p">,</span>
-            <span class="s1">'help'</span><span class="p">:</span> <span class="s1">'Create a project and switch to it.'</span><span class="p">,</span>
-            <span class="s1">'action'</span><span class="p">:</span> <span class="s1">'store_true'</span><span class="p">,</span>
-            <span class="s1">'default'</span><span class="p">:</span> <span class="kc">False</span>
-        <span class="p">},</span> <span class="p">{</span>
-            <span class="s1">'short_flag'</span><span class="p">:</span> <span class="s1">'-d'</span><span class="p">,</span>
-            <span class="s1">'long_flag'</span><span class="p">:</span> <span class="s1">'--delete'</span><span class="p">,</span>
-            <span class="s1">'help'</span><span class="p">:</span> <span class="s1">'Delete existing project PROJECT.'</span><span class="p">,</span>
-            <span class="s1">'type'</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-            <span class="s1">'metavar'</span><span class="p">:</span> <span class="s1">'PROJECT'</span><span class="p">,</span>
-            <span class="s1">'default'</span><span class="p">:</span> <span class="kc">None</span>
+            <span class="s2">"short_flag"</span><span class="p">:</span> <span class="s2">"-l"</span><span class="p">,</span>
+            <span class="s2">"long_flag"</span><span class="p">:</span> <span class="s2">"--list"</span><span class="p">,</span>
+            <span class="s2">"help"</span><span class="p">:</span> <span class="s2">"List all configured gmrecords projects."</span><span class="p">,</span>
+            <span class="s2">"default"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">"action"</span><span class="p">:</span> <span class="s2">"store_true"</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">"short_flag"</span><span class="p">:</span> <span class="s2">"-s"</span><span class="p">,</span>
+            <span class="s2">"long_flag"</span><span class="p">:</span> <span class="s2">"--switch"</span><span class="p">,</span>
+            <span class="s2">"help"</span><span class="p">:</span> <span class="s2">"Switch from current project to PROJECT."</span><span class="p">,</span>
+            <span class="s2">"type"</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="s2">"metavar"</span><span class="p">:</span> <span class="s2">"PROJECT"</span><span class="p">,</span>
+            <span class="s2">"default"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">"short_flag"</span><span class="p">:</span> <span class="s2">"-c"</span><span class="p">,</span>
+            <span class="s2">"long_flag"</span><span class="p">:</span> <span class="s2">"--create"</span><span class="p">,</span>
+            <span class="s2">"help"</span><span class="p">:</span> <span class="s2">"Create a project and switch to it."</span><span class="p">,</span>
+            <span class="s2">"action"</span><span class="p">:</span> <span class="s2">"store_true"</span><span class="p">,</span>
+            <span class="s2">"default"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">"short_flag"</span><span class="p">:</span> <span class="s2">"-d"</span><span class="p">,</span>
+            <span class="s2">"long_flag"</span><span class="p">:</span> <span class="s2">"--delete"</span><span class="p">,</span>
+            <span class="s2">"help"</span><span class="p">:</span> <span class="s2">"Delete existing project PROJECT."</span><span class="p">,</span>
+            <span class="s2">"type"</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="s2">"metavar"</span><span class="p">:</span> <span class="s2">"PROJECT"</span><span class="p">,</span>
+            <span class="s2">"default"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">},</span>
     <span class="p">]</span>
 
@@ -525,7 +530,7 @@
 <span class="sd">            gmrecords:</span>
 <span class="sd">                GMrecordsApp instance.</span>
 <span class="sd">        """</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Running subcommand </span><span class="se">\'</span><span class="si">%s</span><span class="se">\'</span><span class="s1">'</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Running subcommand '</span><span class="si">%s</span><span class="s2">'"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span> <span class="o">=</span> <span class="n">gmrecords</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_arguments</span><span class="p">()</span>
@@ -541,89 +546,91 @@
         <span class="n">config</span> <span class="o">=</span> <span class="n">check_project_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">list</span><span class="p">:</span>
-            <span class="n">projects</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">]</span>
-            <span class="n">current</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">'project'</span><span class="p">]</span>
+            <span class="n">projects</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">]</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"project"</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">pname</span><span class="p">,</span> <span class="n">pdict</span> <span class="ow">in</span> <span class="n">projects</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">is_current</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="k">if</span> <span class="n">pname</span> <span class="o">==</span> <span class="n">current</span><span class="p">:</span>
                     <span class="n">is_current</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span>
-                    <span class="n">pname</span><span class="p">,</span> <span class="n">pdict</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">is_current</span><span class="o">=</span><span class="n">is_current</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">project</span><span class="p">)</span> <span class="o">+</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+                <span class="n">project</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="n">pname</span><span class="p">,</span> <span class="n">pdict</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">is_current</span><span class="o">=</span><span class="n">is_current</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">project</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">switch</span><span class="p">:</span>
             <span class="n">newproject</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">switch</span>
-            <span class="k">if</span> <span class="n">newproject</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">]:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'Project </span><span class="si">%s</span><span class="s1"> not in </span><span class="si">%s</span><span class="s1">.  Run </span><span class="si">%s</span><span class="s1"> -l to see '</span>
-                       <span class="s1">'available projects.'</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">newproject</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">]:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Project </span><span class="si">%s</span><span class="s2"> not in </span><span class="si">%s</span><span class="s2">.  Run </span><span class="si">%s</span><span class="s2"> -l to see "</span> <span class="s2">"available projects."</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">msg</span> <span class="o">%</span> <span class="p">(</span><span class="n">newproject</span><span class="p">,</span> <span class="n">configfile</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="p">))</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-            <span class="n">config</span><span class="p">[</span><span class="s1">'project'</span><span class="p">]</span> <span class="o">=</span> <span class="n">newproject</span>
+            <span class="n">config</span><span class="p">[</span><span class="s2">"project"</span><span class="p">]</span> <span class="o">=</span> <span class="n">newproject</span>
             <span class="n">config</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">configfile</span>
             <span class="n">config</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
-            <span class="n">sp</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="n">newproject</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">][</span><span class="n">newproject</span><span class="p">],</span>
-                         <span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">is_current</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">Switched to project: </span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s1">'</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">sp</span><span class="p">)))</span>
+            <span class="n">sp</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span>
+                <span class="n">newproject</span><span class="p">,</span>
+                <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="n">newproject</span><span class="p">],</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span>
+                <span class="n">is_current</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Switched to project: </span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">sp</span><span class="p">)))</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">delete</span><span class="p">:</span>
             <span class="n">project</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">delete</span>
-            <span class="k">if</span> <span class="n">project</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">]:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'Project </span><span class="si">%s</span><span class="s1"> not in </span><span class="si">%s</span><span class="s1">.  Run </span><span class="se">\'</span><span class="si">%s</span><span class="se">\'</span><span class="s1"> -l to available '</span>
-                       <span class="s1">'projects.'</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">project</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">]:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Project </span><span class="si">%s</span><span class="s2"> not in </span><span class="si">%s</span><span class="s2">.  Run '</span><span class="si">%s</span><span class="s2">' -l to available "</span> <span class="s2">"projects."</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">msg</span> <span class="o">%</span> <span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">configfile</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="p">))</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-            <span class="n">conf_path</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s1">'conf_path'</span><span class="p">]</span>
-            <span class="n">data_path</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s1">'data_path'</span><span class="p">]</span>
+            <span class="n">conf_path</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s2">"conf_path"</span><span class="p">]</span>
+            <span class="n">data_path</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s2">"data_path"</span><span class="p">]</span>
 
-            <span class="n">question</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'Are you sure you want to delete everything in:</span><span class="se">\n</span><span class="s1">'</span>
-                        <span class="s1">'</span><span class="si">%s</span><span class="se">\n</span><span class="s1">--and--</span><span class="se">\n</span><span class="si">%s</span><span class="s1">?</span><span class="se">\n</span><span class="s1">'</span> <span class="o">%</span> <span class="p">(</span><span class="n">conf_path</span><span class="p">,</span> <span class="n">data_path</span><span class="p">))</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">prompt</span><span class="o">.</span><span class="n">query_yes_no</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">'yes'</span><span class="p">):</span>
+            <span class="n">question</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">"Are you sure you want to delete everything in:</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="s2">"</span><span class="si">%s</span><span class="se">\n</span><span class="s2">--and--</span><span class="se">\n</span><span class="si">%s</span><span class="s2">?</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">conf_path</span><span class="p">,</span> <span class="n">data_path</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">prompt</span><span class="o">.</span><span class="n">query_yes_no</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">"yes"</span><span class="p">):</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">conf_path</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-            <span class="k">del</span> <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">][</span><span class="n">project</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="n">project</span><span class="p">]</span>
 
-            <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">==</span> <span class="p">[]:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">'No remaining projects in projects.conf'</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">==</span> <span class="p">[]:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">"No remaining projects in projects.conf"</span><span class="p">)</span>
                 <span class="n">default</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="n">newproject</span> <span class="o">=</span> <span class="s1">'None'</span>
+                <span class="n">newproject</span> <span class="o">=</span> <span class="s2">"None"</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">default</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">default</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">newproject</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span>
-                    <span class="n">default</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">][</span><span class="n">default</span><span class="p">],</span> <span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
-            <span class="n">config</span><span class="p">[</span><span class="s1">'project'</span><span class="p">]</span> <span class="o">=</span> <span class="n">default</span>
+                    <span class="n">default</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="n">default</span><span class="p">],</span> <span class="n">config</span><span class="o">.</span><span class="n">filename</span>
+                <span class="p">)</span>
+            <span class="n">config</span><span class="p">[</span><span class="s2">"project"</span><span class="p">]</span> <span class="o">=</span> <span class="n">default</span>
 
             <span class="n">config</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">configfile</span>
             <span class="n">config</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">'Deleted project: </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">project</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="s1">Deleted conf directory </span><span class="si">%s</span><span class="s1">:'</span> <span class="o">%</span> <span class="n">conf_path</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="s1">Deleted data directory </span><span class="si">%s</span><span class="s1">:'</span> <span class="o">%</span> <span class="n">data_path</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"Deleted project: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">project</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\t</span><span class="s2">Deleted conf directory </span><span class="si">%s</span><span class="s2">:"</span> <span class="o">%</span> <span class="n">conf_path</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\t</span><span class="s2">Deleted data directory </span><span class="si">%s</span><span class="s2">:"</span> <span class="o">%</span> <span class="n">data_path</span><span class="p">)</span>
 
-            <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">Set to new project:</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Set to new project:</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">newproject</span><span class="p">)</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
-        <span class="n">project</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">'project'</span><span class="p">]</span>
-        <span class="n">projects</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">]</span>
+        <span class="n">project</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"project"</span><span class="p">]</span>
+        <span class="n">projects</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">project</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">projects</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'Current project </span><span class="si">%s</span><span class="s1"> not in </span><span class="si">%s</span><span class="s1">. Edit your projects.conf '</span>
-                   <span class="s1">'file to match the specification.'</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">"Current project </span><span class="si">%s</span><span class="s2"> not in </span><span class="si">%s</span><span class="s2">. Edit your projects.conf "</span>
+                <span class="s2">"file to match the specification."</span>
+            <span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">msg</span> <span class="o">%</span> <span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">configfile</span><span class="p">))</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">sproj</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">projects</span><span class="p">[</span><span class="n">project</span><span class="p">],</span> <span class="n">projects</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span>
-                        <span class="n">is_current</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">sproj</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">projects</span><span class="p">[</span><span class="n">project</span><span class="p">],</span> <span class="n">projects</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">is_current</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">sproj</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div></div>
 
 
-<span class="n">current_markers</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="kc">True</span><span class="p">:</span> <span class="s1">'**Current Project**'</span><span class="p">,</span>
-    <span class="kc">False</span><span class="p">:</span> <span class="s1">''</span>
-<span class="p">}</span>
+<span class="n">current_markers</span> <span class="o">=</span> <span class="p">{</span><span class="kc">True</span><span class="p">:</span> <span class="s2">"**Current Project**"</span><span class="p">,</span> <span class="kc">False</span><span class="p">:</span> <span class="s2">""</span><span class="p">}</span>
 
 
 <div class="viewcode-block" id="Project"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/projects/index.html#gmprocess.subcommands.projects.Project">[docs]</a><span class="k">class</span> <span class="nc">Project</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -642,23 +649,22 @@
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span> <span class="o">=</span> <span class="n">indict</span><span class="p">[</span><span class="s1">'conf_path'</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span> <span class="o">=</span> <span class="n">indict</span><span class="p">[</span><span class="s1">'data_path'</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span> <span class="o">=</span> <span class="n">indict</span><span class="p">[</span><span class="s2">"conf_path"</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span> <span class="o">=</span> <span class="n">indict</span><span class="p">[</span><span class="s2">"data_path"</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_marker</span> <span class="o">=</span> <span class="n">current_markers</span><span class="p">[</span><span class="n">is_current</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Project.__repr__"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/projects/index.html#gmprocess.subcommands.projects.Project.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">fmt</span> <span class="o">=</span> <span class="s1">'Project: </span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="se">\n\t</span><span class="s1">Conf Path: </span><span class="si">%s</span><span class="se">\n\t</span><span class="s1">Data Path: </span><span class="si">%s</span><span class="s1">'</span>
-        <span class="n">base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">))</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">'Windows'</span><span class="p">:</span>
-            <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_marker</span><span class="p">,</span>
-                   <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span><span class="p">)),</span>
-                   <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="p">))</span>
-                   <span class="p">)</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"Project: </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="se">\n\t</span><span class="s2">Conf Path: </span><span class="si">%s</span><span class="se">\n\t</span><span class="s2">Data Path: </span><span class="si">%s</span><span class="s2">"</span>
+        <span class="n">base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">"Windows"</span><span class="p">:</span>
+            <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_marker</span><span class="p">,</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span><span class="p">)),</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="p">)),</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_marker</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span><span class="p">,</span>
-                   <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="p">)</span>
+            <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_marker</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">fmt</span> <span class="o">%</span> <span class="n">tpl</span></div></div>
 
 
@@ -673,36 +679,37 @@
 <span class="sd">            The ConfigObj instance.</span>
 <span class="sd">    """</span>
     <span class="c1"># Check that at least one project exists</span>
-    <span class="k">if</span> <span class="s1">'projects'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">'There are currently no projects. Use "gmrecords '</span>
-                      <span class="s1">'projects -c &lt;project&gt;" to create one.'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">"projects"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+            <span class="s1">'There are currently no projects. Use "gmrecords '</span>
+            <span class="s1">'projects -c &lt;project&gt;" to create one.'</span>
+        <span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
     <span class="c1"># Check that the paths for each project exist</span>
-    <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="n">data_exists</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span>
             <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">)),</span>
-                <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s1">'data_path'</span><span class="p">]</span>
+                <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s2">"data_path"</span><span class="p">],</span>
             <span class="p">)</span>
         <span class="p">)</span>
         <span class="n">delete_project</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">data_exists</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">'Data path for project </span><span class="si">%s</span><span class="s1"> does not exist.'</span> <span class="o">%</span> <span class="n">project</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">"Data path for project </span><span class="si">%s</span><span class="s2"> does not exist."</span> <span class="o">%</span> <span class="n">project</span><span class="p">)</span>
             <span class="n">delete_project</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">conf_exists</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span>
             <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">)),</span>
-                <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s1">'conf_path'</span><span class="p">]</span>
+                <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s2">"conf_path"</span><span class="p">],</span>
             <span class="p">)</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">conf_exists</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s1">'Install path for project </span><span class="si">%s</span><span class="s1"> does not exist.'</span> <span class="o">%</span> <span class="n">project</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">"Install path for project </span><span class="si">%s</span><span class="s2"> does not exist."</span> <span class="o">%</span> <span class="n">project</span><span class="p">)</span>
             <span class="n">delete_project</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="n">delete_project</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">'Deleting project </span><span class="si">%s</span><span class="s1">.'</span> <span class="o">%</span> <span class="n">project</span><span class="p">)</span>
-            <span class="k">del</span> <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">][</span><span class="n">project</span><span class="p">]</span>
-            <span class="n">config</span><span class="p">[</span><span class="s1">'project'</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">"Deleting project </span><span class="si">%s</span><span class="s2">."</span> <span class="o">%</span> <span class="n">project</span><span class="p">)</span>
+            <span class="k">del</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="n">project</span><span class="p">]</span>
+            <span class="n">config</span><span class="p">[</span><span class="s2">"project"</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">config</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">config</span></div>
 
@@ -717,79 +724,82 @@
 <span class="sd">            Is this for initializing a "local" project in the current</span>
 <span class="sd">            working directory?</span>
 <span class="sd">    """</span>
-    <span class="n">project</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">'Please enter a project title: [default] '</span><span class="p">)</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">"Please enter a project title: [default] "</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">strip</span><span class="p">()):</span>
-        <span class="n">project</span> <span class="o">=</span> <span class="s1">'default'</span>
-    <span class="k">if</span> <span class="s1">'projects'</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">and</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">]:</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'Project </span><span class="se">\'</span><span class="si">%s</span><span class="se">\'</span><span class="s1"> already exists.  Run </span><span class="se">\'</span><span class="s1">gmrecords projects '</span>
-               <span class="s1">'-l</span><span class="se">\'</span><span class="s1"> to see existing projects.'</span><span class="p">)</span>
+        <span class="n">project</span> <span class="o">=</span> <span class="s2">"default"</span>
+    <span class="k">if</span> <span class="s2">"projects"</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">and</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">]:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">"Project '</span><span class="si">%s</span><span class="s2">' already exists.  Run 'gmrecords projects "</span>
+            <span class="s2">"-l' to see existing projects."</span>
+        <span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">msg</span> <span class="o">%</span> <span class="n">project</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">cwd</span><span class="p">:</span>
         <span class="n">proj_dir</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">PROJECTS_PATH</span>
         <span class="n">default_conf</span><span class="p">,</span> <span class="n">default_data</span> <span class="o">=</span> <span class="n">prompt</span><span class="o">.</span><span class="n">get_default_project_paths</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
-        <span class="n">new_conf_path</span><span class="p">,</span> <span class="n">new_data_path</span> <span class="o">=</span> \
-            <span class="n">prompt</span><span class="o">.</span><span class="n">set_project_paths</span><span class="p">(</span><span class="n">default_conf</span><span class="p">,</span> <span class="n">default_data</span><span class="p">)</span>
+        <span class="n">new_conf_path</span><span class="p">,</span> <span class="n">new_data_path</span> <span class="o">=</span> <span class="n">prompt</span><span class="o">.</span><span class="n">set_project_paths</span><span class="p">(</span>
+            <span class="n">default_conf</span><span class="p">,</span> <span class="n">default_data</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
-        <span class="n">proj_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="s1">'.gmprocess'</span><span class="p">)</span>
-        <span class="n">new_conf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="s1">'conf'</span><span class="p">)</span>
-        <span class="n">new_data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="s1">'data'</span><span class="p">)</span>
+        <span class="n">proj_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="s2">".gmprocess"</span><span class="p">)</span>
+        <span class="n">new_conf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="s2">"conf"</span><span class="p">)</span>
+        <span class="n">new_data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="s2">"data"</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">[</span><span class="n">new_conf_path</span><span class="p">,</span> <span class="n">new_data_path</span><span class="p">]:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'Please enter your name and email. This information will be added'</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'to the config file and reported in the provenance of the data'</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'processed in this project.'</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Please enter your name and email. This information will be added"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"to the config file and reported in the provenance of the data"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"processed in this project."</span><span class="p">)</span>
     <span class="n">user_info</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">user_info</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="s1">Name: '</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">user_info</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">'User name is required. Exiting.'</span><span class="p">)</span>
+    <span class="n">user_info</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">"</span><span class="se">\t</span><span class="s2">Name: "</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">user_info</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"User name is required. Exiting."</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">user_info</span><span class="p">[</span><span class="s1">'email'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="s1">Email: '</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">re_email</span><span class="p">,</span> <span class="n">user_info</span><span class="p">[</span><span class="s1">'email'</span><span class="p">]):</span>
+    <span class="n">user_info</span><span class="p">[</span><span class="s2">"email"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">"</span><span class="se">\t</span><span class="s2">Email: "</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">re_email</span><span class="p">,</span> <span class="n">user_info</span><span class="p">[</span><span class="s2">"email"</span><span class="p">]):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">"Invalid Email. Exiting."</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
     <span class="c1"># Apparently, relpath doesn't work for Windows, at least with the Azure</span>
     <span class="c1"># CI builds</span>
-    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">'Windows'</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">"Windows"</span><span class="p">:</span>
         <span class="n">new_conf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span>
-            <span class="n">new_conf_path</span><span class="p">,</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">))</span>
+            <span class="n">new_conf_path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="n">new_data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span>
-            <span class="n">new_data_path</span><span class="p">,</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">))</span>
+            <span class="n">new_data_path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">)</span>
+        <span class="p">)</span>
 
-    <span class="k">if</span> <span class="s1">'projects'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
-        <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="s2">"projects"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+        <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">][</span><span class="n">project</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">'conf_path'</span><span class="p">:</span> <span class="n">new_conf_path</span><span class="p">,</span>
-        <span class="s1">'data_path'</span><span class="p">:</span> <span class="n">new_data_path</span>
+    <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="n">project</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"conf_path"</span><span class="p">:</span> <span class="n">new_conf_path</span><span class="p">,</span>
+        <span class="s2">"data_path"</span><span class="p">:</span> <span class="n">new_data_path</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="n">config</span><span class="p">[</span><span class="s1">'project'</span><span class="p">]</span> <span class="o">=</span> <span class="n">project</span>
+    <span class="n">config</span><span class="p">[</span><span class="s2">"project"</span><span class="p">]</span> <span class="o">=</span> <span class="n">project</span>
     <span class="n">config</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
-    <span class="n">sproj</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="s1">'projects'</span><span class="p">][</span><span class="n">project</span><span class="p">],</span> <span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">Created project: </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="p">(</span><span class="n">sproj</span><span class="p">))</span>
+    <span class="n">sproj</span> <span class="o">=</span> <span class="n">Project</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="n">project</span><span class="p">],</span> <span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Created project: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">sproj</span><span class="p">))</span>
 
     <span class="c1"># Sart with production conf from repository, then add user info</span>
-    <span class="n">data_path</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s1">'gmprocess'</span><span class="p">,</span> <span class="s1">'data'</span><span class="p">)</span>
+    <span class="n">data_path</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">"gmprocess"</span><span class="p">,</span> <span class="s2">"data"</span><span class="p">)</span>
     <span class="n">current_conf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">constants</span><span class="o">.</span><span class="n">CONFIG_FILE_PRODUCTION</span><span class="p">)</span>
     <span class="n">yaml</span> <span class="o">=</span> <span class="n">ryaml</span><span class="o">.</span><span class="n">YAML</span><span class="p">()</span>
     <span class="n">yaml</span><span class="o">.</span><span class="n">preserve_quotes</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">current_conf</span><span class="p">,</span> <span class="s1">'rt'</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">current_conf</span><span class="p">,</span> <span class="s2">"rt"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">gmrecords_conf</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-    <span class="n">gmrecords_conf</span><span class="p">[</span><span class="s1">'user'</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_info</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">'CALLED_FROM_PYTEST'</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">proj_conf_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">proj_dir</span><span class="p">,</span> <span class="n">new_conf_path</span><span class="p">,</span> <span class="s1">'config.yml'</span><span class="p">)</span>
+    <span class="n">gmrecords_conf</span><span class="p">[</span><span class="s2">"user"</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_info</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"CALLED_FROM_PYTEST"</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">proj_conf_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">proj_dir</span><span class="p">,</span> <span class="n">new_conf_path</span><span class="p">,</span> <span class="s2">"config.yml"</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">proj_dir</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">PROJECTS_PATH_TEST</span>
-        <span class="n">proj_conf_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">proj_dir</span><span class="p">,</span> <span class="s1">'config.yml'</span><span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">proj_conf_file</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">)</span> <span class="k">as</span> <span class="n">yf</span><span class="p">:</span>
+        <span class="n">proj_conf_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">proj_dir</span><span class="p">,</span> <span class="s2">"config.yml"</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">proj_conf_file</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">yf</span><span class="p">:</span>
         <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">gmrecords_conf</span><span class="p">,</span> <span class="n">yf</span><span class="p">)</span></div>
 </pre></div>
         </article>

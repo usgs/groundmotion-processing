@@ -14,25 +14,25 @@ def test_compute_waveform_metrics(script_runner):
         # Need to create profile first.
         cdir = constants.PROJECTS_PATH_TEST
         ddir = pkg_resources.resource_filename(
-            'gmprocess', os.path.join('data', 'testdata',
-                                      'demo_steps', 'compute_metrics'))
+            "gmprocess",
+            os.path.join("data", "testdata", "demo_steps", "compute_metrics"),
+        )
 
         # Make a copy of the hdf files
-        events = ['ci38038071', 'ci38457511']
+        events = ["ci38038071", "ci38457511"]
         for event in events:
-            src = os.path.join(ddir, event, 'workspace.h5')
-            dst = os.path.join(ddir, event, '_workspace.h5')
+            src = os.path.join(ddir, event, "workspace.h5")
+            dst = os.path.join(ddir, event, "_workspace.h5")
             shutil.copyfile(src, dst)
 
         setup_inputs = io.StringIO(
             "2\ntest\n%s\n%s\nname\ntest@email.com\n" % (cdir, ddir)
         )
-        ret = script_runner.run(
-            'gmrecords', 'projects', '-c', stdin=setup_inputs)
+        ret = script_runner.run("gmrecords", "projects", "-c", stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
 
-        ret = script_runner.run('gmrecords', 'compute_waveform_metrics')
+        ret = script_runner.run("gmrecords", "compute_waveform_metrics")
         assert ret.success
 
         assert "Adding waveform metrics to workspace files with" in ret.stderr
@@ -40,7 +40,8 @@ def test_compute_waveform_metrics(script_runner):
         assert "Calculating waveform metrics for CI.TOW2.HN" in ret.stderr
 
         ret = script_runner.run(
-            'gmrecords', 'compute_waveform_metrics', '-n', '2', '-o')
+            "gmrecords", "compute_waveform_metrics", "-n", "2", "-o"
+        )
         assert ret.success
 
     except Exception as ex:
@@ -48,12 +49,12 @@ def test_compute_waveform_metrics(script_runner):
     finally:
         shutil.rmtree(constants.PROJECTS_PATH_TEST)
         # Move the hdf files back
-        events = ['ci38038071', 'ci38457511']
+        events = ["ci38038071", "ci38457511"]
         for event in events:
-            dst = os.path.join(ddir, event, 'workspace.h5')
-            src = os.path.join(ddir, event, '_workspace.h5')
+            dst = os.path.join(ddir, event, "workspace.h5")
+            src = os.path.join(ddir, event, "_workspace.h5")
             shutil.move(src, dst)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_compute_waveform_metrics()

@@ -25,10 +25,10 @@ Classes
 
    .. py:method:: get_rotd(self)
 
-      Performs GMROTD rotation.
+      Performs ROTD rotation.
 
-      :returns: numpy.ndarray of the rotated and combined traces.
-      :rtype: rotd
+      :returns: StationStreams with rotated data added to stream parameters with
+                id "rotd".
 
 
 

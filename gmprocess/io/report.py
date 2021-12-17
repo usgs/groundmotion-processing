@@ -115,14 +115,15 @@ Code version: [VERSION]
 
 """
 
-moveout_page_tex = '''
+moveout_page_tex = """
 \\includegraphics[width=0.9\\textwidth]
     {[MOVEOUTPATH]}
-'''
+"""
 
 
-def build_report_latex(st_list, directory, origin, prefix='', config=None,
-                       gmprocess_version='unknown'):
+def build_report_latex(
+    st_list, directory, origin, prefix="", config=None, gmprocess_version="unknown"
+):
     """
     Build latex summary report.
 
@@ -155,24 +156,20 @@ def build_report_latex(st_list, directory, origin, prefix='', config=None,
 
     # Initialize report string with PREAMBLE
     report = PREAMBLE
-    timestr = origin.time.strftime('%m/%d/%Y %H:%M:%S')
+    timestr = origin.time.strftime("%m/%d/%Y %H:%M:%S")
 
     # Does the map exist?
-    map_file = os.path.join(directory, 'stations_map.png')
+    map_file = os.path.join(directory, "stations_map.png")
     if os.path.isfile(map_file):
-        TB = TITLEBLOCK.replace(
-            '[MAPPATH]', 'stations_map.png'
-        )
+        TB = TITLEBLOCK.replace("[MAPPATH]", "stations_map.png")
 
-        TB = TB.replace(
-            '[VERSION]', gmprocess_version
-        )
-        moveout_file = os.path.join(directory, 'moveout_plot.png')
+        TB = TB.replace("[VERSION]", gmprocess_version)
+        moveout_file = os.path.join(directory, "moveout_plot.png")
         if os.path.isfile(moveout_file):
-            TB = TB.replace('[MOVEOUT_PAGE]', moveout_page_tex)
-            TB = TB.replace('[MOVEOUTPATH]', 'moveout_plot.png')
+            TB = TB.replace("[MOVEOUT_PAGE]", moveout_page_tex)
+            TB = TB.replace("[MOVEOUTPATH]", "moveout_plot.png")
         else:
-            TB = TB.replace('[MOVEOUT_PAGE]', '')
+            TB = TB.replace("[MOVEOUT_PAGE]", "")
         report += TB
 
     # Loop over each StationStream and append it's page to the report
@@ -182,88 +179,84 @@ def build_report_latex(st_list, directory, origin, prefix='', config=None,
     st_list.sort(key=lambda x: x.id)
 
     for st in st_list:
-        plot_path = os.path.join(
-            'plots', origin.id + '_' + st.get_id() + '.png')
-        SB = STREAMBLOCK.replace('[PLOTPATH]', plot_path)
+        plot_path = os.path.join("plots", origin.id + "_" + st.get_id() + ".png")
+        SB = STREAMBLOCK.replace("[PLOTPATH]", plot_path)
         SB = SB.replace(
-            '[EVENT]', 'M %s - %s - %s'
-            % (origin.magnitude, str_for_latex(origin.id), timestr)
+            "[EVENT]",
+            "M %s - %s - %s" % (origin.magnitude, str_for_latex(origin.id), timestr),
         )
-        SB = SB.replace(
-            '[STATION]', st.get_id()
-        )
+        SB = SB.replace("[STATION]", st.get_id())
         report += SB
 
         prov_latex = get_prov_latex(st)
 
         report += prov_latex
-        report += '\n'
-        if st[0].hasParameter('signal_split'):
-            pick_method = st[0].getParameter('signal_split')['picker_type']
-            report += 'Pick Method: %s\n\n' % str_for_latex(pick_method)
-        if 'nnet_qa' in st.getStreamParamKeys():
-            score_lq = st.getStreamParam('nnet_qa')['score_LQ']
-            score_hq = st.getStreamParam('nnet_qa')['score_HQ']
-            report += ('Neural Network LQ score: %s\n\n'
-                       % str_for_latex(str(score_lq)))
-            report += ('Neural Network HQ score: %s\n\n'
-                       % str_for_latex(str(score_hq)))
+        report += "\n"
+        if st[0].hasParameter("signal_split"):
+            pick_method = st[0].getParameter("signal_split")["picker_type"]
+            report += "Pick Method: %s\n\n" % str_for_latex(pick_method)
+        if "nnet_qa" in st.getStreamParamKeys():
+            score_lq = st.getStreamParam("nnet_qa")["score_LQ"]
+            score_hq = st.getStreamParam("nnet_qa")["score_HQ"]
+            report += "Neural Network LQ score: %s\n\n" % str_for_latex(str(score_lq))
+            report += "Neural Network HQ score: %s\n\n" % str_for_latex(str(score_hq))
         if not st.passed:
             for tr in st:
-                if tr.hasParameter('failure'):
-                    report += ('Failure reason: %s\n\n' % str_for_latex(
-                               tr.getParameter('failure')['reason']))
+                if tr.hasParameter("failure"):
+                    report += "Failure reason: %s\n\n" % str_for_latex(
+                        tr.getParameter("failure")["reason"]
+                    )
                     break
-        report += '\\newpage\n\n'
+        report += "\\newpage\n\n"
 
     # Finish the latex file
     report += POSTAMBLE
 
     res = False
     # Do not save report if running tests
-    if 'CALLED_FROM_PYTEST' not in os.environ:
+    if "CALLED_FROM_PYTEST" not in os.environ:
 
         # Set working directory to be the event subdirectory
         current_directory = os.getcwd()
         os.chdir(directory)
 
         # File name relative to current location
-        file_name = ('%s_report_%s.tex' % (prefix, origin.id))
+        file_name = "%s_report_%s.tex" % (prefix, origin.id)
 
         # File name for printing out later relative base directory
         latex_file = os.path.join(directory, file_name)
-        with open(file_name, 'w', encoding='utf-8') as f:
+        with open(file_name, "w", encoding="utf-8") as f:
             f.write(report)
 
         # Can we find pdflatex?
         try:
-            pdflatex_bin = which('pdflatex')
-            pdflatex_options = '-interaction=nonstopmode -halt-on-error'
-            cmd = '%s %s %s' % (pdflatex_bin, pdflatex_options, file_name)
+            pdflatex_bin = which("pdflatex")
+            pdflatex_options = "-interaction=nonstopmode -halt-on-error"
+            cmd = "%s %s %s" % (pdflatex_bin, pdflatex_options, file_name)
             res, stdout, stderr = get_command_output(cmd)
             report_file = latex_file
             if res:
                 base, ext = os.path.splitext(file_name)
-                pdf_file = base + '.pdf'
+                pdf_file = base + ".pdf"
                 if os.path.isfile(pdf_file):
                     report_file = pdf_file
-                    auxfiles = glob.glob(base + '*')
+                    auxfiles = glob.glob(base + "*")
                     auxfiles.remove(pdf_file)
                     for auxfile in auxfiles:
                         os.remove(auxfile)
                 else:
                     res = False
             else:
-                print('pdflatex output:')
+                print("pdflatex output:")
                 print(stdout.decode())
                 print(stderr.decode())
         except BaseException:
-            report_file = ''
+            report_file = ""
             pass
         finally:
             os.chdir(current_directory)
     else:
-        report_file = 'not run'
+        report_file = "not run"
 
     # make report file an absolute path
     report_file = os.path.join(directory, report_file)
@@ -285,18 +278,17 @@ def get_prov_latex(st):
     # start by sorting the channel names
     channels = [tr.stats.channel for tr in st]
     channelidx = np.argsort(channels).tolist()
-    columns = ['Process Step',
-               'Process Attribute']
+    columns = ["Process Step", "Process Attribute"]
 
     trace1 = st[channelidx.index(0)]
     df = pd.DataFrame(columns=columns)
     df = trace1.getProvDataFrame()
-    mapper = {'Process Value': '%s Value' % trace1.stats.channel}
-    df = df.rename(mapper=mapper, axis='columns')
+    mapper = {"Process Value": "%s Value" % trace1.stats.channel}
+    df = df.rename(mapper=mapper, axis="columns")
     for i in channelidx[1:]:
         trace2 = st[i]
         trace2_frame = trace2.getProvDataFrame()
-        df['%s Value' % trace2.stats.channel] = trace2_frame['Process Value']
+        df["%s Value" % trace2.stats.channel] = trace2_frame["Process Value"]
 
     lastrow = None
     newdf = pd.DataFrame(columns=df.columns)
@@ -305,14 +297,14 @@ def get_prov_latex(st):
             lastrow = row
             newdf = newdf.append(row, ignore_index=True)
             continue
-        if row['Index'] == lastrow['Index']:
-            row['Process Step'] = ''
+        if row["Index"] == lastrow["Index"]:
+            row["Process Step"] = ""
         newdf = newdf.append(row, ignore_index=True)
         lastrow = row
 
-    newdf = newdf.drop(labels='Index', axis='columns')
+    newdf = newdf.drop(labels="Index", axis="columns")
     prov_string = newdf.to_latex(index=False)
-    prov_string = '\\tiny\n' + prov_string
+    prov_string = "\\tiny\n" + prov_string
     return prov_string
 
 
@@ -320,13 +312,13 @@ def str_for_latex(string):
     """
     Helper method to convert some strings that are problematic for latex.
     """
-    string = string.replace('_', '\\_')
-    string = string.replace('$', '\\$')
-    string = string.replace('&', '\\&')
-    string = string.replace('%', '\\%')
-    string = string.replace('#', '\\#')
-    string = string.replace('}', '\\}')
-    string = string.replace('{', '\\{')
-    string = string.replace('~', '\\textasciitilde ')
-    string = string.replace('^', '\\textasciicircum ')
+    string = string.replace("_", "\\_")
+    string = string.replace("$", "\\$")
+    string = string.replace("&", "\\&")
+    string = string.replace("%", "\\%")
+    string = string.replace("#", "\\#")
+    string = string.replace("}", "\\}")
+    string = string.replace("{", "\\{")
+    string = string.replace("~", "\\textasciitilde ")
+    string = string.replace("^", "\\textasciicircum ")
     return string

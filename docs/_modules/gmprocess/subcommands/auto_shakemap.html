@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.subcommands.auto_shakemap - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.subcommands.auto_shakemap - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -462,73 +462,86 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">from</span> <span class="nn">gmprocess.subcommands.lazy_loader</span> <span class="kn">import</span> <span class="n">LazyLoader</span>
-<span class="n">arg_dicts</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span>
-    <span class="s1">'arg_dicts'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.arg_dicts'</span><span class="p">)</span>
-<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'base'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.base'</span><span class="p">)</span>
-<span class="n">download</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'download'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.download'</span><span class="p">)</span>
-<span class="n">import_data</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span>
-    <span class="s1">'import_data'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.import_data'</span><span class="p">)</span>
-<span class="n">assemble</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'assemble'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.assemble'</span><span class="p">)</span>
+
+<span class="n">arg_dicts</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"arg_dicts"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.arg_dicts"</span><span class="p">)</span>
+<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"base"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.base"</span><span class="p">)</span>
+<span class="n">download</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"download"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.download"</span><span class="p">)</span>
+<span class="n">import_data</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"import_data"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.import_data"</span><span class="p">)</span>
+<span class="n">assemble</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"assemble"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.assemble"</span><span class="p">)</span>
 <span class="n">process_waveforms</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span>
-    <span class="s1">'process_waveforms'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.process_waveforms'</span><span class="p">)</span>
+    <span class="s2">"process_waveforms"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.process_waveforms"</span>
+<span class="p">)</span>
 <span class="n">compute_station_metrics</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span>
-    <span class="s1">'compute_station_metrics'</span><span class="p">,</span>
-    <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.compute_station_metrics'</span><span class="p">)</span>
+    <span class="s2">"compute_station_metrics"</span><span class="p">,</span>
+    <span class="nb">globals</span><span class="p">(),</span>
+    <span class="s2">"gmprocess.subcommands.compute_station_metrics"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">compute_waveform_metrics</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span>
-    <span class="s1">'compute_waveform_metrics'</span><span class="p">,</span>
-    <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.compute_waveform_metrics'</span><span class="p">)</span>
+    <span class="s2">"compute_waveform_metrics"</span><span class="p">,</span>
+    <span class="nb">globals</span><span class="p">(),</span>
+    <span class="s2">"gmprocess.subcommands.compute_waveform_metrics"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">export_metric_tables</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span>
-    <span class="s1">'export_metric_tables'</span><span class="p">,</span>
-    <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.export_metric_tables'</span><span class="p">)</span>
+    <span class="s2">"export_metric_tables"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.export_metric_tables"</span>
+<span class="p">)</span>
 <span class="n">export_shakemap</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span>
-    <span class="s1">'export_shakemap'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.export_shakemap'</span><span class="p">)</span>
+    <span class="s2">"export_shakemap"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.export_shakemap"</span>
+<span class="p">)</span>
 <span class="n">generate_regression_plot</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span>
-    <span class="s1">'generate_regression_plot'</span><span class="p">,</span>
-    <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.generate_regression_plot'</span><span class="p">)</span>
+    <span class="s2">"generate_regression_plot"</span><span class="p">,</span>
+    <span class="nb">globals</span><span class="p">(),</span>
+    <span class="s2">"gmprocess.subcommands.generate_regression_plot"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">generate_report</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span>
-    <span class="s1">'generate_report'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.generate_report'</span><span class="p">)</span>
+    <span class="s2">"generate_report"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.generate_report"</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="AutoShakemapModule"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/auto_shakemap/index.html#gmprocess.subcommands.auto_shakemap.AutoShakemapModule">[docs]</a><span class="k">class</span> <span class="nc">AutoShakemapModule</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">SubcommandModule</span><span class="p">):</span>
-    <span class="sd">"""Chain together subcommands to get shakemap ground motion file.</span>
-<span class="sd">    """</span>
-    <span class="n">command_name</span> <span class="o">=</span> <span class="s1">'auto_shakemap'</span>
+    <span class="sd">"""Chain together subcommands to get shakemap ground motion file."""</span>
+
+    <span class="n">command_name</span> <span class="o">=</span> <span class="s2">"auto_shakemap"</span>
 
     <span class="n">arguments</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s1">'eventid'</span><span class="p">],</span> <span class="p">{</span>
-            <span class="s1">'short_flag'</span><span class="p">:</span> <span class="s1">'-p'</span><span class="p">,</span>
-            <span class="s1">'long_flag'</span><span class="p">:</span> <span class="s1">'--path'</span><span class="p">,</span>
-            <span class="s1">'help'</span><span class="p">:</span> <span class="p">(</span><span class="s1">'Path to external data file or directory. If given, '</span>
-                     <span class="s1">'then the download step is also skipped.'</span><span class="p">),</span>
-            <span class="s1">'type'</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-            <span class="s1">'default'</span><span class="p">:</span> <span class="kc">None</span>
-        <span class="p">},</span> <span class="p">{</span>
-            <span class="s1">'long_flag'</span><span class="p">:</span> <span class="s1">'--skip-download'</span><span class="p">,</span>
-            <span class="s1">'help'</span><span class="p">:</span> <span class="s1">'Skip data downlaod step.'</span><span class="p">,</span>
-            <span class="s1">'default'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">'action'</span><span class="p">:</span> <span class="s1">'store_true'</span>
-        <span class="p">},</span> <span class="p">{</span>
-            <span class="s1">'short_flag'</span><span class="p">:</span> <span class="s1">'-d'</span><span class="p">,</span>
-            <span class="s1">'long_flag'</span><span class="p">:</span> <span class="s1">'--diagnostics'</span><span class="p">,</span>
-            <span class="s1">'help'</span><span class="p">:</span> <span class="p">(</span><span class="s1">'Include diagnostic outputs that are created after '</span>
-                     <span class="s1">'ShakeMap data file is created.'</span><span class="p">),</span>
-            <span class="s1">'default'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">'action'</span><span class="p">:</span> <span class="s1">'store_true'</span>
-        <span class="p">}</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"eventid"</span><span class="p">],</span>
+        <span class="p">{</span>
+            <span class="s2">"short_flag"</span><span class="p">:</span> <span class="s2">"-p"</span><span class="p">,</span>
+            <span class="s2">"long_flag"</span><span class="p">:</span> <span class="s2">"--path"</span><span class="p">,</span>
+            <span class="s2">"help"</span><span class="p">:</span> <span class="p">(</span>
+                <span class="s2">"Path to external data file or directory. If given, "</span>
+                <span class="s2">"then the download step is also skipped."</span>
+            <span class="p">),</span>
+            <span class="s2">"type"</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="s2">"default"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">"long_flag"</span><span class="p">:</span> <span class="s2">"--skip-download"</span><span class="p">,</span>
+            <span class="s2">"help"</span><span class="p">:</span> <span class="s2">"Skip data downlaod step."</span><span class="p">,</span>
+            <span class="s2">"default"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">"action"</span><span class="p">:</span> <span class="s2">"store_true"</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">"short_flag"</span><span class="p">:</span> <span class="s2">"-d"</span><span class="p">,</span>
+            <span class="s2">"long_flag"</span><span class="p">:</span> <span class="s2">"--diagnostics"</span><span class="p">,</span>
+            <span class="s2">"help"</span><span class="p">:</span> <span class="p">(</span>
+                <span class="s2">"Include diagnostic outputs that are created after "</span>
+                <span class="s2">"ShakeMap data file is created."</span>
+            <span class="p">),</span>
+            <span class="s2">"default"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">"action"</span><span class="p">:</span> <span class="s2">"store_true"</span><span class="p">,</span>
+        <span class="p">},</span>
     <span class="p">]</span>
 
 <div class="viewcode-block" id="AutoShakemapModule.main"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/auto_shakemap/index.html#gmprocess.subcommands.auto_shakemap.AutoShakemapModule.main">[docs]</a>    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gmrecords</span><span class="p">):</span>
-        <span class="sd">"""Chain together subcommands to get shakemap ground motion file.</span>
-<span class="sd">        """</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Running subcommand </span><span class="se">\'</span><span class="si">%s</span><span class="se">\'</span><span class="s1">'</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="p">)</span>
+        <span class="sd">"""Chain together subcommands to get shakemap ground motion file."""</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Running subcommand '</span><span class="si">%s</span><span class="s2">'"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="p">)</span>
 
         <span class="c1"># Hard code overwrite to True since this is all meant to run end-to-end</span>
         <span class="c1"># without interruption.</span>
         <span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">overwrite</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="c1"># Chain together relevant subcommand modules:</span>
-        <span class="k">if</span> <span class="p">((</span><span class="ow">not</span> <span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">skip_download</span><span class="p">)</span>
-                <span class="ow">and</span> <span class="p">(</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">skip_download</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
             <span class="n">download</span><span class="o">.</span><span class="n">DownloadModule</span><span class="p">()</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">gmrecords</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">import_data</span><span class="o">.</span><span class="n">ImportModule</span><span class="p">()</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">gmrecords</span><span class="p">)</span>
@@ -539,8 +552,7 @@
         <span class="n">export_shakemap</span><span class="o">.</span><span class="n">ExportShakeMapModule</span><span class="p">()</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">gmrecords</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">diagnostics</span><span class="p">:</span>
             <span class="n">export_metric_tables</span><span class="o">.</span><span class="n">ExportMetricTablesModule</span><span class="p">()</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">gmrecords</span><span class="p">)</span>
-            <span class="p">(</span><span class="n">generate_regression_plot</span>
-             <span class="o">.</span><span class="n">GenerateRegressionPlotModule</span><span class="p">()</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">gmrecords</span><span class="p">))</span>
+            <span class="p">(</span><span class="n">generate_regression_plot</span><span class="o">.</span><span class="n">GenerateRegressionPlotModule</span><span class="p">()</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">gmrecords</span><span class="p">))</span>
             <span class="n">generate_report</span><span class="o">.</span><span class="n">GenerateReportModule</span><span class="p">()</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">gmrecords</span><span class="p">)</span></div></div>
 </pre></div>
         </article>

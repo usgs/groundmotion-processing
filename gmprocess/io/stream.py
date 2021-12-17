@@ -14,12 +14,11 @@ from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.core.streamcollection import StreamCollection
 
 
-DEFAULT_IMTS = ['PGA', 'PGV', 'SA(0.3)', 'SA(1.0)', 'SA(3.0)']
-DEFAULT_IMCS = ['GREATER_OF_TWO_HORIZONTALS', 'CHANNELS']
+DEFAULT_IMTS = ["PGA", "PGV", "SA(0.3)", "SA(1.0)", "SA(3.0)"]
+DEFAULT_IMCS = ["GREATER_OF_TWO_HORIZONTALS", "CHANNELS"]
 
 
-def directory_to_dataframe(directory, imcs=None, imts=None, origin=None,
-                           process=True):
+def directory_to_dataframe(directory, imcs=None, imts=None, origin=None, process=True):
     """Extract peak ground motions from list of Stream objects.
     Note: The PGM columns underneath each channel will be variable
     depending on the units of the Stream being passed in (velocity
@@ -80,7 +79,8 @@ def directory_to_dataframe(directory, imcs=None, imts=None, origin=None,
     grouped_streams = StreamCollection(streams)
 
     dataframe = streams_to_dataframe(
-        grouped_streams, imcs=imcs, imts=imts, origin=origin)
+        grouped_streams, imcs=imcs, imts=imts, origin=origin
+    )
     return dataframe
 
 
@@ -158,7 +158,8 @@ def streams_to_dataframe(streams, imcs=None, imts=None, event=None):
         if len(stream) < 3:
             continue
         stream_summary = StationSummary.from_stream(
-            stream, station_summary_imcs, station_summary_imts, event)
+            stream, station_summary_imcs, station_summary_imts, event
+        )
         summary = stream_summary.summary
         subdfs += [summary]
     dataframe = pd.concat(subdfs, axis=0).reset_index(drop=True)
@@ -174,13 +175,13 @@ def _match_traces(trace_list):
         if idx1 in all_matches:
             continue
         matches = [idx1]
-        network = trace1.stats['network']
-        station = trace1.stats['station']
+        network = trace1.stats["network"]
+        station = trace1.stats["station"]
         for idx2, trace2 in enumerate(trace_list):
             if idx1 != idx2 and idx1 not in all_matches:
                 if (
-                    network == trace2.stats['network'] and
-                    station == trace2.stats['station']
+                    network == trace2.stats["network"]
+                    and station == trace2.stats["station"]
                 ):
                     matches.append(idx2)
         if len(matches) > 1:

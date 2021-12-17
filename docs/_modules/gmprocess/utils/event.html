@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.utils.event - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.utils.event - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -470,9 +470,7 @@
 
 
 <div class="viewcode-block" id="ScalarEvent"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/event/index.html#gmprocess.utils.event.ScalarEvent">[docs]</a><span class="k">class</span> <span class="nc">ScalarEvent</span><span class="p">(</span><span class="n">Event</span><span class="p">):</span>
-    <span class="sd">'''Class to represent a flattened Event with only 1 origin and 1 magnitude.</span>
-
-<span class="sd">    '''</span>
+    <span class="sd">"""Class to represent a flattened Event with only 1 origin and 1 magnitude."""</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ScalarEvent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -484,9 +482,9 @@
         <span class="c1"># copy the arrays</span>
         <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">event</span><span class="o">.</span><span class="n">origins</span><span class="p">:</span>
             <span class="n">eventobj</span><span class="o">.</span><span class="n">origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">origin</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
-<span class="c1">#            oldid = eventobj.origins[-1].resource_id.id</span>
-<span class="c1">#            eventobj.origins[-1].resource_id.id = oldid.replace(</span>
-<span class="c1">#                'smi:local/', '')</span>
+        <span class="c1">#            oldid = eventobj.origins[-1].resource_id.id</span>
+        <span class="c1">#            eventobj.origins[-1].resource_id.id = oldid.replace(</span>
+        <span class="c1">#                'smi:local/', '')</span>
         <span class="k">for</span> <span class="n">magnitude</span> <span class="ow">in</span> <span class="n">event</span><span class="o">.</span><span class="n">magnitudes</span><span class="p">:</span>
             <span class="n">eventobj</span><span class="o">.</span><span class="n">magnitudes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">magnitude</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
         <span class="k">for</span> <span class="n">station_magnitude</span> <span class="ow">in</span> <span class="n">event</span><span class="o">.</span><span class="n">station_magnitudes</span><span class="p">:</span>
@@ -513,7 +511,7 @@
         <span class="k">return</span> <span class="n">eventobj</span></div>
 
 <div class="viewcode-block" id="ScalarEvent.fromParams"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/event/index.html#gmprocess.utils.event.ScalarEvent.fromParams">[docs]</a>    <span class="k">def</span> <span class="nf">fromParams</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">magnitude</span><span class="p">,</span> <span class="n">mag_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">'''Create a ScalarEvent (subclass of Event).</span>
+        <span class="sd">"""Create a ScalarEvent (subclass of Event).</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            id (str):</span>
@@ -530,7 +528,7 @@
 <span class="sd">                Magnitude of earthquake.</span>
 <span class="sd">            mag_type (str):</span>
 <span class="sd">                Magnitude type of earthqake.</span>
-<span class="sd">        '''</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">time</span> <span class="o">=</span> <span class="n">UTCDateTime</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
@@ -539,27 +537,27 @@
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
 
         <span class="n">origin</span> <span class="o">=</span> <span class="n">Origin</span><span class="p">(</span>
-            <span class="n">resource_id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span>
-            <span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">,</span>
-            <span class="n">longitude</span><span class="o">=</span><span class="n">lon</span><span class="p">,</span>
-            <span class="n">latitude</span><span class="o">=</span><span class="n">lat</span><span class="p">,</span>
-            <span class="n">depth</span><span class="o">=</span><span class="n">depth</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
+            <span class="n">resource_id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="n">lon</span><span class="p">,</span> <span class="n">latitude</span><span class="o">=</span><span class="n">lat</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">depth</span> <span class="o">*</span> <span class="mi">1000</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">origins</span> <span class="o">=</span> <span class="p">[</span><span class="n">origin</span><span class="p">]</span>
-        <span class="n">magnitude</span> <span class="o">=</span> <span class="n">Magnitude</span><span class="p">(</span>
-            <span class="n">resource_id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span>
-            <span class="n">mag</span><span class="o">=</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">magnitude_type</span><span class="o">=</span><span class="n">mag_type</span><span class="p">)</span>
+        <span class="n">magnitude</span> <span class="o">=</span> <span class="n">Magnitude</span><span class="p">(</span><span class="n">resource_id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span> <span class="n">mag</span><span class="o">=</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">magnitude_type</span><span class="o">=</span><span class="n">mag_type</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">magnitudes</span> <span class="o">=</span> <span class="p">[</span><span class="n">magnitude</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">resource_id</span> <span class="o">=</span> <span class="nb">id</span></div>
 
 <div class="viewcode-block" id="ScalarEvent.__repr__"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/event/index.html#gmprocess.utils.event.ScalarEvent.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">'origins'</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">'magnitudes'</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s1">'Empty ScalarEvent'</span>
-        <span class="n">fmt</span> <span class="o">=</span> <span class="s1">'</span><span class="si">%s</span><span class="s1"> </span><span class="si">%s</span><span class="s1"> </span><span class="si">%.3f</span><span class="s1"> </span><span class="si">%.3f</span><span class="s1"> </span><span class="si">%.1f</span><span class="s1">km M</span><span class="si">%.1f</span><span class="s1"> </span><span class="si">%s</span><span class="s1">'</span>
-        <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">),</span>
-               <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
-               <span class="bp">self</span><span class="o">.</span><span class="n">depth_km</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">magnitude_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"origins"</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"magnitudes"</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">"Empty ScalarEvent"</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> </span><span class="si">%.3f</span><span class="s2"> </span><span class="si">%.3f</span><span class="s2"> </span><span class="si">%.1f</span><span class="s2">km M</span><span class="si">%.1f</span><span class="s2"> </span><span class="si">%s</span><span class="s2">"</span>
+        <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">depth_km</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">magnitude_type</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">fmt</span> <span class="o">%</span> <span class="n">tpl</span></div>
 
 <div class="viewcode-block" id="ScalarEvent._get_origin"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/event/index.html#gmprocess.utils.event.ScalarEvent._get_origin">[docs]</a>    <span class="k">def</span> <span class="nf">_get_origin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -576,58 +574,50 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">'''Return the origin resource_id.</span>
-<span class="sd">        '''</span>
+        <span class="sd">"""Return the origin resource_id."""</span>
         <span class="n">origin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_origin</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">origin</span><span class="o">.</span><span class="n">resource_id</span><span class="o">.</span><span class="n">id</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">'''Return the origin time.</span>
-<span class="sd">        '''</span>
+        <span class="sd">"""Return the origin time."""</span>
         <span class="n">origin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_origin</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">origin</span><span class="o">.</span><span class="n">time</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">latitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">'''Return the origin latitude.</span>
-<span class="sd">        '''</span>
+        <span class="sd">"""Return the origin latitude."""</span>
         <span class="n">origin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_origin</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">origin</span><span class="o">.</span><span class="n">latitude</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">longitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">'''Return the origin longitude.</span>
-<span class="sd">        '''</span>
+        <span class="sd">"""Return the origin longitude."""</span>
         <span class="n">origin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_origin</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">origin</span><span class="o">.</span><span class="n">longitude</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">depth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">'''Return the origin depth.</span>
-<span class="sd">        '''</span>
+        <span class="sd">"""Return the origin depth."""</span>
         <span class="n">origin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_origin</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">origin</span><span class="o">.</span><span class="n">depth</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">depth_km</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">'''Return the origin depth.</span>
-<span class="sd">        '''</span>
+        <span class="sd">"""Return the origin depth."""</span>
         <span class="n">origin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_origin</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">origin</span><span class="o">.</span><span class="n">depth</span> <span class="o">/</span> <span class="mi">1000</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">magnitude</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">'''Return the magnitude value.</span>
-<span class="sd">        '''</span>
+        <span class="sd">"""Return the magnitude value."""</span>
         <span class="n">magnitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_magnitude</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">magnitude</span><span class="o">.</span><span class="n">mag</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">magnitude_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">'''Return the magnitude type.</span>
-<span class="sd">        '''</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">magnitudes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">'magnitude_type'</span><span class="p">]</span></div>
+        <span class="sd">"""Return the magnitude type."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">magnitudes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"magnitude_type"</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="get_event_dict"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/event/index.html#gmprocess.utils.event.get_event_dict">[docs]</a><span class="k">def</span> <span class="nf">get_event_dict</span><span class="p">(</span><span class="n">eventid</span><span class="p">):</span>
@@ -648,16 +638,18 @@
 <span class="sd">    """</span>
     <span class="n">dict_or_id</span> <span class="o">=</span> <span class="n">get_event_by_id</span><span class="p">(</span><span class="n">eventid</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">dict_or_id</span><span class="o">.</span><span class="n">id</span> <span class="o">!=</span> <span class="n">eventid</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">'Event ID </span><span class="si">%s</span><span class="s1"> is no longer preferred. Updating with the '</span>
-                     <span class="s1">'preferred event ID: </span><span class="si">%s</span><span class="s1">.'</span> <span class="o">%</span> <span class="p">(</span><span class="n">eventid</span><span class="p">,</span> <span class="n">dict_or_id</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">"Event ID </span><span class="si">%s</span><span class="s2"> is no longer preferred. Updating with the "</span>
+            <span class="s2">"preferred event ID: </span><span class="si">%s</span><span class="s2">."</span> <span class="o">%</span> <span class="p">(</span><span class="n">eventid</span><span class="p">,</span> <span class="n">dict_or_id</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="p">)</span>
     <span class="n">event_dict</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">'id'</span><span class="p">:</span> <span class="n">dict_or_id</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-        <span class="s1">'time'</span><span class="p">:</span> <span class="n">UTCDateTime</span><span class="p">(</span><span class="n">dict_or_id</span><span class="o">.</span><span class="n">time</span><span class="p">),</span>
-        <span class="s1">'lat'</span><span class="p">:</span> <span class="n">dict_or_id</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
-        <span class="s1">'lon'</span><span class="p">:</span> <span class="n">dict_or_id</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
-        <span class="s1">'depth'</span><span class="p">:</span> <span class="n">dict_or_id</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span>
-        <span class="s1">'magnitude'</span><span class="p">:</span> <span class="n">dict_or_id</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-        <span class="s1">'magnitude_type'</span><span class="p">:</span> <span class="n">dict_or_id</span><span class="o">.</span><span class="n">_jdict</span><span class="p">[</span><span class="s1">'properties'</span><span class="p">][</span><span class="s1">'magType'</span><span class="p">]</span>
+        <span class="s2">"id"</span><span class="p">:</span> <span class="n">dict_or_id</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+        <span class="s2">"time"</span><span class="p">:</span> <span class="n">UTCDateTime</span><span class="p">(</span><span class="n">dict_or_id</span><span class="o">.</span><span class="n">time</span><span class="p">),</span>
+        <span class="s2">"lat"</span><span class="p">:</span> <span class="n">dict_or_id</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+        <span class="s2">"lon"</span><span class="p">:</span> <span class="n">dict_or_id</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+        <span class="s2">"depth"</span><span class="p">:</span> <span class="n">dict_or_id</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span>
+        <span class="s2">"magnitude"</span><span class="p">:</span> <span class="n">dict_or_id</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+        <span class="s2">"magnitude_type"</span><span class="p">:</span> <span class="n">dict_or_id</span><span class="o">.</span><span class="n">_jdict</span><span class="p">[</span><span class="s2">"properties"</span><span class="p">][</span><span class="s2">"magType"</span><span class="p">],</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="n">event_dict</span></div>
 
@@ -678,17 +670,19 @@
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dict_or_id</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="n">event_dict</span> <span class="o">=</span> <span class="n">dict_or_id</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">'Unknown input parameter to get_event_info()'</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"Unknown input parameter to get_event_info()"</span><span class="p">)</span>
     <span class="n">event</span> <span class="o">=</span> <span class="n">ScalarEvent</span><span class="p">()</span>
-    <span class="k">if</span> <span class="s1">'magnitude_type'</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">event_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="n">event_dict</span><span class="p">[</span><span class="s1">'magnitude_type'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">event</span><span class="o">.</span><span class="n">fromParams</span><span class="p">(</span><span class="n">event_dict</span><span class="p">[</span><span class="s1">'id'</span><span class="p">],</span>
-                     <span class="n">event_dict</span><span class="p">[</span><span class="s1">'time'</span><span class="p">],</span>
-                     <span class="n">event_dict</span><span class="p">[</span><span class="s1">'lat'</span><span class="p">],</span>
-                     <span class="n">event_dict</span><span class="p">[</span><span class="s1">'lon'</span><span class="p">],</span>
-                     <span class="n">event_dict</span><span class="p">[</span><span class="s1">'depth'</span><span class="p">],</span>
-                     <span class="n">event_dict</span><span class="p">[</span><span class="s1">'magnitude'</span><span class="p">],</span>
-                     <span class="n">event_dict</span><span class="p">[</span><span class="s1">'magnitude_type'</span><span class="p">])</span>
+    <span class="k">if</span> <span class="s2">"magnitude_type"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">event_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">event_dict</span><span class="p">[</span><span class="s2">"magnitude_type"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">event</span><span class="o">.</span><span class="n">fromParams</span><span class="p">(</span>
+        <span class="n">event_dict</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span>
+        <span class="n">event_dict</span><span class="p">[</span><span class="s2">"time"</span><span class="p">],</span>
+        <span class="n">event_dict</span><span class="p">[</span><span class="s2">"lat"</span><span class="p">],</span>
+        <span class="n">event_dict</span><span class="p">[</span><span class="s2">"lon"</span><span class="p">],</span>
+        <span class="n">event_dict</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">],</span>
+        <span class="n">event_dict</span><span class="p">[</span><span class="s2">"magnitude"</span><span class="p">],</span>
+        <span class="n">event_dict</span><span class="p">[</span><span class="s2">"magnitude_type"</span><span class="p">],</span>
+    <span class="p">)</span>
     <span class="k">return</span> <span class="n">event</span></div>
 </pre></div>
         </article>

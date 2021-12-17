@@ -42,10 +42,8 @@ def directory_to_streams(directory, config=None):
     # expected or desired in all cases. We create the temporary directory in
     # the parent directory, which permits using shutil.copytree to duplicate
     # the data prior to processing.
-    intermediate_dir = tempfile.mkdtemp(
-        dir=os.path.dirname(directory))
-    temp_dir = os.path.join(
-        intermediate_dir, 'directory_to_streams')
+    intermediate_dir = tempfile.mkdtemp(dir=os.path.dirname(directory))
+    temp_dir = os.path.join(intermediate_dir, "directory_to_streams")
     try:
         shutil.copytree(directory, temp_dir)
         flatten_directory(temp_dir)
@@ -60,7 +58,7 @@ def directory_to_streams(directory, config=None):
             file_ext = os.path.splitext(file_name)[1].lower()
             if file_ext not in EXT_IGNORE:
                 try:
-                    logging.debug('Attempting to read: %s' % file_path)
+                    logging.debug("Attempting to read: %s" % file_path)
                     streams += read_data(file_path, config=config)
                 except BaseException as ex:
                     logging.info('Failed to read file: %s' % file_name)

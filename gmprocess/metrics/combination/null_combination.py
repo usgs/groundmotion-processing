@@ -6,8 +6,8 @@ from gmprocess.metrics.combination.combination import Combination
 
 
 class Null_Combination(Combination):
-    """"Class for null combination calculation. This perfoms no action
-            other than returning the input combination_data.
+    """Class for null combination calculation. This perfoms no action
+    other than returning the input combination_data.
     """
 
     def __init__(self, combination_data):

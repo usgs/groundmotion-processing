@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.waveform_processing.spectrum - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.waveform_processing.spectrum - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -472,16 +472,20 @@
 <span class="n">M_TO_KM</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mi">1000</span>
 
 
-<div class="viewcode-block" id="fit_spectra"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/spectrum/index.html#gmprocess.waveform_processing.spectrum.fit_spectra">[docs]</a><span class="k">def</span> <span class="nf">fit_spectra</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">kappa</span><span class="o">=</span><span class="mf">0.035</span><span class="p">,</span>
-                <span class="n">RP</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span>
-                <span class="n">VHC</span><span class="o">=</span><span class="mf">0.7071068</span><span class="p">,</span>
-                <span class="n">FSE</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
-                <span class="n">density</span><span class="o">=</span><span class="mf">2.8</span><span class="p">,</span>
-                <span class="n">shear_vel</span><span class="o">=</span><span class="mf">3.7</span><span class="p">,</span>
-                <span class="n">R0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-                <span class="n">moment_factor</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                <span class="n">min_stress</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-                <span class="n">max_stress</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
+<div class="viewcode-block" id="fit_spectra"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/spectrum/index.html#gmprocess.waveform_processing.spectrum.fit_spectra">[docs]</a><span class="k">def</span> <span class="nf">fit_spectra</span><span class="p">(</span>
+    <span class="n">st</span><span class="p">,</span>
+    <span class="n">origin</span><span class="p">,</span>
+    <span class="n">kappa</span><span class="o">=</span><span class="mf">0.035</span><span class="p">,</span>
+    <span class="n">RP</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span>
+    <span class="n">VHC</span><span class="o">=</span><span class="mf">0.7071068</span><span class="p">,</span>
+    <span class="n">FSE</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">2.8</span><span class="p">,</span>
+    <span class="n">shear_vel</span><span class="o">=</span><span class="mf">3.7</span><span class="p">,</span>
+    <span class="n">R0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">moment_factor</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">min_stress</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">max_stress</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+<span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Fit spectra vaying stress_drop and moment.</span>
 
@@ -523,22 +527,26 @@
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
         <span class="c1"># Only do this for horizontal channels for which the smoothed spectra</span>
         <span class="c1"># has been computed.</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">hasCached</span><span class="p">(</span><span class="s1">'smooth_signal_spectrum'</span><span class="p">)</span> <span class="ow">and</span>
-                <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s1">'corner_frequencies'</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasCached</span><span class="p">(</span><span class="s2">"smooth_signal_spectrum"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span>
+            <span class="s2">"corner_frequencies"</span>
+        <span class="p">):</span>
             <span class="n">event_mag</span> <span class="o">=</span> <span class="n">origin</span><span class="o">.</span><span class="n">magnitude</span>
             <span class="n">event_lon</span> <span class="o">=</span> <span class="n">origin</span><span class="o">.</span><span class="n">longitude</span>
             <span class="n">event_lat</span> <span class="o">=</span> <span class="n">origin</span><span class="o">.</span><span class="n">latitude</span>
-            <span class="n">dist</span> <span class="o">=</span> <span class="n">gps2dist_azimuth</span><span class="p">(</span>
-                <span class="n">lat1</span><span class="o">=</span><span class="n">event_lat</span><span class="p">,</span>
-                <span class="n">lon1</span><span class="o">=</span><span class="n">event_lon</span><span class="p">,</span>
-                <span class="n">lat2</span><span class="o">=</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s1">'coordinates'</span><span class="p">][</span><span class="s1">'latitude'</span><span class="p">],</span>
-                <span class="n">lon2</span><span class="o">=</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s1">'coordinates'</span><span class="p">][</span><span class="s1">'longitude'</span><span class="p">]</span>
-            <span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">M_TO_KM</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">gps2dist_azimuth</span><span class="p">(</span>
+                    <span class="n">lat1</span><span class="o">=</span><span class="n">event_lat</span><span class="p">,</span>
+                    <span class="n">lon1</span><span class="o">=</span><span class="n">event_lon</span><span class="p">,</span>
+                    <span class="n">lat2</span><span class="o">=</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"coordinates"</span><span class="p">][</span><span class="s2">"latitude"</span><span class="p">],</span>
+                    <span class="n">lon2</span><span class="o">=</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"coordinates"</span><span class="p">][</span><span class="s2">"longitude"</span><span class="p">],</span>
+                <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="o">*</span> <span class="n">M_TO_KM</span>
+            <span class="p">)</span>
 
             <span class="c1"># Use the smoothed spectra for fitting</span>
-            <span class="n">smooth_signal_dict</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s1">'smooth_signal_spectrum'</span><span class="p">)</span>
-            <span class="n">freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">smooth_signal_dict</span><span class="p">[</span><span class="s1">'freq'</span><span class="p">])</span>
-            <span class="n">obs_spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">smooth_signal_dict</span><span class="p">[</span><span class="s1">'spec'</span><span class="p">])</span>
+            <span class="n">smooth_signal_dict</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">"smooth_signal_spectrum"</span><span class="p">)</span>
+            <span class="n">freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">smooth_signal_dict</span><span class="p">[</span><span class="s2">"freq"</span><span class="p">])</span>
+            <span class="n">obs_spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">smooth_signal_dict</span><span class="p">[</span><span class="s2">"spec"</span><span class="p">])</span>
 
             <span class="c1"># -----------------------------------------------------------------</span>
             <span class="c1"># INITIAL VALUES</span>
@@ -550,23 +558,20 @@
             <span class="n">x0</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">moment_0</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">stress_0</span><span class="p">))</span>
 
             <span class="c1"># Bounds</span>
-            <span class="n">stress_bounds</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">min_stress</span><span class="p">),</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">max_stress</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="n">stress_bounds</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">min_stress</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">max_stress</span><span class="p">))</span>
 
             <span class="c1"># multiplicative factor for moment bounds</span>
             <span class="n">moment_bounds</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">moment_factor</span><span class="p">),</span>
-                <span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">moment_factor</span><span class="p">)</span>
+                <span class="n">x0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">moment_factor</span><span class="p">),</span>
             <span class="p">)</span>
 
             <span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="n">moment_bounds</span><span class="p">,</span> <span class="n">stress_bounds</span><span class="p">)</span>
 
             <span class="c1"># Frequency limits for cost function</span>
-            <span class="n">freq_dict</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s1">'corner_frequencies'</span><span class="p">)</span>
-            <span class="n">fmin</span> <span class="o">=</span> <span class="n">freq_dict</span><span class="p">[</span><span class="s1">'highpass'</span><span class="p">]</span>
-            <span class="n">fmax</span> <span class="o">=</span> <span class="n">freq_dict</span><span class="p">[</span><span class="s1">'lowpass'</span><span class="p">]</span>
+            <span class="n">freq_dict</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"corner_frequencies"</span><span class="p">)</span>
+            <span class="n">fmin</span> <span class="o">=</span> <span class="n">freq_dict</span><span class="p">[</span><span class="s2">"highpass"</span><span class="p">]</span>
+            <span class="n">fmax</span> <span class="o">=</span> <span class="n">freq_dict</span><span class="p">[</span><span class="s2">"lowpass"</span><span class="p">]</span>
 
             <span class="c1"># -----------------------------------------------------------------</span>
             <span class="c1"># CONSTANT ARGUMENTS</span>
@@ -583,17 +588,18 @@
                 <span class="n">FSE</span><span class="p">,</span>
                 <span class="n">shear_vel</span><span class="p">,</span>
                 <span class="n">density</span><span class="p">,</span>
-                <span class="n">R0</span>
+                <span class="n">R0</span><span class="p">,</span>
             <span class="p">)</span>
 
             <span class="n">result</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span>
-                <span class="n">spectrum_cost</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span>
+                <span class="n">spectrum_cost</span><span class="p">,</span>
+                <span class="n">x0</span><span class="p">,</span>
                 <span class="n">args</span><span class="o">=</span><span class="n">cargs</span><span class="p">,</span>
-                <span class="n">method</span><span class="o">=</span><span class="s1">'L-BFGS-B'</span><span class="p">,</span>
+                <span class="n">method</span><span class="o">=</span><span class="s2">"L-BFGS-B"</span><span class="p">,</span>
                 <span class="n">jac</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">,</span>
                 <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
-                <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s1">'disp'</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+                <span class="n">options</span><span class="o">=</span><span class="p">{</span><span class="s2">"disp"</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
             <span class="p">)</span>
 
             <span class="n">moment_fit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -620,52 +626,53 @@
 
             <span class="c1"># Get the fitted spectrum and then calculate the goodness-of-fit</span>
             <span class="c1"># metrics</span>
-            <span class="n">fit_spec</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">moment_fit</span><span class="p">,</span> <span class="n">stress_drop_fit</span><span class="p">),</span> <span class="n">freq</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">kappa</span><span class="p">)</span>
-            <span class="n">mean_squared_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">obs_spec</span> <span class="o">-</span> <span class="n">fit_spec</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">fit_spec</span> <span class="o">=</span> <span class="n">model</span><span class="p">((</span><span class="n">moment_fit</span><span class="p">,</span> <span class="n">stress_drop_fit</span><span class="p">),</span> <span class="n">freq</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">kappa</span><span class="p">)</span>
+            <span class="n">mean_squared_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">obs_spec</span> <span class="o">-</span> <span class="n">fit_spec</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
 
             <span class="c1"># R^2 (Coefficient of Determination) is defined as 1 minus the</span>
             <span class="c1"># residual sum of squares (SSR) divided by the total sum of squares</span>
             <span class="c1"># (SST)</span>
-            <span class="n">ssr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">obs_spec</span> <span class="o">-</span> <span class="n">fit_spec</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-            <span class="n">sst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">obs_spec</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">obs_spec</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">ssr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">obs_spec</span> <span class="o">-</span> <span class="n">fit_spec</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">sst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">obs_spec</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">obs_spec</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
             <span class="n">r_squared</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">ssr</span> <span class="o">/</span> <span class="n">sst</span><span class="p">)</span>
 
             <span class="n">fit_spectra_dict</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s1">'stress_drop'</span><span class="p">:</span> <span class="n">stress_drop_fit</span><span class="p">,</span>
-                <span class="s1">'stress_drop_lnsd'</span><span class="p">:</span> <span class="n">sd</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-                <span class="s1">'epi_dist'</span><span class="p">:</span> <span class="n">dist</span><span class="p">,</span>
-                <span class="s1">'kappa'</span><span class="p">:</span> <span class="n">kappa</span><span class="p">,</span>
-                <span class="s1">'moment'</span><span class="p">:</span> <span class="n">moment_fit</span><span class="p">,</span>
-                <span class="s1">'moment_lnsd'</span><span class="p">:</span> <span class="n">sd</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                <span class="s1">'magnitude'</span><span class="p">:</span> <span class="n">magnitude_fit</span><span class="p">,</span>
-                <span class="s1">'f0'</span><span class="p">:</span> <span class="n">f0_fit</span><span class="p">,</span>
-                <span class="s1">'minimize_message'</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">message</span><span class="p">,</span>
-                <span class="s1">'minimize_success'</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span><span class="p">,</span>
-                <span class="s1">'mean_squared_error'</span><span class="p">:</span> <span class="n">mean_squared_error</span><span class="p">,</span>
-                <span class="s1">'R2'</span><span class="p">:</span> <span class="n">r_squared</span>
+                <span class="s2">"stress_drop"</span><span class="p">:</span> <span class="n">stress_drop_fit</span><span class="p">,</span>
+                <span class="s2">"stress_drop_lnsd"</span><span class="p">:</span> <span class="n">sd</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="s2">"epi_dist"</span><span class="p">:</span> <span class="n">dist</span><span class="p">,</span>
+                <span class="s2">"kappa"</span><span class="p">:</span> <span class="n">kappa</span><span class="p">,</span>
+                <span class="s2">"moment"</span><span class="p">:</span> <span class="n">moment_fit</span><span class="p">,</span>
+                <span class="s2">"moment_lnsd"</span><span class="p">:</span> <span class="n">sd</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="s2">"magnitude"</span><span class="p">:</span> <span class="n">magnitude_fit</span><span class="p">,</span>
+                <span class="s2">"f0"</span><span class="p">:</span> <span class="n">f0_fit</span><span class="p">,</span>
+                <span class="s2">"minimize_message"</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">message</span><span class="p">,</span>
+                <span class="s2">"minimize_success"</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span><span class="p">,</span>
+                <span class="s2">"mean_squared_error"</span><span class="p">:</span> <span class="n">mean_squared_error</span><span class="p">,</span>
+                <span class="s2">"R2"</span><span class="p">:</span> <span class="n">r_squared</span><span class="p">,</span>
             <span class="p">}</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s1">'fit_spectra'</span><span class="p">,</span> <span class="n">fit_spectra_dict</span><span class="p">)</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">"fit_spectra"</span><span class="p">,</span> <span class="n">fit_spectra_dict</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 
 
-<div class="viewcode-block" id="spectrum_cost"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/spectrum/index.html#gmprocess.waveform_processing.spectrum.spectrum_cost">[docs]</a><span class="k">def</span> <span class="nf">spectrum_cost</span><span class="p">(</span><span class="n">x</span><span class="p">,</span>
-                  <span class="n">freq</span><span class="p">,</span>
-                  <span class="n">obs_spec</span><span class="p">,</span>
-                  <span class="n">fmin</span><span class="p">,</span>
-                  <span class="n">fmax</span><span class="p">,</span>
-                  <span class="n">dist</span><span class="p">,</span>
-                  <span class="n">kappa</span><span class="p">,</span>
-                  <span class="n">RP</span><span class="p">,</span>
-                  <span class="n">VHC</span><span class="o">=</span><span class="mf">0.7071068</span><span class="p">,</span>
-                  <span class="n">FSE</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
-                  <span class="n">shear_vel</span><span class="o">=</span><span class="mf">3.7</span><span class="p">,</span>
-                  <span class="n">density</span><span class="o">=</span><span class="mf">2.8</span><span class="p">,</span>
-                  <span class="n">R0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-                  <span class="n">gs_mod</span><span class="o">=</span><span class="s2">"REA99"</span><span class="p">,</span>
-                  <span class="n">q_mod</span><span class="o">=</span><span class="s2">"REA99"</span><span class="p">,</span>
-                  <span class="n">crust_mod</span><span class="o">=</span><span class="s2">"BT15"</span><span class="p">):</span>
+<div class="viewcode-block" id="spectrum_cost"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/spectrum/index.html#gmprocess.waveform_processing.spectrum.spectrum_cost">[docs]</a><span class="k">def</span> <span class="nf">spectrum_cost</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">freq</span><span class="p">,</span>
+    <span class="n">obs_spec</span><span class="p">,</span>
+    <span class="n">fmin</span><span class="p">,</span>
+    <span class="n">fmax</span><span class="p">,</span>
+    <span class="n">dist</span><span class="p">,</span>
+    <span class="n">kappa</span><span class="p">,</span>
+    <span class="n">RP</span><span class="p">,</span>
+    <span class="n">VHC</span><span class="o">=</span><span class="mf">0.7071068</span><span class="p">,</span>
+    <span class="n">FSE</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+    <span class="n">shear_vel</span><span class="o">=</span><span class="mf">3.7</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">2.8</span><span class="p">,</span>
+    <span class="n">R0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">gs_mod</span><span class="o">=</span><span class="s2">"REA99"</span><span class="p">,</span>
+    <span class="n">q_mod</span><span class="o">=</span><span class="s2">"REA99"</span><span class="p">,</span>
+    <span class="n">crust_mod</span><span class="o">=</span><span class="s2">"BT15"</span><span class="p">,</span>
+<span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Function to compute RMS log residuals for optimization.</span>
 
@@ -726,29 +733,32 @@
         <span class="n">R0</span><span class="p">,</span>
         <span class="n">gs_mod</span><span class="p">,</span>
         <span class="n">q_mod</span><span class="p">,</span>
-        <span class="n">crust_mod</span><span class="p">)</span>
+        <span class="n">crust_mod</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="c1"># Remove non-positive values of obs_spec and apply corner frequency</span>
     <span class="c1"># constraints</span>
     <span class="n">keep</span> <span class="o">=</span> <span class="p">(</span><span class="n">obs_spec</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">freq</span> <span class="o">&gt;=</span> <span class="n">fmin</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">freq</span> <span class="o">&lt;=</span> <span class="n">fmax</span><span class="p">)</span>
 
     <span class="n">log_residuals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">obs_spec</span><span class="p">[</span><span class="n">keep</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">mod_spec</span><span class="p">[</span><span class="n">keep</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">log_residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">log_residuals</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="model"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/spectrum/index.html#gmprocess.waveform_processing.spectrum.model">[docs]</a><span class="k">def</span> <span class="nf">model</span><span class="p">(</span><span class="n">x</span><span class="p">,</span>
-          <span class="n">freq</span><span class="p">,</span>
-          <span class="n">dist</span><span class="p">,</span>
-          <span class="n">kappa</span><span class="p">,</span>
-          <span class="n">RP</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span>
-          <span class="n">VHC</span><span class="o">=</span><span class="mf">0.7071068</span><span class="p">,</span>
-          <span class="n">FSE</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
-          <span class="n">shear_vel</span><span class="o">=</span><span class="mf">3.7</span><span class="p">,</span>
-          <span class="n">density</span><span class="o">=</span><span class="mf">2.8</span><span class="p">,</span>
-          <span class="n">R0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-          <span class="n">gs_mod</span><span class="o">=</span><span class="s2">"REA99"</span><span class="p">,</span>
-          <span class="n">q_mod</span><span class="o">=</span><span class="s2">"REA99"</span><span class="p">,</span>
-          <span class="n">crust_mod</span><span class="o">=</span><span class="s2">"BT15"</span><span class="p">):</span>
+<div class="viewcode-block" id="model"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/spectrum/index.html#gmprocess.waveform_processing.spectrum.model">[docs]</a><span class="k">def</span> <span class="nf">model</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">,</span>
+    <span class="n">freq</span><span class="p">,</span>
+    <span class="n">dist</span><span class="p">,</span>
+    <span class="n">kappa</span><span class="p">,</span>
+    <span class="n">RP</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span>
+    <span class="n">VHC</span><span class="o">=</span><span class="mf">0.7071068</span><span class="p">,</span>
+    <span class="n">FSE</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+    <span class="n">shear_vel</span><span class="o">=</span><span class="mf">3.7</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">2.8</span><span class="p">,</span>
+    <span class="n">R0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">gs_mod</span><span class="o">=</span><span class="s2">"REA99"</span><span class="p">,</span>
+    <span class="n">q_mod</span><span class="o">=</span><span class="s2">"REA99"</span><span class="p">,</span>
+    <span class="n">crust_mod</span><span class="o">=</span><span class="s2">"BT15"</span><span class="p">,</span>
+<span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Piece together a model of the ground motion spectrum.</span>
 
@@ -777,7 +787,9 @@
 <span class="sd">        Array of spectra model.</span>
 <span class="sd">    """</span>
     <span class="n">source_mod</span> <span class="o">=</span> <span class="n">brune</span><span class="p">(</span>
-        <span class="n">freq</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">freq</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
         <span class="n">RP</span><span class="o">=</span><span class="n">RP</span><span class="p">,</span>
         <span class="n">VHC</span><span class="o">=</span><span class="n">VHC</span><span class="p">,</span>
         <span class="n">FSE</span><span class="o">=</span><span class="n">FSE</span><span class="p">,</span>
@@ -790,16 +802,18 @@
     <span class="k">return</span> <span class="n">source_mod</span> <span class="o">*</span> <span class="n">path_mod</span> <span class="o">*</span> <span class="n">site_mod</span></div>
 
 
-<div class="viewcode-block" id="brune"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/spectrum/index.html#gmprocess.waveform_processing.spectrum.brune">[docs]</a><span class="k">def</span> <span class="nf">brune</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span>
-          <span class="n">moment</span><span class="p">,</span>
-          <span class="n">stress_drop</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
-          <span class="n">RP</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span>
-          <span class="n">VHC</span><span class="o">=</span><span class="mf">0.7071068</span><span class="p">,</span>
-          <span class="n">FSE</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
-          <span class="n">shear_vel</span><span class="o">=</span><span class="mf">3.7</span><span class="p">,</span>
-          <span class="n">density</span><span class="o">=</span><span class="mf">2.8</span><span class="p">,</span>
-          <span class="n">R0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-          <span class="n">output_units</span><span class="o">=</span><span class="s2">"ACC"</span><span class="p">):</span>
+<div class="viewcode-block" id="brune"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/spectrum/index.html#gmprocess.waveform_processing.spectrum.brune">[docs]</a><span class="k">def</span> <span class="nf">brune</span><span class="p">(</span>
+    <span class="n">freq</span><span class="p">,</span>
+    <span class="n">moment</span><span class="p">,</span>
+    <span class="n">stress_drop</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+    <span class="n">RP</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span>
+    <span class="n">VHC</span><span class="o">=</span><span class="mf">0.7071068</span><span class="p">,</span>
+    <span class="n">FSE</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+    <span class="n">shear_vel</span><span class="o">=</span><span class="mf">3.7</span><span class="p">,</span>
+    <span class="n">density</span><span class="o">=</span><span class="mf">2.8</span><span class="p">,</span>
+    <span class="n">R0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">output_units</span><span class="o">=</span><span class="s2">"ACC"</span><span class="p">,</span>
+<span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Compute Brune (1970, 1971) earthquake source spectrum.</span>
 
@@ -837,8 +851,8 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Unsupported value for output_units."</span><span class="p">)</span>
 
     <span class="n">f0</span> <span class="o">=</span> <span class="n">brune_f0</span><span class="p">(</span><span class="n">moment</span><span class="p">,</span> <span class="n">stress_drop</span><span class="p">,</span> <span class="n">shear_vel</span><span class="p">)</span>
-    <span class="n">S</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">freq</span> <span class="o">/</span> <span class="n">f0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">C</span> <span class="o">=</span> <span class="n">RP</span> <span class="o">*</span> <span class="n">VHC</span> <span class="o">*</span> <span class="n">FSE</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">density</span> <span class="o">*</span> <span class="n">shear_vel</span><span class="o">**</span><span class="mi">3</span> <span class="o">*</span> <span class="n">R0</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-20</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">freq</span> <span class="o">/</span> <span class="n">f0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">RP</span> <span class="o">*</span> <span class="n">VHC</span> <span class="o">*</span> <span class="n">FSE</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">density</span> <span class="o">*</span> <span class="n">shear_vel</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">R0</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-20</span>
 
     <span class="k">if</span> <span class="n">output_units</span> <span class="o">==</span> <span class="s2">"ACC"</span><span class="p">:</span>
         <span class="n">fpow</span> <span class="o">=</span> <span class="mf">2.0</span>
@@ -849,7 +863,7 @@
 
     <span class="n">displacement</span> <span class="o">=</span> <span class="n">C</span> <span class="o">*</span> <span class="n">moment</span> <span class="o">*</span> <span class="n">S</span>
 
-    <span class="k">return</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq</span><span class="p">)</span><span class="o">**</span><span class="n">fpow</span> <span class="o">*</span> <span class="n">displacement</span></div>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq</span><span class="p">)</span> <span class="o">**</span> <span class="n">fpow</span> <span class="o">*</span> <span class="n">displacement</span></div>
 
 
 <div class="viewcode-block" id="brune_f0"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/spectrum/index.html#gmprocess.waveform_processing.spectrum.brune_f0">[docs]</a><span class="k">def</span> <span class="nf">brune_f0</span><span class="p">(</span><span class="n">moment</span><span class="p">,</span> <span class="n">stress_drop</span><span class="p">,</span> <span class="n">shear_vel</span><span class="o">=</span><span class="mf">3.7</span><span class="p">):</span>
@@ -867,7 +881,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        float: Brune corner frequency (Hz).</span>
 <span class="sd">    """</span>
-    <span class="n">f0</span> <span class="o">=</span> <span class="mf">4.906e6</span> <span class="o">*</span> <span class="n">shear_vel</span> <span class="o">*</span> <span class="p">(</span><span class="n">stress_drop</span> <span class="o">/</span> <span class="n">moment</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mf">3.0</span><span class="p">)</span>
+    <span class="n">f0</span> <span class="o">=</span> <span class="mf">4.906e6</span> <span class="o">*</span> <span class="n">shear_vel</span> <span class="o">*</span> <span class="p">(</span><span class="n">stress_drop</span> <span class="o">/</span> <span class="n">moment</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mf">3.0</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">f0</span></div>
 
 
@@ -886,7 +900,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        float: Brune stress drop (bars).</span>
 <span class="sd">    """</span>
-    <span class="n">stress_drop</span> <span class="o">=</span> <span class="p">((</span><span class="n">f0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">4.906e6</span> <span class="o">*</span> <span class="n">shear_vel</span><span class="p">))</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">moment</span>
+    <span class="n">stress_drop</span> <span class="o">=</span> <span class="p">((</span><span class="n">f0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">4.906e6</span> <span class="o">*</span> <span class="n">shear_vel</span><span class="p">))</span> <span class="o">**</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">moment</span>
     <span class="k">return</span> <span class="n">stress_drop</span></div>
 
 
@@ -901,7 +915,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        float: Seismic moment (dyne-cm).</span>
 <span class="sd">    """</span>
-    <span class="k">return</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">magnitude</span> <span class="o">+</span> <span class="mf">16.05</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">magnitude</span> <span class="o">+</span> <span class="mf">16.05</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="magnitude_from_moment"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/spectrum/index.html#gmprocess.waveform_processing.spectrum.magnitude_from_moment">[docs]</a><span class="k">def</span> <span class="nf">magnitude_from_moment</span><span class="p">(</span><span class="n">moment</span><span class="p">):</span>
@@ -940,7 +954,7 @@
     <span class="k">return</span> <span class="n">geom_spread</span> <span class="o">*</span> <span class="n">ae_att</span></div>
 
 
-<div class="viewcode-block" id="site"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/spectrum/index.html#gmprocess.waveform_processing.spectrum.site">[docs]</a><span class="k">def</span> <span class="nf">site</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">crust_mod</span><span class="o">=</span><span class="s1">'BT15'</span><span class="p">):</span>
+<div class="viewcode-block" id="site"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/spectrum/index.html#gmprocess.waveform_processing.spectrum.site">[docs]</a><span class="k">def</span> <span class="nf">site</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">crust_mod</span><span class="o">=</span><span class="s2">"BT15"</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Site term, including crustal amplification and kappa.</span>
 
@@ -968,44 +982,35 @@
 <span class="sd">            - 'BT15' for Boore and Thompson (2015)</span>
 <span class="sd">            - 'none' for no crustal amplification model.</span>
 <span class="sd">    """</span>
-    <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="s1">'BT15'</span><span class="p">:</span>
-        <span class="n">freq_tab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-            <span class="mf">0.001</span><span class="p">,</span>
-            <span class="mf">0.009</span><span class="p">,</span>
-            <span class="mf">0.025</span><span class="p">,</span>
-            <span class="mf">0.049</span><span class="p">,</span>
-            <span class="mf">0.081</span><span class="p">,</span>
-            <span class="mf">0.15</span><span class="p">,</span>
-            <span class="mf">0.37</span><span class="p">,</span>
-            <span class="mf">0.68</span><span class="p">,</span>
-            <span class="mf">1.11</span><span class="p">,</span>
-            <span class="mf">2.36</span><span class="p">,</span>
-            <span class="mf">5.25</span><span class="p">,</span>
-            <span class="mf">60.3</span>
-        <span class="p">])</span>
-        <span class="n">amplification_tab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-            <span class="mf">1.00</span><span class="p">,</span>
-            <span class="mf">1.01</span><span class="p">,</span>
-            <span class="mf">1.03</span><span class="p">,</span>
-            <span class="mf">1.06</span><span class="p">,</span>
-            <span class="mf">1.10</span><span class="p">,</span>
-            <span class="mf">1.19</span><span class="p">,</span>
-            <span class="mf">1.39</span><span class="p">,</span>
-            <span class="mf">1.58</span><span class="p">,</span>
-            <span class="mf">1.77</span><span class="p">,</span>
-            <span class="mf">2.24</span><span class="p">,</span>
-            <span class="mf">2.75</span><span class="p">,</span>
-            <span class="mf">4.49</span>
-        <span class="p">])</span>
+    <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">"BT15"</span><span class="p">:</span>
+        <span class="n">freq_tab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="mf">0.001</span><span class="p">,</span>
+                <span class="mf">0.009</span><span class="p">,</span>
+                <span class="mf">0.025</span><span class="p">,</span>
+                <span class="mf">0.049</span><span class="p">,</span>
+                <span class="mf">0.081</span><span class="p">,</span>
+                <span class="mf">0.15</span><span class="p">,</span>
+                <span class="mf">0.37</span><span class="p">,</span>
+                <span class="mf">0.68</span><span class="p">,</span>
+                <span class="mf">1.11</span><span class="p">,</span>
+                <span class="mf">2.36</span><span class="p">,</span>
+                <span class="mf">5.25</span><span class="p">,</span>
+                <span class="mf">60.3</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">amplification_tab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="mf">1.00</span><span class="p">,</span> <span class="mf">1.01</span><span class="p">,</span> <span class="mf">1.03</span><span class="p">,</span> <span class="mf">1.06</span><span class="p">,</span> <span class="mf">1.10</span><span class="p">,</span> <span class="mf">1.19</span><span class="p">,</span> <span class="mf">1.39</span><span class="p">,</span> <span class="mf">1.58</span><span class="p">,</span> <span class="mf">1.77</span><span class="p">,</span> <span class="mf">2.24</span><span class="p">,</span> <span class="mf">2.75</span><span class="p">,</span> <span class="mf">4.49</span><span class="p">]</span>
+        <span class="p">)</span>
 
         <span class="c1"># Interpolation should be linear freq, log amplification</span>
         <span class="n">log_amp_tab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">amplification_tab</span><span class="p">)</span>
         <span class="n">log_amp_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">freq_tab</span><span class="p">,</span> <span class="n">log_amp_tab</span><span class="p">)</span>
         <span class="n">crustal_amps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_amp_interp</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">model</span> <span class="o">==</span> <span class="s1">'none'</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">"none"</span><span class="p">:</span>
         <span class="n">crustal_amps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Unsupported crustal amplification model.'</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Unsupported crustal amplification model."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">crustal_amps</span></div>
 
@@ -1024,18 +1029,18 @@
 <span class="sd">        geom (float): anelastic attenuation factor.</span>
 <span class="sd">    """</span>
 
-    <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="s1">'REA99'</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">"REA99"</span><span class="p">:</span>
         <span class="n">dist_cross</span> <span class="o">=</span> <span class="mf">40.0</span>
         <span class="k">if</span> <span class="n">dist</span> <span class="o">&lt;=</span> <span class="n">dist_cross</span><span class="p">:</span>
-            <span class="n">geom</span> <span class="o">=</span> <span class="n">dist</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)</span>
+            <span class="n">geom</span> <span class="o">=</span> <span class="n">dist</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">geom</span> <span class="o">=</span> <span class="p">(</span><span class="n">dist</span> <span class="o">*</span> <span class="n">dist_cross</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="n">geom</span> <span class="o">=</span> <span class="p">(</span><span class="n">dist</span> <span class="o">*</span> <span class="n">dist_cross</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Unsupported anelastic attenuation model.'</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Unsupported anelastic attenuation model."</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">geom</span></div>
 
 
-<div class="viewcode-block" id="anelastic_attenuation"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/spectrum/index.html#gmprocess.waveform_processing.spectrum.anelastic_attenuation">[docs]</a><span class="k">def</span> <span class="nf">anelastic_attenuation</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">'REA99'</span><span class="p">):</span>
+<div class="viewcode-block" id="anelastic_attenuation"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/spectrum/index.html#gmprocess.waveform_processing.spectrum.anelastic_attenuation">[docs]</a><span class="k">def</span> <span class="nf">anelastic_attenuation</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">"REA99"</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Effect of anelastic attenuation.</span>
 
@@ -1050,15 +1055,15 @@
 <span class="sd">        Array of aneastic attenuation factor.</span>
 <span class="sd">    """</span>
 
-    <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="s1">'REA99'</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">"REA99"</span><span class="p">:</span>
         <span class="c1"># Frequency dependent quality factor</span>
-        <span class="n">quality_factor</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">freq</span><span class="o">**</span><span class="mf">0.45</span>
+        <span class="n">quality_factor</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">freq</span> <span class="o">**</span> <span class="mf">0.45</span>
         <span class="n">cq</span> <span class="o">=</span> <span class="mf">3.5</span>
         <span class="n">anelastic</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq</span> <span class="o">*</span> <span class="n">dist</span> <span class="o">/</span> <span class="n">quality_factor</span> <span class="o">/</span> <span class="n">cq</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">model</span> <span class="o">==</span> <span class="s1">'none'</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">"none"</span><span class="p">:</span>
         <span class="n">anelastic</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Unsupported anelastic attenuation model.'</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Unsupported anelastic attenuation model."</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">anelastic</span></div>
 
@@ -1096,8 +1101,8 @@
             <span class="n">c1</span> <span class="o">=</span> <span class="mf">0.2350</span>
             <span class="n">c2</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">Mt</span> <span class="o">=</span> <span class="n">Mt2</span>
-        <span class="n">logH</span> <span class="o">=</span> <span class="n">c0</span> <span class="o">+</span> <span class="n">c1</span> <span class="o">*</span> <span class="p">(</span><span class="n">magnitude</span> <span class="o">-</span> <span class="n">Mt</span><span class="p">)</span> <span class="o">+</span> <span class="n">c2</span> <span class="o">*</span> <span class="p">(</span><span class="n">magnitude</span> <span class="o">-</span> <span class="n">Mt</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">logH</span><span class="p">)</span>
+        <span class="n">logH</span> <span class="o">=</span> <span class="n">c0</span> <span class="o">+</span> <span class="n">c1</span> <span class="o">*</span> <span class="p">(</span><span class="n">magnitude</span> <span class="o">-</span> <span class="n">Mt</span><span class="p">)</span> <span class="o">+</span> <span class="n">c2</span> <span class="o">*</span> <span class="p">(</span><span class="n">magnitude</span> <span class="o">-</span> <span class="n">Mt</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">logH</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Unsupported finite fault adjustment model."</span><span class="p">)</span>
 

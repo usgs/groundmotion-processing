@@ -42,7 +42,6 @@ Attributes
 
    Import data for an event into the project data directory.
 
-
    .. py:attribute:: command_name
       :annotation: = import
 

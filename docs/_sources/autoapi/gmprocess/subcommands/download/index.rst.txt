@@ -48,7 +48,6 @@ Attributes
 
    Download data and organize it in the project data directory.
 
-
    .. py:attribute:: command_name
       :annotation: = download
 

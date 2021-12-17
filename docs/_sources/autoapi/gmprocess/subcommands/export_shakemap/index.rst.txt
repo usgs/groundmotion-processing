@@ -60,7 +60,6 @@ Attributes
 
    Export files for ShakeMap input.
 
-
    .. py:attribute:: command_name
       :annotation: = export_shakemap
 

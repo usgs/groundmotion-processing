@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.subcommands.download - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.subcommands.download - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -463,31 +463,33 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">from</span> <span class="nn">gmprocess.subcommands.lazy_loader</span> <span class="kn">import</span> <span class="n">LazyLoader</span>
-<span class="n">arg_dicts</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span>
-    <span class="s1">'arg_dicts'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.arg_dicts'</span><span class="p">)</span>
-<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'base'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.base'</span><span class="p">)</span>
+
+<span class="n">arg_dicts</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"arg_dicts"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.arg_dicts"</span><span class="p">)</span>
+<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"base"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.base"</span><span class="p">)</span>
 <span class="n">download_utils</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span>
-    <span class="s1">'download_utils'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.utils.download_utils'</span><span class="p">)</span>
+    <span class="s2">"download_utils"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.download_utils"</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="DownloadModule"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/download/index.html#gmprocess.subcommands.download.DownloadModule">[docs]</a><span class="k">class</span> <span class="nc">DownloadModule</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">SubcommandModule</span><span class="p">):</span>
-    <span class="sd">"""Download data and organize it in the project data directory.</span>
-<span class="sd">    """</span>
-    <span class="n">command_name</span> <span class="o">=</span> <span class="s1">'download'</span>
+    <span class="sd">"""Download data and organize it in the project data directory."""</span>
+
+    <span class="n">command_name</span> <span class="o">=</span> <span class="s2">"download"</span>
 
     <span class="n">arguments</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s1">'eventid'</span><span class="p">],</span>
-        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s1">'textfile'</span><span class="p">],</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"eventid"</span><span class="p">],</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"textfile"</span><span class="p">],</span>
         <span class="p">{</span>
-            <span class="s1">'long_flag'</span><span class="p">:</span> <span class="s1">'--info'</span><span class="p">,</span>
-            <span class="s1">'help'</span><span class="p">:</span> <span class="p">(</span>
-                <span class="s1">'Single event information as ID TIME(YYYY-MM-DDTHH:MM:SS) '</span>
-                <span class="s1">'LAT LON DEP MAG.'</span><span class="p">),</span>
-            <span class="s1">'type'</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-            <span class="s1">'default'</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s1">'nargs'</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
-            <span class="s1">'metavar'</span><span class="p">:</span> <span class="p">(</span><span class="s1">'ID'</span><span class="p">,</span> <span class="s1">'TIME'</span><span class="p">,</span> <span class="s1">'LAT'</span><span class="p">,</span> <span class="s1">'LON'</span><span class="p">,</span> <span class="s1">'DEPTH'</span><span class="p">,</span> <span class="s1">'MAG'</span><span class="p">,</span> <span class="s1">'MAG_TYPE'</span><span class="p">)</span>
-        <span class="p">}</span>
+            <span class="s2">"long_flag"</span><span class="p">:</span> <span class="s2">"--info"</span><span class="p">,</span>
+            <span class="s2">"help"</span><span class="p">:</span> <span class="p">(</span>
+                <span class="s2">"Single event information as ID TIME(YYYY-MM-DDTHH:MM:SS) "</span>
+                <span class="s2">"LAT LON DEP MAG."</span>
+            <span class="p">),</span>
+            <span class="s2">"type"</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="s2">"default"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">"nargs"</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+            <span class="s2">"metavar"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ID"</span><span class="p">,</span> <span class="s2">"TIME"</span><span class="p">,</span> <span class="s2">"LAT"</span><span class="p">,</span> <span class="s2">"LON"</span><span class="p">,</span> <span class="s2">"DEPTH"</span><span class="p">,</span> <span class="s2">"MAG"</span><span class="p">,</span> <span class="s2">"MAG_TYPE"</span><span class="p">),</span>
+        <span class="p">},</span>
     <span class="p">]</span>
 
 <div class="viewcode-block" id="DownloadModule.main"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/download/index.html#gmprocess.subcommands.download.DownloadModule.main">[docs]</a>    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gmrecords</span><span class="p">):</span>
@@ -498,24 +500,21 @@
 <span class="sd">            gmrecords:</span>
 <span class="sd">                GMrecordsApp instance.</span>
 <span class="sd">        """</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Running subcommand </span><span class="se">\'</span><span class="si">%s</span><span class="se">\'</span><span class="s1">'</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Running subcommand '</span><span class="si">%s</span><span class="s2">'"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span> <span class="o">=</span> <span class="n">gmrecords</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_arguments</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_events</span><span class="p">()</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Number of events to download: </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Number of events to download: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Starting event: </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-            <span class="n">event_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Starting event: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="n">event_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">event_dir</span><span class="p">):</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">event_dir</span><span class="p">)</span>
 
             <span class="n">download_utils</span><span class="o">.</span><span class="n">download</span><span class="p">(</span>
-                <span class="n">event</span><span class="o">=</span><span class="n">event</span><span class="p">,</span>
-                <span class="n">event_dir</span><span class="o">=</span><span class="n">event_dir</span><span class="p">,</span>
-                <span class="n">config</span><span class="o">=</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span>
+                <span class="n">event</span><span class="o">=</span><span class="n">event</span><span class="p">,</span> <span class="n">event_dir</span><span class="o">=</span><span class="n">event_dir</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span>
             <span class="p">)</span></div></div>
 </pre></div>
         </article>

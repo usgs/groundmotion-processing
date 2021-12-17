@@ -17,15 +17,17 @@ def add_shared_args(parser):
     """
     group = parser.add_mutually_exclusive_group()
     group.add_argument(
-        '-d', '--debug', action='store_true',
-        help='Print all informational messages.')
-    group.add_argument(
-        '-q', '--quiet', action='store_true',
-        help='Print only errors.')
+        "-d", "--debug", action="store_true", help="Print all informational messages."
+    )
+    group.add_argument("-q", "--quiet", action="store_true", help="Print only errors.")
     __version__ = get_version(
-        root=os.path.join(os.pardir, os.pardir),
-        relative_to=__file__)
-    parser.add_argument('-v', '--version', action='version',
-                        version='%(prog)s ' + __version__,
-                        help='Print program version.')
+        root=os.path.join(os.pardir, os.pardir), relative_to=__file__
+    )
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version="%(prog)s " + __version__,
+        help="Print program version.",
+    )
     return parser

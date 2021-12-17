@@ -6,8 +6,7 @@ import h5py
 
 
 class TallyStorage(object):
-    """Tally storage used within each group.
-    """
+    """Tally storage used within each group."""
 
     def __init__(self, group_detail=None):
         """Constructor.
@@ -59,22 +58,21 @@ class TallyStorage(object):
         for name, item in items:
             if isinstance(item, h5py.Group):
                 (item_bytes, item_groups) = self.compute_storage(
-                    item.items(), store_subtotals=name in self.group_detail)
+                    item.items(), store_subtotals=name in self.group_detail
+                )
                 if store_subtotals:
                     storage[name] = {
-                        'total_bytes': item_bytes,
-                        'groups': item_groups,
+                        "total_bytes": item_bytes,
+                        "groups": item_groups,
                     }
             elif isinstance(item, h5py.Dataset):
                 item_bytes = self.compute_dataset_storage(item)
                 if store_subtotals:
-                    storage[name] = {
-                        'total_bytes': item_bytes,
-                        'groups': {}
-                    }
+                    storage[name] = {"total_bytes": item_bytes, "groups": {}}
             else:
                 raise ValueError(
                     "Group item '{}' is of type '{}', expected "
-                    "'h5.Dataset' or 'h5.Group'".format(name, type(item)))
+                    "'h5.Dataset' or 'h5.Group'".format(name, type(item))
+                )
             subtotal_bytes += item_bytes
         return (subtotal_bytes, storage)

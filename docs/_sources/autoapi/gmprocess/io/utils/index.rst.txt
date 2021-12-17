@@ -13,6 +13,7 @@ Functions
 
 .. autoapisummary::
 
+   gmprocess.io.utils.is_binary
    gmprocess.io.utils.is_evenly_spaced
    gmprocess.io.utils.resample_uneven_trace
    gmprocess.io.utils.flatten_directory
@@ -40,6 +41,17 @@ Attributes
    :annotation: = 1
 
    
+
+.. py:function:: is_binary(filename)
+
+   Check if file is binary.
+
+   :param filename: File to check.
+   :type filename: str
+
+   :returns: Is this a binary file?
+   :rtype: bool
+
 
 .. py:function:: is_evenly_spaced(times, rtol=1e-06, atol=1e-08)
 
