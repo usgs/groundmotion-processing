@@ -80,7 +80,10 @@ class ExportMetricTablesModule(base.SubcommandModule):
             for imc, imc_table in imc_tables.items():
                 imc_tables_formatted[imc] = tables.set_precisions(imc_table)
             event_table_formatted = tables.set_precisions(event_table)
-            df_fit_spectra_formatted = tables.set_precisions(ev_fit_spec)
+            if ev_fit_spec is not None:
+                df_fit_spectra_formatted = tables.set_precisions(ev_fit_spec)
+            else:
+                df_fit_spectra_formatted = None
 
             imc_list = [
                 "%s_%s_metrics_%s"
@@ -118,6 +121,8 @@ class ExportMetricTablesModule(base.SubcommandModule):
                 output_format = "xlsx"
 
             for filename, df in dict(zip(filenames, files)).items():
+                if df is None:
+                    continue
                 filepath = os.path.normpath(
                     os.path.join(outdir, filename + ".%s" % output_format)
                 )

@@ -935,7 +935,7 @@ class StreamWorkspace(object):
         if len(fit_table):
             df = pd.DataFrame.from_dict(fit_table)
         else:
-            df = pd.DataFrame(columns=FIT_SPECTRA_COLUMNS.keys())
+            return (None, None)
 
         # Ensure that the DataFrame columns are ordered correctly
         df = df[FIT_SPECTRA_COLUMNS.keys()]
@@ -958,20 +958,20 @@ class StreamWorkspace(object):
                 Return parameters only for the given eventid.
             label (str):
                 Return parameters only for the given label.
-            config (dict)
+            config (dict):
                 Dictionary of config options.
 
         Returns:
-            pandas.DataFrame:
-                A DataFrame containing the fit_spectra parameters on a trace-
-                by-trace basis.
+            tuple of pandas DataFrames, which consists of the SNR dataframe and its
+            associated readme.
         """
         # Get list of periods in SA to interpolate SNR to.
         if "WaveFormMetrics" not in self.dataset.auxiliary_data:
-            logging.error(
+            logging.warning(
                 "No WaveFormMetrics found. Please run "
                 "'compute_waveform_metrics' subcommand."
             )
+            return (None, None)
         wm = self.dataset.auxiliary_data.WaveFormMetrics
         wm_tmp = wm[wm.list()[0]]
         bytelist = wm_tmp[wm_tmp.list()[0]].data[:].tolist()
