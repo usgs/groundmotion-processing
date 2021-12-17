@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.waveform_processing.sanity_checks - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.waveform_processing.sanity_checks - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -502,8 +502,10 @@
     <span class="n">new_start_time</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">duration</span>
     <span class="k">if</span> <span class="n">new_start_time</span> <span class="o">&lt;</span> <span class="n">start_time</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s1">'Cannot apply tail check because tail duration exceeds'</span>
-                    <span class="s1">'record duration.'</span><span class="p">)</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span>
+                <span class="s2">"Cannot apply tail check because tail duration exceeds"</span>
+                <span class="s2">"record duration."</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="n">st</span>
 
     <span class="n">vel</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">integrate</span><span class="p">()</span>
@@ -525,15 +527,15 @@
         <span class="n">vel_ratio</span> <span class="o">=</span> <span class="n">abs_max_vel_trim</span> <span class="o">/</span> <span class="n">abs_max_vel</span>
         <span class="n">dis_ratio</span> <span class="o">=</span> <span class="n">abs_max_dis_trim</span> <span class="o">/</span> <span class="n">abs_max_dis</span>
         <span class="k">if</span> <span class="n">vel_ratio</span> <span class="o">&gt;</span> <span class="n">max_vel_ratio</span><span class="p">:</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s1">'Velocity ratio is greater than </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">max_vel_ratio</span><span class="p">)</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"Velocity ratio is greater than </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">max_vel_ratio</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">dis_ratio</span> <span class="o">&gt;</span> <span class="n">max_dis_ratio</span><span class="p">:</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s1">'Displacement ratio is greater than </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">max_dis_ratio</span><span class="p">)</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"Displacement ratio is greater than </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">max_dis_ratio</span><span class="p">)</span>
         <span class="n">tail_conf</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">'max_vel_ratio'</span><span class="p">:</span> <span class="n">max_vel_ratio</span><span class="p">,</span>
-            <span class="s1">'max_dis_ratio'</span><span class="p">:</span> <span class="n">max_dis_ratio</span><span class="p">,</span>
-            <span class="s1">'start_time'</span><span class="p">:</span> <span class="n">new_start_time</span>
+            <span class="s2">"max_vel_ratio"</span><span class="p">:</span> <span class="n">max_vel_ratio</span><span class="p">,</span>
+            <span class="s2">"max_dis_ratio"</span><span class="p">:</span> <span class="n">max_dis_ratio</span><span class="p">,</span>
+            <span class="s2">"start_time"</span><span class="p">:</span> <span class="n">new_start_time</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s1">'tail_conf'</span><span class="p">,</span> <span class="n">tail_conf</span><span class="p">)</span>
+        <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">"tail_conf"</span><span class="p">,</span> <span class="n">tail_conf</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">st</span></div>
 </pre></div>
         </article>

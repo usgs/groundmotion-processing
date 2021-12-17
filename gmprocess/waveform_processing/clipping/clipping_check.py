@@ -32,7 +32,7 @@ def check_clipping(st, origin, threshold=0.2):
 
     """
     # Don't bother with test for strong motion instruments
-    chan_code = st.get_id().split('.')[2]
+    chan_code = st.get_id().split(".")[2]
     if chan_code[1] == "N":
         return st
 
@@ -43,12 +43,15 @@ def check_clipping(st, origin, threshold=0.2):
     event_mag = origin.magnitude
     event_lon = origin.longitude
     event_lat = origin.latitude
-    dist = gps2dist_azimuth(
-        lat1=event_lat,
-        lon1=event_lon,
-        lat2=st[0].stats['coordinates']['latitude'],
-        lon2=st[0].stats['coordinates']['longitude']
-    )[0] * M_TO_KM
+    dist = (
+        gps2dist_azimuth(
+            lat1=event_lat,
+            lon1=event_lon,
+            lat2=st[0].stats["coordinates"]["latitude"],
+            lon2=st[0].stats["coordinates"]["longitude"],
+        )[0]
+        * M_TO_KM
+    )
 
     # Clip mag/dist to range of training dataset
     event_mag = np.clip(event_mag, 4.0, 8.8)
@@ -59,12 +62,17 @@ def check_clipping(st, origin, threshold=0.2):
     max_amp_method = Max_Amp(st, max_amp_thresh=6e6)
     hist_method = Histogram(st)
     ping_method = Ping(st)
-    inputs = [event_mag, dist, max_amp_method.is_clipped,
-              hist_method.is_clipped, ping_method.is_clipped]
+    inputs = [
+        event_mag,
+        dist,
+        max_amp_method.is_clipped,
+        hist_method.is_clipped,
+        ping_method.is_clipped,
+    ]
     prob_clip = clip_nnet.evaluate(inputs)[0][0]
 
     if prob_clip >= threshold:
         for tr in st:
-            tr.fail('Failed clipping check: prob_clip = %.2f.' % prob_clip)
+            tr.fail("Failed clipping check: prob_clip = %.2f." % prob_clip)
 
     return st

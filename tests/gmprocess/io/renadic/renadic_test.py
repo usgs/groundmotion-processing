@@ -8,21 +8,22 @@ from gmprocess.utils.test_utils import read_data_dir
 
 
 def test_renadic():
-    datafiles, origin = read_data_dir('renadic',
-                                      'official20100227063411530_30')
+    datafiles, origin = read_data_dir("renadic", "official20100227063411530_30")
 
     # make sure format checker works
     assert is_renadic(datafiles[0])
 
     raw_streams = []
     for dfile in datafiles:
-        print('Reading file %s...' % dfile)
+        print("Reading file %s..." % dfile)
         raw_streams += read_renadic(dfile)
 
     # following pga values in G taken from file headers
-    peaks = {'672': (-0.030, -0.016, -0.008),
-             '5014': (0.295, -0.155, 0.421),
-             '0': (0.020, -0.019, -0.010)}
+    peaks = {
+        "672": (-0.030, -0.016, -0.008),
+        "5014": (0.295, -0.155, 0.421),
+        "0": (0.020, -0.019, -0.010),
+    }
 
     for stream in raw_streams:
         if stream[0].stats.station not in peaks:
@@ -35,6 +36,6 @@ def test_renadic():
         np.testing.assert_almost_equal(cmp_value, tpl, decimal=3)
 
 
-if __name__ == '__main__':
-    os.environ['CALLED_FROM_PYTEST'] = 'True'
+if __name__ == "__main__":
+    os.environ["CALLED_FROM_PYTEST"] = "True"
     test_renadic()

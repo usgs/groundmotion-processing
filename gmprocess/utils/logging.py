@@ -5,7 +5,7 @@ import logging
 import logging.config
 
 
-def setup_logger(args=None, level='info', log_file=None):
+def setup_logger(args=None, level="info", log_file=None):
     """Setup the logger options.
 
     This is written to handle a few different situations. It is called by
@@ -27,9 +27,8 @@ def setup_logger(args=None, level='info', log_file=None):
 
     """
 
-    fmt = ('%(levelname)s %(asctime)s | '
-           '%(module)s.%(funcName)s: %(message)s')
-    datefmt = '%Y-%m-%d %H:%M:%S'
+    fmt = "%(levelname)s %(asctime)s | " "%(module)s.%(funcName)s: %(message)s"
+    datefmt = "%Y-%m-%d %H:%M:%S"
     # create a console handler, with verbosity setting chosen by user
     if args is not None:
         if args.debug:
@@ -39,51 +38,40 @@ def setup_logger(args=None, level='info', log_file=None):
         else:
             loglevel = logging.INFO
     else:
-        if level == 'debug':
+        if level == "debug":
             loglevel = logging.DEBUG
-        elif level == 'info':
+        elif level == "info":
             loglevel = logging.INFO
-        elif level == 'error':
+        elif level == "error":
             loglevel = logging.ERROR
         else:
-            raise ValueError('Not valid level.')
+            raise ValueError("Not valid level.")
 
     logdict = {
-        'version': 1,
-        'formatters': {
-            'standard': {
-                'format': fmt,
-                'datefmt': datefmt
+        "version": 1,
+        "formatters": {"standard": {"format": fmt, "datefmt": datefmt}},
+        "handlers": {
+            "stream": {
+                "level": loglevel,
+                "formatter": "standard",
+                "class": "logging.StreamHandler",
             }
         },
-        'handlers': {
-            'stream': {
-                'level': loglevel,
-                'formatter': 'standard',
-                'class': 'logging.StreamHandler'
-            }
-        },
-        'loggers': {
-            '': {
-                'handlers': ['stream'],
-                'level': loglevel,
-                'propagate': True
-            }
-        }
+        "loggers": {"": {"handlers": ["stream"], "level": loglevel, "propagate": True}},
     }
 
     if log_file is not None:
-        logdict['handlers']['event_file'] = {}
-        logdict['handlers']['event_file']['filename'] = log_file
-        if level == 'debug':
-            logdict['handlers']['event_file']['level'] = logging.DEBUG
-        elif level == 'quiet':
-            logdict['handlers']['event_file']['level'] = logging.ERROR
+        logdict["handlers"]["event_file"] = {}
+        logdict["handlers"]["event_file"]["filename"] = log_file
+        if level == "debug":
+            logdict["handlers"]["event_file"]["level"] = logging.DEBUG
+        elif level == "quiet":
+            logdict["handlers"]["event_file"]["level"] = logging.ERROR
         else:
-            logdict['handlers']['event_file']['level'] = logging.INFO
-        logdict['handlers']['event_file']['formatter'] = 'standard'
-        logdict['handlers']['event_file']['class'] = 'logging.FileHandler'
-        logdict['loggers']['']['handlers'] = ['stream', 'event_file']
+            logdict["handlers"]["event_file"]["level"] = logging.INFO
+        logdict["handlers"]["event_file"]["formatter"] = "standard"
+        logdict["handlers"]["event_file"]["class"] = "logging.FileHandler"
+        logdict["loggers"][""]["handlers"] = ["stream", "event_file"]
 
     logging.config.dictConfig(logdict)
 

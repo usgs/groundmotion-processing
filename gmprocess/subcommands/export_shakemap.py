@@ -5,35 +5,35 @@ import os
 import logging
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
-arg_dicts = LazyLoader(
-    'arg_dicts', globals(), 'gmprocess.subcommands.arg_dicts')
-base = LazyLoader('base', globals(), 'gmprocess.subcommands.base')
-ws = LazyLoader('ws', globals(), 'gmprocess.io.asdf.stream_workspace')
-const = LazyLoader('const', globals(), 'gmprocess.utils.constants')
-sm_utils = LazyLoader(
-    'sm_utils', globals(), 'gmprocess.utils.export_shakemap_utils')
+
+arg_dicts = LazyLoader("arg_dicts", globals(), "gmprocess.subcommands.arg_dicts")
+base = LazyLoader("base", globals(), "gmprocess.subcommands.base")
+ws = LazyLoader("ws", globals(), "gmprocess.io.asdf.stream_workspace")
+const = LazyLoader("const", globals(), "gmprocess.utils.constants")
+sm_utils = LazyLoader("sm_utils", globals(), "gmprocess.utils.export_shakemap_utils")
 
 
 class ExportShakeMapModule(base.SubcommandModule):
-    """Export files for ShakeMap input.
-    """
-    command_name = 'export_shakemap'
-    aliases = ('shakemap', )
+    """Export files for ShakeMap input."""
+
+    command_name = "export_shakemap"
+    aliases = ("shakemap",)
 
     arguments = [
-        arg_dicts.ARG_DICTS['eventid'],
-        arg_dicts.ARG_DICTS['textfile'],
-        arg_dicts.ARG_DICTS['label'],
+        arg_dicts.ARG_DICTS["eventid"],
+        arg_dicts.ARG_DICTS["textfile"],
+        arg_dicts.ARG_DICTS["label"],
         {
-            'short_flag': '-x',
-            'long_flag': '--expand-imts',
-            'help': ('Use expanded IMTs. Currently this only means all the '
-                     'SA that have been computed, plus PGA and PGV (if '
-                     'computed). Could eventually expand for other IMTs also.'
-                     ),
-            'default': False,
-            'action': 'store_true'
-        }
+            "short_flag": "-x",
+            "long_flag": "--expand-imts",
+            "help": (
+                "Use expanded IMTs. Currently this only means all the "
+                "SA that have been computed, plus PGA and PGV (if "
+                "computed). Could eventually expand for other IMTs also."
+            ),
+            "default": False,
+            "action": "store_true",
+        },
     ]
 
     def main(self, gmrecords):
@@ -43,7 +43,7 @@ class ExportShakeMapModule(base.SubcommandModule):
             gmrecords:
                 GMrecordsApp instance.
         """
-        logging.info('Running subcommand \'%s\'' % self.command_name)
+        logging.info("Running subcommand '%s'" % self.command_name)
 
         self.gmrecords = gmrecords
         self._check_arguments()
@@ -51,18 +51,16 @@ class ExportShakeMapModule(base.SubcommandModule):
 
         for event in self.events:
             self.eventid = event.id
-            logging.info(
-                'Creating shakemap files for event %s...' % self.eventid)
+            logging.info("Creating shakemap files for event %s..." % self.eventid)
 
-            event_dir = os.path.normpath(
-                os.path.join(gmrecords.data_path, event.id))
+            event_dir = os.path.normpath(os.path.join(gmrecords.data_path, event.id))
             workname = os.path.join(event_dir, const.WORKSPACE_NAME)
             if not os.path.isfile(workname):
                 logging.info(
-                    'No workspace file found for event %s. Please run '
-                    'subcommand \'assemble\' to generate workspace file.'
-                    % event.id)
-                logging.info('Continuing to next event.')
+                    "No workspace file found for event %s. Please run "
+                    "subcommand 'assemble' to generate workspace file." % event.id
+                )
+                logging.info("Continuing to next event.")
                 continue
 
             self.workspace = ws.StreamWorkspace.open(workname)
@@ -70,13 +68,18 @@ class ExportShakeMapModule(base.SubcommandModule):
 
             expanded_imts = self.gmrecords.args.expand_imts
             jsonfile, stationfile, _ = sm_utils.create_json(
-                self.workspace, event, event_dir, self.gmrecords.args.label,
-                config=self.gmrecords.conf, expanded_imts=expanded_imts)
+                self.workspace,
+                event,
+                event_dir,
+                self.gmrecords.args.label,
+                config=self.gmrecords.conf,
+                expanded_imts=expanded_imts,
+            )
 
             self.workspace.close()
             if jsonfile is not None:
-                self.append_file('shakemap', jsonfile)
+                self.append_file("shakemap", jsonfile)
             if stationfile is not None:
-                self.append_file('shakemap', stationfile)
+                self.append_file("shakemap", stationfile)
 
         self._summarize_files_created()

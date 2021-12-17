@@ -12,9 +12,7 @@ from libcomcat.search import get_event_by_id
 
 
 class ScalarEvent(Event):
-    '''Class to represent a flattened Event with only 1 origin and 1 magnitude.
-
-    '''
+    """Class to represent a flattened Event with only 1 origin and 1 magnitude."""
 
     def __init__(self, *args, **kwargs):
         super(ScalarEvent, self).__init__(*args, **kwargs)
@@ -26,9 +24,9 @@ class ScalarEvent(Event):
         # copy the arrays
         for origin in event.origins:
             eventobj.origins.append(origin.copy())
-#            oldid = eventobj.origins[-1].resource_id.id
-#            eventobj.origins[-1].resource_id.id = oldid.replace(
-#                'smi:local/', '')
+        #            oldid = eventobj.origins[-1].resource_id.id
+        #            eventobj.origins[-1].resource_id.id = oldid.replace(
+        #                'smi:local/', '')
         for magnitude in event.magnitudes:
             eventobj.magnitudes.append(magnitude.copy())
         for station_magnitude in event.station_magnitudes:
@@ -55,7 +53,7 @@ class ScalarEvent(Event):
         return eventobj
 
     def fromParams(self, id, time, lat, lon, depth, magnitude, mag_type=None):
-        '''Create a ScalarEvent (subclass of Event).
+        """Create a ScalarEvent (subclass of Event).
 
         Args:
             id (str):
@@ -72,7 +70,7 @@ class ScalarEvent(Event):
                 Magnitude of earthquake.
             mag_type (str):
                 Magnitude type of earthqake.
-        '''
+        """
         if isinstance(time, str):
             try:
                 time = UTCDateTime(time)
@@ -81,27 +79,27 @@ class ScalarEvent(Event):
                 raise TypeError(fmt % (time, str(e)))
 
         origin = Origin(
-            resource_id=id,
-            time=time,
-            longitude=lon,
-            latitude=lat,
-            depth=depth * 1000)
+            resource_id=id, time=time, longitude=lon, latitude=lat, depth=depth * 1000
+        )
 
         self.origins = [origin]
-        magnitude = Magnitude(
-            resource_id=id,
-            mag=magnitude,
-            magnitude_type=mag_type)
+        magnitude = Magnitude(resource_id=id, mag=magnitude, magnitude_type=mag_type)
         self.magnitudes = [magnitude]
         self.resource_id = id
 
     def __repr__(self):
-        if not hasattr(self, 'origins') or not hasattr(self, 'magnitudes'):
-            return 'Empty ScalarEvent'
-        fmt = '%s %s %.3f %.3f %.1fkm M%.1f %s'
-        tpl = (self.id, str(self.time),
-               self.latitude, self.longitude,
-               self.depth_km, self.magnitude, self.magnitude_type)
+        if not hasattr(self, "origins") or not hasattr(self, "magnitudes"):
+            return "Empty ScalarEvent"
+        fmt = "%s %s %.3f %.3f %.1fkm M%.1f %s"
+        tpl = (
+            self.id,
+            str(self.time),
+            self.latitude,
+            self.longitude,
+            self.depth_km,
+            self.magnitude,
+            self.magnitude_type,
+        )
         return fmt % tpl
 
     def _get_origin(self):
@@ -118,58 +116,50 @@ class ScalarEvent(Event):
 
     @property
     def id(self):
-        '''Return the origin resource_id.
-        '''
+        """Return the origin resource_id."""
         origin = self._get_origin()
         return origin.resource_id.id
 
     @property
     def time(self):
-        '''Return the origin time.
-        '''
+        """Return the origin time."""
         origin = self._get_origin()
         return origin.time
 
     @property
     def latitude(self):
-        '''Return the origin latitude.
-        '''
+        """Return the origin latitude."""
         origin = self._get_origin()
         return origin.latitude
 
     @property
     def longitude(self):
-        '''Return the origin longitude.
-        '''
+        """Return the origin longitude."""
         origin = self._get_origin()
         return origin.longitude
 
     @property
     def depth(self):
-        '''Return the origin depth.
-        '''
+        """Return the origin depth."""
         origin = self._get_origin()
         return origin.depth
 
     @property
     def depth_km(self):
-        '''Return the origin depth.
-        '''
+        """Return the origin depth."""
         origin = self._get_origin()
         return origin.depth / 1000
 
     @property
     def magnitude(self):
-        '''Return the magnitude value.
-        '''
+        """Return the magnitude value."""
         magnitude = self._get_magnitude()
         return magnitude.mag
 
     @property
     def magnitude_type(self):
-        '''Return the magnitude type.
-        '''
-        return self.magnitudes[0]['magnitude_type']
+        """Return the magnitude type."""
+        return self.magnitudes[0]["magnitude_type"]
 
 
 def get_event_dict(eventid):
@@ -190,16 +180,18 @@ def get_event_dict(eventid):
     """
     dict_or_id = get_event_by_id(eventid)
     if dict_or_id.id != eventid:
-        logging.warn('Event ID %s is no longer preferred. Updating with the '
-                     'preferred event ID: %s.' % (eventid, dict_or_id.id))
+        logging.warn(
+            "Event ID %s is no longer preferred. Updating with the "
+            "preferred event ID: %s." % (eventid, dict_or_id.id)
+        )
     event_dict = {
-        'id': dict_or_id.id,
-        'time': UTCDateTime(dict_or_id.time),
-        'lat': dict_or_id.latitude,
-        'lon': dict_or_id.longitude,
-        'depth': dict_or_id.depth,
-        'magnitude': dict_or_id.magnitude,
-        'magnitude_type': dict_or_id._jdict['properties']['magType']
+        "id": dict_or_id.id,
+        "time": UTCDateTime(dict_or_id.time),
+        "lat": dict_or_id.latitude,
+        "lon": dict_or_id.longitude,
+        "depth": dict_or_id.depth,
+        "magnitude": dict_or_id.magnitude,
+        "magnitude_type": dict_or_id._jdict["properties"]["magType"],
     }
     return event_dict
 
@@ -220,15 +212,17 @@ def get_event_object(dict_or_id):
     elif isinstance(dict_or_id, dict):
         event_dict = dict_or_id.copy()
     else:
-        raise Exception('Unknown input parameter to get_event_info()')
+        raise Exception("Unknown input parameter to get_event_info()")
     event = ScalarEvent()
-    if 'magnitude_type' not in event_dict.keys():
-        event_dict['magnitude_type'] = None
-    event.fromParams(event_dict['id'],
-                     event_dict['time'],
-                     event_dict['lat'],
-                     event_dict['lon'],
-                     event_dict['depth'],
-                     event_dict['magnitude'],
-                     event_dict['magnitude_type'])
+    if "magnitude_type" not in event_dict.keys():
+        event_dict["magnitude_type"] = None
+    event.fromParams(
+        event_dict["id"],
+        event_dict["time"],
+        event_dict["lat"],
+        event_dict["lon"],
+        event_dict["depth"],
+        event_dict["magnitude"],
+        event_dict["magnitude_type"],
+    )
     return event

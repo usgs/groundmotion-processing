@@ -23,9 +23,8 @@ of the code. The big picture rules are:
 
 - Run the unit tests (we use ``pytest``) prior to sending in your changes.
 
-- Run a linter such as `flake8 <https://flake8.pycqa.org/en/latest/>`_ 
-  or an auto formatter like `autopep8 <https://pypi.org/project/autopep8/>`_.
-  before sending in your changes.
+- Please use `black <https://github.com/psf/black>`_ to format python code.
+
 
 - Use Python's 
   `built-in <https://docs.python.org/3.8/library/exceptions.html#built-in-exceptions>`_

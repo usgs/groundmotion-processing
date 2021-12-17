@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.subcommands.generate_regression_plot - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.subcommands.generate_regression_plot - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,18 +465,19 @@
 <span class="kn">import</span> <span class="nn">glob</span>
 
 <span class="kn">from</span> <span class="nn">gmprocess.subcommands.lazy_loader</span> <span class="kn">import</span> <span class="n">LazyLoader</span>
-<span class="n">pd</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'pd'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'pandas'</span><span class="p">)</span>
 
-<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'base'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.subcommands.base'</span><span class="p">)</span>
-<span class="n">plot</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'plot'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.utils.plot'</span><span class="p">)</span>
-<span class="n">const</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'const'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.utils.constants'</span><span class="p">)</span>
+<span class="n">pd</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"pd"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"pandas"</span><span class="p">)</span>
+
+<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"base"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.base"</span><span class="p">)</span>
+<span class="n">plot</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"plot"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.plot"</span><span class="p">)</span>
+<span class="n">const</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"const"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.constants"</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="GenerateRegressionPlotModule"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/generate_regression_plot/index.html#gmprocess.subcommands.generate_regression_plot.GenerateRegressionPlotModule">[docs]</a><span class="k">class</span> <span class="nc">GenerateRegressionPlotModule</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">SubcommandModule</span><span class="p">):</span>
-    <span class="sd">"""Generate multi-event \"regression\" plot.</span>
-<span class="sd">    """</span>
-    <span class="n">command_name</span> <span class="o">=</span> <span class="s1">'generate_regression_plot'</span>
-    <span class="n">aliases</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'regression'</span><span class="p">,</span> <span class="p">)</span>
+    <span class="sd">"""Generate multi-event \"regression\" plot."""</span>
+
+    <span class="n">command_name</span> <span class="o">=</span> <span class="s2">"generate_regression_plot"</span>
+    <span class="n">aliases</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"regression"</span><span class="p">,)</span>
 
     <span class="n">arguments</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -487,59 +488,64 @@
 <span class="sd">            gmrecords:</span>
 <span class="sd">                GMrecordsApp instance.</span>
 <span class="sd">        """</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Running subcommand </span><span class="se">\'</span><span class="si">%s</span><span class="se">\'</span><span class="s1">'</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Running subcommand '</span><span class="si">%s</span><span class="s2">'"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span> <span class="o">=</span> <span class="n">gmrecords</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_arguments</span><span class="p">()</span>
 
-        <span class="n">imc_table_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">file</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'_README'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
-                           <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span><span class="p">)</span>
-                           <span class="k">if</span> <span class="s1">'README'</span> <span class="ow">in</span> <span class="n">file</span><span class="p">]</span>
+        <span class="n">imc_table_names</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"_README"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">"README"</span> <span class="ow">in</span> <span class="n">file</span>
+        <span class="p">]</span>
 
         <span class="n">imc_tables</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">imc_table_names</span><span class="p">:</span>
             <span class="n">imckey</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">file</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">imc_tables</span><span class="p">[</span><span class="n">imckey</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span><span class="p">,</span> <span class="n">file</span><span class="p">)))</span>
-            <span class="k">if</span> <span class="s1">'fit_spectra_parameters'</span> <span class="ow">in</span> <span class="n">imc_tables</span><span class="p">:</span>
-                <span class="k">del</span> <span class="n">imc_tables</span><span class="p">[</span><span class="s1">'fit_spectra_parameters'</span><span class="p">]</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span><span class="p">,</span> <span class="n">file</span><span class="p">))</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="s2">"fit_spectra_parameters"</span> <span class="ow">in</span> <span class="n">imc_tables</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">imc_tables</span><span class="p">[</span><span class="s2">"fit_spectra_parameters"</span><span class="p">]</span>
 
         <span class="c1"># TODO - where is this being written? Is it a requirement?</span>
         <span class="c1"># It appears this is being written in gmprocess2 and</span>
         <span class="c1"># generate_metric_tables.py, and it gets appended to when re-run.</span>
-        <span class="n">event_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">'*_events.*'</span><span class="p">))</span>
+        <span class="n">event_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">"*_events.*"</span><span class="p">))</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">event_files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">event_file</span> <span class="o">=</span> <span class="n">event_files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">event_files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">'No event file found. Cannot build regression plot.'</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">'Please run </span><span class="se">\'</span><span class="s1">gmrecords export_metric_tables</span><span class="se">\'</span><span class="s1">.'</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"No event file found. Cannot build regression plot."</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"Please run 'gmrecords export_metric_tables'."</span><span class="p">)</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">'Multiple event files found, please select one:'</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"Multiple event files found, please select one:"</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">event_files</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
-            <span class="n">event_file</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">'&gt; '</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\t</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
+            <span class="n">event_file</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">"&gt; "</span><span class="p">)</span>
         <span class="n">event_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">event_file</span><span class="p">)</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
 
         <span class="c1"># make a regression plot of the most common imc/imt combination we</span>
         <span class="c1"># can find</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">imc_tables</span><span class="p">):</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s1">'''No IMC tables found. It is likely that no streams</span>
-<span class="s1">            passed checks. If you created reports for the events you</span>
-<span class="s1">            have been processing, check those to see if this is the case,</span>
-<span class="s1">            then adjust your configuration as necessary to process the data.</span>
-<span class="s1">            '''</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"""No IMC tables found. It is likely that no streams</span>
+<span class="s2">            passed checks. If you created reports for the events you</span>
+<span class="s2">            have been processing, check those to see if this is the case,</span>
+<span class="s2">            then adjust your configuration as necessary to process the data.</span>
+<span class="s2">            """</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">pref_imcs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'rotd50.0'</span><span class="p">,</span>
-                         <span class="s1">'greater_of_two_horizontals'</span><span class="p">,</span>
-                         <span class="s1">'h1'</span><span class="p">,</span> <span class="s1">'h2'</span><span class="p">,</span> <span class="p">]</span>
-            <span class="n">pref_imts</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'PGA'</span><span class="p">,</span> <span class="s1">'PGV'</span><span class="p">,</span> <span class="s1">'SA(1.0)'</span><span class="p">]</span>
+            <span class="n">pref_imcs</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="s2">"rotd50.0"</span><span class="p">,</span>
+                <span class="s2">"greater_of_two_horizontals"</span><span class="p">,</span>
+                <span class="s2">"h1"</span><span class="p">,</span>
+                <span class="s2">"h2"</span><span class="p">,</span>
+            <span class="p">]</span>
+            <span class="n">pref_imts</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"PGA"</span><span class="p">,</span> <span class="s2">"PGV"</span><span class="p">,</span> <span class="s2">"SA(1.000)"</span><span class="p">]</span>
             <span class="n">found_imc</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">found_imt</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">tab_key_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">imc_tables</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-            <span class="n">tab_key_imcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">tab_key_list</span><span class="p">]</span>
+            <span class="n">tab_key_imcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">tab_key_list</span><span class="p">]</span>
             <span class="n">tab_key_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">tab_key_imcs</span><span class="p">,</span> <span class="n">tab_key_list</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">imc</span> <span class="ow">in</span> <span class="n">pref_imcs</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">imc</span> <span class="ow">in</span> <span class="n">tab_key_imcs</span><span class="p">:</span>
@@ -559,21 +565,20 @@
                 <span class="n">found_imt</span> <span class="o">=</span> <span class="n">imtlist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">found_imc</span> <span class="ow">and</span> <span class="n">found_imt</span><span class="p">:</span>
-                <span class="n">pngfile</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="s1">'regression_</span><span class="si">%s</span><span class="s1">_</span><span class="si">%s</span><span class="s1">.png'</span> <span class="o">%</span>
-                    <span class="p">(</span><span class="n">found_imc</span><span class="p">,</span> <span class="n">found_imt</span><span class="p">)</span>
+                <span class="n">pngfile</span> <span class="o">=</span> <span class="s2">"regression_</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">.png"</span> <span class="o">%</span> <span class="p">(</span><span class="n">found_imc</span><span class="p">,</span> <span class="n">found_imt</span><span class="p">)</span>
+                <span class="n">regression_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span><span class="p">,</span> <span class="n">pngfile</span><span class="p">)</span>
                 <span class="p">)</span>
-                <span class="n">regression_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span><span class="p">,</span> <span class="n">pngfile</span><span class="p">))</span>
                 <span class="n">plot</span><span class="o">.</span><span class="n">plot_regression</span><span class="p">(</span>
-                    <span class="n">event_table</span><span class="p">,</span> <span class="n">found_imc</span><span class="p">,</span>
+                    <span class="n">event_table</span><span class="p">,</span>
+                    <span class="n">found_imc</span><span class="p">,</span>
                     <span class="n">imc_tables</span><span class="p">[</span><span class="n">tab_key_dict</span><span class="p">[</span><span class="n">found_imc</span><span class="p">]],</span>
                     <span class="n">found_imt</span><span class="p">,</span>
                     <span class="n">regression_file</span><span class="p">,</span>
-                    <span class="n">distance_metric</span><span class="o">=</span><span class="s1">'EpicentralDistance'</span><span class="p">,</span>
-                    <span class="n">colormap</span><span class="o">=</span><span class="s1">'viridis_r'</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">append_file</span><span class="p">(</span>
-                    <span class="s1">'Multi-event regression plot'</span><span class="p">,</span> <span class="n">regression_file</span><span class="p">)</span>
+                    <span class="n">distance_metric</span><span class="o">=</span><span class="s2">"EpicentralDistance"</span><span class="p">,</span>
+                    <span class="n">colormap</span><span class="o">=</span><span class="s2">"viridis_r"</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">append_file</span><span class="p">(</span><span class="s2">"Multi-event regression plot"</span><span class="p">,</span> <span class="n">regression_file</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_summarize_files_created</span><span class="p">()</span></div></div>
 </pre></div>

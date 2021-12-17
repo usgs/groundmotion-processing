@@ -26,8 +26,8 @@ class SA(IMT):
         """
         super().__init__(imt, imc, period=None)
         self._steps = {
-            'Transform2': 'oscillator',
-            'Transform3': 'null_transform',
-            'Combination1': 'null_combination',
-            'Reduction': 'max',
+            "Transform2": "oscillator",
+            "Transform3": "null_transform",
+            "Combination1": "null_combination",
+            "Reduction": "max",
         }

@@ -20,14 +20,14 @@ from obspy.taup import TauPyModel
 from gmprocess.utils.config import get_config
 from gmprocess.utils.event import ScalarEvent
 
-NAN_TIME = UTCDateTime('1970-01-01T00:00:00')
+NAN_TIME = UTCDateTime("1970-01-01T00:00:00")
 
 
 def butter_bandpass(lowcut, highcut, fs, order=5):
     nyq = 0.5 * fs
     low = lowcut / nyq
     high = highcut / nyq
-    b, a = butter(order, [low, high], btype='band')
+    b, a = butter(order, [low, high], btype="band")
     return b, a
 
 
@@ -46,10 +46,10 @@ def AICPicker(data, triggers, search_window, sps):
 
     for trigpts in triggers:
 
-        trigstart = (trigpts - (2 * searchwindowpts))
+        trigstart = trigpts - (2 * searchwindowpts)
         trigend = trigpts + 1 * searchwindowpts
 
-        if(trigstart > 0 and trigend < np.size(data)):
+        if trigstart > 0 and trigend < np.size(data):
             data_select = data[trigstart:trigend]
         else:
             continue
@@ -61,12 +61,12 @@ def AICPicker(data, triggers, search_window, sps):
 
         for n in range(1, np.size(AIC) - 2):
             s1 = np.var(data_select[0:n])
-            if(s1 <= 0):
+            if s1 <= 0:
                 s1 = 0
             else:
                 s1 = np.log(s1)
-            s2 = np.var(data_select[(n + 1):-1])
-            if(s2 <= 0):
+            s2 = np.var(data_select[(n + 1) : -1])
+            if s2 <= 0:
                 s2 = 0
             else:
                 s2 = np.log(s2)
@@ -80,11 +80,12 @@ def AICPicker(data, triggers, search_window, sps):
     return refined_triggers
 
 
-def STALTA_Earle(data, datao, sps, STAW, STAW2, LTAW, hanning, threshold,
-                 threshold2, threshdrop):
+def STALTA_Earle(
+    data, datao, sps, STAW, STAW2, LTAW, hanning, threshold, threshold2, threshdrop
+):
     data_hil = hilbert(data)
     envelope = np.abs(data_hil)
-    envelope = np.convolve(envelope, np.hanning(hanning * sps), mode='same')
+    envelope = np.convolve(envelope, np.hanning(hanning * sps), mode="same")
 
     sta_samples = int(STAW * sps)
     sta_samples2 = int(STAW2 * sps)
@@ -95,17 +96,12 @@ def STALTA_Earle(data, datao, sps, STAW, STAW2, LTAW, hanning, threshold,
     lta = np.zeros(np.size(envelope))
 
     for i in range(np.size(envelope) - lta_samples - 1):
-        lta[i + lta_samples + 1] = np.sum(
-            envelope[i:i + lta_samples]
-        )
+        lta[i + lta_samples + 1] = np.sum(envelope[i : i + lta_samples])
         sta[i + lta_samples + 1] = np.sum(
-            envelope[i + lta_samples + 1:i
-                     + lta_samples + sta_samples + 1]
+            envelope[i + lta_samples + 1 : i + lta_samples + sta_samples + 1]
         )
         sta2[i + lta_samples + 1] = np.sum(
-            envelope[i + lta_samples + 1:i
-                     + lta_samples + 1
-                     + sta_samples2]
+            envelope[i + lta_samples + 1 : i + lta_samples + 1 + sta_samples2]
         )
 
     lta = lta / float(lta_samples)
@@ -122,23 +118,45 @@ def STALTA_Earle(data, datao, sps, STAW, STAW2, LTAW, hanning, threshold,
     triggers_off = []
 
     for i in range(np.size(ratio) - 1):
-        if(trigger is False and ratio[i] >= threshold
-           and ratio2[i] >= threshold2 and ratio[i] > ratio[i + 1]):
+        if (
+            trigger is False
+            and ratio[i] >= threshold
+            and ratio2[i] >= threshold2
+            and ratio[i] > ratio[i + 1]
+        ):
             triggers_on.append(i)
             trigger = True
-        elif(trigger is True and ratio[i] <= threshdrop):
+        elif trigger is True and ratio[i] <= threshdrop:
             triggers_off.append(i)
             trigger = False
 
-    refined_triggers = AICPicker(data, triggers_on, 4., sps)
+    refined_triggers = AICPicker(data, triggers_on, 4.0, sps)
 
-    return (refined_triggers, triggers_on, triggers_off, ratio, ratio2,
-            envelope, sta, lta)
+    return (
+        refined_triggers,
+        triggers_on,
+        triggers_off,
+        ratio,
+        ratio2,
+        envelope,
+        sta,
+        lta,
+    )
 
 
-def PowerPicker(tr, highpass=1.4, lowpass=6, order=3, sta=3.0, sta2=3.0,
-                lta=20.0, hanningWindow=3.0, threshDetect=2.0,
-                threshDetect2=2.5, threshRestart=99999999):
+def PowerPicker(
+    tr,
+    highpass=1.4,
+    lowpass=6,
+    order=3,
+    sta=3.0,
+    sta2=3.0,
+    lta=20.0,
+    hanningWindow=3.0,
+    threshDetect=2.0,
+    threshDetect2=2.5,
+    threshRestart=99999999,
+):
     """Pick P-wave arrival time.
 
     Args:
@@ -177,11 +195,20 @@ def PowerPicker(tr, highpass=1.4, lowpass=6, order=3, sta=3.0, sta2=3.0,
     data = tr_copy.data
     sps = tr_copy.stats.sampling_rate
 
-    datahigh = butter_bandpass_filter(data, highpass, lowpass, sps,
-                                      order=order)
+    datahigh = butter_bandpass_filter(data, highpass, lowpass, sps, order=order)
 
-    rt = STALTA_Earle(datahigh, data, sps, sta, sta2, lta, hanningWindow,
-                      threshDetect, threshDetect2, threshRestart)[0]
+    rt = STALTA_Earle(
+        datahigh,
+        data,
+        sps,
+        sta,
+        sta2,
+        lta,
+        hanningWindow,
+        threshDetect,
+        threshDetect2,
+        threshRestart,
+    )[0]
 
     if not len(rt):
         return -1
@@ -209,11 +236,11 @@ def pick_kalkan(stream, picker_config=None, config=None):
             - Mean signal to noise ratio based on the pick.
     """
     if picker_config is None:
-        picker_config = get_config(section='pickers')
+        picker_config = get_config(section="pickers")
     if config is None:
         config = get_config()
-    min_noise_dur = config['windows']['window_checks']['min_noise_duration']
-    params = picker_config['kalkan']
+    min_noise_dur = config["windows"]["window_checks"]["min_noise_duration"]
+    params = picker_config["kalkan"]
     locs = []
     for trace in stream:
         loc = pphase_pick(trace, **params)
@@ -225,7 +252,7 @@ def pick_kalkan(stream, picker_config=None, config=None):
     else:
         minloc = -1
     if minloc < min_noise_dur:
-        fmt = 'Noise window (%.1f s) less than minimum (%.1f)'
+        fmt = "Noise window (%.1f s) less than minimum (%.1f)"
         tpl = (minloc, min_noise_dur)
         raise ValueError(fmt % tpl)
     mean_snr = calc_snr(stream, minloc)
@@ -252,26 +279,26 @@ def pick_ar(stream, picker_config=None, config=None):
             - Mean signal to noise ratio based on the pick.
     """
     if picker_config is None:
-        picker_config = get_config(section='pickers')
+        picker_config = get_config(section="pickers")
     if config is None:
         config = get_config()
-    min_noise_dur = config['windows']['window_checks']['min_noise_duration']
-    params = picker_config['ar']
+    min_noise_dur = config["windows"]["window_checks"]["min_noise_duration"]
+    params = picker_config["ar"]
     # Get the east, north, and vertical components from the stream
-    st_e = stream.select(channel='??[E1]')
-    st_n = stream.select(channel='??[N2]')
-    st_z = stream.select(channel='??[Z3]')
+    st_e = stream.select(channel="??[E1]")
+    st_n = stream.select(channel="??[N2]")
+    st_z = stream.select(channel="??[Z3]")
 
     # Check if we found one of each component
     # If not, use the next picker in the order of preference
     if len(st_e) != 1 or len(st_n) != 1 or len(st_z) != 1:
-        raise BaseException('Unable to perform AR picker.')
+        raise BaseException("Unable to perform AR picker.")
 
-    minloc = ar_pick(st_z[0].data, st_n[0].data, st_e[0].data,
-                     st_z[0].stats.sampling_rate,
-                     **params)[0]
+    minloc = ar_pick(
+        st_z[0].data, st_n[0].data, st_e[0].data, st_z[0].stats.sampling_rate, **params
+    )[0]
     if minloc < min_noise_dur:
-        fmt = 'Noise window (%.1f s) less than minimum (%.1f)'
+        fmt = "Noise window (%.1f s) less than minimum (%.1f)"
         tpl = (minloc, min_noise_dur)
         raise ValueError(fmt % tpl)
     mean_snr = calc_snr(stream, minloc)
@@ -298,15 +325,14 @@ def pick_baer(stream, picker_config=None, config=None):
             - Mean signal to noise ratio based on the pick.
     """
     if picker_config is None:
-        picker_config = get_config(section='pickers')
+        picker_config = get_config(section="pickers")
     if config is None:
         config = get_config()
-    min_noise_dur = config['windows']['window_checks']['min_noise_duration']
-    params = picker_config['baer']
+    min_noise_dur = config["windows"]["window_checks"]["min_noise_duration"]
+    params = picker_config["baer"]
     locs = []
     for trace in stream:
-        pick_sample = pk_baer(trace.data, trace.stats.sampling_rate,
-                              **params)[0]
+        pick_sample = pk_baer(trace.data, trace.stats.sampling_rate, **params)[0]
         loc = pick_sample * trace.stats.delta
         locs.append(loc)
 
@@ -316,7 +342,7 @@ def pick_baer(stream, picker_config=None, config=None):
     else:
         minloc = -1
     if minloc < min_noise_dur:
-        fmt = 'Noise window (%.1f s) less than minimum (%.1f)'
+        fmt = "Noise window (%.1f s) less than minimum (%.1f)"
         tpl = (minloc, min_noise_dur)
         raise ValueError(fmt % tpl)
     mean_snr = calc_snr(stream, minloc)
@@ -325,7 +351,7 @@ def pick_baer(stream, picker_config=None, config=None):
 
 
 def pick_travel(stream, origin, model=None, picker_config=None):
-    '''Use TauP travel time model to find P-Phase arrival time.
+    """Use TauP travel time model to find P-Phase arrival time.
 
     Args:
         stream (StationStream):
@@ -338,11 +364,11 @@ def pick_travel(stream, origin, model=None, picker_config=None):
         tuple:
             - Best estimate for p-wave arrival time (s since start of trace).
             - Mean signal to noise ratio based on the pick.
-    '''
+    """
     if model is None:
         if picker_config is None:
-            picker_config = get_config(section='pickers')
-        model = TauPyModel(picker_config['travel_time']['model'])
+            picker_config = get_config(section="pickers")
+        model = TauPyModel(picker_config["travel_time"]["model"])
     if stream[0].stats.starttime == NAN_TIME:
         return (-1, 0)
     lat = origin.latitude
@@ -359,10 +385,10 @@ def pick_travel(stream, origin, model=None, picker_config=None):
         arrivals = model.get_travel_times(
             source_depth_in_km=depth,
             distance_in_degree=dist_deg,
-            phase_list=['P', 'p', 'Pn'])
+            phase_list=["P", "p", "Pn"],
+        )
     except BaseException as e:
-        fmt = ('Exception "%s" generated by get_travel_times() '
-               'dist=%.3f depth=%.1f')
+        fmt = 'Exception "%s" generated by get_travel_times() ' "dist=%.3f depth=%.1f"
         logging.warning(fmt % (str(e), dist_deg, depth))
         arrivals = []
     if not len(arrivals):
@@ -389,7 +415,7 @@ def pick_yeck(stream):
     """
     min_window = 5.0  # put into config
     config = get_config()
-    min_noise_dur = config['windows']['window_checks']['min_noise_duration']
+    min_noise_dur = config["windows"]["window_checks"]["min_noise_duration"]
     locs = []
     for trace in stream:
         data = trace.data
@@ -410,7 +436,7 @@ def pick_yeck(stream):
     else:
         minloc = -1
     if minloc < min_noise_dur:
-        fmt = 'Noise window (%.1f s) less than minimum (%.1f)'
+        fmt = "Noise window (%.1f s) less than minimum (%.1f)"
         tpl = (minloc, min_noise_dur)
         raise ValueError(fmt % tpl)
     mean_snr = calc_snr(stream, minloc)
@@ -437,11 +463,11 @@ def pick_power(stream, picker_config=None, config=None):
             - Mean signal to noise ratio based on the pick.
     """
     if picker_config is None:
-        picker_config = get_config(section='pickers')
+        picker_config = get_config(section="pickers")
     if config is None:
         config = get_config()
-    min_noise_dur = config['windows']['window_checks']['min_noise_duration']
-    params = picker_config['power']
+    min_noise_dur = config["windows"]["window_checks"]["min_noise_duration"]
+    params = picker_config["power"]
     locs = []
     for trace in stream:
         loc = PowerPicker(trace, **params)
@@ -453,7 +479,7 @@ def pick_power(stream, picker_config=None, config=None):
     else:
         minloc = -1
     if minloc < min_noise_dur:
-        fmt = 'Noise window (%.1f s) less than minimum (%.1f)'
+        fmt = "Noise window (%.1f s) less than minimum (%.1f)"
         tpl = (minloc, min_noise_dur)
         raise ValueError(fmt % tpl)
     mean_snr = calc_snr(stream, minloc)
@@ -477,7 +503,7 @@ def sub_calc_snr(data, pidx):
     signal = data[pidx:]
     noise = data[0:pidx]
     aps = np.mean(np.power(signal, 2))  # average power of signal
-    apn = np.mean(np.power(noise, 2))   # average power of noise
+    apn = np.mean(np.power(noise, 2))  # average power of noise
     aps /= len(signal)
     apn /= len(noise)
     if apn == 0:
@@ -488,7 +514,7 @@ def sub_calc_snr(data, pidx):
     try:
         snr = 10 * np.math.log10(aps / apn)
     except ValueError as ve:
-        raise(ve)
+        raise (ve)
 
     return snr
 
@@ -512,14 +538,14 @@ def calc_snr(stream, minloc):
     for trace in stream:
         dt = trace.stats.delta
         signal = np.array(trace.data, dtype=float)
-        noise = np.array(trace.data, dtype=float)[0:int(minloc / dt)]
+        noise = np.array(trace.data, dtype=float)[0 : int(minloc / dt)]
         aps = np.mean(np.power(signal, 2))  # average power of signal
         if aps == 0:
-            trace.fail('Signal window mean is 0.')
+            trace.fail("Signal window mean is 0.")
             snr_values.append(0.0)
             continue
         if len(noise) != 0:
-            apn = np.mean(np.power(noise, 2))   # average power of noise
+            apn = np.mean(np.power(noise, 2))  # average power of noise
         else:
             apn = 0.0
 
@@ -527,8 +553,7 @@ def calc_snr(stream, minloc):
         # even if len > 0.
         if apn == 0:
             apn = 0.00001
-            logging.warning(
-                'Noise window for %s has mean of zero.' % trace.get_id())
+            logging.warning("Noise window for %s has mean of zero." % trace.get_id())
         # signal-to-noise ratio in decibel
         snr_i = 10 * np.math.log10(aps / apn)
         snr_values.append(snr_i)
@@ -536,8 +561,7 @@ def calc_snr(stream, minloc):
     return np.mean(snr_values)
 
 
-def pphase_pick(trace, period=None, damping=0.6, nbins=None,
-                peak_selection=False):
+def pphase_pick(trace, period=None, damping=0.6, nbins=None, peak_selection=False):
     """Compute P-phase arrival time.
 
     Adapted from Python code written by Francisco Hernandez of the Puerto Rico
@@ -565,18 +589,18 @@ def pphase_pick(trace, period=None, damping=0.6, nbins=None,
             - Float number of seconds from start of trace to P-Phase beginning.
             - Signal-to-noise ratio in decibels
     """
-    WAVEFORM_TYPES = {'acc': 'sm', 'vel': 'wm'}
-    wftype = WAVEFORM_TYPES[trace.stats.standard['units']]
-    if period == 'None':
+    WAVEFORM_TYPES = {"acc": "sm", "vel": "wm"}
+    wftype = WAVEFORM_TYPES[trace.stats.standard["units"]]
+    if period == "None":
         if trace.stats.sampling_rate >= 100:
             period = 0.01
         else:
             period = 0.1
 
-    if nbins == 'None':
+    if nbins == "None":
         nbins = 2 / trace.stats.delta
 
-    if wftype == 'wm':
+    if wftype == "wm":
         filtflag = 1
         flp = 0.1
         fhp = 10.0
@@ -593,20 +617,22 @@ def pphase_pick(trace, period=None, damping=0.6, nbins=None,
     trace_copy.data = trace_copy.data / np.max(np.abs(trace_copy.data))
 
     if filtflag != 0:
-        trace_copy.filter(type='bandpass', freqmin=flp, freqmax=fhp,
-                          corners=4, zerophase=True)
-        trace_copy.detrend(type='linear')
+        trace_copy.filter(
+            type="bandpass", freqmin=flp, freqmax=fhp, corners=4, zerophase=True
+        )
+        trace_copy.detrend(type="linear")
 
-    if peak_selection == 'True':
-        ind_peak = np.nonzero(np.abs(trace_copy.data)
-                              == np.max(np.abs(trace_copy.data)))
-        trace_copy.data = trace_copy.data[0:ind_peak[0][0]]
+    if peak_selection == "True":
+        ind_peak = np.nonzero(
+            np.abs(trace_copy.data) == np.max(np.abs(trace_copy.data))
+        )
+        trace_copy.data = trace_copy.data[0 : ind_peak[0][0]]
 
     # Construct a fixed-base viscously damped SDF oscillator
-    omegan = 2 * np.pi / period           # natural frequency in radian/second
-    C = 2 * damping * omegan               # viscous damping term
-    K = omegan**2                 # stiffness term
-    y = np.zeros((2, len(trace_copy.data)))   # response vector
+    omegan = 2 * np.pi / period  # natural frequency in radian/second
+    C = 2 * damping * omegan  # viscous damping term
+    K = omegan ** 2  # stiffness term
+    y = np.zeros((2, len(trace_copy.data)))  # response vector
 
     # Solve second-order ordinary differential equation of motion
     A = np.array([[0, 1], [-K, -C]])
@@ -617,7 +643,7 @@ def pphase_pick(trace, period=None, damping=0.6, nbins=None,
         y[:, k] = np.dot(Ae, y[:, k - 1]) + AeB * trace_copy.data[k]
 
     # relative velocity of mass
-    veloc = (y[1, :])
+    veloc = y[1, :]
     # integrand of viscous damping energy
     Edi = np.dot(2 * damping * omegan, np.power(veloc, 2))
 
@@ -625,8 +651,9 @@ def pphase_pick(trace, period=None, damping=0.6, nbins=None,
     levels, histogram, bins = _get_statelevel(Edi, nbins)
     locs = np.nonzero(Edi > levels[0])[0]
     # get zero crossings
-    indx = np.nonzero(np.multiply(trace_copy.data[0:locs[0] - 1],
-                                  trace_copy.data[1:locs[0]]) < 0)[0]
+    indx = np.nonzero(
+        np.multiply(trace_copy.data[0 : locs[0] - 1], trace_copy.data[1 : locs[0]]) < 0
+    )[0]
     TF = indx.size
 
     # Update first onset
@@ -637,8 +664,10 @@ def pphase_pick(trace, period=None, damping=0.6, nbins=None,
         levels, histogram, bins = _get_statelevel(Edi, np.ceil(nbins / 2))
         locs = np.nonzero(Edi > levels[0])[0]
         # get zero crossings
-        indx = np.nonzero(np.multiply(trace_copy.data[0:locs[0] - 1],
-                                      trace_copy.data[1:locs[0]]) < 0)[0]
+        indx = np.nonzero(
+            np.multiply(trace_copy.data[0 : locs[0] - 1], trace_copy.data[1 : locs[0]])
+            < 0
+        )[0]
         TF = indx.size
         if TF != 0:
             loc = (indx[TF - 1] + 1) * dt
@@ -683,8 +712,8 @@ def _get_statelevel(y, n):
     uHigh = iHigh
 
     # Upper and lower histograms
-    lHist = histogram[int(lLow):int(lHigh)]
-    uHist = histogram[int(uLow):int(uHigh)]
+    lHist = histogram[int(lLow) : int(lHigh)]
+    uHist = histogram[int(uLow) : int(uHigh)]
 
     levels = np.zeros(2)
     iMax = np.argmax(lHist[1, :])
@@ -729,12 +758,18 @@ def create_travel_time_dataframe(streams, catalog_file, ddepth, ddist, model):
     df_catalog = pd.read_csv(catalog_file)
 
     # Replace any negative depths with 0
-    df_catalog['depth'].clip(lower=0, inplace=True)
+    df_catalog["depth"].clip(lower=0, inplace=True)
     catalog = []
     for idx, row in df_catalog.iterrows():
         event = ScalarEvent()
-        event.fromParams(row['id'], row['time'], row['latitude'],
-                         row['longitude'], row['depth'], row['mag'])
+        event.fromParams(
+            row["id"],
+            row["time"],
+            row["latitude"],
+            row["longitude"],
+            row["depth"],
+            row["mag"],
+        )
         catalog.append(event)
 
     # Store the lat, lon, and id for each stream
@@ -742,7 +777,7 @@ def create_travel_time_dataframe(streams, catalog_file, ddepth, ddist, model):
     for st in streams:
         st_lats.append(st[0].stats.coordinates.latitude)
         st_lons.append(st[0].stats.coordinates.longitude)
-        st_ids.append(st[0].stats.network + '.' + st[0].stats.station)
+        st_ids.append(st[0].stats.network + "." + st[0].stats.station)
 
     # Calculate the distance for each stream, for each event
     # Store distances in a matrix
@@ -751,18 +786,18 @@ def create_travel_time_dataframe(streams, catalog_file, ddepth, ddist, model):
         distances_matrix[idx] = locations2degrees(
             np.repeat(st_lats[idx], len(catalog)),
             np.repeat(st_lons[idx], len(catalog)),
-            df_catalog['latitude'], df_catalog['longitude'])
+            df_catalog["latitude"],
+            df_catalog["longitude"],
+        )
     distances_matrix = distances_matrix.T
 
     # Calculate the minimum depth/distance values for the inteprolation grid
     # This includes a buffer to avoid interpolating at the endpoints
     # Make sure that the minimum depth/distance values aren't negative
-    minimum_depth = max([0, min(df_catalog['depth']) - 2 * ddepth])
+    minimum_depth = max([0, min(df_catalog["depth"]) - 2 * ddepth])
     minimum_dist = max([0, distances_matrix.min() - 2 * ddist])
-    depth_grid = np.arange(
-        minimum_depth, max(df_catalog['depth']) + 2 * ddepth, ddepth)
-    distance_grid = np.arange(
-        minimum_dist, distances_matrix.max() + 2 * ddist, ddist)
+    depth_grid = np.arange(minimum_depth, max(df_catalog["depth"]) + 2 * ddepth, ddepth)
+    distance_grid = np.arange(minimum_dist, distances_matrix.max() + 2 * ddist, ddist)
 
     # For each distance and each depth, compute the travel time
     # Store values in the "times" 2D matrix
@@ -770,28 +805,31 @@ def create_travel_time_dataframe(streams, catalog_file, ddepth, ddist, model):
     times = np.zeros((len(depth_grid), len(distance_grid)))
     for i, depth in enumerate(depth_grid):
         for j, dist in enumerate(distance_grid):
-            arrivals = taupy_model.get_travel_times(
-                depth, dist, ['p', 'P', 'Pn'])
+            arrivals = taupy_model.get_travel_times(depth, dist, ["p", "P", "Pn"])
             if not arrivals:
                 times[i][j] = np.nan
             else:
                 times[i][j] = arrivals[0].time
 
     # Use 2D interpolation to interpolate values at the actual points
-    points = np.transpose([np.tile(distance_grid, len(depth_grid)),
-                           np.repeat(depth_grid, len(distance_grid))])
+    points = np.transpose(
+        [
+            np.tile(distance_grid, len(depth_grid)),
+            np.repeat(depth_grid, len(distance_grid)),
+        ]
+    )
     new_points = np.vstack(
-        (distances_matrix.flatten(),
-         np.repeat(df_catalog['depth'], len(streams)))).T
+        (distances_matrix.flatten(), np.repeat(df_catalog["depth"], len(streams)))
+    ).T
     interpolated_times = griddata(points, times.flatten(), new_points).reshape(
-        (-1, len(streams)))
-    utcdatetimes = np.array([UTCDateTime(time) for time in df_catalog['time']])
+        (-1, len(streams))
+    )
+    utcdatetimes = np.array([UTCDateTime(time) for time in df_catalog["time"]])
     interpolated_times = utcdatetimes.reshape(-1, 1) + interpolated_times
 
     # Store travel time information in a DataFrame
     # Column indicies are the station ids, rows are the earthquake ids
-    df = pd.DataFrame(data=interpolated_times, index=df_catalog['id'],
-                      columns=st_ids)
+    df = pd.DataFrame(data=interpolated_times, index=df_catalog["id"], columns=st_ids)
 
     # Remove any duplicate columns which might result from a station with
     # multiple instruments

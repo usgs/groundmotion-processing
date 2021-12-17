@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.waveform_processing.fft - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.waveform_processing.fft - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -462,12 +462,10 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">obspy.signal.util</span> <span class="kn">import</span> <span class="n">next_pow_2</span>
 
-<span class="kn">from</span> <span class="nn">gmprocess.waveform_processing.smoothing.konno_ohmachi</span> <span class="kn">import</span> \
-    <span class="n">konno_ohmachi_smooth</span>
+<span class="kn">from</span> <span class="nn">gmprocess.waveform_processing.smoothing.konno_ohmachi</span> <span class="kn">import</span> <span class="n">konno_ohmachi_smooth</span>
 
 
-<div class="viewcode-block" id="compute_and_smooth_spectrum"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/fft/index.html#gmprocess.waveform_processing.fft.compute_and_smooth_spectrum">[docs]</a><span class="k">def</span> <span class="nf">compute_and_smooth_spectrum</span><span class="p">(</span>
-        <span class="n">tr</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nfft</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="compute_and_smooth_spectrum"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/fft/index.html#gmprocess.waveform_processing.fft.compute_and_smooth_spectrum">[docs]</a><span class="k">def</span> <span class="nf">compute_and_smooth_spectrum</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nfft</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Compute raw and smoothed signal spectrum for a given trace.</span>
 
@@ -499,20 +497,13 @@
         <span class="n">window</span> <span class="o">=</span> <span class="n">tr</span>
 
     <span class="n">spec_raw</span><span class="p">,</span> <span class="n">freqs_raw</span> <span class="o">=</span> <span class="n">compute_fft</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">nfft</span><span class="p">)</span>
-    <span class="n">spec_smooth</span><span class="p">,</span> <span class="n">freqs_smooth</span> <span class="o">=</span> <span class="n">smooth_spectrum</span><span class="p">(</span>
-        <span class="n">spec_raw</span><span class="p">,</span> <span class="n">freqs_raw</span><span class="p">,</span> <span class="n">nfft</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">)</span>
+    <span class="n">spec_smooth</span><span class="p">,</span> <span class="n">freqs_smooth</span> <span class="o">=</span> <span class="n">smooth_spectrum</span><span class="p">(</span><span class="n">spec_raw</span><span class="p">,</span> <span class="n">freqs_raw</span><span class="p">,</span> <span class="n">nfft</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">)</span>
 
-    <span class="n">raw_dict</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">'spec'</span><span class="p">:</span> <span class="n">spec_raw</span><span class="p">,</span>
-        <span class="s1">'freq'</span><span class="p">:</span> <span class="n">freqs_raw</span>
-    <span class="p">}</span>
-    <span class="n">smooth_dict</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">'spec'</span><span class="p">:</span> <span class="n">spec_smooth</span><span class="p">,</span>
-        <span class="s1">'freq'</span><span class="p">:</span> <span class="n">freqs_smooth</span>
-    <span class="p">}</span>
+    <span class="n">raw_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"spec"</span><span class="p">:</span> <span class="n">spec_raw</span><span class="p">,</span> <span class="s2">"freq"</span><span class="p">:</span> <span class="n">freqs_raw</span><span class="p">}</span>
+    <span class="n">smooth_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"spec"</span><span class="p">:</span> <span class="n">spec_smooth</span><span class="p">,</span> <span class="s2">"freq"</span><span class="p">:</span> <span class="n">freqs_smooth</span><span class="p">}</span>
 
-    <span class="n">tr</span><span class="o">.</span><span class="n">setCached</span><span class="p">(</span><span class="s1">'</span><span class="si">%s</span><span class="s1">_spectrum'</span> <span class="o">%</span> <span class="n">section</span><span class="p">,</span> <span class="n">raw_dict</span><span class="p">)</span>
-    <span class="n">tr</span><span class="o">.</span><span class="n">setCached</span><span class="p">(</span><span class="s1">'smooth_</span><span class="si">%s</span><span class="s1">_spectrum'</span> <span class="o">%</span> <span class="n">section</span><span class="p">,</span> <span class="n">smooth_dict</span><span class="p">)</span>
+    <span class="n">tr</span><span class="o">.</span><span class="n">setCached</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2">_spectrum"</span> <span class="o">%</span> <span class="n">section</span><span class="p">,</span> <span class="n">raw_dict</span><span class="p">)</span>
+    <span class="n">tr</span><span class="o">.</span><span class="n">setCached</span><span class="p">(</span><span class="s2">"smooth_</span><span class="si">%s</span><span class="s2">_spectrum"</span> <span class="o">%</span> <span class="n">section</span><span class="p">,</span> <span class="n">smooth_dict</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">tr</span></div>
 
@@ -565,7 +556,8 @@
 
     <span class="c1"># Konno Omachi Smoothing</span>
     <span class="n">konno_ohmachi_smooth</span><span class="p">(</span>
-        <span class="n">spec</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">),</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">ko_freqs</span><span class="p">,</span> <span class="n">spec_smooth</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">)</span>
+        <span class="n">spec</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">),</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">ko_freqs</span><span class="p">,</span> <span class="n">spec_smooth</span><span class="p">,</span> <span class="n">bandwidth</span>
+    <span class="p">)</span>
     <span class="k">return</span> <span class="n">spec_smooth</span><span class="p">,</span> <span class="n">ko_freqs</span></div>
 </pre></div>
         </article>

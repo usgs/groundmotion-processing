@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.metrics.imc.quadratic_mean - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.metrics.imc.quadratic_mean - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -487,15 +487,15 @@
 <span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">imc</span><span class="p">,</span> <span class="n">imt</span><span class="p">,</span> <span class="n">percentile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">'Rotation'</span><span class="p">:</span> <span class="s1">'null_rotation'</span><span class="p">,</span>
-            <span class="s1">'Combination2'</span><span class="p">:</span> <span class="s1">'quadratic_mean'</span><span class="p">,</span>
+            <span class="s2">"Rotation"</span><span class="p">:</span> <span class="s2">"null_rotation"</span><span class="p">,</span>
+            <span class="s2">"Combination2"</span><span class="p">:</span> <span class="s2">"quadratic_mean"</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="k">if</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'fas'</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">[</span><span class="s1">'Combination1'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'quadratic_mean'</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">[</span><span class="s1">'Combination2'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'null_combination'</span>
-        <span class="k">if</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'arias'</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">[</span><span class="s1">'Combination1'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'null_combination'</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">[</span><span class="s1">'Combination2'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'quadratic_mean'</span></div>
+        <span class="k">if</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"fas"</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">[</span><span class="s2">"Combination1"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"quadratic_mean"</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">[</span><span class="s2">"Combination2"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"null_combination"</span>
+        <span class="k">if</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"arias"</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">[</span><span class="s2">"Combination1"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"null_combination"</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">[</span><span class="s2">"Combination2"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"quadratic_mean"</span></div>
 </pre></div>
         </article>
       </div>

@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.metrics" href="../../metrics/index.html" /><link rel="prev" title="gmprocess.io.stream" href="../stream/index.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.io.utils - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.io.utils - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -468,22 +468,25 @@
 <col style="width: 90%"/>
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.utils.is_evenly_spaced" title="gmprocess.io.utils.is_evenly_spaced"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_evenly_spaced</span></code></a>(times, rtol=1e-06, atol=1e-08)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.utils.is_binary" title="gmprocess.io.utils.is_binary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_binary</span></code></a>(filename)</p></td>
+<td><p>Check if file is binary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.utils.is_evenly_spaced" title="gmprocess.io.utils.is_evenly_spaced"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_evenly_spaced</span></code></a>(times, rtol=1e-06, atol=1e-08)</p></td>
 <td><p>Checks whether times are evenly spaced.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.utils.resample_uneven_trace" title="gmprocess.io.utils.resample_uneven_trace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resample_uneven_trace</span></code></a>(trace, times, data, resample_rate=None, method='linear')</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.utils.resample_uneven_trace" title="gmprocess.io.utils.resample_uneven_trace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resample_uneven_trace</span></code></a>(trace, times, data, resample_rate=None, method='linear')</p></td>
 <td><p>Resample unevenly spaced data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.utils.flatten_directory" title="gmprocess.io.utils.flatten_directory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flatten_directory</span></code></a>(directory)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.utils.flatten_directory" title="gmprocess.io.utils.flatten_directory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flatten_directory</span></code></a>(directory)</p></td>
 <td><p>Prepare a messy directory to be read in.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.utils._walk_and_unzip" title="gmprocess.io.utils._walk_and_unzip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_walk_and_unzip</span></code></a>(directory)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.utils._walk_and_unzip" title="gmprocess.io.utils._walk_and_unzip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_walk_and_unzip</span></code></a>(directory)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.utils._split_all_path" title="gmprocess.io.utils._split_all_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_split_all_path</span></code></a>(path)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.utils._split_all_path" title="gmprocess.io.utils._split_all_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_split_all_path</span></code></a>(path)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.utils._handle_duplicates" title="gmprocess.io.utils._handle_duplicates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_handle_duplicates</span></code></a>(target)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.utils._handle_duplicates" title="gmprocess.io.utils._handle_duplicates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_handle_duplicates</span></code></a>(target)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -513,6 +516,22 @@
 <dt class="sig sig-object py" id="gmprocess.io.utils.DUPLICATE_MARKER">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.utils.</span></span><span class="sig-name descname"><span class="pre">DUPLICATE_MARKER</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#gmprocess.io.utils.DUPLICATE_MARKER" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="gmprocess.io.utils.is_binary">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.io.utils.</span></span><span class="sig-name descname"><span class="pre">is_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/io/utils.html#is_binary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.utils.is_binary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if file is binary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – File to check.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Is this a binary file?</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.utils.is_evenly_spaced">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.utils.</span></span><span class="sig-name descname"><span class="pre">is_evenly_spaced</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/io/utils.html#is_evenly_spaced"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.utils.is_evenly_spaced" title="Permalink to this definition">¶</a></dt>
@@ -647,6 +666,7 @@ to be read in with teh directory_to_streams method.</p>
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
 <li><a class="reference internal" href="#gmprocess.io.utils.CONFIG">CONFIG</a></li>
 <li><a class="reference internal" href="#gmprocess.io.utils.DUPLICATE_MARKER">DUPLICATE_MARKER</a></li>
+<li><a class="reference internal" href="#gmprocess.io.utils.is_binary">is_binary</a></li>
 <li><a class="reference internal" href="#gmprocess.io.utils.is_evenly_spaced">is_evenly_spaced</a></li>
 <li><a class="reference internal" href="#gmprocess.io.utils.resample_uneven_trace">resample_uneven_trace</a></li>
 <li><a class="reference internal" href="#gmprocess.io.utils.flatten_directory">flatten_directory</a></li>

@@ -29,12 +29,12 @@ class Quadratic_Mean(IMC):
         """
         super().__init__(imc, imt, percentile=None, period=None)
         self._steps = {
-            'Rotation': 'null_rotation',
-            'Combination2': 'quadratic_mean',
+            "Rotation": "null_rotation",
+            "Combination2": "quadratic_mean",
         }
-        if imt.startswith('fas'):
-            self._steps['Combination1'] = 'quadratic_mean'
-            self._steps['Combination2'] = 'null_combination'
-        if imt.startswith('arias'):
-            self._steps['Combination1'] = 'null_combination'
-            self._steps['Combination2'] = 'quadratic_mean'
+        if imt.startswith("fas"):
+            self._steps["Combination1"] = "quadratic_mean"
+            self._steps["Combination2"] = "null_combination"
+        if imt.startswith("arias"):
+            self._steps["Combination1"] = "null_combination"
+            self._steps["Combination2"] = "quadratic_mean"

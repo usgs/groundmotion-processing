@@ -6,7 +6,7 @@ from gmprocess.waveform_processing.clipping.clip_detection import ClipDetection
 
 
 class Jerk(ClipDetection):
-    '''
+    """
     Class for the jerk clipping detection algorithm.
 
     Attributes:
@@ -25,10 +25,10 @@ class Jerk(ClipDetection):
 
     Methods:
         See parent class.
-    '''
+    """
 
     def __init__(self, st, point_thresh=400, test_all=False):
-        '''
+        """
         Constructs all neccessary attributes for the Max_Amp class.
 
         Args:
@@ -39,7 +39,7 @@ class Jerk(ClipDetection):
                 as clipped.
             test_all (bool, default=False):
                 If true, compute and store number of outliers for all traces.
-        '''
+        """
         ClipDetection.__init__(self, st.copy(), test_all)
         self.point_thresh = point_thresh
         if self.test_all:
@@ -49,7 +49,7 @@ class Jerk(ClipDetection):
         self._get_results()
 
     def _clean_trace(self, tr):
-        '''
+        """
         Pre-processing steps.
 
         Args:
@@ -59,7 +59,7 @@ class Jerk(ClipDetection):
         Returns:
             clean_tr (StationTrace):
                 Cleaned trace.
-        '''
+        """
         t_1 = tr.stats.starttime
         t_2 = t_1 + 180
         clean_tr = tr.copy()
@@ -67,7 +67,7 @@ class Jerk(ClipDetection):
         return clean_tr
 
     def _detect(self, tr):
-        '''
+        """
         Check for jerk outliers. Based on method described by:
 
             Ringler, A. T., L. S. Gee, B. Marshall, C. R. Hutt, and T. Storm
@@ -82,13 +82,13 @@ class Jerk(ClipDetection):
         Returns:
             bool:
                 Is the trace clipped?
-        '''
+        """
         temp_tr = tr.copy()
         temp_tr.differentiate()
         temp_tr.differentiate()
         abs_diff = np.abs(temp_tr.data)
         median_x100 = 100 * np.median(abs_diff)
-        i_jerk, = np.where(abs_diff >= median_x100)
+        (i_jerk,) = np.where(abs_diff >= median_x100)
         num_outliers = len(i_jerk)
         if self.test_all:
             self.num_outliers.append(num_outliers)
@@ -99,10 +99,10 @@ class Jerk(ClipDetection):
         return False
 
     def _get_results(self):
-        '''
+        """
         Iterates through and runs _detect() on each trace in the stream to
         determine if the record is clipped or not.
 
         See parent class.
-        '''
+        """
         return ClipDetection._get_results(self)

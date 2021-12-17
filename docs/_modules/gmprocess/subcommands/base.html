@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.subcommands.base - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.subcommands.base - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,12 +465,12 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">from</span> <span class="nn">gmprocess.subcommands.lazy_loader</span> <span class="kn">import</span> <span class="n">LazyLoader</span>
-<span class="n">base_utils</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s1">'base_utils'</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s1">'gmprocess.utils.base_utils'</span><span class="p">)</span>
+
+<span class="n">base_utils</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"base_utils"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.base_utils"</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="SubcommandModule"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/base/index.html#gmprocess.subcommands.base.SubcommandModule">[docs]</a><span class="k">class</span> <span class="nc">SubcommandModule</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="sd">"""gmprocess base module.</span>
-<span class="sd">    """</span>
+    <span class="sd">"""gmprocess base module."""</span>
 
     <span class="nd">@property</span>
     <span class="nd">@abstractmethod</span>
@@ -485,8 +485,7 @@
     <span class="n">aliases</span> <span class="o">=</span> <span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Dictionary instance variable to track files created by module.</span>
-<span class="sd">        """</span>
+        <span class="sd">"""Dictionary instance variable to track files created by module."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">files_created</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="nd">@property</span>
@@ -507,21 +506,17 @@
 
 <div class="viewcode-block" id="SubcommandModule.list_arguments"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/base/index.html#gmprocess.subcommands.base.SubcommandModule.list_arguments">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">list_arguments</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="sd">"""List the arguments of the subcommand.</span>
-<span class="sd">        """</span>
+        <span class="sd">"""List the arguments of the subcommand."""</span>
         <span class="n">arg_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">arguments</span><span class="p">:</span>
-            <span class="n">arg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">arg</span><span class="p">[</span><span class="s1">'long_flag'</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'--'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'-'</span><span class="p">,</span> <span class="s1">'_'</span><span class="p">)</span>
-            <span class="p">)</span>
+            <span class="n">arg_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">[</span><span class="s2">"long_flag"</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"--"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"-"</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">arg_list</span></div>
 
 <div class="viewcode-block" id="SubcommandModule.argugments_default_dict"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/base/index.html#gmprocess.subcommands.base.SubcommandModule.argugments_default_dict">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">argugments_default_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="sd">"""List the arguments of the subcommand.</span>
-<span class="sd">        """</span>
+        <span class="sd">"""List the arguments of the subcommand."""</span>
         <span class="n">arg_list</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">list_arguments</span><span class="p">()</span>
-        <span class="n">default_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">arg</span><span class="p">[</span><span class="s1">'default'</span><span class="p">]</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">arguments</span><span class="p">]</span>
+        <span class="n">default_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">arg</span><span class="p">[</span><span class="s2">"default"</span><span class="p">]</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">arguments</span><span class="p">]</span>
         <span class="n">default_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">arg_list</span><span class="p">,</span> <span class="n">default_list</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">default_dict</span></div>
 
@@ -540,8 +535,7 @@
                 <span class="n">args</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">arg</span><span class="p">:</span> <span class="n">val</span><span class="p">})</span></div>
 
 <div class="viewcode-block" id="SubcommandModule.append_file"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/base/index.html#gmprocess.subcommands.base.SubcommandModule.append_file">[docs]</a>    <span class="k">def</span> <span class="nf">append_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="sd">"""Convenience method to add file via tag to self.files_created.</span>
-<span class="sd">        """</span>
+        <span class="sd">"""Convenience method to add file via tag to self.files_created."""</span>
         <span class="k">if</span> <span class="n">tag</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">files_created</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">files_created</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -549,24 +543,23 @@
 
 <div class="viewcode-block" id="SubcommandModule._summarize_files_created"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/base/index.html#gmprocess.subcommands.base.SubcommandModule._summarize_files_created">[docs]</a>    <span class="k">def</span> <span class="nf">_summarize_files_created</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">files_created</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">The following files have been created:'</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">The following files have been created:"</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">file_type</span><span class="p">,</span> <span class="n">file_list</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">files_created</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">'File type: </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">file_type</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">"File type: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">file_type</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\t</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">fname</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">'No new files created.'</span><span class="p">)</span></div>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"No new files created."</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SubcommandModule._get_pstreams"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/base/index.html#gmprocess.subcommands.base.SubcommandModule._get_pstreams">[docs]</a>    <span class="k">def</span> <span class="nf">_get_pstreams</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Convenience method for recycled code.</span>
-<span class="sd">        """</span>
+        <span class="sd">"""Convenience method for recycled code."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">pstreams</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">getStreams</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">label</span><span class="p">],</span>
-            <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">label</span><span class="p">],</span> <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="SubcommandModule._get_events"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/base/index.html#gmprocess.subcommands.base.SubcommandModule._get_events">[docs]</a>    <span class="k">def</span> <span class="nf">_get_events</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># NOTE: as currently written, `get_events` will do the following,</span>
@@ -581,52 +574,57 @@
         <span class="c1">#</span>
         <span class="c1"># This whole thing is really hacky and should probably be completely</span>
         <span class="c1"># rewritten.</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="s1">'data_source'</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="s2">"data_source"</span><span class="p">):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">data_source</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="c1"># Use project directory from config</span>
                 <span class="n">temp_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="s1">'No such directory: </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">temp_dir</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">data_source</span> <span class="o">==</span> <span class="s1">'download'</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="s2">"No such directory: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">temp_dir</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">data_source</span> <span class="o">==</span> <span class="s2">"download"</span><span class="p">:</span>
                 <span class="n">temp_dir</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">temp_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">data_source</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="s1">'No such directory: </span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">temp_dir</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="s2">"No such directory: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">temp_dir</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">download_dir</span> <span class="o">=</span> <span class="n">temp_dir</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">download_dir</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">info</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="s1">'info'</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="n">tfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">textfile</span> <span class="k">if</span> \
-            <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="s1">'textfile'</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">info</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="s2">"info"</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="n">tfile</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">textfile</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="s2">"textfile"</span><span class="p">)</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">events</span> <span class="o">=</span> <span class="n">base_utils</span><span class="o">.</span><span class="n">get_events</span><span class="p">(</span>
             <span class="n">eventids</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">eventid</span><span class="p">,</span>
             <span class="n">textfile</span><span class="o">=</span><span class="n">tfile</span><span class="p">,</span>
             <span class="n">eventinfo</span><span class="o">=</span><span class="n">info</span><span class="p">,</span>
             <span class="n">directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">download_dir</span><span class="p">,</span>
-            <span class="n">outdir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span>
+            <span class="n">outdir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="SubcommandModule._get_labels"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/base/index.html#gmprocess.subcommands.base.SubcommandModule._get_labels">[docs]</a>    <span class="k">def</span> <span class="nf">_get_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">getLabels</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
-            <span class="n">labels</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">'unprocessed'</span><span class="p">)</span>
+            <span class="n">labels</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">"unprocessed"</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'No processed waveform data in workspace for event </span><span class="si">%s</span><span class="s1">'</span>
-                         <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">"No processed waveform data in workspace for event </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span>
+            <span class="p">)</span>
             <span class="k">return</span>
 
         <span class="c1"># If there are more than 1 processed labels, prompt user to select</span>
         <span class="c1"># one.</span>
         <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">Which label do you want to use?'</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Which label do you want to use?"</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">lab</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="si">%s</span><span class="s1">'</span> <span class="o">%</span> <span class="n">lab</span><span class="p">)</span>
-            <span class="n">tmplab</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">'&gt; '</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\t</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">lab</span><span class="p">)</span>
+            <span class="n">tmplab</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">"&gt; "</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">tmplab</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="si">%s</span><span class="s1"> not a valid label. Exiting.'</span> <span class="o">%</span> <span class="n">tmplab</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> not a valid label. Exiting."</span> <span class="o">%</span> <span class="n">tmplab</span><span class="p">)</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">tmplab</span>

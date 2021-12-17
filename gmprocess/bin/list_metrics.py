@@ -13,19 +13,18 @@ from gmprocess.metrics.imt.imt import IMT
 
 
 def get_class(imc, ctype):
-    """Return class (not instance) corresponding to imc string.
-    """
-    if ctype == 'imt':
+    """Return class (not instance) corresponding to imc string."""
+    if ctype == "imt":
         compclass = IMT
-    elif ctype == 'imc':
+    elif ctype == "imc":
         compclass = IMC
-    datapath = os.path.join('metrics', ctype)
-    imc_directory = pkg_resources.resource_filename('gmprocess', datapath)
-    modfile = os.path.join(imc_directory, imc + '.py')
+    datapath = os.path.join("metrics", ctype)
+    imc_directory = pkg_resources.resource_filename("gmprocess", datapath)
+    modfile = os.path.join(imc_directory, imc + ".py")
     if not os.path.isfile(modfile):
         return None
-    modname = modfile[modfile.rfind('gmprocess'):].replace('.py', '')
-    modname = modname.replace(os.path.sep, '.')
+    modname = modfile[modfile.rfind("gmprocess") :].replace(".py", "")
+    modname = modname.replace(os.path.sep, ".")
     mod = importlib.import_module(modname)
     tclass = None
     for name, obj in inspect.getmembers(mod):
@@ -40,23 +39,23 @@ def get_class(imc, ctype):
 
 def get_combinations():
     imts, imcs = gather_pgms()
-    dataframe = pd.DataFrame(columns=imts + ['imc'])
-    checks = ['Y'] * len(imts)
+    dataframe = pd.DataFrame(columns=imts + ["imc"])
+    checks = ["Y"] * len(imts)
     for imc in imcs:
-        imc_class = get_class(imc, 'imc')
+        imc_class = get_class(imc, "imc")
         invalid_imts = imc_class._invalid_imts
         row = dict(zip(imts, checks))
         for iimt in invalid_imts:
-            row[iimt.lower()] = 'N'
-        row['imc'] = imc
+            row[iimt.lower()] = "N"
+        row["imc"] = imc
         dataframe = dataframe.append(row, ignore_index=True)
 
-    dataframe = dataframe.set_index('imc')
+    dataframe = dataframe.set_index("imc")
     return dataframe
 
 
 def main():
-    helpstr = '''
+    helpstr = """
     Table of supported IMC/IMT combinations is below.
 
     Notes:
@@ -67,11 +66,11 @@ def main():
     The "gmrotd" and "rotd" IMCs will need to be specified as "gmrotd50"
     for the Geometric Mean 50th percentile, rotd100 for the 100th percentile,
     and so forth.
-    '''
+    """
     comboframe = get_combinations()
     print(helpstr)
     print(comboframe)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -11,7 +11,7 @@ def get_rawdir(event_dir):
         event_dir (str):
             Directory where raw directory will be found or created.
     """
-    rawdir = os.path.join(event_dir, 'raw')
+    rawdir = os.path.join(event_dir, "raw")
     if not os.path.exists(rawdir):
         os.makedirs(rawdir)
     return rawdir

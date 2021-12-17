@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="gmprocess.metrics.rotation.rotd" href="../rotd/index.html" /><link rel="prev" title="gmprocess.metrics.rotation.radial_transverse" href="../radial_transverse/index.html" />
 
     <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.metrics.rotation.rotation - gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</title>
+        <title>gmprocess.metrics.rotation.rotation - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">gmprocess 1.1.11.dev133+gbb66c59.d20211130 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -484,11 +484,8 @@
 <dd><p>Gets the two horizontal components.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><dl class="simple">
-<dt>list of horizontal channels</dt><dd><p>(obspy.core.trac.Trace).</p>
-</dd>
-</dl>
-</p>
+<dd class="field-odd"><p>list of horizontal channels
+(obspy.core.trac.Trace).</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>horizontal_channels</p>
@@ -536,8 +533,7 @@ Default is None.</p></li>
 </dd>
 </dl>
 </p></li>
-<li><p><strong>percentiles</strong> (<em>list</em>) – percentile(s) to return the requested values.
-Default is 50.</p></li>
+<li><p><strong>percentiles</strong> (<em>list</em>) – Percentile(s) to return the requested values. Default is 50.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -562,8 +558,8 @@ data at each degree.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tr1</strong> (<em>obspy.core.trace.Trace</em>) – Trace 1 of strong motion data.</p></li>
-<li><p><strong>tr2</strong> (<em>obspy.core.trace.Trace</em>) – Trace 2 of strong motion data.</p></li>
+<li><p><strong>tr1</strong> (<em>ndarray</em>) – Array of trace data.</p></li>
+<li><p><strong>tr2</strong> (<em>ndarray</em>) – Array of trace data.</p></li>
 <li><p><strong>combine</strong> (<em>bool</em>) – Whether rotated traces should be combined. Default is False.</p></li>
 <li><p><strong>delta</strong> (<em>float</em>) – Delta degrees which will determine the number of rows
 for the matrix of rotated components.
