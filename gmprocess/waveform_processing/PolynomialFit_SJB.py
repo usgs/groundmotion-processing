@@ -13,7 +13,7 @@ from gmprocess.waveform_processing.filtering import (
 
 
 def PolynomialFit_SJB(
-    st, target=0.02, tol=0.001, polynomial_order=6.0, maxiter=30, maxfc=0.5
+    st, target=0.02, tol=0.001, polynomial_order=6.0, maxiter=30, maxfc=0.5, int_method = "frequency_domain"
 ):
     """Search for highpass corner using Ridder's method such that
         it satisfies the criterion that the ratio between the maximum of a third order polynomial
@@ -38,6 +38,8 @@ def PolynomialFit_SJB(
             maximum number of allowed iterations in Ridder's method
         maxfc (float):
             Maximum allowable value of the highpass corner freq.
+        int_method (string):
+            method used to perform integration between acceleration, velocity, and dispacement. Options are "frequency_domain", "time_domain_zero_init" or "time_domain_zero_mean"
 
     Returns:
         StationStream.
@@ -54,7 +56,7 @@ def PolynomialFit_SJB(
             initial_corners = tr.getParameter("corner_frequencies")
             f_hp = 0.0001  # GP: Want the initial bounds to encompass the solution
 
-            out = __ridder_log(tr, f_hp, target, tol, polynomial_order, maxiter, maxfc)
+            out = __ridder_log(tr, f_hp, target, tol, polynomial_order, maxiter, maxfc, int_method)
 
             if out[0] == True:
                 initial_corners["highpass"] = out[1]
@@ -74,7 +76,7 @@ def PolynomialFit_SJB(
 
 
 def __ridder_log(
-    tr, f_hp, target=0.02, tol=0.001, polynomial_order=6, maxiter=30, maxfc=0.5
+    tr, f_hp, target=0.02, tol=0.001, polynomial_order=6, maxiter=30, maxfc=0.5, int_method = "frequency_domain"
 ):
 
     logging.debug("Ridder activated")
@@ -166,7 +168,7 @@ def filtered_Facc(Facc, freq, fc, order):
     return filtered_Facc
 
 
-def get_disp(freq, Facc, N):
+def get_disp_frequency_domain(freq, Facc, N):
     Fdisp = []
     for facc, f in zip(Facc, freq):
         if f == 0:
@@ -179,11 +181,15 @@ def get_disp(freq, Facc, N):
     return disp
 
 
-def get_disp_timedomain(Facc, delta, N):
+def get_disp_time_domain_zero_init(Facc, delta, N):
     acc_time = np.fft.irfft(Facc, n=N)
     disp = cumtrapz(cumtrapz(acc_time, dx=delta, initial=0), dx=delta, initial=0)
     return disp
 
+def get_disp_time_domain_zero_mean(Facc, delta, N):
+    acc_time = np.fft.irfft(Facc, n=N)
+    disp = cumtrapz(cumtrapz(acc_time, dx=delta, initial=0), dx=delta, initial=0)
+    return disp
 
 def get_residual(time, disp, target, polynomial_order):
     coef = np.polyfit(time[0 : len(disp)], disp, polynomial_order)
