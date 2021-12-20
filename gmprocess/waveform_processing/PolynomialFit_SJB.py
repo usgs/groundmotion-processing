@@ -55,7 +55,7 @@ def PolynomialFit_SJB(
             initial_corners = tr.getParameter("corner_frequencies")
             f_hp = 0.0001  # GP: Want the initial bounds to encompass the solution
 
-            out = __ridder_log(tr, f_hp, target, tol, polynomial_order, maxiter, maxfc)
+            out = __ridder_log(tr, f_hp, target, tol, polynomial_order, maxiter, maxfc, int_method)
 
             if out[0] == True:
                 initial_corners["highpass"] = out[1]
@@ -195,7 +195,6 @@ def filtered_Facc(Facc, freq, fc, order):
 #     vel -= np.mean(vel)
 #     disp = cumtrapz(vel,dx = delta, initial = 0)
 #     return disp
-
 
 def get_residual(time, disp, target, polynomial_order):
     coef = np.polyfit(time[0 : len(disp)], disp, polynomial_order)
