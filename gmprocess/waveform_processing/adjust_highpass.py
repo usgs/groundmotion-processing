@@ -5,13 +5,19 @@ import numpy as np
 
 from gmprocess.utils.config import get_config
 from scipy.optimize import curve_fit
-from gmprocess.waveform_processing.filtering import \
-    lowpass_filter_trace, highpass_filter_trace
+from gmprocess.waveform_processing.filtering import (
+    lowpass_filter_trace,
+    highpass_filter_trace,
+)
 
 
-def adjust_highpass_corner(st, step_factor=1.5, maximum_freq=0.5,
-                           max_final_displacement=0.2,
-                           max_displacment_ratio=0.2):
+def adjust_highpass_corner(
+    st,
+    step_factor=1.5,
+    maximum_freq=0.5,
+    max_final_displacement=0.2,
+    max_displacment_ratio=0.2,
+):
     """Adjust high pass corner frequency.
 
     Options for further refinement of the highpass corner. Currently, this
@@ -87,20 +93,22 @@ def __disp_checks(tr, max_final_displacement=0.025, max_displacment_ratio=0.2):
     # Filter
     trdis = lowpass_filter_trace(trdis, **lp_args)
     trdis = highpass_filter_trace(trdis, **hp_args)
-    
+
     # Integrate to displacment
     trdis.integrate()
     trdis.integrate()
-    
-    #Apply baseline correction
-    time_values = np.linspace(0,trdis.stats.npts - 1, trdis.stats.npts) * trdis.stats.delta
+
+    # Apply baseline correction
+    time_values = (
+        np.linspace(0, trdis.stats.npts - 1, trdis.stats.npts) * trdis.stats.delta
+    )
     poly_cofs = list(curve_fit(_poly_func, time_values, trdis.data)[0])
     poly_cofs += [0, 0]
 
     # Construct a polynomial from the coefficients and subtract from displacement
     polynomial = np.poly1d(poly_cofs)
     trdis.data -= polynomial(time_values)
-    
+
     # Checks
     ok = True
     max_displacment = np.max(np.abs(trdis.data))
@@ -115,8 +123,9 @@ def __disp_checks(tr, max_final_displacement=0.025, max_displacment_ratio=0.2):
 
     return ok
 
+
 def _poly_func(x, a, b, c, d, e):
     """
     Model polynomial function for polynomial baseline correction.
     """
-    return a * x**6 + b * x**5 + c * x**4 + d * x**3 + e * x**2
+    return a * x ** 6 + b * x ** 5 + c * x ** 4 + d * x ** 3 + e * x ** 2
