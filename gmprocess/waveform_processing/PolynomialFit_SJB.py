@@ -96,13 +96,13 @@ def __ridder_log(
     freq = np.fft.rfftfreq(len(acc), acc.stats.delta)
     fc0 = f_hp
     Facc0 = Facc
-    disp0 = get_disp(freq, Facc, len(acc))
+    disp0 = get_disp_frequency_domain(freq, Facc, len(acc))
     # disp0 = get_disp_timedomain(Facc,acc.stats.delta,len(acc))
     R0 = get_residual(time, disp0, target, polynomial_order)
 
     fc2 = maxfc
     Facc2 = filtered_Facc(Facc, freq, fc2, order=5)
-    disp2 = get_disp(freq, Facc2, len(acc))
+    disp2 = get_disp_frequency_domain(freq, Facc2, len(acc))
     # disp2 = get_disp_timedomain(Facc2,acc.stats.delta,len(acc))
 
     R2 = get_residual(time, disp2, target, polynomial_order)
@@ -118,7 +118,7 @@ def __ridder_log(
         logging.debug("Ridder iteration = %s" % i)
         fc1 = np.exp(0.5 * (np.log(fc0) + np.log(fc2)))
         Facc1 = filtered_Facc(Facc, freq, fc1, order=5)
-        disp = get_disp(freq, Facc1, len(acc))
+        disp = get_disp_frequency_domain(freq, Facc1, len(acc))
         # disp = get_disp_timedomain(Facc1,acc.stats.delta,len(acc))
         R1 = get_residual(time, disp, target, polynomial_order)
         fc3 = np.exp(
@@ -130,7 +130,7 @@ def __ridder_log(
         )
         fc3 = np.min([maxfc, fc3])
         Facc3 = filtered_Facc(Facc, freq, fc3, order=5)
-        disp = get_disp(freq, Facc3, len(acc))
+        disp = get_disp_frequency_domain(freq, Facc3, len(acc))
         # disp = get_disp_timedomain(Facc3, acc.stats.delta,len(acc))
         R3 = get_residual(time, disp, target, polynomial_order)
         if (np.abs(R3) <= tol) or (i == maxiter - 1):
