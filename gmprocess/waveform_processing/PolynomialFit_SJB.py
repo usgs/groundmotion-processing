@@ -188,7 +188,9 @@ def get_disp_time_domain_zero_init(Facc, delta, N):
 
 def get_disp_time_domain_zero_mean(Facc, delta, N):
     acc_time = np.fft.irfft(Facc, n=N)
-    disp = cumtrapz(cumtrapz(acc_time, dx=delta, initial=0), dx=delta, initial=0)
+    vel = cumtrapz(acc_time, dx=delta, initial=0)
+    vel -= np.mean(vel)
+    disp = cumtrapz(vel,dx = delta, initial = 0)
     return disp
 
 def get_residual(time, disp, target, polynomial_order):
