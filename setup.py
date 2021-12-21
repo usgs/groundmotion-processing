@@ -23,14 +23,14 @@ ext_modules = [
         sourcefiles,
         libraries=libraries,
         include_dirs=[numpy.get_include()],
-        extra_compile_args=["-O2", "-Xpreprocessor", "-fopenmp"],
+        # extra_compile_args=["-O2", "-Xpreprocessor", "-fopenmp"],
     ),
     Extension(
         "gmprocess.waveform_processing.smoothing.konno_ohmachi",
         ko_sourcefiles,
         libraries=libraries,
         include_dirs=[numpy.get_include()],
-        extra_compile_args=["-O2", "-Xpreprocessor", "-fopenmp"],
+        # extra_compile_args=["-O2", "-Xpreprocessor", "-fopenmp"],
     ),
 ]
 
