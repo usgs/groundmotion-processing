@@ -95,6 +95,9 @@ def __disp_checks(tr, max_final_displacement=0.025, max_displacment_ratio=0.2):
     # Filter
     trdis = lowpass_filter_trace(trdis, **lp_args)
     trdis = highpass_filter_trace(trdis, **hp_args)
+    
+    # Apply baseline correction
+    trdis = correct_baseline(trdis)
 
     # Apply baseline correction
     trdis = correct_baseline(trdis)
@@ -115,10 +118,3 @@ def __disp_checks(tr, max_final_displacement=0.025, max_displacment_ratio=0.2):
         ok = False
 
     return ok
-
-
-def _poly_func(x, a, b, c, d, e):
-    """
-    Model polynomial function for polynomial baseline correction.
-    """
-    return a * x ** 6 + b * x ** 5 + c * x ** 4 + d * x ** 3 + e * x ** 2
