@@ -116,9 +116,9 @@ conda remove -y -n $VENV --all
 
 
 # Create a conda virtual environment
-conda config --add channels 'defaults'
 conda config --add channels 'conda-forge'
-conda config --set channel_priority strict
+conda config --add channels 'defaults'
+conda config --set channel_priority flexible
 
 echo "Creating the $VENV virtual environment:"
 # conda create -n $VENV -y --file requirements.txt
