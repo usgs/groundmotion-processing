@@ -75,6 +75,9 @@ jobs:
           export CPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include
           echo "MacOS 10.15"
         fi
+      else
+        ln -s /usr/lib/x86_64-linux-gnu/libpthread_nonshared.a /usr/lib64/libpthread_nonshared.a
+        ln -s /usr/lib/x86_64-linux-gnu/libpthread.so.0  /usr/lib64/libpthread.so.0
       fi
       echo $(Agent.NAME)
       echo $(python.version)

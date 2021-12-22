@@ -14,8 +14,6 @@ else
     exit
 fi
 
-CC_PKG=c-compiler
-
 source $prof
 
 # Name of virtual environment
