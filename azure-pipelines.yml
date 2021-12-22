@@ -79,8 +79,6 @@ jobs:
       echo $(Agent.NAME)
       echo $(python.version)
       bash install.sh -p $(python.version)
-      conda activate gmprocess
-      pip install -v -v -v -e .
     displayName: Create conda environment and install gmprocess (mac/linux)
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
