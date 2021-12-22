@@ -198,7 +198,7 @@ else
 fi
 ##################### Try to get in front of missing/wrong C compiler issues #######
 
-pip install -e .
+# pip install -e .
 
 # if pip install fails, bow out gracefully
 if [ $? -ne 0 ];then

@@ -75,13 +75,17 @@ jobs:
           export CPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include
           echo "MacOS 10.15"
         fi
-      else
-        sudo ln -s /usr/lib/x86_64-linux-gnu/libpthread_nonshared.a /usr/lib64/libpthread_nonshared.a
-        sudo ln -s /usr/lib/x86_64-linux-gnu/libpthread.so.0  /usr/lib64/libpthread.so.0
       fi
       echo $(Agent.NAME)
       echo $(python.version)
       bash install.sh -p $(python.version)
+    displayName: Create conda environment and install gmprocess (mac/linux)
+    condition: ne( variables['Agent.OS'], 'Windows_NT' )
+
+  - bash: |
+      conda init bash
+      conda activate gmprocess
+      pip install -v -v -v -e .
     displayName: Create conda environment and install gmprocess (mac/linux)
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
@@ -96,10 +100,6 @@ jobs:
       pip install -U pytest-console-scripts
     displayName: Install gmprocess packages (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
-
-  - bash: conda init bash
-    displayName: Init conda for bash
-    condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
   - bash: |
       source activate gmprocess

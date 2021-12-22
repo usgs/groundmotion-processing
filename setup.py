@@ -6,6 +6,14 @@ from distutils.extension import Extension
 from Cython.Build import cythonize
 import glob
 import numpy
+import shutil
+
+# This should be handled by conda when we install a platform-specific
+# compiler, but apparently isn't on macs (yet?)
+if shutil.which("clang") is None:
+    os.environ["CC"] = "gcc"
+else:
+    os.environ["CC"] = "clang"
 
 sourcefiles = ["gmprocess/metrics/oscillators.pyx", "gmprocess/metrics/cfuncs.c"]
 ko_sourcefiles = [
