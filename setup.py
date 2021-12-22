@@ -4,6 +4,7 @@ from setuptools import setup
 import os
 from distutils.extension import Extension
 from Cython.Build import cythonize
+from Cython.Distutils import build_ext
 import glob
 import numpy
 import shutil
@@ -15,7 +16,7 @@ if shutil.which("clang") is None:
 else:
     os.environ["CC"] = "clang"
 
-sourcefiles = ["gmprocess/metrics/oscillators.pyx", "gmprocess/metrics/cfuncs.c"]
+osc_sourcefiles = ["gmprocess/metrics/oscillators.pyx", "gmprocess/metrics/cfuncs.c"]
 ko_sourcefiles = [
     "gmprocess/waveform_processing/smoothing/konno_ohmachi.pyx",
     "gmprocess/waveform_processing/smoothing/smoothing.c",
@@ -24,23 +25,29 @@ ko_sourcefiles = [
 libraries = []
 if os.name == "posix":
     libraries.append("m")
+    libraries.append("omp")
 
 ext_modules = [
     Extension(
         "gmprocess.metrics.oscillators",
-        sourcefiles,
+        osc_sourcefiles,
         libraries=libraries,
         include_dirs=[numpy.get_include()],
-        # extra_compile_args=["-O2", "-Xpreprocessor", "-fopenmp"],
+        extra_compile_args=["-O2", "-Xpreprocessor", "-fopenmp"],
+        extra_link_args=["-Xpreprocessor", "-fopenmp"],
     ),
     Extension(
         "gmprocess.waveform_processing.smoothing.konno_ohmachi",
         ko_sourcefiles,
         libraries=libraries,
         include_dirs=[numpy.get_include()],
-        # extra_compile_args=["-O2", "-Xpreprocessor", "-fopenmp"],
+        extra_compile_args=["-O2", "-Xpreprocessor", "-fopenmp"],
+        extra_link_args=["-Xpreprocessor", "-fopenmp"],
     ),
 ]
+
+cmdclass = {}
+cmdclass["build_ext"] = build_ext
 
 setup(
     name="gmprocess",
@@ -99,5 +106,6 @@ setup(
             "list_metrics = gmprocess.bin.list_metrics:main",
         ]
     },
+    cmdclass=cmdclass,
     ext_modules=cythonize(ext_modules),
 )
