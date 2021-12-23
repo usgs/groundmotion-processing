@@ -94,10 +94,6 @@ jobs:
     displayName: Install gmprocess packages (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
-  - bash: conda init bash
-    displayName: Init conda for bash
-    condition: ne( variables['Agent.OS'], 'Windows_NT' )
-
   - bash: |
       source activate gmprocess
       pip install -U pytest-console-scripts
