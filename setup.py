@@ -2,20 +2,19 @@
 
 # from setuptools import setup
 import os
-from distutils.core import setup
-from distutils.extension import Extension
+from setuptools import setup, Extension
 from Cython.Distutils import build_ext
 from Cython.Build import cythonize
 import glob
 import numpy
 import shutil
 
-# This should be handled by conda when we install a platform-specific
-# compiler, but apparently isn't on macs (yet?)
-if shutil.which("clang") is None:
-    os.environ["CC"] = "gcc"
-else:
-    os.environ["CC"] = "clang"
+# # This should be handled by conda when we install a platform-specific
+# # compiler, but apparently isn't on macs (yet?)
+# if shutil.which("clang") is None:
+#     os.environ["CC"] = "gcc"
+# else:
+#     os.environ["CC"] = "clang"
 
 osc_sourcefiles = ["gmprocess/metrics/oscillators.pyx", "gmprocess/metrics/cfuncs.c"]
 ko_sourcefiles = [
@@ -109,4 +108,5 @@ setup(
     },
     cmdclass=cmdclass,
     ext_modules=cythonize(ext_modules),
+    zip_safe=False,
 )
