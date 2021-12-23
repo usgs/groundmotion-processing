@@ -14,8 +14,6 @@ else
     exit
 fi
 
-source $prof
-
 # Name of virtual environment
 VENV=gmprocess
 
