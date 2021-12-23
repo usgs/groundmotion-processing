@@ -44,7 +44,9 @@ def PolynomialFit_SJB(
         StationStream.
 
     """
-
+    config = get_config()
+    int_method = config["integration"]
+    
     for tr in st:
         if not tr.hasParameter("corner_frequencies"):
             tr.fail(
@@ -55,7 +57,7 @@ def PolynomialFit_SJB(
             initial_corners = tr.getParameter("corner_frequencies")
             f_hp = 0.0001  # GP: Want the initial bounds to encompass the solution
 
-            out = __ridder_log(tr, f_hp, target, tol, polynomial_order, maxiter, maxfc, int_method)
+            out = __ridder_log(tr, f_hp, target, tol, polynomial_order, maxiter, maxfc)
 
             if out[0] == True:
                 initial_corners["highpass"] = out[1]
