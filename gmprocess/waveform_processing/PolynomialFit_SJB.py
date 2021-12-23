@@ -6,6 +6,7 @@ import logging
 from scipy import signal
 from scipy.integrate import cumtrapz
 from gmprocess.utils.config import get_config
+from gmprocess.waveform_processing.integrate import integrate_timeseries
 from gmprocess.waveform_processing.filtering import (
     lowpass_filter_trace,
     highpass_filter_trace,
@@ -13,7 +14,7 @@ from gmprocess.waveform_processing.filtering import (
 
 
 def PolynomialFit_SJB(
-    st, target=0.02, tol=0.001, polynomial_order=6.0, maxiter=30, maxfc=0.5, int_method = "frequency_domain"
+    st, target=0.02, tol=0.001, polynomial_order=6.0, maxiter=30, maxfc=0.5
 ):
     """Search for highpass corner using Ridder's method such that
         it satisfies the criterion that the ratio between the maximum of a third order polynomial
@@ -44,7 +45,9 @@ def PolynomialFit_SJB(
         StationStream.
 
     """
-
+    config = get_config()
+    int_method = config["integration"]
+    
     for tr in st:
         if not tr.hasParameter("corner_frequencies"):
             tr.fail(
@@ -55,7 +58,7 @@ def PolynomialFit_SJB(
             initial_corners = tr.getParameter("corner_frequencies")
             f_hp = 0.0001  # GP: Want the initial bounds to encompass the solution
 
-            out = __ridder_log(tr, f_hp, target, tol, polynomial_order, maxiter, maxfc, int_method)
+            out = __ridder_log(tr, f_hp, target, tol, polynomial_order, maxiter, maxfc)
 
             if out[0] == True:
                 initial_corners["highpass"] = out[1]
@@ -75,7 +78,7 @@ def PolynomialFit_SJB(
 
 
 def __ridder_log(
-    tr, f_hp, target=0.02, tol=0.001, polynomial_order=6, maxiter=30, maxfc=0.5, int_method = "frequency_domain"
+    tr, f_hp, target=0.02, tol=0.001, polynomial_order=6, maxiter=30, maxfc=0.5
 ):
 
     logging.debug("Ridder activated")
