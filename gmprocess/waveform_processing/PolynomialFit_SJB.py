@@ -20,8 +20,7 @@ def PolynomialFit_SJB(
         fit to the displacement time series and the maximum of the displacement
         timeseries is a target % within a tolerance.
 
-    This algorithm searches between an initial corner frequency that was selected
-    as configured in the `get_corner_frequencies` step and a maximum fc.
+    This algorithm searches between a low initial corner frequency a maximum fc.
 
     Method developed originally by Scott Brandenberg
 
