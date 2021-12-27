@@ -98,8 +98,7 @@ def __disp_checks(tr, max_final_displacement=0.025, max_displacment_ratio=0.2):
     trdis = correct_baseline(trdis)
 
     # Integrate to displacment
-    trdis.integrate()
-    trdis.integrate()
+    trdis = get_disp(trdis, method = config["integration"]["method"])
 
     # Checks
     ok = True
