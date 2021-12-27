@@ -4,7 +4,6 @@
 import numpy as np
 import logging
 from scipy import signal
-from scipy.integrate import cumtrapz
 from gmprocess.utils.config import get_config
 from gmprocess.waveform_processing.integrate import get_disp
 from gmprocess.waveform_processing.filtering import (

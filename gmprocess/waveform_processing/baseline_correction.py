@@ -3,7 +3,6 @@
 
 import numpy as np
 from scipy.optimize import curve_fit
-from scipy.integrate import cumtrapz
 from gmprocess.waveform_processing.integrate import get_disp
 from gmprocess.utils.config import get_config
 
