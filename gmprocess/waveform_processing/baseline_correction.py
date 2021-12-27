@@ -7,6 +7,7 @@ from scipy.integrate import cumtrapz
 from gmprocess.waveform_processing.integrate import get_disp
 from gmprocess.utils.config import get_config
 
+
 def correct_baseline(trace):
     """
     Performs a baseline correction following the method of Ancheta
@@ -23,8 +24,8 @@ def correct_baseline(trace):
     config = get_config()
 
     # Integrate twice to get the displacement time series
-    disp_data = get_disp(trace, method = config["integration"]["method"])
-    
+    disp_data = get_disp(trace, method=config["integration"]["method"])
+
     # Fit a sixth order polynomial to displacement time series, requiring
     # that the 1st and 0th order coefficients are zero
     time_values = (
