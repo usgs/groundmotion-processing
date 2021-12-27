@@ -24,6 +24,8 @@ def get_disp(tr, method="frequency_domain"):
 
     """
     tr_copy = tr.copy()
+    tr_copy.detrend("demean")
+    tr_copy = tr_copy.taper(max_percentage=0.05, type="hann", side="both")
 
     if method == "frequency_domain":
         N = len(tr_copy.data)
