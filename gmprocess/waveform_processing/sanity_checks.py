@@ -6,7 +6,9 @@ This module is for waveform procesisng simple sanity checks.
 """
 
 import numpy as np
-
+from gmprocess.waveform_processing.integrate import get_vel
+from gmprocess.waveform_processing.integrate import get_disp
+from gmprocess.utils.config import get_config
 
 def check_tail(st, duration, max_vel_ratio=0.1, max_dis_ratio=0.5):
     """Check for abnormally arge values in the tail of the stream.
@@ -50,8 +52,10 @@ def check_tail(st, duration, max_vel_ratio=0.1, max_dis_ratio=0.5):
             )
         return st
 
-    vel = st.copy().integrate()
-    dis = vel.copy().integrate()
+    config = get_config()
+    
+    vel = get_vel(st.copy, method = config["integration"]["method"])
+    dis = get_disp(st.copy, method = config["integration"]["method"])
     vel_trim = vel.copy()
     dis_trim = dis.copy()
 
