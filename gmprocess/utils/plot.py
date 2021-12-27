@@ -612,12 +612,14 @@ def summary_plots(st, directory, origin):
 
     # Compute velocity
     st_vel = st.copy()
-    st_vel = get_vel(st_vel,method = config["integration"]["method"])
+    for tr in st_vel:
+        tr.data = get_vel(tr,method = config["integration"]["method"])
 
     # Compute displacement
-    st_dis = st_vel.copy()
-    st_dis = get_disp(st_dis,method = config["integration"]["method"])
-
+    st_dis = st.copy()
+    for tr in st_dis:
+        tr.data = get_disp(tr,method = config["integration"]["method"])
+    
     # process channels in preferred sort order (i.e., HN1, HN2, HNZ)
     channels = [tr.stats.channel for tr in st]
     if len(channels) < 3:

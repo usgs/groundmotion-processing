@@ -38,6 +38,7 @@ def get_disp(tr, method="frequency_domain"):
                     (facc / 100) / (2.0j * np.pi * f) ** 2
                 )  # convert from cm/s^2 to m/s^2
         disp = np.fft.irfft(Fdisp, n=N) * 100  # convert back to cm
+        logging.debug("freq domain integration to disp run")
         return disp
 
     elif method == "time_domain_0init":
