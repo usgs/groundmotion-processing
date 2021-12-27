@@ -95,7 +95,7 @@ def __disp_checks(tr, max_final_displacement=0.025, max_displacment_ratio=0.2):
     # Filter
     trdis = lowpass_filter_trace(trdis, **lp_args)
     trdis = highpass_filter_trace(trdis, **hp_args)
-    
+
     # Apply baseline correction
     trdis = correct_baseline(trdis)
 

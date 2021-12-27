@@ -46,7 +46,7 @@ def PolynomialFit_SJB(
     """
     config = get_config()
     int_method = config["integration"]
-    
+
     for tr in st:
         if not tr.hasParameter("corner_frequencies"):
             tr.fail(

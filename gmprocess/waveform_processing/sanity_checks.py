@@ -62,7 +62,7 @@ def check_tail(st, duration, max_vel_ratio=0.1, max_dis_ratio=0.5):
         tr.data = get_vel(tr, method=config["integration"]["method"])
     for tr in dis:
         tr.data = get_disp(tr, method=config["integration"]["method"])
-    
+
     vel_trim = vel.copy()
     dis_trim = dis.copy()
 
