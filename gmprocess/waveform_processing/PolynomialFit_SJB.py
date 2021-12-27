@@ -110,7 +110,9 @@ def __ridder_log(
 
     fc2 = maxfc
     Facc2 = filtered_Facc(Facc, freq, fc2, order=5)
-    disp2 = get_disp(np.fft.irfft(Facc2, len(acc)), method=int_config["method"])
+    tr2 = tr.copy()
+    tr2.data = np.fft.irfft(Facc2, len(acc))
+    disp2 = get_disp(tr2, method=int_config["method"])
 
     R2 = get_residual(time, disp2, target, polynomial_order)
     if (np.sign(R0) < 0) and (np.sign(R2) < 0):
