@@ -14,8 +14,8 @@ from gmprocess.waveform_processing.filtering import (
 
 
 def PolynomialFit_SJB(
-    st, target=0.02, tol=0.001, polynomial_order=6.0, maxiter=30, maxfc=0.5
-):
+    st, target=0.02, tol=0.001, polynomial_order=6.0, maxiter=30, maxfc=0.5, config = None
+    ):
     """Search for highpass corner using Ridder's method such that
         it satisfies the criterion that the ratio between the maximum of a third order polynomial
         fit to the displacement time series and the maximum of the displacement
@@ -45,8 +45,6 @@ def PolynomialFit_SJB(
         StationStream.
 
     """
-    config = get_config()
-    int_method = config["integration"]
 
     for tr in st:
         if not tr.hasParameter("corner_frequencies"):
@@ -78,16 +76,19 @@ def PolynomialFit_SJB(
 
 
 def __ridder_log(
-    tr, f_hp, target=0.02, tol=0.001, polynomial_order=6, maxiter=30, maxfc=0.5
+    tr, f_hp, target=0.02, tol=0.001, polynomial_order=6, maxiter=30, maxfc=0.5, config = None
 ):
+
+    if config is None:
+        config = get_config()
+    
+    int_config = config["integration"]
 
     logging.debug("Ridder activated")
     output = {}
     acc = tr.copy()
     acc.detrend("demean")
 
-    
-    
     # apply window use Hann taper to be consistent
     acc = acc.taper(
         max_percentage=0.05, type="hann", side="both"
@@ -98,12 +99,12 @@ def __ridder_log(
     freq = np.fft.rfftfreq(len(acc), acc.stats.delta)
     fc0 = f_hp
     Facc0 = Facc
-    disp0 = get_disp(acc, method)
+    disp0 = get_disp(acc, method=int_config["method"])
     R0 = get_residual(time, disp0, target, polynomial_order)
 
     fc2 = maxfc
     Facc2 = filtered_Facc(Facc, freq, fc2, order=5)
-    disp2 = get_disp(np.fft.irfft(Facc2, len(acc)), method)
+    disp2 = get_disp(np.fft.irfft(Facc2, len(acc)), method=int_config["method"])
 
     R2 = get_residual(time, disp2, target, polynomial_order)
     if (np.sign(R0) < 0) and (np.sign(R2) < 0):
@@ -118,7 +119,7 @@ def __ridder_log(
         logging.debug("Ridder iteration = %s" % i)
         fc1 = np.exp(0.5 * (np.log(fc0) + np.log(fc2)))
         Facc1 = filtered_Facc(Facc, freq, fc1, order=5)
-        disp = get_disp(np.fft.irfft(Facc1, len(acc)), method)
+        disp = get_disp(np.fft.irfft(Facc1, len(acc)), method=int_config["method"])
         R1 = get_residual(time, disp, target, polynomial_order)
         fc3 = np.exp(
             np.log(fc1)
@@ -129,7 +130,7 @@ def __ridder_log(
         )
         fc3 = np.min([maxfc, fc3])
         Facc3 = filtered_Facc(Facc, freq, fc3, order=5)
-        disp = get_disp(np.fft.irfft(Facc3, len(acc)), method)
+        disp = get_disp(np.fft.irfft(Facc3, len(acc)), method=int_config["method"])
         R3 = get_residual(time, disp, target, polynomial_order)
         if (np.abs(R3) <= tol) or (i == maxiter - 1):
             output = [True, fc3, np.abs(R3)]

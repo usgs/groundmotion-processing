@@ -124,6 +124,9 @@ CONF_SCHEMA = Schema(
             },
             "duration": {"intervals": list},
         },
+        "integration": {
+            "method": str,
+        },
         "pickers": {
             "p_arrival_shift": float,
             Optional("ar"): {
@@ -166,7 +169,7 @@ CONF_SCHEMA = Schema(
                 "threshRestart": float,
             },
             "travel_time": {"model": str},
-        },
+        }
     }
 )
 
