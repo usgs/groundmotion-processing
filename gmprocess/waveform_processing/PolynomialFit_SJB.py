@@ -6,7 +6,7 @@ import logging
 from scipy import signal
 from scipy.integrate import cumtrapz
 from gmprocess.utils.config import get_config
-from gmprocess.waveform_processing.integrate import integrate_timeseries
+from gmprocess.waveform_processing.integrate import get_disp
 from gmprocess.waveform_processing.filtering import (
     lowpass_filter_trace,
     highpass_filter_trace,
@@ -47,7 +47,7 @@ def PolynomialFit_SJB(
     """
     config = get_config()
     int_method = config["integration"]
-    
+
     for tr in st:
         if not tr.hasParameter("corner_frequencies"):
             tr.fail(
@@ -86,26 +86,24 @@ def __ridder_log(
     acc = tr.copy()
     acc.detrend("demean")
 
-    # apply window
-    #  window = signal.tukey(len(acc), alpha=0.2) #GP: use Hann taper to be consistent
+    
+    
+    # apply window use Hann taper to be consistent
     acc = acc.taper(
         max_percentage=0.05, type="hann", side="both"
-    )  # GP: taper is applied to the signal window before this step
-    # acc.data = acc.data * window
+    )
 
     time = np.linspace(0, acc.stats.delta * len(acc), len(acc))
     Facc = np.fft.rfft(acc, n=len(acc))
     freq = np.fft.rfftfreq(len(acc), acc.stats.delta)
     fc0 = f_hp
     Facc0 = Facc
-    disp0 = get_disp_frequency_domain(freq, Facc, len(acc))
-    # disp0 = get_disp_timedomain(Facc,acc.stats.delta,len(acc))
+    disp0 = get_disp(acc, method)
     R0 = get_residual(time, disp0, target, polynomial_order)
 
     fc2 = maxfc
     Facc2 = filtered_Facc(Facc, freq, fc2, order=5)
-    disp2 = get_disp_frequency_domain(freq, Facc2, len(acc))
-    # disp2 = get_disp_timedomain(Facc2,acc.stats.delta,len(acc))
+    disp2 = get_disp(np.fft.irfft(Facc2, len(acc)), method)
 
     R2 = get_residual(time, disp2, target, polynomial_order)
     if (np.sign(R0) < 0) and (np.sign(R2) < 0):
@@ -120,8 +118,7 @@ def __ridder_log(
         logging.debug("Ridder iteration = %s" % i)
         fc1 = np.exp(0.5 * (np.log(fc0) + np.log(fc2)))
         Facc1 = filtered_Facc(Facc, freq, fc1, order=5)
-        disp = get_disp_frequency_domain(freq, Facc1, len(acc))
-        # disp = get_disp_timedomain(Facc1,acc.stats.delta,len(acc))
+        disp = get_disp(np.fft.irfft(Facc1, len(acc)), method)
         R1 = get_residual(time, disp, target, polynomial_order)
         fc3 = np.exp(
             np.log(fc1)
@@ -132,8 +129,7 @@ def __ridder_log(
         )
         fc3 = np.min([maxfc, fc3])
         Facc3 = filtered_Facc(Facc, freq, fc3, order=5)
-        disp = get_disp_frequency_domain(freq, Facc3, len(acc))
-        # disp = get_disp_timedomain(Facc3, acc.stats.delta,len(acc))
+        disp = get_disp(np.fft.irfft(Facc3, len(acc)), method)
         R3 = get_residual(time, disp, target, polynomial_order)
         if (np.abs(R3) <= tol) or (i == maxiter - 1):
             output = [True, fc3, np.abs(R3)]
@@ -170,30 +166,30 @@ def filtered_Facc(Facc, freq, fc, order):
     return filtered_Facc
 
 
-def get_disp_frequency_domain(freq, Facc, N):
-    Fdisp = []
-    for facc, f in zip(Facc, freq):
-        if f == 0:
-            Fdisp.append(0.0)
-        else:
-            Fdisp.append(
-                (facc / 100) / (2.0j * np.pi * f) ** 2
-            )  # convert from cm/s^2 to m/s^2
-    disp = np.fft.irfft(Fdisp, n=N) * 100
-    return disp
+# def get_disp_frequency_domain(freq, Facc, N):
+#     Fdisp = []
+#     for facc, f in zip(Facc, freq):
+#         if f == 0:
+#             Fdisp.append(0.0)
+#         else:
+#             Fdisp.append(
+#                 (facc / 100) / (2.0j * np.pi * f) ** 2
+#             )  # convert from cm/s^2 to m/s^2
+#     disp = np.fft.irfft(Fdisp, n=N) * 100
+#     return disp
 
 
-def get_disp_time_domain_zero_init(Facc, delta, N):
-    acc_time = np.fft.irfft(Facc, n=N)
-    disp = cumtrapz(cumtrapz(acc_time, dx=delta, initial=0), dx=delta, initial=0)
-    return disp
+# def get_disp_time_domain_zero_init(Facc, delta, N):
+#     acc_time = np.fft.irfft(Facc, n=N)
+#     disp = cumtrapz(cumtrapz(acc_time, dx=delta, initial=0), dx=delta, initial=0)
+#     return disp
 
-def get_disp_time_domain_zero_mean(Facc, delta, N):
-    acc_time = np.fft.irfft(Facc, n=N)
-    vel = cumtrapz(acc_time, dx=delta, initial=0)
-    vel -= np.mean(vel)
-    disp = cumtrapz(vel,dx = delta, initial = 0)
-    return disp
+# def get_disp_time_domain_zero_mean(Facc, delta, N):
+#     acc_time = np.fft.irfft(Facc, n=N)
+#     vel = cumtrapz(acc_time, dx=delta, initial=0)
+#     vel -= np.mean(vel)
+#     disp = cumtrapz(vel,dx = delta, initial = 0)
+#     return disp
 
 def get_residual(time, disp, target, polynomial_order):
     coef = np.polyfit(time[0 : len(disp)], disp, polynomial_order)
