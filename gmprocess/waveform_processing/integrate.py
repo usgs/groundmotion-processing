@@ -97,7 +97,7 @@ def get_vel(tr, method="frequency_domain"):
         return vel
 
     elif method == "time_domain_0init_0mean":
-        tr.copy.data -= np.mean(tr.copy.data)
+        tr_copy.data -= np.mean(tr_copy.data)
         vel = cumtrapz(tr_copy.data, dx=tr_copy.stats.delta, initial=0)
         return vel
     else:
