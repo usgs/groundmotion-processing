@@ -23,11 +23,11 @@ def get_disp(tr, method="frequency_domain"):
         StationTrace.
 
     """
-    tr_copy = tr.copy
+    tr_copy = tr.copy()
 
     if method == "frequency_domain":
         N = len(tr_copy.data)
-        Facc = np.fft.rfft(tr_copy, n=N)
+        Facc = np.fft.rfft(tr_copy.data, n=N)
         freq = np.fft.rfftfreq(N, tr_copy.stats.delta)
         Fdisp = []
         for facc, f in zip(Facc, freq):
@@ -74,11 +74,11 @@ def get_vel(tr, method="frequency_domain"):
         StationTrace.
 
     """
-    tr_copy = tr.copy
+    tr_copy = tr.copy()
 
     if method == "frequency_domain":
         N = len(tr_copy.data)
-        Facc = np.fft.rfft(tr_copy, n=N)
+        Facc = np.fft.rfft(tr_copy.data, n=N)
         freq = np.fft.rfftfreq(N, tr_copy.stats.delta)
         Fvel = []
         for facc, f in zip(Facc, freq):

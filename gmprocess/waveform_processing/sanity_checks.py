@@ -55,8 +55,8 @@ def check_tail(st, duration, max_vel_ratio=0.1, max_dis_ratio=0.5):
 
     config = get_config()
 
-    vel = get_vel(st.copy, method=config["integration"]["method"])
-    dis = get_disp(st.copy, method=config["integration"]["method"])
+    vel = get_vel(st.copy(), method=config["integration"]["method"])
+    dis = get_disp(st.copy(), method=config["integration"]["method"])
     vel_trim = vel.copy()
     dis_trim = dis.copy()
 
