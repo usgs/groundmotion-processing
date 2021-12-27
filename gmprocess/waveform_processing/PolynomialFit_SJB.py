@@ -14,8 +14,8 @@ from gmprocess.waveform_processing.filtering import (
 
 
 def PolynomialFit_SJB(
-    st, target=0.02, tol=0.001, polynomial_order=6.0, maxiter=30, maxfc=0.5, config = None
-    ):
+    st, target=0.02, tol=0.001, polynomial_order=6.0, maxiter=30, maxfc=0.5, config=None
+):
     """Search for highpass corner using Ridder's method such that
         it satisfies the criterion that the ratio between the maximum of a third order polynomial
         fit to the displacement time series and the maximum of the displacement
@@ -76,12 +76,19 @@ def PolynomialFit_SJB(
 
 
 def __ridder_log(
-    tr, f_hp, target=0.02, tol=0.001, polynomial_order=6, maxiter=30, maxfc=0.5, config = None
+    tr,
+    f_hp,
+    target=0.02,
+    tol=0.001,
+    polynomial_order=6,
+    maxiter=30,
+    maxfc=0.5,
+    config=None,
 ):
 
     if config is None:
         config = get_config()
-    
+
     int_config = config["integration"]
 
     logging.debug("Ridder activated")
@@ -90,9 +97,7 @@ def __ridder_log(
     acc.detrend("demean")
 
     # apply window use Hann taper to be consistent
-    acc = acc.taper(
-        max_percentage=0.05, type="hann", side="both"
-    )
+    acc = acc.taper(max_percentage=0.05, type="hann", side="both")
 
     time = np.linspace(0, acc.stats.delta * len(acc), len(acc))
     Facc = np.fft.rfft(acc, n=len(acc))
@@ -191,6 +196,7 @@ def filtered_Facc(Facc, freq, fc, order):
 #     vel -= np.mean(vel)
 #     disp = cumtrapz(vel,dx = delta, initial = 0)
 #     return disp
+
 
 def get_residual(time, disp, target, polynomial_order):
     coef = np.polyfit(time[0 : len(disp)], disp, polynomial_order)

@@ -169,7 +169,7 @@ CONF_SCHEMA = Schema(
                 "threshRestart": float,
             },
             "travel_time": {"model": str},
-        }
+        },
     }
 )
 
