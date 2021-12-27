@@ -12,6 +12,7 @@ from gmprocess.waveform_processing.filtering import (
 from gmprocess.waveform_processing.baseline_correction import correct_baseline
 from gmprocess.waveform_processing.integrate import get_disp
 
+
 def adjust_highpass_corner(
     st,
     step_factor=1.5,
@@ -94,12 +95,12 @@ def __disp_checks(tr, max_final_displacement=0.025, max_displacment_ratio=0.2):
     # Filter
     trdis = lowpass_filter_trace(trdis, **lp_args)
     trdis = highpass_filter_trace(trdis, **hp_args)
-    
+
     # Apply baseline correction
     trdis = correct_baseline(trdis)
 
     # Integrate to displacment
-    trdis = get_disp(trdis, method = config["integration"]["method"])
+    trdis = get_disp(trdis, method=config["integration"]["method"])
 
     # Checks
     ok = True
