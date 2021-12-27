@@ -10,6 +10,7 @@ from gmprocess.waveform_processing.filtering import (
     highpass_filter_trace,
 )
 from gmprocess.waveform_processing.baseline_correction import correct_baseline
+from gmprocess.waveform_processing.integrate import get_disp
 
 def adjust_highpass_corner(
     st,
