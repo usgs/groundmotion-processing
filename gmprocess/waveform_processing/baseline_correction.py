@@ -4,6 +4,8 @@
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy.integrate import cumtrapz
+from gmprocess.waveform_processing.integrate import get_disp
+from gmprocess.utils.config import get_config
 
 def correct_baseline(trace):
     """
@@ -18,14 +20,11 @@ def correct_baseline(trace):
     Returns:
         trace: Baseline-corrected trace.
     """
+    config = get_config()
 
     # Integrate twice to get the displacement time series
-    disp_data = cumtrapz(
-        cumtrapz(trace.data, dx=trace.stats.delta, initial=0),
-        dx=trace.stats.delta,
-        initial=0,
-    )
-
+    disp_data = get_disp(trace, method = config["integration"]["method"])
+    
     # Fit a sixth order polynomial to displacement time series, requiring
     # that the 1st and 0th order coefficients are zero
     time_values = (
