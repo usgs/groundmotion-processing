@@ -529,7 +529,12 @@ metrics:
 #         column_header: example_column_header
 #         readme_entry: example_readme_entry
 #         units: example_units
-
+# -----------------------------------------------------------------------------
+# This section is for options for integration method
+integration:
+    # method can be one of "frequency domain", "time_domain_0_init"
+    # "time_domain_0init_0mean"
+    method: "frequency domain"
 # -----------------------------------------------------------------------------
 # This section is for options for phase pickers
 pickers:

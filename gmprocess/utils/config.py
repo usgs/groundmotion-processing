@@ -125,7 +125,7 @@ CONF_SCHEMA = Schema(
             "duration": {"intervals": list},
         },
         "integration": {
-            "method": str,
+            "method": str
         },
         "pickers": {
             "p_arrival_shift": float,
