@@ -546,7 +546,7 @@ metrics:
 integration:
     # method can be one of "frequency domain", "time_domain_0_init"
     # "time_domain_0init_0mean"
-    method: "frequency domain"
+    method: "frequency_domain"
 # -----------------------------------------------------------------------------
 # This section is for options for phase pickers
 pickers:
