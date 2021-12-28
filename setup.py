@@ -9,10 +9,10 @@ from distutils.sysconfig import get_config_vars as default_get_config_vars
 # Modification of method for removing pthread described here:
 # https://stackoverflow.com/questions/57046796/how-to-remove-pthread-compiler-flag-from-cython-setup-file
 def remove_sysroot(x):
-    if type(x) is str:
-        arg_list = x.split()
-        new_arg_list = [a for a in arg_list if a != "-Wl,--sysroot=/"]
-        x = " ".join(new_arg_list)
+    # if type(x) is str:
+    #    arg_list = x.split()
+    #    new_arg_list = [a for a in arg_list if a != "-Wl,--sysroot=/"]
+    #    x = " ".join(new_arg_list)
     return x
 
 
