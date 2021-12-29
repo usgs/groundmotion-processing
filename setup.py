@@ -6,6 +6,9 @@ import numpy
 
 from distutils.sysconfig import get_config_vars as default_get_config_vars
 
+print("############################")
+print(default_get_get_config_vars())
+print("############################")
 # Modification of method for removing pthread described here:
 # https://stackoverflow.com/questions/57046796/how-to-remove-pthread-compiler-flag-from-cython-setup-file
 def remove_sysroot(x):

@@ -140,6 +140,9 @@ if [ $? -ne 0 ];then
     exit 1
 fi
 
+# upgrade pip, mostly so pip doesn't complain about not being new...
+pip install --upgrade pip
+
 # if pip upgrade fails, complain but try to keep going
 if [ $? -ne 0 ];then
     echo "Failed to upgrade pip, trying to continue..."
@@ -155,7 +158,7 @@ fi
 # This package
 echo "Installing ${VENV}..."
 
-pip install -v -v -v -e .
+pip install -v -v -v --no-deps -e .
 
 # if pip install fails, bow out gracefully
 if [ $? -ne 0 ];then
