@@ -29,6 +29,7 @@ def my_get_config_vars(*args):
 
 import distutils.sysconfig as dsc
 from distutils.core import setup
+import versioneer
 from distutils.extension import Extension
 from Cython.Build import cythonize
 from Cython.Distutils import build_ext
@@ -65,7 +66,7 @@ ext_modules = [
     ),
 ]
 
-cmdclass = {}
+cmdclass = versioneer.get_cmdclass()
 cmdclass["build_ext"] = build_ext
 
 setup(
