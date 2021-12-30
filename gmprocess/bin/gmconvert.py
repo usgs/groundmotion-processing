@@ -9,13 +9,13 @@ import logging
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
 # local imports
-log = LazyLoader('log', globals(), 'gmprocess.utils.logging')
-argmod = LazyLoader('argmod', globals(), 'gmprocess.utils.args')
+log = LazyLoader("log", globals(), "gmprocess.utils.logging")
+argmod = LazyLoader("argmod", globals(), "gmprocess.utils.args")
 streamcollection = LazyLoader(
-    'streamcollection', globals(), 'gmprocess.core.streamcollection')
-readmod = LazyLoader('readmod', globals(), 'gmprocess.io.read')
-read_directory = LazyLoader(
-    'read_directory', globals(), 'gmprocess.io.read_directory')
+    "streamcollection", globals(), "gmprocess.core.streamcollection"
+)
+readmod = LazyLoader("readmod", globals(), "gmprocess.io.read")
+read_directory = LazyLoader("read_directory", globals(), "gmprocess.io.read_directory")
 
 
 class CustomFormatter(
@@ -123,7 +123,7 @@ https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supp
         allstreams = []
         error_dict = {}
         for dfile in args.files:
-            logging.info("Parsing %s..." % dfile)
+            logging.info(f"Parsing {dfile}...")
             try:
                 streams = readmod.read_data(dfile)
             except BaseException as e:
@@ -132,8 +132,7 @@ https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supp
             allstreams += streams
     else:
         # grab all the files in the input directory
-        allstreams, unprocessed, errors = \
-            read_directory.directory_to_streams(indir)
+        allstreams, unprocessed, errors = read_directory.directory_to_streams(indir)
         error_dict = dict(zip(unprocessed, errors))
 
     sc = streamcollection.StreamCollection(allstreams)
@@ -142,20 +141,20 @@ https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supp
         streamid = stream.get_id()
         if len(stream) == 1:
             streamid = stream[0].get_id()
-        outfile = os.path.join(outdir, "%s.%s" % (streamid, oformat.lower()))
-        invfile = os.path.join(outdir, "%s.xml" % (streamid))
+        outfile = os.path.join(outdir, f"{streamid}.{oformat.lower()}")
+        invfile = os.path.join(outdir, f"{streamid}.xml")
         inv_format = "STATIONXML"
         inv = stream.getInventory()
-        logging.info("Writing data file %s..." % outfile)
+        logging.info(f"Writing data file {outfile}...")
         stream.write(outfile, format=oformat)
-        logging.info("Writing inventory file %s..." % invfile)
+        logging.info(f"Writing inventory file {invfile}...")
         inv.write(invfile, format=inv_format)
 
     print("Wrote %i streams to %s" % (len(sc), outdir))
     if len(error_dict):
         print("\nThe following files could not be read:")
         for fname, error in error_dict.items():
-            print('\t%s - "%s"' % (fname, error))
+            print(f'\t{fname} - "{error}"')
 
 
 if __name__ == "__main__":

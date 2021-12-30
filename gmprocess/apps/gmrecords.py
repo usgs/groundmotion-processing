@@ -76,12 +76,12 @@ class GMrecordsApp(object):
         log_file = None
         if self.args.log:
             log_file = os.path.join(self.data_path, "log.txt")
-            print("Logging output sent to: %s" % log_file)
+            print(f"Logging output sent to: {log_file}")
 
         log_utils.setup_logger(self.args, log_file=log_file)
         logging.info("Logging level includes INFO.")
         logging.debug("Logging level includes DEBUG.")
-        logging.info("PROJECTS_PATH: %s" % PROJECTS_PATH)
+        logging.info(f"PROJECTS_PATH: {PROJECTS_PATH}")
 
     def main(self):
         if self.args.subcommand is None:
@@ -143,7 +143,7 @@ class GMrecordsApp(object):
             self.conf_path = const.PROJECTS_PATH_TEST
         self.conf_file = os.path.join(self.conf_path, "config.yml")
         if not os.path.isfile(self.conf_file):
-            print("Config file does not exist: %s" % self.conf_file)
+            print(f"Config file does not exist: {self.conf_file}")
             print("Exiting.")
             sys.exit(1)
         self.conf = config.get_config(self.conf_file)

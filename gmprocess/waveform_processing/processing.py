@@ -122,7 +122,7 @@ def process_streams(streams, origin, config=None):
     model = TauPyModel(config["pickers"]["travel_time"]["model"])
 
     for st in streams:
-        logging.debug("Checking stream %s..." % st.get_id())
+        logging.debug(f"Checking stream {st.get_id()}...")
         # Estimate noise/signal split time
         st = signal_split(
             st, origin, model, picker_config=config["pickers"], config=config
@@ -137,7 +137,7 @@ def process_streams(streams, origin, config=None):
             event_lon=event_lon,
             event_lat=event_lat,
             event_mag=event_mag,
-            **end_conf
+            **end_conf,
         )
         wcheck_conf = window_conf["window_checks"]
         if wcheck_conf["do_check"]:
@@ -153,7 +153,7 @@ def process_streams(streams, origin, config=None):
 
     # Loop over streams
     for stream in streams:
-        logging.info("Stream: %s" % stream.get_id())
+        logging.info(f"Stream: {stream.get_id()}")
         for processing_step_dict in processing_steps:
 
             key_list = list(processing_step_dict.keys())
@@ -161,12 +161,12 @@ def process_streams(streams, origin, config=None):
                 raise ValueError("Each processing step must contain exactly one key.")
             step_name = key_list[0]
 
-            logging.debug("Processing step: %s" % step_name)
+            logging.debug(f"Processing step: {step_name}")
             step_args = processing_step_dict[step_name]
             # Using globals doesn't seem like a great solution here, but it
             # works.
             if step_name not in globals():
-                raise ValueError("Processing step %s is not valid." % step_name)
+                raise ValueError(f"Processing step {step_name} is not valid.")
 
             # Origin is required by some steps and has to be handled specially.
             # There must be a better solution for this...
@@ -293,7 +293,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None, inv=None):
                         "input_units": "counts",
                         "output_units": ABBREV_UNITS[output],
                         "water_level": water_level,
-                        "pre_filt_freqs": "%f, %f, %f, %f" % (f1, f2, f3, f4),
+                        "pre_filt_freqs": f"{f1:f}, {f2:f}, {f3:f}, {f4:f}",
                     },
                 )
             elif tr.stats.channel[1] == "N":
@@ -331,7 +331,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None, inv=None):
                                 "input_units": "counts",
                                 "output_units": ABBREV_UNITS[output],
                                 "water_level": water_level,
-                                "pre_filt_freqs": "%f, %f, %f, %f" % (f1, f2, f3, f4),
+                                "pre_filt_freqs": f"{f1:f}, {f2:f}, {f3:f}, {f4:f}",
                             },
                         )
                 except BaseException as e:
@@ -416,7 +416,7 @@ def min_sample_rate(st, min_sps=20.0):
     for tr in st:
         actual_sps = tr.stats.sampling_rate
         if actual_sps < min_sps:
-            tr.fail("Minimum sample rate of %s not exceeded." % min_sps)
+            tr.fail(f"Minimum sample rate of {min_sps} not exceeded.")
 
     return st
 
@@ -594,11 +594,11 @@ def check_instrument(st, n_max=3, n_min=1, require_two_horiz=False):
         return st
 
     logging.debug("Starting check_instrument")
-    logging.debug("len(st) = %s" % len(st))
+    logging.debug(f"len(st) = {len(st)}")
 
     for failed_test, message in [
-        (len(st) > n_max, "More than %s traces in stream." % n_max),
-        (len(st) < n_min, "Less than %s traces in stream." % n_min),
+        (len(st) > n_max, f"More than {n_max} traces in stream."),
+        (len(st) < n_min, f"Less than {n_min} traces in stream."),
         (
             require_two_horiz and (st.num_horizontal != 2),
             "Not two horizontal components",
@@ -639,10 +639,10 @@ def max_traces(st, n_max=3):
         return st
 
     logging.debug("Starting max_traces")
-    logging.debug("len(st) = %s" % len(st))
+    logging.debug(f"len(st) = {len(st)}")
     if len(st) > n_max:
         for tr in st:
-            tr.fail("More than %s traces in stream." % n_max)
+            tr.fail(f"More than {n_max} traces in stream.")
     return st
 
 

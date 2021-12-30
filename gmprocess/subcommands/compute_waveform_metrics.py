@@ -37,7 +37,7 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
             gmrecords:
                 GMrecordsApp instance.
         """
-        logging.info("Running subcommand '%s'" % self.command_name)
+        logging.info(f"Running subcommand '{self.command_name}'")
 
         self.gmrecords = gmrecords
         self._check_arguments()
@@ -50,7 +50,7 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
 
     def _compute_event_waveform_metrics(self, event):
         self.eventid = event.id
-        logging.info("Computing waveform metrics for event %s..." % self.eventid)
+        logging.info(f"Computing waveform metrics for event {self.eventid}...")
         event_dir = os.path.join(self.gmrecords.data_path, self.eventid)
         workname = os.path.normpath(os.path.join(event_dir, const.WORKSPACE_NAME))
         if not os.path.isfile(workname):
@@ -96,7 +96,7 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
                         )
                     )
                     logging.info(
-                        "Calculating waveform metrics for %s..." % stream.get_id()
+                        f"Calculating waveform metrics for {stream.get_id()}..."
                     )
                     if self.gmrecords.args.num_processes > 0:
                         future = client.submit(

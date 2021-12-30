@@ -30,7 +30,7 @@ class GenerateRegressionPlotModule(base.SubcommandModule):
             gmrecords:
                 GMrecordsApp instance.
         """
-        logging.info("Running subcommand '%s'" % self.command_name)
+        logging.info(f"Running subcommand '{self.command_name}'")
 
         self.gmrecords = gmrecords
         self._check_arguments()
@@ -63,7 +63,7 @@ class GenerateRegressionPlotModule(base.SubcommandModule):
         else:
             print("Multiple event files found, please select one:")
             for e in event_files:
-                print("\t%s" % e)
+                print(f"\t{e}")
             event_file = input("> ")
         event_table = pd.read_csv(event_file).drop_duplicates()
 
@@ -107,7 +107,7 @@ class GenerateRegressionPlotModule(base.SubcommandModule):
                 found_imt = imtlist[0]
 
             if found_imc and found_imt:
-                pngfile = "regression_%s_%s.png" % (found_imc, found_imt)
+                pngfile = f"regression_{found_imc}_{found_imt}.png"
                 regression_file = os.path.normpath(
                     os.path.join(self.gmrecords.data_path, pngfile)
                 )

@@ -44,8 +44,8 @@ def compute_and_smooth_spectrum(tr, bandwidth, section, window=None, nfft=None):
     raw_dict = {"spec": spec_raw, "freq": freqs_raw}
     smooth_dict = {"spec": spec_smooth, "freq": freqs_smooth}
 
-    tr.setCached("%s_spectrum" % section, raw_dict)
-    tr.setCached("smooth_%s_spectrum" % section, smooth_dict)
+    tr.setCached(f"{section}_spectrum", raw_dict)
+    tr.setCached(f"smooth_{section}_spectrum", smooth_dict)
 
     return tr
 

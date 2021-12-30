@@ -67,7 +67,7 @@ def read_cwb(filename, config=None, **kwargs):
     """
     logging.debug("Starting read_cwb.")
     if not is_cwb(filename, config):
-        raise Exception("%s is not a valid CWB strong motion data file." % filename)
+        raise Exception(f"{filename} is not a valid CWB strong motion data file.")
     f = open(filename, "rt", encoding="utf-8")
     # according to the powers that defined the Network.Station.Channel.Location
     # "standard", Location is a two character field.  Most data providers,
@@ -177,10 +177,10 @@ def _get_header_info(file, data):
         line = file.readline()
         if line.startswith("#StationCode"):
             hdr["station"] = line.split(":")[1].strip()
-            logging.debug("station: %s" % hdr["station"])
+            logging.debug(f"station: {hdr['station']}")
         if line.startswith("#StationName"):
             standard["station_name"] = line.split(":")[1].strip()
-            logging.debug("station_name: %s" % standard["station_name"])
+            logging.debug(f"station_name: {standard['station_name']}")
         if line.startswith("#StationLongitude"):
             coordinates["longitude"] = float(line.split(":")[1].strip())
         if line.startswith("#StationLatitude"):

@@ -284,8 +284,8 @@ class GeoNetFetcher(object):
                         continue
                     datafiles.append(localfile)
                     f = open(localfile, "wb")
-                    logging.info("Retrieving remote file %s...\n" % ftpfile)
-                    ftp.retrbinary("RETR %s" % ftpfile, f.write)
+                    logging.info(f"Retrieving remote file {ftpfile}...\n")
+                    ftp.retrbinary(f"RETR {ftpfile}", f.write)
                     f.close()
                 ftp.cwd("..")
                 ftp.cwd("..")
@@ -293,7 +293,7 @@ class GeoNetFetcher(object):
         ftp.quit()
         streams = []
         for dfile in datafiles:
-            logging.info("Reading GeoNet file %s..." % dfile)
+            logging.info(f"Reading GeoNet file {dfile}...")
             try:
                 tstreams = read_geonet(dfile)
                 streams += tstreams

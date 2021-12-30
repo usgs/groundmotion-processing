@@ -37,13 +37,13 @@ class AssembleModule(base.SubcommandModule):
             gmrecords:
                 GMrecordsApp instance.
         """
-        logging.info("Running subcommand '%s'" % self.command_name)
+        logging.info(f"Running subcommand '{self.command_name}'")
         self.gmrecords = gmrecords
         self._check_arguments()
 
         self._get_events()
 
-        logging.info("Number of events to assemble: %s" % len(self.events))
+        logging.info(f"Number of events to assemble: {len(self.events)}")
 
         if gmrecords.args.num_processes:
             # parallelize processing on events
@@ -65,20 +65,20 @@ class AssembleModule(base.SubcommandModule):
         self._summarize_files_created()
 
     def _assemble_event(self, event):
-        logging.info("Starting event: %s" % event.id)
+        logging.info(f"Starting event: {event.id}")
         event_dir = os.path.normpath(os.path.join(self.gmrecords.data_path, event.id))
         if not os.path.exists(event_dir):
             os.makedirs(event_dir)
         workname = os.path.normpath(os.path.join(event_dir, constants.WORKSPACE_NAME))
         workspace_exists = os.path.isfile(workname)
         if workspace_exists:
-            logging.info("ASDF exists: %s" % workname)
+            logging.info(f"ASDF exists: {workname}")
             if not self.gmrecords.args.overwrite:
                 logging.info("The --overwrite argument not selected.")
-                logging.info("No action taken for %s." % event.id)
+                logging.info(f"No action taken for {event.id}.")
                 return event.id
             else:
-                logging.info("Removing existing ASDF file: %s" % workname)
+                logging.info(f"Removing existing ASDF file: {workname}")
                 os.remove(workname)
 
         workspace = assemble_utils.assemble(

@@ -290,9 +290,9 @@ class FDSNFetcher(DataFetcher):
                 client_list.append(client)
             # If the FDSN service is down, then an FDSNException is raised
             except FDSNException:
-                logging.warning("Unable to initalize client %s" % provider_str)
+                logging.warning(f"Unable to initalize client {provider_str}")
             except KeyError:
-                logging.warning("Unable to initalize client %s" % provider_str)
+                logging.warning(f"Unable to initalize client {provider_str}")
 
         if len(client_list):
             # Pass off the initalized clients to the Mass Downloader

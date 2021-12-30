@@ -121,7 +121,7 @@ def match_to_usgs_id(eqids, mags, times, lats, lons):
                 logging.warning("NO MATCH FOUND")
                 event_matches[eqid] = match_dict
                 continue
-            logging.info("Match Error: %.4f" % min_error)
+            logging.info(f"Match Error: {min_error:.4f}")
             if min_error >= ERROR_THRESH:
                 logging.warning("HIGH ERROR")
                 warning_ids.append(eqid)
@@ -139,7 +139,7 @@ def match_to_usgs_id(eqids, mags, times, lats, lons):
             event_matches[eqid] = match_dict
 
     match_rate = match_percentage(eqids, event_matches)
-    logging.info("Event Matching Success: %.2f %%" % (match_rate * 100))
+    logging.info(f"Event Matching Success: {match_rate * 100:.2f} %")
     return event_matches
 
 
@@ -197,8 +197,8 @@ def plot_match_rate_by_mag(project_name, mag_range, mag_rates):
         mag_rates (list):
             List of percentages of events matched by magnitude.
     """
-    plot_name = "%s_found_rate_by_mag.png" % project_name
-    logging.info("Generating bar graph '%s'..." % plot_name)
+    plot_name = f"{project_name}_found_rate_by_mag.png"
+    logging.info(f"Generating bar graph '{plot_name}'...")
     plt.bar(mag_range, mag_rates)
     plt.xlabel("Magnitude")
     plt.ylabel("Match Rate (%)")
@@ -238,9 +238,7 @@ def write_summary(project_name, event_matches):
         summary_data[key] = [val[key] for _, val in event_matches.items()]
     summary_data = pd.DataFrame(summary_data)
     summary_data.columns = [col.upper() for col in summary_data.columns]
-    summary_data.to_excel(
-        "%s_usgs_ids_cross_reference.xlsx" % project_name, index=False
-    )
+    summary_data.to_excel(f"{project_name}_usgs_ids_cross_reference.xlsx", index=False)
 
 
 def set_target(mag, time, lat, lon):

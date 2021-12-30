@@ -23,7 +23,7 @@ def cmp_dicts(adict, bdict):
     for pgm, channels in adict.items():
         for channel, avalue in channels.items():
             bvalue = bdict[pgm][channel]
-            print("Comparing %s->%s..." % (pgm, channel))
+            print(f"Comparing {pgm}->{channel}...")
             np.testing.assert_almost_equal(avalue, bvalue)
 
 

@@ -116,7 +116,7 @@ def get_metadata(
     eqtimewindow=10,  # seconds
     station_radius=200,
 ):
-    """Retrieve station metadata JSON from CESMD web service.
+    f"""Retrieve station metadata JSON from CESMD web service.
 
     Args:
         eqlat (float):
@@ -130,7 +130,7 @@ def get_metadata(
         abandoned (bool):
             Whether or not to include abandoned stations in the search.
         station_type (str):
-            One of the following station types: [%s]
+            One of the following station types: [{','.join(STATION_TYPES)}]
         eqtimewidow (float):
             Earthquake time search window in sec.
         station_radius (str):
@@ -143,9 +143,7 @@ def get_metadata(
         ValueError
         ConnectionError
 
-    """ % (
-        ",".join(STATION_TYPES)
-    )
+    """
     params = {
         "rettype": "metadata",
         "groupby": "event",

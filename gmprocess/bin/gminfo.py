@@ -70,7 +70,7 @@ def render_concise(files, save=False):
     for filename in files:
         fpath, fname = os.path.split(filename)
         if fpath not in folders:
-            sys.stderr.write("Parsing files from subfolder %s...\n" % fpath)
+            sys.stderr.write(f"Parsing files from subfolder {fpath}...\n")
             folders.append(fpath)
         try:
             streams = readmod.read_data(filename)
@@ -224,8 +224,8 @@ def main():
             if args.save is not None and args.concise:
                 fbase, fext = os.path.splitext(args.save)
                 errfile = fbase + "_errors" + fext
-                print("Catalog written to %s." % args.save)
-                print("Errors written to %s." % errfile)
+                print(f"Catalog written to {args.save}.")
+                print(f"Errors written to {errfile}.")
                 if fext == ".xlsx":
                     df.to_excel(args.save, index=False)
                     errors.to_excel(errfile, index=False)

@@ -46,7 +46,7 @@ def assemble(event, config, directory, gmprocess_version):
     # Make raw directory
     in_event_dir = os.path.join(directory, event.id)
     in_raw_dir = get_rawdir(in_event_dir)
-    logging.debug("in_raw_dir: %s" % in_raw_dir)
+    logging.debug(f"in_raw_dir: {in_raw_dir}")
     streams, _, _ = directory_to_streams(in_raw_dir, config=config)
     logging.debug("streams:")
     logging.debug(streams)

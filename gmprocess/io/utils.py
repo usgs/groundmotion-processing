@@ -143,7 +143,7 @@ def flatten_directory(directory):
             sub_str = "_".join(split_path)
             for f in files:
                 # Append subdir to file name:
-                long_name = "%s_%s" % (sub_str, f)
+                long_name = f"{sub_str}_{f}"
                 src = os.path.join(dirpath, f)
                 # I don't think there should ever be duplicates but I'm
                 # leaving this here just in case.
@@ -172,15 +172,14 @@ def _walk_and_unzip(directory):
                     for m in zip.namelist():
                         zip.extract(m, dirpath)
                         src = os.path.join(dirpath, m)
-                        new_name = "%s_%s" % (base, m.replace(os.path.sep, "_"))
+                        new_name = f"{base}_{m.replace(os.path.sep, '_')}"
                         dst = os.path.join(dirpath, new_name)
                         if not os.path.exists(dst):
                             os.rename(src, dst)
                         else:
                             # This should never happen
                             logging.warning(
-                                "While extracting %s, "
-                                "file %s already exists." % (f, dst)
+                                f"While extracting {f}, file {dst} already exists."
                             )
                 os.remove(full_file)
     return has_zips

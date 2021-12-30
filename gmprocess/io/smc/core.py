@@ -175,22 +175,18 @@ def read_smc(filename, config=None, **kwargs):
     location = kwargs.get("location", "")
 
     if not is_smc(filename, config):
-        raise Exception("%s is not a valid SMC file" % filename)
+        raise Exception(f"{filename} is not a valid SMC file")
 
     with open(filename, "rt") as f:
         line = f.readline().strip()
         if "DISPLACEMENT" in line:
             raise BaseException(
-                "SMC: Diplacement records are not supported: %s." % filename
+                f"SMC: Diplacement records are not supported: {filename}."
             )
         elif "VELOCITY" in line:
-            raise BaseException(
-                "SMC: Velocity records are not supported: %s." % filename
-            )
+            raise BaseException(f"SMC: Velocity records are not supported: {filename}.")
         elif line == "*":
-            raise BaseException(
-                "SMC: No record volume specified in file: %s." % filename
-            )
+            raise BaseException(f"SMC: No record volume specified in file: {filename}.")
 
     stats, num_comments = _get_header_info(
         filename,
@@ -288,14 +284,14 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False, locati
         ascheader = [next(f).strip() for x in range(ASCII_HEADER_LINES)]
 
     standard["process_level"] = PROCESS_LEVELS[VALID_HEADERS[ascheader[0]]]
-    logging.debug("process_level: %s" % standard["process_level"])
+    logging.debug(f"process_level: {standard['process_level']}")
 
     # station code is in the third line
     stats["station"] = ""
     if len(ascheader[2]) >= 4:
         stats["station"] = ascheader[2][0:4].strip()
         stats["station"] = stats["station"].strip("\x00")
-    logging.debug("station: %s" % stats["station"])
+    logging.debug(f"station: {stats['station']}")
 
     standard["process_time"] = ""
     standard["station_name"] = ascheader[5][10:40].strip()
@@ -528,7 +524,7 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False, locati
                 is_north=False,
             )
 
-    logging.debug("channel: %s" % stats["channel"])
+    logging.debug(f"channel: {stats['channel']}")
     sensor_frequency = floatheader[4, 1]
     standard["instrument_period"] = 1 / sensor_frequency
     standard["instrument_damping"] = floatheader[4, 2]

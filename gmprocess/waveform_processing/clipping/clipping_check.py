@@ -73,6 +73,6 @@ def check_clipping(st, origin, threshold=0.2):
 
     if prob_clip >= threshold:
         for tr in st:
-            tr.fail("Failed clipping check: prob_clip = %.2f." % prob_clip)
+            tr.fail(f"Failed clipping check: prob_clip = {prob_clip:.2f}.")
 
     return st

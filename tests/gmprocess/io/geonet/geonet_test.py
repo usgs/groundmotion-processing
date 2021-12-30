@@ -48,7 +48,7 @@ def test():
         fname = comp[0]
         desc = comp[1]
         test_vals = comp[2:]
-        print("Testing %s, %s..." % (fname, desc))
+        print(f"Testing {fname}, {desc}...")
         geonet_file = os.path.join(datadir_2016, fname)
         assert is_geonet(geonet_file)
         stream = read_geonet(geonet_file)[0]
@@ -69,7 +69,7 @@ def test():
         fname = comp[0]
         desc = comp[1]
         test_vals = comp[2:]
-        print("Testing %s, %s..." % (fname, desc))
+        print(f"Testing {fname}, {desc}...")
         geonet_file = os.path.join(datadir_2018, fname)
         assert is_geonet(geonet_file)
         stream = read_geonet(geonet_file)[0]

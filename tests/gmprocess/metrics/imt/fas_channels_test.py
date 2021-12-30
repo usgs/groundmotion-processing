@@ -81,7 +81,7 @@ def test_fas():
     pgms = summary.pgms
     # pgms.to_pickle(fas_file)
     for idx, f in enumerate(freqs):
-        fstr = "FAS(%.3f)" % (1 / f)
+        fstr = f"FAS({1 / f:.3f})"
         fval1 = pgms.loc[fstr, "H1"].Result
         fval2 = target_df.loc[fstr, "H1"].Result
         np.testing.assert_allclose(fval1, fval2, rtol=1e-5, atol=1e-5)

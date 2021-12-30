@@ -260,7 +260,7 @@ class StreamCollection(object):
                                 instrument=tf,
                             ):
                                 for tr in st:
-                                    tr.fail("Colocated with %s instrument." % keep)
+                                    tr.fail(f"Colocated with {keep} instrument.")
 
                         break
                 if no_match:
@@ -414,9 +414,9 @@ class StreamCollection(object):
         """String summary of the StreamCollection."""
         summary = ""
         n = len(self.streams)
-        summary += "%s StationStreams(s) in StreamCollection:\n" % n
-        summary += "    %s StationStreams(s) passed checks.\n" % self.n_passed
-        summary += "    %s StationStreams(s) failed checks.\n" % self.n_failed
+        summary += f"{n} StationStreams(s) in StreamCollection:\n"
+        summary += f"    {self.n_passed} StationStreams(s) passed checks.\n"
+        summary += f"    {self.n_failed} StationStreams(s) failed checks.\n"
         return summary
 
     def describe(self):

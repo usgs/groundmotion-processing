@@ -50,7 +50,7 @@ class ProcessWaveformsModule(base.SubcommandModule):
             gmrecords:
                 GMrecordsApp instance.
         """
-        logging.info("Running subcommand '%s'" % self.command_name)
+        logging.info(f"Running subcommand '{self.command_name}'")
 
         self.gmrecords = gmrecords
         self._check_arguments()
@@ -58,7 +58,7 @@ class ProcessWaveformsModule(base.SubcommandModule):
 
         # get the process tag from the user or use "default" for tag
         self.process_tag = gmrecords.args.label or "default"
-        logging.info("Processing tag: %s" % self.process_tag)
+        logging.info(f"Processing tag: {self.process_tag}")
 
         for event in self.events:
             self._process_event(event)
@@ -96,8 +96,7 @@ class ProcessWaveformsModule(base.SubcommandModule):
 
             if len(raw_streams):
                 logging.info(
-                    "Processing '%s' streams for event %s..."
-                    % ("unprocessed", event.id)
+                    f"Processing '{'unprocessed'}' streams for event {event.id}..."
                 )
                 if self.gmrecords.args.num_processes > 0:
                     future = client.submit(

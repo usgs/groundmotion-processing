@@ -21,13 +21,13 @@ def test_gminfo():
         os.mkdir(out_dir)
     try:
         # Concise output, save to file
-        cmd = "gminfo %s -c -s %s" % (data_dir, os.path.join(out_dir, "test.csv"))
+        cmd = f"gminfo {data_dir} -c -s {os.path.join(out_dir, 'test.csv')}"
 
         rc, so, se = get_command_output(cmd)
         assert rc
 
         # Verbose output
-        cmd = "gminfo %s" % (data_dir)
+        cmd = f"gminfo {data_dir}"
         rc, so, se = get_command_output(cmd)
         assert rc
         assert "Caltech" in so.decode()

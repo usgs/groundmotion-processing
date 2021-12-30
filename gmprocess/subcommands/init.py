@@ -31,7 +31,7 @@ class InitModule(base.SubcommandModule):
             gmrecords:
                 GMrecordsApp instance.
         """
-        logging.info("Running subcommand '%s'" % self.command_name)
+        logging.info(f"Running subcommand '{self.command_name}'")
 
         config = configobj.ConfigObj(encoding="utf-8")
         cwd = os.getcwd()

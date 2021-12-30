@@ -273,7 +273,7 @@ def get_config(config_file=None, section=None):
 
     if section is not None:
         if section not in config:
-            raise IndexError("Section %s not found in config file." % section)
+            raise IndexError(f"Section {section} not found in config file.")
         else:
             config = config[section]
 

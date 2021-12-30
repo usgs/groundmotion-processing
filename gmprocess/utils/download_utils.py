@@ -128,7 +128,7 @@ def plot_raw(rawdir, tcollection, event):
             logging.warning(fmt % (str(e), dist, source_depth))
             arrival_time = 0.0
         ptime = arrival_time + (event.time - stream[0].stats.starttime)
-        outfile = os.path.join(rawdir, "%s.png" % stream.get_id())
+        outfile = os.path.join(rawdir, f"{stream.get_id()}.png")
 
         fig, axeslist = plt.subplots(nrows=3, ncols=1, figsize=(12, 6))
         for ax, trace in zip(axeslist, stream):
@@ -150,7 +150,7 @@ def plot_raw(rawdir, tcollection, event):
             tbefore = event.time + arrival_time < trace.stats.starttime + 1.0
             tafter = event.time + arrival_time > trace.stats.endtime - 1.0
             if tbefore or tafter:
-                legstr = "P arrival time %.1f seconds" % ptime
+                legstr = f"P arrival time {ptime:.1f} seconds"
                 left, right = ax.get_xlim()
                 xloc = left + (right - left) / 20
                 bottom, top = ax.get_ylim()
@@ -176,4 +176,4 @@ def download_rupture_file(event_id, event_dir):
             "rupture.json", os.path.join(event_dir, "rupture.json")
         )
     except BaseException:
-        logging.info("%s does not have a rupture.json file." % event_id)
+        logging.info(f"{event_id} does not have a rupture.json file.")

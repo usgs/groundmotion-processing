@@ -291,9 +291,9 @@ class CESMDFetcher(DataFetcher):
                     self.time.strftime("%Y-%m-%d %H:%M:%S"),
                 )
                 if "404" in str(ex):
-                    logging.info("Could not find data records for %s" % eqdesc)
+                    logging.info(f"Could not find data records for {eqdesc}")
                 else:
-                    logging.info("Unplanned exception getting records for %s" % eqdesc)
+                    logging.info(f"Unplanned exception getting records for {eqdesc}")
                 return []
         else:
             # web service has a maximum number of stations you're allowed to
@@ -344,7 +344,7 @@ class CESMDFetcher(DataFetcher):
                         logging.info(fmt % (eqdesc, mindist, maxdist))
                     else:
                         logging.warning(
-                            "Unplanned exception getting records for %s" % eqdesc
+                            f"Unplanned exception getting records for {eqdesc}"
                         )
                     continue
                 datafiles += tfiles
@@ -352,11 +352,11 @@ class CESMDFetcher(DataFetcher):
         if self.stream_collection:
             streams = []
             for dfile in datafiles:
-                logging.info("Reading CESMD file %s..." % dfile)
+                logging.info(f"Reading CESMD file {dfile}...")
                 try:
                     streams += read_data(dfile)
                 except BaseException as ex:
-                    logging.info('Could not read %s: error "%s"' % (dfile, str(ex)))
+                    logging.info(f'Could not read {dfile}: error "{str(ex)}"')
 
             stream_collection = StreamCollection(
                 streams=streams, drop_non_free=self.drop_non_free

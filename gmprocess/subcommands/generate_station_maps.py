@@ -34,7 +34,7 @@ class GenerateHTMLMapModule(base.SubcommandModule):
             gmrecords:
                 GMrecordsApp instance.
         """
-        logging.info("Running subcommand '%s'" % self.command_name)
+        logging.info(f"Running subcommand '{self.command_name}'")
 
         self.gmrecords = gmrecords
         self._check_arguments()
@@ -60,7 +60,7 @@ class GenerateHTMLMapModule(base.SubcommandModule):
                 logging.info("No processed waveforms available. No report generated.")
                 return False
 
-            logging.info("Generating station maps for event %s..." % event.id)
+            logging.info(f"Generating station maps for event {event.id}...")
 
             pstreams = []
             for station_id in station_list:

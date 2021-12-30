@@ -32,11 +32,11 @@ def read_data(filename, config=None, read_format=None, **kwargs):
     """
     _, file_ext = os.path.splitext(filename)
     if file_ext in EXCLUDED_EXTS:
-        raise ValueError("Excluded extension: %s" % filename)
+        raise ValueError(f"Excluded extension: {filename}")
 
     # Check if file exists
     if not os.path.exists(filename):
-        raise OSError("Not a file %r" % filename)
+        raise OSError(f"Not a file {filename!r}")
     # Get and validate format
     if config is None:
         config = get_config()
@@ -119,7 +119,7 @@ def _get_format(filename, config):
     elif len(formats) == 2 and "gmobspy" in formats:
         return formats[formats != "gmobspy"][0]
     elif len(formats) == 0:
-        raise Exception("No format found for file %r." % filename)
+        raise Exception(f"No format found for file {filename!r}.")
     else:
         raise Exception(
             "Multiple formats passing: %r. Please retry file %r "

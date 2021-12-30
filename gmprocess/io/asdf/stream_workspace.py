@@ -100,13 +100,13 @@ FLATFILE_COLUMNS = {
 }
 
 FLATFILE_IMT_COLUMNS = {
-    "PGA": "Peak ground acceleration (%s)" % XML_UNITS["pga"],
-    "PGV": "Peak ground velocity (%s)" % XML_UNITS["pgv"],
-    "SA(X)": "Pseudo-spectral acceleration (%s) at X seconds" % XML_UNITS["sa"],
-    "FAS(X)": "Fourier amplitude spectrum value (%s) at X seconds" % XML_UNITS["fas"],
-    "DURATIONp-q": "p-q percent significant duration (%s)" % XML_UNITS["duration"],
-    "SORTED_DURATION": "Sorted significant duration (%s)" % XML_UNITS["duration"],
-    "ARIAS": "Arias intensity (%s)" % XML_UNITS["arias"],
+    "PGA": f"Peak ground acceleration ({XML_UNITS['pga']})",
+    "PGV": f"Peak ground velocity ({XML_UNITS['pgv']})",
+    "SA(X)": f"Pseudo-spectral acceleration ({XML_UNITS['sa']}) at X seconds",
+    "FAS(X)": f"Fourier amplitude spectrum value ({XML_UNITS['fas']}) at X seconds",
+    "DURATIONp-q": f"p-q percent significant duration ({XML_UNITS['duration']})",
+    "SORTED_DURATION": f"Sorted significant duration ({XML_UNITS['duration']})",
+    "ARIAS": f"Arias intensity ({XML_UNITS['arias']})",
 }
 
 # List of columns in the fit_spectra_parameters file, along README descriptions
@@ -210,7 +210,7 @@ class StreamWorkspace(object):
             StreamWorkspace: Object containing ASDF file.
         """
         if os.path.exists(filename):
-            raise IOError("File %s already exists." % filename)
+            raise IOError(f"File {filename} already exists.")
         return cls(filename)
 
     @classmethod
@@ -225,7 +225,7 @@ class StreamWorkspace(object):
             StreamWorkspace: Object containing ASDF file.
         """
         if not os.path.exists(filename):
-            raise IOError("File %s does not exist." % filename)
+            raise IOError(f"File {filename} does not exist.")
         return cls(filename)
 
     def close(self):
@@ -276,7 +276,7 @@ class StreamWorkspace(object):
 
     def getGmprocessVersion(self):
         """Get gmprocess version from ASDF file."""
-        group_name = "%s/%s" % ("gmprocess_version", "version")
+        group_name = f"{'gmprocess_version'}/{'version'}"
         data_exists = group_name in self.dataset._auxiliary_data_group
         if not data_exists:
             logging.error("No version for gmprocess found.")
@@ -319,15 +319,15 @@ class StreamWorkspace(object):
         logging.debug(streams)
         for stream in streams:
             station = stream[0].stats["station"]
-            logging.info("Adding waveforms for station %s" % station)
+            logging.info(f"Adding waveforms for station {station}")
             # is this a raw file? Check the trace for provenance info.
             is_raw = not len(stream[0].getProvenanceKeys())
 
             if label is None:
                 tfmt = "%Y%m%d%H%M%S"
                 tnow = UTCDateTime.now().strftime(tfmt)
-                label = "processed%s" % tnow
-            tag = "{}_{}".format(eventid, label)
+                label = f"processed{tnow}"
+            tag = f"{eventid}_{label}"
             if is_raw:
                 level = "raw"
             else:
@@ -473,7 +473,7 @@ class StreamWorkspace(object):
 
         net_codes = [st.split(".")[0] for st in stations]
         sta_codes = [st.split(".")[1] for st in stations]
-        tag = ["%s_%s" % (eventid, label) for label in labels]
+        tag = [f"{eventid}_{label}" for label in labels]
 
         for waveform in self.dataset.ifilter(
             self.dataset.q.network == net_codes,
@@ -593,7 +593,7 @@ class StreamWorkspace(object):
         # just to store a string in HDF, but other
         # approaches failed. Suggestions are welcome.
 
-        group_name = "%s/%s" % (data_name, path)
+        group_name = f"{data_name}/{path}"
         data_exists = group_name in self.dataset._auxiliary_data_group
         if overwrite and data_exists:
             del self.dataset._auxiliary_data_group[group_name]
@@ -677,7 +677,7 @@ class StreamWorkspace(object):
 
         for stream in streams:
             instrument = stream.get_id()
-            logging.info("Calculating stream metrics for %s..." % instrument)
+            logging.info(f"Calculating stream metrics for {instrument}...")
 
             try:
                 summary = StationSummary.from_config(
@@ -700,7 +700,7 @@ class StreamWorkspace(object):
             if calc_waveform_metrics and stream.passed:
                 xmlstr = summary.get_metric_xml()
                 if stream_label is not None:
-                    tag = "%s_%s" % (eventid, stream_label)
+                    tag = f"{eventid}_{stream_label}"
                 else:
                     tag = stream.tag
                 metricpath = "/".join(
@@ -1059,7 +1059,7 @@ class StreamWorkspace(object):
         snr = interp(freq)
         snr_dict = {}
         for f, s in zip(freq, snr):
-            key = "SNR(%.4g)" % f
+            key = f"SNR({f:.4g})"
             snr_dict[key] = s
         return snr_dict
 
@@ -1105,7 +1105,7 @@ class StreamWorkspace(object):
 
         # get the stream matching the eventid, station, and label
         if streams is None:
-            station_id = "%s.%s" % (network, station)
+            station_id = f"{network}.{station}"
             streams = self.getStreams(
                 eventid, stations=[station_id], labels=[label], config=config
             )
@@ -1126,7 +1126,7 @@ class StreamWorkspace(object):
             return None
 
         if stream_label is not None:
-            stream_tag = "%s_%s" % (eventid, stream_label)
+            stream_tag = f"{eventid}_{stream_label}"
         else:
             stream_tag = streams[0].tag
 

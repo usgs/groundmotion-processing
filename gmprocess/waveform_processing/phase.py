@@ -553,7 +553,7 @@ def calc_snr(stream, minloc):
         # even if len > 0.
         if apn == 0:
             apn = 0.00001
-            logging.warning("Noise window for %s has mean of zero." % trace.get_id())
+            logging.warning(f"Noise window for {trace.get_id()} has mean of zero.")
         # signal-to-noise ratio in decibel
         snr_i = 10 * np.math.log10(aps / apn)
         snr_values.append(snr_i)

@@ -49,7 +49,7 @@ class ExportFailureTablesModule(base.SubcommandModule):
             gmrecords:
                 GMrecordsApp instance.
         """
-        logging.info("Running subcommand '%s'" % self.command_name)
+        logging.info(f"Running subcommand '{self.command_name}'")
 
         self.gmrecords = gmrecords
         self._check_arguments()
@@ -58,7 +58,7 @@ class ExportFailureTablesModule(base.SubcommandModule):
         failures = {}
         for event in self.events:
             self.eventid = event.id
-            logging.info("Creating failure tables for event %s..." % self.eventid)
+            logging.info(f"Creating failure tables for event {self.eventid}...")
             event_dir = os.path.join(self.gmrecords.data_path, self.eventid)
             workname = os.path.normpath(os.path.join(event_dir, const.WORKSPACE_NAME))
             if not os.path.isfile(workname):
@@ -107,8 +107,7 @@ class ExportFailureTablesModule(base.SubcommandModule):
             comp_failures_path = os.path.normpath(
                 os.path.join(
                     self.gmrecords.data_path,
-                    "%s_%s_complete_failures.csv"
-                    % (gmrecords.project, gmrecords.args.label),
+                    f"{gmrecords.project}_{gmrecords.args.label}_complete_failures.csv",
                 )
             )
             if self.gmrecords.args.type == "long":

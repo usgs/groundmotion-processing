@@ -70,7 +70,7 @@ class CleanModule(base.SubcommandModule):
             gmrecords:
                 GMrecordsApp instance.
         """
-        logging.info("Running subcommand '%s'" % self.command_name)
+        logging.info(f"Running subcommand '{self.command_name}'")
         self.gmrecords = gmrecords
         self._check_arguments()
 
@@ -89,7 +89,7 @@ class CleanModule(base.SubcommandModule):
         # ---------------------------------------------------------------------
         # Inside the event directories
         events = glob(os.path.join(data_path, "*/"))
-        logging.info("Number of events: %s" % len(events))
+        logging.info(f"Number of events: {len(events)}")
         for event in events:
             event_dir = os.path.normpath(os.path.join(data_path, event))
             if os.path.exists(event_dir):
@@ -116,10 +116,10 @@ class CleanModule(base.SubcommandModule):
                     rawdir = os.path.normpath(os.path.join(event_dir, "raw"))
                     if os.path.isdir(rawdir):
                         try:
-                            logging.info("Removing: %s" % rawdir)
+                            logging.info(f"Removing: {rawdir}")
                             shutil.rmtree(rawdir)
                         except BaseException as e:
-                            logging.info("Error while deleting: %s" % e)
+                            logging.info(f"Error while deleting: {e}")
 
                 # Plots
                 if gmrecords.args.all or gmrecords.args.plot:
@@ -127,10 +127,10 @@ class CleanModule(base.SubcommandModule):
                     plotsdir = os.path.normpath(os.path.join(event_dir, "plots"))
                     if os.path.isdir(plotsdir):
                         try:
-                            logging.info("Removing: %s" % plotsdir)
+                            logging.info(f"Removing: {plotsdir}")
                             shutil.rmtree(plotsdir)
                         except BaseException as e:
-                            logging.info("Error while deleting: %s" % e)
+                            logging.info(f"Error while deleting: {e}")
 
                 # HTML
                 if gmrecords.args.all or gmrecords.args.html:
@@ -143,7 +143,7 @@ class CleanModule(base.SubcommandModule):
             for match in matches:
                 match = os.path.normpath(match)
                 try:
-                    logging.info("Removing: %s" % match)
+                    logging.info(f"Removing: {match}")
                     os.remove(match)
                 except BaseException as e:
-                    logging.info("Error while deleting: %s" % e)
+                    logging.info(f"Error while deleting: {e}")

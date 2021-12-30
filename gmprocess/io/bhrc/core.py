@@ -146,7 +146,7 @@ def _read_header_lines(filename, offset):
     standard["sensor_serial_number"] = ""
     volstr = lines[0].split()[1].strip()
     if volstr not in LEVELS:
-        raise KeyError("Volume %s files are not supported." % volstr)
+        raise KeyError(f"Volume {volstr} files are not supported.")
     standard["process_level"] = PROCESS_LEVELS[LEVELS[volstr]]
     standard["process_time"] = ""
     station_name = lines[7][0 : lines[7].index("Station")].strip()

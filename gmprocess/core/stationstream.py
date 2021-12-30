@@ -209,9 +209,7 @@ class StationStream(Stream):
             all_codes = []
             for tr in self:
                 stats = tr.stats
-                all_codes.append(
-                    "%s.%s.%s" % (stats.network, stats.station, stats.channel)
-                )
+                all_codes.append(f"{stats.network}.{stats.station}.{stats.channel}")
             if len(set(all_codes)) != len(all_codes):
                 for tr in self:
                     tr.fail("Nonunique channel code in StationStream.")
@@ -220,16 +218,12 @@ class StationStream(Stream):
         # Check that id is consistent, and set id if it passes the check.
         if len(self):
             stats = self.traces[0].stats
-            id_str = "%s.%s.%s" % (stats.network, stats.station, stats.channel[0:2])
+            id_str = f"{stats.network}.{stats.station}.{stats.channel[0:2]}"
 
             # Check that the id would be the same for all traces
             for tr in self:
                 stats = tr.stats
-                test_str = "%s.%s.%s" % (
-                    stats.network,
-                    stats.station,
-                    stats.channel[0:2],
-                )
+                test_str = f"{stats.network}.{stats.station}.{stats.channel[0:2]}"
                 if id_str != test_str:
                     raise ValueError("Inconsistent stream ID for different traces.")
             self.id = id_str
@@ -324,7 +318,7 @@ class StationStream(Stream):
                 Parameters for the given key.
         """
         if param_id not in self.parameters:
-            raise KeyError("Parameter %s not found in StationStream" % param_id)
+            raise KeyError(f"Parameter {param_id} not found in StationStream")
         return self.parameters[param_id]
 
     def getProvenanceDocuments(self, base_prov=None):
@@ -371,7 +365,7 @@ class StationStream(Stream):
         )
         channels = []
         for trace in self:
-            logging.debug("trace: %s" % trace)
+            logging.debug(f"trace: {trace}")
             channel = _channel_from_stats(trace.stats)
             channels.append(channel)
 
@@ -461,7 +455,7 @@ def _channel_from_stats(stats):
         response = Response(instrument_sensitivity=sensitivity)
 
     comments = Comment(stats.standard.comments)
-    logging.debug("channel: %s" % stats.channel)
+    logging.debug(f"channel: {stats.channel}")
     channel = Channel(
         stats.channel,
         stats.location,

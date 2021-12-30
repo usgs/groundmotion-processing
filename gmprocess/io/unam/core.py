@@ -150,9 +150,9 @@ def _read_header(filename):
     # the hour, minute and second of origin
     eqtimestr = header_dict["HORA EPICENTRO (GMT)"]
     try:
-        eqtime = datetime.strptime("%s %s" % (eqdatestr, eqtimestr), TIMEFMT1)
+        eqtime = datetime.strptime(f"{eqdatestr} {eqtimestr}", TIMEFMT1)
     except ValueError:
-        eqtime = datetime.strptime("%s %s" % (eqdatestr, eqtimestr), TIMEFMT2)
+        eqtime = datetime.strptime(f"{eqdatestr} {eqtimestr}", TIMEFMT2)
 
     # if the origin time and record start time are more than 10 minutes
     # apart (in either direction), then assume that we need to add 1 day

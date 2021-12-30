@@ -274,7 +274,7 @@ def read_cosmos(filename, config=None, **kwargs):
     """
     logging.debug("Starting read_cosmos.")
     if not is_cosmos(filename, config):
-        raise Exception("%s is not a valid COSMOS strong motion data file." % filename)
+        raise Exception(f"{filename} is not a valid COSMOS strong motion data file.")
     # get list of valid stations
     valid_station_types = kwargs.get("valid_station_types", None)
     # get list of valid stations
@@ -360,10 +360,10 @@ def _read_channel(filename, line_offset, location=""):
     unit = hdr["format_specific"]["physical_units"]
     if unit in UNIT_CONVERSIONS:
         data *= UNIT_CONVERSIONS[unit]
-        logging.debug("Data converted from %s to cm/s/s" % (unit))
+        logging.debug(f"Data converted from {unit} to cm/s/s")
     else:
         if unit != "counts":
-            raise ValueError("COSMOS: %s is not a supported unit." % unit)
+            raise ValueError(f"COSMOS: {unit} is not a supported unit.")
 
     if hdr["standard"]["units"] != "acc":
         raise ValueError("COSMOS: Only acceleration data accepted.")
@@ -482,14 +482,14 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=""):
             network = "--"
             source = ""
     hdr["network"] = network
-    logging.debug("network: %s" % network)
+    logging.debug(f"network: {network}")
     hdr["station"] = lines[4][28:34].strip()
-    logging.debug("station: %s" % hdr["station"])
+    logging.debug(f"station: {hdr['station']}")
 
     # the channel orientation can be either relative to true north (idx 53)
     # or relative to sensor orientation (idx 54).
     horizontal_angle = int(int_data[53])
-    logging.debug("horizontal_angle: %s" % horizontal_angle)
+    logging.debug(f"horizontal_angle: {horizontal_angle}")
     if horizontal_angle not in VALID_AZIMUTH_INTS:
         angles = np.array(int_data[19:21]).astype(np.float32)
         angles[angles == unknown] = np.nan
@@ -578,7 +578,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=""):
         )
         raise BaseException("COSMOS: " + errstr)
     hdr["channel"] = channel
-    logging.debug("channel: %s" % hdr["channel"])
+    logging.debug(f"channel: {hdr['channel']}")
     if location == "":
         location = int(int_data[55])
         location = str(_check_assign(location, unknown, "--"))
@@ -626,10 +626,10 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=""):
     for key in coordinates:
         if coordinates[key] == unknown:
             if key != "elevation":
-                logging.warning("Missing %r. Setting to np.nan." % key, Warning)
+                logging.warning(f"Missing {key!r}. Setting to np.nan.", Warning)
                 coordinates[key] = np.nan
             else:
-                logging.warning("Missing %r. Setting to 0.0." % key, Warning)
+                logging.warning(f"Missing {key!r}. Setting to 0.0.", Warning)
                 coordinates[key] = 0.0
 
     hdr["coordinates"] = coordinates
@@ -683,7 +683,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=""):
         standard["process_level"] = PROCESS_LEVELS["V3"]
     else:
         standard["process_level"] = PROCESS_LEVELS["V1"]
-    logging.debug("process_level: %s" % process_level)
+    logging.debug(f"process_level: {process_level}")
     serial = int(int_data[52])
     if serial != unknown:
         standard["sensor_serial_number"] = str(_check_assign(serial, unknown, ""))
@@ -785,7 +785,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=""):
         fmt = "%s.%s.%s.%s"
         tpl = (hdr["network"], hdr["station"], hdr["channel"], hdr["location"])
         nscl = fmt % tpl
-        raise ValueError("Gain of 0 discovered for NSCL: %s" % nscl)
+        raise ValueError(f"Gain of 0 discovered for NSCL: {nscl}")
     denom = ctov * vtog * (1.0 / gain) * sp.g
     standard["instrument_sensitivity"] = 1 / denom
 

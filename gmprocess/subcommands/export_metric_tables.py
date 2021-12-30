@@ -34,7 +34,7 @@ class ExportMetricTablesModule(base.SubcommandModule):
             gmrecords:
                 GMrecordsApp instance.
         """
-        logging.info("Running subcommand '%s'" % self.command_name)
+        logging.info(f"Running subcommand '{self.command_name}'")
 
         self.gmrecords = gmrecords
         self._check_arguments()
@@ -42,7 +42,7 @@ class ExportMetricTablesModule(base.SubcommandModule):
 
         for event in self.events:
             self.eventid = event.id
-            logging.info("Creating tables for event %s..." % self.eventid)
+            logging.info(f"Creating tables for event {self.eventid}...")
             event_dir = os.path.join(gmrecords.data_path, self.eventid)
             workname = os.path.normpath(os.path.join(event_dir, const.WORKSPACE_NAME))
             if not os.path.isfile(workname):
@@ -86,8 +86,7 @@ class ExportMetricTablesModule(base.SubcommandModule):
                 df_fit_spectra_formatted = None
 
             imc_list = [
-                "%s_%s_metrics_%s"
-                % (gmrecords.project, gmrecords.args.label, imc.lower())
+                f"{gmrecords.project}_{gmrecords.args.label}_metrics_{imc.lower()}"
                 for imc in imc_tables_formatted.keys()
             ]
             readme_list = [
@@ -124,20 +123,20 @@ class ExportMetricTablesModule(base.SubcommandModule):
                 if df is None:
                     continue
                 filepath = os.path.normpath(
-                    os.path.join(outdir, filename + ".%s" % output_format)
+                    os.path.join(outdir, filename + f".{output_format}")
                 )
                 if os.path.exists(filepath):
                     if "README" in filename:
                         continue
                     else:
                         if self.gmrecords.args.overwrite:
-                            logging.warning("File exists: %s" % filename)
-                            logging.warning("Overwriting file: %s" % filename)
+                            logging.warning(f"File exists: {filename}")
+                            logging.warning(f"Overwriting file: {filename}")
                             mode = "w"
                             header = True
                         else:
-                            logging.warning("File exists: %s" % filename)
-                            logging.warning("Appending to file: %s" % filename)
+                            logging.warning(f"File exists: {filename}")
+                            logging.warning(f"Appending to file: {filename}")
                             mode = "a"
                             header = False
                 else:

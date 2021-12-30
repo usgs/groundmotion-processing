@@ -76,7 +76,7 @@ class AutoShakemapModule(base.SubcommandModule):
 
     def main(self, gmrecords):
         """Chain together subcommands to get shakemap ground motion file."""
-        logging.info("Running subcommand '%s'" % self.command_name)
+        logging.info(f"Running subcommand '{self.command_name}'")
 
         # Hard code overwrite to True since this is all meant to run end-to-end
         # without interruption.

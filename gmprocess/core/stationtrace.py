@@ -294,8 +294,8 @@ class StationTrace(Trace):
         istack = inspect.stack()
         calling_module = istack[1][3]
         self.setParameter("failure", {"module": calling_module, "reason": reason})
-        trace_id = "%s" % self.id
-        logging.info("%s - %s - %s" % (calling_module, trace_id, reason))
+        trace_id = f"{self.id}"
+        logging.info(f"{calling_module} - {trace_id} - {reason}")
 
     def validate(self):
         """Ensure that all required metadata fields have been set.
@@ -329,7 +329,7 @@ class StationTrace(Trace):
         if not req_keys <= std_keys:
             missing = str(req_keys - std_keys)
             raise KeyError(
-                'Missing standard values in StationTrace header: "%s"' % missing
+                f'Missing standard values in StationTrace header: "{missing}"'
             )
         type_errors = []
         required_errors = []
@@ -538,7 +538,7 @@ class StationTrace(Trace):
             dict: Dictionary of arrays (see setSpectrum).
         """
         if name not in self.cached:
-            raise KeyError("%s not in set of spectra arrays." % name)
+            raise KeyError(f"{name} not in set of spectra arrays.")
         return self.cached[name]
 
     def hasCached(self, name):
@@ -575,7 +575,7 @@ class StationTrace(Trace):
                 Parameters for the given key.
         """
         if param_id not in self.parameters:
-            raise KeyError("Parameter %s not found in StationTrace" % param_id)
+            raise KeyError(f"Parameter {param_id} not found in StationTrace")
         return self.parameters[param_id]
 
     def getProvDataFrame(self):
@@ -650,7 +650,7 @@ class StationTrace(Trace):
             out = "%%-%ds" % (id_length)
             trace_id = out % self.id
         else:
-            trace_id = "%s" % self.id
+            trace_id = f"{self.id}"
         out = ""
         # output depending on delta or sampling rate bigger than one
         if self.stats.sampling_rate < 0.1:
@@ -692,7 +692,7 @@ class StationTrace(Trace):
 def _stats_from_inventory(data, inventory, seed_id, start_time):
     if len(inventory.source):
         if inventory.sender is not None and inventory.sender != inventory.source:
-            source = "%s,%s" % (inventory.source, inventory.sender)
+            source = f"{inventory.source},{inventory.sender}"
         else:
             source = inventory.source
 
@@ -794,7 +794,7 @@ def _stats_from_inventory(data, inventory, seed_id, start_time):
                 num, denom = units.split("/")
                 if num.lower() not in LENGTH_CONVERSIONS:
                     raise KeyError(
-                        "Sensitivity input units of %s are not supported." % units
+                        f"Sensitivity input units of {units} are not supported."
                     )
                 conversion = LENGTH_CONVERSIONS[num.lower()]
                 sensitivity = response.instrument_sensitivity.value * conversion
@@ -871,7 +871,7 @@ def _get_software_agent(pr, gmprocess_version):
     """
     software = "gmprocess"
     hashstr = "0000001"
-    agent_id = "seis_prov:sp001_sa_%s" % hashstr
+    agent_id = f"seis_prov:sp001_sa_{hashstr}"
     giturl = "https://github.com/usgs/groundmotion-processing"
     pr.agent(
         agent_id,
@@ -918,7 +918,7 @@ def _get_person_agent(pr, config=None):
         if "email" in config["user"]:
             email = config["user"]["email"]
     hashstr = "0000001"
-    person_id = "seis_prov:sp001_pp_%s" % hashstr
+    person_id = f"seis_prov:sp001_pp_{hashstr}"
     pr.agent(
         person_id,
         other_attributes=(
@@ -955,7 +955,7 @@ def _get_waveform_entity(trace, pr):
         trace.stats.channel.lower(),
     )
     waveform_hash = "%s_%s_%s" % tpl
-    waveform_id = "seis_prov:sp001_wf_%s" % waveform_hash
+    waveform_id = f"seis_prov:sp001_wf_{waveform_hash}"
     pr.entity(
         waveform_id,
         other_attributes=(
@@ -996,7 +996,7 @@ def _get_activity(pr, activity, attributes, sequence):
     code = activity_dict["code"]
     label = activity_dict["label"]
     activity_id = "sp%03i_%s_%s" % (sequence, code, hashid)
-    pr_attributes = [("prov:label", label), ("prov:type", "seis_prov:%s" % activity)]
+    pr_attributes = [("prov:label", label), ("prov:type", f"seis_prov:{activity}")]
     for key, value in attributes.items():
         if isinstance(value, float):
             value = prov.model.Literal(value, prov.constants.XSD_DOUBLE)
@@ -1007,7 +1007,7 @@ def _get_activity(pr, activity, attributes, sequence):
                 value.strftime(TIMEFMT), prov.constants.XSD_DATETIME
             )
 
-        att_tuple = ("seis_prov:%s" % key, value)
+        att_tuple = (f"seis_prov:{key}", value)
         pr_attributes.append(att_tuple)
-    pr.activity("seis_prov:%s" % activity_id, other_attributes=pr_attributes)
+    pr.activity(f"seis_prov:{activity_id}", other_attributes=pr_attributes)
     return pr

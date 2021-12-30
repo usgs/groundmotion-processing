@@ -602,10 +602,10 @@ class StationSummary(object):
                     period = element.attrib["period"]
                     if "damping" in element.attrib:
                         damping = float(element.attrib["damping"])
-                    imt = "%s(%s)" % (etag.upper(), period)
+                    imt = f"{etag.upper()}({period})"
                 elif etag == "duration":
                     interval = element.attrib["interval"]
-                    imt = "%s%s" % (etag.upper(), interval)
+                    imt = f"{etag.upper()}{interval}"
                 else:
                     imt = etag.upper()
                 for imc_element in element.getchildren():
@@ -750,7 +750,7 @@ class StationSummary(object):
                         units = XML_UNITS[key]
                         break
             if units is None:
-                raise KeyError("Could not find units for IMT %s" % imtstr)
+                raise KeyError(f"Could not find units for IMT {imtstr}")
 
             period = None
             if imtstr.startswith("sa") or imtstr.startswith("fas"):
