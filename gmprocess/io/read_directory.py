@@ -58,10 +58,10 @@ def directory_to_streams(directory, config=None):
             file_ext = os.path.splitext(file_name)[1].lower()
             if file_ext not in EXT_IGNORE:
                 try:
-                    logging.debug("Attempting to read: %s" % file_path)
+                    logging.debug(f"Attempting to read: {file_path}")
                     streams += read_data(file_path, config=config)
                 except BaseException as ex:
-                    logging.info('Failed to read file: %s' % file_name)
+                    logging.info(f"Failed to read file: {file_name}")
                     unprocessed_files += [file_path]
                     unprocessed_file_errors += [ex]
 

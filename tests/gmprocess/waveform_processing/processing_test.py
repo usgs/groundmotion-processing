@@ -39,7 +39,7 @@ def test_process_streams():
 
     test = process_streams(sc, origin, config=config)
 
-    logging.info("Testing trace: %s" % test[0][1])
+    logging.info(f"Testing trace: {test[0][1]}")
 
     assert len(test) == 3
     assert len(test[0]) == 3
@@ -99,7 +99,7 @@ def test_check_instrument():
 
     for sta, expected in [("CVS", True), ("GASB", True), ("SBT", False)]:
         st = test.select(station=sta)[0]
-        logging.info("Testing stream: %s" % st)
+        logging.info(f"Testing stream: {st}")
         assert st.passed == expected
 
 

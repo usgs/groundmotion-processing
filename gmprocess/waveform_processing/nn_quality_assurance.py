@@ -668,48 +668,72 @@ def getClassificationMetrics(tr, p_pick, delta_t):
     snr_max = max(snrgm)
 
     lower_index_average, upper_index_average = getFreqIndex(snr1_freq, 0.1, 10)
-    snr_average = np.trapz(
-        snrgm[lower_index_average:upper_index_average],
-        snr1_freq[lower_index_average:upper_index_average],
-    ) / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
+    snr_average = (
+        np.trapz(
+            snrgm[lower_index_average:upper_index_average],
+            snr1_freq[lower_index_average:upper_index_average],
+        )
+        / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
+    )
 
     lower_index_average, upper_index_average = getFreqIndex(snr1_freq, 0.1, 0.5)
-    ft_a1 = np.trapz(
-        smooth_ftgm[lower_index_average:upper_index_average],
-        snr1_freq[lower_index_average:upper_index_average],
-    ) / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
-    snr_a1 = np.trapz(
-        snrgm[lower_index_average:upper_index_average],
-        snr1_freq[lower_index_average:upper_index_average],
-    ) / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
+    ft_a1 = (
+        np.trapz(
+            smooth_ftgm[lower_index_average:upper_index_average],
+            snr1_freq[lower_index_average:upper_index_average],
+        )
+        / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
+    )
+    snr_a1 = (
+        np.trapz(
+            snrgm[lower_index_average:upper_index_average],
+            snr1_freq[lower_index_average:upper_index_average],
+        )
+        / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
+    )
 
     lower_index_average, upper_index_average = getFreqIndex(snr1_freq, 0.5, 1.0)
-    ft_a2 = np.trapz(
-        smooth_ftgm[lower_index_average:upper_index_average],
-        snr1_freq[lower_index_average:upper_index_average],
-    ) / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
-    snr_a2 = np.trapz(
-        snrgm[lower_index_average:upper_index_average],
-        snr1_freq[lower_index_average:upper_index_average],
-    ) / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
+    ft_a2 = (
+        np.trapz(
+            smooth_ftgm[lower_index_average:upper_index_average],
+            snr1_freq[lower_index_average:upper_index_average],
+        )
+        / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
+    )
+    snr_a2 = (
+        np.trapz(
+            snrgm[lower_index_average:upper_index_average],
+            snr1_freq[lower_index_average:upper_index_average],
+        )
+        / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
+    )
 
     lower_index_average, upper_index_average = getFreqIndex(snr1_freq, 1.0, 2.0)
-    snr_a3 = np.trapz(
-        snrgm[lower_index_average:upper_index_average],
-        snr1_freq[lower_index_average:upper_index_average],
-    ) / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
+    snr_a3 = (
+        np.trapz(
+            snrgm[lower_index_average:upper_index_average],
+            snr1_freq[lower_index_average:upper_index_average],
+        )
+        / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
+    )
 
     lower_index_average, upper_index_average = getFreqIndex(snr1_freq, 2.0, 5.0)
-    snr_a4 = np.trapz(
-        snrgm[lower_index_average:upper_index_average],
-        snr1_freq[lower_index_average:upper_index_average],
-    ) / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
+    snr_a4 = (
+        np.trapz(
+            snrgm[lower_index_average:upper_index_average],
+            snr1_freq[lower_index_average:upper_index_average],
+        )
+        / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
+    )
 
     lower_index_average, upper_index_average = getFreqIndex(snr1_freq, 5.0, 10.0)
-    snr_a5 = np.trapz(
-        snrgm[lower_index_average:upper_index_average],
-        snr1_freq[lower_index_average:upper_index_average],
-    ) / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
+    snr_a5 = (
+        np.trapz(
+            snrgm[lower_index_average:upper_index_average],
+            snr1_freq[lower_index_average:upper_index_average],
+        )
+        / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
+    )
 
     ft_a1_a2 = ft_a1 / ft_a2
 

@@ -358,10 +358,10 @@ class KNETFetcher(DataFetcher):
         payload = {
             "formattype": ["A"],
             "eqidlist": cgi_value,
-            "datanames": "%s;alldata" % firstid,
+            "datanames": f"{firstid};alldata",
             "datakind": ["all"],
         }
-        logging.info("Downloading Japanese data into %s..." % localfile)
+        logging.info(f"Downloading Japanese data into {localfile}...")
         req = requests.get(url, params=payload, auth=(self.user, self.password))
         logging.debug("KNET download url: %s", str(url))
         logging.debug("KNET download response code: %s", req.status_code)
@@ -372,7 +372,7 @@ class KNETFetcher(DataFetcher):
             with open(localfile, "wb") as f:
                 for chunk in req:
                     f.write(chunk)
-        logging.info("Finished downloading into %s..." % localfile)
+        logging.info(f"Finished downloading into {localfile}...")
 
         # open the tarball, extract the kiknet/knet gzipped tarballs
         tar = tarfile.open(localfile)
@@ -411,7 +411,7 @@ class KNETFetcher(DataFetcher):
             for subdir in subdirs:
                 datafiles = glob.glob(os.path.join(subdir, "*.*"))
                 for dfile in datafiles:
-                    logging.info("Reading KNET/KikNet file %s..." % dfile)
+                    logging.info(f"Reading KNET/KikNet file {dfile}...")
                     streams += read_knet(dfile)
 
             if self.rawdir is None:

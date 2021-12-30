@@ -80,12 +80,12 @@ LOCATION_CODES = {"RE": RE_NETWORK}
 def _get_station_file(filename, stream, metadata_directory):
     network = stream[0].stats.network
     station = stream[0].stats.station
-    pattern = "%s.%s.xml" % (network, station)
+    pattern = f"{network}.{station}.xml"
     if metadata_directory == "None":
         filebase, fname = os.path.split(filename)
         xmlfiles = glob.glob(os.path.join(filebase, pattern))
     else:
-        logging.info("Using 'metadata_directory': %s" % metadata_directory)
+        logging.info(f"Using 'metadata_directory': {metadata_directory}")
         xmlfiles = glob.glob(os.path.join(metadata_directory, pattern))
     if len(xmlfiles) != 1:
         return "None"
@@ -149,7 +149,7 @@ def read_obspy(filename, config=None, **kwargs):
     if config is None:
         config = get_config()
     if not is_obspy(filename, config):
-        raise Exception("%s is not a valid Obspy file format." % filename)
+        raise Exception(f"{filename} is not a valid Obspy file format.")
 
     if "exclude_patterns" in kwargs:
         exclude_patterns = kwargs.get("exclude_patterns", EXCLUDE_PATTERNS)
@@ -185,7 +185,7 @@ def read_obspy(filename, config=None, **kwargs):
         location = ttrace.stats.location
 
         # full instrument name for matching purposes
-        instrument = "%s.%s.%s.%s" % (network, station, location, channel)
+        instrument = f"{network}.{station}.{location}.{channel}"
 
         # Search for a match using regular expressions.
         for pattern in exclude_patterns:

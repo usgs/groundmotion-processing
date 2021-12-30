@@ -16,9 +16,7 @@ def test_export_provenance_tables(script_runner):
         ddir = pkg_resources.resource_filename(
             "gmprocess", os.path.join("data", "testdata", "demo_steps", "exports")
         )
-        setup_inputs = io.StringIO(
-            "2\ntest\n%s\n%s\nname\ntest@email.com\n" % (cdir, ddir)
-        )
+        setup_inputs = io.StringIO(f"2\ntest\n{cdir}\n{ddir}\nname\ntest@email.com\n")
         ret = script_runner.run("gmrecords", "projects", "-c", stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success

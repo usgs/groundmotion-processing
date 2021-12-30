@@ -46,7 +46,7 @@ class ComputeStationMetricsModule(base.SubcommandModule):
             gmrecords:
                 GMrecordsApp instance.
         """
-        logging.info("Running subcommand '%s'" % self.command_name)
+        logging.info(f"Running subcommand '{self.command_name}'")
 
         self.gmrecords = gmrecords
         self._check_arguments()
@@ -69,7 +69,7 @@ class ComputeStationMetricsModule(base.SubcommandModule):
 
     def _event_station_metrics(self, event):
         self.eventid = event.id
-        logging.info("Computing station metrics for event %s..." % self.eventid)
+        logging.info(f"Computing station metrics for event {self.eventid}...")
         event_dir = os.path.join(self.gmrecords.data_path, self.eventid)
         workname = os.path.normpath(
             os.path.join(event_dir, utils.constants.WORKSPACE_NAME)
@@ -202,7 +202,7 @@ class ComputeStationMetricsModule(base.SubcommandModule):
                 raise ValueError("No matching streams found.")
 
             for stream in streams:
-                logging.info("Calculating station metrics for %s..." % stream.get_id())
+                logging.info(f"Calculating station metrics for {stream.get_id()}...")
                 summary = station_summary.StationSummary.from_config(
                     stream,
                     event=event,

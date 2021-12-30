@@ -31,7 +31,7 @@ def query_yes_no(question, default="yes"):
     elif default == "no":
         prompt = " [y/N] "
     else:
-        raise ValueError("invalid default answer: '%s'" % default)
+        raise ValueError(f"invalid default answer: '{default}'")
 
     while True:
         sys.stdout.write(question + prompt)
@@ -50,7 +50,7 @@ def make_dir(pathstr, default):
     make_ok = False
     ppath = ""
     while not make_ok:
-        ppath = input("Please enter the %s: [%s] " % (pathstr, default))
+        ppath = input(f"Please enter the {pathstr}: [{default}] ")
         if not len(ppath.strip()):
             ppath = default
         try:

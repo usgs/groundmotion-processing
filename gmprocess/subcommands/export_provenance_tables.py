@@ -32,7 +32,7 @@ class ExportProvenanceTablesModule(base.SubcommandModule):
             gmrecords:
                 GMrecordsApp instance.
         """
-        logging.info("Running subcommand '%s'" % self.command_name)
+        logging.info(f"Running subcommand '{self.command_name}'")
 
         self.gmrecords = gmrecords
         self._check_arguments()
@@ -40,7 +40,7 @@ class ExportProvenanceTablesModule(base.SubcommandModule):
 
         for event in self.events:
             self.eventid = event.id
-            logging.info("Creating provenance tables for event %s..." % self.eventid)
+            logging.info(f"Creating provenance tables for event {self.eventid}...")
             event_dir = os.path.normpath(
                 os.path.join(gmrecords.data_path, self.eventid)
             )
@@ -68,13 +68,13 @@ class ExportProvenanceTablesModule(base.SubcommandModule):
             )
             self.workspace.close()
 
-            basename = "%s_%s_provenance" % (gmrecords.project, gmrecords.args.label)
+            basename = f"{gmrecords.project}_{gmrecords.args.label}_provenance"
             if gmrecords.args.output_format == "csv":
-                csvfile = os.path.join(event_dir, "%s.csv" % basename)
+                csvfile = os.path.join(event_dir, f"{basename}.csv")
                 self.append_file("Provenance", csvfile)
                 provdata.to_csv(csvfile, index=False)
             else:
-                excelfile = os.path.join(event_dir, "%s.xlsx" % basename)
+                excelfile = os.path.join(event_dir, f"{basename}.xlsx")
                 self.append_file("Provenance", excelfile)
                 provdata.to_excel(excelfile, index=False)
 

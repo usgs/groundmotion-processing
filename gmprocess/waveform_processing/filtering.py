@@ -62,7 +62,7 @@ def highpass_filter_trace(tr, filter_order=5, number_of_passes=2):
             },
         )
     except BaseException as e:
-        tr.fail("Lowpass filter failed with excpetion: %s" % e)
+        tr.fail(f"Lowpass filter failed with excpetion: {e}")
     return tr
 
 
@@ -126,5 +126,5 @@ def lowpass_filter_trace(tr, filter_order=5, number_of_passes=2):
             },
         )
     except BaseException as e:
-        tr.fail("Lowpass filter failed with excpetion: %s" % e)
+        tr.fail(f"Lowpass filter failed with excpetion: {e}")
     return tr

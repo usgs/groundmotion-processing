@@ -75,7 +75,7 @@ def read_knet(filename, config=None, **kwargs):
     """
     logging.debug("Starting read_knet.")
     if not is_knet(filename, config):
-        raise Exception("%s is not a valid KNET file" % filename)
+        raise Exception(f"{filename} is not a valid KNET file")
 
     # Parse the header portion of the file
     with open(filename, "rt") as f:
@@ -86,7 +86,7 @@ def read_knet(filename, config=None, **kwargs):
     standard = {}
     hdr["network"] = "BO"
     hdr["station"] = lines[5].split()[2]
-    logging.debug("station: %s" % hdr["station"])
+    logging.debug(f"station: {hdr['station']}")
     standard["station_name"] = ""
 
     # according to the powers that defined the Network.Station.Channel.Location
@@ -121,9 +121,9 @@ def read_knet(filename, config=None, **kwargs):
             hdr["sampling_rate"], is_acceleration=True, is_vertical=True, is_north=False
         )
     else:
-        raise Exception("KNET: Could not parse direction %s" % lines[12].split()[1])
+        raise Exception(f"KNET: Could not parse direction {lines[12].split()[1]}")
 
-    logging.debug("channel: %s" % hdr["channel"])
+    logging.debug(f"channel: {hdr['channel']}")
     scalestr = lines[13].split()[2]
     parts = scalestr.split("/")
     num = float(parts[0].replace("(gal)", ""))

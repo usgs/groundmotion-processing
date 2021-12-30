@@ -72,7 +72,7 @@ class ProjectsModule(base.SubcommandModule):
             gmrecords:
                 GMrecordsApp instance.
         """
-        logging.info("Running subcommand '%s'" % self.command_name)
+        logging.info(f"Running subcommand '{self.command_name}'")
 
         self.gmrecords = gmrecords
         self._check_arguments()
@@ -113,7 +113,7 @@ class ProjectsModule(base.SubcommandModule):
                 config.filename,
                 is_current=True,
             )
-            print("\nSwitched to project: \n%s\n" % (str(sp)))
+            print(f"\nSwitched to project: \n{str(sp)}\n")
             sys.exit(0)
 
         if args.delete:
@@ -150,9 +150,9 @@ class ProjectsModule(base.SubcommandModule):
 
             config.filename = configfile
             config.write()
-            print("Deleted project: %s" % project)
-            print("\tDeleted conf directory %s:" % conf_path)
-            print("\tDeleted data directory %s:" % data_path)
+            print(f"Deleted project: {project}")
+            print(f"\tDeleted conf directory {conf_path}:")
+            print(f"\tDeleted data directory {data_path}:")
 
             print("\nSet to new project:\n")
             print(newproject)
@@ -237,7 +237,7 @@ def check_project_config(config):
         )
         delete_project = False
         if not data_exists:
-            logging.warn("Data path for project %s does not exist." % project)
+            logging.warn(f"Data path for project {project} does not exist.")
             delete_project = True
         conf_exists = os.path.isdir(
             os.path.join(
@@ -246,10 +246,10 @@ def check_project_config(config):
             )
         )
         if not conf_exists:
-            logging.warn("Install path for project %s does not exist." % project)
+            logging.warn(f"Install path for project {project} does not exist.")
             delete_project = True
         if delete_project:
-            logging.warn("Deleting project %s." % project)
+            logging.warn(f"Deleting project {project}.")
             del config["projects"][project]
             config["project"] = config["projects"].keys()[0]
             config.write()
@@ -326,7 +326,7 @@ def create(config, cwd=False):
     config["project"] = project
     config.write()
     sproj = Project(project, config["projects"][project], config.filename)
-    print("\nCreated project: %s" % (sproj))
+    print(f"\nCreated project: {sproj}")
 
     # Sart with production conf from repository, then add user info
     data_path = pkg_resources.resource_filename("gmprocess", "data")

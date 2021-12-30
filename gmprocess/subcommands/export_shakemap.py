@@ -43,7 +43,7 @@ class ExportShakeMapModule(base.SubcommandModule):
             gmrecords:
                 GMrecordsApp instance.
         """
-        logging.info("Running subcommand '%s'" % self.command_name)
+        logging.info(f"Running subcommand '{self.command_name}'")
 
         self.gmrecords = gmrecords
         self._check_arguments()
@@ -51,7 +51,7 @@ class ExportShakeMapModule(base.SubcommandModule):
 
         for event in self.events:
             self.eventid = event.id
-            logging.info("Creating shakemap files for event %s..." % self.eventid)
+            logging.info(f"Creating shakemap files for event {self.eventid}...")
 
             event_dir = os.path.normpath(os.path.join(gmrecords.data_path, event.id))
             workname = os.path.join(event_dir, const.WORKSPACE_NAME)

@@ -183,7 +183,7 @@ def build_report_latex(
         SB = STREAMBLOCK.replace("[PLOTPATH]", plot_path)
         SB = SB.replace(
             "[EVENT]",
-            "M %s - %s - %s" % (origin.magnitude, str_for_latex(origin.id), timestr),
+            f"M {origin.magnitude} - {str_for_latex(origin.id)} - {timestr}",
         )
         SB = SB.replace("[STATION]", st.get_id())
         report += SB
@@ -194,12 +194,12 @@ def build_report_latex(
         report += "\n"
         if st[0].hasParameter("signal_split"):
             pick_method = st[0].getParameter("signal_split")["picker_type"]
-            report += "Pick Method: %s\n\n" % str_for_latex(pick_method)
+            report += f"Pick Method: {str_for_latex(pick_method)}\n\n"
         if "nnet_qa" in st.getStreamParamKeys():
             score_lq = st.getStreamParam("nnet_qa")["score_LQ"]
             score_hq = st.getStreamParam("nnet_qa")["score_HQ"]
-            report += "Neural Network LQ score: %s\n\n" % str_for_latex(str(score_lq))
-            report += "Neural Network HQ score: %s\n\n" % str_for_latex(str(score_hq))
+            report += f"Neural Network LQ score: {str_for_latex(str(score_lq))}\n\n"
+            report += f"Neural Network HQ score: {str_for_latex(str(score_hq))}\n\n"
         if not st.passed:
             for tr in st:
                 if tr.hasParameter("failure"):
@@ -221,7 +221,7 @@ def build_report_latex(
         os.chdir(directory)
 
         # File name relative to current location
-        file_name = "%s_report_%s.tex" % (prefix, origin.id)
+        file_name = f"{prefix}_report_{origin.id}.tex"
 
         # File name for printing out later relative base directory
         latex_file = os.path.join(directory, file_name)
@@ -232,7 +232,7 @@ def build_report_latex(
         try:
             pdflatex_bin = which("pdflatex")
             pdflatex_options = "-interaction=nonstopmode -halt-on-error"
-            cmd = "%s %s %s" % (pdflatex_bin, pdflatex_options, file_name)
+            cmd = f"{pdflatex_bin} {pdflatex_options} {file_name}"
             res, stdout, stderr = get_command_output(cmd)
             report_file = latex_file
             if res:
@@ -283,12 +283,12 @@ def get_prov_latex(st):
     trace1 = st[channelidx.index(0)]
     df = pd.DataFrame(columns=columns)
     df = trace1.getProvDataFrame()
-    mapper = {"Process Value": "%s Value" % trace1.stats.channel}
+    mapper = {"Process Value": f"{trace1.stats.channel} Value"}
     df = df.rename(mapper=mapper, axis="columns")
     for i in channelidx[1:]:
         trace2 = st[i]
         trace2_frame = trace2.getProvDataFrame()
-        df["%s Value" % trace2.stats.channel] = trace2_frame["Process Value"]
+        df[f"{trace2.stats.channel} Value"] = trace2_frame["Process Value"]
 
     lastrow = None
     newdf = pd.DataFrame(columns=df.columns)

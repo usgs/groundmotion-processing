@@ -23,7 +23,7 @@ def test_check_clipping():
     for code in codes:
         traces = []
         for ss in streams:
-            tcode = "%s.%s" % (ss[0].stats.network, ss[0].stats.station)
+            tcode = f"{ss[0].stats.network}.{ss[0].stats.station}"
             if tcode == code:
                 traces.append(ss[0])
         st = StationStream(traces)

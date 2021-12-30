@@ -17,7 +17,7 @@ def test_gmconvert():
     )
     out_dir = "temp_dir"
     try:
-        cmd = "gmconvert -i %s -o %s -f SAC" % (data_dir, out_dir)
+        cmd = f"gmconvert -i {data_dir} -o {out_dir} -f SAC"
         rc, so, se = get_command_output(cmd)
         assert rc
 

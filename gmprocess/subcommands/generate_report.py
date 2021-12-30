@@ -41,7 +41,7 @@ class GenerateReportModule(base.SubcommandModule):
             gmrecords:
                 GMrecordsApp instance.
         """
-        logging.info("Running subcommand '%s'" % self.command_name)
+        logging.info(f"Running subcommand '{self.command_name}'")
 
         self.gmrecords = gmrecords
         self._check_arguments()
@@ -51,7 +51,7 @@ class GenerateReportModule(base.SubcommandModule):
             event_dir = os.path.join(self.gmrecords.data_path, event.id)
             pstreams = self.generate_diagnostic_plots(event)
 
-            logging.info("Generating summary report for event %s..." % event.id)
+            logging.info(f"Generating summary report for event {event.id}...")
 
             build_conf = gmrecords.conf["build_report"]
             report_format = build_conf["format"]
@@ -60,7 +60,7 @@ class GenerateReportModule(base.SubcommandModule):
                     pstreams,
                     event_dir,
                     event,
-                    prefix="%s_%s" % (gmrecords.project, gmrecords.args.label),
+                    prefix=f"{gmrecords.project}_{gmrecords.args.label}",
                     config=gmrecords.conf,
                     gmprocess_version=gmrecords.gmprocess_version,
                 )
@@ -98,7 +98,7 @@ class GenerateReportModule(base.SubcommandModule):
                 threads_per_worker=1, n_workers=self.gmrecords.args.num_processes
             )
 
-        logging.info("Creating diagnostic plots for event %s..." % event.id)
+        logging.info(f"Creating diagnostic plots for event {event.id}...")
         plot_dir = os.path.join(event_dir, "plots")
         if not os.path.isdir(plot_dir):
             os.makedirs(plot_dir)

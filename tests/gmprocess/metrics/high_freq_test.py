@@ -124,11 +124,11 @@ def test_high_freq_sa():
         7.5,
         10.0,
     ]
-    imt_list = ["sa%s" % p for p in periods]
+    imt_list = [f"sa{p}" for p in periods]
     station = StationSummary.from_stream(st, ["rotd50"], imt_list)
     # I believe that units are %g in the following table:
     pgmdf = station.pgms
-    imt_strs = ["SA(%.3f)" % p for p in periods]
+    imt_strs = [f"SA({p:.3f})" for p in periods]
     test_sa = []
     for i in imt_strs:
         test_sa.append(pgmdf.loc[i, "ROTD(50.0)"].Result)
@@ -177,7 +177,7 @@ def test_high_freq_sa():
     np.testing.assert_allclose(test_data["target_sa"], test_data["test_sa"], rtol=0.1)
     t2 = time.time()
     elapsed = t2 - t1
-    print("Test duration: %s" % elapsed)
+    print(f"Test duration: {elapsed}")
 
 
 if __name__ == "__main__":

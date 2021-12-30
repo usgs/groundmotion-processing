@@ -58,14 +58,14 @@ def cut(st, sec_before_split=None):
         return st
 
     for tr in st:
-        logging.debug("Before cut end time: %s " % tr.stats.endtime)
+        logging.debug(f"Before cut end time: {tr.stats.endtime} ")
         etime = tr.getParameter("signal_end")["end_time"]
         tr.trim(endtime=etime)
-        logging.debug("After cut end time: %s " % tr.stats.endtime)
+        logging.debug(f"After cut end time: {tr.stats.endtime} ")
         if sec_before_split is not None:
             split_time = tr.getParameter("signal_split")["split_time"]
             stime = split_time - sec_before_split
-            logging.debug("Before cut start time: %s " % tr.stats.starttime)
+            logging.debug(f"Before cut start time: {tr.stats.starttime} ")
             if stime < etime:
                 tr.trim(starttime=stime)
             else:
@@ -73,7 +73,7 @@ def cut(st, sec_before_split=None):
                     "The 'cut' processing step resulting in "
                     "incompatible start and end times."
                 )
-            logging.debug("After cut start time: %s " % tr.stats.starttime)
+            logging.debug(f"After cut start time: {tr.stats.starttime} ")
         tr.setProvenance(
             "cut",
             {"new_start_time": tr.stats.starttime, "new_end_time": tr.stats.endtime},

@@ -87,9 +87,9 @@ class SubcommandModule(ABC):
         if len(self.files_created):
             print("\nThe following files have been created:")
             for file_type, file_list in self.files_created.items():
-                print("File type: %s" % file_type)
+                print(f"File type: {file_type}")
                 for fname in file_list:
-                    print("\t%s" % os.path.normpath(fname))
+                    print(f"\t{os.path.normpath(fname)}")
         else:
             print("No new files created.")
 
@@ -121,13 +121,13 @@ class SubcommandModule(ABC):
                 # Use project directory from config
                 temp_dir = self.gmrecords.data_path
                 if not os.path.isdir(temp_dir):
-                    raise OSError("No such directory: %s" % temp_dir)
+                    raise OSError(f"No such directory: {temp_dir}")
             elif self.gmrecords.args.data_source == "download":
                 temp_dir = None
             else:
                 temp_dir = self.gmrecords.args.data_source
                 if not os.path.isdir(temp_dir):
-                    raise OSError("No such directory: %s" % temp_dir)
+                    raise OSError(f"No such directory: {temp_dir}")
             self.download_dir = temp_dir
         else:
             self.download_dir = None
@@ -154,7 +154,7 @@ class SubcommandModule(ABC):
             labels.remove("unprocessed")
         if not len(labels):
             logging.info(
-                "No processed waveform data in workspace for event %s" % self.eventid
+                f"No processed waveform data in workspace for event {self.eventid}"
             )
             return
 
@@ -163,10 +163,10 @@ class SubcommandModule(ABC):
         if (len(labels) > 1) and (self.gmrecords.args.label is None):
             print("\nWhich label do you want to use?")
             for lab in labels:
-                print("\t%s" % lab)
+                print(f"\t{lab}")
             tmplab = input("> ")
             if tmplab not in labels:
-                print("%s not a valid label. Exiting." % tmplab)
+                print(f"{tmplab} not a valid label. Exiting.")
                 sys.exit(1)
             else:
                 self.gmrecords.args.label = tmplab

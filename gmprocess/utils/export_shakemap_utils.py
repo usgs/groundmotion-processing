@@ -155,11 +155,11 @@ def create_json(
     }
 
     station_feature_dict = {"type": "FeatureCollection", "features": station_features}
-    stationfile = os.path.join(event_dir, "%s_groundmotions_dat.json" % event.id)
+    stationfile = os.path.join(event_dir, f"{event.id}_groundmotions_dat.json")
     with open(stationfile, "wt") as f:
         json.dump(station_feature_dict, f, allow_nan=False)
 
-    jsonfile = os.path.join(event_dir, "%s_metrics.json" % event.id)
+    jsonfile = os.path.join(event_dir, f"{event.id}_metrics.json")
     with open(jsonfile, "wt") as f:
         json.dump(feature_dict, f, allow_nan=False)
 

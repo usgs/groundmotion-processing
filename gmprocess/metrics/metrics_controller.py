@@ -687,14 +687,14 @@ class MetricsController(object):
         interval = steps["interval"]
         if period is not None:
             sfmt = METRICS_XML_FLOAT_STRING_FORMAT["period"]
-            tmp_imt_str = "%s(%s)" % (imt.upper(), sfmt)
+            tmp_imt_str = f"{imt.upper()}({sfmt})"
             imt_str = tmp_imt_str % float(period)
         elif interval is not None:
             imt_str = "%s%i-%i" % (imt.upper(), interval[0], interval[1])
         else:
             imt_str = imt.upper()
         if percentile is not None:
-            imc_str = "%s(%s)" % (imc.upper(), float(percentile))
+            imc_str = f"{imc.upper()}({float(percentile)})"
         else:
             imc_str = imc.upper()
 
@@ -877,16 +877,14 @@ class MetricsController(object):
                 if period is None:
                     continue
                 cleaned_imts.add(
-                    "fas(%s)"
-                    % METRICS_XML_FLOAT_STRING_FORMAT["period"]
-                    % float(period)
+                    f"fas({METRICS_XML_FLOAT_STRING_FORMAT['period']})" % float(period)
                 )
             elif imt.startswith("sa"):
                 period = self._parse_period(imt)
                 if period is None:
                     continue
                 cleaned_imts.add(
-                    "sa(%s)" % METRICS_XML_FLOAT_STRING_FORMAT["period"] % float(period)
+                    f"sa({METRICS_XML_FLOAT_STRING_FORMAT['period']})" % float(period)
                 )
             else:
                 cleaned_imts.add(imt)

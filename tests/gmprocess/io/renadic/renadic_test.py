@@ -15,7 +15,7 @@ def test_renadic():
 
     raw_streams = []
     for dfile in datafiles:
-        print("Reading file %s..." % dfile)
+        print(f"Reading file {dfile}...")
         raw_streams += read_renadic(dfile)
 
     # following pga values in G taken from file headers

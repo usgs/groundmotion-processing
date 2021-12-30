@@ -75,11 +75,7 @@ class WorkspaceApp(object):
             """
             shape = ",".join([str(d) for d in dataset.shape])
             indent = INDENT * min(level, 1)
-            print(
-                "{indent}{name} dims=({shape}) type={dtype}".format(
-                    indent=indent, name=name, shape=shape, dtype=dataset.dtype.name
-                )
-            )
+            print(f"{indent}{name} dims=({shape}) type={dataset.dtype.name}")
             return
 
         def _print_group(items, level):
@@ -125,11 +121,7 @@ class WorkspaceApp(object):
                    Level of group in HDF5 hierarchy (root level is 0).
             """
             mb = group["total_bytes"] / float(2 ** 20)
-            print(
-                "{indent}{name}: {subtotal:.3f} MB".format(
-                    indent=INDENT * level, name=name, subtotal=mb
-                )
-            )
+            print(f"{INDENT * level}{name}: {mb:.3f} MB")
             for subgroup in group["groups"]:
                 _print_subtotal(subgroup, group["groups"][subgroup], level + 1)
             return

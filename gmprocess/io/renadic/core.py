@@ -248,7 +248,7 @@ def _read_header(lines, filename, table):
     elif raw_channel in VERTICAL_CHANNELS:
         channel = get_channel_name(header["sampling_rate"], True, True, False)
     else:
-        raise KeyError("Channel name %s not defined" % raw_channel)
+        raise KeyError(f"Channel name {raw_channel} not defined")
 
     header["channel"] = channel
     header["station"] = lines[5].split()[-1]
@@ -257,7 +257,7 @@ def _read_header(lines, filename, table):
 
     # these files seem to have all zeros for station coordinates!
     if not len(station_row):
-        logging.warning("Could not find station match for %s" % station_name)
+        logging.warning(f"Could not find station match for {station_name}")
         coordparts = lines[4].split()
         lat = float(re.search(FLOATRE, coordparts[2]).group())
         lon = float(re.search(FLOATRE, coordparts[3]).group())

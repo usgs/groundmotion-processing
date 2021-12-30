@@ -94,11 +94,9 @@ def events_from_directory(dir):
                     old_dir = os.path.join(dir, eventid)
                     new_dir = os.path.join(dir, event.id)
                     os.rename(old_dir, new_dir)
-                    logging.warn(
-                        "Directory %s has been renamed to %s." % (old_dir, new_dir)
-                    )
+                    logging.warn(f"Directory {old_dir} has been renamed to {new_dir}.")
             except BaseException:
-                logging.warning("Could not get info for event id: %s" % eventid)
+                logging.warning(f"Could not get info for event id: {eventid}")
 
     return events
 

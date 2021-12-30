@@ -42,15 +42,15 @@ class DownloadModule(base.SubcommandModule):
             gmrecords:
                 GMrecordsApp instance.
         """
-        logging.info("Running subcommand '%s'" % self.command_name)
+        logging.info(f"Running subcommand '{self.command_name}'")
         self.gmrecords = gmrecords
         self._check_arguments()
 
         self._get_events()
 
-        logging.info("Number of events to download: %s" % len(self.events))
+        logging.info(f"Number of events to download: {len(self.events)}")
         for event in self.events:
-            logging.info("Starting event: %s" % event.id)
+            logging.info(f"Starting event: {event.id}")
             event_dir = os.path.normpath(os.path.join(gmrecords.data_path, event.id))
             if not os.path.exists(event_dir):
                 os.makedirs(event_dir)

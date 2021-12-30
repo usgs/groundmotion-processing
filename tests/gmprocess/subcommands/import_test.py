@@ -20,9 +20,7 @@ def test_import(script_runner):
         idir = pkg_resources.resource_filename(
             "gmprocess", os.path.join("data", "testdata", "import")
         )
-        setup_inputs = io.StringIO(
-            "2\ntest\n%s\n%s\nname\ntest@email.com\n" % (cdir, ddir)
-        )
+        setup_inputs = io.StringIO(f"2\ntest\n{cdir}\n{ddir}\nname\ntest@email.com\n")
         ret = script_runner.run("gmrecords", "projects", "-c", stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success

@@ -77,7 +77,7 @@ def read_esm(filename, config=None, **kwargs):
     """
     logging.debug("Starting read_esm.")
     if not is_esm(filename, config):
-        raise Exception("%s is not a valid ESM file" % filename)
+        raise Exception(f"{filename} is not a valid ESM file")
 
     # Parse the header portion of the file
     header = {}

@@ -155,7 +155,7 @@ def read_dmg(filename, config=None, **kwargs):
     """
     logging.debug("Starting read_dmg.")
     if not is_dmg(filename, config):
-        raise Exception("%s is not a valid DMG strong motion data file." % filename)
+        raise Exception(f"{filename} is not a valid DMG strong motion data file.")
 
     # Check for units and location
     units = kwargs.get("units", "acc")
@@ -283,9 +283,9 @@ def _read_volume_one(filename, line_offset, location="", units="acc"):
 
     if unit in UNIT_CONVERSIONS:
         acc_data *= UNIT_CONVERSIONS[unit]
-        logging.debug("Data converted from %s to cm/s/s" % (unit))
+        logging.debug(f"Data converted from {unit} to cm/s/s")
     else:
-        raise ValueError("DMG: %s is not a supported unit." % unit)
+        raise ValueError(f"DMG: {unit} is not a supported unit.")
 
     acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()))
 
@@ -351,9 +351,9 @@ def _read_volume_two(filename, line_offset, location="", units="acc"):
         acc_data = acc_data[: hdr["npts"]]
         if unit in UNIT_CONVERSIONS:
             acc_data *= UNIT_CONVERSIONS[unit]
-            logging.debug("Data converted from %s to cm/s/s" % (unit))
+            logging.debug(f"Data converted from {unit} to cm/s/s")
         else:
-            raise ValueError("DMG: %s is not a supported unit." % unit)
+            raise ValueError(f"DMG: {unit} is not a supported unit.")
         acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()))
 
         response = {"input_units": "counts", "output_units": "cm/s^2"}
@@ -476,13 +476,13 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=""):
             network = "--"
             source = "unknown"
     hdr["network"] = network
-    logging.debug("network: %s" % network)
+    logging.debug(f"network: {network}")
     station_line = lines[4]
     station = station_line[12:17].strip()
-    logging.debug("station: %s" % station)
+    logging.debug(f"station: {station}")
     hdr["station"] = station
     angle = int_data[26]
-    logging.debug("angle: %s" % angle)
+    logging.debug(f"angle: {angle}")
 
     # newer files seem to have the *real* number of points in int header 32
     if int_data[32] != 0:
@@ -490,10 +490,10 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=""):
     else:
         hdr["npts"] = int_data[27]
     reclen = flt_data[2]
-    logging.debug("reclen: %s" % reclen)
-    logging.debug("npts: %s" % hdr["npts"])
+    logging.debug(f"reclen: {reclen}")
+    logging.debug(f"npts: {hdr['npts']}")
     hdr["sampling_rate"] = np.round((hdr["npts"] - 1) / reclen)
-    logging.debug("sampling_rate: %s" % hdr["sampling_rate"])
+    logging.debug(f"sampling_rate: {hdr['sampling_rate']}")
     hdr["delta"] = 1 / hdr["sampling_rate"]
     hdr["channel"] = _get_channel(angle, hdr["sampling_rate"])
     # this format uses codes of 500/600 in this angle to indicate a vertical
@@ -501,7 +501,7 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=""):
     # horizontal angle is zero in these cases
     if hdr["channel"].endswith("Z"):
         angle = "0.0"
-    logging.debug("channel: %s" % hdr["channel"])
+    logging.debug(f"channel: {hdr['channel']}")
 
     if location == "":
         hdr["location"] = "--"
@@ -553,7 +553,7 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=""):
         standard["process_time"] = ""
 
     standard["process_level"] = PROCESS_LEVELS[level]
-    logging.debug("process_level: %s" % standard["process_level"])
+    logging.debug(f"process_level: {standard['process_level']}")
     if "comments" not in standard:
         standard["comments"] = ""
     standard["structure_type"] = lines[7][46:80].strip()

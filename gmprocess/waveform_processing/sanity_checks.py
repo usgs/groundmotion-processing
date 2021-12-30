@@ -69,9 +69,9 @@ def check_tail(st, duration, max_vel_ratio=0.1, max_dis_ratio=0.5):
         vel_ratio = abs_max_vel_trim / abs_max_vel
         dis_ratio = abs_max_dis_trim / abs_max_dis
         if vel_ratio > max_vel_ratio:
-            tr.fail("Velocity ratio is greater than %s" % max_vel_ratio)
+            tr.fail(f"Velocity ratio is greater than {max_vel_ratio}")
         if dis_ratio > max_dis_ratio:
-            tr.fail("Displacement ratio is greater than %s" % max_dis_ratio)
+            tr.fail(f"Displacement ratio is greater than {max_dis_ratio}")
         tail_conf = {
             "max_vel_ratio": max_vel_ratio,
             "max_dis_ratio": max_dis_ratio,

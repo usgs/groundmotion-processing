@@ -257,15 +257,15 @@ class TurkeyFetcher(DataFetcher):
             logging.debug("TurkeyFetcher data url: %s", str(data_url))
             logging.debug("TurkeyFetcher data response code: %s", req3.status_code)
             data = req3.text
-            localfile = os.path.join(rawdir, "%s.txt" % station_id)
-            logging.info("Downloading Turkish data file %s..." % station_id)
+            localfile = os.path.join(rawdir, f"{station_id}.txt")
+            logging.info(f"Downloading Turkish data file {station_id}...")
             with open(localfile, "wt") as f:
                 f.write(data)
             datafiles.append(localfile)
 
         streams = []
         for dfile in datafiles:
-            logging.info("Reading datafile %s..." % dfile)
+            logging.info(f"Reading datafile {dfile}...")
             streams += read_nsmn(dfile)
 
         if self.rawdir is None:

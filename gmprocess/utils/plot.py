@@ -56,7 +56,7 @@ def plot_regression(
     ax = fig.add_axes([BOTTOM, AX1_LEFT, AX1_WIDTH, AX1_HEIGHT])
 
     if distance_metric not in imc_table.columns:
-        raise KeyError('Distance metric "%s" not found in table' % distance_metric)
+        raise KeyError(f'Distance metric "{distance_metric}" not found in table')
     imt = imt.upper()
 
     # Stupid hack to get units for now. Need a better, more systematic
@@ -66,10 +66,10 @@ def plot_regression(
     elif imt.startswith("FAS") or imt in ["ARIAS", "PGV"]:
         units = "cm/s"
     else:
-        units = "Unknown units for IMT %s" % imt
+        units = f"Unknown units for IMT {imt}"
 
     if imt not in imc_table.columns:
-        raise KeyError('IMT "%s" not found in table' % imt)
+        raise KeyError(f'IMT "{imt}" not found in table')
     # get the event information
     # group imt data by event id
     # plot imts by event using colors banded by magnitude
@@ -99,8 +99,8 @@ def plot_regression(
         imtdata = erows[imt]
         ax.loglog(distance, imtdata, mfc=color, mec="k", marker="o", linestyle="None")
 
-    ax.set_xlabel("%s (km)" % distance_metric)
-    ax.set_ylabel("%s (%s)" % (imt, units))
+    ax.set_xlabel(f"{distance_metric} (km)")
+    ax.set_ylabel(f"{imt} ({units})")
 
     bounds = np.arange(min_mag, max_mag + 1.0, 0.5)
     norm = mpl.colors.BoundaryNorm(bounds, cmap2.N)
@@ -119,7 +119,7 @@ def plot_regression(
 
     plt.sca(ax)
     plt.suptitle("%s vs %s (#eqks=%i)" % (distance_metric, imt, len(eventids)))
-    plt.title("for component %s" % (imc))
+    plt.title(f"for component {imc}")
 
     plt.savefig(filename)
 
@@ -239,7 +239,7 @@ def plot_arias(
             max_value = abs_arr[idx]
             ax.plot([t[idx]], [trace.data[idx]], marker="o", color="red")
             ax.annotate(
-                "%.2E" % max_value,
+                f"{max_value:.2E}",
                 (t[idx], trace.data[idx]),
                 xycoords="data",
                 xytext=(0.85, 0.25),
@@ -536,7 +536,7 @@ def plot_moveout(
             ax.plot(times, trace.data + distance, c="k", alpha=alpha)
             nplot += 1
     ax.invert_yaxis()
-    ax.set_title("Orientation code: %s" % orientation, fontsize=minfontsize + 4)
+    ax.set_title(f"Orientation code: {orientation}", fontsize=minfontsize + 4)
     ax.set_ylabel("Epicentral distance (km)", fontsize=minfontsize)
     ax.yaxis.set_tick_params(labelsize=minfontsize - 2)
     plt.xticks([])
@@ -589,17 +589,17 @@ def summary_plots(st, directory, origin):
     ax = [plt.subplot(g) for g in gs]
 
     stream_id = st.get_id()
-    logging.debug("stream_id: %s" % stream_id)
-    logging.debug("passed: %s" % st.passed)
+    logging.debug(f"stream_id: {stream_id}")
+    logging.debug(f"passed: {st.passed}")
     if st.passed:
         plt.suptitle(
-            "M%s %s | %s (passed)" % (origin.magnitude, origin.id, stream_id),
+            f"M{origin.magnitude} {origin.id} | {stream_id} (passed)",
             x=0.5,
             y=1.02,
         )
     else:
         plt.suptitle(
-            "M%s %s | %s (failed)" % (origin.magnitude, origin.id, stream_id),
+            f"M{origin.magnitude} {origin.id} | {stream_id} (failed)",
             color="red",
             x=0.5,
             y=1.02,
@@ -701,7 +701,7 @@ def summary_plots(st, directory, origin):
         ax[j].text(
             0.95,
             0.95,
-            "PGA: %.3g g" % pga,
+            f"PGA: {pga:.3g} g",
             transform=ax[j].transAxes,
             va="top",
             ha="right",
@@ -730,7 +730,7 @@ def summary_plots(st, directory, origin):
         ax[j + ntrace].text(
             0.95,
             0.95,
-            "PGV: %.3g cm/s" % pgv,
+            f"PGV: {pgv:.3g} cm/s",
             transform=ax[j + ntrace].transAxes,
             va="top",
             ha="right",
@@ -776,7 +776,7 @@ def summary_plots(st, directory, origin):
         ax[j + 2 * ntrace].text(
             0.95,
             0.95,
-            "PGD: %.3g cm" % pgd,
+            f"PGD: {pgd:.3g} cm",
             transform=ax[j + 2 * ntrace].transAxes,
             va="top",
             ha="right",
