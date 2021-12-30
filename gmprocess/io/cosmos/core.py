@@ -2,10 +2,13 @@
 
 # stdlib imports
 from datetime import datetime
+from dataclasses import dataclass
+from enum import Enum
 import os
 import re
 import pkg_resources
 import logging
+import pathlib
 
 # third party
 import numpy as np
@@ -18,6 +21,7 @@ from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
 from gmprocess.io.seedname import get_channel_name, get_units_type
 from gmprocess.io.utils import is_binary
+
 
 MICRO_TO_VOLT = 1e6  # convert microvolts to volts
 MSEC_TO_SEC = 1 / 1000.0
@@ -765,8 +769,6 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=""):
         format_specific["record_flag"] = "Unfixed problem"
     else:
         format_specific["record_flag"] = ""
-    scaling_factor = float(flt_data[87])
-    format_specific["scaling_factor"] = _check_assign(scaling_factor, unknown, np.nan)
     scaling_factor = float(flt_data[41])
     format_specific["sensor_sensitivity"] = _check_assign(
         scaling_factor, unknown, np.nan
@@ -852,3 +854,7 @@ def _read_lines(skip_rows, filename):
         # row is incomplete
         data_arr = data_arr[~np.isnan(data_arr)]
     return num_lines, data_arr
+
+
+def write_cosmos(filename, label):
+    pass

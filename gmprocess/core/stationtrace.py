@@ -423,13 +423,14 @@ class StationTrace(Trace):
         """
         return self.provenance
 
-    def getProvenanceDocument(self, base_prov=None):
+    def getProvenanceDocument(self, gmprocess_version, base_prov=None):
         """Generate a provenance document.
 
         Args:
+            gmprocess_version (str):
+                gmprocess version string.
             base_prov:
                 Base provenance document.
-
         Returns:
             Provenance document.
         """
@@ -437,7 +438,7 @@ class StationTrace(Trace):
             pr = prov.model.ProvDocument()
             pr.add_namespace(*NS_SEIS)
             pr = _get_person_agent(pr)
-            pr = _get_software_agent(pr)
+            pr = _get_software_agent(pr, gmprocess_version)
             pr = _get_waveform_entity(self, pr)
         else:
             pr = _get_waveform_entity(self, copy.deepcopy(base_prov))
@@ -785,6 +786,7 @@ def _stats_from_inventory(data, inventory, seed_id, start_time):
         standard["source_format"] = "fdsn"
 
     standard["instrument_sensitivity"] = np.nan
+    standard["volts_to_counts"] = np.nan
     response = None
     if channel.response is not None:
         response = channel.response
@@ -800,6 +802,10 @@ def _stats_from_inventory(data, inventory, seed_id, start_time):
                 sensitivity = response.instrument_sensitivity.value * conversion
                 response.instrument_sensitivity.value = sensitivity
                 standard["instrument_sensitivity"] = sensitivity
+                # find the volts to counts stage and store that
+                for stage in channel.response_stages:
+                    if stage.input_units == "V" and stage.output_units == "COUNTS":
+                        standard["instrument_volts_counts"] = stage.stage_gain
             else:
                 standard[
                     "instrument_sensitivity"
