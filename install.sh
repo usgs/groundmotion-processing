@@ -155,6 +155,13 @@ if [ -d bin/__pycache__ ]; then
     rm -rf bin/__pycache__
 fi
 
+echo "Installing OpenQuake from github..."
+pip install --upgrade --no-dependencies https://github.com/gem/oq-engine/archive/engine-3.12.zip
+if [ $? -ne 0 ];then
+    echo "Failed to pip install OpenQuake. Exiting."
+    exit 1
+fi
+
 # This package
 echo "Installing ${VENV}..."
 
