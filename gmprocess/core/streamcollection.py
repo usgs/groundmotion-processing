@@ -101,6 +101,8 @@ class StreamCollection(object):
             if drop_non_free:
                 if s[0].free_field:
                     newstreams.append(s)
+                else:
+                    logging.debug(f"Omitting station trace {s[0].id} from stream collection because it is not free field.")
             else:
                 newstreams.append(s)
 
