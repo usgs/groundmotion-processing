@@ -10,7 +10,7 @@ import inspect
 import argparse
 import logging
 
-from . import __version__ as VERSION
+from .. import __version__ as VERSION
 from .subcommands.lazy_loader import LazyLoader
 
 configobj = LazyLoader("configobj", globals(), "configobj")
