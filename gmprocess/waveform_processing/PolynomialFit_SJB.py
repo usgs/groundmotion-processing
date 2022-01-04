@@ -204,6 +204,7 @@ def filtered_Facc(Facc, freq, fc, order):
 #     disp = cumtrapz(vel,dx = delta, initial = 0)
 #     return disp
 
+
 def get_residual(time, disp, target, polynomial_order):
     coef = np.polyfit(time[0 : len(disp)], disp, polynomial_order)
     fit = []
