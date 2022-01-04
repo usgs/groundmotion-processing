@@ -11,11 +11,10 @@ libcomcat>=2.0.13
 lxml>=4.6.1
 mapio>=0.7.27
 matplotlib>=3.1.0
-numpy>=1.21
+numpy<1.22
 obspy>=1.2.1
 openmp>=8.0.1
 openpyxl>=3.0.8
-openquake.engine>=3.12
 pandas>=1.0
 ps2ff>=1.5.2
 pyasdf>=0.7

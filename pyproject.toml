@@ -4,7 +4,7 @@ requires = [
   "wheel",
   "setuptools_scm[toml]>=3.4",
   "cython",
-  "numpy",
+  "numpy<1.22",
 ]
 [tool.setuptools_scm]
 write_to = "gmprocess/version.py"

@@ -4,36 +4,12 @@ import os
 import glob
 import numpy
 
-from distutils.sysconfig import get_config_vars as default_get_config_vars
-
-# Modification of method for removing pthread described here:
-# https://stackoverflow.com/questions/57046796/how-to-remove-pthread-compiler-flag-from-cython-setup-file
-def remove_sysroot(x):
-    if type(x) is str:
-        arg_list = x.split()
-        new_arg_list = [a for a in arg_list if a != "-Wl,--sysroot=/"]
-        x = " ".join(new_arg_list)
-    return x
-
-
-def my_get_config_vars(*args):
-    result = default_get_config_vars(*args)
-    # sometimes result is a list and sometimes a dict:
-    if type(result) is list:
-        return [remove_sysroot(x) for x in result]
-    elif type(result) is dict:
-        return {k: remove_sysroot(x) for k, x in result.items()}
-    else:
-        raise Exception("cannot handle type" + type(result))
-
-
 import distutils.sysconfig as dsc
 from distutils.core import setup
 from distutils.extension import Extension
 from Cython.Build import cythonize
 from Cython.Distutils import build_ext
 
-dsc.get_config_vars = my_get_config_vars
 
 osc_sourcefiles = ["gmprocess/metrics/oscillators.pyx", "gmprocess/metrics/cfuncs.c"]
 ko_sourcefiles = [
