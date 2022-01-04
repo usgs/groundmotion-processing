@@ -1,19 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-
 # third party imports
 import h5py
 
 # local imports
 from .stream_workspace import StreamWorkspace
-from setuptools_scm import get_version
+
+from ... import __version__ as VERSION
 
 TIMEPAT = "[0-9]{4}-[0-9]{2}-[0-9]{2}T"
-VERSION = get_version(
-    root=os.path.join(os.pardir, os.pardir, os.pardir), relative_to=__file__
-)
 
 
 def is_asdf(filename, config=None):

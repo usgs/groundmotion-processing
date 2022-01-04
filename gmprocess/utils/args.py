@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
+from . import __version__ as VERSION
 
-from setuptools_scm import get_version
 
 def add_shared_args(parser):
     """Method for arguments shared across all programs.
@@ -20,14 +19,11 @@ def add_shared_args(parser):
         "-d", "--debug", action="store_true", help="Print all informational messages."
     )
     group.add_argument("-q", "--quiet", action="store_true", help="Print only errors.")
-    __version__ = get_version(
-        root=os.path.join(os.pardir, os.pardir), relative_to=__file__
-    )
     parser.add_argument(
         "-v",
         "--version",
         action="version",
-        version="%(prog)s " + __version__,
+        version="%(prog)s " + VERSION,
         help="Print program version.",
     )
     return parser
