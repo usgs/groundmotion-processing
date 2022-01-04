@@ -120,7 +120,7 @@ class ExportMetricTablesModule(base.SubcommandModule):
                 output_format = "xlsx"
 
             for filename, df in dict(zip(filenames, files)).items():
-                if df is None:
+                if df is None or df.size == 0:
                     continue
                 filepath = os.path.normpath(
                     os.path.join(outdir, filename + f".{output_format}")

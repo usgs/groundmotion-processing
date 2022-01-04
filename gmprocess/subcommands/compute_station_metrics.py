@@ -86,6 +86,11 @@ class ComputeStationMetricsModule(base.SubcommandModule):
         ds = self.workspace.dataset
         self._get_labels()
 
+        station_list = ds.waveforms.list()
+        if not len(station_list):
+            self.workspace.close()
+            return event.id
+
         rupture_file = rupt_utils.get_rupture_file(event_dir)
         origin = rupt.origin.Origin(
             {
@@ -110,7 +115,6 @@ class ComputeStationMetricsModule(base.SubcommandModule):
         self.sta_rhyp = []
         self.sta_baz = []
 
-        station_list = ds.waveforms.list()
         self._get_labels()
 
         for station_id in station_list:

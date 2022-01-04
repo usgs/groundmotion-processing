@@ -86,12 +86,11 @@ class GenerateReportModule(base.SubcommandModule):
         self.workspace = ws.StreamWorkspace.open(workname)
         ds = self.workspace.dataset
         station_list = ds.waveforms.list()
-        self._get_labels()
-
         if len(station_list) == 0:
             logging.info("No processed waveforms available. No report generated.")
-            return False
+            return []
 
+        self._get_labels()
         if self.gmrecords.args.num_processes > 0:
             futures = []
             client = distributed.Client(
