@@ -899,6 +899,8 @@ class StreamWorkspace(object):
         """
         fit_table = []
         event = self.getEvent(eventid)
+        if not event:
+            return (None, None)
 
         station_list = self.dataset.waveforms.list()
         for station_id in station_list:
@@ -1269,10 +1271,7 @@ class StreamWorkspace(object):
             if event.resource_id.id.find(eventid) > -1:
                 eventobj = event
                 break
-        if eventobj is None:
-            fmt = "Event with a resource id containing %s could not be found."
-            raise KeyError(fmt % eventid)
-        eventobj2 = ScalarEvent.fromEvent(eventobj)
+        eventobj2 = ScalarEvent.fromEvent(eventobj) if eventobj else None
         return eventobj2
 
     def getProvenance(self, eventid, stations=None, labels=None):
