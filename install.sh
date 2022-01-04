@@ -114,9 +114,9 @@ conda remove -y -n $VENV --all
 
 
 # Create a conda virtual environment
-conda config --add channels 'conda-forge'
 conda config --add channels 'defaults'
-conda config --set channel_priority flexible
+conda config --add channels 'conda-forge'
+conda config --set channel_priority strict
 
 echo "Creating the $VENV virtual environment:"
 # conda create -n $VENV -y --file requirements.txt
@@ -162,7 +162,8 @@ fi
 # This package
 echo "Installing ${VENV}..."
 
-pip install -v -v -v -e .
+# pip install --no-deps --no-binary :all: -e .
+pip install --no-deps -e .
 
 # if pip install fails, bow out gracefully
 if [ $? -ne 0 ];then
