@@ -544,7 +544,7 @@ metrics:
 # -----------------------------------------------------------------------------
 # This section is for options for integration method
 integration:
-    # method can be one of "frequency domain", "time_domain_0_init"
+    # method can be one of "frequency domain", "time_domain_0init"
     # "time_domain_0init_0mean"
     method: "frequency_domain"
 # -----------------------------------------------------------------------------
