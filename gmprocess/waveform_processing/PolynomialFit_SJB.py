@@ -110,9 +110,9 @@ def __ridder_log(
 
     fc2 = maxfc
     Facc2 = filtered_Facc(Facc, freq, fc2, order=5)
-    tr2 = tr.copy()
-    tr2.data = np.fft.irfft(Facc2, len(acc))
-    disp2 = get_disp(tr2, method=int_config["method"])
+    acc2 = tr.copy()
+    acc2.data = np.fft.irfft(Facc2, len(acc))
+    disp2 = get_disp(acc2, method=int_config["method"])
 
     R2 = get_residual(time, disp2, target, polynomial_order)
     if (np.sign(R0) < 0) and (np.sign(R2) < 0):
@@ -127,7 +127,9 @@ def __ridder_log(
         logging.debug("Ridder iteration = %s" % i)
         fc1 = np.exp(0.5 * (np.log(fc0) + np.log(fc2)))
         Facc1 = filtered_Facc(Facc, freq, fc1, order=5)
-        disp = get_disp(np.fft.irfft(Facc1, len(acc)), method=int_config["method"])
+        acc1 = acc.copy()
+        acc1.data = np.fft.irfft(Facc1, len(acc))
+        disp = get_disp(acc1, method=int_config["method"])
         R1 = get_residual(time, disp, target, polynomial_order)
         fc3 = np.exp(
             np.log(fc1)
@@ -138,7 +140,9 @@ def __ridder_log(
         )
         fc3 = np.min([maxfc, fc3])
         Facc3 = filtered_Facc(Facc, freq, fc3, order=5)
-        disp = get_disp(np.fft.irfft(Facc3, len(acc)), method=int_config["method"])
+        acc3 = acc.copy()
+        acc3.data = np.fft.irfft(Facc3, len(acc))
+        disp = get_disp(acc3, method=int_config["method"])
         R3 = get_residual(time, disp, target, polynomial_order)
         if (np.abs(R3) <= tol) or (i == maxiter - 1):
             output = [True, fc3, np.abs(R3)]
