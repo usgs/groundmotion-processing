@@ -142,8 +142,6 @@ Attributes
       Close the workspace.
 
 
-
-
    .. py:method:: __repr__(self)
 
       Provide summary string representation of the file.
@@ -165,20 +163,14 @@ Attributes
       Add config to an ASDF file.
 
 
-
-
    .. py:method:: addGmprocessVersion(self, version)
 
       Add gmprocess version to an ASDF file.
 
 
-
-
    .. py:method:: getGmprocessVersion(self)
 
       Get gmprocess version from ASDF file.
-
-
 
 
    .. py:method:: addStreams(self, event, streams, label=None, gmprocess_version='unknown')
@@ -478,7 +470,6 @@ Attributes
               Returns:
                   DataFrame:
                       Table of processing steps/parameters (see above).
-
 
 
 

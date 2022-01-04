@@ -1,3 +1,8 @@
+
+# -----------------------------------------------------------------------------
+user:
+  name: Test user
+  email: testuser@email.com
 # -----------------------------------------------------------------------------
 # This section is for configuring data fetching routines.
 fetchers:
@@ -8,11 +13,11 @@ fetchers:
         user: USERNAME
         password: PASSWORD
         # define the distance search radius (km)
-        radius : 100
+        radius : 100.0
         # define the time search threshold (sec)
-        dt : 60
+        dt : 60.0
         # define the depth search threshold (km)
-        ddepth : 30
+        ddepth : 30.0
         # define the magnitude search threshold (km)
         dmag : 0.3
         # restrict the number of processed stations by
@@ -26,27 +31,27 @@ fetchers:
         process_type: raw
         station_type: Ground
         # define the distance search radius (km)
-        eq_radius : 10
+        eq_radius : 10.0
         # define the time search threshokd (sec)
-        eq_dt : 10
+        eq_dt : 10.0
         # station search radius (km)
-        station_radius: CESMD_RADIUS_KM
+        station_radius: 100.0
     TurkeyFetcher:
         # define the distance search radius (km)
-        radius : 100
+        radius : 100.0
         # define the time search threshold (sec)
-        dt : 16
+        dt : 16.0
         # define the depth search threshold (km)
-        ddepth : 30
+        ddepth : 30.0
         # define the magnitude search threshold (km)
         dmag : 0.3
     FDSNFetcher:
         # search radius in decimal degrees
-        radius : 4
+        radius : 4.0
         # seconds before arrival time
-        time_before : 30
+        time_before : 30.0
         # seconds after arrival time
-        time_after : 420
+        time_after : 420.0
         # channels : ["BH?", "HH?", "BN?", "HN?"] # only get strong motion and high-gain channels
         channels : ["[BH]N?"] # only get strong motion/broadband accelerometer data
 
@@ -100,7 +105,7 @@ read:
     metadata_directory: None
 
     # Resampling rate if times are unevenly spaced
-    resample_rate: 200
+    resample_rate: 200.0
 
     # SAC header doesn't include units (!) and is generally assumed to be:
     #     nm/s/s for acceleration
@@ -140,7 +145,7 @@ windows:
         method: model
         vmin: 1.0
         # Minimum duration in sec for use with 'vmin' option.
-        floor: 120
+        floor: 120.0
         # Duration model
         model: AS16
         # Number of standard deviations; if epsilon is 1.0, then the signal
@@ -210,7 +215,7 @@ processing:
         f4: Null
 
         # Water level (dB) for deconvolution
-        water_level: 60
+        water_level: 60.0
 
     - detrend:
         # Supported obspy methods (besides the baseline described below):
@@ -234,12 +239,12 @@ processing:
             # frequency for the SNR check.
             max_freq: 5.0
             f0_options:
-                stress_drop: 10  # bars
-                shear_vel: 3.7   # km/s
-                ceiling: 2.0     # Hz. If the computed f0 is greater than
+                stress_drop: 10.0  # bars
+                shear_vel: 3.7     # km/s
+                ceiling: 2.0       # Hz. If the computed f0 is greater than
                 # ceiling, then the ceiling frequency will be used. This should
                 # be less than max_freq.
-                floor: 0.1       # Hz. If the computed f0 is less than the
+                floor: 0.1         # Hz. If the computed f0 is less than the
                 # floor, then the floor frequency will be used.
 
     # - NNet_QA:
@@ -384,13 +389,13 @@ processing:
         # moment (from the catalog moment magnitude) is multiplied and
         # divided by `moment_factor` to set the bounds for the spectral
         # optimization.
-        moment_factor: 100
+        moment_factor: 100.0
 
         # Min stress for fit search (bars)
         min_stress: 0.1
 
         # Max stress for fit search (bars)
-        max_stress: 10000
+        max_stress: 10000.0
 
 colocated:
     # This section is for handling colocated instruments that have otherwise
@@ -420,7 +425,7 @@ duplicate:
     # This section is for handling duplicate data when creating a StreamCollection
 
     # Maximum distance tolerance (in m) for duplicate data
-    max_dist_tolerance: 500
+    max_dist_tolerance: 500.0
 
     # List of preferences (in order) for handling duplicate data.
     preference_order: ['process_level', 'source_format', 'starttime', 'npts',
@@ -574,7 +579,7 @@ pickers:
     # Options for obspy.signal.trigger.pk_baer()
     baer:
         # If dtime exceeds tdownmax, the trigger is examined for validity
-        tdownmax: 20
+        tdownmax: 20.0
 
         # Minimum number of samples for itrm to be accepted as a pick
         tupevent: 60
@@ -589,7 +594,7 @@ pickers:
         preset_len: 100
 
         # Time interval for which the maximum amplitude is evaluated
-        p_dur: 100
+        p_dur: 100.0
 
     kalkan:
         # undamped natural period in second (default is 0.01 for
@@ -615,7 +620,7 @@ pickers:
     # TODO: Document these options
     power:
         highpass: 1.4
-        lowpass: 6
+        lowpass: 6.0
         order: 3
         sta: 3.0
         sta2: 3.0

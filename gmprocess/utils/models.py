@@ -20,13 +20,14 @@ def load_model(model):
         The openquake ground shaking intensity model object.
     """
     mod_file = pkg_resources.resource_filename(
-        'gmprocess', os.path.join('data', MODULE_FILE))
-    with open(mod_file, 'r', encoding='utf-8') as f:
+        "gmprocess", os.path.join("data", MODULE_FILE)
+    )
+    with open(mod_file, "r", encoding="utf-8") as f:
         yaml = YAML()
         yaml.preserve_quotes = True
         mods = yaml.load(f)
 
     # Import module
-    cname, mpath = mods['modules'][model]
+    cname, mpath = mods["modules"][model]
     dmodel = getattr(import_module(mpath), cname)()
     return dmodel

@@ -5,44 +5,34 @@ import numpy as np
 from obspy.signal.util import next_pow_2
 
 from gmprocess.waveform_processing.fft import compute_and_smooth_spectrum
-from gmprocess.waveform_processing.spectrum import \
-    brune_f0, moment_from_magnitude
+from gmprocess.waveform_processing.spectrum import brune_f0, moment_from_magnitude
 
 
 # Options for tapering noise/signal windows
 TAPER_WIDTH = 0.05
-TAPER_TYPE = 'hann'
-TAPER_SIDE = 'both'
+TAPER_TYPE = "hann"
+TAPER_SIDE = "both"
 MIN_POINTS_IN_WINDOW = 10
 
 
 def compute_snr_trace(tr, bandwidth, mag=None, check=None):
-    if tr.hasParameter('signal_split'):
+    if tr.hasParameter("signal_split"):
         # Split the noise and signal into two separate traces
-        split_prov = tr.getParameter('signal_split')
+        split_prov = tr.getParameter("signal_split")
         if isinstance(split_prov, list):
             split_prov = split_prov[0]
-        split_time = split_prov['split_time']
+        split_time = split_prov["split_time"]
         noise = tr.copy().trim(endtime=split_time)
         signal = tr.copy().trim(starttime=split_time)
 
-        tr.setCached(
-            'noise_trace', {
-                'times': noise.times(),
-                'data': noise.data
-            }
-        )
+        tr.setCached("noise_trace", {"times": noise.times(), "data": noise.data})
 
-        noise.detrend('demean')
-        signal.detrend('demean')
+        noise.detrend("demean")
+        signal.detrend("demean")
 
         # Taper both windows
-        noise.taper(max_percentage=TAPER_WIDTH,
-                    type=TAPER_TYPE,
-                    side=TAPER_SIDE)
-        signal.taper(max_percentage=TAPER_WIDTH,
-                     type=TAPER_TYPE,
-                     side=TAPER_SIDE)
+        noise.taper(max_percentage=TAPER_WIDTH, type=TAPER_TYPE, side=TAPER_SIDE)
+        signal.taper(max_percentage=TAPER_WIDTH, type=TAPER_TYPE, side=TAPER_SIDE)
 
         # Check that there are a minimum number of points in the noise window
         if noise.stats.npts < MIN_POINTS_IN_WINDOW:
@@ -50,56 +40,57 @@ def compute_snr_trace(tr, bandwidth, mag=None, check=None):
             # ** only fail here if it hasn't already failed; we do not yet
             # ** support tracking multiple fail reasons and I think it is
             # ** better to know the FIRST reason if I have to pick one.
-            if not tr.hasParameter('failure'):
-                tr.fail('Failed SNR check; Not enough points in noise window.')
-            compute_and_smooth_spectrum(tr, bandwidth, 'signal')
+            if not tr.hasParameter("failure"):
+                tr.fail("Failed SNR check; Not enough points in noise window.")
+            compute_and_smooth_spectrum(tr, bandwidth, "signal")
             return tr
 
         # Check that there are a minimum number of points in the noise window
         if signal.stats.npts < MIN_POINTS_IN_WINDOW:
             # Fail the trace, but still compute the signal spectra
-            if not tr.hasParameter('failure'):
-                tr.fail(
-                    'Failed SNR check; Not enough points in signal window.')
-            compute_and_smooth_spectrum(tr, bandwidth, 'signal')
+            if not tr.hasParameter("failure"):
+                tr.fail("Failed SNR check; Not enough points in signal window.")
+            compute_and_smooth_spectrum(tr, bandwidth, "signal")
             return tr
 
-        nfft = max(next_pow_2(signal.stats.npts),
-                   next_pow_2(noise.stats.npts))
+        nfft = max(next_pow_2(signal.stats.npts), next_pow_2(noise.stats.npts))
 
-        compute_and_smooth_spectrum(tr, bandwidth, 'noise', noise, nfft)
-        compute_and_smooth_spectrum(tr, bandwidth, 'signal', signal, nfft)
+        compute_and_smooth_spectrum(tr, bandwidth, "noise", noise, nfft)
+        compute_and_smooth_spectrum(tr, bandwidth, "signal", signal, nfft)
 
         # For both the raw and smoothed spectra, subtract the noise spectrum
         # from the signal spectrum
         tr.setCached(
-            'signal_spectrum', {
-                'spec': (tr.getCached('signal_spectrum')['spec'] -
-                         tr.getCached('noise_spectrum')['spec']),
-                'freq': tr.getCached('signal_spectrum')['freq']
-            }
+            "signal_spectrum",
+            {
+                "spec": (
+                    tr.getCached("signal_spectrum")["spec"]
+                    - tr.getCached("noise_spectrum")["spec"]
+                ),
+                "freq": tr.getCached("signal_spectrum")["freq"],
+            },
         )
         tr.setCached(
-            'smooth_signal_spectrum', {
-                'spec': (tr.getCached('smooth_signal_spectrum')['spec'] -
-                         tr.getCached('smooth_noise_spectrum')['spec']),
-                'freq': tr.getCached('smooth_signal_spectrum')['freq']
-            }
+            "smooth_signal_spectrum",
+            {
+                "spec": (
+                    tr.getCached("smooth_signal_spectrum")["spec"]
+                    - tr.getCached("smooth_noise_spectrum")["spec"]
+                ),
+                "freq": tr.getCached("smooth_signal_spectrum")["freq"],
+            },
         )
 
-        smooth_signal_spectrum = tr.getCached('smooth_signal_spectrum')['spec']
-        smooth_noise_spectrum = tr.getCached('smooth_noise_spectrum')['spec']
+        smooth_signal_spectrum = tr.getCached("smooth_signal_spectrum")["spec"]
+        smooth_noise_spectrum = tr.getCached("smooth_noise_spectrum")["spec"]
         snr = smooth_signal_spectrum / smooth_noise_spectrum
 
-        snr_dict = {
-            'snr': snr,
-            'freq': tr.getCached('smooth_signal_spectrum')['freq']
-        }
-        tr.setCached('snr', snr_dict)
+        snr_dict = {"snr": snr, "freq": tr.getCached("smooth_signal_spectrum")["freq"]}
+        tr.setCached("snr", snr_dict)
 
     else:
         # We do not have an estimate of the signal split time for this trace
-        compute_and_smooth_spectrum(tr, bandwidth, 'signal')
+        compute_and_smooth_spectrum(tr, bandwidth, "signal")
     if check is not None:
         tr = snr_check(tr, mag, **check)
 
@@ -126,9 +117,14 @@ def compute_snr(st, bandwidth, mag=None, check=None):
     return st
 
 
-def snr_check(tr, mag, threshold=3.0, min_freq='f0', max_freq=5.0, f0_options={
-              'stress_drop': 10, 'shear_vel': 3.7, 'ceiling': 2.0,
-              'floor': 0.1}):
+def snr_check(
+    tr,
+    mag,
+    threshold=3.0,
+    min_freq="f0",
+    max_freq=5.0,
+    f0_options={"stress_drop": 10, "shear_vel": 3.7, "ceiling": 2.0, "floor": 0.1},
+):
     """
     Check signal-to-noise ratio.
 
@@ -152,20 +148,22 @@ def snr_check(tr, mag, threshold=3.0, min_freq='f0', max_freq=5.0, f0_options={
     Returns:
         trace: Trace with SNR check.
     """
-    if tr.hasCached('snr'):
-        snr_dict = tr.getCached('snr')
-        snr = np.array(snr_dict['snr'])
-        freq = np.array(snr_dict['freq'])
+    if tr.hasCached("snr"):
+        snr_dict = tr.getCached("snr")
+        snr = np.array(snr_dict["snr"])
+        freq = np.array(snr_dict["freq"])
 
         # If min_freq is 'f0', then compute Brune corner frequency
-        if min_freq == 'f0':
+        if min_freq == "f0":
             min_freq = brune_f0(
-                moment_from_magnitude(mag), f0_options['stress_drop'],
-                f0_options['shear_vel'])
-            if min_freq < f0_options['floor']:
-                min_freq = f0_options['floor']
-            if min_freq > f0_options['ceiling']:
-                min_freq = f0_options['ceiling']
+                moment_from_magnitude(mag),
+                f0_options["stress_drop"],
+                f0_options["shear_vel"],
+            )
+            if min_freq < f0_options["floor"]:
+                min_freq = f0_options["floor"]
+            if min_freq > f0_options["ceiling"]:
+                min_freq = f0_options["ceiling"]
 
         # Check if signal criteria is met
         mask = (freq >= min_freq) & (freq <= max_freq)
@@ -175,11 +173,7 @@ def snr_check(tr, mag, threshold=3.0, min_freq='f0', max_freq=5.0, f0_options={
             min_snr = 0
 
         if min_snr < threshold:
-            tr.fail('Failed SNR check; SNR less than threshold.')
-    snr_conf = {
-        'threshold': threshold,
-        'min_freq': min_freq,
-        'max_freq': max_freq
-    }
-    tr.setParameter('snr_conf', snr_conf)
+            tr.fail("Failed SNR check; SNR less than threshold.")
+    snr_conf = {"threshold": threshold, "min_freq": min_freq, "max_freq": max_freq}
+    tr.setParameter("snr_conf", snr_conf)
     return tr

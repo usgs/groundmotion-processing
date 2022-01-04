@@ -28,7 +28,6 @@ Classes
 
    Tally storage used within each group.
 
-
    .. py:method:: compute_dataset_storage(dataset)
       :staticmethod:
 

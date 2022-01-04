@@ -14,28 +14,28 @@ import pkg_resources
 import os
 
 # Path to model data
-NN_PATH = os.path.join('data', 'nn_clipping')
-NN_PATH = pkg_resources.resource_filename('gmprocess', NN_PATH)
+NN_PATH = os.path.join("data", "nn_clipping")
+NN_PATH = pkg_resources.resource_filename("gmprocess", NN_PATH)
 
 
-class clipNet():
-    '''
+class clipNet:
+    """
     Class allowing the instantiation and use of simple (1 or 2 layers)
     neural networks
-    '''
+    """
 
     def __init__(self):
-        '''
+        """
         Instantiate an empty neural network (no weights, functions, or
         biases loaded
-        '''
+        """
         self.n_input = 0
         self.n_neuron_H1 = 0
         self.n_neuron_H2 = -1
         self.n_output = 0
-        self.activation_H1 = 'NA'
-        self.activation_H2 = 'NA'
-        self.activation_output = 'NA'
+        self.activation_H1 = "NA"
+        self.activation_H2 = "NA"
+        self.activation_output = "NA"
         self.w_H1 = []
         self.w_H2 = []
         self.b_H1 = []
@@ -43,7 +43,7 @@ class clipNet():
         self.w_output = []
         self.b_output = []
 
-        data_path = os.path.join(NN_PATH, 'masterF.txt')
+        data_path = os.path.join(NN_PATH, "masterF.txt")
         with open(data_path) as masterF:
             readCSV = csv.reader(masterF)
             for row in readCSV:
@@ -66,33 +66,33 @@ class clipNet():
 
         # Load weights and biases
         # Weights first hidden layer
-        data_path = os.path.join(NN_PATH, 'weight_1.csv')
+        data_path = os.path.join(NN_PATH, "weight_1.csv")
         self.w_H1 = np.asarray(loadCSV(data_path))
 
         # Biases first hidden layer
-        data_path = os.path.join(NN_PATH, 'bias_1.csv')
+        data_path = os.path.join(NN_PATH, "bias_1.csv")
         self.b_H1 = np.asarray(loadCSV(data_path))
 
         # Weights output layer
-        data_path = os.path.join(NN_PATH, 'weight_output.csv')
+        data_path = os.path.join(NN_PATH, "weight_output.csv")
         self.w_output = np.asarray(loadCSV(data_path))
 
         # Biases output layer
-        data_path = os.path.join(NN_PATH, 'bias_output.csv')
+        data_path = os.path.join(NN_PATH, "bias_output.csv")
         self.b_output = np.asarray(loadCSV(data_path))
 
         # Second hidden layer
         if self.n_neuron_H2 != -1:
             # Weights second hidden layer
-            data_path = os.path.join(NN_PATH, 'weight_2.csv')
+            data_path = os.path.join(NN_PATH, "weight_2.csv")
             self.w_H2 = np.asarray(loadCSV(data_path))
 
             # Biases second hidden layer
-            data_path = os.path.join(NN_PATH, 'bias_2.csv')
+            data_path = os.path.join(NN_PATH, "bias_2.csv")
             self.b_H2 = np.asarray(loadCSV(data_path))
 
     def evaluate(self, v_input):
-        '''
+        """
         Use a populated neural network (i.e. from the input, returns the
         classification score or the regression result).
 
@@ -103,41 +103,41 @@ class clipNet():
 
         Returns:
             np.array: numpy array containing the results.
-        '''
+        """
         # Transform input if required
         if isinstance(v_input, list):
             v_input = np.asarray(v_input)
 
-        t1 = np.array([8.8, 445.8965938, 1., 1., 1.])
-        t2 = np.array([4, 0.68681514, 0., 0., 0.])
-        t3 = np.array([0., 0., 0., 0., 0.])
+        t1 = np.array([8.8, 445.8965938, 1.0, 1.0, 1.0])
+        t2 = np.array([4, 0.68681514, 0.0, 0.0, 0.0])
+        t3 = np.array([0.0, 0.0, 0.0, 0.0, 0.0])
         v_input = 2.0 / (t1 - t2) * (v_input - t3)
 
         v_inter = np.array([])
 
         # First layer
-        if self.activation_H1 == 'sigmoid':
+        if self.activation_H1 == "sigmoid":
             v_inter = sigmoid(np.dot(v_input.T, self.w_H1) + self.b_H1)
-        elif self.activation_H1 == 'tanh':
+        elif self.activation_H1 == "tanh":
             v_inter = tanh(np.dot(v_input.T, self.w_H1) + self.b_H1)
-        elif self.activation_H1 == 'relu':
+        elif self.activation_H1 == "relu":
             v_inter = relu(np.dot(v_input.T, self.w_H1) + self.b_H1)
         else:
             v_inter = relu(np.dot(v_input.T, self.w_H1) + self.b_H1.T)
 
         # If second layer exist
         if self.n_neuron_H2 != -1:
-            if self.activation_H2 == 'sigmoid':
+            if self.activation_H2 == "sigmoid":
                 v_inter = sigmoid(np.dot(v_inter, self.w_H2) + self.b_H2)
-            elif self.activation_H2 == 'tanh':
+            elif self.activation_H2 == "tanh":
                 v_inter = tanh(np.dot(v_inter, self.w_H2) + self.b_H2)
             else:
                 v_inter = np.dot(v_inter, self.w_H2) + self.b_H2
 
         # Final layer
-        if self.activation_output == 'sigmoid':
+        if self.activation_output == "sigmoid":
             v_inter = sigmoid(np.dot(v_inter, self.w_output) + self.b_output)
-        elif self.activation_output == 'tanh':
+        elif self.activation_output == "tanh":
             v_inter = tanh(np.dot(v_inter, self.w_output) + self.b_output)
         else:
             v_inter = sigmoid(np.dot(v_inter, self.w_output) + self.b_output)
@@ -146,7 +146,7 @@ class clipNet():
 
 
 def loadCSV(data_path, row_ignore=0, col_ignore=0):
-    '''
+    """
     Load csv files from a given path and returns a list of list.
     For all imported data, check if is a number. If so, returns a
     float. If not, returns a string.
@@ -161,7 +161,7 @@ def loadCSV(data_path, row_ignore=0, col_ignore=0):
 
     Returns:
         list of list: containing the data from the csv
-    '''
+    """
 
     M = []
     with open(data_path) as csvfile:
@@ -185,7 +185,7 @@ def loadCSV(data_path, row_ignore=0, col_ignore=0):
 
 
 def sigmoid(v_input):
-    '''
+    """
     Performs a sigmoid operation on the input (1/(e(-x)+1))
 
     Args:
@@ -194,15 +194,15 @@ def sigmoid(v_input):
 
     Returns:
         float: sigmoid result (a number between 0 and 1).
-    '''
+    """
     v_act = []
     for x in v_input:
-        v_act.append(1. / (1 + np.exp(-x)))
+        v_act.append(1.0 / (1 + np.exp(-x)))
     return v_act
 
 
 def tanh(v_input):
-    '''
+    """
     Performs a hyperbolic tangent operation on the input (2/(e(2x)+1))
 
     Args:
@@ -211,7 +211,7 @@ def tanh(v_input):
 
     Returns:
         float: tanh result (a number between -1 and 1).
-    '''
+    """
     v_act = []
     for x in v_input:
         v_act.append(np.tanh(x))
@@ -219,7 +219,7 @@ def tanh(v_input):
 
 
 def relu(v_input):
-    '''
+    """
     Performs a hyperbolic tangent operation on the input (2/(e(2x)+1))
 
     Args:
@@ -228,7 +228,7 @@ def relu(v_input):
 
     Returns:
         float: tanh result (a number between -1 and 1).
-    '''
+    """
     v_act = []
     for x in v_input:
         v_act.append(np.maximum(0.0, x))
@@ -236,7 +236,7 @@ def relu(v_input):
 
 
 def isNumber(s):
-    '''
+    """
     Check if given input is a number.
 
     Args:
@@ -245,7 +245,7 @@ def isNumber(s):
 
     Returns:
         bool: True if is a number, False if isn't
-    '''
+    """
     try:
         float(s)
         return True

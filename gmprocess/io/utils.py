@@ -11,7 +11,26 @@ import numpy as np
 from gmprocess.utils.config import get_config
 
 CONFIG = get_config()
-DUPLICATE_MARKER = '1'
+DUPLICATE_MARKER = "1"
+
+
+def is_binary(filename):
+    """Check if file is binary.
+
+    Args:
+        filename (str):
+            File to check.
+
+    Returns:
+        bool: Is this a binary file?
+    """
+    # quick check to see if this is a binary or text file
+    textchars = bytearray({7, 8, 9, 10, 12, 13, 27} | set(range(0x20, 0x100)) - {0x7F})
+
+    def is_binary_string(bytes):
+        return bool(bytes.translate(None, textchars))
+
+    return is_binary_string(open(filename, "rb").read(1024))
 
 
 def is_evenly_spaced(times, rtol=1e-6, atol=1e-8):
@@ -30,13 +49,10 @@ def is_evenly_spaced(times, rtol=1e-6, atol=1e-8):
         bool: True if times are evenly spaced. False otherwise.
     """
     diff_times = np.diff(times)
-    return np.all(
-        np.isclose(diff_times[0], diff_times, rtol=rtol, atol=atol)
-    )
+    return np.all(np.isclose(diff_times[0], diff_times, rtol=rtol, atol=atol))
 
 
-def resample_uneven_trace(trace, times, data, resample_rate=None,
-                          method='linear'):
+def resample_uneven_trace(trace, times, data, resample_rate=None, method="linear"):
     """
     Resample unevenly spaced data.
 
@@ -62,28 +78,31 @@ def resample_uneven_trace(trace, times, data, resample_rate=None,
 
     # Load the resampling rate from the config if not provided
     if resample_rate is None:
-        resample_rate = CONFIG['read']['resample_rate']
+        resample_rate = CONFIG["read"]["resample_rate"]
 
     new_times = np.arange(times[0], times[-1], 1 / resample_rate)
 
     # Save max value of original data as a trace parameter
     raw_max = np.max(np.abs(data))
 
-    if method == 'linear':
+    if method == "linear":
         trace.data = np.interp(new_times, times, data, np.nan, np.nan)
         trace.stats.sampling_rate = resample_rate
-        method_str = 'Linear interpolation of unevenly spaced samples'
+        method_str = "Linear interpolation of unevenly spaced samples"
     else:
-        raise ValueError('Unsupported method value.')
+        raise ValueError("Unsupported method value.")
 
-    trace.setProvenance('resample', {
-        'record_length': duration,
-        'total_no_samples': npts,
-        'nominal_sps': nominal_sps,
-        'method': method_str
-    })
+    trace.setProvenance(
+        "resample",
+        {
+            "record_length": duration,
+            "total_no_samples": npts,
+            "nominal_sps": nominal_sps,
+            "method": method_str,
+        },
+    )
 
-    trace.setParameter('raw_max', raw_max)
+    trace.setParameter("raw_max", raw_max)
     return trace
 
 
@@ -118,18 +137,17 @@ def flatten_directory(directory):
     for dirpath, sub_dirs, files in os.walk(directory, topdown=False):
         if dirpath != directory:
             # Strip out "directory" path from dirpath
-            sub_path = dirpath.replace(directory, '')
+            sub_path = dirpath.replace(directory, "")
             split_path = _split_all_path(sub_path)
             split_path = [s for s in split_path if s != os.path.sep]
-            sub_str = '_'.join(split_path)
+            sub_str = "_".join(split_path)
             for f in files:
                 # Append subdir to file name:
-                long_name = '%s_%s' % (sub_str, f)
+                long_name = f"{sub_str}_{f}"
                 src = os.path.join(dirpath, f)
                 # I don't think there should ever be duplicates but I'm
                 # leaving this here just in case.
-                dst = _handle_duplicates(
-                    os.path.join(directory, long_name))
+                dst = _handle_duplicates(os.path.join(directory, long_name))
                 os.rename(src, dst)
 
         for d in sub_dirs:
@@ -143,28 +161,26 @@ def _walk_and_unzip(directory):
             full_file = os.path.join(dirpath, f)
             is_zip = False
             try:
-                zipfile.ZipFile(full_file, 'r')
+                zipfile.ZipFile(full_file, "r")
                 is_zip = True
             except BaseException:
                 pass
             if is_zip:
                 has_zips = True
                 base, ext = os.path.splitext(f)
-                with zipfile.ZipFile(full_file, 'r') as zip:
+                with zipfile.ZipFile(full_file, "r") as zip:
                     for m in zip.namelist():
                         zip.extract(m, dirpath)
                         src = os.path.join(dirpath, m)
-                        new_name = '%s_%s' % (
-                            base, m.replace(os.path.sep, '_'))
+                        new_name = f"{base}_{m.replace(os.path.sep, '_')}"
                         dst = os.path.join(dirpath, new_name)
                         if not os.path.exists(dst):
                             os.rename(src, dst)
                         else:
                             # This should never happen
                             logging.warning(
-                                'While extracting %s, '
-                                'file %s already exists.'
-                                % (f, dst))
+                                f"While extracting {f}, file {dst} already exists."
+                            )
                 os.remove(full_file)
     return has_zips
 

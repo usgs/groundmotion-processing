@@ -17,12 +17,48 @@ Classes
 
 
 
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.subcommands.export_shakemap.arg_dicts
+   gmprocess.subcommands.export_shakemap.base
+   gmprocess.subcommands.export_shakemap.ws
+   gmprocess.subcommands.export_shakemap.const
+   gmprocess.subcommands.export_shakemap.sm_utils
+
+
+.. py:data:: arg_dicts
+   
+
+   
+
+.. py:data:: base
+   
+
+   
+
+.. py:data:: ws
+   
+
+   
+
+.. py:data:: const
+   
+
+   
+
+.. py:data:: sm_utils
+   
+
+   
+
 .. py:class:: ExportShakeMapModule
 
-   Bases: :py:obj:`gmprocess.subcommands.base.SubcommandModule`
+   Bases: :py:obj:`base`
 
    Export files for ShakeMap input.
-
 
    .. py:attribute:: command_name
       :annotation: = export_shakemap

@@ -23,7 +23,6 @@ Classes
 
    Class defining steps and invalid imts, for greater of two horizontals.
 
-
    .. py:attribute:: _invalid_imts
       :annotation: = []
 

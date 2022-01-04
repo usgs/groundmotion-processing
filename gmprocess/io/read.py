@@ -13,9 +13,8 @@ import numpy as np
 
 from gmprocess.utils.config import get_config
 
-EXCLUDED_MODS = ['__pycache__']
-EXCLUDED_EXTS = [
-    '.xml', ".gif", ".csv", ".dis", ".abc", ".zip", ".rs2", ".fs1"]
+EXCLUDED_MODS = ["__pycache__"]
+EXCLUDED_EXTS = [".xml", ".gif", ".csv", ".dis", ".abc", ".zip", ".rs2", ".fs1"]
 
 
 def read_data(filename, config=None, read_format=None, **kwargs):
@@ -33,11 +32,11 @@ def read_data(filename, config=None, read_format=None, **kwargs):
     """
     _, file_ext = os.path.splitext(filename)
     if file_ext in EXCLUDED_EXTS:
-        raise ValueError('Excluded extension: %s' % filename)
+        raise ValueError(f"Excluded extension: {filename}")
 
     # Check if file exists
     if not os.path.exists(filename):
-        raise OSError('Not a file %r' % filename)
+        raise OSError(f"Not a file {filename!r}")
     # Get and validate format
     if config is None:
         config = get_config()
@@ -46,9 +45,9 @@ def read_data(filename, config=None, read_format=None, **kwargs):
     else:
         read_format = _validate_format(filename, config, read_format.lower())
     # Load reader and read file
-    reader = 'gmprocess.io.' + read_format + '.core'
+    reader = "gmprocess.io." + read_format + ".core"
     reader_module = importlib.import_module(reader)
-    read_name = 'read_' + read_format
+    read_name = "read_" + read_format
     read_method = getattr(reader_module, read_name)
     streams = read_method(filename, config, **kwargs)
     return streams
@@ -69,39 +68,36 @@ def _get_format(filename, config):
     """
     # Get the valid formats
     valid_formats = []
-    io_directory = pkg_resources.resource_filename('gmprocess', 'io')
+    io_directory = pkg_resources.resource_filename("gmprocess", "io")
 
     # Create valid list
     for module in os.listdir(io_directory):
-        if module.find('.') < 0 and module not in EXCLUDED_MODS:
+        if module.find(".") < 0 and module not in EXCLUDED_MODS:
             valid_formats += [module]
 
     # Select most likely format to test first; use ordered dict so we can put
     # control order in which modules are moved to the front of the line.
     _, file_ext = os.path.splitext(filename)
     ext_dict = OrderedDict()
-    ext_dict['obspy'] = ['.mseed', '.sac']
-    ext_dict['cwb'] = ['dat']
-    ext_dict['smc'] = ['.smc']
-    ext_dict['dmg'] = ['.raw', '.v1', '.v2']
-    ext_dict['nsmn'] = ['txt']
-    ext_dict['esm'] = ['.asc']
-    ext_dict['knet'] = ['ns', 'ew', 'ud',
-                        'ns1', 'ew1', 'ud1',
-                        'ns2', 'ew2', 'ud2']
-    ext_dict['renadic'] = ['.v1', '.v2']
-    ext_dict['bhrc'] = ['v1', 'v2']
-    ext_dict['geonet'] = ['v1', 'v2', 'v1a', 'v2a']
-    ext_dict['cosmos'] = ['v0', 'v0c', 'v1', 'v1c', 'v1', 'v1c', 'v2', 'v2c']
+    ext_dict["obspy"] = [".mseed", ".sac"]
+    ext_dict["cwb"] = ["dat"]
+    ext_dict["smc"] = [".smc"]
+    ext_dict["dmg"] = [".raw", ".v1", ".v2"]
+    ext_dict["nsmn"] = ["txt"]
+    ext_dict["esm"] = [".asc"]
+    ext_dict["knet"] = ["ns", "ew", "ud", "ns1", "ew1", "ud1", "ns2", "ew2", "ud2"]
+    ext_dict["renadic"] = [".v1", ".v2"]
+    ext_dict["bhrc"] = ["v1", "v2"]
+    ext_dict["geonet"] = ["v1", "v2", "v1a", "v2a"]
+    ext_dict["cosmos"] = ["v0", "v0c", "v1", "v1c", "v1", "v1c", "v2", "v2c"]
 
     # List of unique extensions, so we can break out of loop.
-    unique_exts = ['.mseed', '.sac', '.dat', '.smc', '.txt', '.asc', '.raw']
-    unique_exts.extend(ext_dict['knet'])
+    unique_exts = [".mseed", ".sac", ".dat", ".smc", ".txt", ".asc", ".raw"]
+    unique_exts.extend(ext_dict["knet"])
 
     for mod, ext_list in ext_dict.items():
         if file_ext.lower() in ext_list:
-            valid_formats.insert(
-                0, valid_formats.pop(valid_formats.index(mod)))
+            valid_formats.insert(0, valid_formats.pop(valid_formats.index(mod)))
             if file_ext.lower() in unique_exts:
                 break
 
@@ -109,9 +105,9 @@ def _get_format(filename, config):
     formats = []
     for valid_format in valid_formats:
         # Create the module and function name from the request
-        reader = 'gmprocess.io.' + valid_format + '.core'
+        reader = "gmprocess.io." + valid_format + ".core"
         reader_module = importlib.import_module(reader)
-        is_name = 'is_' + valid_format
+        is_name = "is_" + valid_format
         is_method = getattr(reader_module, is_name)
         if is_method(filename, config):
             formats += [valid_format]
@@ -120,14 +116,15 @@ def _get_format(filename, config):
     formats = np.asarray(formats)
     if len(formats) == 1:
         return formats[0]
-    elif len(formats) == 2 and 'gmobspy' in formats:
-        return formats[formats != 'gmobspy'][0]
+    elif len(formats) == 2 and "gmobspy" in formats:
+        return formats[formats != "gmobspy"][0]
     elif len(formats) == 0:
-        raise Exception('No format found for file %r.' % filename)
+        raise Exception(f"No format found for file {filename!r}.")
     else:
         raise Exception(
-            'Multiple formats passing: %r. Please retry file %r '
-            'with a specified format.' % (formats.tolist(), filename))
+            "Multiple formats passing: %r. Please retry file %r "
+            "with a specified format." % (formats.tolist(), filename)
+        )
 
 
 def _validate_format(filename, config, read_format):
@@ -148,25 +145,29 @@ def _validate_format(filename, config, read_format):
     # Get the valid formats
     valid_formats = []
     home = os.path.dirname(os.path.abspath(__file__))
-    io_directory = os.path.abspath(os.path.join(home, '..', 'io'))
+    io_directory = os.path.abspath(os.path.join(home, "..", "io"))
     # Create valid list
     for module in os.listdir(io_directory):
-        if module.find('.') < 0 and module not in EXCLUDED_MODS:
+        if module.find(".") < 0 and module not in EXCLUDED_MODS:
             valid_formats += [module]
     # Check for a valid format
     if read_format in valid_formats:
-        reader = 'gmprocess.io.' + read_format + '.core'
+        reader = "gmprocess.io." + read_format + ".core"
         reader_module = importlib.import_module(reader)
-        is_name = 'is_' + read_format
+        is_name = "is_" + read_format
         is_method = getattr(reader_module, is_name)
     else:
-        logging.warning('Not a supported format %r. '
-                        'Attempting to find a supported format.' % read_format)
+        logging.warning(
+            "Not a supported format %r. "
+            "Attempting to find a supported format." % read_format
+        )
         return _get_format(filename, config)
     # Check that the format passes tests
     if is_method(filename, config):
         return read_format
     else:
-        logging.warning('File did not match specified format. '
-                        'Attempting to find a supported format.')
+        logging.warning(
+            "File did not match specified format. "
+            "Attempting to find a supported format."
+        )
         return _get_format(filename, config)

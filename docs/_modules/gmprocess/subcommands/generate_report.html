@@ -4,14 +4,15 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.3.0, furo 2021.10.09"/>
-        <title>gmprocess.subcommands.generate_report - gmprocess 1.1.11.dev129+g2383d0f.d20211115 documentation</title>
+    <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
+        <title>gmprocess.subcommands.generate_report - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=16fb25fabf47304eee183a5e9af80b1ba98259b1" />
     
@@ -138,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev129+g2383d0f.d20211115 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -175,8 +176,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../contents/overview/index.html">Overview</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../contents/getting-started/index.html">Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../contents/getting-started/install.html">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../contents/getting-started/initial_setup.html">Initial Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contents/getting-started/install.html">   Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contents/getting-started/initial_setup.html">   Initial Setup</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../contents/tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -187,17 +188,18 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../contents/manual/index.html">Manual</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../contents/manual/data_structures.html">Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../contents/manual/workspace.html">Workspace</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../contents/manual/config_file.html">Configuration File</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../contents/manual/processing.html">Processing Steps</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../contents/manual/utilities.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contents/manual/data_structures.html">   Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contents/manual/workspace.html">   Workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contents/manual/config_file.html">   Configuration File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contents/manual/processing.html">   Processing Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contents/manual/utilities.html">   Utilities</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../contents/developer/index.html">Developer Resources</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../contents/developer/contributing.html">Contributing Guidelines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../contents/developer/new_readers.html">Adding New Data Readers</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../../autoapi/gmprocess/index.html">API</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../contents/developer/contributing.html">   Contributing Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contents/developer/new_readers.html">   Adding New Data Readers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contents/developer/build_docs.html">   Building the Documentation</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../autoapi/gmprocess/index.html">   API</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/gmprocess/apps/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.apps</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/apps/gmrecords/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.apps.gmrecords</span></code></a></li>
 </ul>
@@ -379,6 +381,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/generate_station_maps/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.generate_station_maps</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/import_data/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.import_data</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/init/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.init</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/lazy_loader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.lazy_loader</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/process_waveforms/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.process_waveforms</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/projects/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.projects</span></code></a></li>
 </ul>
@@ -459,27 +462,29 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">gmprocess.subcommands.lazy_loader</span> <span class="kn">import</span> <span class="n">LazyLoader</span>
 
-<span class="kn">from</span> <span class="nn">gmprocess.subcommands.base</span> <span class="kn">import</span> <span class="n">SubcommandModule</span>
-<span class="kn">from</span> <span class="nn">gmprocess.subcommands.arg_dicts</span> <span class="kn">import</span> <span class="n">ARG_DICTS</span>
-<span class="kn">from</span> <span class="nn">gmprocess.io.asdf.stream_workspace</span> <span class="kn">import</span> <span class="n">StreamWorkspace</span>
-<span class="kn">from</span> <span class="nn">gmprocess.io.report</span> <span class="kn">import</span> <span class="n">build_report_latex</span>
-<span class="kn">from</span> <span class="nn">gmprocess.utils.plot</span> <span class="kn">import</span> <span class="n">summary_plots</span><span class="p">,</span> <span class="n">plot_moveout</span>
-<span class="kn">from</span> <span class="nn">gmprocess.utils.constants</span> <span class="kn">import</span> <span class="n">WORKSPACE_NAME</span>
+<span class="n">distributed</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"distributed"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"dask.distributed"</span><span class="p">)</span>
+
+<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"base"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.base"</span><span class="p">)</span>
+<span class="n">arg_dicts</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"arg_dicts"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.arg_dicts"</span><span class="p">)</span>
+<span class="n">ws</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"ws"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.io.asdf.stream_workspace"</span><span class="p">)</span>
+<span class="n">report</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"report"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.io.report"</span><span class="p">)</span>
+<span class="n">plot</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"plot"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.plot"</span><span class="p">)</span>
+<span class="n">const</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"const"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.constants"</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="GenerateReportModule"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/generate_report/index.html#gmprocess.subcommands.generate_report.GenerateReportModule">[docs]</a><span class="k">class</span> <span class="nc">GenerateReportModule</span><span class="p">(</span><span class="n">SubcommandModule</span><span class="p">):</span>
-    <span class="sd">"""Generate summary report (latex required).</span>
-<span class="sd">    """</span>
-    <span class="n">command_name</span> <span class="o">=</span> <span class="s1">'generate_report'</span>
-    <span class="n">aliases</span> <span class="o">=</span> <span class="p">(</span><span class="s1">'report'</span><span class="p">,</span> <span class="p">)</span>
+<div class="viewcode-block" id="GenerateReportModule"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/generate_report/index.html#gmprocess.subcommands.generate_report.GenerateReportModule">[docs]</a><span class="k">class</span> <span class="nc">GenerateReportModule</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">SubcommandModule</span><span class="p">):</span>
+    <span class="sd">"""Generate summary report (latex required)."""</span>
+
+    <span class="n">command_name</span> <span class="o">=</span> <span class="s2">"generate_report"</span>
+    <span class="n">aliases</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"report"</span><span class="p">,)</span>
 
     <span class="n">arguments</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">ARG_DICTS</span><span class="p">[</span><span class="s1">'eventid'</span><span class="p">],</span>
-        <span class="n">ARG_DICTS</span><span class="p">[</span><span class="s1">'textfile'</span><span class="p">],</span>
-        <span class="n">ARG_DICTS</span><span class="p">[</span><span class="s1">'label'</span><span class="p">],</span>
-        <span class="n">ARG_DICTS</span><span class="p">[</span><span class="s1">'num_processes'</span><span class="p">]</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"eventid"</span><span class="p">],</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"textfile"</span><span class="p">],</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"label"</span><span class="p">],</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"num_processes"</span><span class="p">],</span>
     <span class="p">]</span>
 
 <div class="viewcode-block" id="GenerateReportModule.main"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/generate_report/index.html#gmprocess.subcommands.generate_report.GenerateReportModule.main">[docs]</a>    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gmrecords</span><span class="p">):</span>
@@ -494,7 +499,7 @@
 <span class="sd">            gmrecords:</span>
 <span class="sd">                GMrecordsApp instance.</span>
 <span class="sd">        """</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Running subcommand </span><span class="se">\'</span><span class="si">%s</span><span class="se">\'</span><span class="s1">'</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Running subcommand '</span><span class="si">%s</span><span class="s2">'"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span> <span class="o">=</span> <span class="n">gmrecords</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_arguments</span><span class="p">()</span>
@@ -504,56 +509,55 @@
             <span class="n">event_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
             <span class="n">pstreams</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_diagnostic_plots</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="s1">'Generating summary report for event </span><span class="si">%s</span><span class="s1">...'</span> <span class="o">%</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Generating summary report for event </span><span class="si">%s</span><span class="s2">..."</span> <span class="o">%</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 
-            <span class="n">build_conf</span> <span class="o">=</span> <span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span><span class="p">[</span><span class="s1">'build_report'</span><span class="p">]</span>
-            <span class="n">report_format</span> <span class="o">=</span> <span class="n">build_conf</span><span class="p">[</span><span class="s1">'format'</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">report_format</span> <span class="o">==</span> <span class="s1">'latex'</span><span class="p">:</span>
-                <span class="n">report_file</span><span class="p">,</span> <span class="n">success</span> <span class="o">=</span> <span class="n">build_report_latex</span><span class="p">(</span>
+            <span class="n">build_conf</span> <span class="o">=</span> <span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span><span class="p">[</span><span class="s2">"build_report"</span><span class="p">]</span>
+            <span class="n">report_format</span> <span class="o">=</span> <span class="n">build_conf</span><span class="p">[</span><span class="s2">"format"</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">report_format</span> <span class="o">==</span> <span class="s2">"latex"</span><span class="p">:</span>
+                <span class="n">report_file</span><span class="p">,</span> <span class="n">success</span> <span class="o">=</span> <span class="n">report</span><span class="o">.</span><span class="n">build_report_latex</span><span class="p">(</span>
                     <span class="n">pstreams</span><span class="p">,</span>
                     <span class="n">event_dir</span><span class="p">,</span>
                     <span class="n">event</span><span class="p">,</span>
                     <span class="n">prefix</span><span class="o">=</span><span class="s2">"</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">label</span><span class="p">),</span>
                     <span class="n">config</span><span class="o">=</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span><span class="p">,</span>
-                    <span class="n">gmprocess_version</span><span class="o">=</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">gmprocess_version</span>
+                    <span class="n">gmprocess_version</span><span class="o">=</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">gmprocess_version</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">report_file</span> <span class="o">=</span> <span class="s1">''</span>
+                <span class="n">report_file</span> <span class="o">=</span> <span class="s2">""</span>
                 <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">report_file</span><span class="p">)</span> <span class="ow">and</span> <span class="n">success</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">append_file</span><span class="p">(</span><span class="s1">'Summary report'</span><span class="p">,</span> <span class="n">report_file</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">append_file</span><span class="p">(</span><span class="s2">"Summary report"</span><span class="p">,</span> <span class="n">report_file</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_summarize_files_created</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="GenerateReportModule.generate_diagnostic_plots"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/generate_report/index.html#gmprocess.subcommands.generate_report.GenerateReportModule.generate_diagnostic_plots">[docs]</a>    <span class="k">def</span> <span class="nf">generate_diagnostic_plots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="n">event_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-        <span class="n">workname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="n">WORKSPACE_NAME</span><span class="p">)</span>
+        <span class="n">workname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="n">const</span><span class="o">.</span><span class="n">WORKSPACE_NAME</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">workname</span><span class="p">):</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="s1">'No workspace file found for event </span><span class="si">%s</span><span class="s1">. Please run '</span>
-                <span class="s1">'subcommand </span><span class="se">\'</span><span class="s1">assemble</span><span class="se">\'</span><span class="s1"> to generate workspace file.'</span>
-                <span class="o">%</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Continuing to next event.'</span><span class="p">)</span>
+                <span class="s2">"No workspace file found for event </span><span class="si">%s</span><span class="s2">. Please run "</span>
+                <span class="s2">"subcommand 'assemble' to generate workspace file."</span> <span class="o">%</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span>
+            <span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Continuing to next event."</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span> <span class="o">=</span> <span class="n">StreamWorkspace</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">workname</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span> <span class="o">=</span> <span class="n">ws</span><span class="o">.</span><span class="n">StreamWorkspace</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">workname</span><span class="p">)</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">dataset</span>
         <span class="n">station_list</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">waveforms</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">station_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'No processed waveforms available. No report '</span>
-                         <span class="s1">'generated.'</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"No processed waveforms available. No report "</span> <span class="s2">"generated."</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">num_processes</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">futures</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">threads_per_worker</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                            <span class="n">n_workers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">num_processes</span><span class="p">)</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="n">distributed</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span>
+                <span class="n">threads_per_worker</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_workers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">num_processes</span>
+            <span class="p">)</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Creating diagnostic plots for event </span><span class="si">%s</span><span class="s1">...'</span> <span class="o">%</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-        <span class="n">plot_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="s1">'plots'</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Creating diagnostic plots for event </span><span class="si">%s</span><span class="s2">..."</span> <span class="o">%</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">plot_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="s2">"plots"</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">plot_dir</span><span class="p">):</span>
             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">plot_dir</span><span class="p">)</span>
 
@@ -564,29 +568,27 @@
                 <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
                 <span class="n">stations</span><span class="o">=</span><span class="p">[</span><span class="n">station_id</span><span class="p">],</span>
                 <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">label</span><span class="p">],</span>
-                <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span>
+                <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">conf</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">streams</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'No matching streams found.'</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No matching streams found."</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">:</span>
                 <span class="n">pstreams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">num_processes</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">future</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
-                        <span class="n">summary_plots</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">plot_dir</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+                    <span class="n">future</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">plot</span><span class="o">.</span><span class="n">summary_plots</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">plot_dir</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
                     <span class="n">futures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">future</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">summary_plots</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">plot_dir</span><span class="p">,</span> <span class="n">event</span><span class="p">))</span>
+                    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plot</span><span class="o">.</span><span class="n">summary_plots</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">plot_dir</span><span class="p">,</span> <span class="n">event</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">num_processes</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="c1"># Collect the results??</span>
             <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">futures</span><span class="p">]</span>
             <span class="n">client</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
 
-        <span class="n">moveoutfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="s1">'moveout_plot.png'</span><span class="p">)</span>
-        <span class="n">plot_moveout</span><span class="p">(</span><span class="n">pstreams</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
-                     <span class="n">file</span><span class="o">=</span><span class="n">moveoutfile</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">append_file</span><span class="p">(</span><span class="s1">'Moveout plot'</span><span class="p">,</span> <span class="n">moveoutfile</span><span class="p">)</span>
+        <span class="n">moveoutfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="s2">"moveout_plot.png"</span><span class="p">)</span>
+        <span class="n">plot</span><span class="o">.</span><span class="n">plot_moveout</span><span class="p">(</span><span class="n">pstreams</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">moveoutfile</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">append_file</span><span class="p">(</span><span class="s2">"Moveout plot"</span><span class="p">,</span> <span class="n">moveoutfile</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
@@ -622,8 +624,10 @@
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/scripts/main.js"></script>
-    <script src="../../../_static/tabs.js"></script>
     <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/tabs.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     </body>
 </html>

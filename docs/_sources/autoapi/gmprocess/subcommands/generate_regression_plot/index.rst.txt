@@ -17,12 +17,42 @@ Classes
 
 
 
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.subcommands.generate_regression_plot.pd
+   gmprocess.subcommands.generate_regression_plot.base
+   gmprocess.subcommands.generate_regression_plot.plot
+   gmprocess.subcommands.generate_regression_plot.const
+
+
+.. py:data:: pd
+   
+
+   
+
+.. py:data:: base
+   
+
+   
+
+.. py:data:: plot
+   
+
+   
+
+.. py:data:: const
+   
+
+   
+
 .. py:class:: GenerateRegressionPlotModule
 
-   Bases: :py:obj:`gmprocess.subcommands.base.SubcommandModule`
+   Bases: :py:obj:`base`
 
    Generate multi-event "regression" plot.
-
 
    .. py:attribute:: command_name
       :annotation: = generate_regression_plot

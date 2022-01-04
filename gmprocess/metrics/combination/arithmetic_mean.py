@@ -33,11 +33,11 @@ class Arithmetic_Mean(Combination):
             if isinstance(h1, dict):
                 # this is the case where IMT is FAS
                 am = {
-                    'freqs': h1['freqs'],
-                    'spectra': (h1['spectra'] + h2['spectra']) / 2
+                    "freqs": h1["freqs"],
+                    "spectra": (h1["spectra"] + h2["spectra"]) / 2,
                 }
             else:
-                am = {'': 0.5 * (h1 + h2)}
+                am = {"": 0.5 * (h1 + h2)}
         else:
             # Just for tests?
             horizontals = self.combination_data

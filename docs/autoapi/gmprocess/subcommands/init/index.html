@@ -3,16 +3,17 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.subcommands.process_waveforms" href="../process_waveforms/index.html" /><link rel="prev" title="gmprocess.subcommands.import_data" href="../import_data/index.html" />
+<link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.subcommands.lazy_loader" href="../lazy_loader/index.html" /><link rel="prev" title="gmprocess.subcommands.import_data" href="../import_data/index.html" />
 
-    <meta name="generator" content="sphinx-4.3.0, furo 2021.10.09"/>
-        <title>gmprocess.subcommands.init - gmprocess 1.1.11.dev129+g2383d0f.d20211115 documentation</title>
+    <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
+        <title>gmprocess.subcommands.init - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=16fb25fabf47304eee183a5e9af80b1ba98259b1" />
     
@@ -139,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev129+g2383d0f.d20211115 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -176,8 +177,8 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../../../contents/overview/index.html">Overview</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../contents/getting-started/index.html">Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../contents/getting-started/install.html">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../contents/getting-started/initial_setup.html">Initial Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/getting-started/install.html">   Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/getting-started/initial_setup.html">   Initial Setup</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../contents/tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -188,17 +189,18 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../contents/manual/index.html">Manual</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/data_structures.html">Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/workspace.html">Workspace</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/config_file.html">Configuration File</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/processing.html">Processing Steps</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/utilities.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/data_structures.html">   Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/workspace.html">   Workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/config_file.html">   Configuration File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/processing.html">   Processing Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/utilities.html">   Utilities</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../../../../contents/developer/index.html">Developer Resources</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../../../../contents/developer/contributing.html">Contributing Guidelines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../contents/developer/new_readers.html">Adding New Data Readers</a></li>
-<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html">API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/developer/contributing.html">   Contributing Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/developer/new_readers.html">   Adding New Data Readers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/developer/build_docs.html">   Building the Documentation</a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html">   API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../apps/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.apps</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../apps/gmrecords/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.apps.gmrecords</span></code></a></li>
 </ul>
@@ -380,6 +382,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../generate_station_maps/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.generate_station_maps</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../import_data/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.import_data</span></code></a></li>
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.init</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../lazy_loader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.lazy_loader</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../process_waveforms/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.process_waveforms</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../projects/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.projects</span></code></a></li>
 </ul>
@@ -470,10 +473,49 @@
 </tr>
 </tbody>
 </table></div>
+</section>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h3>
+<div class="table-wrapper"><table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%"/>
+<col style="width: 90%"/>
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.init.configobj" title="gmprocess.subcommands.init.configobj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">configobj</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.init.base" title="gmprocess.subcommands.init.base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.init.const" title="gmprocess.subcommands.init.const"><code class="xref py py-obj docutils literal notranslate"><span class="pre">const</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.init.projects" title="gmprocess.subcommands.init.projects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">projects</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table></div>
+<dl class="py data">
+<dt class="sig sig-object py" id="gmprocess.subcommands.init.configobj">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.init.</span></span><span class="sig-name descname"><span class="pre">configobj</span></span><a class="headerlink" href="#gmprocess.subcommands.init.configobj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+<dl class="py data">
+<dt class="sig sig-object py" id="gmprocess.subcommands.init.base">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.init.</span></span><span class="sig-name descname"><span class="pre">base</span></span><a class="headerlink" href="#gmprocess.subcommands.init.base" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+<dl class="py data">
+<dt class="sig sig-object py" id="gmprocess.subcommands.init.const">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.init.</span></span><span class="sig-name descname"><span class="pre">const</span></span><a class="headerlink" href="#gmprocess.subcommands.init.const" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+<dl class="py data">
+<dt class="sig sig-object py" id="gmprocess.subcommands.init.projects">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.init.</span></span><span class="sig-name descname"><span class="pre">projects</span></span><a class="headerlink" href="#gmprocess.subcommands.init.projects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="gmprocess.subcommands.init.InitModule">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.init.</span></span><span class="sig-name descname"><span class="pre">InitModule</span></span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/init.html#InitModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.init.InitModule" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="../base/index.html#gmprocess.subcommands.base.SubcommandModule" title="gmprocess.subcommands.base.SubcommandModule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gmprocess.subcommands.base.SubcommandModule</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#gmprocess.subcommands.init.base" title="gmprocess.subcommands.init.base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base</span></code></a></p>
 <p>Initialize the current directory as a gmprocess project directory.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gmprocess.subcommands.init.InitModule.command_name">
@@ -503,12 +545,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../process_waveforms/index.html">
+          <a class="next-page" href="../lazy_loader/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.process_waveforms</span></code></div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.lazy_loader</span></code></div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -553,7 +595,12 @@
             <ul>
 <li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.init</span></code></a><ul>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
-<li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#gmprocess.subcommands.init.configobj">configobj</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.init.base">base</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.init.const">const</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.init.projects">projects</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.init.InitModule">InitModule</a><ul>
 <li><a class="reference internal" href="#gmprocess.subcommands.init.InitModule.command_name">command_name</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.init.InitModule.arguments">arguments</a></li>
@@ -580,8 +627,10 @@
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/scripts/main.js"></script>
-    <script src="../../../../_static/tabs.js"></script>
     <script src="../../../../_static/togglebutton.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/tabs.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     </body>
 </html>

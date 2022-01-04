@@ -13,12 +13,19 @@ from obspy.signal.util import next_pow_2
 
 
 class FFT(Transform):
-    """Class for computing the fast fourier transform.
-    """
+    """Class for computing the fast fourier transform."""
 
-    def __init__(self, transform_data, damping=None, period=None, times=None,
-                 max_period=None, allow_nans=None, bandwidth=None,
-                 config=None):
+    def __init__(
+        self,
+        transform_data,
+        damping=None,
+        period=None,
+        times=None,
+        max_period=None,
+        allow_nans=None,
+        bandwidth=None,
+        config=None,
+    ):
         """
         Args:
             transform_data (obspy.core.stream.Stream or numpy.ndarray):
@@ -37,9 +44,16 @@ class FFT(Transform):
                 Configuration options.
 
         """
-        super().__init__(transform_data, damping=None, period=None, times=None,
-                         max_period=None, allow_nans=None, bandwidth=None,
-                         config=None)
+        super().__init__(
+            transform_data,
+            damping=None,
+            period=None,
+            times=None,
+            max_period=None,
+            allow_nans=None,
+            bandwidth=None,
+            config=None,
+        )
         self.max_period = max_period
         self.allow_nans = allow_nans
         self.bandwidth = bandwidth
@@ -58,19 +72,16 @@ class FFT(Transform):
             nfft = self.get_nfft(trace)
 
             # Check if we already have computed the FFT for this trace
-            if trace.hasCached('fas_spectrum'):
-                spectra = trace.getCached('fas_spectrum')
+            if trace.hasCached("fas_spectrum"):
+                spectra = trace.getCached("fas_spectrum")
                 sampling_rate = trace.stats.sampling_rate
                 freqs = np.fft.rfftfreq(nfft, 1 / sampling_rate)
             else:
                 spectra, freqs = compute_fft(trace, nfft)
-                trace.setCached('fas_spectrum', spectra)
+                trace.setCached("fas_spectrum", spectra)
 
-            tdict = {
-                'freqs': freqs,
-                'spectra': spectra
-            }
-            fft_dict[trace.stats['channel'].upper()] = tdict
+            tdict = {"freqs": freqs, "spectra": spectra}
+            fft_dict[trace.stats["channel"].upper()] = tdict
 
         return fft_dict
 
@@ -91,7 +102,8 @@ class FFT(Transform):
         else:
             nyquist = 0.5 * self.transform_data[0].stats.sampling_rate
             min_freq = 1.0 / self.max_period
-            df = (min_freq * 10**(3.0 / self.bandwidth)) - (
-                min_freq / 10**(3.0 / self.bandwidth))
+            df = (min_freq * 10 ** (3.0 / self.bandwidth)) - (
+                min_freq / 10 ** (3.0 / self.bandwidth)
+            )
             nfft = max(len(trace.data), nyquist / df)
         return next_pow_2(nfft)

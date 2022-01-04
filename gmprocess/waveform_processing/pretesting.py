@@ -26,13 +26,13 @@ def check_free_field(st, reject_non_free_field=False):
 
     for trace in st:
         if not trace.free_field and reject_non_free_field:
-            trace.fail('Failed free field sensor check.')
+            trace.fail("Failed free field sensor check.")
 
     return st
 
 
 def check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0):
-    '''
+    """
     Checks that the maximum STA/LTA ratio for AT LEAST ONE of the stream's
     traces is above a certain threshold.
 
@@ -48,7 +48,7 @@ def check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0):
 
     Returns:
         Stream that has been checked for sta/lta requirements.
-    '''
+    """
     if not st.passed:
         return st
 
@@ -58,11 +58,14 @@ def check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0):
         if len(tr) >= nlta:
             sta_lta = classic_sta_lta(tr.data, sta_length * sr + 1, nlta)
             if sta_lta.max() < threshold:
-                tr.fail('Failed sta/lta check because threshold sta/lta '
-                        'is not exceeded.')
+                tr.fail(
+                    "Failed sta/lta check because threshold sta/lta is not exceeded."
+                )
         else:
-            tr.fail('Failed sta/lta check because record length is shorter '
-                    'than lta length.')
+            tr.fail(
+                "Failed sta/lta check because record length is shorter "
+                "than lta length."
+            )
 
     return st
 
@@ -89,9 +92,8 @@ def check_max_amplitude(st, min=5, max=2e6):
     for tr in st:
         # Only perform amplitude/clipping check if data has not been converted
         # to physical units
-        if 'remove_response' not in tr.getProvenanceKeys():
-            if (abs(tr.max()) < float(min) or
-                    abs(tr.max()) > float(max)):
-                tr.fail('Failed max amplitude check.')
+        if "remove_response" not in tr.getProvenanceKeys():
+            if abs(tr.max()) < float(min) or abs(tr.max()) > float(max):
+                tr.fail("Failed max amplitude check.")
 
     return st

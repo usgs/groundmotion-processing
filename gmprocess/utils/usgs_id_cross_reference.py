@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from libcomcat.search import search
 from gmprocess.utils.logging import setup_logger
 
-setup_logger(args=None, level='info')
+setup_logger(args=None, level="info")
 
 DELTA_MAG = 0.5
 # Can change if target event only has month, day, and year
@@ -64,8 +64,11 @@ def match_to_usgs_id(eqids, mags, times, lats, lons):
         of matching USGS ID and event attributes.
     """
     # Converting datetime object
-    times = [datetime.datetime.utcfromtimestamp(time.astype('O')/1e9)
-             for time in times if isinstance(time, np.datetime64)]
+    times = [
+        datetime.datetime.utcfromtimestamp(time.astype("O") / 1e9)
+        for time in times
+        if isinstance(time, np.datetime64)
+    ]
 
     event_matches = {}
     warning_ids = []
@@ -76,23 +79,25 @@ def match_to_usgs_id(eqids, mags, times, lats, lons):
         buffer = set_buffer(target)
 
         match_dict = {
-            'magnitude': target['mag'],
-            'time': target['time'],
-            'latitude': target['lat'],
-            'longitude': target['lon'],
-            'usgs_id': None,
-            'usgs_magnitude': None,
-            'usgs_time': None,
-            'usgs_latitude': None,
-            'usgs_longitude': None,
-            'error': None}
+            "magnitude": target["mag"],
+            "time": target["time"],
+            "latitude": target["lat"],
+            "longitude": target["lon"],
+            "usgs_id": None,
+            "usgs_magnitude": None,
+            "usgs_time": None,
+            "usgs_latitude": None,
+            "usgs_longitude": None,
+            "error": None,
+        }
 
         # Libcomcat search for matching events
         try:
             usgs_events = find_events(target, buffer)
             num_events_found = len(usgs_events)
-            logging.info('EQID %s: %d potential match(es) found' %
-                        (eqid, num_events_found))
+            logging.info(
+                "EQID %s: %d potential match(es) found" % (eqid, num_events_found)
+            )
 
             if num_events_found == 1:
                 usgs_event = usgs_events[0]
@@ -102,28 +107,31 @@ def match_to_usgs_id(eqids, mags, times, lats, lons):
                 min_error = 100
                 for event in usgs_events:
                     total_error = calculate_error(event, buffer, target)
-                    is_unique = all([True if v['usgs_id'] != event.id
-                                    else False
-                                    for v in event_matches.values()])
+                    is_unique = all(
+                        [
+                            True if v["usgs_id"] != event.id else False
+                            for v in event_matches.values()
+                        ]
+                    )
                     if total_error < min_error and is_unique:
                         matching_event = event
                         min_error = total_error
                 usgs_event = matching_event
             else:
-                logging.warning('NO MATCH FOUND')
+                logging.warning("NO MATCH FOUND")
                 event_matches[eqid] = match_dict
                 continue
-            logging.info('Match Error: %.4f' % min_error)
+            logging.info(f"Match Error: {min_error:.4f}")
             if min_error >= ERROR_THRESH:
-                logging.warning('HIGH ERROR')
+                logging.warning("HIGH ERROR")
                 warning_ids.append(eqid)
 
-            match_dict['error'] = min_error
-            match_dict['usgs_id'] = usgs_event.id
-            match_dict['usgs_magnitude'] = usgs_event.magnitude
-            match_dict['usgs_time'] = usgs_event.time
-            match_dict['usgs_latitude'] = usgs_event.latitude
-            match_dict['usgs_longitude'] = usgs_event.longitude
+            match_dict["error"] = min_error
+            match_dict["usgs_id"] = usgs_event.id
+            match_dict["usgs_magnitude"] = usgs_event.magnitude
+            match_dict["usgs_time"] = usgs_event.time
+            match_dict["usgs_latitude"] = usgs_event.latitude
+            match_dict["usgs_longitude"] = usgs_event.longitude
 
             event_matches[eqid] = match_dict
         except Exception:
@@ -131,7 +139,7 @@ def match_to_usgs_id(eqids, mags, times, lats, lons):
             event_matches[eqid] = match_dict
 
     match_rate = match_percentage(eqids, event_matches)
-    logging.info('Event Matching Success: %.2f %%' % (match_rate * 100))
+    logging.info(f"Event Matching Success: {match_rate * 100:.2f} %")
     return event_matches
 
 
@@ -146,7 +154,7 @@ def get_magnitude_range(magnitudes):
     """
     max_m = max(magnitudes)
     max_l = min(magnitudes)
-    mag_range = list(range(int(max_l), int(max_m)+1))
+    mag_range = list(range(int(max_l), int(max_m) + 1))
     return mag_range
 
 
@@ -189,12 +197,12 @@ def plot_match_rate_by_mag(project_name, mag_range, mag_rates):
         mag_rates (list):
             List of percentages of events matched by magnitude.
     """
-    plot_name = '%s_found_rate_by_mag.png' % project_name
-    logging.info("Generating bar graph '%s'..." % plot_name)
+    plot_name = f"{project_name}_found_rate_by_mag.png"
+    logging.info(f"Generating bar graph '{plot_name}'...")
     plt.bar(mag_range, mag_rates)
-    plt.xlabel('Magnitude')
-    plt.ylabel('Match Rate (%)')
-    plt.title('''Event IDs to USGS Event IDs \n Match Rate by Magnitude''')
+    plt.xlabel("Magnitude")
+    plt.ylabel("Match Rate (%)")
+    plt.title("""Event IDs to USGS Event IDs \n Match Rate by Magnitude""")
     plt.savefig(plot_name)
     logging.info("COMPLETE")
 
@@ -210,26 +218,27 @@ def write_summary(project_name, event_matches):
             Map of target event ids to dictionary of matching
             USGS ID and other event attributes.
     """
-    summary_data = {'project': [],
-                    'eqid': [],
-                    'magnitude': [],
-                    'latitude': [],
-                    'longitude': [],
-                    'time': [],
-                    'usgs_id': [],
-                    'usgs_magnitude': [],
-                    'usgs_latitude': [],
-                    'usgs_longitude': [],
-                    'usgs_time': []}
-    summary_data['project'] = project_name
-    summary_data['eqid'] = event_matches.keys()
-    ignore_keys = ['project', 'eqid']
+    summary_data = {
+        "project": [],
+        "eqid": [],
+        "magnitude": [],
+        "latitude": [],
+        "longitude": [],
+        "time": [],
+        "usgs_id": [],
+        "usgs_magnitude": [],
+        "usgs_latitude": [],
+        "usgs_longitude": [],
+        "usgs_time": [],
+    }
+    summary_data["project"] = project_name
+    summary_data["eqid"] = event_matches.keys()
+    ignore_keys = ["project", "eqid"]
     for key in summary_data.keys() - ignore_keys:
         summary_data[key] = [val[key] for _, val in event_matches.items()]
     summary_data = pd.DataFrame(summary_data)
     summary_data.columns = [col.upper() for col in summary_data.columns]
-    summary_data.to_excel('%s_usgs_ids_cross_reference.xlsx' %
-                          project_name, index=False)
+    summary_data.to_excel(f"{project_name}_usgs_ids_cross_reference.xlsx", index=False)
 
 
 def set_target(mag, time, lat, lon):
@@ -248,10 +257,7 @@ def set_target(mag, time, lat, lon):
         targets (dictionary): Dictionary of target event magnitude,
         time, and location values.
     """
-    target = {'mag': mag,
-              'time': time,
-              'lat': lat,
-              'lon': lon}
+    target = {"mag": mag, "time": time, "lat": lat, "lon": lon}
     return target
 
 
@@ -267,14 +273,12 @@ def set_buffer(target):
         buffer (dictionary): Dictionary of time, magnitude,
         and distance buffers.
     """
-    if target['time'].strftime('%M:%S') == '00:00':
+    if target["time"].strftime("%M:%S") == "00:00":
         DELTA_HOUR = 24
     time_buffer = datetime.timedelta(hours=DELTA_HOUR)
     # Search radius scaled by target event magnitude
-    distance_buffer = DIST_SCALER * target['mag']
-    buffer = {'mag': DELTA_MAG,
-              'time': time_buffer,
-              'dist': distance_buffer}
+    distance_buffer = DIST_SCALER * target["mag"]
+    buffer = {"mag": DELTA_MAG, "time": time_buffer, "dist": distance_buffer}
     return buffer
 
 
@@ -291,13 +295,14 @@ def find_events(target, buffer):
         usgs_events (list): List of Libcomcat SummaryEvents.
     """
     usgs_event = search(
-        starttime=target['time'] - buffer['time'],
-        endtime=target['time'] + buffer['time'],
-        latitude=target['lat'],
-        longitude=target['lon'],
-        maxradiuskm=buffer['dist'],
-        maxmagnitude=target['mag'] + buffer['mag'],
-        minmagnitude=target['mag'] - buffer['mag'])
+        starttime=target["time"] - buffer["time"],
+        endtime=target["time"] + buffer["time"],
+        latitude=target["lat"],
+        longitude=target["lon"],
+        maxradiuskm=buffer["dist"],
+        maxmagnitude=target["mag"] + buffer["mag"],
+        minmagnitude=target["mag"] - buffer["mag"],
+    )
     return usgs_event
 
 
@@ -317,12 +322,14 @@ def calculate_error(event, buffer, target):
         total_error (float): Float (0-3) giving the total error
         between the proposed matching event and the target event.
     """
-    mag_error = np.abs(event.magnitude - target['mag'])/buffer['mag']
-    time_error = (np.abs((event.time - target['time']).total_seconds()) /
-                 buffer['time'].total_seconds())
-    dist_error = (np.sqrt((event.latitude-target['lat'])**2 +
-                 (event.longitude-target['lon'])**2) /
-                 (COORD_KM_SCALER*buffer['dist']))
+    mag_error = np.abs(event.magnitude - target["mag"]) / buffer["mag"]
+    time_error = (
+        np.abs((event.time - target["time"]).total_seconds())
+        / buffer["time"].total_seconds()
+    )
+    dist_error = np.sqrt(
+        (event.latitude - target["lat"]) ** 2 + (event.longitude - target["lon"]) ** 2
+    ) / (COORD_KM_SCALER * buffer["dist"])
     total_error = mag_error + time_error + dist_error
     return total_error
 
@@ -341,6 +348,5 @@ def match_percentage(eqids, event_matches):
         rate (float): Percent (0 to 1) of events matched.
     """
     eqids = np.unique(eqids)
-    rate = sum([bool(event_matches[eqid]['usgs_id'])
-                for eqid in eqids])/len(eqids)
+    rate = sum([bool(event_matches[eqid]["usgs_id"]) for eqid in eqids]) / len(eqids)
     return rate

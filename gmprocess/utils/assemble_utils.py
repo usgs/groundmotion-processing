@@ -12,10 +12,10 @@ from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.io.read_directory import directory_to_streams
 from gmprocess.utils.misc import get_rawdir
 
-TIMEFMT2 = '%Y-%m-%dT%H:%M:%S.%f'
+TIMEFMT2 = "%Y-%m-%dT%H:%M:%S.%f"
 
 
-FLOAT_PATTERN = r'[-+]?[0-9]*\.?[0-9]+'
+FLOAT_PATTERN = r"[-+]?[0-9]*\.?[0-9]+"
 
 
 def assemble(event, config, directory, gmprocess_version):
@@ -46,15 +46,14 @@ def assemble(event, config, directory, gmprocess_version):
     # Make raw directory
     in_event_dir = os.path.join(directory, event.id)
     in_raw_dir = get_rawdir(in_event_dir)
-    logging.debug('in_raw_dir: %s' % in_raw_dir)
-    streams, _, _ = directory_to_streams(
-        in_raw_dir, config=config)
-    logging.debug('streams:')
+    logging.debug(f"in_raw_dir: {in_raw_dir}")
+    streams, _, _ = directory_to_streams(in_raw_dir, config=config)
+    logging.debug("streams:")
     logging.debug(streams)
-    tcollection = StreamCollection(streams, **config['duplicate'])
+    tcollection = StreamCollection(streams, **config["duplicate"])
 
     if len(tcollection):
-        logging.debug('tcollection.describe():')
+        logging.debug("tcollection.describe():")
         logging.debug(tcollection.describe())
 
     # Create the workspace file and put the unprocessed waveforms in it
@@ -66,13 +65,13 @@ def assemble(event, config, directory, gmprocess_version):
 
     workspace = StreamWorkspace(workname)
     workspace.addEvent(event)
-    logging.debug('workspace.dataset.events:')
+    logging.debug("workspace.dataset.events:")
     logging.debug(workspace.dataset.events)
-    workspace.addStreams(event, tcollection, label='unprocessed')
-    logging.debug('workspace.dataset.waveforms.list():')
+    workspace.addStreams(event, tcollection, label="unprocessed")
+    logging.debug("workspace.dataset.waveforms.list():")
     logging.debug(workspace.dataset.waveforms.list())
     workspace.addConfig()
     workspace.addGmprocessVersion(gmprocess_version)
-    logging.debug('workspace.dataset.config')
+    logging.debug("workspace.dataset.config")
 
     return workspace

@@ -18,7 +18,7 @@ class SortedDuration(IMT):
     # Until we redesign the metrics controller to allow for two
     # different reduction steps, we can't support the percentile-baesd
     # IMCs. See notes in gmprocess.metrics.execute_steps
-    _invalid_imcs = ['gmrotd', 'rotd']
+    _invalid_imcs = ["gmrotd", "rotd"]
 
     def __init__(self, imt, imc, period=None):
         """
@@ -33,8 +33,8 @@ class SortedDuration(IMT):
         """
         super().__init__(imt, imc, period=None)
         self._steps = {
-            'Transform2': 'null_transform',
-            'Transform3': 'null_transform',
-            'Combination1': 'null_combination',
-            'Reduction': 'sorted_duration',
+            "Transform2": "null_transform",
+            "Transform3": "null_transform",
+            "Combination1": "null_combination",
+            "Reduction": "sorted_duration",
         }

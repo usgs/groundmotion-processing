@@ -137,7 +137,6 @@ Attributes
    Parse a datetime object with month/day/year info found from string.
 
 
-
 .. py:function:: _get_time(line)
 
    Parse a timdelta object with hour, minute, fractional second info found

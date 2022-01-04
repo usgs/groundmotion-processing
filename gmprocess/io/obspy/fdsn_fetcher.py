@@ -11,8 +11,11 @@ import pytz
 from obspy.core.utcdatetime import UTCDateTime
 from obspy.clients.fdsn.header import URL_MAPPINGS, FDSNException
 from obspy.clients.fdsn import Client
-from obspy.clients.fdsn.mass_downloader import \
-    CircularDomain, Restrictions, MassDownloader
+from obspy.clients.fdsn.mass_downloader import (
+    CircularDomain,
+    Restrictions,
+    MassDownloader,
+)
 
 # local imports
 from gmprocess.io.fetcher import DataFetcher, _get_first_value
@@ -28,29 +31,41 @@ RADIUS = 4  # dd
 TIME_BEFORE = 10  # seconds
 TIME_AFTER = 420  # seconds
 CHANNELS = ["HN[ZNE]"]  # default to only get strong motion stations
-EXCLUDE_NETWORKS = ['SY']
+EXCLUDE_NETWORKS = ["SY"]
 EXCLUDE_STATIONS = []
 REJECT_CHANNELS_WITH_GAPS = True
 MINIMUM_LENGTH = 0.1
 SANITIZE = True
 MINIMUM_INTERSTATION_DISTANCE_IN_M = 0.0
-NETWORK = '*'
+NETWORK = "*"
 
 URL_ERROR_CODE = 200  # if we get this from a request, we're good
 
 OBSPY_LOGGER = "obspy.clients.fdsn.mass_downloader"
 
 GEONET_ARCHIVE_DAYS = 7 * 86400
-GEONET_ARCHIVE_URL = 'http://service.geonet.org.nz'
-GEO_NET_ARCHIVE_KEY = 'GEONET'
-GEONET_REALTIME_URL = 'http://service-nrt.geonet.org.nz'
+GEONET_ARCHIVE_URL = "http://service.geonet.org.nz"
+GEO_NET_ARCHIVE_KEY = "GEONET"
+GEONET_REALTIME_URL = "http://service-nrt.geonet.org.nz"
 
 
 class FDSNFetcher(DataFetcher):
-    def __init__(self, time, lat, lon, depth, magnitude,
-                 radius=None, time_before=None, time_after=None, channels=None,
-                 rawdir=None, config=None, drop_non_free=True,
-                 stream_collection=True):
+    def __init__(
+        self,
+        time,
+        lat,
+        lon,
+        depth,
+        magnitude,
+        radius=None,
+        time_before=None,
+        time_after=None,
+        channels=None,
+        rawdir=None,
+        config=None,
+        drop_non_free=True,
+        stream_collection=True,
+    ):
         """Create an FDSNFetcher instance.
 
         Download waveform data from the all available FDSN sites
@@ -103,40 +118,36 @@ class FDSNFetcher(DataFetcher):
         sanitize = SANITIZE
         minimum_interstation_distance_in_m = MINIMUM_INTERSTATION_DISTANCE_IN_M
         network = NETWORK
-        if 'fetchers' in config:
-            if 'FDSNFetcher' in config['fetchers']:
-                fetch_cfg = config['fetchers']['FDSNFetcher']
-                if 'radius' in fetch_cfg:
-                    cfg_radius = float(fetch_cfg['radius'])
-                if 'time_before' in fetch_cfg:
-                    cfg_time_before = float(fetch_cfg['time_before'])
-                if 'time_after' in fetch_cfg:
-                    cfg_time_after = float(fetch_cfg['time_after'])
-                if 'channels' in fetch_cfg:
-                    cfg_channels = fetch_cfg['channels']
-                if 'exclude_networks' in fetch_cfg:
-                    exclude_networks = fetch_cfg['exclude_networks']
-                if 'exclude_stations' in fetch_cfg:
-                    exclude_stations = fetch_cfg['exclude_stations']
-                if 'reject_channels_with_gaps' in fetch_cfg:
-                    reject_channels_with_gaps = \
-                        fetch_cfg['reject_channels_with_gaps']
-                if 'minimum_length' in fetch_cfg:
-                    minimum_length = fetch_cfg['minimum_length']
-                if 'sanitize' in fetch_cfg:
-                    sanitize = fetch_cfg['sanitize']
-                if 'minimum_interstation_distance_in_m' in fetch_cfg:
-                    minimum_interstation_distance_in_m = \
-                        fetch_cfg['minimum_interstation_distance_in_m']
-                if 'network' in fetch_cfg:
-                    network = fetch_cfg['network']
+        if "fetchers" in config:
+            if "FDSNFetcher" in config["fetchers"]:
+                fetch_cfg = config["fetchers"]["FDSNFetcher"]
+                if "radius" in fetch_cfg:
+                    cfg_radius = float(fetch_cfg["radius"])
+                if "time_before" in fetch_cfg:
+                    cfg_time_before = float(fetch_cfg["time_before"])
+                if "time_after" in fetch_cfg:
+                    cfg_time_after = float(fetch_cfg["time_after"])
+                if "channels" in fetch_cfg:
+                    cfg_channels = fetch_cfg["channels"]
+                if "exclude_networks" in fetch_cfg:
+                    exclude_networks = fetch_cfg["exclude_networks"]
+                if "exclude_stations" in fetch_cfg:
+                    exclude_stations = fetch_cfg["exclude_stations"]
+                if "reject_channels_with_gaps" in fetch_cfg:
+                    reject_channels_with_gaps = fetch_cfg["reject_channels_with_gaps"]
+                if "minimum_length" in fetch_cfg:
+                    minimum_length = fetch_cfg["minimum_length"]
+                if "sanitize" in fetch_cfg:
+                    sanitize = fetch_cfg["sanitize"]
+                if "minimum_interstation_distance_in_m" in fetch_cfg:
+                    minimum_interstation_distance_in_m = fetch_cfg[
+                        "minimum_interstation_distance_in_m"
+                    ]
+                if "network" in fetch_cfg:
+                    network = fetch_cfg["network"]
         radius = _get_first_value(radius, cfg_radius, RADIUS)
-        time_before = _get_first_value(time_before,
-                                       cfg_time_before,
-                                       TIME_BEFORE)
-        time_after = _get_first_value(time_after,
-                                      cfg_time_after,
-                                      TIME_AFTER)
+        time_before = _get_first_value(time_before, cfg_time_before, TIME_BEFORE)
+        time_after = _get_first_value(time_after, cfg_time_after, TIME_AFTER)
         channels = _get_first_value(channels, cfg_channels, CHANNELS)
 
         tz = pytz.UTC
@@ -159,8 +170,7 @@ class FDSNFetcher(DataFetcher):
         self.reject_channels_with_gaps = reject_channels_with_gaps
         self.minimum_length = minimum_length
         self.sanitize = sanitize
-        self.minimum_interstation_distance_in_m = \
-            minimum_interstation_distance_in_m
+        self.minimum_interstation_distance_in_m = minimum_interstation_distance_in_m
 
         self.drop_non_free = drop_non_free
         self.stream_collection = stream_collection
@@ -197,7 +207,7 @@ class FDSNFetcher(DataFetcher):
             StreamCollection: StreamCollection object.
         """
         # Bail out if FDSNFetcher not configured
-        if 'FDSNFetcher' not in self.config['fetchers']:
+        if "FDSNFetcher" not in self.config["fetchers"]:
             return
         rawdir = self.rawdir
         if self.rawdir is None:
@@ -222,17 +232,19 @@ class FDSNFetcher(DataFetcher):
             obspy_logger.addHandler(fhandler)
 
         # Circular domain around the epicenter.
-        domain = CircularDomain(latitude=self.lat, longitude=self.lon,
-                                minradius=0, maxradius=self.radius)
+        domain = CircularDomain(
+            latitude=self.lat, longitude=self.lon, minradius=0, maxradius=self.radius
+        )
 
         min_dist = self.minimum_interstation_distance_in_m
         restrictions = Restrictions(
             # Define the temporal bounds of the waveform data.
             starttime=origin_time - self.time_before,
             endtime=origin_time + self.time_after,
-            network=self.network, station='*',
-            location='*',
-            location_priorities=['*'],
+            network=self.network,
+            station="*",
+            location="*",
+            location_priorities=["*"],
             reject_channels_with_gaps=self.reject_channels_with_gaps,
             # Any trace that is shorter than 95 % of the
             # desired total duration will be discarded.
@@ -241,7 +253,8 @@ class FDSNFetcher(DataFetcher):
             minimum_interstation_distance_in_m=min_dist,
             exclude_networks=self.exclude_networks,
             exclude_stations=self.exclude_stations,
-            channel_priorities=self.channels)
+            channel_priorities=self.channels,
+        )
 
         # For each of the providers, check if we have a username and password
         # provided in the config. If we do, initialize the client with the
@@ -253,21 +266,23 @@ class FDSNFetcher(DataFetcher):
                 if dt < GEONET_ARCHIVE_DAYS:
                     provider_str = GEONET_REALTIME_URL
             try:
-                fdsn_config = self.config['fetchers']['FDSNFetcher']
+                fdsn_config = self.config["fetchers"]["FDSNFetcher"]
                 if provider_str in fdsn_config:
-                    if logging.getLevelName(root.level) == 'DEBUG':
+                    if logging.getLevelName(root.level) == "DEBUG":
                         client = Client(
                             provider_str,
-                            user=fdsn_config[provider_str]['user'],
-                            password=fdsn_config[provider_str]['password'],
-                            debug=True)
+                            user=fdsn_config[provider_str]["user"],
+                            password=fdsn_config[provider_str]["password"],
+                            debug=True,
+                        )
                     else:
                         client = Client(
                             provider_str,
-                            user=fdsn_config[provider_str]['user'],
-                            password=fdsn_config[provider_str]['password'])
+                            user=fdsn_config[provider_str]["user"],
+                            password=fdsn_config[provider_str]["password"],
+                        )
                 else:
-                    if logging.getLevelName(root.level) == 'DEBUG':
+                    if logging.getLevelName(root.level) == "DEBUG":
                         client = Client(provider_str, debug=True)
                     else:
                         client = Client(provider_str)
@@ -275,29 +290,30 @@ class FDSNFetcher(DataFetcher):
                 client_list.append(client)
             # If the FDSN service is down, then an FDSNException is raised
             except FDSNException:
-                logging.warning('Unable to initalize client %s' % provider_str)
+                logging.warning(f"Unable to initalize client {provider_str}")
             except KeyError:
-                logging.warning('Unable to initalize client %s' % provider_str)
+                logging.warning(f"Unable to initalize client {provider_str}")
 
         if len(client_list):
             # Pass off the initalized clients to the Mass Downloader
-            if logging.getLevelName(root.level) == 'DEBUG':
+            if logging.getLevelName(root.level) == "DEBUG":
                 for handler in root.handlers:
                     if hasattr(handler, "baseFilename"):
-                        log_file = getattr(handler, 'baseFilename')
-                sys.stdout = open(log_file, 'a')
+                        log_file = getattr(handler, "baseFilename")
+                sys.stdout = open(log_file, "a")
                 mdl = MassDownloader(providers=client_list, debug=True)
             else:
                 mdl = MassDownloader(providers=client_list)
-            logging.info('Downloading new MiniSEED files...')
+            logging.info("Downloading new MiniSEED files...")
             # The data will be downloaded to the ``./waveforms/`` and
             # ``./stations/`` folders with automatically chosen file names.
-            mdl.download(domain, restrictions, mseed_storage=rawdir,
-                         stationxml_storage=rawdir)
+            mdl.download(
+                domain, restrictions, mseed_storage=rawdir, stationxml_storage=rawdir
+            )
             sys.stdout.close()
 
             if self.stream_collection:
-                seed_files = glob.glob(os.path.join(rawdir, '*.mseed'))
+                seed_files = glob.glob(os.path.join(rawdir, "*.mseed"))
                 streams = []
                 for seed_file in seed_files:
                     try:
@@ -312,7 +328,8 @@ class FDSNFetcher(DataFetcher):
                         streams += tstreams
 
                 stream_collection = StreamCollection(
-                    streams=streams, drop_non_free=self.drop_non_free)
+                    streams=streams, drop_non_free=self.drop_non_free
+                )
                 return stream_collection
             else:
                 return None

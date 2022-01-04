@@ -12,7 +12,7 @@ class ROTD(IMC):
     # 1) it doesn't change with instances
     # 2) information can now be retrieved without
     #    instantiating first
-    _invalid_imts = ['FAS', 'ARIAS']
+    _invalid_imts = ["FAS", "ARIAS"]
 
     def __init__(self, imc, imt, percentile=None, period=None):
         """
@@ -31,11 +31,11 @@ class ROTD(IMC):
         self.percentile = percentile
         self.period = period
         self._steps = {
-            'Rotation': 'rotd',
-            'Combination2': 'null_combination',
-            'Reduction': 'percentile'
+            "Rotation": "rotd",
+            "Combination2": "null_combination",
+            "Reduction": "percentile",
         }
 
-        if imt.startswith('sa'):
-            self._steps['Transform2'] = 'null_transform'
-            self._steps['Transform3'] = 'oscillator'
+        if imt.startswith("sa"):
+            self._steps["Transform2"] = "null_transform"
+            self._steps["Transform3"] = "oscillator"

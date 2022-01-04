@@ -4,23 +4,25 @@
 import os
 import logging
 
-from gmprocess.subcommands.base import SubcommandModule
-from gmprocess.subcommands.arg_dicts import ARG_DICTS
-from gmprocess.io.asdf.stream_workspace import StreamWorkspace
-from gmprocess.utils.constants import WORKSPACE_NAME
-from gmprocess.utils.report_utils import draw_stations_map
+from gmprocess.subcommands.lazy_loader import LazyLoader
+
+arg_dicts = LazyLoader("arg_dicts", globals(), "gmprocess.subcommands.arg_dicts")
+base = LazyLoader("base", globals(), "gmprocess.subcommands.base")
+ws = LazyLoader("ws", globals(), "gmprocess.io.asdf.stream_workspace")
+const = LazyLoader("const", globals(), "gmprocess.utils.constants")
+report_utils = LazyLoader("report_utils", globals(), "gmprocess.utils.report_utils")
 
 
-class GenerateHTMLMapModule(SubcommandModule):
-    """Generate station maps (PNG and HTML).
-    """
-    command_name = 'generate_station_maps'
-    aliases = ('maps', )
+class GenerateHTMLMapModule(base.SubcommandModule):
+    """Generate station maps (PNG and HTML)."""
+
+    command_name = "generate_station_maps"
+    aliases = ("maps",)
 
     arguments = [
-        ARG_DICTS['eventid'],
-        ARG_DICTS['textfile'],
-        ARG_DICTS['label']
+        arg_dicts.ARG_DICTS["eventid"],
+        arg_dicts.ARG_DICTS["textfile"],
+        arg_dicts.ARG_DICTS["label"],
     ]
 
     def main(self, gmrecords):
@@ -32,7 +34,7 @@ class GenerateHTMLMapModule(SubcommandModule):
             gmrecords:
                 GMrecordsApp instance.
         """
-        logging.info('Running subcommand \'%s\'' % self.command_name)
+        logging.info(f"Running subcommand '{self.command_name}'")
 
         self.gmrecords = gmrecords
         self._check_arguments()
@@ -40,27 +42,25 @@ class GenerateHTMLMapModule(SubcommandModule):
 
         for event in self.events:
             event_dir = os.path.join(self.gmrecords.data_path, event.id)
-            workname = os.path.join(event_dir, WORKSPACE_NAME)
+            workname = os.path.join(event_dir, const.WORKSPACE_NAME)
             if not os.path.isfile(workname):
                 logging.info(
-                    'No workspace file found for event %s. Please run '
-                    'subcommand \'assemble\' to generate workspace file.'
-                    % event.id)
-                logging.info('Continuing to next event.')
+                    "No workspace file found for event %s. Please run "
+                    "subcommand 'assemble' to generate workspace file." % event.id
+                )
+                logging.info("Continuing to next event.")
                 return False
 
-            self.workspace = StreamWorkspace.open(workname)
+            self.workspace = ws.StreamWorkspace.open(workname)
             ds = self.workspace.dataset
             station_list = ds.waveforms.list()
             self._get_labels()
 
             if len(station_list) == 0:
-                logging.info('No processed waveforms available. No report '
-                             'generated.')
+                logging.info("No processed waveforms available. No report generated.")
                 return False
 
-            logging.info(
-                'Generating station maps for event %s...' % event.id)
+            logging.info(f"Generating station maps for event {event.id}...")
 
             pstreams = []
             for station_id in station_list:
@@ -68,16 +68,16 @@ class GenerateHTMLMapModule(SubcommandModule):
                     event.id,
                     stations=[station_id],
                     labels=[self.gmrecords.args.label],
-                    config=self.gmrecords.conf
+                    config=self.gmrecords.conf,
                 )
                 if not len(streams):
-                    raise ValueError('No matching streams found.')
+                    raise ValueError("No matching streams found.")
 
                 for stream in streams:
                     pstreams.append(stream)
 
-            mapfiles = draw_stations_map(pstreams, event, event_dir)
+            mapfiles = report_utils.draw_stations_map(pstreams, event, event_dir)
             for file in mapfiles:
-                self.append_file('Station map', file)
+                self.append_file("Station map", file)
 
         self._summarize_files_created()

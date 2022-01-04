@@ -15,22 +15,19 @@ import h5py
 # local imports
 from gmprocess.io.asdf.utils import TallyStorage
 
-INDENT = ' ' * 4
+INDENT = " " * 4
 
 
 def format_helptext(text):
-    """Format help text, including wrapping.
-    """
-    return '\n'.join(textwrap.wrap(text))
+    """Format help text, including wrapping."""
+    return "\n".join(textwrap.wrap(text))
 
 
 class WorkspaceApp(object):
-    """Application for simple queries of the workspace.
-    """
+    """Application for simple queries of the workspace."""
 
     def __init__(self):
-        """Constructor
-        """
+        """Constructor"""
         self.h5 = None
         return
 
@@ -47,9 +44,8 @@ class WorkspaceApp(object):
             compute_storage (bool):
                 Show storage used by workspace.
         """
-        args = argparse.Namespace(
-            **kwargs) if kwargs else self._parse_command_line()
-        self.h5 = h5py.File(args.filename, 'r')
+        args = argparse.Namespace(**kwargs) if kwargs else self._parse_command_line()
+        self.h5 = h5py.File(args.filename, "r")
 
         if args.describe:
             self.describe()
@@ -77,11 +73,9 @@ class WorkspaceApp(object):
                 dataset (h5py.Dataset):
                     HDF5 dataset
             """
-            shape = ','.join([str(d) for d in dataset.shape])
+            shape = ",".join([str(d) for d in dataset.shape])
             indent = INDENT * min(level, 1)
-            print('{indent}{name} dims=({shape}) type={dtype}'.format(
-                indent=indent, name=name, shape=shape,
-                dtype=dataset.dtype.name))
+            print(f"{indent}{name} dims=({shape}) type={dataset.dtype.name}")
             return
 
         def _print_group(items, level):
@@ -100,17 +94,17 @@ class WorkspaceApp(object):
                 else:
                     raise ValueError(
                         "HDF5 item '{}' is of type '{}', expected "
-                        "'h5.Dataset' or 'h5.Group'".format(name, type(item)))
+                        "'h5.Dataset' or 'h5.Group'".format(name, type(item))
+                    )
             return
 
         _print_group(self.h5.items(), level=0)
         return
 
     def compute_storage(self):
-        """Compute the storage of items in a workspace.
-        """
+        """Compute the storage of items in a workspace."""
         GROUP_DETAIL = [
-            'AuxiliaryData',
+            "AuxiliaryData",
         ]
 
         def _print_subtotal(name, group, level=0):
@@ -126,21 +120,21 @@ class WorkspaceApp(object):
                 level (int):
                    Level of group in HDF5 hierarchy (root level is 0).
             """
-            mb = group['total_bytes'] / float(2**20)
-            print('{indent}{name}: {subtotal:.3f} MB'.format(
-                indent=INDENT * level, name=name, subtotal=mb))
-            for subgroup in group['groups']:
-                _print_subtotal(subgroup, group['groups'][subgroup], level + 1)
+            mb = group["total_bytes"] / float(2 ** 20)
+            print(f"{INDENT * level}{name}: {mb:.3f} MB")
+            for subgroup in group["groups"]:
+                _print_subtotal(subgroup, group["groups"][subgroup], level + 1)
             return
 
         storage = TallyStorage(GROUP_DETAIL)
-        (total_bytes, groups) = storage.compute_storage(self.h5.items(),
-                                                        store_subtotals=True)
+        (total_bytes, groups) = storage.compute_storage(
+            self.h5.items(), store_subtotals=True
+        )
         total = {
-            'total_bytes': total_bytes,
-            'groups': groups,
+            "total_bytes": total_bytes,
+            "groups": groups,
         }
-        _print_subtotal('Total', total)
+        _print_subtotal("Total", total)
         return
 
     @staticmethod
@@ -153,24 +147,32 @@ class WorkspaceApp(object):
         """
         parser = argparse.ArgumentParser()
 
-        help_filename = format_helptext(
-            'Name of workspace file.'
+        help_filename = format_helptext("Name of workspace file.")
+        parser.add_argument(
+            "--filename",
+            action="store",
+            dest="filename",
+            type=str,
+            required=True,
+            help=help_filename,
         )
-        parser.add_argument('--filename', action='store', dest='filename',
-                            type=str, required=True, help=help_filename)
 
         help_describe = format_helptext(
-            'Print a summary of workspace contents to stdout. Similar to '
-            'h5dump.'
+            "Print a summary of workspace contents to stdout. Similar to h5dump."
         )
-        parser.add_argument('--describe', action='store_true', dest='describe',
-                            help=help_describe)
+        parser.add_argument(
+            "--describe", action="store_true", dest="describe", help=help_describe
+        )
 
         help_storage = format_helptext(
-            'Print a summary of the workspace storage to stdout.'
+            "Print a summary of the workspace storage to stdout."
         )
-        parser.add_argument('--compute-storage', action='store_true',
-                            dest='compute_storage', help=help_storage)
+        parser.add_argument(
+            "--compute-storage",
+            action="store_true",
+            dest="compute_storage",
+            help=help_storage,
+        )
         return parser.parse_args()
 
 
@@ -178,5 +180,5 @@ def main():
     WorkspaceApp().main()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -10,11 +10,18 @@ from gmprocess.metrics.reduction.reduction import Reduction
 
 
 class Percentile(Reduction):
-    def __init__(self, reduction_data, bandwidth=None, percentile=None,
-                 period=None, smoothing=None, interval=[5, 95]):
+    def __init__(
+        self,
+        reduction_data,
+        bandwidth=None,
+        percentile=None,
+        period=None,
+        smoothing=None,
+        interval=[5, 95],
+    ):
         """
         Args:
-            reduction_data (obspy.core.stream.Stream or numpy.ndarray):
+            reduction_data (StationStream or ndarray):
                 Intensity measurement component.
             bandwidth (float):
                 Bandwidth for the smoothing operation. Default is None.
@@ -32,11 +39,15 @@ class Percentile(Reduction):
         Raises:
             PGMException: if the percentile value is None.
         """
-        super().__init__(reduction_data, bandwidth=None, percentile=None,
-                         period=None, smoothing=None)
+        super().__init__(
+            reduction_data, bandwidth=None, percentile=None, period=None, smoothing=None
+        )
         if percentile is None:
-            raise PGMException('Percentile: The percentile value must '
-                               'be defined and of type float or int.')
+            raise PGMException(
+                "Percentile: The percentile value must "
+                "be defined and of type float or int."
+            )
+        self.period = period
         self.percentile = percentile
         self.result = self.get_percentile()
 
@@ -47,15 +58,29 @@ class Percentile(Reduction):
         Returns:
             percentiles: Dictionary of percentiles for each channel.
         """
-        percentiles = {}
-        if len(self.reduction_data) == 3:
-            for tr in self.reduction_data:
-                percentiles[tr.channel] = np.percentile(
-                    tr.data, self.percentile)
-        elif len(self.reduction_data) == 1:
-            maximums = np.amax(np.abs(self.reduction_data[0]), 1)
-            percentiles[''] = np.percentile(maximums, self.percentile)
+        stream = self.reduction_data
+        if isinstance(stream, np.ndarray):
+            rdata = stream
+        elif self.period is not None:
+            if "rotated_oscillator" in stream.getStreamParamKeys():
+                rdata = stream.getStreamParam("rotated_oscillator")
+            else:
+                raise ValueError("Missing rotated oscillator response.")
+        elif "rotated" in stream.getStreamParamKeys():
+            rdata = stream.getStreamParam("rotated")
         else:
-            percentiles[''] = np.percentile(
-                self.reduction_data, self.percentile)
+            raise ValueError(
+                "Percentile reduction can only be applied after a rotation "
+                "has been applied to the data."
+            )
+
+        percentiles = {}
+        if len(rdata) == 3:
+            for tr in rdata:
+                percentiles[tr.channel] = np.percentile(tr.data, self.percentile)
+        elif len(rdata) == 1:
+            maximums = np.amax(np.abs(rdata[0]), 1)
+            percentiles[""] = np.percentile(maximums, self.percentile)
+        else:
+            percentiles[""] = np.percentile(rdata, self.percentile)
         return percentiles

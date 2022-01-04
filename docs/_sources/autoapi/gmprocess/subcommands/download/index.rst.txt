@@ -17,12 +17,36 @@ Classes
 
 
 
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.subcommands.download.arg_dicts
+   gmprocess.subcommands.download.base
+   gmprocess.subcommands.download.download_utils
+
+
+.. py:data:: arg_dicts
+   
+
+   
+
+.. py:data:: base
+   
+
+   
+
+.. py:data:: download_utils
+   
+
+   
+
 .. py:class:: DownloadModule
 
-   Bases: :py:obj:`gmprocess.subcommands.base.SubcommandModule`
+   Bases: :py:obj:`base`
 
    Download data and organize it in the project data directory.
-
 
    .. py:attribute:: command_name
       :annotation: = download

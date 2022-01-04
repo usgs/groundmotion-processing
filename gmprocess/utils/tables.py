@@ -36,106 +36,103 @@ def set_precisions(df):
 
 def _get_table_row(stream, summary, event, imc):
 
-    if imc == 'Z':
-        z = stream.select(channel='*Z')
+    if imc == "Z":
+        z = stream.select(channel="*Z")
         if not len(z):
             return {}
         z = z[0]
-        z_lowfilt = z.getProvenance('lowpass_filter')
-        z_highfilt = z.getProvenance('highpass_filter')
+        z_lowfilt = z.getProvenance("lowpass_filter")
+        z_highfilt = z.getProvenance("highpass_filter")
         z_lowpass = np.nan
         z_highpass = np.nan
         if len(z_lowfilt):
-            z_lowpass = z_lowfilt[0]['corner_frequency']
+            z_lowpass = z_lowfilt[0]["corner_frequency"]
         if len(z_highfilt):
-            z_highpass = z_highfilt[0]['corner_frequency']
-        filter_dict = {
-            'ZLowpass': z_lowpass,
-            'ZHighpass': z_highpass
-        }
+            z_highpass = z_highfilt[0]["corner_frequency"]
+        filter_dict = {"ZLowpass": z_lowpass, "ZHighpass": z_highpass}
     else:
-        h1 = stream.select(channel='*1')
-        h2 = stream.select(channel='*2')
+        h1 = stream.select(channel="*1")
+        h2 = stream.select(channel="*2")
         if not len(h1):
-            h1 = stream.select(channel='*N')
-            h2 = stream.select(channel='*E')
+            h1 = stream.select(channel="*N")
+            h2 = stream.select(channel="*E")
 
         if not len(h1) or not len(h2):
             return {}
         h1 = h1[0]
         h2 = h2[0]
 
-        h1_lowfilt = h1.getProvenance('lowpass_filter')
-        h1_highfilt = h1.getProvenance('highpass_filter')
+        h1_lowfilt = h1.getProvenance("lowpass_filter")
+        h1_highfilt = h1.getProvenance("highpass_filter")
         h1_lowpass = np.nan
         h1_highpass = np.nan
         if len(h1_lowfilt):
-            h1_lowpass = h1_lowfilt[0]['corner_frequency']
+            h1_lowpass = h1_lowfilt[0]["corner_frequency"]
         if len(h1_highfilt):
-            h1_highpass = h1_highfilt[0]['corner_frequency']
+            h1_highpass = h1_highfilt[0]["corner_frequency"]
 
-        h2_lowfilt = h2.getProvenance('lowpass_filter')
-        h2_highfilt = h2.getProvenance('highpass_filter')
+        h2_lowfilt = h2.getProvenance("lowpass_filter")
+        h2_highfilt = h2.getProvenance("highpass_filter")
         h2_lowpass = np.nan
         h2_highpass = np.nan
         if len(h2_lowfilt):
-            h2_lowpass = h2_lowfilt[0]['corner_frequency']
+            h2_lowpass = h2_lowfilt[0]["corner_frequency"]
         if len(h2_highfilt):
-            h2_highpass = h2_highfilt[0]['corner_frequency']
+            h2_highpass = h2_highfilt[0]["corner_frequency"]
         filter_dict = {
-            'H1Lowpass': h1_lowpass,
-            'H1Highpass': h1_highpass,
-            'H2Lowpass': h2_lowpass,
-            'H2Highpass': h2_highpass
+            "H1Lowpass": h1_lowpass,
+            "H1Highpass": h1_highpass,
+            "H2Lowpass": h2_lowpass,
+            "H2Highpass": h2_highpass,
         }
 
     dists = summary.distances
 
     row = {
-        'EarthquakeId': event.id.replace('smi:local/', ''),
-        'EarthquakeTime': event.time,
-        'EarthquakeLatitude': event.latitude,
-        'EarthquakeLongitude': event.longitude,
-        'EarthquakeDepth': event.depth_km,
-        'EarthquakeMagnitude': event.magnitude,
-        'EarthquakeMagnitudeType': event.magnitude_type,
-        'Network': stream[0].stats.network,
-        'DataProvider': stream[0].stats.standard.source,
-        'StationCode': stream[0].stats.station,
-        'StationID': stream.get_id(),
-        'StationDescription': stream[0].stats.standard.station_name,
-        'StationLatitude': stream[0].stats.coordinates.latitude,
-        'StationLongitude': stream[0].stats.coordinates.longitude,
-        'StationElevation': stream[0].stats.coordinates.elevation,
-        'SamplingRate': stream[0].stats.sampling_rate,
-        'BackAzimuth': summary._back_azimuth,
-        'EpicentralDistance': dists['epicentral'],
-        'HypocentralDistance': dists['hypocentral'],
-        'SourceFile': stream[0].stats.standard.source_file
+        "EarthquakeId": event.id.replace("smi:local/", ""),
+        "EarthquakeTime": event.time,
+        "EarthquakeLatitude": event.latitude,
+        "EarthquakeLongitude": event.longitude,
+        "EarthquakeDepth": event.depth_km,
+        "EarthquakeMagnitude": event.magnitude,
+        "EarthquakeMagnitudeType": event.magnitude_type,
+        "Network": stream[0].stats.network,
+        "DataProvider": stream[0].stats.standard.source,
+        "StationCode": stream[0].stats.station,
+        "StationID": stream.get_id(),
+        "StationDescription": stream[0].stats.standard.station_name,
+        "StationLatitude": stream[0].stats.coordinates.latitude,
+        "StationLongitude": stream[0].stats.coordinates.longitude,
+        "StationElevation": stream[0].stats.coordinates.elevation,
+        "SamplingRate": stream[0].stats.sampling_rate,
+        "BackAzimuth": summary._back_azimuth,
+        "EpicentralDistance": dists["epicentral"],
+        "HypocentralDistance": dists["hypocentral"],
+        "SourceFile": stream[0].stats.standard.source_file,
     }
-    if 'rupture' in dists:
-        row.update({'RuptureDistance': dists['rupture']})
-        row.update({'RuptureDistanceVar': dists['rupture_var']})
-    if 'joyner_boore' in dists:
-        row.update({'JoynerBooreDistance': dists['joyner_boore']})
-        row.update({'JoynerBooreDistanceVar': dists['joyner_boore_var']})
-    if 'gc2_rx' in dists:
-        row.update({'GC2_rx': dists['gc2_rx']})
-    if 'gc2_ry' in dists:
-        row.update({'GC2_ry': dists['gc2_ry']})
-    if 'gc2_ry0' in dists:
-        row.update({'GC2_ry0': dists['gc2_ry0']})
-    if 'gc2_U' in dists:
-        row.update({'GC2_U': dists['gc2_U']})
-    if 'gc2_T' in dists:
-        row.update({'GC2_T': dists['gc2_T']})
+    if "rupture" in dists:
+        row.update({"RuptureDistance": dists["rupture"]})
+        row.update({"RuptureDistanceVar": dists["rupture_var"]})
+    if "joyner_boore" in dists:
+        row.update({"JoynerBooreDistance": dists["joyner_boore"]})
+        row.update({"JoynerBooreDistanceVar": dists["joyner_boore_var"]})
+    if "gc2_rx" in dists:
+        row.update({"GC2_rx": dists["gc2_rx"]})
+    if "gc2_ry" in dists:
+        row.update({"GC2_ry": dists["gc2_ry"]})
+    if "gc2_ry0" in dists:
+        row.update({"GC2_ry0": dists["gc2_ry0"]})
+    if "gc2_U" in dists:
+        row.update({"GC2_U": dists["gc2_U"]})
+    if "gc2_T" in dists:
+        row.update({"GC2_T": dists["gc2_T"]})
 
     # Add the filter frequency information to the row
     row.update(filter_dict)
 
     # Add the Vs30 values to the row
     for vs30_dict in summary._vs30.values():
-        row[vs30_dict['column_header']] = vs30_dict['value']
+        row[vs30_dict["column_header"]] = vs30_dict["value"]
 
     imt_frame = summary.pgms.xs(imc, level=1)
     row.update(imt_frame.Result.to_dict())
@@ -153,7 +150,6 @@ def find_float(imt):
         float: the IMT float, if found, otherwise None.
     """
     try:
-        return float(re.search(r'[0-9]*\.[0-9]*', imt).group())
+        return float(re.search(r"[0-9]*\.[0-9]*", imt).group())
     except AttributeError:
         return None
-

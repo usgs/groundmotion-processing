@@ -12,8 +12,7 @@ import pytz
 from gmprocess.utils.event import get_event_object, ScalarEvent
 
 
-def get_events(eventids, textfile, eventinfo, directory,
-               outdir=None):
+def get_events(eventids, textfile, eventinfo, directory, outdir=None):
     """Find the list of events.
 
     Args:
@@ -83,7 +82,7 @@ def events_from_directory(dir):
     if len(eventfiles):
         events = read_event_json_files(eventfiles)
     else:
-        eventids = [f for f in os.listdir(dir) if not f.startswith('.')]
+        eventids = [f for f in os.listdir(dir) if not f.startswith(".")]
         for eventid in eventids:
             try:
                 event = get_event_object(eventid)
@@ -95,11 +94,9 @@ def events_from_directory(dir):
                     old_dir = os.path.join(dir, eventid)
                     new_dir = os.path.join(dir, event.id)
                     os.rename(old_dir, new_dir)
-                    logging.warn('Directory %s has been renamed to %s.' %
-                                 (old_dir, new_dir))
+                    logging.warn(f"Directory {old_dir} has been renamed to {new_dir}.")
             except BaseException:
-                logging.warning(
-                    'Could not get info for event id: %s' % eventid)
+                logging.warning(f"Could not get info for event id: {eventid}")
 
     return events
 
@@ -119,7 +116,7 @@ def get_event_files(directory):
     eventfiles = []
     for root, dirs, files in os.walk(directory):
         for name in files:
-            if name == 'event.json':
+            if name == "event.json":
                 fullname = os.path.join(root, name)
                 eventfiles.append(fullname)
     return eventfiles
@@ -150,18 +147,25 @@ def parse_event_file(eventfile):
         list: ScalarEvent objects constructed from list of event information.
 
     """
-    df = pd.read_csv(eventfile, sep=',', header=None)
+    df = pd.read_csv(eventfile, sep=",", header=None)
     nrows, ncols = df.shape
     events = []
     if ncols == 1:
-        df.columns = ['eventid']
+        df.columns = ["eventid"]
         for idx, row in df.iterrows():
-            event = get_event_object(row['eventid'])
+            event = get_event_object(row["eventid"])
             events.append(event)
     elif ncols == 7:
-        df.columns = ['id', 'time', 'lat', 'lon', 'depth', 'magnitude',
-                      'magnitude_type']
-        df['time'] = pd.to_datetime(df['time'])
+        df.columns = [
+            "id",
+            "time",
+            "lat",
+            "lon",
+            "depth",
+            "magnitude",
+            "magnitude_type",
+        ]
+        df["time"] = pd.to_datetime(df["time"])
         for idx, row in df.iterrows():
             rowdict = row.to_dict()
             event = get_event_object(rowdict)
@@ -183,11 +187,12 @@ def read_event_json_files(eventfiles):
     """
     events = []
     for eventfile in eventfiles:
-        with open(eventfile, 'rt', encoding='utf-8') as f:
+        with open(eventfile, "rt", encoding="utf-8") as f:
             event = json.load(f)
             try:
                 origintime = datetime.fromtimestamp(
-                    event["properties"]["time"] / 1000.0, pytz.utc)
+                    event["properties"]["time"] / 1000.0, pytz.utc
+                )
                 evdict = {
                     "id": event["id"],
                     "time": origintime.strftime("%Y-%m-%dT%H:%M:%S.%f"),

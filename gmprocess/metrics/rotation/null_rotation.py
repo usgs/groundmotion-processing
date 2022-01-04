@@ -6,8 +6,8 @@ from gmprocess.metrics.rotation.rotation import Rotation
 
 
 class Null_Rotation(Rotation):
-    """"Class for null rotation calculation. This perfoms no action
-            other than returning the input rotation_data."""
+    """Class for null rotation calculation. This perfoms no action
+    other than returning the input rotation_data."""
 
     def __init__(self, rotation_data, event=None):
         super().__init__(rotation_data, event=None)

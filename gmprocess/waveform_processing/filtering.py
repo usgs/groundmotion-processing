@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
 def highpass_filter(st, filter_order=5, number_of_passes=2):
     """
     Highpass filter.
@@ -47,24 +48,21 @@ def highpass_filter_trace(tr, filter_order=5, number_of_passes=2):
     else:
         raise ValueError("number_of_passes must be 1 or 2.")
 
-    freq_dict = tr.getParameter('corner_frequencies')
-    freq = freq_dict['highpass']
+    freq_dict = tr.getParameter("corner_frequencies")
+    freq = freq_dict["highpass"]
     try:
-        tr.filter(type="highpass",
-                  freq=freq,
-                  corners=filter_order,
-                  zerophase=zerophase)
+        tr.filter(type="highpass", freq=freq, corners=filter_order, zerophase=zerophase)
         tr.setProvenance(
-            'highpass_filter',
+            "highpass_filter",
             {
-                'filter_type': 'Butterworth',
-                'filter_order': filter_order,
-                'number_of_passes': number_of_passes,
-                'corner_frequency': freq
-            }
+                "filter_type": "Butterworth",
+                "filter_order": filter_order,
+                "number_of_passes": number_of_passes,
+                "corner_frequency": freq,
+            },
         )
     except BaseException as e:
-        tr.fail("Lowpass filter failed with excpetion: %s" % e)
+        tr.fail(f"Lowpass filter failed with excpetion: {e}")
     return tr
 
 
@@ -114,22 +112,19 @@ def lowpass_filter_trace(tr, filter_order=5, number_of_passes=2):
     else:
         raise ValueError("number_of_passes must be 1 or 2.")
 
-    freq_dict = tr.getParameter('corner_frequencies')
-    freq = freq_dict['lowpass']
+    freq_dict = tr.getParameter("corner_frequencies")
+    freq = freq_dict["lowpass"]
     try:
-        tr.filter(type="lowpass",
-                  freq=freq,
-                  corners=filter_order,
-                  zerophase=zerophase)
+        tr.filter(type="lowpass", freq=freq, corners=filter_order, zerophase=zerophase)
         tr.setProvenance(
-            'lowpass_filter',
+            "lowpass_filter",
             {
-                'filter_type': 'Butterworth',
-                'filter_order': filter_order,
-                'number_of_passes': number_of_passes,
-                'corner_frequency': freq
-            }
+                "filter_type": "Butterworth",
+                "filter_order": filter_order,
+                "number_of_passes": number_of_passes,
+                "corner_frequency": freq,
+            },
         )
     except BaseException as e:
-        tr.fail("Lowpass filter failed with excpetion: %s" % e)
+        tr.fail(f"Lowpass filter failed with excpetion: {e}")
     return tr

@@ -14,10 +14,6 @@ else
     exit
 fi
 
-CC_PKG=c-compiler
-
-source $prof
-
 # Name of virtual environment
 VENV=gmprocess
 
@@ -118,9 +114,9 @@ conda remove -y -n $VENV --all
 
 
 # Create a conda virtual environment
-conda config --add channels 'defaults'
 conda config --add channels 'conda-forge'
-conda config --set channel_priority strict
+conda config --add channels 'defaults'
+conda config --set channel_priority flexible
 
 echo "Creating the $VENV virtual environment:"
 # conda create -n $VENV -y --file requirements.txt
@@ -159,48 +155,7 @@ fi
 # This package
 echo "Installing ${VENV}..."
 
-##################### Try to get in front of missing/wrong C compiler issues #######
-clang_exists=0
-clang_path=`which clang`
-if [ -n "${clang_path}" ]; then
-    clang_exists=1
-    echo "clang is installed on your system."
-fi
-
-gcc_exists=0
-gcc_path=`which gcc`
-if [ -n "$gcc_path" ]; then
-    gcc_exists=1
-    echo "gcc is installed on your system."
-fi
-
-if [ clang_exists == 0 ] && [ gcc_exists == 0 ]; then
-    echo "You are missing a C compiler. Please install either gcc or clang."
-    exit 1
-fi
-
-# test to see if CC is set
-# https://stackoverflow.com/a/13864829
-cc_set=0
-x=""
-if [ -n "${CC}" ]; then # if $CC is set
-    cc_set=1
-    echo "CC is set to '${CC}'"
-fi
-
-if [ $cc_set == 0 ]; then
-    if [ $clang_exists == 1 ];then
-        export CC=clang
-    else
-        export CC=gcc
-    fi
-    echo "Using ${CC} as C compiler"
-else
-    echo "CC is set to ${CC} already."
-fi
-##################### Try to get in front of missing/wrong C compiler issues #######
-
-pip install -e .
+pip install -v -v -v -e .
 
 # if pip install fails, bow out gracefully
 if [ $? -ne 0 ];then

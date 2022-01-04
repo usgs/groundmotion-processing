@@ -22,8 +22,86 @@ Attributes
 
 .. autoapisummary::
 
+   gmprocess.subcommands.compute_station_metrics.np
+   gmprocess.subcommands.compute_station_metrics.spint
+   gmprocess.subcommands.compute_station_metrics.gmt
+   gmprocess.subcommands.compute_station_metrics.ob
+   gmprocess.subcommands.compute_station_metrics.oqgeo
+   gmprocess.subcommands.compute_station_metrics.rupt
+   gmprocess.subcommands.compute_station_metrics.ps2ff
+   gmprocess.subcommands.compute_station_metrics.arg_dicts
+   gmprocess.subcommands.compute_station_metrics.base
+   gmprocess.subcommands.compute_station_metrics.utils
+   gmprocess.subcommands.compute_station_metrics.rupt_utils
+   gmprocess.subcommands.compute_station_metrics.ws
+   gmprocess.subcommands.compute_station_metrics.station_summary
    gmprocess.subcommands.compute_station_metrics.M_PER_KM
 
+
+.. py:data:: np
+   
+
+   
+
+.. py:data:: spint
+   
+
+   
+
+.. py:data:: gmt
+   
+
+   
+
+.. py:data:: ob
+   
+
+   
+
+.. py:data:: oqgeo
+   
+
+   
+
+.. py:data:: rupt
+   
+
+   
+
+.. py:data:: ps2ff
+   
+
+   
+
+.. py:data:: arg_dicts
+   
+
+   
+
+.. py:data:: base
+   
+
+   
+
+.. py:data:: utils
+   
+
+   
+
+.. py:data:: rupt_utils
+   
+
+   
+
+.. py:data:: ws
+   
+
+   
+
+.. py:data:: station_summary
+   
+
+   
 
 .. py:data:: M_PER_KM
    :annotation: = 1000
@@ -32,10 +110,9 @@ Attributes
 
 .. py:class:: ComputeStationMetricsModule
 
-   Bases: :py:obj:`gmprocess.subcommands.base.SubcommandModule`
+   Bases: :py:obj:`base`
 
    Compute station metrics.
-
 
    .. py:attribute:: command_name
       :annotation: = compute_station_metrics

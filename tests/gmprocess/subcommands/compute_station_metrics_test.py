@@ -14,35 +14,32 @@ def test_compute_station_metrics(script_runner):
         # Need to create profile first.
         cdir = constants.PROJECTS_PATH_TEST
         ddir = pkg_resources.resource_filename(
-            'gmprocess', os.path.join('data', 'testdata',
-                                      'demo_steps', 'compute_metrics'))
+            "gmprocess",
+            os.path.join("data", "testdata", "demo_steps", "compute_metrics"),
+        )
 
         # Make a copy of the hdf files
-        events = ['ci38038071', 'ci38457511']
+        events = ["ci38038071", "ci38457511"]
         for event in events:
-            src = os.path.join(ddir, event, 'workspace.h5')
-            dst = os.path.join(ddir, event, '_workspace.h5')
+            src = os.path.join(ddir, event, "workspace.h5")
+            dst = os.path.join(ddir, event, "_workspace.h5")
             shutil.copyfile(src, dst)
 
-        setup_inputs = io.StringIO(
-            "2\ntest\n%s\n%s\nname\ntest@email.com\n" % (cdir, ddir)
-        )
-        ret = script_runner.run(
-            'gmrecords', 'projects', '-c', stdin=setup_inputs)
+        setup_inputs = io.StringIO(f"2\ntest\n{cdir}\n{ddir}\nname\ntest@email.com\n")
+        ret = script_runner.run("gmrecords", "projects", "-c", stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
 
-        ret = script_runner.run('gmrecords', 'compute_station_metrics')
+        ret = script_runner.run("gmrecords", "compute_station_metrics")
         print(ret.stderr)
         assert ret.success
 
         # No new files created, check stderr
-        assert 'Added station metrics to workspace files with' in ret.stderr
-        assert 'Calculating station metrics for CI.CCC.HN' in ret.stderr
-        assert 'Calculating station metrics for AZ.HSSP.HN' in ret.stderr
+        assert "Added station metrics to workspace files with" in ret.stderr
+        assert "Calculating station metrics for CI.CCC.HN" in ret.stderr
+        assert "Calculating station metrics for AZ.HSSP.HN" in ret.stderr
 
-        ret = script_runner.run(
-            'gmrecords', 'compute_station_metrics', '-o')
+        ret = script_runner.run("gmrecords", "compute_station_metrics", "-o")
         assert ret.success
 
     except Exception as ex:
@@ -50,12 +47,12 @@ def test_compute_station_metrics(script_runner):
     finally:
         shutil.rmtree(constants.PROJECTS_PATH_TEST)
         # Move the hdf files back
-        events = ['ci38038071', 'ci38457511']
+        events = ["ci38038071", "ci38457511"]
         for event in events:
-            dst = os.path.join(ddir, event, 'workspace.h5')
-            src = os.path.join(ddir, event, '_workspace.h5')
+            dst = os.path.join(ddir, event, "workspace.h5")
+            src = os.path.join(ddir, event, "_workspace.h5")
             shutil.move(src, dst)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_compute_station_metrics()

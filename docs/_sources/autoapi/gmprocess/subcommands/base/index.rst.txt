@@ -17,12 +17,24 @@ Classes
 
 
 
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.subcommands.base.base_utils
+
+
+.. py:data:: base_utils
+   
+
+   
+
 .. py:class:: SubcommandModule
 
    Bases: :py:obj:`abc.ABC`
 
    gmprocess base module.
-
 
    .. py:attribute:: aliases
       :annotation: = []
@@ -55,12 +67,10 @@ Classes
       List the arguments of the subcommand.
 
 
-
    .. py:method:: argugments_default_dict(cls)
       :classmethod:
 
       List the arguments of the subcommand.
-
 
 
    .. py:method:: _check_arguments(self)
@@ -78,14 +88,12 @@ Classes
       Convenience method to add file via tag to self.files_created.
 
 
-
    .. py:method:: _summarize_files_created(self)
 
 
    .. py:method:: _get_pstreams(self)
 
       Convenience method for recycled code.
-
 
 
    .. py:method:: _get_events(self)
