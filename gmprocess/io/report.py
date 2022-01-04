@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 
 # stdlib imports
-import glob
 import os
-import subprocess
+from shutil import which
+import glob
 
 # third party imports
 import numpy as np
 import pandas as pd
+from impactutils.io.cmd import get_command_output
 
 # local imports
 from gmprocess.utils.config import get_config
@@ -229,20 +230,12 @@ def build_report_latex(
 
         # Can we find pdflatex?
         try:
-<<<<<<< HEAD
-            cp = subprocess.run(
-                ['pdflatex', '-interaction=nonstopmode', '-halt-on-error', file_name],
-                capture_output=True,
-                text=True
-            )
-=======
             pdflatex_bin = which("pdflatex")
             pdflatex_options = "-interaction=nonstopmode -halt-on-error"
             cmd = f"{pdflatex_bin} {pdflatex_options} {file_name}"
             res, stdout, stderr = get_command_output(cmd)
->>>>>>> upstream/master
             report_file = latex_file
-            if cp.returncode == 0:
+            if res:
                 base, ext = os.path.splitext(file_name)
                 pdf_file = base + ".pdf"
                 if os.path.isfile(pdf_file):
@@ -254,15 +247,9 @@ def build_report_latex(
                 else:
                     res = False
             else:
-<<<<<<< HEAD
-                print('pdflatex output:')
-                print(cp.stdout)
-                print(cp.stderr)
-=======
                 print("pdflatex output:")
                 print(stdout.decode())
                 print(stderr.decode())
->>>>>>> upstream/master
         except BaseException:
             report_file = ""
             pass
