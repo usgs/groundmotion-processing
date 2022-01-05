@@ -21,7 +21,7 @@ Classes
 
    Bases: :py:obj:`gmprocess.metrics.combination.combination.Combination`
 
-   "Class for null combination calculation. This perfoms no action
+   Class for null combination calculation. This perfoms no action
    other than returning the input combination_data.
 
    .. py:method:: get_combination_data(self)

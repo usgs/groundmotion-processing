@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.utils.usgs_id_cross_reference - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
+    <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
+        <title>gmprocess.utils.usgs_id_cross_reference - gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -208,7 +208,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmconvert/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmconvert</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gminfo/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gminfo</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmrecords/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmrecords</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmsetup/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmsetup</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmworkspace/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmworkspace</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/list_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.list_metrics</span></code></a></li>
 </ul>
@@ -579,7 +578,7 @@
                 <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"NO MATCH FOUND"</span><span class="p">)</span>
                 <span class="n">event_matches</span><span class="p">[</span><span class="n">eqid</span><span class="p">]</span> <span class="o">=</span> <span class="n">match_dict</span>
                 <span class="k">continue</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Match Error: </span><span class="si">%.4f</span><span class="s2">"</span> <span class="o">%</span> <span class="n">min_error</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Match Error: </span><span class="si">{</span><span class="n">min_error</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">min_error</span> <span class="o">&gt;=</span> <span class="n">ERROR_THRESH</span><span class="p">:</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"HIGH ERROR"</span><span class="p">)</span>
                 <span class="n">warning_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eqid</span><span class="p">)</span>
@@ -597,7 +596,7 @@
             <span class="n">event_matches</span><span class="p">[</span><span class="n">eqid</span><span class="p">]</span> <span class="o">=</span> <span class="n">match_dict</span>
 
     <span class="n">match_rate</span> <span class="o">=</span> <span class="n">match_percentage</span><span class="p">(</span><span class="n">eqids</span><span class="p">,</span> <span class="n">event_matches</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Event Matching Success: </span><span class="si">%.2f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">match_rate</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Event Matching Success: </span><span class="si">{</span><span class="n">match_rate</span> <span class="o">*</span> <span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> %"</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">event_matches</span></div>
 
 
@@ -655,8 +654,8 @@
 <span class="sd">        mag_rates (list):</span>
 <span class="sd">            List of percentages of events matched by magnitude.</span>
 <span class="sd">    """</span>
-    <span class="n">plot_name</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">_found_rate_by_mag.png"</span> <span class="o">%</span> <span class="n">project_name</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Generating bar graph '</span><span class="si">%s</span><span class="s2">'..."</span> <span class="o">%</span> <span class="n">plot_name</span><span class="p">)</span>
+    <span class="n">plot_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">project_name</span><span class="si">}</span><span class="s2">_found_rate_by_mag.png"</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Generating bar graph '</span><span class="si">{</span><span class="n">plot_name</span><span class="si">}</span><span class="s2">'..."</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">mag_range</span><span class="p">,</span> <span class="n">mag_rates</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Magnitude"</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Match Rate (%)"</span><span class="p">)</span>
@@ -696,9 +695,7 @@
         <span class="n">summary_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">val</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">event_matches</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
     <span class="n">summary_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">summary_data</span><span class="p">)</span>
     <span class="n">summary_data</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">summary_data</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
-    <span class="n">summary_data</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span>
-        <span class="s2">"</span><span class="si">%s</span><span class="s2">_usgs_ids_cross_reference.xlsx"</span> <span class="o">%</span> <span class="n">project_name</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
-    <span class="p">)</span></div>
+    <span class="n">summary_data</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">project_name</span><span class="si">}</span><span class="s2">_usgs_ids_cross_reference.xlsx"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="set_target"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/usgs_id_cross_reference/index.html#gmprocess.utils.usgs_id_cross_reference.set_target">[docs]</a><span class="k">def</span> <span class="nf">set_target</span><span class="p">(</span><span class="n">mag</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">):</span>

@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.io.cosmos.cesmd_search - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
+    <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
+        <title>gmprocess.io.cosmos.cesmd_search - gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -208,7 +208,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/gmconvert/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmconvert</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/gminfo/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gminfo</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/gmrecords/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmrecords</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/gmsetup/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmsetup</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/gmworkspace/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmworkspace</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/list_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.list_metrics</span></code></a></li>
 </ul>
@@ -574,36 +573,34 @@
     <span class="n">eqtimewindow</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>  <span class="c1"># seconds</span>
     <span class="n">station_radius</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">"""Retrieve station metadata JSON from CESMD web service.</span>
+    <span class="sa">f</span><span class="s2">"""Retrieve station metadata JSON from CESMD web service.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        eqlat (float):</span>
-<span class="sd">            Earthquake latitude.</span>
-<span class="sd">        eqlon (float):</span>
-<span class="sd">            Earthquake longitude.</span>
-<span class="sd">        eqtime (datetime):</span>
-<span class="sd">            Earthquake origin time.</span>
-<span class="sd">        eqradius (float):</span>
-<span class="sd">            Earthquake search radius (km).</span>
-<span class="sd">        abandoned (bool):</span>
-<span class="sd">            Whether or not to include abandoned stations in the search.</span>
-<span class="sd">        station_type (str):</span>
-<span class="sd">            One of the following station types: [%s]</span>
-<span class="sd">        eqtimewidow (float):</span>
-<span class="sd">            Earthquake time search window in sec.</span>
-<span class="sd">        station_radius (str):</span>
-<span class="sd">            Radius (km) to search for stations from epicenter.</span>
+<span class="s2">    Args:</span>
+<span class="s2">        eqlat (float):</span>
+<span class="s2">            Earthquake latitude.</span>
+<span class="s2">        eqlon (float):</span>
+<span class="s2">            Earthquake longitude.</span>
+<span class="s2">        eqtime (datetime):</span>
+<span class="s2">            Earthquake origin time.</span>
+<span class="s2">        eqradius (float):</span>
+<span class="s2">            Earthquake search radius (km).</span>
+<span class="s2">        abandoned (bool):</span>
+<span class="s2">            Whether or not to include abandoned stations in the search.</span>
+<span class="s2">        station_type (str):</span>
+<span class="s2">            One of the following station types: [</span><span class="si">{</span><span class="s1">','</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">STATION_TYPES</span><span class="p">)</span><span class="si">}</span><span class="s2">]</span>
+<span class="s2">        eqtimewidow (float):</span>
+<span class="s2">            Earthquake time search window in sec.</span>
+<span class="s2">        station_radius (str):</span>
+<span class="s2">            Radius (km) to search for stations from epicenter.</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        dict: Dictionary of event/station information.</span>
+<span class="s2">    Returns:</span>
+<span class="s2">        dict: Dictionary of event/station information.</span>
 
-<span class="sd">    Raises:</span>
-<span class="sd">        ValueError</span>
-<span class="sd">        ConnectionError</span>
+<span class="s2">    Raises:</span>
+<span class="s2">        ValueError</span>
+<span class="s2">        ConnectionError</span>
 
-<span class="sd">    """</span> <span class="o">%</span> <span class="p">(</span>
-        <span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">STATION_TYPES</span><span class="p">)</span>
-    <span class="p">)</span>
+<span class="s2">    """</span>
     <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">"rettype"</span><span class="p">:</span> <span class="s2">"metadata"</span><span class="p">,</span>
         <span class="s2">"groupby"</span><span class="p">:</span> <span class="s2">"event"</span><span class="p">,</span>

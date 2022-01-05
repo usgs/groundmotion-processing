@@ -25,7 +25,12 @@ Then the docs are built with
 ./makedocs.sh
 ```
 
-The docs can then be previewed by opening `docs/index.html` in a browser.
+The docs can then be previewed by opening `../docs/index.html` in a browser.
 
-Note that you should never edit the contents of `docs`, only edit the
-files in `docs_source`.
+Notes:
+ - Never edit the contents of `docs`, only edit the files in `doc_source`.
+ - Remember that the notebooks run gmprocess code when you build the docs, 
+   so please be sure to check that the tutorials ran sucessfully. 
+ - The result of the tutorials will depend on your config file options, 
+   so I recommend having a project with the default config file set up 
+   and use that project when building the docs. 

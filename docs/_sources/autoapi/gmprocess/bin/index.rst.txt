@@ -13,7 +13,6 @@ Submodules
    gmconvert/index.rst
    gminfo/index.rst
    gmrecords/index.rst
-   gmsetup/index.rst
    gmworkspace/index.rst
    list_metrics/index.rst
 

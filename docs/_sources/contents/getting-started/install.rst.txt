@@ -55,8 +55,14 @@ and activate the environment
 
 .. code-block::
 
-   conda create --name gmprocess  python=3.7 --file requirements.txt --strict-channel-priority -c conda-forge -y -v
+   conda create --name gmprocess  python=3.8 --file requirements.txt --strict-channel-priority -c conda-forge -y -v
    call activate gmprocess
+
+Also, we need to install OpenQuake via pip rather than conda:
+
+.. code-block::
+   
+   pip install --upgrade --no-dependencies https://github.com/gem/oq-engine/archive/engine-3.12.zip
 
 And install the gmprocess code in the ``gmprocess`` virtual environment
 

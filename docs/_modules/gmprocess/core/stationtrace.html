@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.core.stationtrace - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
+    <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
+        <title>gmprocess.core.stationtrace - gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -208,7 +208,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmconvert/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmconvert</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gminfo/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gminfo</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmrecords/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmrecords</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmsetup/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmsetup</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmworkspace/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmworkspace</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/list_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.list_metrics</span></code></a></li>
 </ul>
@@ -752,8 +751,8 @@
         <span class="n">istack</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()</span>
         <span class="n">calling_module</span> <span class="o">=</span> <span class="n">istack</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">"failure"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"module"</span><span class="p">:</span> <span class="n">calling_module</span><span class="p">,</span> <span class="s2">"reason"</span><span class="p">:</span> <span class="n">reason</span><span class="p">})</span>
-        <span class="n">trace_id</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> - </span><span class="si">%s</span><span class="s2"> - </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">calling_module</span><span class="p">,</span> <span class="n">trace_id</span><span class="p">,</span> <span class="n">reason</span><span class="p">))</span></div>
+        <span class="n">trace_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">"</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">calling_module</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">trace_id</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">reason</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="StationTrace.validate"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/stationtrace/index.html#gmprocess.core.stationtrace.StationTrace.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Ensure that all required metadata fields have been set.</span>
@@ -787,7 +786,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">req_keys</span> <span class="o">&lt;=</span> <span class="n">std_keys</span><span class="p">:</span>
             <span class="n">missing</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">req_keys</span> <span class="o">-</span> <span class="n">std_keys</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
-                <span class="s1">'Missing standard values in StationTrace header: "</span><span class="si">%s</span><span class="s1">"'</span> <span class="o">%</span> <span class="n">missing</span>
+                <span class="sa">f</span><span class="s1">'Missing standard values in StationTrace header: "</span><span class="si">{</span><span class="n">missing</span><span class="si">}</span><span class="s1">"'</span>
             <span class="p">)</span>
         <span class="n">type_errors</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">required_errors</span> <span class="o">=</span> <span class="p">[]</span>
@@ -996,7 +995,7 @@
 <span class="sd">            dict: Dictionary of arrays (see setSpectrum).</span>
 <span class="sd">        """</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> not in set of spectra arrays."</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> not in set of spectra arrays."</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cached</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="StationTrace.hasCached"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/stationtrace/index.html#gmprocess.core.stationtrace.StationTrace.hasCached">[docs]</a>    <span class="k">def</span> <span class="nf">hasCached</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
@@ -1033,7 +1032,7 @@
 <span class="sd">                Parameters for the given key.</span>
 <span class="sd">        """</span>
         <span class="k">if</span> <span class="n">param_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">"Parameter </span><span class="si">%s</span><span class="s2"> not found in StationTrace"</span> <span class="o">%</span> <span class="n">param_id</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Parameter </span><span class="si">{</span><span class="n">param_id</span><span class="si">}</span><span class="s2"> not found in StationTrace"</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">param_id</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="StationTrace.getProvDataFrame"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/stationtrace/index.html#gmprocess.core.stationtrace.StationTrace.getProvDataFrame">[docs]</a>    <span class="k">def</span> <span class="nf">getProvDataFrame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1108,7 +1107,7 @@
             <span class="n">out</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%%</span><span class="s2">-</span><span class="si">%d</span><span class="s2">s"</span> <span class="o">%</span> <span class="p">(</span><span class="n">id_length</span><span class="p">)</span>
             <span class="n">trace_id</span> <span class="o">=</span> <span class="n">out</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">trace_id</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">trace_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">"</span>
         <span class="n">out</span> <span class="o">=</span> <span class="s2">""</span>
         <span class="c1"># output depending on delta or sampling rate bigger than one</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">:</span>
@@ -1150,7 +1149,7 @@
 <div class="viewcode-block" id="_stats_from_inventory"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/stationtrace/index.html#gmprocess.core.stationtrace._stats_from_inventory">[docs]</a><span class="k">def</span> <span class="nf">_stats_from_inventory</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">inventory</span><span class="p">,</span> <span class="n">seed_id</span><span class="p">,</span> <span class="n">start_time</span><span class="p">):</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">inventory</span><span class="o">.</span><span class="n">source</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">inventory</span><span class="o">.</span><span class="n">sender</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">inventory</span><span class="o">.</span><span class="n">sender</span> <span class="o">!=</span> <span class="n">inventory</span><span class="o">.</span><span class="n">source</span><span class="p">:</span>
-            <span class="n">source</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">inventory</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">inventory</span><span class="o">.</span><span class="n">sender</span><span class="p">)</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">inventory</span><span class="o">.</span><span class="n">source</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">inventory</span><span class="o">.</span><span class="n">sender</span><span class="si">}</span><span class="s2">"</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">source</span> <span class="o">=</span> <span class="n">inventory</span><span class="o">.</span><span class="n">source</span>
 
@@ -1252,7 +1251,7 @@
                 <span class="n">num</span><span class="p">,</span> <span class="n">denom</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">num</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">LENGTH_CONVERSIONS</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
-                        <span class="s2">"Sensitivity input units of </span><span class="si">%s</span><span class="s2"> are not supported."</span> <span class="o">%</span> <span class="n">units</span>
+                        <span class="sa">f</span><span class="s2">"Sensitivity input units of </span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2"> are not supported."</span>
                     <span class="p">)</span>
                 <span class="n">conversion</span> <span class="o">=</span> <span class="n">LENGTH_CONVERSIONS</span><span class="p">[</span><span class="n">num</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
                 <span class="n">sensitivity</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">instrument_sensitivity</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="n">conversion</span>
@@ -1329,7 +1328,7 @@
 <span class="sd">    """</span>
     <span class="n">software</span> <span class="o">=</span> <span class="s2">"gmprocess"</span>
     <span class="n">hashstr</span> <span class="o">=</span> <span class="s2">"0000001"</span>
-    <span class="n">agent_id</span> <span class="o">=</span> <span class="s2">"seis_prov:sp001_sa_</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">hashstr</span>
+    <span class="n">agent_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"seis_prov:sp001_sa_</span><span class="si">{</span><span class="n">hashstr</span><span class="si">}</span><span class="s2">"</span>
     <span class="n">giturl</span> <span class="o">=</span> <span class="s2">"https://github.com/usgs/groundmotion-processing"</span>
     <span class="n">pr</span><span class="o">.</span><span class="n">agent</span><span class="p">(</span>
         <span class="n">agent_id</span><span class="p">,</span>
@@ -1376,7 +1375,7 @@
         <span class="k">if</span> <span class="s2">"email"</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">"user"</span><span class="p">]:</span>
             <span class="n">email</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"user"</span><span class="p">][</span><span class="s2">"email"</span><span class="p">]</span>
     <span class="n">hashstr</span> <span class="o">=</span> <span class="s2">"0000001"</span>
-    <span class="n">person_id</span> <span class="o">=</span> <span class="s2">"seis_prov:sp001_pp_</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">hashstr</span>
+    <span class="n">person_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"seis_prov:sp001_pp_</span><span class="si">{</span><span class="n">hashstr</span><span class="si">}</span><span class="s2">"</span>
     <span class="n">pr</span><span class="o">.</span><span class="n">agent</span><span class="p">(</span>
         <span class="n">person_id</span><span class="p">,</span>
         <span class="n">other_attributes</span><span class="o">=</span><span class="p">(</span>
@@ -1413,7 +1412,7 @@
         <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
     <span class="p">)</span>
     <span class="n">waveform_hash</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">tpl</span>
-    <span class="n">waveform_id</span> <span class="o">=</span> <span class="s2">"seis_prov:sp001_wf_</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">waveform_hash</span>
+    <span class="n">waveform_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"seis_prov:sp001_wf_</span><span class="si">{</span><span class="n">waveform_hash</span><span class="si">}</span><span class="s2">"</span>
     <span class="n">pr</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span>
         <span class="n">waveform_id</span><span class="p">,</span>
         <span class="n">other_attributes</span><span class="o">=</span><span class="p">(</span>
@@ -1454,7 +1453,7 @@
     <span class="n">code</span> <span class="o">=</span> <span class="n">activity_dict</span><span class="p">[</span><span class="s2">"code"</span><span class="p">]</span>
     <span class="n">label</span> <span class="o">=</span> <span class="n">activity_dict</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span>
     <span class="n">activity_id</span> <span class="o">=</span> <span class="s2">"sp</span><span class="si">%03i</span><span class="s2">_</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">hashid</span><span class="p">)</span>
-    <span class="n">pr_attributes</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">"prov:label"</span><span class="p">,</span> <span class="n">label</span><span class="p">),</span> <span class="p">(</span><span class="s2">"prov:type"</span><span class="p">,</span> <span class="s2">"seis_prov:</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">activity</span><span class="p">)]</span>
+    <span class="n">pr_attributes</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">"prov:label"</span><span class="p">,</span> <span class="n">label</span><span class="p">),</span> <span class="p">(</span><span class="s2">"prov:type"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"seis_prov:</span><span class="si">{</span><span class="n">activity</span><span class="si">}</span><span class="s2">"</span><span class="p">)]</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">prov</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">Literal</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">prov</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">XSD_DOUBLE</span><span class="p">)</span>
@@ -1465,9 +1464,9 @@
                 <span class="n">value</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">TIMEFMT</span><span class="p">),</span> <span class="n">prov</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">XSD_DATETIME</span>
             <span class="p">)</span>
 
-        <span class="n">att_tuple</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"seis_prov:</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="n">att_tuple</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s2">"seis_prov:</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="n">pr_attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">att_tuple</span><span class="p">)</span>
-    <span class="n">pr</span><span class="o">.</span><span class="n">activity</span><span class="p">(</span><span class="s2">"seis_prov:</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">activity_id</span><span class="p">,</span> <span class="n">other_attributes</span><span class="o">=</span><span class="n">pr_attributes</span><span class="p">)</span>
+    <span class="n">pr</span><span class="o">.</span><span class="n">activity</span><span class="p">(</span><span class="sa">f</span><span class="s2">"seis_prov:</span><span class="si">{</span><span class="n">activity_id</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">other_attributes</span><span class="o">=</span><span class="n">pr_attributes</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">pr</span></div>
 </pre></div>
         </article>

@@ -21,7 +21,7 @@ Classes
 
    Bases: :py:obj:`gmprocess.metrics.reduction.reduction.Reduction`
 
-   "Class for null reduction calculation. This perfoms no action
+   Class for null reduction calculation. This perfoms no action
    other than returning the input reduction_data.
 
    .. py:method:: get_reduction_data(self)

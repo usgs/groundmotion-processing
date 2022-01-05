@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.io.asdf.stream_workspace - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
+    <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
+        <title>gmprocess.io.asdf.stream_workspace - gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -208,7 +208,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/gmconvert/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmconvert</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/gminfo/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gminfo</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/gmrecords/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmrecords</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/gmsetup/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmsetup</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/gmworkspace/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmworkspace</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/list_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.list_metrics</span></code></a></li>
 </ul>
@@ -558,13 +557,13 @@
 <span class="p">}</span>
 
 <span class="n">FLATFILE_IMT_COLUMNS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"PGA"</span><span class="p">:</span> <span class="s2">"Peak ground acceleration (</span><span class="si">%s</span><span class="s2">)"</span> <span class="o">%</span> <span class="n">XML_UNITS</span><span class="p">[</span><span class="s2">"pga"</span><span class="p">],</span>
-    <span class="s2">"PGV"</span><span class="p">:</span> <span class="s2">"Peak ground velocity (</span><span class="si">%s</span><span class="s2">)"</span> <span class="o">%</span> <span class="n">XML_UNITS</span><span class="p">[</span><span class="s2">"pgv"</span><span class="p">],</span>
-    <span class="s2">"SA(X)"</span><span class="p">:</span> <span class="s2">"Pseudo-spectral acceleration (</span><span class="si">%s</span><span class="s2">) at X seconds"</span> <span class="o">%</span> <span class="n">XML_UNITS</span><span class="p">[</span><span class="s2">"sa"</span><span class="p">],</span>
-    <span class="s2">"FAS(X)"</span><span class="p">:</span> <span class="s2">"Fourier amplitude spectrum value (</span><span class="si">%s</span><span class="s2">) at X seconds"</span> <span class="o">%</span> <span class="n">XML_UNITS</span><span class="p">[</span><span class="s2">"fas"</span><span class="p">],</span>
-    <span class="s2">"DURATIONp-q"</span><span class="p">:</span> <span class="s2">"p-q percent significant duration (</span><span class="si">%s</span><span class="s2">)"</span> <span class="o">%</span> <span class="n">XML_UNITS</span><span class="p">[</span><span class="s2">"duration"</span><span class="p">],</span>
-    <span class="s2">"SORTED_DURATION"</span><span class="p">:</span> <span class="s2">"Sorted significant duration (</span><span class="si">%s</span><span class="s2">)"</span> <span class="o">%</span> <span class="n">XML_UNITS</span><span class="p">[</span><span class="s2">"duration"</span><span class="p">],</span>
-    <span class="s2">"ARIAS"</span><span class="p">:</span> <span class="s2">"Arias intensity (</span><span class="si">%s</span><span class="s2">)"</span> <span class="o">%</span> <span class="n">XML_UNITS</span><span class="p">[</span><span class="s2">"arias"</span><span class="p">],</span>
+    <span class="s2">"PGA"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Peak ground acceleration (</span><span class="si">{</span><span class="n">XML_UNITS</span><span class="p">[</span><span class="s1">'pga'</span><span class="p">]</span><span class="si">}</span><span class="s2">)"</span><span class="p">,</span>
+    <span class="s2">"PGV"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Peak ground velocity (</span><span class="si">{</span><span class="n">XML_UNITS</span><span class="p">[</span><span class="s1">'pgv'</span><span class="p">]</span><span class="si">}</span><span class="s2">)"</span><span class="p">,</span>
+    <span class="s2">"SA(X)"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Pseudo-spectral acceleration (</span><span class="si">{</span><span class="n">XML_UNITS</span><span class="p">[</span><span class="s1">'sa'</span><span class="p">]</span><span class="si">}</span><span class="s2">) at X seconds"</span><span class="p">,</span>
+    <span class="s2">"FAS(X)"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Fourier amplitude spectrum value (</span><span class="si">{</span><span class="n">XML_UNITS</span><span class="p">[</span><span class="s1">'fas'</span><span class="p">]</span><span class="si">}</span><span class="s2">) at X seconds"</span><span class="p">,</span>
+    <span class="s2">"DURATIONp-q"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"p-q percent significant duration (</span><span class="si">{</span><span class="n">XML_UNITS</span><span class="p">[</span><span class="s1">'duration'</span><span class="p">]</span><span class="si">}</span><span class="s2">)"</span><span class="p">,</span>
+    <span class="s2">"SORTED_DURATION"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Sorted significant duration (</span><span class="si">{</span><span class="n">XML_UNITS</span><span class="p">[</span><span class="s1">'duration'</span><span class="p">]</span><span class="si">}</span><span class="s2">)"</span><span class="p">,</span>
+    <span class="s2">"ARIAS"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Arias intensity (</span><span class="si">{</span><span class="n">XML_UNITS</span><span class="p">[</span><span class="s1">'arias'</span><span class="p">]</span><span class="si">}</span><span class="s2">)"</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="c1"># List of columns in the fit_spectra_parameters file, along README descriptions</span>
@@ -668,7 +667,7 @@
 <span class="sd">            StreamWorkspace: Object containing ASDF file.</span>
 <span class="sd">        """</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">"File </span><span class="si">%s</span><span class="s2"> already exists."</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"File </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> already exists."</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="StreamWorkspace.open"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/asdf/stream_workspace/index.html#gmprocess.io.asdf.stream_workspace.StreamWorkspace.open">[docs]</a>    <span class="nd">@classmethod</span>
@@ -683,7 +682,7 @@
 <span class="sd">            StreamWorkspace: Object containing ASDF file.</span>
 <span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">"File </span><span class="si">%s</span><span class="s2"> does not exist."</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"File </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> does not exist."</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="StreamWorkspace.close"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/asdf/stream_workspace/index.html#gmprocess.io.asdf.stream_workspace.StreamWorkspace.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -734,7 +733,7 @@
 
 <div class="viewcode-block" id="StreamWorkspace.getGmprocessVersion"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/asdf/stream_workspace/index.html#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getGmprocessVersion">[docs]</a>    <span class="k">def</span> <span class="nf">getGmprocessVersion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">"""Get gmprocess version from ASDF file."""</span>
-        <span class="n">group_name</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="s2">"gmprocess_version"</span><span class="p">,</span> <span class="s2">"version"</span><span class="p">)</span>
+        <span class="n">group_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'gmprocess_version'</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="s1">'version'</span><span class="si">}</span><span class="s2">"</span>
         <span class="n">data_exists</span> <span class="o">=</span> <span class="n">group_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">_auxiliary_data_group</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">data_exists</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"No version for gmprocess found."</span><span class="p">)</span>
@@ -777,15 +776,15 @@
         <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">streams</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">:</span>
             <span class="n">station</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"station"</span><span class="p">]</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Adding waveforms for station </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">station</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Adding waveforms for station </span><span class="si">{</span><span class="n">station</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             <span class="c1"># is this a raw file? Check the trace for provenance info.</span>
             <span class="n">is_raw</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getProvenanceKeys</span><span class="p">())</span>
 
             <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">tfmt</span> <span class="o">=</span> <span class="s2">"%Y%m</span><span class="si">%d</span><span class="s2">%H%M%S"</span>
                 <span class="n">tnow</span> <span class="o">=</span> <span class="n">UTCDateTime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">tfmt</span><span class="p">)</span>
-                <span class="n">label</span> <span class="o">=</span> <span class="s2">"processed</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">tnow</span>
-            <span class="n">tag</span> <span class="o">=</span> <span class="s2">"</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">eventid</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"processed</span><span class="si">{</span><span class="n">tnow</span><span class="si">}</span><span class="s2">"</span>
+            <span class="n">tag</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">eventid</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">"</span>
             <span class="k">if</span> <span class="n">is_raw</span><span class="p">:</span>
                 <span class="n">level</span> <span class="o">=</span> <span class="s2">"raw"</span>
             <span class="k">else</span><span class="p">:</span>
@@ -931,7 +930,7 @@
 
         <span class="n">net_codes</span> <span class="o">=</span> <span class="p">[</span><span class="n">st</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">stations</span><span class="p">]</span>
         <span class="n">sta_codes</span> <span class="o">=</span> <span class="p">[</span><span class="n">st</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">stations</span><span class="p">]</span>
-        <span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">eventid</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]</span>
+        <span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">eventid</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">waveform</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">ifilter</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">network</span> <span class="o">==</span> <span class="n">net_codes</span><span class="p">,</span>
@@ -1051,7 +1050,7 @@
         <span class="c1"># just to store a string in HDF, but other</span>
         <span class="c1"># approaches failed. Suggestions are welcome.</span>
 
-        <span class="n">group_name</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">data_name</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="n">group_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">data_name</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">"</span>
         <span class="n">data_exists</span> <span class="o">=</span> <span class="n">group_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">_auxiliary_data_group</span>
         <span class="k">if</span> <span class="n">overwrite</span> <span class="ow">and</span> <span class="n">data_exists</span><span class="p">:</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">_auxiliary_data_group</span><span class="p">[</span><span class="n">group_name</span><span class="p">]</span>
@@ -1135,7 +1134,7 @@
 
         <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">:</span>
             <span class="n">instrument</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Calculating stream metrics for </span><span class="si">%s</span><span class="s2">..."</span> <span class="o">%</span> <span class="n">instrument</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Calculating stream metrics for </span><span class="si">{</span><span class="n">instrument</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
 
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">summary</span> <span class="o">=</span> <span class="n">StationSummary</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span>
@@ -1158,7 +1157,7 @@
             <span class="k">if</span> <span class="n">calc_waveform_metrics</span> <span class="ow">and</span> <span class="n">stream</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
                 <span class="n">xmlstr</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">get_metric_xml</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">stream_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">tag</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">eventid</span><span class="p">,</span> <span class="n">stream_label</span><span class="p">)</span>
+                    <span class="n">tag</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">eventid</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">stream_label</span><span class="si">}</span><span class="s2">"</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">tag</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">tag</span>
                 <span class="n">metricpath</span> <span class="o">=</span> <span class="s2">"/"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
@@ -1357,6 +1356,8 @@
 <span class="sd">        """</span>
         <span class="n">fit_table</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">event</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getEvent</span><span class="p">(</span><span class="n">eventid</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">event</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="n">station_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">waveforms</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">station_id</span> <span class="ow">in</span> <span class="n">station_list</span><span class="p">:</span>
@@ -1393,7 +1394,7 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fit_table</span><span class="p">):</span>
             <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">fit_table</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">FIT_SPECTRA_COLUMNS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="k">return</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="c1"># Ensure that the DataFrame columns are ordered correctly</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">FIT_SPECTRA_COLUMNS</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
@@ -1416,20 +1417,20 @@
 <span class="sd">                Return parameters only for the given eventid.</span>
 <span class="sd">            label (str):</span>
 <span class="sd">                Return parameters only for the given label.</span>
-<span class="sd">            config (dict)</span>
+<span class="sd">            config (dict):</span>
 <span class="sd">                Dictionary of config options.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            pandas.DataFrame:</span>
-<span class="sd">                A DataFrame containing the fit_spectra parameters on a trace-</span>
-<span class="sd">                by-trace basis.</span>
+<span class="sd">            tuple of pandas DataFrames, which consists of the SNR dataframe and its</span>
+<span class="sd">            associated readme.</span>
 <span class="sd">        """</span>
         <span class="c1"># Get list of periods in SA to interpolate SNR to.</span>
         <span class="k">if</span> <span class="s2">"WaveFormMetrics"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">auxiliary_data</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                 <span class="s2">"No WaveFormMetrics found. Please run "</span>
                 <span class="s2">"'compute_waveform_metrics' subcommand."</span>
             <span class="p">)</span>
+            <span class="k">return</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">wm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">auxiliary_data</span><span class="o">.</span><span class="n">WaveFormMetrics</span>
         <span class="n">wm_tmp</span> <span class="o">=</span> <span class="n">wm</span><span class="p">[</span><span class="n">wm</span><span class="o">.</span><span class="n">list</span><span class="p">()[</span><span class="mi">0</span><span class="p">]]</span>
         <span class="n">bytelist</span> <span class="o">=</span> <span class="n">wm_tmp</span><span class="p">[</span><span class="n">wm_tmp</span><span class="o">.</span><span class="n">list</span><span class="p">()[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">data</span><span class="p">[:]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
@@ -1517,7 +1518,7 @@
         <span class="n">snr</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span>
         <span class="n">snr_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">snr</span><span class="p">):</span>
-            <span class="n">key</span> <span class="o">=</span> <span class="s2">"SNR(</span><span class="si">%.4g</span><span class="s2">)"</span> <span class="o">%</span> <span class="n">f</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"SNR(</span><span class="si">{</span><span class="n">f</span><span class="si">:</span><span class="s2">.4g</span><span class="si">}</span><span class="s2">)"</span>
             <span class="n">snr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span>
         <span class="k">return</span> <span class="n">snr_dict</span>
 
@@ -1555,9 +1556,7 @@
 <span class="sd">            StationSummary: Object containing all stream metrics or None.</span>
 <span class="sd">        """</span>
         <span class="k">if</span> <span class="s2">"WaveFormMetrics"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">auxiliary_data</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">"Waveform metrics not found in workspace, "</span> <span class="s2">"cannot get stream metrics."</span>
-            <span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Waveform metrics not found in workspace, cannot get stream metrics."</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
 
@@ -1565,7 +1564,7 @@
 
         <span class="c1"># get the stream matching the eventid, station, and label</span>
         <span class="k">if</span> <span class="n">streams</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">station_id</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">station</span><span class="p">)</span>
+            <span class="n">station_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">network</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">station</span><span class="si">}</span><span class="s2">"</span>
             <span class="n">streams</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getStreams</span><span class="p">(</span>
                 <span class="n">eventid</span><span class="p">,</span> <span class="n">stations</span><span class="o">=</span><span class="p">[</span><span class="n">station_id</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="n">label</span><span class="p">],</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span>
             <span class="p">)</span>
@@ -1586,7 +1585,7 @@
             <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="n">stream_label</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">stream_tag</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">_</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">eventid</span><span class="p">,</span> <span class="n">stream_label</span><span class="p">)</span>
+            <span class="n">stream_tag</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">eventid</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">stream_label</span><span class="si">}</span><span class="s2">"</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">stream_tag</span> <span class="o">=</span> <span class="n">streams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tag</span>
 
@@ -1729,10 +1728,7 @@
             <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">resource_id</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">eventid</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
                 <span class="n">eventobj</span> <span class="o">=</span> <span class="n">event</span>
                 <span class="k">break</span>
-        <span class="k">if</span> <span class="n">eventobj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"Event with a resource id containing </span><span class="si">%s</span><span class="s2"> could not be found."</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="n">eventid</span><span class="p">)</span>
-        <span class="n">eventobj2</span> <span class="o">=</span> <span class="n">ScalarEvent</span><span class="o">.</span><span class="n">fromEvent</span><span class="p">(</span><span class="n">eventobj</span><span class="p">)</span>
+        <span class="n">eventobj2</span> <span class="o">=</span> <span class="n">ScalarEvent</span><span class="o">.</span><span class="n">fromEvent</span><span class="p">(</span><span class="n">eventobj</span><span class="p">)</span> <span class="k">if</span> <span class="n">eventobj</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="n">eventobj2</span></div>
 
 <div class="viewcode-block" id="StreamWorkspace.getProvenance"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/asdf/stream_workspace/index.html#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getProvenance">[docs]</a>    <span class="k">def</span> <span class="nf">getProvenance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eventid</span><span class="p">,</span> <span class="n">stations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>

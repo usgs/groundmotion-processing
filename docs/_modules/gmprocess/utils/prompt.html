@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.utils.prompt - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
+    <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
+        <title>gmprocess.utils.prompt - gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -208,7 +208,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmconvert/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmconvert</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gminfo/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gminfo</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmrecords/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmrecords</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmsetup/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmsetup</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmworkspace/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmworkspace</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/list_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.list_metrics</span></code></a></li>
 </ul>
@@ -489,7 +488,7 @@
     <span class="k">elif</span> <span class="n">default</span> <span class="o">==</span> <span class="s2">"no"</span><span class="p">:</span>
         <span class="n">prompt</span> <span class="o">=</span> <span class="s2">" [y/N] "</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"invalid default answer: '</span><span class="si">%s</span><span class="s2">'"</span> <span class="o">%</span> <span class="n">default</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"invalid default answer: '</span><span class="si">{</span><span class="n">default</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
 
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">question</span> <span class="o">+</span> <span class="n">prompt</span><span class="p">)</span>
@@ -499,7 +498,7 @@
         <span class="k">elif</span> <span class="n">choice</span> <span class="ow">in</span> <span class="n">valid</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">valid</span><span class="p">[</span><span class="n">choice</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"Please respond with 'yes' or 'no' "</span> <span class="s2">"(or 'y' or 'n').</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span></div>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"Please respond with 'yes' or 'no' (or 'y' or 'n').</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="make_dir"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/prompt/index.html#gmprocess.utils.prompt.make_dir">[docs]</a><span class="k">def</span> <span class="nf">make_dir</span><span class="p">(</span><span class="n">pathstr</span><span class="p">,</span> <span class="n">default</span><span class="p">):</span>
@@ -508,7 +507,7 @@
     <span class="n">make_ok</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">ppath</span> <span class="o">=</span> <span class="s2">""</span>
     <span class="k">while</span> <span class="ow">not</span> <span class="n">make_ok</span><span class="p">:</span>
-        <span class="n">ppath</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">"Please enter the </span><span class="si">%s</span><span class="s2">: [</span><span class="si">%s</span><span class="s2">] "</span> <span class="o">%</span> <span class="p">(</span><span class="n">pathstr</span><span class="p">,</span> <span class="n">default</span><span class="p">))</span>
+        <span class="n">ppath</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Please enter the </span><span class="si">{</span><span class="n">pathstr</span><span class="si">}</span><span class="s2">: [</span><span class="si">{</span><span class="n">default</span><span class="si">}</span><span class="s2">] "</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">ppath</span><span class="o">.</span><span class="n">strip</span><span class="p">()):</span>
             <span class="n">ppath</span> <span class="o">=</span> <span class="n">default</span>
         <span class="k">try</span><span class="p">:</span>
@@ -566,7 +565,7 @@
     <span class="nb">print</span><span class="p">(</span>
         <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
             <span class="n">textwrap</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span>
-                <span class="s2">"You will be prompted to supply two directories for this "</span> <span class="s2">"project:"</span>
+                <span class="s2">"You will be prompted to supply two directories for this project:"</span>
             <span class="p">)</span>
         <span class="p">)</span>
     <span class="p">)</span>

@@ -30,7 +30,6 @@ Attributes
    gmprocess.apps.gmrecords.log_utils
    gmprocess.apps.gmrecords.projmod
    gmprocess.apps.gmrecords.init
-   gmprocess.apps.gmrecords.VERSION
 
 
 .. py:data:: configobj
@@ -69,11 +68,6 @@ Attributes
    
 
 .. py:data:: init
-   
-
-   
-
-.. py:data:: VERSION
    
 
    

@@ -29,3 +29,11 @@ Submodules
    version/index.rst
 
 
+Package Contents
+----------------
+
+.. py:data:: __version__
+   :annotation: = 1.1.11.dev203+gf35d074a.d20220105
+
+   
+
