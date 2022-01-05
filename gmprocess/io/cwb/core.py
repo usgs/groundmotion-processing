@@ -238,9 +238,10 @@ def _get_header_info(file, data):
     )
     standard["source_format"] = "cwb"
 
-    # this field can be used for instrument correction
+    # these fields can be used for instrument correction
     # when data is in counts
     standard["instrument_sensitivity"] = np.nan
+    standard["volts_to_counts"] = np.nan
 
     if "station_name" not in standard:
         standard["station_name"] = ""

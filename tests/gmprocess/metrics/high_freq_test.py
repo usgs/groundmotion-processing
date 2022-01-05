@@ -73,6 +73,7 @@ def read_at2(dfile, horient=0.0):
     standard["process_level"] = "corrected physical units"
     standard["source_format"] = "AT2"
     standard["process_time"] = ""
+    standard["volts_to_counts"] = np.nan
     hdr["standard"] = standard
     # convert data from g to cm/s^2
     g_to_cmss = 980.665

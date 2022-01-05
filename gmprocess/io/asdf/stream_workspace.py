@@ -358,7 +358,9 @@ class StreamWorkspace(object):
 
             # add processing provenance info from traces
             if level == "processed":
-                provdocs = stream.getProvenanceDocuments(base_prov)
+                provdocs = stream.getProvenanceDocuments(
+                    base_prov=base_prov, gmprocess_version=gmprocess_version
+                )
                 for provdoc, trace in zip(provdocs, stream):
                     provname = format_nslct(trace.stats, tag)
                     self.dataset.add_provenance_document(provdoc, name=provname)

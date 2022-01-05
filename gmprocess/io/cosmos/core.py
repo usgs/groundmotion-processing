@@ -769,9 +769,12 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=""):
         format_specific["record_flag"] = "Unfixed problem"
     else:
         format_specific["record_flag"] = ""
-    scaling_factor = float(flt_data[41])
+
+    scaling_factor = float(flt_data[87])
+    format_specific["scaling_factor"] = _check_assign(scaling_factor, unknown, np.nan)
+    sensor_sensitivity = float(flt_data[41])
     format_specific["sensor_sensitivity"] = _check_assign(
-        scaling_factor, unknown, np.nan
+        sensor_sensitivity, unknown, np.nan
     )
 
     # for V0 files, set a standard field called instrument_sensitivity
@@ -788,6 +791,7 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=""):
         raise ValueError(f"Gain of 0 discovered for NSCL: {nscl}")
     denom = ctov * vtog * (1.0 / gain) * sp.g
     standard["instrument_sensitivity"] = 1 / denom
+    standard["volts_to_counts"] = ctov
 
     # Set dictionary
     hdr["standard"] = standard

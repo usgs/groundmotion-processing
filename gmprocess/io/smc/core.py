@@ -534,9 +534,10 @@ def _get_header_info(filename, any_structure=False, accept_flagged=False, locati
     standard["units"] = "cm/s/s"
     standard["units_type"] = get_units_type(stats["channel"])
 
-    # this field can be used for instrument correction
+    # these fields can be used for instrument correction
     # when data is in counts
     standard["instrument_sensitivity"] = np.nan
+    standard["volts_to_counts"] = np.nan
 
     # read in the comment lines
     with open(filename) as f:

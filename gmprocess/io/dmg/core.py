@@ -568,9 +568,10 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=""):
     standard["source_format"] = "dmg"
     standard["station_name"] = lines[5].strip()
 
-    # this field can be used for instrument correction
+    # these fields can be used for instrument correction
     # when data is in counts
     standard["instrument_sensitivity"] = np.nan
+    standard["volts_to_counts"] = np.nan
 
     # Format specific metadata
     format_specific["fractional_unit"] = flt_data[4]
@@ -727,9 +728,10 @@ def _get_header_info(int_data, flt_data, lines, level, location=""):
     standard["source_format"] = "dmg"
     standard["station_name"] = station_name
 
-    # this field can be used for instrument correction
+    # these fields can be used for instrument correction
     # when data is in counts
     standard["instrument_sensitivity"] = np.nan
+    standard["volts_to_counts"] = np.nan
 
     # Format specific metadata
     format_specific["fractional_unit"] = flt_data[4]

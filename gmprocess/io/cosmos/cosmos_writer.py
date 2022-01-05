@@ -1,22 +1,22 @@
 # stdlib imports
-from enum import Enum
-from dataclasses import dataclass
-import pathlib
 from collections import OrderedDict
 from datetime import datetime
+from enum import Enum
+import logging
+import pathlib
 import pkg_resources
-import json
 import re
-from io import StringIO
+import time
 
 # third party imports
 import numpy as np
 import pandas as pd
 from obspy.geodetics.base import gps2dist_azimuth
+import scipy.constants as sp
 
 # local imports
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
-from gmprocess.io.cosmos.core import BUILDING_TYPES, SENSOR_TYPES
+from gmprocess.io.cosmos.core import BUILDING_TYPES, SENSOR_TYPES, MICRO_TO_VOLT
 from gmprocess.core.stationtrace import TIMEFMT, UNITS
 from gmprocess.utils.config import get_config
 
@@ -129,46 +129,6 @@ TEXT_HEADER_LINES = [
     ("missing_data_str", "missing_data_int", "missing_data_float"),
 ]
 
-# TODO - research better way to do matching...
-# def get_table10():
-#     table10 = {}
-#     datadir = (
-#         pathlib.Path.home()
-#         / "src"
-#         / "python"
-#         / "groundmotion-processing"
-#         / "gmprocess"
-#         / "data"
-#     )
-#     excelfile = datadir / "cosmos_table10.xls"
-#     dataframe = pd.read_excel(excelfile)
-#     for idx, row in dataframe.iterrows():
-#         table10[row["Sensor"]] = row["Cosmos Code"]
-#     return table10
-
-
-# def similar(a, b):
-#     return SequenceMatcher(None, a, b).ratio()
-
-
-# def get_sensor_code(sensor_string):
-#     table10 = get_table10()
-#     matches = {}
-#     for key in table10.keys():
-#         matches[key] = 0
-#         tsensor = sensor_string.replace(",", " ")
-#         tsensor = tsensor.replace("_", " ")
-#         parts = tsensor.split()
-#         for part in parts:
-#             if not len(part.strip()):
-#                 continue
-#             matches[key] += similar(part, key)
-#         matches[key] = matches[key] / len(parts)
-#     if not len(matches):
-#         matches["Other sensor"] = 1
-#     max_key = max(matches, key=matches.get)
-#     return max_key, table10[max_key]
-
 
 class Table4(object):
     def __init__(self, excelfile):
@@ -207,7 +167,8 @@ class Table4(object):
 
 
 class TextHeader(object):
-    # header_fmt tuples are (format_string, column offset, and value (filled in by constructor))
+    # header_fmt tuples are (format_string, column offset, and value
+    # (filled in by constructor))
     header_fmt = OrderedDict()
     # header_fmt["param_type"] = ["{value:25s}", 0, None]
     # line 1
@@ -285,13 +246,13 @@ class TextHeader(object):
             quantity = "acceleration"
         level = "Raw"
         dmax = trace.max()
-        maxidx = np.where(np.abs(trace.data) == dmax)[0][0]
+        maxidx = np.where(trace.data == dmax)[0][0]
 
         if volume == Volume.CONVERTED:
             level = "Corrected"
             converted = trace.remove_response()
             dmax = converted.max()  # max of absolute value
-            maxidx = np.where(np.abs(converted.data) == dmax)[0][0]
+            maxidx = np.where(converted.data == dmax)[0][0]
         elif volume == Volume.PROCESSED:
             level = "Corrected"
         maxtime = trace.stats.delta * maxidx  # seconds since rec start
@@ -404,7 +365,6 @@ class TextHeader(object):
         self.set_header_value("missing_data_str", miss_str)
         self.set_header_value("missing_data_int", MISSING_DATA_INT)
         self.set_header_value("missing_data_float", MISSING_DATA_FLOAT)
-        
 
     def set_header_value(self, key, value):
         width = int(re.search(r"\d+", self.header_fmt[key][0]).group(0))
@@ -420,14 +380,9 @@ class TextHeader(object):
             for line_key in line_keys:
                 _, column_offset, value = self.header_fmt[line_key]
                 offset = column_offset - len(line)
-                try:
-                    line += " " * offset + value
-                except:
-                    x = 1
+                line += " " * offset + value
 
             line += (80 - len(line)) * " "
-            if len(line) != 80:
-                x = 1
             cosmos_file.write(line + "\n")
         return None
 
@@ -479,10 +434,6 @@ class IntHeader(object):
         channels = [trace.stats.channel for trace in stream]
         channel_number = channels.index(trace.stats.channel) + 1
         self.header[4][9] = channel_number
-        # TODO - research better methods for string matching
-        # instrument = trace.stats.standard.instrument.replace("None", "").strip()
-        # sensor_type = REV_SENSOR_TYPES[trace.stats.standard.instrument]
-        # self.header[5][1] = sensor_type
         azimuth = trace.stats.standard.horizontal_orientation
         # 0 degrees is not an accepted azimuth angle...
         if azimuth == 0.0:
@@ -535,8 +486,16 @@ class FloatHeader(object):
             trace.stats.coordinates.latitude,
             trace.stats.coordinates.longitude,
         )
-        self.header[2][4] = dist
+        self.header[2][4] = dist / 1000  # m to km
         self.header[2][5] = az
+        # Recorder/datalogger parameters
+        if hasattr(trace.stats.standard, "volts_to_counts"):
+            # volts to counts is counts/volt
+            # MICRO_TO_VOLT is microvolts/volt
+            self.header[3][3] = (
+                1 / trace.stats.standard.volts_to_counts
+            ) * MICRO_TO_VOLT  # microvolts/count
+
         # Record parameters
         dtime = (
             len(trace.data) * trace.stats.delta
@@ -547,9 +506,15 @@ class FloatHeader(object):
         # Sensor/channel parameters
         self.header[6][3] = 1 / trace.stats.standard.instrument_period
         self.header[6][4] = trace.stats.standard.instrument_damping
-        self.header[6][
-            5
-        ] = trace.stats.standard.instrument_sensitivity  # TODO: check units
+        has_sensitivity = hasattr(trace.stats.standard, "instrument_sensitivity")
+        has_volts = hasattr(trace.stats.standard, "volts_to_counts")
+        if has_sensitivity and has_volts:
+            instrument_sensitivity = (
+                trace.stats.standard.instrument_sensitivity
+            )  # counts/m/s^2
+            volts_to_counts = trace.stats.standard.volts_to_counts  # counts/volts
+            sensor_sensitivity = (1 / volts_to_counts) * instrument_sensitivity * sp.g
+            self.header[6][5] = sensor_sensitivity  # volts/g
         if volume == Volume.PROCESSED:
             lowpass_info = trace.getProvenance("lowpass_filter")[0]
             highpass_info = trace.getProvenance("highpass_filter")[0]
@@ -562,7 +527,8 @@ class FloatHeader(object):
         maxidx = np.where(trace.data == trace.max())[0][0]
         maxtime = trace.stats.delta * maxidx  # seconds since rec start
         self.header[10][4] = maxtime
-        self.header[10][5] = trace.data.mean()  # TODO: absolute value?
+
+        self.header[10][5] = trace.data.mean()
 
         # replace nan values with missing code
         self.header[np.isnan(self.header)] = MISSING_DATA_FLOAT
@@ -576,7 +542,10 @@ class FloatHeader(object):
 
 
 class DataBlock(object):
-    def __init__(self, trace, volume):
+    def __init__(self, trace, volume, eventid, gmprocess_version):
+        datadir = pkg_resources.resource_filename("gmprocess", "data")
+        excelfile = pathlib.Path(datadir) / "cosmos_table4.xls"
+        table4 = Table4(excelfile)
         self.volume = volume
         self.trace = trace
         quantity = "velocity"
@@ -586,18 +555,50 @@ class DataBlock(object):
         itime = int(trace.stats.endtime - trace.stats.starttime)  # duration secs
         units = UNITS[trace.stats.standard.units_type]
         ffmt = cfmt_to_ffmt(DATA_FMT, NUM_DATA_COLS)
+        # fill in comment fields that we use for overflow information
+        self.comment_lines = []
+        instrument = trace.stats.standard.instrument.replace("None", "").strip()
+        self.write_comment("Sensor", instrument, "standard")
+        network = trace.stats.network
+        station = trace.stats.station
+        channel = trace.stats.channel
+        location = trace.stats.location
+        event_network = table4.get_matching_network(eventid)
+        eventcode = eventid.lower().replace(event_network, "")
+        record_id = (
+            f"{event_network.upper()}.{eventcode}.{network}."
+            f"{station}.{channel}.{location}"
+        )
+        self.write_comment("RcrdId", record_id, "standard")
+        scnl = f"{station}.{channel}.{network}.{location}"
+        self.write_comment("SCNL", scnl, "standard")
+        pstr = f"Automatically processed using gmprocess version {gmprocess_version}"
+        self.write_comment("PROCESS", pstr, "non-standard")
         # fill in data for float header
         self.start_lines = []
-        self.start_lines.append('0 Comment line(s) follow, each starting with a "|":')
-        self.start_lines.append(
-            f"{npts} {quantity} pts, approx {itime} secs, "
-            f"units={units},Format=({ffmt})"
+        ncomments = len(self.comment_lines)
+        self.header_line1 = (
+            f'{ncomments} Comment line(s) follow, each starting with a "|":'
         )
+        self.header_line2 = (
+            f"{npts} {quantity} pts, approx {itime} secs, units={units},Format=({ffmt})"
+        )
+
+    def write_comment(self, key, value, comment_type):
+        if comment_type == "standard":
+            comment = f"| {key}: {value}"
+        else:
+            comment = f"|<{key}>{value}"
+        comment += (80 - len(comment)) * " "  # pad to 80 characters
+        self.comment_lines.append(comment)
+        return
 
     def write(self, cosmos_file):
         # write out data for float header to cosmos_file object
-        for line in self.start_lines:
+        cosmos_file.write(self.header_line1 + "\n")
+        for line in self.comment_lines:
             cosmos_file.write(line + "\n")
+        cosmos_file.write(self.header_line2 + "\n")
         fmt = [DATA_FMT] * NUM_DATA_COLS
         data = self.trace.data
         if self.volume == Volume.CONVERTED:
@@ -634,23 +635,43 @@ class CosmosWriter(object):
         nstreams = 0
         ntraces = 0
         files = []
+        t_text = []
+        t_int = []
+        t_float = []
+        t_data = []
+        t_write = []
         for eventid in self._workspace.getEventIds():
             nevents += 1
             scalar_event = self._workspace.getEvent(eventid)
             gmprocess_version = self._workspace.getGmprocessVersion()
-            for stream in self._workspace.getStreams(eventid, labels=[self._label]):
+            # remove "dirty" stuff from gmprocess version
+            idx = gmprocess_version.find(".dev")
+            gmprocess_version = gmprocess_version[0:idx]
+            ds = self._workspace.dataset
+            station_list = ds.waveforms.list()
+            for station_id in station_list:
+                stream = self._workspace.getStreams(
+                    eventid, stations=[station_id], labels=[self._label]
+                )[0]
                 if not stream.passed:
                     continue
-                print(f"Writing stream {stream.id}...")
+                logging.debug(f"Writing stream {stream.id}...")
                 nstreams += 1
                 for trace in stream:
-                    ntraces += 1
                     net = trace.stats.network
                     sta = trace.stats.station
                     cha = trace.stats.channel
                     loc = trace.stats.location
+                    if trace.stats.standard.units_type != "acc":
+                        msg = (
+                            "Only supporting acceleration data at this "
+                            f"time. Skipping channel {cha}."
+                        )
+                        logging.debug(msg)
+                        continue
+                    ntraces += 1
                     stime = trace.stats.starttime.strftime("%Y%m%d%H%M%S")
-                    # TODO make extension match label
+
                     extension = "V0"
                     if self._volume == Volume.CONVERTED:
                         extension = "V1"
@@ -660,18 +681,49 @@ class CosmosWriter(object):
                     cosmos_filename = self._cosmos_directory / fname
                     files.append(cosmos_filename)
                     with open(cosmos_filename, "wt") as cosmos_file:
+                        logging.debug(f"Getting text header for {trace.id}")
+                        t1 = time.time()
                         text_header = TextHeader(
                             trace, scalar_event, stream, self._volume, gmprocess_version
                         )
+                        t2 = time.time()
+                        t_text.append(t2 - t1)
+                        t1 = time.time()
+                        logging.debug(f"Getting int header for {trace.id}")
                         int_header = IntHeader(
                             trace, scalar_event, stream, self._volume, gmprocess_version
                         )
+                        t2 = time.time()
+                        t_int.append(t2 - t1)
+                        logging.debug(f"Getting float header for {trace.id}")
+                        t1 = time.time()
                         float_header = FloatHeader(trace, scalar_event, self._volume)
+                        t2 = time.time()
+                        t_float.append(t2 - t1)
                         text_header.write(cosmos_file)
                         int_header.write(cosmos_file)
                         float_header.write(cosmos_file)
-                        data_block = DataBlock(trace, self._volume)
+                        logging.debug(f"Getting data block for {trace.id}")
+                        t1 = time.time()
+                        data_block = DataBlock(
+                            trace, self._volume, eventid, gmprocess_version
+                        )
+                        t2 = time.time()
+                        t_data.append(t2 - t1)
+                        t1 = time.time()
                         data_block.write(cosmos_file)
+                        t2 = time.time()
+                        t_write.append(t2 - t1)
+        text_av = sum(t_text) / ntraces
+        int_av = sum(t_int) / ntraces
+        float_av = sum(t_float) / ntraces
+        data_av = sum(t_data) / ntraces
+        write_av = sum(t_write) / ntraces
+        logging.debug(f"Text header mean: {text_av}")
+        logging.debug(f"Int header mean: {int_av}")
+        logging.debug(f"Float header mean: {float_av}")
+        logging.debug(f"Data block mean: {data_av}")
+        logging.debug(f"Data write mean: {write_av}")
         return (files, nevents, nstreams, ntraces)
 
     def __del__(self):

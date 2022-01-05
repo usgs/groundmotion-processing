@@ -355,9 +355,10 @@ def _read_header(
     standard["corner_frequency"] = np.nan
     standard["source_format"] = "geonet"
 
-    # this field can be used for instrument correction
+    # these fields can be used for instrument correction
     # when data is in counts
     standard["instrument_sensitivity"] = np.nan
+    standard["volts_to_counts"] = np.nan
 
     # get format specific metadata
     format_specific["sensor_bit_resolution"] = resolution

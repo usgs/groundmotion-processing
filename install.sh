@@ -161,9 +161,9 @@ fi
 
 # This package
 echo "Installing ${VENV}..."
-
-# pip install --no-deps --no-binary :all: -e .
-pip install --no-deps -e .
+# make sure the C code gets re-built in case numpy changed
+find . -name '*.c' -exec touch {} \;
+pip install -v -v -v -e .
 
 # if pip install fails, bow out gracefully
 if [ $? -ne 0 ];then

@@ -190,9 +190,10 @@ def read_knet(filename, config=None, **kwargs):
     head, tail = os.path.split(filename)
     standard["source_file"] = tail or os.path.basename(head)
 
-    # this field can be used for instrument correction
+    # these fields can be used for instrument correction
     # when data is in counts
     standard["instrument_sensitivity"] = np.nan
+    standard["volts_to_counts"] = np.nan
 
     hdr["coordinates"] = coordinates
     hdr["standard"] = standard

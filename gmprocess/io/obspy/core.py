@@ -10,6 +10,7 @@ import re
 # third party
 from obspy.core.stream import read
 from obspy import read_inventory
+import numpy as np
 
 # local imports
 from gmprocess.core.stationtrace import StationTrace
@@ -230,6 +231,7 @@ def read_obspy(filename, config=None, **kwargs):
                     trace.stats.standard.structure_type = sdict["description"]
         head, tail = os.path.split(filename)
         trace.stats["standard"]["source_file"] = tail or os.path.basename(head)
+
         traces.append(trace)
     if no_match is True:
         stream = StationStream(traces=traces)

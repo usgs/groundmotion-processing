@@ -137,6 +137,7 @@ def read_esm(filename, config=None, **kwargs):
     standard["units"] = "cm/s^2"
     standard["units_type"] = "acc"
     standard["instrument_sensitivity"] = np.nan
+    standard["volts_to_counts"] = np.nan
     standard["corner_frequency"] = np.nan
 
     coordinates["latitude"] = float(header["STATION_LATITUDE_DEGREE"])
