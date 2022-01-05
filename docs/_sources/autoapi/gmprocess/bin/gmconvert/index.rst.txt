@@ -30,8 +30,38 @@ Attributes
 
 .. autoapisummary::
 
+   gmprocess.bin.gmconvert.log
+   gmprocess.bin.gmconvert.argmod
+   gmprocess.bin.gmconvert.streamcollection
+   gmprocess.bin.gmconvert.readmod
+   gmprocess.bin.gmconvert.read_directory
    gmprocess.bin.gmconvert.FORMATS
 
+
+.. py:data:: log
+   
+
+   
+
+.. py:data:: argmod
+   
+
+   
+
+.. py:data:: streamcollection
+   
+
+   
+
+.. py:data:: readmod
+   
+
+   
+
+.. py:data:: read_directory
+   
+
+   
 
 .. py:class:: CustomFormatter(prog, indent_increment=2, max_help_position=24, width=None)
 

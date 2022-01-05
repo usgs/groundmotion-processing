@@ -26,9 +26,39 @@ Attributes
 
 .. autoapisummary::
 
+   gmprocess.bin.gminfo.pd
+   gmprocess.bin.gminfo.readmod
+   gmprocess.bin.gminfo.argmod
+   gmprocess.bin.gminfo.stationtrace
+   gmprocess.bin.gminfo.confmod
    gmprocess.bin.gminfo.COLUMNS
    gmprocess.bin.gminfo.ERROR_COLUMNS
 
+
+.. py:data:: pd
+   
+
+   
+
+.. py:data:: readmod
+   
+
+   
+
+.. py:data:: argmod
+   
+
+   
+
+.. py:data:: stationtrace
+   
+
+   
+
+.. py:data:: confmod
+   
+
+   
 
 .. py:data:: COLUMNS
    :annotation: = ['Filename', 'Format', 'Process Level', 'Start Time', 'End Time', 'Duration (s)', 'Network',...

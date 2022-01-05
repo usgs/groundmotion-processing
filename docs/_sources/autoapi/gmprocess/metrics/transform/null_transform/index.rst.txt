@@ -21,7 +21,7 @@ Classes
 
    Bases: :py:obj:`gmprocess.metrics.transform.transform.Transform`
 
-   "Class for null transform calculation. This perfoms no action
+   Class for null transform calculation. This perfoms no action
    other than returning the input transform_data.
 
    .. py:method:: get_transform_data(self)

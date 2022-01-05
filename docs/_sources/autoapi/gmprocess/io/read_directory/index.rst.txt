@@ -33,7 +33,7 @@ Attributes
 
 
 .. py:data:: EXT_IGNORE
-   :annotation: = ['.gif', '.csv', '.dis', '.abc', '.zip', '.rs2', '.fs1']
+   :annotation: = ['.gif', '.csv', '.dis', '.abc', '.zip', '.rs2', '.fs1', '.xml']
 
    
 

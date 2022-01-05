@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.core.streamcollection - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
+    <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
+        <title>gmprocess.core.streamcollection - gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -208,7 +208,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmconvert/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmconvert</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gminfo/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gminfo</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmrecords/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmrecords</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmsetup/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmsetup</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmworkspace/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmworkspace</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/list_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.list_metrics</span></code></a></li>
 </ul>
@@ -559,6 +558,8 @@
             <span class="k">if</span> <span class="n">drop_non_free</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">free_field</span><span class="p">:</span>
                     <span class="n">newstreams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Omitting station trace </span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> from stream collection because it is not free field."</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">newstreams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 
@@ -718,7 +719,7 @@
                                 <span class="n">instrument</span><span class="o">=</span><span class="n">tf</span><span class="p">,</span>
                             <span class="p">):</span>
                                 <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-                                    <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"Colocated with </span><span class="si">%s</span><span class="s2"> instrument."</span> <span class="o">%</span> <span class="n">keep</span><span class="p">)</span>
+                                    <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Colocated with </span><span class="si">{</span><span class="n">keep</span><span class="si">}</span><span class="s2"> instrument."</span><span class="p">)</span>
 
                         <span class="k">break</span>
                 <span class="k">if</span> <span class="n">no_match</span><span class="p">:</span>
@@ -872,9 +873,9 @@
         <span class="sd">"""String summary of the StreamCollection."""</span>
         <span class="n">summary</span> <span class="o">=</span> <span class="s2">""</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">streams</span><span class="p">)</span>
-        <span class="n">summary</span> <span class="o">+=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2"> StationStreams(s) in StreamCollection:</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="n">n</span>
-        <span class="n">summary</span> <span class="o">+=</span> <span class="s2">"    </span><span class="si">%s</span><span class="s2"> StationStreams(s) passed checks.</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_passed</span>
-        <span class="n">summary</span> <span class="o">+=</span> <span class="s2">"    </span><span class="si">%s</span><span class="s2"> StationStreams(s) failed checks.</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_failed</span>
+        <span class="n">summary</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> StationStreams(s) in StreamCollection:</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="n">summary</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"    </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_passed</span><span class="si">}</span><span class="s2"> StationStreams(s) passed checks.</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="n">summary</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"    </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_failed</span><span class="si">}</span><span class="s2"> StationStreams(s) failed checks.</span><span class="se">\n</span><span class="s2">"</span>
         <span class="k">return</span> <span class="n">summary</span></div>
 
 <div class="viewcode-block" id="StreamCollection.describe"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/streamcollection/index.html#gmprocess.core.streamcollection.StreamCollection.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.bin.gminfo - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
+    <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
+        <title>gmprocess.bin.gminfo - gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -208,7 +208,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmconvert/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmconvert</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gminfo/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gminfo</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmrecords/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmrecords</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmsetup/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmsetup</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmworkspace/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmworkspace</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/list_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.list_metrics</span></code></a></li>
 </ul>
@@ -467,14 +466,17 @@
 <span class="kn">import</span> <span class="nn">textwrap</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
+<span class="kn">from</span> <span class="nn">gmprocess.subcommands.lazy_loader</span> <span class="kn">import</span> <span class="n">LazyLoader</span>
+
 <span class="c1"># third party imports</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">pd</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"pd"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"pandas"</span><span class="p">)</span>
 
 <span class="c1"># local imports</span>
-<span class="kn">from</span> <span class="nn">gmprocess.io.read</span> <span class="kn">import</span> <span class="n">_get_format</span><span class="p">,</span> <span class="n">read_data</span>
-<span class="kn">from</span> <span class="nn">gmprocess.utils.args</span> <span class="kn">import</span> <span class="n">add_shared_args</span>
-<span class="kn">from</span> <span class="nn">gmprocess.core.stationtrace</span> <span class="kn">import</span> <span class="n">REV_PROCESS_LEVELS</span>
-<span class="kn">from</span> <span class="nn">gmprocess.utils.config</span> <span class="kn">import</span> <span class="n">get_config</span>
+<span class="n">readmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"readmod"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.io.read"</span><span class="p">)</span>
+<span class="n">argmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"argmod"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.args"</span><span class="p">)</span>
+<span class="n">stationtrace</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"stationtrace"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.core.stationtrace"</span><span class="p">)</span>
+<span class="n">confmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"confmod"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.config"</span><span class="p">)</span>
+
 
 <span class="n">COLUMNS</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">"Filename"</span><span class="p">,</span>
@@ -525,10 +527,10 @@
     <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
         <span class="n">fpath</span><span class="p">,</span> <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">fpath</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">folders</span><span class="p">:</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"Parsing files from subfolder </span><span class="si">%s</span><span class="s2">...</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="n">fpath</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Parsing files from subfolder </span><span class="si">{</span><span class="n">fpath</span><span class="si">}</span><span class="s2">...</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
             <span class="n">folders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fpath</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">streams</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">streams</span> <span class="o">=</span> <span class="n">readmod</span><span class="o">.</span><span class="n">read_data</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">:</span>
                 <span class="n">tdf</span> <span class="o">=</span> <span class="n">get_dataframe</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">stream</span><span class="p">)</span>
                 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="p">,</span> <span class="n">tdf</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -564,12 +566,12 @@
 
 
 <div class="viewcode-block" id="render_verbose"><a class="viewcode-back" href="../../../autoapi/gmprocess/bin/gminfo/index.html#gmprocess.bin.gminfo.render_verbose">[docs]</a><span class="k">def</span> <span class="nf">render_verbose</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
-    <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">confmod</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
     <span class="n">errors</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">ERROR_COLUMNS</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">fmt</span> <span class="o">=</span> <span class="n">_get_format</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
-            <span class="n">stream</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">config</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="n">readmod</span><span class="o">.</span><span class="n">_get_format</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+            <span class="n">stream</span> <span class="o">=</span> <span class="n">readmod</span><span class="o">.</span><span class="n">read_data</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">config</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">stats</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span>
             <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">stats</span><span class="p">[</span><span class="s2">"coordinates"</span><span class="p">][</span><span class="s2">"latitude"</span><span class="p">],</span>
@@ -648,7 +650,7 @@
     <span class="n">phelp</span> <span class="o">=</span> <span class="s2">"Print error log containing files that could not be parsed."</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--quiet-errors"</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">"store_true"</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="n">phelp</span><span class="p">)</span>
     <span class="c1"># Shared arguments</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">add_shared_args</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argmod</span><span class="o">.</span><span class="n">add_shared_args</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">concise</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">save</span><span class="p">:</span>
@@ -679,8 +681,8 @@
             <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">save</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">concise</span><span class="p">:</span>
                 <span class="n">fbase</span><span class="p">,</span> <span class="n">fext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">save</span><span class="p">)</span>
                 <span class="n">errfile</span> <span class="o">=</span> <span class="n">fbase</span> <span class="o">+</span> <span class="s2">"_errors"</span> <span class="o">+</span> <span class="n">fext</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">"Catalog written to </span><span class="si">%s</span><span class="s2">."</span> <span class="o">%</span> <span class="n">args</span><span class="o">.</span><span class="n">save</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">"Errors written to </span><span class="si">%s</span><span class="s2">."</span> <span class="o">%</span> <span class="n">errfile</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Catalog written to </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">save</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Errors written to </span><span class="si">{</span><span class="n">errfile</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">fext</span> <span class="o">==</span> <span class="s2">".xlsx"</span><span class="p">:</span>
                     <span class="n">df</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">save</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
                     <span class="n">errors</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">errfile</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>

@@ -5,8 +5,8 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Linear Mixed Effects Regressions" href="lme.html" /><link rel="prev" title="Command Line Interface" href="cli.html" />
 
-    <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>Response Spectra Calculation and Comparison - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
+    <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
+        <title>Response Spectra Calculation and Comparison - gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -209,7 +209,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/bin/gmconvert/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmconvert</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/bin/gminfo/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gminfo</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/bin/gmrecords/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmrecords</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/bin/gmsetup/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmsetup</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/bin/gmworkspace/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmworkspace</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/bin/list_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.list_metrics</span></code></a></li>
 </ul>
@@ -554,42 +553,42 @@ metrics, including the response spectra</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3 StationStreams(s) in StreamCollection:
-  3 StationTrace(s) in StationStream (passed):
-    CI.CLC.--.HN2 | 2019-07-06T03:19:52.680000Z - 2019-07-06T03:20:33.980000Z | 100.0 Hz, 4131 samples (passed)
-    CI.CLC.--.HN1 | 2019-07-06T03:19:52.680000Z - 2019-07-06T03:20:33.980000Z | 100.0 Hz, 4131 samples (passed)
-    CI.CLC.--.HNZ | 2019-07-06T03:19:52.680000Z - 2019-07-06T03:20:33.980000Z | 100.0 Hz, 4131 samples (passed)
   3 StationTrace(s) in StationStream (failed):
-    CI.TOW2.--.HN2 | 2019-07-06T03:19:54.060000Z - 2019-07-06T03:20:43.600000Z | 100.0 Hz, 4955 samples (passed)
-    CI.TOW2.--.HN1 | 2019-07-06T03:19:54.060000Z - 2019-07-06T03:20:43.600000Z | 100.0 Hz, 4955 samples (passed)
-    CI.TOW2.--.HNZ | 2019-07-06T03:19:54.060000Z - 2019-07-06T03:20:43.600000Z | 100.0 Hz, 4955 samples (failed)
+    CI.CLC.--.HN2 | 2019-07-06T03:19:51.680000Z - 2019-07-06T03:20:52.210000Z | 100.0 Hz, 6054 samples (passed)
+    CI.CLC.--.HN1 | 2019-07-06T03:19:51.680000Z - 2019-07-06T03:20:52.210000Z | 100.0 Hz, 6054 samples (passed)
+    CI.CLC.--.HNZ | 2019-07-06T03:19:51.680000Z - 2019-07-06T03:20:52.210000Z | 100.0 Hz, 6054 samples (failed)
   3 StationTrace(s) in StationStream (passed):
-    CI.CCC.--.HN2 | 2019-07-06T03:19:57.140000Z - 2019-07-06T03:21:00.020000Z | 100.0 Hz, 6289 samples (passed)
-    CI.CCC.--.HN1 | 2019-07-06T03:19:57.140000Z - 2019-07-06T03:21:00.020000Z | 100.0 Hz, 6289 samples (passed)
-    CI.CCC.--.HNZ | 2019-07-06T03:19:57.140000Z - 2019-07-06T03:21:00.020000Z | 100.0 Hz, 6289 samples (passed)
+    CI.TOW2.--.HN2 | 2019-07-06T03:19:53.060000Z - 2019-07-06T03:21:05.850000Z | 100.0 Hz, 7280 samples (passed)
+    CI.TOW2.--.HN1 | 2019-07-06T03:19:53.060000Z - 2019-07-06T03:21:05.850000Z | 100.0 Hz, 7280 samples (passed)
+    CI.TOW2.--.HNZ | 2019-07-06T03:19:53.060000Z - 2019-07-06T03:21:05.850000Z | 100.0 Hz, 7280 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    CI.CCC.--.HN2 | 2019-07-06T03:19:56.140000Z - 2019-07-06T03:21:28.800000Z | 100.0 Hz, 9267 samples (passed)
+    CI.CCC.--.HN1 | 2019-07-06T03:19:56.140000Z - 2019-07-06T03:21:28.800000Z | 100.0 Hz, 9267 samples (passed)
+    CI.CCC.--.HNZ | 2019-07-06T03:19:56.140000Z - 2019-07-06T03:21:28.800000Z | 100.0 Hz, 9267 samples (passed)
 </pre></div>
 </div>
 </div>
 </div>
-<p>From the <code class="docutils literal notranslate"><span class="pre">describe</span></code> output, you can see that station CI.TOW2 failed the QA
+<p>From the <code class="docutils literal notranslate"><span class="pre">describe</span></code> output, you can see that station CI.CLC failed the QA
 checks that are applied during the <code class="docutils literal notranslate"><span class="pre">process_streams</span></code> command. You can also
 see that it is because of a failure on the Z component. To investigate what
 caused the failure, we can look at the <code class="docutils literal notranslate"><span class="pre">failure</span></code> trace parameter</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">psc</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s1">'failure'</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">psc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s1">'failure'</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{'module': 'check_tail', 'reason': 'Velocity ratio is greater than 0.25'}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{'module': 'check_tail', 'reason': 'Velocity ratio is greater than 0.3'}
 </pre></div>
 </div>
 </div>
 </div>
-<p>Note that the first index is to select the CI.TOW2 stream, and the second is to
-select the Z trace.</p>
+<p>Note that the first index is to select the CI.CLC stream, and the second is to
+select the Z component.</p>
 <p>The output shows that the trace failed in the <code class="docutils literal notranslate"><span class="pre">check_tail</span></code> module with the
-reason being that the tail velocity ratio is great than 0.25. This is a simple
+reason being that the tail velocity ratio is great than 0.3. This is a simple
 “sanity” check that is designed to avoid records with unphysical drifts.
 Although the record is probably still usable in this case, we will continue
 use the third stream (CI.CCC) for the rest of this tutorial.</p>
@@ -605,19 +604,19 @@ use the third stream (CI.CCC) for the rest of this tutorial.</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                               Result
 IMT             IMC                  
-DURATION5-75    H2           9.030000
-                H1           8.520000
+DURATION5-75    H2           9.010000
+                H1           8.610000
                 Z            9.610000
-DURATION5-95    H2          11.120000
-                H1          11.250000
+DURATION5-95    H2          11.390000
+                H1          11.280000
 ...                               ...
-SA(7.500)       Z            0.574455
-                ROTD(50.0)   4.028694
-SORTED_DURATION H2           5.570000
-                H1           5.850000
-                Z            6.580000
+SA(7.500)       Z            0.576301
+                ROTD(50.0)   4.024171
+SORTED_DURATION H2           5.600000
+                H1           5.890000
+                Z            6.560000
 
-[81 rows x 1 columns]
+[101 rows x 1 columns]
 </pre></div>
 </div>
 </div>

@@ -5,8 +5,8 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Initial Setup" href="initial_setup.html" /><link rel="prev" title="Getting Started" href="index.html" />
 
-    <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>Installation - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
+    <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
+        <title>Installation - gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -209,7 +209,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/bin/gmconvert/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmconvert</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/bin/gminfo/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gminfo</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/bin/gmrecords/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmrecords</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/bin/gmsetup/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmsetup</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/bin/gmworkspace/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmworkspace</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/bin/list_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.list_metrics</span></code></a></li>
 </ul>
@@ -503,8 +502,12 @@ from cython.</p></li>
 </div>
 <p>Then install the <code class="docutils literal notranslate"><span class="pre">gmprocess</span></code> virtual environment and all of the dependencies
 and activate the environment</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">--</span><span class="n">name</span> <span class="n">gmprocess</span>  <span class="n">python</span><span class="o">=</span><span class="mf">3.7</span> <span class="o">--</span><span class="n">file</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span> <span class="o">--</span><span class="n">strict</span><span class="o">-</span><span class="n">channel</span><span class="o">-</span><span class="n">priority</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="o">-</span><span class="n">y</span> <span class="o">-</span><span class="n">v</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">--</span><span class="n">name</span> <span class="n">gmprocess</span>  <span class="n">python</span><span class="o">=</span><span class="mf">3.8</span> <span class="o">--</span><span class="n">file</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span> <span class="o">--</span><span class="n">strict</span><span class="o">-</span><span class="n">channel</span><span class="o">-</span><span class="n">priority</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="o">-</span><span class="n">y</span> <span class="o">-</span><span class="n">v</span>
 <span class="n">call</span> <span class="n">activate</span> <span class="n">gmprocess</span>
+</pre></div>
+</div>
+<p>Also, we need to install OpenQuake via pip rather than conda:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">dependencies</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">gem</span><span class="o">/</span><span class="n">oq</span><span class="o">-</span><span class="n">engine</span><span class="o">/</span><span class="n">archive</span><span class="o">/</span><span class="n">engine</span><span class="o">-</span><span class="mf">3.12</span><span class="o">.</span><span class="n">zip</span>
 </pre></div>
 </div>
 <p>And install the gmprocess code in the <code class="docutils literal notranslate"><span class="pre">gmprocess</span></code> virtual environment</p>

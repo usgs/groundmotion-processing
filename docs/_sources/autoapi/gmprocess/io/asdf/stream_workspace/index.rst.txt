@@ -354,9 +354,8 @@ Attributes
       :param config: Dictionary of config options.
       :type config: dict
 
-      :returns:     A DataFrame containing the fit_spectra parameters on a trace-
-                    by-trace basis.
-      :rtype: pandas.DataFrame
+      :returns: tuple of pandas DataFrames, which consists of the SNR dataframe and its
+                associated readme.
 
 
    .. py:method:: __flatten_snr_dict(tr, periods)

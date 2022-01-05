@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.3.1, furo 2021.10.09"/>
-        <title>gmprocess.apps.gmrecords - gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</title>
+    <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
+        <title>gmprocess.apps.gmrecords - gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev156+g7b6aa8d.d20211214 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -208,7 +208,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmconvert/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmconvert</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gminfo/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gminfo</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmrecords/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmrecords</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmsetup/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmsetup</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/gmworkspace/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmworkspace</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/bin/list_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.list_metrics</span></code></a></li>
 </ul>
@@ -468,7 +467,8 @@
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">gmprocess.subcommands.lazy_loader</span> <span class="kn">import</span> <span class="n">LazyLoader</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">VERSION</span>
+<span class="kn">from</span> <span class="nn">..subcommands.lazy_loader</span> <span class="kn">import</span> <span class="n">LazyLoader</span>
 
 <span class="n">configobj</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"configobj"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"configobj"</span><span class="p">)</span>
 <span class="n">setuptools_scm</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"setuptools_scm"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"setuptools_scm"</span><span class="p">)</span>
@@ -479,11 +479,6 @@
 <span class="n">log_utils</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"log_utils"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.logging"</span><span class="p">)</span>
 <span class="n">projmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"projmod"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.projects"</span><span class="p">)</span>
 <span class="n">init</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"init"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.init"</span><span class="p">)</span>
-
-
-<span class="n">VERSION</span> <span class="o">=</span> <span class="n">setuptools_scm</span><span class="o">.</span><span class="n">get_version</span><span class="p">(</span>
-    <span class="n">root</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">),</span> <span class="n">relative_to</span><span class="o">=</span><span class="vm">__file__</span>
-<span class="p">)</span>
 
 
 <div class="viewcode-block" id="GMrecordsApp"><a class="viewcode-back" href="../../../autoapi/gmprocess/apps/gmrecords/index.html#gmprocess.apps.gmrecords.GMrecordsApp">[docs]</a><span class="k">class</span> <span class="nc">GMrecordsApp</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -534,12 +529,12 @@
         <span class="n">log_file</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">log</span><span class="p">:</span>
             <span class="n">log_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">"log.txt"</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"Logging output sent to: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">log_file</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Logging output sent to: </span><span class="si">{</span><span class="n">log_file</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
         <span class="n">log_utils</span><span class="o">.</span><span class="n">setup_logger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="n">log_file</span><span class="o">=</span><span class="n">log_file</span><span class="p">)</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Logging level includes INFO."</span><span class="p">)</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Logging level includes DEBUG."</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"PROJECTS_PATH: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">PROJECTS_PATH</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"PROJECTS_PATH: </span><span class="si">{</span><span class="n">PROJECTS_PATH</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 <div class="viewcode-block" id="GMrecordsApp.main"><a class="viewcode-back" href="../../../autoapi/gmprocess/apps/gmrecords/index.html#gmprocess.apps.gmrecords.GMrecordsApp.main">[docs]</a>    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">subcommand</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -601,7 +596,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span> <span class="o">=</span> <span class="n">const</span><span class="o">.</span><span class="n">PROJECTS_PATH_TEST</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">conf_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span><span class="p">,</span> <span class="s2">"config.yml"</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf_file</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"Config file does not exist: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf_file</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Config file does not exist: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">conf_file</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">"Exiting."</span><span class="p">)</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf_file</span><span class="p">)</span></div>
