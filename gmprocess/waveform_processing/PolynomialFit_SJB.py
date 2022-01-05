@@ -1,0 +1,213 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import numpy as np
+import logging
+from scipy import signal
+from gmprocess.utils.config import get_config
+from gmprocess.waveform_processing.integrate import get_disp
+from gmprocess.waveform_processing.filtering import (
+    lowpass_filter_trace,
+    highpass_filter_trace,
+)
+
+
+def PolynomialFit_SJB(
+    st, target=0.02, tol=0.001, polynomial_order=6.0, maxiter=30, maxfc=0.5, config=None
+):
+    """Search for highpass corner using Ridder's method such that
+        it satisfies the criterion that the ratio between the maximum of a third order polynomial
+        fit to the displacement time series and the maximum of the displacement
+        timeseries is a target % within a tolerance.
+
+    This algorithm searches between a low initial corner frequency a maximum fc.
+
+    Method developed originally by Scott Brandenberg
+
+    Args:
+        st (StationStream):
+            Stream of data.
+        target (float):
+            target percentage for ratio between max polynomial value and max displacement.
+        tol (float):
+            tolereance for matching the ratio target
+        polynomial_order (float):
+            order of polynomial to fit to displacement time series.
+        maxiter (float):
+            maximum number of allowed iterations in Ridder's method
+        maxfc (float):
+            Maximum allowable value of the highpass corner freq.
+        int_method (string):
+            method used to perform integration between acceleration, velocity, and dispacement. Options are "frequency_domain", "time_domain_zero_init" or "time_domain_zero_mean"
+
+    Returns:
+        StationStream.
+
+    """
+    config = get_config()
+    int_method = config["integration"]
+
+    for tr in st:
+        if not tr.hasParameter("corner_frequencies"):
+            tr.fail(
+                "Have not applied PolynomialFit_SJB method because "
+                "initial corner frequencies are not set."
+            )
+        else:
+            initial_corners = tr.getParameter("corner_frequencies")
+            f_hp = 0.0001  # GP: Want the initial bounds to encompass the solution
+
+            out = __ridder_log(tr, f_hp, target, tol, polynomial_order, maxiter, maxfc)
+
+            if out[0] == True:
+                initial_corners["highpass"] = out[1]
+                tr.setParameter("corner_frequencies", initial_corners)
+                logging.debug(
+                    "Ridder fchp passed to trace stats = %s with misfit %s",
+                    out[1],
+                    out[2],
+                )
+
+            else:
+                tr.fail(
+                    "Initial Ridder residuals were both positive, cannot find appropriate fchp below maxfc"
+                )
+
+    return st
+
+
+def __ridder_log(
+    tr,
+    f_hp,
+    target=0.02,
+    tol=0.001,
+    polynomial_order=6,
+    maxiter=30,
+    maxfc=0.5,
+    config=None,
+):
+
+    if config is None:
+        config = get_config()
+
+    int_config = config["integration"]
+
+    logging.debug("Ridder activated")
+    output = {}
+    acc = tr.copy()
+    acc.detrend("demean")
+
+    # apply window use Hann taper to be consistent
+    acc = acc.taper(max_percentage=0.05, type="hann", side="both")
+
+    time = np.linspace(0, acc.stats.delta * len(acc), len(acc))
+    Facc = np.fft.rfft(acc, n=len(acc))
+    freq = np.fft.rfftfreq(len(acc), acc.stats.delta)
+    fc0 = f_hp
+    Facc0 = Facc
+    disp0 = get_disp(acc, method=int_config["method"])
+    R0 = get_residual(time, disp0, target, polynomial_order)
+
+    fc2 = maxfc
+    Facc2 = filtered_Facc(Facc, freq, fc2, order=5)
+    acc2 = tr.copy()
+    acc2.data = np.fft.irfft(Facc2, len(acc))
+    disp2 = get_disp(acc2, method=int_config["method"])
+
+    R2 = get_residual(time, disp2, target, polynomial_order)
+    if (np.sign(R0) < 0) and (np.sign(R2) < 0):
+        # output = {'status': True, 'fc (Hz)': fc0, 'acc (g)': np.fft.irfft(Facc0), 'vel (m/s)': get_vel(freq, Facc0), 'disp (m)': get_disp(freq, Facc0)}
+        output = [True, fc0, np.abs(R0)]
+        return output
+    if (np.sign(R0) > 0) and (np.sign(R2) > 0):
+        output = [False]
+        return output
+
+    for i in np.arange(maxiter):
+        logging.debug("Ridder iteration = %s" % i)
+        fc1 = np.exp(0.5 * (np.log(fc0) + np.log(fc2)))
+        Facc1 = filtered_Facc(Facc, freq, fc1, order=5)
+        acc1 = acc.copy()
+        acc1.data = np.fft.irfft(Facc1, len(acc))
+        disp = get_disp(acc1, method=int_config["method"])
+        R1 = get_residual(time, disp, target, polynomial_order)
+        fc3 = np.exp(
+            np.log(fc1)
+            + (np.log(fc1) - np.log(fc0))
+            * np.sign(R0)
+            * R1
+            / (np.sqrt(R1 ** 2 - R0 * R2))
+        )
+        fc3 = np.min([maxfc, fc3])
+        Facc3 = filtered_Facc(Facc, freq, fc3, order=5)
+        acc3 = acc.copy()
+        acc3.data = np.fft.irfft(Facc3, len(acc))
+        disp = get_disp(acc3, method=int_config["method"])
+        R3 = get_residual(time, disp, target, polynomial_order)
+        if (np.abs(R3) <= tol) or (i == maxiter - 1):
+            output = [True, fc3, np.abs(R3)]
+            break
+        if R1 * R3 < 0:
+            fc0 = fc1
+            fc2 = fc3
+            R0 = R1
+            R2 = R3
+        elif np.sign(R2) != np.sign(R3):
+            fc0 = fc2
+            fc2 = fc3
+            R0 = R2
+            R2 = R3
+        else:
+            fc0 = fc0
+            fc2 = fc3
+            R0 = R0
+            R2 = R3
+    return output
+
+
+def MAX(vx):
+    return np.max([np.max(vx), -np.min(vx)])
+
+
+def filtered_Facc(Facc, freq, fc, order):
+    filtered_Facc = []
+    for Fa, f in zip(Facc, freq):
+        if f == 0:
+            filtered_Facc.append(0.0)
+        else:
+            filtered_Facc.append(Fa / (np.sqrt(1.0 + (fc / f) ** (2.0 * order))))
+    return filtered_Facc
+
+
+# def get_disp_frequency_domain(freq, Facc, N):
+#     Fdisp = []
+#     for facc, f in zip(Facc, freq):
+#         if f == 0:
+#             Fdisp.append(0.0)
+#         else:
+#             Fdisp.append(
+#                 (facc / 100) / (2.0j * np.pi * f) ** 2
+#             )  # convert from cm/s^2 to m/s^2
+#     disp = np.fft.irfft(Fdisp, n=N) * 100
+#     return disp
+
+
+# def get_disp_time_domain_zero_init(Facc, delta, N):
+#     acc_time = np.fft.irfft(Facc, n=N)
+#     disp = cumtrapz(cumtrapz(acc_time, dx=delta, initial=0), dx=delta, initial=0)
+#     return disp
+
+# def get_disp_time_domain_zero_mean(Facc, delta, N):
+#     acc_time = np.fft.irfft(Facc, n=N)
+#     vel = cumtrapz(acc_time, dx=delta, initial=0)
+#     vel -= np.mean(vel)
+#     disp = cumtrapz(vel,dx = delta, initial = 0)
+#     return disp
+
+
+def get_residual(time, disp, target, polynomial_order):
+    coef = np.polyfit(time[0 : len(disp)], disp, polynomial_order)
+    fit = []
+    for t in time:
+        fit.append(np.polyval(coef, t))
+    return MAX(fit) / MAX(disp) - target

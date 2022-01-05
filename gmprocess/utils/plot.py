@@ -21,6 +21,9 @@ from gmprocess.metrics.reduction.arias import Arias
 from gmprocess.waveform_processing import spectrum
 from gmprocess.metrics.oscillators import get_spectral
 from gmprocess.utils.constants import UNIT_CONVERSIONS
+from gmprocess.utils.config import get_config
+from gmprocess.waveform_processing.integrate import get_disp
+from gmprocess.waveform_processing.integrate import get_vel
 
 MIN_MAG = 4.0
 MAX_MAG = 7.0
@@ -577,6 +580,8 @@ def summary_plots(st, directory, origin):
     """
     mpl.rcParams["font.size"] = 8
 
+    config = get_config()
+
     # Check if directory exists, and if not, create it.
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -607,12 +612,14 @@ def summary_plots(st, directory, origin):
 
     # Compute velocity
     st_vel = st.copy()
-    st_vel = st_vel.integrate()
+    for tr in st_vel:
+        tr.data = get_vel(tr,method = config["integration"]["method"])
 
     # Compute displacement
-    st_dis = st_vel.copy()
-    st_dis = st_dis.integrate()
-
+    st_dis = st.copy()
+    for tr in st_dis:
+        tr.data = get_disp(tr,method = config["integration"]["method"])
+    
     # process channels in preferred sort order (i.e., HN1, HN2, HNZ)
     channels = [tr.stats.channel for tr in st]
     if len(channels) < 3:
