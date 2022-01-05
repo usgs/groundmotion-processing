@@ -10,7 +10,8 @@ import inspect
 import argparse
 import logging
 
-from gmprocess.subcommands.lazy_loader import LazyLoader
+from .. import __version__ as VERSION
+from ..subcommands.lazy_loader import LazyLoader
 
 configobj = LazyLoader("configobj", globals(), "configobj")
 setuptools_scm = LazyLoader("setuptools_scm", globals(), "setuptools_scm")
@@ -21,11 +22,6 @@ const = LazyLoader("const", globals(), "gmprocess.utils.constants")
 log_utils = LazyLoader("log_utils", globals(), "gmprocess.utils.logging")
 projmod = LazyLoader("projmod", globals(), "gmprocess.subcommands.projects")
 init = LazyLoader("init", globals(), "gmprocess.subcommands.init")
-
-
-VERSION = setuptools_scm.get_version(
-    root=os.path.join(os.pardir, os.pardir), relative_to=__file__
-)
 
 
 class GMrecordsApp(object):
