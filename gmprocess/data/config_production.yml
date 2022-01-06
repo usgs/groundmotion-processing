@@ -5,8 +5,8 @@ fetchers:
         # NIED requires a username and a password, obtain these by
         # visiting this page:
         # https://hinetwww11.bosai.go.jp/nied/registration/
-        user: gparker
-        password: seismicdata
+        user: USERNAME
+        password: PASSWORD
         # define the distance search radius (km)
         radius: 100.0
         # define the time search threshold (sec)
@@ -22,7 +22,7 @@ fetchers:
         # CESMD requires an email, register yours by
         # visiting this page:
         # https://strongmotioncenter.org/cgi-bin/CESMD/register.pl
-        email: gparker@usgs.gov
+        email: EMAIL
         process_type: raw
         station_type: Ground
         # define the distance search radius (km)
