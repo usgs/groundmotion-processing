@@ -29,7 +29,7 @@ from gmprocess.utils.models import load_model
 M_TO_KM = 1.0 / 1000
 
 
-def cut(st, sec_before_split=None):
+def cut(st, sec_before_split=None, config=None):
     """
     Cut/trim the record.
 
@@ -50,6 +50,8 @@ def cut(st, sec_before_split=None):
         sec_before_split (float):
             Seconds to trim before split. If None, then the beginning of the
             record will be unchanged.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         stream: cut streams.

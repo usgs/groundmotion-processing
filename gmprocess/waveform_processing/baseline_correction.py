@@ -8,7 +8,7 @@ from gmprocess.waveform_processing.integrate import get_disp
 from gmprocess.utils.config import get_config
 
 
-def correct_baseline(trace):
+def correct_baseline(trace, config=None):
     """
     Performs a baseline correction following the method of Ancheta
     et al. (2013). This removes low-frequency, non-physical trends
@@ -17,11 +17,14 @@ def correct_baseline(trace):
     Args:
         trace (obspy.core.trace.Trace):
             Trace of strong motion data.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         trace: Baseline-corrected trace.
     """
-    config = get_config()
+    if config is None:
+        config = get_config()
 
     # Integrate twice to get the displacement time series
     disp_data = get_disp(trace, method=config["integration"]["method"])

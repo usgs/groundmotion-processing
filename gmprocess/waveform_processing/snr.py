@@ -97,7 +97,7 @@ def compute_snr_trace(tr, bandwidth, mag=None, check=None):
     return tr
 
 
-def compute_snr(st, bandwidth, mag=None, check=None):
+def compute_snr(st, bandwidth, mag=None, check=None, config=None):
     """Compute SNR dictionaries for a stream, looping over all traces.
 
     Args:
@@ -107,6 +107,8 @@ def compute_snr(st, bandwidth, mag=None, check=None):
            Konno-Omachi smoothing bandwidth parameter.
         check (dict):
             If None, no checks performed.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         StationStream with SNR dictionaries added as trace parameters.

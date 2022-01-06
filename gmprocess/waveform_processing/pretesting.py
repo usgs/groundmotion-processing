@@ -8,7 +8,7 @@ Pretesting methods.
 from obspy.signal.trigger import classic_sta_lta
 
 
-def check_free_field(st, reject_non_free_field=False):
+def check_free_field(st, reject_non_free_field=False, config=None):
     """
     Checks free field status of stream.
 
@@ -17,6 +17,8 @@ def check_free_field(st, reject_non_free_field=False):
             Stream of data.
         reject_non_free_field (bool):
             Should non free-field stations be failed?
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         Stream that has been checked for free field status.
@@ -31,7 +33,7 @@ def check_free_field(st, reject_non_free_field=False):
     return st
 
 
-def check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0):
+def check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0, config=None):
     """
     Checks that the maximum STA/LTA ratio for AT LEAST ONE of the stream's
     traces is above a certain threshold.
@@ -45,6 +47,8 @@ def check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0):
             Length of time window for LTA (seconds).
         threshold (float):
             Required maximum STA/LTA ratio to pass the test.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         Stream that has been checked for sta/lta requirements.
@@ -70,7 +74,7 @@ def check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0):
     return st
 
 
-def check_max_amplitude(st, min=5, max=2e6):
+def check_max_amplitude(st, min=5, max=2e6, config=None):
     """
     Checks that the maximum amplitude of the traces in the stream are ALL
     within a defined range. Only applied to counts/raw data.
@@ -82,6 +86,8 @@ def check_max_amplitude(st, min=5, max=2e6):
             Minimum amplitude for the acceptable range. Default is 5.
         max (float):
             Maximum amplitude for the acceptable range. Default is 2e6.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         Stream that has been checked for maximum amplitude criteria.

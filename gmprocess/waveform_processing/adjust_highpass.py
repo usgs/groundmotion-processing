@@ -4,7 +4,6 @@
 import numpy as np
 
 from gmprocess.utils.config import get_config
-from scipy.optimize import curve_fit
 from gmprocess.waveform_processing.filtering import (
     lowpass_filter_trace,
     highpass_filter_trace,
@@ -19,6 +18,7 @@ def adjust_highpass_corner(
     maximum_freq=0.5,
     max_final_displacement=0.2,
     max_displacment_ratio=0.2,
+    config=None,
 ):
     """Adjust high pass corner frequency.
 
@@ -47,6 +47,8 @@ def adjust_highpass_corner(
             Maximum allowable value (in cm) for final displacement.
         max_displacment_ratio (float):
             Maximum allowable ratio of final displacement to max displacment.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         StationStream.

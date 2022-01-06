@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-import logging
 
 from scipy.integrate import cumtrapz
 from gmprocess.utils.config import get_config

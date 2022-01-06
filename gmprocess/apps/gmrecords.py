@@ -142,7 +142,8 @@ class GMrecordsApp(object):
             print(f"Config file does not exist: {self.conf_file}")
             print("Exiting.")
             sys.exit(1)
-        self.conf = config.get_config(self.conf_file)
+        if "projects" not in self.args.func.command_name:
+            self.conf = config.get_config(self.conf_file)
 
     def _initial_setup(self):
         """
