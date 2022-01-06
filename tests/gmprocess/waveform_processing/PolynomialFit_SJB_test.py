@@ -20,6 +20,12 @@ def test_PolynomialFit_SJB():
     output_fchp = []
 
     for st in sc:
+        for tr in st:
+            tr.setParameter(
+                "corner_frequencies",
+                {"type": "constant", "highpass": np.NAN, "lowpass": np.NaN},
+            )
+
         tmp_st = PolynomialFit_SJB(st)
         for tr in tmp_st:
             initial_corners = tr.getParameter("corner_frequencies")
@@ -27,15 +33,15 @@ def test_PolynomialFit_SJB():
 
     target_fchp = np.array(
         [
-            0.36988959067393229,
-            -0.73299742723316885,
-            0.1137765255648102,
-            -0.55555187352854052,
-            2.1831940048288971,
-            -1.7749477126649993,
-            -0.042977720010361237,
-            -0.017518138494959104,
-            -0.018422681637998786,
+            0.044132073708851055,
+            0.044316733610217741,
+            0.016886763544486788,
+            0.068504032933123862,
+            0.088654805911294959,
+            0.051921625174727967,
+            0.064174286727038274,
+            0.077823186442056894,
+            0.037224807399398735,
         ]
     )
 
@@ -44,4 +50,4 @@ def test_PolynomialFit_SJB():
 
 if __name__ == "__main__":
     os.environ["CALLED_FROM_PYTEST"] = "True"
-    test_correct_baseline()
+    test_PolynomialFit_SJB()
