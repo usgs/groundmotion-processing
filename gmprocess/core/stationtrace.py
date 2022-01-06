@@ -364,6 +364,30 @@ class StationTrace(Trace):
         if len(error_msg.strip()):
             raise KeyError(error_msg)
 
+    def integrate(self, frequency=False):
+        """***
+        
+        Returns:
+        ***
+        """
+        if frequency: #if integrating in frequency domain
+            N = len(self.data)
+            Facc = np.fft.rfft(self.data, n=N)
+            freq = np.fft.rfftfreq(N, self.stats.delta)
+            F = []
+            for facc, f in zip(Facc, freq):
+                if f == 0:
+                    F.append(0.0)
+                else:
+                    F.append(
+                        (facc / 100) / (2.0j * np.pi * f)
+                )       #convert from cm/s^2 to m/s^2
+            integral_result = np.fft.irfft(F, n=N) * 100 #convert back to cm
+            return integral_result
+        else: #if integrating in time domain
+            integral_result = self.super().integrate()
+            return integral_result
+
     def getProvenanceKeys(self):
         """Get a list of all available provenance keys.
 
