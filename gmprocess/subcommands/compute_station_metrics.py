@@ -52,16 +52,6 @@ class ComputeStationMetricsModule(base.SubcommandModule):
         self._check_arguments()
         self._get_events()
 
-        vs30_grids = None
-        if gmrecords.conf is not None:
-            if "vs30" in gmrecords.conf["metrics"]:
-                vs30_grids = gmrecords.conf["metrics"]["vs30"]
-                for vs30_name in vs30_grids:
-                    vs30_grids[vs30_name]["grid_object"] = gmt.GMTGrid.load(
-                        vs30_grids[vs30_name]["file"]
-                    )
-        self.vs30_grids = vs30_grids
-
         for event in self.events:
             self._event_station_metrics(event)
 
@@ -85,6 +75,18 @@ class ComputeStationMetricsModule(base.SubcommandModule):
         self.workspace = ws.StreamWorkspace.open(workname)
         ds = self.workspace.dataset
         self._get_labels()
+
+        config = self.workspace.config
+        if not hasattr(self, "vs30_grids"):
+            vs30_grids = None
+            if config is not None:
+                if "vs30" in config["metrics"]:
+                    vs30_grids = config["metrics"]["vs30"]
+                    for vs30_name in vs30_grids:
+                        vs30_grids[vs30_name]["grid_object"] = gmt.GMTGrid.load(
+                            vs30_grids[vs30_name]["file"]
+                        )
+            self.vs30_grids = vs30_grids
 
         station_list = ds.waveforms.list()
         if not len(station_list):
@@ -122,7 +124,7 @@ class ComputeStationMetricsModule(base.SubcommandModule):
                 event.id,
                 stations=[station_id],
                 labels=[self.gmrecords.args.label],
-                config=self.gmrecords.conf,
+                config=config,
             )
             if not len(streams):
                 raise ValueError("No matching streams found.")
@@ -200,7 +202,7 @@ class ComputeStationMetricsModule(base.SubcommandModule):
                 event.id,
                 stations=[station_id],
                 labels=[self.gmrecords.args.label],
-                config=self.gmrecords.conf,
+                config=config,
             )
             if not len(streams):
                 raise ValueError("No matching streams found.")
@@ -210,7 +212,7 @@ class ComputeStationMetricsModule(base.SubcommandModule):
                 summary = station_summary.StationSummary.from_config(
                     stream,
                     event=event,
-                    config=self.gmrecords.conf,
+                    config=config,
                     calc_waveform_metrics=False,
                     calc_station_metrics=False,
                     rupture=rupture,

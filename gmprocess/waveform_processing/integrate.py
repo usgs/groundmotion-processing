@@ -2,21 +2,19 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-
 from scipy.integrate import cumtrapz
-from gmprocess.utils.config import get_config
 
 
 def get_disp(tr, method="frequency_domain"):
-
-    """Integrate acceleration to displacement using the method chosen in the config file.
+    """Integrate acceleration to displacement.
 
     Args:
-    tr (StationTrace):
-        Trace of acceleration data. This is the trace where the Cache values will be set.
-    method (string):
-        method used to perform integration, specified in the config file.
-        Options are "frequency_domain", "time_domain_0init" or "time_domain_0init_0mean"
+        tr (StationTrace):
+            Trace of acceleration data. This is the trace where the Cache values will
+            be set.
+        method (string):
+            Method used to perform integration. Options are "frequency_domain",
+            "time_domain_0init" or "time_domain_0init_0mean".
 
     Returns:
         StationTrace.
@@ -56,20 +54,22 @@ def get_disp(tr, method="frequency_domain"):
         return disp
     else:
         raise ValueError(
-            "Improper integration method specified in config. Must be one of 'frequency_domain', 'time_domain_0init' or 'time_domain_0init_0mean'"
+            "Improper integration method specified in config. "
+            "Must be one of 'frequency_domain', 'time_domain_0init' or "
+            "'time_domain_0init_0mean'"
         )
 
 
 def get_vel(tr, method="frequency_domain"):
-
-    """Integrate acceleration to velocity using the method chosen in the config file.
+    """Integrate acceleration to velocity.
 
     Args:
-    tr (StationTrace):
-        Trace of acceleration data. This is the trace where the Cache values will be set.
-    method (string):
-        method used to perform integration, specified in the config file.
-        Options are "frequency_domain", "time_domain_0init" or "time_domain_0init_0mean"
+        tr (StationTrace):
+            Trace of acceleration data. This is the trace where the Cache values will
+            be set.
+        method (string):
+            Method used to perform integration, specified in the config file. Options
+            are "frequency_domain", "time_domain_0init" or "time_domain_0init_0mean".
 
     Returns:
         StationTrace.
@@ -102,5 +102,6 @@ def get_vel(tr, method="frequency_domain"):
         return vel
     else:
         raise ValueError(
-            "Improper integration method specified in config. Must be one of 'frequency_domain', 'time_domain_0init' or 'time_domain_0init_0mean'"
+            "Improper integration method specified in config. Must be one of "
+            "'frequency_domain', 'time_domain_0init' or 'time_domain_0init_0mean'"
         )

@@ -457,9 +457,9 @@ def detrend(st, detrending_method=None, config=None):
 
     for tr in st:
         if detrending_method == "baseline_sixth_order":
-            tr = correct_baseline(tr)
+            tr = correct_baseline(tr, config)
         elif detrending_method == "pre":
-            tr = _detrend_pre_event_mean(tr)
+            tr = _detrend_pre_event_mean(tr, config)
         else:
             tr = tr.detrend(detrending_method)
 
@@ -669,13 +669,15 @@ def max_traces(st, n_max=3, config=None):
     return st
 
 
-def _detrend_pre_event_mean(trace):
+def _detrend_pre_event_mean(trace, config=None):
     """
     Subtraces the mean of the pre-event noise window from the full trace.
 
     Args:
         trace (obspy.core.trace.Trace):
             Trace of strong motion data.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         trace: Detrended trace.

@@ -67,10 +67,10 @@ def assemble(event, config, directory, gmprocess_version):
     workspace.addEvent(event)
     logging.debug("workspace.dataset.events:")
     logging.debug(workspace.dataset.events)
+    workspace.addConfig(config)
     workspace.addStreams(event, tcollection, label="unprocessed")
     logging.debug("workspace.dataset.waveforms.list():")
     logging.debug(workspace.dataset.waveforms.list())
-    workspace.addConfig()
     workspace.addGmprocessVersion(gmprocess_version)
     logging.debug("workspace.dataset.config")
 

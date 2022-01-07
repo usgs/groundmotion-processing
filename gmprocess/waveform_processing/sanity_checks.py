@@ -55,7 +55,8 @@ def check_tail(st, duration, max_vel_ratio=0.1, max_dis_ratio=0.5, config=None):
             )
         return st
 
-    config = get_config()
+    if config is None:
+        config = get_config()
 
     vel = st.copy()
     dis = st.copy()

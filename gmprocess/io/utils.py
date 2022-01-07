@@ -10,7 +10,6 @@ import numpy as np
 # local imports
 from gmprocess.utils.config import get_config
 
-CONFIG = get_config()
 DUPLICATE_MARKER = "1"
 
 
@@ -52,7 +51,9 @@ def is_evenly_spaced(times, rtol=1e-6, atol=1e-8):
     return np.all(np.isclose(diff_times[0], diff_times, rtol=rtol, atol=atol))
 
 
-def resample_uneven_trace(trace, times, data, resample_rate=None, method="linear"):
+def resample_uneven_trace(
+    trace, times, data, resample_rate=None, method="linear", config=None
+):
     """
     Resample unevenly spaced data.
 
@@ -67,6 +68,8 @@ def resample_uneven_trace(trace, times, data, resample_rate=None, method="linear
             Resampling rate in Hz.
         method (str):
             Method of resampling. Currently only supported is 'linear'.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         trace (gmprocess.core.stationtrace.StationTrace):
@@ -78,7 +81,9 @@ def resample_uneven_trace(trace, times, data, resample_rate=None, method="linear
 
     # Load the resampling rate from the config if not provided
     if resample_rate is None:
-        resample_rate = CONFIG["read"]["resample_rate"]
+        if config is None:
+            config = get_config()
+        resample_rate = config["read"]["resample_rate"]
 
     new_times = np.arange(times[0], times[-1], 1 / resample_rate)
 

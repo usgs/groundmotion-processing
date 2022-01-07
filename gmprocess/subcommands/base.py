@@ -99,8 +99,9 @@ class SubcommandModule(ABC):
         if self.gmrecords.args.label is None:
             return
 
+        config = self.workspace.config
         self.pstreams = self.workspace.getStreams(
-            self.eventid, labels=[self.gmrecords.args.label], config=self.gmrecords.conf
+            self.eventid, labels=[self.gmrecords.args.label], config=config
         )
 
     def _get_events(self):

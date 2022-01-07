@@ -196,6 +196,12 @@ class StreamWorkspace(object):
             self.dataset = pyasdf.ASDFDataSet(filename, compression=compression)
         self.FORMAT_VERSION = FORMAT_VERSION
 
+        # Add the config data as workspace attribute if it is present
+        group_name = f"{'config'}/{'config'}"
+        config_exists = group_name in self.dataset._auxiliary_data_group
+        if config_exists:
+            self.setConfig()
+
     @classmethod
     def create(cls, filename, compression=None):
         """Load from existing ASDF file.
@@ -261,14 +267,26 @@ class StreamWorkspace(object):
         """
         self.dataset.add_quakeml(event)
 
-    def addConfig(self):
-        """Add config to an ASDF file."""
-        config = get_config()
+    def addConfig(self, config=None):
+        """Add config to an ASDF dataset and workspace attribute."""
+        if config is None:
+            config = get_config()
+        self.config = config
         config_bytes = json.dumps(config).encode("utf-8")
         config_array = np.frombuffer(config_bytes, dtype=np.uint8)
         self.dataset.add_auxiliary_data(
             config_array, data_type="config", path="config", parameters={}
         )
+
+    def setConfig(self):
+        """Get config from ASDF dataset and set as a workspace attribute."""
+        group_name = f"{'config'}/{'config'}"
+        data_exists = group_name in self.dataset._auxiliary_data_group
+        if not data_exists:
+            logging.error("No config found in auxiliary data.")
+        bytelist = self.dataset._auxiliary_data_group[group_name][()].tolist()
+        conf_str = "".join([chr(b) for b in bytelist])
+        self.config = json.loads(conf_str)
 
     def addGmprocessVersion(self, version):
         """Add gmprocess version to an ASDF file."""
@@ -313,7 +331,7 @@ class StreamWorkspace(object):
         # base provenance document that will be copied and used as a template
         base_prov = prov.model.ProvDocument()
         base_prov.add_namespace(*NS_SEIS)
-        base_prov = _get_person_agent(base_prov)
+        base_prov = _get_person_agent(base_prov, self.config)
         base_prov = _get_software_agent(base_prov, gmprocess_version)
 
         logging.debug(streams)

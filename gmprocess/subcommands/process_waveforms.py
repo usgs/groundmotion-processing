@@ -91,7 +91,7 @@ class ProcessWaveformsModule(base.SubcommandModule):
                 event.id,
                 stations=[station_id],
                 labels=["unprocessed"],
-                config=self.gmrecords.conf,
+                config=workspace.config,
             )
 
             if len(raw_streams):
@@ -103,14 +103,12 @@ class ProcessWaveformsModule(base.SubcommandModule):
                         processing.process_streams,
                         raw_streams,
                         event,
-                        self.gmrecords.conf,
+                        workspace.config,
                     )
                     futures.append(future)
                 else:
                     processed_streams.append(
-                        processing.process_streams(
-                            raw_streams, event, self.gmrecords.conf
-                        )
+                        processing.process_streams(raw_streams, event, workspace.config)
                     )
 
         if self.gmrecords.args.num_processes > 0:

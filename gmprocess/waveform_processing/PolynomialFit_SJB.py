@@ -6,10 +6,6 @@ import logging
 from scipy import signal
 from gmprocess.utils.config import get_config
 from gmprocess.waveform_processing.integrate import get_disp
-from gmprocess.waveform_processing.filtering import (
-    lowpass_filter_trace,
-    highpass_filter_trace,
-)
 
 
 def PolynomialFit_SJB(
@@ -28,7 +24,8 @@ def PolynomialFit_SJB(
         st (StationStream):
             Stream of data.
         target (float):
-            target percentage for ratio between max polynomial value and max displacement.
+            target percentage for ratio between max polynomial value and max
+            displacement.
         tol (float):
             tolereance for matching the ratio target
         polynomial_order (float):
@@ -38,14 +35,18 @@ def PolynomialFit_SJB(
         maxfc (float):
             Maximum allowable value of the highpass corner freq.
         int_method (string):
-            method used to perform integration between acceleration, velocity, and dispacement. Options are "frequency_domain", "time_domain_zero_init" or "time_domain_zero_mean"
+            method used to perform integration between acceleration, velocity, and
+            dispacement. Options are "frequency_domain", "time_domain_zero_init" or
+            "time_domain_zero_mean"
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         StationStream.
 
     """
-    config = get_config()
-    int_method = config["integration"]
+    if config is None:
+        config = get_config()
 
     for tr in st:
         if not tr.hasParameter("corner_frequencies"):
@@ -104,7 +105,6 @@ def __ridder_log(
     Facc = np.fft.rfft(acc, n=len(acc))
     freq = np.fft.rfftfreq(len(acc), acc.stats.delta)
     fc0 = f_hp
-    Facc0 = Facc
     disp0 = get_disp(acc, method=int_config["method"])
     R0 = get_residual(time, disp0, target, polynomial_order)
 

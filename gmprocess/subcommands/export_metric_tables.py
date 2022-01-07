@@ -55,12 +55,13 @@ class ExportMetricTablesModule(base.SubcommandModule):
 
             self.workspace = ws.StreamWorkspace.open(workname)
             self._get_labels()
+            config = self.workspace.config
 
             event_table, imc_tables, readmes = self.workspace.getTables(
-                self.gmrecords.args.label, self.gmrecords.conf
+                self.gmrecords.args.label, config
             )
             ev_fit_spec, fit_readme = self.workspace.getFitSpectraTable(
-                self.eventid, self.gmrecords.args.label, self.gmrecords.conf
+                self.eventid, self.gmrecords.args.label, config
             )
 
             # We need to have a consistent set of frequencies for reporting the
@@ -68,7 +69,7 @@ class ExportMetricTablesModule(base.SubcommandModule):
             # this could be changed to something else, or even be set via the
             # config file.
             snr_table, snr_readme = self.workspace.getSNRTable(
-                self.eventid, self.gmrecords.args.label, self.gmrecords.conf
+                self.eventid, self.gmrecords.args.label, config
             )
             self.workspace.close()
 

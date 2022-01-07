@@ -59,6 +59,7 @@ class GenerateHTMLMapModule(base.SubcommandModule):
                 return False
 
             self._get_labels()
+            config = self.workspace.config
             logging.info(f"Generating station maps for event {event.id}...")
 
             pstreams = []
@@ -67,7 +68,7 @@ class GenerateHTMLMapModule(base.SubcommandModule):
                     event.id,
                     stations=[station_id],
                     labels=[self.gmrecords.args.label],
-                    config=self.gmrecords.conf,
+                    config=config,
                 )
                 if not len(streams):
                     raise ValueError("No matching streams found.")

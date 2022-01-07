@@ -64,7 +64,9 @@ def adjust_highpass_corner(
         else:
             initial_corners = tr.getParameter("corner_frequencies")
             f_hp = initial_corners["highpass"]
-            ok = __disp_checks(tr, max_final_displacement, max_displacment_ratio)
+            ok = __disp_checks(
+                tr, max_final_displacement, max_displacment_ratio, config
+            )
             while not ok:
                 f_hp = step_factor * f_hp
                 if f_hp > maximum_freq:
@@ -75,14 +77,19 @@ def adjust_highpass_corner(
                     break
                 initial_corners["highpass"] = f_hp
                 tr.setParameter("corner_frequencies", initial_corners)
-                ok = __disp_checks(tr, max_final_displacement, max_displacment_ratio)
+                ok = __disp_checks(
+                    tr, max_final_displacement, max_displacment_ratio, config
+                )
     return st
 
 
-def __disp_checks(tr, max_final_displacement=0.025, max_displacment_ratio=0.2):
+def __disp_checks(
+    tr, max_final_displacement=0.025, max_displacment_ratio=0.2, config=None
+):
     # Need to find the high/low pass filtering steps in the config
     # to ensure that filtering here is done with the same options
-    config = get_config()
+    if config is None:
+        config = get_config()
     processing_steps = config["processing"]
     ps_names = [list(ps.keys())[0] for ps in processing_steps]
     ind = int(np.where(np.array(ps_names) == "highpass_filter")[0][0])
@@ -99,7 +106,7 @@ def __disp_checks(tr, max_final_displacement=0.025, max_displacment_ratio=0.2):
     trdis = highpass_filter_trace(trdis, **hp_args)
 
     # Apply baseline correction
-    trdis = correct_baseline(trdis)
+    trdis = correct_baseline(trdis, config)
 
     # Integrate to displacment
     trdis = get_disp(trdis, method=config["integration"]["method"])

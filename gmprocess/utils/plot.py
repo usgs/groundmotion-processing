@@ -567,7 +567,7 @@ def plot_moveout(
     return (fig, ax)
 
 
-def summary_plots(st, directory, origin):
+def summary_plots(st, directory, origin, config=None):
     """Stream summary plot.
 
     Args:
@@ -577,10 +577,14 @@ def summary_plots(st, directory, origin):
             Directory for saving plots.
         origin (ScalarEvent):
             Flattened subclass of Obspy Event.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
+
     """
     mpl.rcParams["font.size"] = 8
 
-    config = get_config()
+    if config is None:
+        config = get_config()
 
     # Check if directory exists, and if not, create it.
     if not os.path.exists(directory):
@@ -613,13 +617,13 @@ def summary_plots(st, directory, origin):
     # Compute velocity
     st_vel = st.copy()
     for tr in st_vel:
-        tr.data = get_vel(tr,method = config["integration"]["method"])
+        tr.data = get_vel(tr, method=config["integration"]["method"])
 
     # Compute displacement
     st_dis = st.copy()
     for tr in st_dis:
-        tr.data = get_disp(tr,method = config["integration"]["method"])
-    
+        tr.data = get_disp(tr, method=config["integration"]["method"])
+
     # process channels in preferred sort order (i.e., HN1, HN2, HNZ)
     channels = [tr.stats.channel for tr in st]
     if len(channels) < 3:
