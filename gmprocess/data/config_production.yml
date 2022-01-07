@@ -423,6 +423,18 @@ colocated:
 
     preference: ["HN?", "BN?", "HH?", "BH?"]
 
+    # Optionally, provide a difference preference order for "large distances", for which
+    # the distance threshold can be specified as a function of magnitude. The distance
+    # threshold is computed as:
+    #     dist_thresh = dist[0]
+    #     for m, d in zip(mag, dist):
+    #         if eqmag > m:
+    #             dist_thresh = d
+    large_dist:
+        preference: [BH?, HH?, HN?, BN?]
+        mag: [3, 4, 5, 6, 7]
+        dist: [20, 50,100, 300, 600]
+
 # travel_time:
 #     # Section for computing travel times which is used by the
 #     # "trim_multiple_events" processing step
