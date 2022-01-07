@@ -30,7 +30,7 @@ Attributes
 
    
 
-.. py:function:: check_clipping(st, origin, threshold=0.2)
+.. py:function:: check_clipping(st, origin, threshold=0.2, config=None)
 
    Apply clicking check.
 
@@ -43,6 +43,8 @@ Attributes
    :type origin: ScalarEvent
    :param threshold: Threshold probability.
    :type threshold: float
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: StationStream checked for clipping.
 

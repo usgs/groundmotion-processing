@@ -27,6 +27,7 @@ Attributes
    gmprocess.subcommands.export_metric_tables.ws
    gmprocess.subcommands.export_metric_tables.const
    gmprocess.subcommands.export_metric_tables.tables
+   gmprocess.subcommands.export_metric_tables.confmod
 
 
 .. py:data:: arg_dicts
@@ -50,6 +51,11 @@ Attributes
    
 
 .. py:data:: tables
+   
+
+   
+
+.. py:data:: confmod
    
 
    

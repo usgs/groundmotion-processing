@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.version" href="../../version/index.html" /><link rel="prev" title="gmprocess.waveform_processing.windows" href="../windows/index.html" />
 
     <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
-        <title>gmprocess.waveform_processing.zero_crossings - gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</title>
+        <title>gmprocess.waveform_processing.zero_crossings - gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -409,10 +409,13 @@
 </li>
 <li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PolynomialFit_SJB/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.PolynomialFit_SJB</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../adjust_highpass/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../baseline_correction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../corner_frequencies/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.corner_frequencies</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../fft/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.fft</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../filtering/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.filtering</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../integrate/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.integrate</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../nn_quality_assurance/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../phase/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.phase</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pretesting/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.pretesting</span></code></a></li>
@@ -467,14 +470,14 @@
 <col style="width: 90%"/>
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.zero_crossings.check_zero_crossings" title="gmprocess.waveform_processing.zero_crossings.check_zero_crossings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_zero_crossings</span></code></a>(st, min_crossings=1.0)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.zero_crossings.check_zero_crossings" title="gmprocess.waveform_processing.zero_crossings.check_zero_crossings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_zero_crossings</span></code></a>(st, min_crossings=1.0, config=None)</p></td>
 <td><p>Check for a large enough density.</p></td>
 </tr>
 </tbody>
 </table></div>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.zero_crossings.check_zero_crossings">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.zero_crossings.</span></span><span class="sig-name descname"><span class="pre">check_zero_crossings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_crossings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/zero_crossings.html#check_zero_crossings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.zero_crossings.check_zero_crossings" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.zero_crossings.</span></span><span class="sig-name descname"><span class="pre">check_zero_crossings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_crossings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/zero_crossings.html#check_zero_crossings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.zero_crossings.check_zero_crossings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check for a large enough density.</p>
 <p>This is intended to screen out instrumental failures or resetting.
 Value determined empirically from observations on the GeoNet network
@@ -485,6 +488,7 @@ by R Lee.</p>
 <li><p><strong>st</strong> (<a class="reference internal" href="../../core/stationstream/index.html#gmprocess.core.stationstream.StationStream" title="gmprocess.core.stationstream.StationStream"><em>StationStream</em></a>) – StationStream object.</p></li>
 <li><p><strong>min_crossings</strong> (<em>float</em>) – Minimum average number of zero crossings per second for the full
 trace.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Configuration dictionary (or None). See get_config().</p></li>
 </ul>
 </dd>
 </dl>

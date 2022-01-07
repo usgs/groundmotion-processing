@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
-        <title>gmprocess.io.asdf.stream_workspace - gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</title>
+        <title>gmprocess.io.asdf.stream_workspace - gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -408,10 +408,13 @@
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/PolynomialFit_SJB/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.PolynomialFit_SJB</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/adjust_highpass/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/baseline_correction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/corner_frequencies/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.corner_frequencies</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/fft/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.fft</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/filtering/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.filtering</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/integrate/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.integrate</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/phase/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.phase</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/pretesting/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.pretesting</span></code></a></li>
@@ -653,6 +656,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">pyasdf</span><span class="o">.</span><span class="n">ASDFDataSet</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="n">compression</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">FORMAT_VERSION</span> <span class="o">=</span> <span class="n">FORMAT_VERSION</span>
 
+        <span class="c1"># Add the config data as workspace attribute if it is present</span>
+        <span class="n">group_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'config'</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="s1">'config'</span><span class="si">}</span><span class="s2">"</span>
+        <span class="n">config_exists</span> <span class="o">=</span> <span class="n">group_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">_auxiliary_data_group</span>
+        <span class="k">if</span> <span class="n">config_exists</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setConfig</span><span class="p">()</span>
+
 <div class="viewcode-block" id="StreamWorkspace.create"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/asdf/stream_workspace/index.html#gmprocess.io.asdf.stream_workspace.StreamWorkspace.create">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">"""Load from existing ASDF file.</span>
@@ -718,14 +727,26 @@
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">add_quakeml</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StreamWorkspace.addConfig"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/asdf/stream_workspace/index.html#gmprocess.io.asdf.stream_workspace.StreamWorkspace.addConfig">[docs]</a>    <span class="k">def</span> <span class="nf">addConfig</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Add config to an ASDF file."""</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
+<div class="viewcode-block" id="StreamWorkspace.addConfig"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/asdf/stream_workspace/index.html#gmprocess.io.asdf.stream_workspace.StreamWorkspace.addConfig">[docs]</a>    <span class="k">def</span> <span class="nf">addConfig</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">"""Add config to an ASDF dataset and workspace attribute."""</span>
+        <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
         <span class="n">config_bytes</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span>
         <span class="n">config_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">config_bytes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">add_auxiliary_data</span><span class="p">(</span>
             <span class="n">config_array</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="s2">"config"</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">"config"</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">{}</span>
         <span class="p">)</span></div>
+
+<div class="viewcode-block" id="StreamWorkspace.setConfig"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/asdf/stream_workspace/index.html#gmprocess.io.asdf.stream_workspace.StreamWorkspace.setConfig">[docs]</a>    <span class="k">def</span> <span class="nf">setConfig</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Get config from ASDF dataset and set as a workspace attribute."""</span>
+        <span class="n">group_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'config'</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="s1">'config'</span><span class="si">}</span><span class="s2">"</span>
+        <span class="n">data_exists</span> <span class="o">=</span> <span class="n">group_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">_auxiliary_data_group</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">data_exists</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"No config found in auxiliary data."</span><span class="p">)</span>
+        <span class="n">bytelist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">_auxiliary_data_group</span><span class="p">[</span><span class="n">group_name</span><span class="p">][()]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">conf_str</span> <span class="o">=</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">chr</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">bytelist</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">conf_str</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="StreamWorkspace.addGmprocessVersion"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/asdf/stream_workspace/index.html#gmprocess.io.asdf.stream_workspace.StreamWorkspace.addGmprocessVersion">[docs]</a>    <span class="k">def</span> <span class="nf">addGmprocessVersion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">version</span><span class="p">):</span>
         <span class="sd">"""Add gmprocess version to an ASDF file."""</span>
@@ -770,7 +791,11 @@
         <span class="c1"># base provenance document that will be copied and used as a template</span>
         <span class="n">base_prov</span> <span class="o">=</span> <span class="n">prov</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">ProvDocument</span><span class="p">()</span>
         <span class="n">base_prov</span><span class="o">.</span><span class="n">add_namespace</span><span class="p">(</span><span class="o">*</span><span class="n">NS_SEIS</span><span class="p">)</span>
-        <span class="n">base_prov</span> <span class="o">=</span> <span class="n">_get_person_agent</span><span class="p">(</span><span class="n">base_prov</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"config"</span><span class="p">):</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
+        <span class="n">base_prov</span> <span class="o">=</span> <span class="n">_get_person_agent</span><span class="p">(</span><span class="n">base_prov</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
         <span class="n">base_prov</span> <span class="o">=</span> <span class="n">_get_software_agent</span><span class="p">(</span><span class="n">base_prov</span><span class="p">,</span> <span class="n">gmprocess_version</span><span class="p">)</span>
 
         <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">streams</span><span class="p">)</span>

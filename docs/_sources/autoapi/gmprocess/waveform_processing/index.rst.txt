@@ -19,10 +19,13 @@ Submodules
    :titlesonly:
    :maxdepth: 1
 
+   PolynomialFit_SJB/index.rst
    adjust_highpass/index.rst
+   baseline_correction/index.rst
    corner_frequencies/index.rst
    fft/index.rst
    filtering/index.rst
+   integrate/index.rst
    nn_quality_assurance/index.rst
    phase/index.rst
    pretesting/index.rst

@@ -24,7 +24,7 @@ Functions
 
 
 
-.. py:function:: check_free_field(st, reject_non_free_field=False)
+.. py:function:: check_free_field(st, reject_non_free_field=False, config=None)
 
    Checks free field status of stream.
 
@@ -32,11 +32,13 @@ Functions
    :type st: obspy.core.stream.Stream
    :param reject_non_free_field: Should non free-field stations be failed?
    :type reject_non_free_field: bool
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: Stream that has been checked for free field status.
 
 
-.. py:function:: check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0)
+.. py:function:: check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0, config=None)
 
    Checks that the maximum STA/LTA ratio for AT LEAST ONE of the stream's
    traces is above a certain threshold.
@@ -49,11 +51,13 @@ Functions
    :type lta_length: float
    :param threshold: Required maximum STA/LTA ratio to pass the test.
    :type threshold: float
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: Stream that has been checked for sta/lta requirements.
 
 
-.. py:function:: check_max_amplitude(st, min=5, max=2000000.0)
+.. py:function:: check_max_amplitude(st, min=5, max=2000000.0, config=None)
 
    Checks that the maximum amplitude of the traces in the stream are ALL
    within a defined range. Only applied to counts/raw data.
@@ -64,6 +68,8 @@ Functions
    :type min: float
    :param max: Maximum amplitude for the acceptable range. Default is 2e6.
    :type max: float
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: Stream that has been checked for maximum amplitude criteria.
 

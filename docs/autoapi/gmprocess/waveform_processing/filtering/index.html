@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.waveform_processing.nn_quality_assurance" href="../nn_quality_assurance/index.html" /><link rel="prev" title="gmprocess.waveform_processing.fft" href="../fft/index.html" />
+<link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.waveform_processing.integrate" href="../integrate/index.html" /><link rel="prev" title="gmprocess.waveform_processing.fft" href="../fft/index.html" />
 
     <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
-        <title>gmprocess.waveform_processing.filtering - gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</title>
+        <title>gmprocess.waveform_processing.filtering - gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -409,10 +409,13 @@
 </li>
 <li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PolynomialFit_SJB/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.PolynomialFit_SJB</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../adjust_highpass/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../baseline_correction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../corner_frequencies/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.corner_frequencies</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../fft/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.fft</span></code></a></li>
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.filtering</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../integrate/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.integrate</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../nn_quality_assurance/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../phase/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.phase</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pretesting/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.pretesting</span></code></a></li>
@@ -467,13 +470,13 @@
 <col style="width: 90%"/>
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.filtering.highpass_filter" title="gmprocess.waveform_processing.filtering.highpass_filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">highpass_filter</span></code></a>(st, filter_order=5, number_of_passes=2)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.filtering.highpass_filter" title="gmprocess.waveform_processing.filtering.highpass_filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">highpass_filter</span></code></a>(st, filter_order=5, number_of_passes=2, config=None)</p></td>
 <td><p>Highpass filter.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.filtering.highpass_filter_trace" title="gmprocess.waveform_processing.filtering.highpass_filter_trace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">highpass_filter_trace</span></code></a>(tr, filter_order=5, number_of_passes=2)</p></td>
 <td><p>Highpass filter.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.filtering.lowpass_filter" title="gmprocess.waveform_processing.filtering.lowpass_filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lowpass_filter</span></code></a>(st, filter_order=5, number_of_passes=2)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.filtering.lowpass_filter" title="gmprocess.waveform_processing.filtering.lowpass_filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lowpass_filter</span></code></a>(st, filter_order=5, number_of_passes=2, config=None)</p></td>
 <td><p>Lowpass filter.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.filtering.lowpass_filter_trace" title="gmprocess.waveform_processing.filtering.lowpass_filter_trace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lowpass_filter_trace</span></code></a>(tr, filter_order=5, number_of_passes=2)</p></td>
@@ -483,7 +486,7 @@
 </table></div>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.filtering.highpass_filter">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.filtering.</span></span><span class="sig-name descname"><span class="pre">highpass_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_passes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/filtering.html#highpass_filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.filtering.highpass_filter" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.filtering.</span></span><span class="sig-name descname"><span class="pre">highpass_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_passes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/filtering.html#highpass_filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.filtering.highpass_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Highpass filter.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -491,6 +494,7 @@
 <li><p><strong>st</strong> (<a class="reference internal" href="../../core/stationstream/index.html#gmprocess.core.stationstream.StationStream" title="gmprocess.core.stationstream.StationStream"><em>StationStream</em></a>) – Stream of data.</p></li>
 <li><p><strong>filter_order</strong> (<em>int</em>) – Filter order.</p></li>
 <li><p><strong>number_of_passes</strong> (<em>int</em>) – Number of passes.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Configuration dictionary (or None). See get_config().</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -523,7 +527,7 @@
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.filtering.lowpass_filter">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.filtering.</span></span><span class="sig-name descname"><span class="pre">lowpass_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_passes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/filtering.html#lowpass_filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.filtering.lowpass_filter" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.filtering.</span></span><span class="sig-name descname"><span class="pre">lowpass_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_passes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/filtering.html#lowpass_filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.filtering.lowpass_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lowpass filter.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -531,6 +535,7 @@
 <li><p><strong>st</strong> (<a class="reference internal" href="../../core/stationstream/index.html#gmprocess.core.stationstream.StationStream" title="gmprocess.core.stationstream.StationStream"><em>StationStream</em></a>) – Stream of data.</p></li>
 <li><p><strong>filter_order</strong> (<em>int</em>) – Filter order.</p></li>
 <li><p><strong>number_of_passes</strong> (<em>int</em>) – Number of passes.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Configuration dictionary (or None). See get_config().</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -570,12 +575,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../nn_quality_assurance/index.html">
+          <a class="next-page" href="../integrate/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance</span></code></div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.integrate</span></code></div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>

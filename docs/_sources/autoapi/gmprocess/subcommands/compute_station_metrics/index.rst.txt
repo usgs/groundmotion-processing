@@ -35,6 +35,7 @@ Attributes
    gmprocess.subcommands.compute_station_metrics.rupt_utils
    gmprocess.subcommands.compute_station_metrics.ws
    gmprocess.subcommands.compute_station_metrics.station_summary
+   gmprocess.subcommands.compute_station_metrics.confmod
    gmprocess.subcommands.compute_station_metrics.M_PER_KM
 
 
@@ -99,6 +100,11 @@ Attributes
    
 
 .. py:data:: station_summary
+   
+
+   
+
+.. py:data:: confmod
    
 
    

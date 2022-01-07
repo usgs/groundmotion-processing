@@ -39,7 +39,7 @@ Attributes
 
    
 
-.. py:function:: cut(st, sec_before_split=None)
+.. py:function:: cut(st, sec_before_split=None, config=None)
 
    Cut/trim the record.
 
@@ -59,6 +59,8 @@ Attributes
    :param sec_before_split: Seconds to trim before split. If None, then the beginning of the
                             record will be unchanged.
    :type sec_before_split: float
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: cut streams.
    :rtype: stream

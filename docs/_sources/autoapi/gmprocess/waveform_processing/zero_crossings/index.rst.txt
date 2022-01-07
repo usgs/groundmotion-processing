@@ -17,7 +17,7 @@ Functions
 
 
 
-.. py:function:: check_zero_crossings(st, min_crossings=1.0)
+.. py:function:: check_zero_crossings(st, min_crossings=1.0, config=None)
 
    Check for a large enough density.
 
@@ -30,5 +30,7 @@ Functions
    :param min_crossings: Minimum average number of zero crossings per second for the full
                          trace.
    :type min_crossings: float
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
 

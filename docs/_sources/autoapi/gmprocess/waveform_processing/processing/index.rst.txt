@@ -29,8 +29,6 @@ Functions
    gmprocess.waveform_processing.processing.check_instrument
    gmprocess.waveform_processing.processing.max_traces
    gmprocess.waveform_processing.processing._detrend_pre_event_mean
-   gmprocess.waveform_processing.processing._correct_baseline
-   gmprocess.waveform_processing.processing._poly_func
 
 
 
@@ -85,7 +83,7 @@ Attributes
    :returns: A StreamCollection object.
 
 
-.. py:function:: remove_response(st, f1, f2, f3=None, f4=None, water_level=None, inv=None)
+.. py:function:: remove_response(st, f1, f2, f3=None, f4=None, water_level=None, inv=None, config=None)
 
    Performs instrument response correction. If the response information is
    not already attached to the stream, then an inventory object must be
@@ -109,12 +107,14 @@ Attributes
    :type water_level: float
    :param inv: Obspy inventory object containing response information.
    :type inv: obspy.core.inventory.inventory
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: Instrument-response-corrected stream.
    :rtype: StationStream
 
 
-.. py:function:: lowpass_max_frequency(st, fn_fac=0.9)
+.. py:function:: lowpass_max_frequency(st, fn_fac=0.9, config=None)
 
    Cap lowpass corner as a fraction of the Nyquist.
 
@@ -122,12 +122,14 @@ Attributes
    :type st: StationStream
    :param fn_fac: Factor to be multiplied by the Nyquist to cap the lowpass filter.
    :type fn_fac: float
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: Resampled stream.
    :rtype: StationStream
 
 
-.. py:function:: min_sample_rate(st, min_sps=20.0)
+.. py:function:: min_sample_rate(st, min_sps=20.0, config=None)
 
    Discard records if the sample rate doers not exceed minimum.
 
@@ -135,12 +137,14 @@ Attributes
    :type st: StationStream
    :param min_sps: Minimum samples per second.
    :type min_sps: float
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: Stream checked for sample rate criteria.
    :rtype: StationStream
 
 
-.. py:function:: detrend(st, detrending_method=None)
+.. py:function:: detrend(st, detrending_method=None, config=None)
 
    Detrend stream.
 
@@ -156,12 +160,14 @@ Attributes
                          series.
                       - 'pre', for removing the mean of the pre-event noise window.
    :type method: str
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: Detrended stream.
    :rtype: StationStream
 
 
-.. py:function:: resample(st, new_sampling_rate=None, method=None, a=None)
+.. py:function:: resample(st, new_sampling_rate=None, method=None, a=None, config=None)
 
    Resample stream.
 
@@ -173,12 +179,14 @@ Attributes
    :type method: str
    :param a: Width of the Lanczos window, in number of samples.
    :type a: int
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: Resampled stream.
    :rtype: StationStream
 
 
-.. py:function:: get_corner_frequencies(st, method='constant', constant=None, snr=None)
+.. py:function:: get_corner_frequencies(st, method='constant', constant=None, snr=None, config=None)
 
    Select corner frequencies.
 
@@ -190,12 +198,14 @@ Attributes
    :type constant: dict
    :param snr: Dictionary of `snr` method config options.
    :type snr: dict
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: Stream with selected corner frequencies added.
    :rtype: strea
 
 
-.. py:function:: taper(st, type='hann', width=0.05, side='both')
+.. py:function:: taper(st, type='hann', width=0.05, side='both', config=None)
 
    Taper streams.
 
@@ -207,12 +217,14 @@ Attributes
    :type width: float
    :param side: Valid options: "both", "left", "right".
    :type side: str
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: tapered streams.
    :rtype: stream
 
 
-.. py:function:: check_instrument(st, n_max=3, n_min=1, require_two_horiz=False)
+.. py:function:: check_instrument(st, n_max=3, n_min=1, require_two_horiz=False, config=None)
 
    Test the channels of the station.
 
@@ -232,11 +244,13 @@ Attributes
    :type n_min: int
    :param require_two_horiz: Require two horizontal components; default to `False`.
    :type require_two_horiz: bool
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: Stream with adjusted failed fields.
 
 
-.. py:function:: max_traces(st, n_max=3)
+.. py:function:: max_traces(st, n_max=3, config=None)
 
    Reject a stream if it has more than n_max traces.
 
@@ -248,36 +262,22 @@ Attributes
    :type st: StationStream
    :param n_max: Maximum allowed number of streams; default to 3.
    :type n_max: int
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: Stream with adjusted failed fields.
 
 
-.. py:function:: _detrend_pre_event_mean(trace)
+.. py:function:: _detrend_pre_event_mean(trace, config=None)
 
    Subtraces the mean of the pre-event noise window from the full trace.
 
    :param trace: Trace of strong motion data.
    :type trace: obspy.core.trace.Trace
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: Detrended trace.
    :rtype: trace
-
-
-.. py:function:: _correct_baseline(trace)
-
-   Performs a baseline correction following the method of Ancheta
-   et al. (2013). This removes low-frequency, non-physical trends
-   that remain in the time series following filtering.
-
-   :param trace: Trace of strong motion data.
-   :type trace: obspy.core.trace.Trace
-
-   :returns: Baseline-corrected trace.
-   :rtype: trace
-
-
-.. py:function:: _poly_func(x, a, b, c, d, e)
-
-   Model polynomial function for polynomial baseline correction.
 
 

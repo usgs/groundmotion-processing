@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="gmprocess.io.asdf.utils" href="../utils/index.html" /><link rel="prev" title="gmprocess.io.asdf.core" href="../core/index.html" />
 
     <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
-        <title>gmprocess.io.asdf.stream_workspace - gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</title>
+        <title>gmprocess.io.asdf.stream_workspace - gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -409,10 +409,13 @@
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../waveform_processing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/PolynomialFit_SJB/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.PolynomialFit_SJB</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/adjust_highpass/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/baseline_correction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/corner_frequencies/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.corner_frequencies</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/fft/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.fft</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/filtering/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.filtering</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/integrate/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.integrate</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/nn_quality_assurance/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/phase/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.phase</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/pretesting/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.pretesting</span></code></a></li>
@@ -672,8 +675,13 @@
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.io.asdf.stream_workspace.StreamWorkspace.addConfig">
-<span class="sig-name descname"><span class="pre">addConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/asdf/stream_workspace.html#StreamWorkspace.addConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.addConfig" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add config to an ASDF file.</p>
+<span class="sig-name descname"><span class="pre">addConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/asdf/stream_workspace.html#StreamWorkspace.addConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.addConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add config to an ASDF dataset and workspace attribute.</p>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gmprocess.io.asdf.stream_workspace.StreamWorkspace.setConfig">
+<span class="sig-name descname"><span class="pre">setConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/asdf/stream_workspace.html#StreamWorkspace.setConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.setConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get config from ASDF dataset and set as a workspace attribute.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.io.asdf.stream_workspace.StreamWorkspace.addGmprocessVersion">
@@ -1163,6 +1171,7 @@ plain .sort() will put SA(10.0) before SA(2.0), for example.</p>
 <li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.__repr__">__repr__</a></li>
 <li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.addEvent">addEvent</a></li>
 <li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.addConfig">addConfig</a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.setConfig">setConfig</a></li>
 <li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.addGmprocessVersion">addGmprocessVersion</a></li>
 <li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getGmprocessVersion">getGmprocessVersion</a></li>
 <li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.addStreams">addStreams</a></li>

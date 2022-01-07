@@ -158,9 +158,14 @@ Attributes
       :type event: Event
 
 
-   .. py:method:: addConfig(self)
+   .. py:method:: addConfig(self, config=None)
 
-      Add config to an ASDF file.
+      Add config to an ASDF dataset and workspace attribute.
+
+
+   .. py:method:: setConfig(self)
+
+      Get config from ASDF dataset and set as a workspace attribute.
 
 
    .. py:method:: addGmprocessVersion(self, version)

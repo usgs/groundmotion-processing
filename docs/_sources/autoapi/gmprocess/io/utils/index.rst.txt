@@ -28,14 +28,8 @@ Attributes
 
 .. autoapisummary::
 
-   gmprocess.io.utils.CONFIG
    gmprocess.io.utils.DUPLICATE_MARKER
 
-
-.. py:data:: CONFIG
-   
-
-   
 
 .. py:data:: DUPLICATE_MARKER
    :annotation: = 1
@@ -68,7 +62,7 @@ Attributes
    :rtype: bool
 
 
-.. py:function:: resample_uneven_trace(trace, times, data, resample_rate=None, method='linear')
+.. py:function:: resample_uneven_trace(trace, times, data, resample_rate=None, method='linear', config=None)
 
    Resample unevenly spaced data.
 
@@ -82,6 +76,8 @@ Attributes
    :type resample_rate: float
    :param method: Method of resampling. Currently only supported is 'linear'.
    :type method: str
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns:     Resampled trace with updated provenance information.
    :rtype: trace (gmprocess.core.stationtrace.StationTrace)

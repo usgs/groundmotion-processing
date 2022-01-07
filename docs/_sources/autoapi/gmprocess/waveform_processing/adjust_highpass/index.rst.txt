@@ -18,7 +18,7 @@ Functions
 
 
 
-.. py:function:: adjust_highpass_corner(st, step_factor=1.5, maximum_freq=0.5, max_final_displacement=0.2, max_displacment_ratio=0.2)
+.. py:function:: adjust_highpass_corner(st, step_factor=1.5, maximum_freq=0.5, max_final_displacement=0.2, max_displacment_ratio=0.2, config=None)
 
    Adjust high pass corner frequency.
 
@@ -46,10 +46,12 @@ Functions
    :type max_final_displacement: float
    :param max_displacment_ratio: Maximum allowable ratio of final displacement to max displacment.
    :type max_displacment_ratio: float
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: StationStream.
 
 
-.. py:function:: __disp_checks(tr, max_final_displacement=0.025, max_displacment_ratio=0.2)
+.. py:function:: __disp_checks(tr, max_final_displacement=0.025, max_displacment_ratio=0.2, config=None)
 
 

@@ -22,7 +22,7 @@ Functions
 
 
 
-.. py:function:: check_tail(st, duration, max_vel_ratio=0.1, max_dis_ratio=0.5)
+.. py:function:: check_tail(st, duration, max_vel_ratio=0.1, max_dis_ratio=0.5, config=None)
 
    Check for abnormally arge values in the tail of the stream.
 
@@ -46,6 +46,8 @@ Functions
                          tail is greater than max_disp_ratio times the max absolute
                          displacement of the whole trace.
    :type max_dis_ratio: float
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    Returns:
 

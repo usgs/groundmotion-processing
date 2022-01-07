@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.waveform_processing.corner_frequencies" href="../corner_frequencies/index.html" /><link rel="prev" title="gmprocess.waveform_processing.smoothing" href="../smoothing/index.html" />
+<link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.waveform_processing.baseline_correction" href="../baseline_correction/index.html" /><link rel="prev" title="gmprocess.waveform_processing.PolynomialFit_SJB" href="../PolynomialFit_SJB/index.html" />
 
     <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
-        <title>gmprocess.waveform_processing.adjust_highpass - gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</title>
+        <title>gmprocess.waveform_processing.adjust_highpass - gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -409,10 +409,13 @@
 </li>
 <li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PolynomialFit_SJB/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.PolynomialFit_SJB</span></code></a></li>
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../baseline_correction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../corner_frequencies/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.corner_frequencies</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../fft/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.fft</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../filtering/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.filtering</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../integrate/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.integrate</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../nn_quality_assurance/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../phase/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.phase</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pretesting/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.pretesting</span></code></a></li>
@@ -467,17 +470,17 @@
 <col style="width: 90%"/>
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.adjust_highpass.adjust_highpass_corner" title="gmprocess.waveform_processing.adjust_highpass.adjust_highpass_corner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adjust_highpass_corner</span></code></a>(st, step_factor=1.5, maximum_freq=0.5, max_final_displacement=0.2, max_displacment_ratio=0.2)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.adjust_highpass.adjust_highpass_corner" title="gmprocess.waveform_processing.adjust_highpass.adjust_highpass_corner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adjust_highpass_corner</span></code></a>(st, step_factor=1.5, maximum_freq=0.5, max_final_displacement=0.2, max_displacment_ratio=0.2, config=None)</p></td>
 <td><p>Adjust high pass corner frequency.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.adjust_highpass.__disp_checks" title="gmprocess.waveform_processing.adjust_highpass.__disp_checks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__disp_checks</span></code></a>(tr, max_final_displacement=0.025, max_displacment_ratio=0.2)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.adjust_highpass.__disp_checks" title="gmprocess.waveform_processing.adjust_highpass.__disp_checks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__disp_checks</span></code></a>(tr, max_final_displacement=0.025, max_displacment_ratio=0.2, config=None)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table></div>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.adjust_highpass.adjust_highpass_corner">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.adjust_highpass.</span></span><span class="sig-name descname"><span class="pre">adjust_highpass_corner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_final_displacement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_displacment_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/adjust_highpass.html#adjust_highpass_corner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.adjust_highpass.adjust_highpass_corner" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.adjust_highpass.</span></span><span class="sig-name descname"><span class="pre">adjust_highpass_corner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_final_displacement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_displacment_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/adjust_highpass.html#adjust_highpass_corner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.adjust_highpass.adjust_highpass_corner" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adjust high pass corner frequency.</p>
 <p>Options for further refinement of the highpass corner. Currently, this
 includes criteria employed by:</p>
@@ -500,6 +503,7 @@ are met.</p>
 to search across to pass displacement checks.</p></li>
 <li><p><strong>max_final_displacement</strong> (<em>float</em>) – Maximum allowable value (in cm) for final displacement.</p></li>
 <li><p><strong>max_displacment_ratio</strong> (<em>float</em>) – Maximum allowable ratio of final displacement to max displacment.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Configuration dictionary (or None). See get_config().</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -509,7 +513,7 @@ to search across to pass displacement checks.</p></li>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.adjust_highpass.__disp_checks">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.adjust_highpass.</span></span><span class="sig-name descname"><span class="pre">__disp_checks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_final_displacement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.025</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_displacment_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/adjust_highpass.html#__disp_checks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.adjust_highpass.__disp_checks" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.adjust_highpass.</span></span><span class="sig-name descname"><span class="pre">__disp_checks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_final_displacement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.025</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_displacment_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/adjust_highpass.html#__disp_checks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.adjust_highpass.__disp_checks" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 </section>
 </section>
@@ -520,23 +524,23 @@ to search across to pass displacement checks.</p></li>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../corner_frequencies/index.html">
+          <a class="next-page" href="../baseline_correction/index.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.corner_frequencies</span></code></div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../smoothing/index.html">
+          <a class="prev-page" href="../PolynomialFit_SJB/index.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.PolynomialFit_SJB</span></code></div>
                 
               </div>
             </a>

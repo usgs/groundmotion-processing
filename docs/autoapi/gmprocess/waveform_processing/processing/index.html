@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.waveform_processing.sanity_checks" href="../sanity_checks/index.html" /><link rel="prev" title="gmprocess.waveform_processing.pretesting" href="../pretesting/index.html" />
 
     <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
-        <title>gmprocess.waveform_processing.processing - gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</title>
+        <title>gmprocess.waveform_processing.processing - gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -409,10 +409,13 @@
 </li>
 <li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../PolynomialFit_SJB/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.PolynomialFit_SJB</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../adjust_highpass/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../baseline_correction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../corner_frequencies/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.corner_frequencies</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../fft/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.fft</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../filtering/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.filtering</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../integrate/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.integrate</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../nn_quality_assurance/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../phase/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.phase</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pretesting/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.pretesting</span></code></a></li>
@@ -471,41 +474,35 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.process_streams" title="gmprocess.waveform_processing.processing.process_streams"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_streams</span></code></a>(streams, origin, config=None)</p></td>
 <td><p>Run processing steps from the config file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.remove_response" title="gmprocess.waveform_processing.processing.remove_response"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_response</span></code></a>(st, f1, f2, f3=None, f4=None, water_level=None, inv=None)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.remove_response" title="gmprocess.waveform_processing.processing.remove_response"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_response</span></code></a>(st, f1, f2, f3=None, f4=None, water_level=None, inv=None, config=None)</p></td>
 <td><p>Performs instrument response correction. If the response information is</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.lowpass_max_frequency" title="gmprocess.waveform_processing.processing.lowpass_max_frequency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lowpass_max_frequency</span></code></a>(st, fn_fac=0.9)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.lowpass_max_frequency" title="gmprocess.waveform_processing.processing.lowpass_max_frequency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lowpass_max_frequency</span></code></a>(st, fn_fac=0.9, config=None)</p></td>
 <td><p>Cap lowpass corner as a fraction of the Nyquist.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.min_sample_rate" title="gmprocess.waveform_processing.processing.min_sample_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_sample_rate</span></code></a>(st, min_sps=20.0)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.min_sample_rate" title="gmprocess.waveform_processing.processing.min_sample_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_sample_rate</span></code></a>(st, min_sps=20.0, config=None)</p></td>
 <td><p>Discard records if the sample rate doers not exceed minimum.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.detrend" title="gmprocess.waveform_processing.processing.detrend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">detrend</span></code></a>(st, detrending_method=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.detrend" title="gmprocess.waveform_processing.processing.detrend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">detrend</span></code></a>(st, detrending_method=None, config=None)</p></td>
 <td><p>Detrend stream.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.resample" title="gmprocess.waveform_processing.processing.resample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resample</span></code></a>(st, new_sampling_rate=None, method=None, a=None)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.resample" title="gmprocess.waveform_processing.processing.resample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resample</span></code></a>(st, new_sampling_rate=None, method=None, a=None, config=None)</p></td>
 <td><p>Resample stream.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.get_corner_frequencies" title="gmprocess.waveform_processing.processing.get_corner_frequencies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_corner_frequencies</span></code></a>(st, method='constant', constant=None, snr=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.get_corner_frequencies" title="gmprocess.waveform_processing.processing.get_corner_frequencies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_corner_frequencies</span></code></a>(st, method='constant', constant=None, snr=None, config=None)</p></td>
 <td><p>Select corner frequencies.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.taper" title="gmprocess.waveform_processing.processing.taper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">taper</span></code></a>(st, type='hann', width=0.05, side='both')</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.taper" title="gmprocess.waveform_processing.processing.taper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">taper</span></code></a>(st, type='hann', width=0.05, side='both', config=None)</p></td>
 <td><p>Taper streams.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.check_instrument" title="gmprocess.waveform_processing.processing.check_instrument"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_instrument</span></code></a>(st, n_max=3, n_min=1, require_two_horiz=False)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.check_instrument" title="gmprocess.waveform_processing.processing.check_instrument"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_instrument</span></code></a>(st, n_max=3, n_min=1, require_two_horiz=False, config=None)</p></td>
 <td><p>Test the channels of the station.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.max_traces" title="gmprocess.waveform_processing.processing.max_traces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_traces</span></code></a>(st, n_max=3)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.max_traces" title="gmprocess.waveform_processing.processing.max_traces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_traces</span></code></a>(st, n_max=3, config=None)</p></td>
 <td><p>Reject a stream if it has more than n_max traces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing._detrend_pre_event_mean" title="gmprocess.waveform_processing.processing._detrend_pre_event_mean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_detrend_pre_event_mean</span></code></a>(trace)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing._detrend_pre_event_mean" title="gmprocess.waveform_processing.processing._detrend_pre_event_mean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_detrend_pre_event_mean</span></code></a>(trace, config=None)</p></td>
 <td><p>Subtraces the mean of the pre-event noise window from the full trace.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing._correct_baseline" title="gmprocess.waveform_processing.processing._correct_baseline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_correct_baseline</span></code></a>(trace)</p></td>
-<td><p>Performs a baseline correction following the method of Ancheta</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing._poly_func" title="gmprocess.waveform_processing.processing._poly_func"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_poly_func</span></code></a>(x, a, b, c, d, e)</p></td>
-<td><p>Model polynomial function for polynomial baseline correction.</p></td>
 </tr>
 </tbody>
 </table></div>
@@ -572,7 +569,7 @@ steps are not applied once a check has failed.</p>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.processing.remove_response">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">remove_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f3</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f4</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">water_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#remove_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.remove_response" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">remove_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f3</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f4</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">water_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#remove_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.remove_response" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs instrument response correction. If the response information is
 not already attached to the stream, then an inventory object must be
 provided. If the instrument is a strong-motion accelerometer, then
@@ -589,6 +586,7 @@ tr.remove_response() with the defined pre-filter and water level.</p>
 <li><p><strong>f4</strong> (<em>float</em>) – Frequency 4 for pre-filter.</p></li>
 <li><p><strong>water_level</strong> (<em>float</em>) – Water level for deconvolution.</p></li>
 <li><p><strong>inv</strong> (<em>obspy.core.inventory.inventory</em>) – Obspy inventory object containing response information.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Configuration dictionary (or None). See get_config().</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -601,13 +599,14 @@ tr.remove_response() with the defined pre-filter and water level.</p>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.processing.lowpass_max_frequency">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">lowpass_max_frequency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn_fac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#lowpass_max_frequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.lowpass_max_frequency" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">lowpass_max_frequency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn_fac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#lowpass_max_frequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.lowpass_max_frequency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Cap lowpass corner as a fraction of the Nyquist.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>st</strong> (<a class="reference internal" href="../../core/stationstream/index.html#gmprocess.core.stationstream.StationStream" title="gmprocess.core.stationstream.StationStream"><em>StationStream</em></a>) – Stream of data.</p></li>
 <li><p><strong>fn_fac</strong> (<em>float</em>) – Factor to be multiplied by the Nyquist to cap the lowpass filter.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Configuration dictionary (or None). See get_config().</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -620,13 +619,14 @@ tr.remove_response() with the defined pre-filter and water level.</p>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.processing.min_sample_rate">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">min_sample_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_sps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#min_sample_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.min_sample_rate" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">min_sample_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_sps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#min_sample_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.min_sample_rate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Discard records if the sample rate doers not exceed minimum.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>st</strong> (<a class="reference internal" href="../../core/stationstream/index.html#gmprocess.core.stationstream.StationStream" title="gmprocess.core.stationstream.StationStream"><em>StationStream</em></a>) – Stream of data.</p></li>
 <li><p><strong>min_sps</strong> (<em>float</em>) – Minimum samples per second.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Configuration dictionary (or None). See get_config().</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -639,7 +639,7 @@ tr.remove_response() with the defined pre-filter and water level.</p>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.processing.detrend">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">detrend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detrending_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#detrend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.detrend" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">detrend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detrending_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#detrend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.detrend" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detrend stream.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -662,6 +662,7 @@ series.</p>
 </ul>
 </div></blockquote>
 </p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Configuration dictionary (or None). See get_config().</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -674,7 +675,7 @@ series.</p>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.processing.resample">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">resample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_sampling_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#resample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.resample" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">resample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_sampling_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#resample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.resample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resample stream.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -683,6 +684,7 @@ series.</p>
 <li><p><strong>sampling_rate</strong> (<em>float</em>) – New sampling rate, in Hz.</p></li>
 <li><p><strong>method</strong> (<em>str</em>) – Method for interpolation. Currently only supports ‘lanczos’.</p></li>
 <li><p><strong>a</strong> (<em>int</em>) – Width of the Lanczos window, in number of samples.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Configuration dictionary (or None). See get_config().</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -695,7 +697,7 @@ series.</p>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.processing.get_corner_frequencies">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">get_corner_frequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'constant'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#get_corner_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.get_corner_frequencies" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">get_corner_frequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'constant'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#get_corner_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.get_corner_frequencies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Select corner frequencies.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -704,6 +706,7 @@ series.</p>
 <li><p><strong>method</strong> (<em>str</em>) – Which method to use; currently allowed “snr” or “constant”.</p></li>
 <li><p><strong>constant</strong> (<em>dict</em>) – Dictionary of <cite>constant</cite> method config options.</p></li>
 <li><p><strong>snr</strong> (<em>dict</em>) – Dictionary of <cite>snr</cite> method config options.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Configuration dictionary (or None). See get_config().</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -716,7 +719,7 @@ series.</p>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.processing.taper">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">taper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hann'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">side</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#taper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.taper" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">taper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hann'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">side</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#taper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.taper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Taper streams.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -725,6 +728,7 @@ series.</p>
 <li><p><strong>type</strong> (<em>str</em>) – Taper type.</p></li>
 <li><p><strong>width</strong> (<em>float</em>) – Taper width as percentage of trace length.</p></li>
 <li><p><strong>side</strong> (<em>str</em>) – Valid options: “both”, “left”, “right”.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Configuration dictionary (or None). See get_config().</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -737,7 +741,7 @@ series.</p>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.processing.check_instrument">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">check_instrument</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">require_two_horiz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#check_instrument"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.check_instrument" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">check_instrument</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">require_two_horiz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#check_instrument"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.check_instrument" title="Permalink to this definition">¶</a></dt>
 <dd><p>Test the channels of the station.</p>
 <p>The purpose of the maximum limit is to skip over stations with muliple
 strong motion instruments, which can occur with downhole or structural
@@ -752,6 +756,7 @@ channels are required for subsequent intensity measures such as ROTD.</p>
 <li><p><strong>n_max</strong> (<em>int</em>) – Maximum allowed number of streams; default to 3.</p></li>
 <li><p><strong>n_min</strong> (<em>int</em>) – Minimum allowed number of streams; default to 1.</p></li>
 <li><p><strong>require_two_horiz</strong> (<em>bool</em>) – Require two horizontal components; default to <cite>False</cite>.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Configuration dictionary (or None). See get_config().</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -761,7 +766,7 @@ channels are required for subsequent intensity measures such as ROTD.</p>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.processing.max_traces">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">max_traces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#max_traces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.max_traces" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">max_traces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#max_traces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.max_traces" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reject a stream if it has more than n_max traces.</p>
 <p>The purpose of this is to skip over stations with muliple strong motion
 instruments, which can occur with downhole or structural arrays since our
@@ -771,6 +776,7 @@ code currently is not able to reliably group by location within an array.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>st</strong> (<a class="reference internal" href="../../core/stationstream/index.html#gmprocess.core.stationstream.StationStream" title="gmprocess.core.stationstream.StationStream"><em>StationStream</em></a>) – Stream of data.</p></li>
 <li><p><strong>n_max</strong> (<em>int</em>) – Maximum allowed number of streams; default to 3.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Configuration dictionary (or None). See get_config().</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -780,11 +786,14 @@ code currently is not able to reliably group by location within an array.</p>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.processing._detrend_pre_event_mean">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">_detrend_pre_event_mean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#_detrend_pre_event_mean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing._detrend_pre_event_mean" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">_detrend_pre_event_mean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#_detrend_pre_event_mean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing._detrend_pre_event_mean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subtraces the mean of the pre-event noise window from the full trace.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>trace</strong> (<em>obspy.core.trace.Trace</em>) – Trace of strong motion data.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trace</strong> (<em>obspy.core.trace.Trace</em>) – Trace of strong motion data.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Configuration dictionary (or None). See get_config().</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Detrended trace.</p>
@@ -793,29 +802,6 @@ code currently is not able to reliably group by location within an array.</p>
 <dd class="field-odd"><p>trace</p>
 </dd>
 </dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="gmprocess.waveform_processing.processing._correct_baseline">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">_correct_baseline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#_correct_baseline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing._correct_baseline" title="Permalink to this definition">¶</a></dt>
-<dd><p>Performs a baseline correction following the method of Ancheta
-et al. (2013). This removes low-frequency, non-physical trends
-that remain in the time series following filtering.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>trace</strong> (<em>obspy.core.trace.Trace</em>) – Trace of strong motion data.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Baseline-corrected trace.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>trace</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="gmprocess.waveform_processing.processing._poly_func">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">_poly_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#_poly_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing._poly_func" title="Permalink to this definition">¶</a></dt>
-<dd><p>Model polynomial function for polynomial baseline correction.</p>
 </dd></dl>
 </section>
 </section>
@@ -893,8 +879,6 @@ that remain in the time series following filtering.</p>
 <li><a class="reference internal" href="#gmprocess.waveform_processing.processing.check_instrument">check_instrument</a></li>
 <li><a class="reference internal" href="#gmprocess.waveform_processing.processing.max_traces">max_traces</a></li>
 <li><a class="reference internal" href="#gmprocess.waveform_processing.processing._detrend_pre_event_mean">_detrend_pre_event_mean</a></li>
-<li><a class="reference internal" href="#gmprocess.waveform_processing.processing._correct_baseline">_correct_baseline</a></li>
-<li><a class="reference internal" href="#gmprocess.waveform_processing.processing._poly_func">_poly_func</a></li>
 </ul>
 </li>
 </ul>

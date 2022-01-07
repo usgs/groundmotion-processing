@@ -1,0 +1,48 @@
+:py:mod:`gmprocess.waveform_processing.integrate`
+=================================================
+
+.. py:module:: gmprocess.waveform_processing.integrate
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.waveform_processing.integrate.get_disp
+   gmprocess.waveform_processing.integrate.get_vel
+
+
+
+.. py:function:: get_disp(tr, method='frequency_domain')
+
+   Integrate acceleration to displacement.
+
+   :param tr: Trace of acceleration data. This is the trace where the Cache values will
+              be set.
+   :type tr: StationTrace
+   :param method: Method used to perform integration. Options are "frequency_domain",
+                  "time_domain_0init" or "time_domain_0init_0mean".
+   :type method: string
+
+   :returns: StationTrace.
+
+
+.. py:function:: get_vel(tr, method='frequency_domain')
+
+   Integrate acceleration to velocity.
+
+   :param tr: Trace of acceleration data. This is the trace where the Cache values will
+              be set.
+   :type tr: StationTrace
+   :param method: Method used to perform integration, specified in the config file. Options
+                  are "frequency_domain", "time_domain_0init" or "time_domain_0init_0mean".
+   :type method: string
+
+   :returns: StationTrace.
+
+
