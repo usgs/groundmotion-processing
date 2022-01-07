@@ -179,7 +179,9 @@ def build_report_latex(
     st_list.sort(key=lambda x: x.id)
 
     for st in st_list:
-        plot_path = os.path.join("plots", origin.id + "_" + st.get_id() + ".png")
+        # Do NOT use os.path.join() here becuase even on windows, latex needs the path
+        # to use linux-style forward slashs.
+        plot_path = f"plots/{origin.id}_{st.get_id()}.png"
         SB = STREAMBLOCK.replace("[PLOTPATH]", plot_path)
         SB = SB.replace(
             "[EVENT]",
