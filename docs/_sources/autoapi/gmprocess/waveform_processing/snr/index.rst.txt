@@ -53,7 +53,7 @@ Attributes
 .. py:function:: compute_snr_trace(tr, bandwidth, mag=None, check=None)
 
 
-.. py:function:: compute_snr(st, bandwidth, mag=None, check=None)
+.. py:function:: compute_snr(st, bandwidth, mag=None, check=None, config=None)
 
    Compute SNR dictionaries for a stream, looping over all traces.
 
@@ -63,6 +63,8 @@ Attributes
    :type bandwidth: float
    :param check: If None, no checks performed.
    :type check: dict
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: StationStream with SNR dictionaries added as trace parameters.
 

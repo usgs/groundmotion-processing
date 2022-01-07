@@ -23,9 +23,15 @@ Attributes
 .. autoapisummary::
 
    gmprocess.subcommands.base.base_utils
+   gmprocess.subcommands.base.confmod
 
 
 .. py:data:: base_utils
+   
+
+   
+
+.. py:data:: confmod
    
 
    

@@ -209,7 +209,7 @@ Attributes
    :rtype: tuple
 
 
-.. py:function:: summary_plots(st, directory, origin)
+.. py:function:: summary_plots(st, directory, origin, config=None)
 
    Stream summary plot.
 
@@ -219,6 +219,8 @@ Attributes
    :type directory: str
    :param origin: Flattened subclass of Obspy Event.
    :type origin: ScalarEvent
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
 
 .. py:function:: plot_oscillators(st, periods=[0.1, 2, 5, 10], file=None, show=False)

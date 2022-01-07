@@ -54,7 +54,7 @@ Attributes
 
    
 
-.. py:function:: fit_spectra(st, origin, kappa=0.035, RP=0.55, VHC=0.7071068, FSE=2.0, density=2.8, shear_vel=3.7, R0=1.0, moment_factor=100, min_stress=0.1, max_stress=10000)
+.. py:function:: fit_spectra(st, origin, kappa=0.035, RP=0.55, VHC=0.7071068, FSE=2.0, density=2.8, shear_vel=3.7, R0=1.0, moment_factor=100, min_stress=0.1, max_stress=10000, config=None)
 
    Fit spectra vaying stress_drop and moment.
 
@@ -88,6 +88,8 @@ Attributes
    :type min_stress: float
    :param max_stress: Max stress for fit search (bars).
    :type max_stress: float
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: StationStream with fitted spectra parameters.
 

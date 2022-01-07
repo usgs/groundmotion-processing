@@ -33,7 +33,7 @@ Package Contents
 ----------------
 
 .. py:data:: __version__
-   :annotation: = 1.1.11.dev203+gf35d074a.d20220105
+   :annotation: = 1.0.5.dev719+g4d55239e.d20220105
 
    
 

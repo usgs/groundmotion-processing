@@ -278,7 +278,7 @@ Functions
    :returns: List of float containing the 20 quality metrics
 
 
-.. py:function:: NNet_QA(st, acceptance_threshold, model_name)
+.. py:function:: NNet_QA(st, acceptance_threshold, model_name, config=None)
 
    Assess the quality of a stream by analyzing its two horizontal components
    as described in Bellagamba et al. (2019). Performs three steps:
@@ -299,6 +299,8 @@ Functions
    :type acceptance_threshold: float
    :param model_name: name of the used model ('Cant' or 'CantWell')
    :type model_name: string
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: stream of traces tagged with quality scores and flags,
              used model name and acceptance threshold

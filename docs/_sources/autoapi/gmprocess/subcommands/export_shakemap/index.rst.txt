@@ -27,6 +27,7 @@ Attributes
    gmprocess.subcommands.export_shakemap.ws
    gmprocess.subcommands.export_shakemap.const
    gmprocess.subcommands.export_shakemap.sm_utils
+   gmprocess.subcommands.export_shakemap.confmod
 
 
 .. py:data:: arg_dicts
@@ -50,6 +51,11 @@ Attributes
    
 
 .. py:data:: sm_utils
+   
+
+   
+
+.. py:data:: confmod
    
 
    

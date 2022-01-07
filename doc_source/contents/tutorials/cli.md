@@ -46,7 +46,11 @@ Created project: Project: tutorial
    Data Path: /Users/emthompson/gmprocess_projects/tutorial/data
 ```
 
-At this point the data and config directories are created but empty.
+At this point the data has been created but it is empty. The config directory has 
+one file in it: `config.yml`. This is the config file that controls many aspects of
+how `gmrecords` operates. The user should review the contents and make edits as 
+necessary. In some cases, there are usernames and passwords that need to be provided
+for some data sources (e.g., CESMD). 
 
 ## Download Data
 

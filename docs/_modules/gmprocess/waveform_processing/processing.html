@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
-        <title>gmprocess.waveform_processing.processing - gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</title>
+        <title>gmprocess.waveform_processing.processing - gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -408,10 +408,13 @@
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/gmprocess/waveform_processing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/waveform_processing/smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/waveform_processing/PolynomialFit_SJB/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.PolynomialFit_SJB</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/waveform_processing/adjust_highpass/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/waveform_processing/baseline_correction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/waveform_processing/corner_frequencies/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.corner_frequencies</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/waveform_processing/fft/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.fft</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/waveform_processing/filtering/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.filtering</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/waveform_processing/integrate/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.integrate</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/waveform_processing/phase/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.phase</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/waveform_processing/pretesting/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.pretesting</span></code></a></li>
@@ -466,8 +469,6 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">from</span> <span class="nn">obspy.taup</span> <span class="kn">import</span> <span class="n">TauPyModel</span>
-<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">curve_fit</span>
-<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">cumtrapz</span>
 
 <span class="kn">from</span> <span class="nn">gmprocess.core.stationtrace</span> <span class="kn">import</span> <span class="n">PROCESS_LEVELS</span>
 <span class="kn">from</span> <span class="nn">gmprocess.core.streamcollection</span> <span class="kn">import</span> <span class="n">StreamCollection</span>
@@ -479,6 +480,7 @@
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">gmprocess.waveform_processing.phase</span> <span class="kn">import</span> <span class="n">create_travel_time_dataframe</span>
 <span class="kn">from</span> <span class="nn">gmprocess.waveform_processing</span> <span class="kn">import</span> <span class="n">corner_frequencies</span>
+<span class="kn">from</span> <span class="nn">gmprocess.waveform_processing.baseline_correction</span> <span class="kn">import</span> <span class="n">correct_baseline</span>
 
 <span class="c1"># -----------------------------------------------------------------------------</span>
 <span class="c1"># Note: no QA on following imports because they need to be in namespace to be</span>
@@ -494,6 +496,7 @@
     <span class="n">highpass_filter</span><span class="p">,</span>
 <span class="p">)</span>  <span class="c1"># NOQA</span>
 <span class="kn">from</span> <span class="nn">gmprocess.waveform_processing.adjust_highpass</span> <span class="kn">import</span> <span class="n">adjust_highpass_corner</span>  <span class="c1"># NOQA</span>
+<span class="kn">from</span> <span class="nn">gmprocess.waveform_processing.PolynomialFit_SJB</span> <span class="kn">import</span> <span class="n">PolynomialFit_SJB</span>  <span class="c1"># NOQA</span>
 <span class="kn">from</span> <span class="nn">gmprocess.waveform_processing.zero_crossings</span> <span class="kn">import</span> <span class="n">check_zero_crossings</span>  <span class="c1"># NOQA</span>
 <span class="kn">from</span> <span class="nn">gmprocess.waveform_processing.nn_quality_assurance</span> <span class="kn">import</span> <span class="n">NNet_QA</span>  <span class="c1"># NOQA</span>
 <span class="kn">from</span> <span class="nn">gmprocess.waveform_processing.snr</span> <span class="kn">import</span> <span class="n">compute_snr</span>  <span class="c1"># NOQA</span>
@@ -636,9 +639,9 @@
                 <span class="n">step_args</span><span class="p">[</span><span class="s2">"mag"</span><span class="p">]</span> <span class="o">=</span> <span class="n">origin</span><span class="o">.</span><span class="n">magnitude</span>
 
             <span class="k">if</span> <span class="n">step_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">stream</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()[</span><span class="n">step_name</span><span class="p">](</span><span class="n">stream</span><span class="p">)</span>
+                <span class="n">stream</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()[</span><span class="n">step_name</span><span class="p">](</span><span class="n">stream</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">stream</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()[</span><span class="n">step_name</span><span class="p">](</span><span class="n">stream</span><span class="p">,</span> <span class="o">**</span><span class="n">step_args</span><span class="p">)</span>
+                <span class="n">stream</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()[</span><span class="n">step_name</span><span class="p">](</span><span class="n">stream</span><span class="p">,</span> <span class="o">**</span><span class="n">step_args</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
 
     <span class="c1"># -------------------------------------------------------------------------</span>
     <span class="c1"># Begin colocated instrument selection</span>
@@ -653,7 +656,9 @@
     <span class="k">return</span> <span class="n">streams</span></div>
 
 
-<div class="viewcode-block" id="remove_response"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.remove_response">[docs]</a><span class="k">def</span> <span class="nf">remove_response</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">f3</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f4</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">water_level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="remove_response"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.remove_response">[docs]</a><span class="k">def</span> <span class="nf">remove_response</span><span class="p">(</span>
+    <span class="n">st</span><span class="p">,</span> <span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">f3</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f4</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">water_level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Performs instrument response correction. If the response information is</span>
 <span class="sd">    not already attached to the stream, then an inventory object must be</span>
@@ -678,6 +683,8 @@
 <span class="sd">            Water level for deconvolution.</span>
 <span class="sd">        inv (obspy.core.inventory.inventory):</span>
 <span class="sd">            Obspy inventory object containing response information.</span>
+<span class="sd">        config (dict):</span>
+<span class="sd">            Configuration dictionary (or None). See get_config().</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        StationStream: Instrument-response-corrected stream.</span>
@@ -827,7 +834,7 @@
     <span class="k">return</span> <span class="n">st</span></div>
 
 
-<div class="viewcode-block" id="lowpass_max_frequency"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.lowpass_max_frequency">[docs]</a><span class="k">def</span> <span class="nf">lowpass_max_frequency</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">fn_fac</span><span class="o">=</span><span class="mf">0.9</span><span class="p">):</span>
+<div class="viewcode-block" id="lowpass_max_frequency"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.lowpass_max_frequency">[docs]</a><span class="k">def</span> <span class="nf">lowpass_max_frequency</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">fn_fac</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Cap lowpass corner as a fraction of the Nyquist.</span>
 
@@ -836,6 +843,8 @@
 <span class="sd">            Stream of data.</span>
 <span class="sd">        fn_fac (float):</span>
 <span class="sd">            Factor to be multiplied by the Nyquist to cap the lowpass filter.</span>
+<span class="sd">        config (dict):</span>
+<span class="sd">            Configuration dictionary (or None). See get_config().</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        StationStream: Resampled stream.</span>
@@ -854,7 +863,7 @@
     <span class="k">return</span> <span class="n">st</span></div>
 
 
-<div class="viewcode-block" id="min_sample_rate"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.min_sample_rate">[docs]</a><span class="k">def</span> <span class="nf">min_sample_rate</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">min_sps</span><span class="o">=</span><span class="mf">20.0</span><span class="p">):</span>
+<div class="viewcode-block" id="min_sample_rate"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.min_sample_rate">[docs]</a><span class="k">def</span> <span class="nf">min_sample_rate</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">min_sps</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Discard records if the sample rate doers not exceed minimum.</span>
 
@@ -863,6 +872,8 @@
 <span class="sd">            Stream of data.</span>
 <span class="sd">        min_sps (float):</span>
 <span class="sd">            Minimum samples per second.</span>
+<span class="sd">        config (dict):</span>
+<span class="sd">            Configuration dictionary (or None). See get_config().</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        StationStream: Stream checked for sample rate criteria.</span>
@@ -878,7 +889,7 @@
     <span class="k">return</span> <span class="n">st</span></div>
 
 
-<div class="viewcode-block" id="detrend"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.detrend">[docs]</a><span class="k">def</span> <span class="nf">detrend</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">detrending_method</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="detrend"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.detrend">[docs]</a><span class="k">def</span> <span class="nf">detrend</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">detrending_method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Detrend stream.</span>
 
@@ -894,6 +905,8 @@
 <span class="sd">                   fit polynomial is then removed from the acceleration time</span>
 <span class="sd">                   series.</span>
 <span class="sd">                - 'pre', for removing the mean of the pre-event noise window.</span>
+<span class="sd">        config (dict):</span>
+<span class="sd">            Configuration dictionary (or None). See get_config().</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        StationStream: Detrended stream.</span>
@@ -904,9 +917,9 @@
 
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">detrending_method</span> <span class="o">==</span> <span class="s2">"baseline_sixth_order"</span><span class="p">:</span>
-            <span class="n">tr</span> <span class="o">=</span> <span class="n">_correct_baseline</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span>
+            <span class="n">tr</span> <span class="o">=</span> <span class="n">correct_baseline</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">detrending_method</span> <span class="o">==</span> <span class="s2">"pre"</span><span class="p">:</span>
-            <span class="n">tr</span> <span class="o">=</span> <span class="n">_detrend_pre_event_mean</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span>
+            <span class="n">tr</span> <span class="o">=</span> <span class="n">_detrend_pre_event_mean</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">tr</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">detrend</span><span class="p">(</span><span class="n">detrending_method</span><span class="p">)</span>
 
@@ -915,7 +928,7 @@
     <span class="k">return</span> <span class="n">st</span></div>
 
 
-<div class="viewcode-block" id="resample"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.resample">[docs]</a><span class="k">def</span> <span class="nf">resample</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">new_sampling_rate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="resample"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.resample">[docs]</a><span class="k">def</span> <span class="nf">resample</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">new_sampling_rate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Resample stream.</span>
 
@@ -928,6 +941,8 @@
 <span class="sd">            Method for interpolation. Currently only supports 'lanczos'.</span>
 <span class="sd">        a (int):</span>
 <span class="sd">            Width of the Lanczos window, in number of samples.</span>
+<span class="sd">        config (dict):</span>
+<span class="sd">            Configuration dictionary (or None). See get_config().</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        StationStream: Resampled stream.</span>
@@ -945,7 +960,7 @@
     <span class="k">return</span> <span class="n">st</span></div>
 
 
-<div class="viewcode-block" id="get_corner_frequencies"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.get_corner_frequencies">[docs]</a><span class="k">def</span> <span class="nf">get_corner_frequencies</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"constant"</span><span class="p">,</span> <span class="n">constant</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">snr</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="get_corner_frequencies"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.get_corner_frequencies">[docs]</a><span class="k">def</span> <span class="nf">get_corner_frequencies</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"constant"</span><span class="p">,</span> <span class="n">constant</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">snr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Select corner frequencies.</span>
 
@@ -958,6 +973,8 @@
 <span class="sd">            Dictionary of `constant` method config options.</span>
 <span class="sd">        snr (dict):</span>
 <span class="sd">            Dictionary of `snr` method config options.</span>
+<span class="sd">        config (dict):</span>
+<span class="sd">            Configuration dictionary (or None). See get_config().</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        strea: Stream with selected corner frequencies added.</span>
@@ -993,7 +1010,7 @@
     <span class="k">return</span> <span class="n">st</span></div>
 
 
-<div class="viewcode-block" id="taper"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.taper">[docs]</a><span class="k">def</span> <span class="nf">taper</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"hann"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">"both"</span><span class="p">):</span>
+<div class="viewcode-block" id="taper"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.taper">[docs]</a><span class="k">def</span> <span class="nf">taper</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"hann"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">"both"</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Taper streams.</span>
 
@@ -1006,6 +1023,8 @@
 <span class="sd">            Taper width as percentage of trace length.</span>
 <span class="sd">        side (str):</span>
 <span class="sd">            Valid options: "both", "left", "right".</span>
+<span class="sd">        config (dict):</span>
+<span class="sd">            Configuration dictionary (or None). See get_config().</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        stream: tapered streams.</span>
@@ -1022,7 +1041,7 @@
     <span class="k">return</span> <span class="n">st</span></div>
 
 
-<div class="viewcode-block" id="check_instrument"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.check_instrument">[docs]</a><span class="k">def</span> <span class="nf">check_instrument</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">require_two_horiz</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="check_instrument"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.check_instrument">[docs]</a><span class="k">def</span> <span class="nf">check_instrument</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">require_two_horiz</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Test the channels of the station.</span>
 
@@ -1043,12 +1062,17 @@
 <span class="sd">            Minimum allowed number of streams; default to 1.</span>
 <span class="sd">        require_two_horiz (bool):</span>
 <span class="sd">            Require two horizontal components; default to `False`.</span>
+<span class="sd">        config (dict):</span>
+<span class="sd">            Configuration dictionary (or None). See get_config().</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Stream with adjusted failed fields.</span>
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">st</span>
+
+    <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
 
     <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Starting check_instrument"</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"len(st) = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">st</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
@@ -1070,7 +1094,7 @@
     <span class="k">return</span> <span class="n">st</span></div>
 
 
-<div class="viewcode-block" id="max_traces"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.max_traces">[docs]</a><span class="k">def</span> <span class="nf">max_traces</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<div class="viewcode-block" id="max_traces"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.max_traces">[docs]</a><span class="k">def</span> <span class="nf">max_traces</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Reject a stream if it has more than n_max traces.</span>
 
@@ -1083,6 +1107,8 @@
 <span class="sd">            Stream of data.</span>
 <span class="sd">        n_max (int):</span>
 <span class="sd">            Maximum allowed number of streams; default to 3.</span>
+<span class="sd">        config (dict):</span>
+<span class="sd">            Configuration dictionary (or None). See get_config().</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Stream with adjusted failed fields.</span>
@@ -1103,13 +1129,15 @@
     <span class="k">return</span> <span class="n">st</span></div>
 
 
-<div class="viewcode-block" id="_detrend_pre_event_mean"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing._detrend_pre_event_mean">[docs]</a><span class="k">def</span> <span class="nf">_detrend_pre_event_mean</span><span class="p">(</span><span class="n">trace</span><span class="p">):</span>
+<div class="viewcode-block" id="_detrend_pre_event_mean"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing._detrend_pre_event_mean">[docs]</a><span class="k">def</span> <span class="nf">_detrend_pre_event_mean</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Subtraces the mean of the pre-event noise window from the full trace.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        trace (obspy.core.trace.Trace):</span>
 <span class="sd">            Trace of strong motion data.</span>
+<span class="sd">        config (dict):</span>
+<span class="sd">            Configuration dictionary (or None). See get_config().</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        trace: Detrended trace.</span>
@@ -1122,55 +1150,6 @@
     <span class="n">noise_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">noise</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
     <span class="n">trace</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">data</span> <span class="o">-</span> <span class="n">noise_mean</span>
     <span class="k">return</span> <span class="n">trace</span></div>
-
-
-<div class="viewcode-block" id="_correct_baseline"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing._correct_baseline">[docs]</a><span class="k">def</span> <span class="nf">_correct_baseline</span><span class="p">(</span><span class="n">trace</span><span class="p">):</span>
-    <span class="sd">"""</span>
-<span class="sd">    Performs a baseline correction following the method of Ancheta</span>
-<span class="sd">    et al. (2013). This removes low-frequency, non-physical trends</span>
-<span class="sd">    that remain in the time series following filtering.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        trace (obspy.core.trace.Trace):</span>
-<span class="sd">            Trace of strong motion data.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        trace: Baseline-corrected trace.</span>
-<span class="sd">    """</span>
-
-    <span class="c1"># Integrate twice to get the displacement time series</span>
-    <span class="n">disp_data</span> <span class="o">=</span> <span class="n">cumtrapz</span><span class="p">(</span>
-        <span class="n">cumtrapz</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
-        <span class="n">dx</span><span class="o">=</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span><span class="p">,</span>
-        <span class="n">initial</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="c1"># Fit a sixth order polynomial to displacement time series, requiring</span>
-    <span class="c1"># that the 1st and 0th order coefficients are zero</span>
-    <span class="n">time_values</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span><span class="p">)</span> <span class="o">*</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span>
-    <span class="p">)</span>
-    <span class="n">poly_cofs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">curve_fit</span><span class="p">(</span><span class="n">_poly_func</span><span class="p">,</span> <span class="n">time_values</span><span class="p">,</span> <span class="n">disp_data</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">poly_cofs</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-
-    <span class="c1"># Construct a polynomial from the coefficients and compute</span>
-    <span class="c1"># the second derivative</span>
-    <span class="n">polynomial</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">poly1d</span><span class="p">(</span><span class="n">poly_cofs</span><span class="p">)</span>
-    <span class="n">polynomial_second_derivative</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyder</span><span class="p">(</span><span class="n">polynomial</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-
-    <span class="c1"># Subtract the second derivative of the polynomial from the</span>
-    <span class="c1"># acceleration trace</span>
-    <span class="n">trace</span><span class="o">.</span><span class="n">data</span> <span class="o">-=</span> <span class="n">polynomial_second_derivative</span><span class="p">(</span><span class="n">time_values</span><span class="p">)</span>
-    <span class="n">trace</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">"baseline"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"polynomial_coefs"</span><span class="p">:</span> <span class="n">poly_cofs</span><span class="p">})</span>
-
-    <span class="k">return</span> <span class="n">trace</span></div>
-
-
-<div class="viewcode-block" id="_poly_func"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing._poly_func">[docs]</a><span class="k">def</span> <span class="nf">_poly_func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
-    <span class="sd">"""</span>
-<span class="sd">    Model polynomial function for polynomial baseline correction.</span>
-<span class="sd">    """</span>
-    <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">6</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">5</span> <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">4</span> <span class="o">+</span> <span class="n">d</span> <span class="o">*</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">e</span> <span class="o">*</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span></div>
 </pre></div>
         </article>
       </div>

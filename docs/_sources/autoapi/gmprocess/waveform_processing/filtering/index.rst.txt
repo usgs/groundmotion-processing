@@ -20,7 +20,7 @@ Functions
 
 
 
-.. py:function:: highpass_filter(st, filter_order=5, number_of_passes=2)
+.. py:function:: highpass_filter(st, filter_order=5, number_of_passes=2, config=None)
 
    Highpass filter.
 
@@ -30,6 +30,8 @@ Functions
    :type filter_order: int
    :param number_of_passes: Number of passes.
    :type number_of_passes: int
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: Filtered streams.
    :rtype: StationStream
@@ -50,7 +52,7 @@ Functions
    :rtype: StationTrace
 
 
-.. py:function:: lowpass_filter(st, filter_order=5, number_of_passes=2)
+.. py:function:: lowpass_filter(st, filter_order=5, number_of_passes=2, config=None)
 
    Lowpass filter.
 
@@ -60,6 +62,8 @@ Functions
    :type filter_order: int
    :param number_of_passes: Number of passes.
    :type number_of_passes: int
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
 
    :returns: Filtered streams.
    :rtype: StationStream

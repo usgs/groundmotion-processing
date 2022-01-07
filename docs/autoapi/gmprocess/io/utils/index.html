@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.metrics" href="../../metrics/index.html" /><link rel="prev" title="gmprocess.io.stream" href="../stream/index.html" />
 
     <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
-        <title>gmprocess.io.utils - gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</title>
+        <title>gmprocess.io.utils - gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev205+geb4c851.d20220105 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -409,10 +409,13 @@
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../waveform_processing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../waveform_processing/smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../waveform_processing/PolynomialFit_SJB/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.PolynomialFit_SJB</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../waveform_processing/adjust_highpass/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../waveform_processing/baseline_correction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../waveform_processing/corner_frequencies/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.corner_frequencies</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../waveform_processing/fft/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.fft</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../waveform_processing/filtering/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.filtering</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../waveform_processing/integrate/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.integrate</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../waveform_processing/nn_quality_assurance/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../waveform_processing/phase/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.phase</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../waveform_processing/pretesting/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.pretesting</span></code></a></li>
@@ -473,7 +476,7 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.utils.is_evenly_spaced" title="gmprocess.io.utils.is_evenly_spaced"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_evenly_spaced</span></code></a>(times, rtol=1e-06, atol=1e-08)</p></td>
 <td><p>Checks whether times are evenly spaced.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.utils.resample_uneven_trace" title="gmprocess.io.utils.resample_uneven_trace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resample_uneven_trace</span></code></a>(trace, times, data, resample_rate=None, method='linear')</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.utils.resample_uneven_trace" title="gmprocess.io.utils.resample_uneven_trace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resample_uneven_trace</span></code></a>(trace, times, data, resample_rate=None, method='linear', config=None)</p></td>
 <td><p>Resample unevenly spaced data.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.utils.flatten_directory" title="gmprocess.io.utils.flatten_directory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flatten_directory</span></code></a>(directory)</p></td>
@@ -499,18 +502,11 @@
 <col style="width: 90%"/>
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.utils.CONFIG" title="gmprocess.io.utils.CONFIG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CONFIG</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.utils.DUPLICATE_MARKER" title="gmprocess.io.utils.DUPLICATE_MARKER"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DUPLICATE_MARKER</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.utils.DUPLICATE_MARKER" title="gmprocess.io.utils.DUPLICATE_MARKER"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DUPLICATE_MARKER</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table></div>
-<dl class="py data">
-<dt class="sig sig-object py" id="gmprocess.io.utils.CONFIG">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.io.utils.</span></span><span class="sig-name descname"><span class="pre">CONFIG</span></span><a class="headerlink" href="#gmprocess.io.utils.CONFIG" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.utils.DUPLICATE_MARKER">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.utils.</span></span><span class="sig-name descname"><span class="pre">DUPLICATE_MARKER</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#gmprocess.io.utils.DUPLICATE_MARKER" title="Permalink to this definition">¶</a></dt>
@@ -553,7 +549,7 @@
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.utils.resample_uneven_trace">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.io.utils.</span></span><span class="sig-name descname"><span class="pre">resample_uneven_trace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/io/utils.html#resample_uneven_trace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.utils.resample_uneven_trace" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.io.utils.</span></span><span class="sig-name descname"><span class="pre">resample_uneven_trace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/io/utils.html#resample_uneven_trace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.utils.resample_uneven_trace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resample unevenly spaced data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -563,6 +559,7 @@
 <li><p><strong>data</strong> (<em>array</em>) – Array of floats of values to be resampled.</p></li>
 <li><p><strong>resample_rate</strong> (<em>float</em>) – Resampling rate in Hz.</p></li>
 <li><p><strong>method</strong> (<em>str</em>) – Method of resampling. Currently only supported is ‘linear’.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – Configuration dictionary (or None). See get_config().</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -663,7 +660,6 @@ to be read in with teh directory_to_streams method.</p>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
-<li><a class="reference internal" href="#gmprocess.io.utils.CONFIG">CONFIG</a></li>
 <li><a class="reference internal" href="#gmprocess.io.utils.DUPLICATE_MARKER">DUPLICATE_MARKER</a></li>
 <li><a class="reference internal" href="#gmprocess.io.utils.is_binary">is_binary</a></li>
 <li><a class="reference internal" href="#gmprocess.io.utils.is_evenly_spaced">is_evenly_spaced</a></li>

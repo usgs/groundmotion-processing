@@ -406,7 +406,7 @@ processing:
         max_vel_ratio: 0.3
         # Max ratio of the absolute displacement in the tail to the full 
         # trace.
-        max_dis_ratio: 0.6
+        max_dis_ratio: 0.9
 
 colocated:
     # This section is for handling colocated instruments that have otherwise

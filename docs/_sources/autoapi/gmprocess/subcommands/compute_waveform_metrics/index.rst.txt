@@ -28,6 +28,7 @@ Attributes
    gmprocess.subcommands.compute_waveform_metrics.ws
    gmprocess.subcommands.compute_waveform_metrics.station_summary
    gmprocess.subcommands.compute_waveform_metrics.const
+   gmprocess.subcommands.compute_waveform_metrics.confmod
 
 
 .. py:data:: arg_dicts
@@ -56,6 +57,11 @@ Attributes
    
 
 .. py:data:: const
+   
+
+   
+
+.. py:data:: confmod
    
 
    

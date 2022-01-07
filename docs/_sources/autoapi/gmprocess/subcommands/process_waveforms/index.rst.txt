@@ -28,6 +28,7 @@ Attributes
    gmprocess.subcommands.process_waveforms.const
    gmprocess.subcommands.process_waveforms.ws
    gmprocess.subcommands.process_waveforms.processing
+   gmprocess.subcommands.process_waveforms.confmod
 
 
 .. py:data:: distributed
@@ -56,6 +57,11 @@ Attributes
    
 
 .. py:data:: processing
+   
+
+   
+
+.. py:data:: confmod
    
 
    
