@@ -22,6 +22,7 @@ ws = LazyLoader("ws", globals(), "gmprocess.io.asdf.stream_workspace")
 station_summary = LazyLoader(
     "station_summary", globals(), "gmprocess.metrics.station_summary"
 )
+confmod = LazyLoader("confmod", globals(), "gmprocess.utils.config")
 
 M_PER_KM = 1000
 
@@ -76,7 +77,11 @@ class ComputeStationMetricsModule(base.SubcommandModule):
         ds = self.workspace.dataset
         self._get_labels()
 
-        config = self.workspace.config
+        if hasattr(self.workspace, "config"):
+            config = self.workspace.config
+        else:
+            config = confmod.get_config()
+
         if not hasattr(self, "vs30_grids"):
             vs30_grids = None
             if config is not None:

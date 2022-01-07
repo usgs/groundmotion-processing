@@ -144,7 +144,7 @@ class GMrecordsApp(object):
             sys.exit(1)
 
         # Only run get_config for assemble and projects
-        subcommands_need_conf = ["assemble"]
+        subcommands_need_conf = ["assemble", "auto_shakemap"]
         if self.args.func.command_name in subcommands_need_conf:
             self.conf = config.get_config(self.conf_file)
 

@@ -11,6 +11,7 @@ base = LazyLoader("base", globals(), "gmprocess.subcommands.base")
 ws = LazyLoader("ws", globals(), "gmprocess.io.asdf.stream_workspace")
 const = LazyLoader("const", globals(), "gmprocess.utils.constants")
 tables = LazyLoader("tables", globals(), "gmprocess.utils.tables")
+confmod = LazyLoader("confmod", globals(), "gmprocess.utils.config")
 
 
 class ExportMetricTablesModule(base.SubcommandModule):
@@ -55,7 +56,10 @@ class ExportMetricTablesModule(base.SubcommandModule):
 
             self.workspace = ws.StreamWorkspace.open(workname)
             self._get_labels()
-            config = self.workspace.config
+            if hasattr(self.workspace, "config"):
+                config = self.workspace.config
+            else:
+                config = confmod.get_config()
 
             event_table, imc_tables, readmes = self.workspace.getTables(
                 self.gmrecords.args.label, config

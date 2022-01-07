@@ -14,6 +14,7 @@ station_summary = LazyLoader(
     "station_summary", globals(), "gmprocess.metrics.station_summary"
 )
 const = LazyLoader("const", globals(), "gmprocess.utils.constants")
+confmod = LazyLoader("confmod", globals(), "gmprocess.utils.config")
 
 
 class ComputeWaveformMetricsModule(base.SubcommandModule):
@@ -65,7 +66,10 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
         ds = self.workspace.dataset
         station_list = ds.waveforms.list()
         self._get_labels()
-        config = self.workspace.config
+        if hasattr(self.workspace, "config"):
+            config = self.workspace.config
+        else:
+            config = confmod.get_config()
 
         summaries = []
         metricpaths = []

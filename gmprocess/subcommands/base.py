@@ -9,6 +9,7 @@ import logging
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
 base_utils = LazyLoader("base_utils", globals(), "gmprocess.utils.base_utils")
+confmod = LazyLoader("confmod", globals(), "gmprocess.utils.config")
 
 
 class SubcommandModule(ABC):
@@ -99,7 +100,11 @@ class SubcommandModule(ABC):
         if self.gmrecords.args.label is None:
             return
 
-        config = self.workspace.config
+        if hasattr(self.workspace, "config"):
+            config = self.workspace.config
+        else:
+            config = confmod.get_config()
+
         self.pstreams = self.workspace.getStreams(
             self.eventid, labels=[self.gmrecords.args.label], config=config
         )

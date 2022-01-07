@@ -331,7 +331,11 @@ class StreamWorkspace(object):
         # base provenance document that will be copied and used as a template
         base_prov = prov.model.ProvDocument()
         base_prov.add_namespace(*NS_SEIS)
-        base_prov = _get_person_agent(base_prov, self.config)
+        if hasattr(self, "config"):
+            config = self.config
+        else:
+            config = get_config()
+        base_prov = _get_person_agent(base_prov, config)
         base_prov = _get_software_agent(base_prov, gmprocess_version)
 
         logging.debug(streams)

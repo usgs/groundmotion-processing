@@ -3,7 +3,6 @@
 
 import numpy as np
 import logging
-from scipy import signal
 from gmprocess.utils.config import get_config
 from gmprocess.waveform_processing.integrate import get_disp
 
@@ -11,10 +10,11 @@ from gmprocess.waveform_processing.integrate import get_disp
 def PolynomialFit_SJB(
     st, target=0.02, tol=0.001, polynomial_order=6.0, maxiter=30, maxfc=0.5, config=None
 ):
-    """Search for highpass corner using Ridder's method such that
-        it satisfies the criterion that the ratio between the maximum of a third order polynomial
-        fit to the displacement time series and the maximum of the displacement
-        timeseries is a target % within a tolerance.
+    """Search for highpass corner using Ridder's method.
+
+    Search such that the criterion that the ratio between the maximum of a third order
+    polynomial fit to the displacement time series and the maximum of the displacement
+    timeseries is a target % within a tolerance.
 
     This algorithm searches between a low initial corner frequency a maximum fc.
 
@@ -71,7 +71,8 @@ def PolynomialFit_SJB(
 
             else:
                 tr.fail(
-                    "Initial Ridder residuals were both positive, cannot find appropriate fchp below maxfc"
+                    "Initial Ridder residuals were both positive, cannot find "
+                    "appropriate fchp below maxfc."
                 )
 
     return st
@@ -116,7 +117,13 @@ def __ridder_log(
 
     R2 = get_residual(time, disp2, target, polynomial_order)
     if (np.sign(R0) < 0) and (np.sign(R2) < 0):
-        # output = {'status': True, 'fc (Hz)': fc0, 'acc (g)': np.fft.irfft(Facc0), 'vel (m/s)': get_vel(freq, Facc0), 'disp (m)': get_disp(freq, Facc0)}
+        # output = {
+        #     'status': True,
+        #     'fc (Hz)': fc0,
+        #     'acc (g)': np.fft.irfft(Facc0),
+        #     'vel (m/s)': get_vel(freq, Facc0),
+        #     'disp (m)': get_disp(freq, Facc0)
+        # }
         output = [True, fc0, np.abs(R0)]
         return output
     if (np.sign(R0) > 0) and (np.sign(R2) > 0):

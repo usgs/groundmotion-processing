@@ -15,6 +15,7 @@ ws = LazyLoader("ws", globals(), "gmprocess.io.asdf.stream_workspace")
 processing = LazyLoader(
     "processing", globals(), "gmprocess.waveform_processing.processing"
 )
+confmod = LazyLoader("confmod", globals(), "gmprocess.utils.config")
 
 
 class ProcessWaveformsModule(base.SubcommandModule):
@@ -87,11 +88,15 @@ class ProcessWaveformsModule(base.SubcommandModule):
 
         for station_id in station_list:
             # Cannot parallelize IO to ASDF file
+            if hasattr(workspace, "config"):
+                config = workspace.config
+            else:
+                config = confmod.get_config()
             raw_streams = workspace.getStreams(
                 event.id,
                 stations=[station_id],
                 labels=["unprocessed"],
-                config=workspace.config,
+                config=config,
             )
 
             if len(raw_streams):
@@ -103,12 +108,12 @@ class ProcessWaveformsModule(base.SubcommandModule):
                         processing.process_streams,
                         raw_streams,
                         event,
-                        workspace.config,
+                        config,
                     )
                     futures.append(future)
                 else:
                     processed_streams.append(
-                        processing.process_streams(raw_streams, event, workspace.config)
+                        processing.process_streams(raw_streams, event, config)
                     )
 
         if self.gmrecords.args.num_processes > 0:
