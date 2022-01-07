@@ -231,15 +231,6 @@ def get_config(config_file=None, section=None):
         IndexError:
             If input section name is not found.
     """
-    print("*" * 80)
-    print("get_config")
-    import inspect
-
-    curframe = inspect.currentframe()
-    calframe = inspect.getouterframes(curframe, 2)
-    print(calframe[1][3])
-    print("*" * 80)
-
     if config_file is None:
         # Try not to let tests interfere with actual system:
         if os.getenv("CALLED_FROM_PYTEST") is None:
