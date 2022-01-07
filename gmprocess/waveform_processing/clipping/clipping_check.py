@@ -13,7 +13,7 @@ from gmprocess.waveform_processing.clipping.ping import Ping
 M_TO_KM = 1.0 / 1000
 
 
-def check_clipping(st, origin, threshold=0.2):
+def check_clipping(st, origin, threshold=0.2, config=None):
     """Apply clicking check.
 
     Lower thresholds will pass fewer streams but will give less false negatives
@@ -26,6 +26,8 @@ def check_clipping(st, origin, threshold=0.2):
             ScalarEvent object.
         threshold (float):
             Threshold probability.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         StationStream checked for clipping.

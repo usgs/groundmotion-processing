@@ -142,7 +142,11 @@ class GMrecordsApp(object):
             print(f"Config file does not exist: {self.conf_file}")
             print("Exiting.")
             sys.exit(1)
-        self.conf = config.get_config(self.conf_file)
+
+        # Only run get_config for assemble and projects
+        subcommands_need_conf = ["assemble", "auto_shakemap"]
+        if self.args.func.command_name in subcommands_need_conf:
+            self.conf = config.get_config(self.conf_file)
 
     def _initial_setup(self):
         """

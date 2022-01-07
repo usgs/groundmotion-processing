@@ -11,7 +11,7 @@ from gmprocess.waveform_processing.integrate import get_disp
 from gmprocess.utils.config import get_config
 
 
-def check_tail(st, duration, max_vel_ratio=0.1, max_dis_ratio=0.5):
+def check_tail(st, duration, max_vel_ratio=0.1, max_dis_ratio=0.5, config=None):
     """Check for abnormally arge values in the tail of the stream.
 
     This QA check looks for the presence of abnomally large values in the tail
@@ -35,6 +35,8 @@ def check_tail(st, duration, max_vel_ratio=0.1, max_dis_ratio=0.5):
             Trace is labeled as failed if the max absolute displacement in the
             tail is greater than max_disp_ratio times the max absolute
             displacement of the whole trace.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
 
@@ -53,7 +55,8 @@ def check_tail(st, duration, max_vel_ratio=0.1, max_dis_ratio=0.5):
             )
         return st
 
-    config = get_config()
+    if config is None:
+        config = get_config()
 
     vel = st.copy()
     dis = st.copy()

@@ -27,6 +27,7 @@ def fit_spectra(
     moment_factor=100,
     min_stress=0.1,
     max_stress=10000,
+    config=None,
 ):
     """
     Fit spectra vaying stress_drop and moment.
@@ -62,6 +63,8 @@ def fit_spectra(
             Min stress for fit search (bars).
         max_stress (float):
             Max stress for fit search (bars).
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         StationStream with fitted spectra parameters.

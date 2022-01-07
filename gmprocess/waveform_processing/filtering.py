@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-def highpass_filter(st, filter_order=5, number_of_passes=2):
+def highpass_filter(st, filter_order=5, number_of_passes=2, config=None):
     """
     Highpass filter.
 
@@ -13,6 +13,8 @@ def highpass_filter(st, filter_order=5, number_of_passes=2):
             Filter order.
         number_of_passes (int):
             Number of passes.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         StationStream: Filtered streams.
@@ -66,7 +68,7 @@ def highpass_filter_trace(tr, filter_order=5, number_of_passes=2):
     return tr
 
 
-def lowpass_filter(st, filter_order=5, number_of_passes=2):
+def lowpass_filter(st, filter_order=5, number_of_passes=2, config=None):
     """
     Lowpass filter.
 
@@ -77,6 +79,8 @@ def lowpass_filter(st, filter_order=5, number_of_passes=2):
             Filter order.
         number_of_passes (int):
             Number of passes.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         StationStream: Filtered streams.

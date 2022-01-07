@@ -873,7 +873,7 @@ def computeQualityMetrics(st):
     return qm
 
 
-def NNet_QA(st, acceptance_threshold, model_name):
+def NNet_QA(st, acceptance_threshold, model_name, config=None):
     """
     Assess the quality of a stream by analyzing its two horizontal components
     as described in Bellagamba et al. (2019). Performs three steps:
@@ -895,6 +895,8 @@ def NNet_QA(st, acceptance_threshold, model_name):
             Threshold from which GM records are considered acceptable.
         model_name (string):
             name of the used model ('Cant' or 'CantWell')
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         st: stream of traces tagged with quality scores and flags,

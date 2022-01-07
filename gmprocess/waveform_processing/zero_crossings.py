@@ -4,7 +4,7 @@
 import numpy as np
 
 
-def check_zero_crossings(st, min_crossings=1.0):
+def check_zero_crossings(st, min_crossings=1.0, config=None):
     """
     Check for a large enough density.
 
@@ -18,6 +18,10 @@ def check_zero_crossings(st, min_crossings=1.0):
         min_crossings (float):
             Minimum average number of zero crossings per second for the full
             trace.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
+
+
     """
 
     zero_count_tr = []

@@ -3,22 +3,18 @@
 
 import numpy as np
 import logging
-from scipy import signal
 from gmprocess.utils.config import get_config
 from gmprocess.waveform_processing.integrate import get_disp
-from gmprocess.waveform_processing.filtering import (
-    lowpass_filter_trace,
-    highpass_filter_trace,
-)
 
 
 def PolynomialFit_SJB(
     st, target=0.02, tol=0.001, polynomial_order=6.0, maxiter=30, maxfc=0.5, config=None
 ):
-    """Search for highpass corner using Ridder's method such that
-        it satisfies the criterion that the ratio between the maximum of a third order polynomial
-        fit to the displacement time series and the maximum of the displacement
-        timeseries is a target % within a tolerance.
+    """Search for highpass corner using Ridder's method.
+
+    Search such that the criterion that the ratio between the maximum of a third order
+    polynomial fit to the displacement time series and the maximum of the displacement
+    timeseries is a target % within a tolerance.
 
     This algorithm searches between a low initial corner frequency a maximum fc.
 
@@ -28,7 +24,8 @@ def PolynomialFit_SJB(
         st (StationStream):
             Stream of data.
         target (float):
-            target percentage for ratio between max polynomial value and max displacement.
+            target percentage for ratio between max polynomial value and max
+            displacement.
         tol (float):
             tolereance for matching the ratio target
         polynomial_order (float):
@@ -38,14 +35,18 @@ def PolynomialFit_SJB(
         maxfc (float):
             Maximum allowable value of the highpass corner freq.
         int_method (string):
-            method used to perform integration between acceleration, velocity, and dispacement. Options are "frequency_domain", "time_domain_zero_init" or "time_domain_zero_mean"
+            method used to perform integration between acceleration, velocity, and
+            dispacement. Options are "frequency_domain", "time_domain_zero_init" or
+            "time_domain_zero_mean"
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         StationStream.
 
     """
-    config = get_config()
-    int_method = config["integration"]
+    if config is None:
+        config = get_config()
 
     for tr in st:
         if not tr.hasParameter("corner_frequencies"):
@@ -70,7 +71,8 @@ def PolynomialFit_SJB(
 
             else:
                 tr.fail(
-                    "Initial Ridder residuals were both positive, cannot find appropriate fchp below maxfc"
+                    "Initial Ridder residuals were both positive, cannot find "
+                    "appropriate fchp below maxfc."
                 )
 
     return st
@@ -104,7 +106,6 @@ def __ridder_log(
     Facc = np.fft.rfft(acc, n=len(acc))
     freq = np.fft.rfftfreq(len(acc), acc.stats.delta)
     fc0 = f_hp
-    Facc0 = Facc
     disp0 = get_disp(acc, method=int_config["method"])
     R0 = get_residual(time, disp0, target, polynomial_order)
 
@@ -116,7 +117,13 @@ def __ridder_log(
 
     R2 = get_residual(time, disp2, target, polynomial_order)
     if (np.sign(R0) < 0) and (np.sign(R2) < 0):
-        # output = {'status': True, 'fc (Hz)': fc0, 'acc (g)': np.fft.irfft(Facc0), 'vel (m/s)': get_vel(freq, Facc0), 'disp (m)': get_disp(freq, Facc0)}
+        # output = {
+        #     'status': True,
+        #     'fc (Hz)': fc0,
+        #     'acc (g)': np.fft.irfft(Facc0),
+        #     'vel (m/s)': get_vel(freq, Facc0),
+        #     'disp (m)': get_disp(freq, Facc0)
+        # }
         output = [True, fc0, np.abs(R0)]
         return output
     if (np.sign(R0) > 0) and (np.sign(R2) > 0):

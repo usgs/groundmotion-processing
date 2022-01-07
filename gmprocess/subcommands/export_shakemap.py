@@ -11,6 +11,7 @@ base = LazyLoader("base", globals(), "gmprocess.subcommands.base")
 ws = LazyLoader("ws", globals(), "gmprocess.io.asdf.stream_workspace")
 const = LazyLoader("const", globals(), "gmprocess.utils.constants")
 sm_utils = LazyLoader("sm_utils", globals(), "gmprocess.utils.export_shakemap_utils")
+confmod = LazyLoader("confmod", globals(), "gmprocess.utils.config")
 
 
 class ExportShakeMapModule(base.SubcommandModule):
@@ -65,6 +66,10 @@ class ExportShakeMapModule(base.SubcommandModule):
 
             self.workspace = ws.StreamWorkspace.open(workname)
             self._get_labels()
+            if hasattr(self.workspace, "config"):
+                config = self.workspace.config
+            else:
+                config = confmod.get_config()
 
             expanded_imts = self.gmrecords.args.expand_imts
             jsonfile, stationfile, _ = sm_utils.create_json(
@@ -72,7 +77,7 @@ class ExportShakeMapModule(base.SubcommandModule):
                 event,
                 event_dir,
                 self.gmrecords.args.label,
-                config=self.gmrecords.conf,
+                config=config,
                 expanded_imts=expanded_imts,
             )
 

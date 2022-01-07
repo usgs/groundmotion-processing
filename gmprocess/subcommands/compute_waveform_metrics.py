@@ -14,6 +14,7 @@ station_summary = LazyLoader(
     "station_summary", globals(), "gmprocess.metrics.station_summary"
 )
 const = LazyLoader("const", globals(), "gmprocess.utils.constants")
+confmod = LazyLoader("confmod", globals(), "gmprocess.utils.config")
 
 
 class ComputeWaveformMetricsModule(base.SubcommandModule):
@@ -65,6 +66,10 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
         ds = self.workspace.dataset
         station_list = ds.waveforms.list()
         self._get_labels()
+        if hasattr(self.workspace, "config"):
+            config = self.workspace.config
+        else:
+            config = confmod.get_config()
 
         summaries = []
         metricpaths = []
@@ -78,7 +83,7 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
                 event.id,
                 stations=[station_id],
                 labels=[self.gmrecords.args.label],
-                config=self.gmrecords.conf,
+                config=config,
             )
             if not len(streams):
                 raise ValueError("No matching streams found.")
@@ -102,7 +107,7 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
                         future = client.submit(
                             station_summary.StationSummary.from_config,
                             stream=stream,
-                            config=self.gmrecords.conf,
+                            config=config,
                             event=event,
                             calc_waveform_metrics=True,
                             calc_station_metrics=False,
@@ -113,7 +118,7 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
                             station_summary.StationSummary.from_config(
                                 stream,
                                 event=event,
-                                config=self.gmrecords.conf,
+                                config=config,
                                 calc_waveform_metrics=True,
                                 calc_station_metrics=False,
                             )

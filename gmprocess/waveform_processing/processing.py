@@ -179,9 +179,9 @@ def process_streams(streams, origin, config=None):
                 step_args["mag"] = origin.magnitude
 
             if step_args is None:
-                stream = globals()[step_name](stream)
+                stream = globals()[step_name](stream, config)
             else:
-                stream = globals()[step_name](stream, **step_args)
+                stream = globals()[step_name](stream, **step_args, config=config)
 
     # -------------------------------------------------------------------------
     # Begin colocated instrument selection
@@ -196,7 +196,9 @@ def process_streams(streams, origin, config=None):
     return streams
 
 
-def remove_response(st, f1, f2, f3=None, f4=None, water_level=None, inv=None):
+def remove_response(
+    st, f1, f2, f3=None, f4=None, water_level=None, inv=None, config=None
+):
     """
     Performs instrument response correction. If the response information is
     not already attached to the stream, then an inventory object must be
@@ -221,6 +223,8 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None, inv=None):
             Water level for deconvolution.
         inv (obspy.core.inventory.inventory):
             Obspy inventory object containing response information.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         StationStream: Instrument-response-corrected stream.
@@ -370,7 +374,7 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None, inv=None):
     return st
 
 
-def lowpass_max_frequency(st, fn_fac=0.9):
+def lowpass_max_frequency(st, fn_fac=0.9, config=None):
     """
     Cap lowpass corner as a fraction of the Nyquist.
 
@@ -379,6 +383,8 @@ def lowpass_max_frequency(st, fn_fac=0.9):
             Stream of data.
         fn_fac (float):
             Factor to be multiplied by the Nyquist to cap the lowpass filter.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         StationStream: Resampled stream.
@@ -397,7 +403,7 @@ def lowpass_max_frequency(st, fn_fac=0.9):
     return st
 
 
-def min_sample_rate(st, min_sps=20.0):
+def min_sample_rate(st, min_sps=20.0, config=None):
     """
     Discard records if the sample rate doers not exceed minimum.
 
@@ -406,6 +412,8 @@ def min_sample_rate(st, min_sps=20.0):
             Stream of data.
         min_sps (float):
             Minimum samples per second.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         StationStream: Stream checked for sample rate criteria.
@@ -421,7 +429,7 @@ def min_sample_rate(st, min_sps=20.0):
     return st
 
 
-def detrend(st, detrending_method=None):
+def detrend(st, detrending_method=None, config=None):
     """
     Detrend stream.
 
@@ -437,6 +445,8 @@ def detrend(st, detrending_method=None):
                    fit polynomial is then removed from the acceleration time
                    series.
                 - 'pre', for removing the mean of the pre-event noise window.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         StationStream: Detrended stream.
@@ -447,9 +457,9 @@ def detrend(st, detrending_method=None):
 
     for tr in st:
         if detrending_method == "baseline_sixth_order":
-            tr = correct_baseline(tr)
+            tr = correct_baseline(tr, config)
         elif detrending_method == "pre":
-            tr = _detrend_pre_event_mean(tr)
+            tr = _detrend_pre_event_mean(tr, config)
         else:
             tr = tr.detrend(detrending_method)
 
@@ -458,7 +468,7 @@ def detrend(st, detrending_method=None):
     return st
 
 
-def resample(st, new_sampling_rate=None, method=None, a=None):
+def resample(st, new_sampling_rate=None, method=None, a=None, config=None):
     """
     Resample stream.
 
@@ -471,6 +481,8 @@ def resample(st, new_sampling_rate=None, method=None, a=None):
             Method for interpolation. Currently only supports 'lanczos'.
         a (int):
             Width of the Lanczos window, in number of samples.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         StationStream: Resampled stream.
@@ -488,7 +500,7 @@ def resample(st, new_sampling_rate=None, method=None, a=None):
     return st
 
 
-def get_corner_frequencies(st, method="constant", constant=None, snr=None):
+def get_corner_frequencies(st, method="constant", constant=None, snr=None, config=None):
     """
     Select corner frequencies.
 
@@ -501,6 +513,8 @@ def get_corner_frequencies(st, method="constant", constant=None, snr=None):
             Dictionary of `constant` method config options.
         snr (dict):
             Dictionary of `snr` method config options.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         strea: Stream with selected corner frequencies added.
@@ -536,7 +550,7 @@ def get_corner_frequencies(st, method="constant", constant=None, snr=None):
     return st
 
 
-def taper(st, type="hann", width=0.05, side="both"):
+def taper(st, type="hann", width=0.05, side="both", config=None):
     """
     Taper streams.
 
@@ -549,6 +563,8 @@ def taper(st, type="hann", width=0.05, side="both"):
             Taper width as percentage of trace length.
         side (str):
             Valid options: "both", "left", "right".
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         stream: tapered streams.
@@ -565,7 +581,7 @@ def taper(st, type="hann", width=0.05, side="both"):
     return st
 
 
-def check_instrument(st, n_max=3, n_min=1, require_two_horiz=False):
+def check_instrument(st, n_max=3, n_min=1, require_two_horiz=False, config=None):
     """
     Test the channels of the station.
 
@@ -586,12 +602,17 @@ def check_instrument(st, n_max=3, n_min=1, require_two_horiz=False):
             Minimum allowed number of streams; default to 1.
         require_two_horiz (bool):
             Require two horizontal components; default to `False`.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         Stream with adjusted failed fields.
     """
     if not st.passed:
         return st
+
+    if config is None:
+        config = get_config()
 
     logging.debug("Starting check_instrument")
     logging.debug(f"len(st) = {len(st)}")
@@ -613,7 +634,7 @@ def check_instrument(st, n_max=3, n_min=1, require_two_horiz=False):
     return st
 
 
-def max_traces(st, n_max=3):
+def max_traces(st, n_max=3, config=None):
     """
     Reject a stream if it has more than n_max traces.
 
@@ -626,6 +647,8 @@ def max_traces(st, n_max=3):
             Stream of data.
         n_max (int):
             Maximum allowed number of streams; default to 3.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         Stream with adjusted failed fields.
@@ -646,13 +669,15 @@ def max_traces(st, n_max=3):
     return st
 
 
-def _detrend_pre_event_mean(trace):
+def _detrend_pre_event_mean(trace, config=None):
     """
     Subtraces the mean of the pre-event noise window from the full trace.
 
     Args:
         trace (obspy.core.trace.Trace):
             Trace of strong motion data.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         trace: Detrended trace.

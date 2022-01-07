@@ -53,7 +53,8 @@ class GenerateReportModule(base.SubcommandModule):
 
             logging.info(f"Generating summary report for event {event.id}...")
 
-            build_conf = gmrecords.conf["build_report"]
+            config = self.workspace.config
+            build_conf = config["build_report"]
             report_format = build_conf["format"]
             if report_format == "latex":
                 report_file, success = report.build_report_latex(
@@ -61,7 +62,7 @@ class GenerateReportModule(base.SubcommandModule):
                     event_dir,
                     event,
                     prefix=f"{gmrecords.project}_{gmrecords.args.label}",
-                    config=gmrecords.conf,
+                    config=config,
                     gmprocess_version=gmrecords.gmprocess_version,
                 )
             else:
@@ -84,6 +85,7 @@ class GenerateReportModule(base.SubcommandModule):
             return False
 
         self.workspace = ws.StreamWorkspace.open(workname)
+        config = self.workspace.config
         ds = self.workspace.dataset
         station_list = ds.waveforms.list()
         if len(station_list) == 0:
@@ -109,7 +111,7 @@ class GenerateReportModule(base.SubcommandModule):
                 event.id,
                 stations=[station_id],
                 labels=[self.gmrecords.args.label],
-                config=self.gmrecords.conf,
+                config=config,
             )
             if not len(streams):
                 raise ValueError("No matching streams found.")
@@ -117,10 +119,18 @@ class GenerateReportModule(base.SubcommandModule):
             for stream in streams:
                 pstreams.append(stream)
                 if self.gmrecords.args.num_processes > 0:
-                    future = client.submit(plot.summary_plots, stream, plot_dir, event)
+                    future = client.submit(
+                        plot.summary_plots,
+                        stream,
+                        plot_dir,
+                        event,
+                        config=config,
+                    )
                     futures.append(future)
                 else:
-                    results.append(plot.summary_plots(stream, plot_dir, event))
+                    results.append(
+                        plot.summary_plots(stream, plot_dir, event, config=config)
+                    )
 
         if self.gmrecords.args.num_processes > 0:
             # Collect the results??
