@@ -20,44 +20,26 @@ def get_disp(tr, method="frequency_domain"):
         StationTrace.
 
     """
-    tr_copy = tr.copy()
-    tr_copy.detrend("demean")
-    tr_copy = tr_copy.taper(max_percentage=0.05, type="hann", side="both")
+    acc = tr.copy()
+    acc.detrend("demean")
+    acc.taper(max_percentage=0.05, type="hann", side="both")
 
     if method == "frequency_domain":
-        N = len(tr_copy.data)
-        Facc = np.fft.rfft(tr_copy.data, n=N)
-        freq = np.fft.rfftfreq(N, tr_copy.stats.delta)
-        Fdisp = []
-        for facc, f in zip(Facc, freq):
-            if f == 0:
-                Fdisp.append(0.0)
-            else:
-                Fdisp.append(
-                    (facc / 100) / (2.0j * np.pi * f) ** 2
-                )  # convert from cm/s^2 to m/s^2
-        disp = np.fft.irfft(Fdisp, n=N) * 100  # convert back to cm
-        return disp
+        disp = acc.integrate(frequency=True).integrate(frequency=True)
 
     elif method == "time_domain_0init":
-        disp = cumtrapz(
-            cumtrapz(tr_copy.data, dx=tr.stats.delta, initial=0),
-            dx=tr.stats.delta,
-            initial=0,
-        )
-        return disp
+        disp = acc.integrate().integrate()
 
     elif method == "time_domain_0init_0mean":
-        vel = cumtrapz(tr_copy.data, dx=tr_copy.stats.delta, initial=0)
-        vel -= np.mean(vel)
-        disp = cumtrapz(vel, dx=tr_copy.stats.delta, initial=0)
-        return disp
+        disp = acc.integrate().integrate(demean=True)
     else:
         raise ValueError(
             "Improper integration method specified in config. "
             "Must be one of 'frequency_domain', 'time_domain_0init' or "
             "'time_domain_0init_0mean'"
         )
+
+    return disp
 
 
 def get_vel(tr, method="frequency_domain"):
@@ -75,33 +57,20 @@ def get_vel(tr, method="frequency_domain"):
         StationTrace.
 
     """
-    tr_copy = tr.copy()
+    acc = tr.copy()
 
     if method == "frequency_domain":
-        N = len(tr_copy.data)
-        Facc = np.fft.rfft(tr_copy.data, n=N)
-        freq = np.fft.rfftfreq(N, tr_copy.stats.delta)
-        Fvel = []
-        for facc, f in zip(Facc, freq):
-            if f == 0:
-                Fvel.append(0.0)
-            else:
-                Fvel.append(
-                    (facc / 100) / (2.0j * np.pi * f)
-                )  # convert from cm/s^2 to m/s^2
-        vel = np.fft.irfft(Fvel, n=N) * 100  # convert back to cm/s
-        return vel
+        vel = acc.integrate(frequency=True)
 
     elif method == "time_domain_0init":
-        vel = cumtrapz(tr_copy.data, dx=tr.stats.delta, initial=0)
-        return vel
+        vel = acc.integrate()
 
     elif method == "time_domain_0init_0mean":
-        tr_copy.data -= np.mean(tr_copy.data)
-        vel = cumtrapz(tr_copy.data, dx=tr_copy.stats.delta, initial=0)
-        return vel
+        vel = acc.integrate(demean=True)
     else:
         raise ValueError(
             "Improper integration method specified in config. Must be one of "
             "'frequency_domain', 'time_domain_0init' or 'time_domain_0init_0mean'"
         )
+
+    return vel
