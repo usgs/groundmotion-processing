@@ -365,10 +365,13 @@ class StationTrace(Trace):
             raise KeyError(error_msg)
 
     def integrate(self, frequency=False):
-        """***
+        """Integrate a StationTrace with respect to either frequency or time.
         
+        Args: frequency: Boolean operator to determine if integration is with
+                         with respect to frequency. Default = True.
+
         Returns:
-        ***
+            StationTrace: Input StationTrace is integrated and returned. 
         """
         if frequency: #if integrating in frequency domain
             N = len(self.data)
@@ -385,7 +388,7 @@ class StationTrace(Trace):
             integral_result = np.fft.irfft(F, n=N) * 100 #convert back to cm
             return integral_result
         else: #if integrating in time domain
-            integral_result = self.super().integrate()
+            integral_result = super(StationTrace, self).integrate()
             return integral_result
 
     def getProvenanceKeys(self):
