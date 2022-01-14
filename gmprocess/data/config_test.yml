@@ -538,9 +538,14 @@ metrics:
 # -----------------------------------------------------------------------------
 # This section is for options for integration method
 integration:
-    # method can be one of "frequency_domain", "time_domain_0init"
-    # "time_domain_0init_0mean"
-    method: "frequency_domain"
+    # Integrate with respect to frequency. If not, then integrate
+    # with respect to time.
+    frequency: False
+    # The first value returned in the resulting trace. Can be any
+    # scalar or None.
+    initial: 0.0
+    # Remove the mean of the data before integrating. DO I DO THIS FOR FREQUENCY DOMAIN STUFF AS WELL???
+    demean: False
 # -----------------------------------------------------------------------------
 # This section is for options for phase pickers
 pickers:

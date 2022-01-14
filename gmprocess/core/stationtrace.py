@@ -367,22 +367,28 @@ class StationTrace(Trace):
         if len(error_msg.strip()):
             raise KeyError(error_msg)
 
-    def integrate(self, frequency=False, init=0, demean=False):
+    def integrate(self, frequency=False, initial=0.0, demean=False, config=None):
         """Integrate a StationTrace with respect to either frequency or time.
 
         Args:
             frequency (bool):
-                If True, integrate with respect to frequency.
-            init (scalar):
-                First value in the returned result. Defined
-                from SciPy.
+                Determine if we're integrating in frequency domain.
+                If not, integrate in time domain.
+            initial (float):
+                Define initial value returned in result.
             demean (bool):
-                If True, remove mean of integrated result from the
-                integrated result.
+                Remove mean from array before integrating.
+            config (dict):
+                Configuration dictionary (or None). See get_config().
 
         Returns:
             StationTrace: Input StationTrace is integrated and returned.
         """
+        if config:
+            frequency = config["integration"]["frequency"]
+            initial = config["integration"]["initial"]
+            demean = config["integration"]["demean"]
+
         if frequency:  # if integrating in frequency domain
             N = len(self.data)
             Facc = np.fft.rfft(self.data, n=N)
@@ -390,7 +396,7 @@ class StationTrace(Trace):
             F = []
             for facc, f in zip(Facc, freq):
                 if f == 0:
-                    F.append(0.0)
+                    F.append(initial)
                 else:
                     F.append(
                         (facc / 100) / (2.0j * np.pi * f)
@@ -401,7 +407,7 @@ class StationTrace(Trace):
         else:  # if integrating in time domain
             if demean:
                 self.data -= np.mean(self.data)
-            integral_result = cumtrapz(self.data, dx=self.stats.delta, initial=init)
+            integral_result = cumtrapz(self.data, dx=self.stats.delta, initial=initial)
             self.data = integral_result
             return self
 

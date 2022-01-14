@@ -6,6 +6,7 @@ import os
 
 # third party imports
 import numpy as np
+from obspy.core.trace import Trace
 
 # local imports
 from gmprocess.utils.constants import GAL_TO_PCTG
@@ -46,9 +47,9 @@ def test_velocity():
     datafiles, _ = read_data_dir("geonet", "us1000778i", "20161113_110259_WTMC_20.V2A")
     acc_file = datafiles[0]
     acc = read_data(acc_file)[0]
-    target_v = acc.copy().integrate()[0]
-    v = get_velocity(acc)
-    np.testing.assert_allclose(v[0], target_v)
+    target_v = Trace(acc.copy()[0].data, header=acc.copy()[0].stats).integrate()
+    v = acc[0].integrate()
+    np.testing.assert_allclose(v, target_v)
 
 
 if __name__ == "__main__":
