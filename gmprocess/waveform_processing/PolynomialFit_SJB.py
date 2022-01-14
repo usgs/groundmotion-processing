@@ -58,7 +58,9 @@ def PolynomialFit_SJB(
             initial_corners = tr.getParameter("corner_frequencies")
             f_hp = 0.0001  # GP: Want the initial bounds to encompass the solution
 
-            out = __ridder_log(tr, f_hp, target, tol, polynomial_order, maxiter, maxfc)
+            out = __ridder_log(
+                tr, f_hp, target, tol, polynomial_order, maxiter, maxfc, config
+            )
 
             if out[0] == True:
                 initial_corners["highpass"] = out[1]
@@ -106,14 +108,14 @@ def __ridder_log(
     Facc = np.fft.rfft(acc, n=len(acc))
     freq = np.fft.rfftfreq(len(acc), acc.stats.delta)
     fc0 = f_hp
-    disp0 = get_disp(acc, method=int_config["method"])
+    disp0 = get_disp(acc, config=config)
     R0 = get_residual(time, disp0, target, polynomial_order)
 
     fc2 = maxfc
     Facc2 = filtered_Facc(Facc, freq, fc2, order=5)
     acc2 = tr.copy()
     acc2.data = np.fft.irfft(Facc2, len(acc))
-    disp2 = get_disp(acc2, method=int_config["method"])
+    disp2 = get_disp(acc2, config=config)
 
     R2 = get_residual(time, disp2, target, polynomial_order)
     if (np.sign(R0) < 0) and (np.sign(R2) < 0):
@@ -136,7 +138,7 @@ def __ridder_log(
         Facc1 = filtered_Facc(Facc, freq, fc1, order=5)
         acc1 = acc.copy()
         acc1.data = np.fft.irfft(Facc1, len(acc))
-        disp = get_disp(acc1, method=int_config["method"])
+        disp = get_disp(acc1, config=config)
         R1 = get_residual(time, disp, target, polynomial_order)
         fc3 = np.exp(
             np.log(fc1)
@@ -149,7 +151,7 @@ def __ridder_log(
         Facc3 = filtered_Facc(Facc, freq, fc3, order=5)
         acc3 = acc.copy()
         acc3.data = np.fft.irfft(Facc3, len(acc))
-        disp = get_disp(acc3, method=int_config["method"])
+        disp = get_disp(acc3, config=config)
         R3 = get_residual(time, disp, target, polynomial_order)
         if (np.abs(R3) <= tol) or (i == maxiter - 1):
             output = [True, fc3, np.abs(R3)]
@@ -213,8 +215,8 @@ def filtered_Facc(Facc, freq, fc, order):
 
 
 def get_residual(time, disp, target, polynomial_order):
-    coef = np.polyfit(time[0 : len(disp)], disp, polynomial_order)
+    coef = np.polyfit(time[0 : len(disp.data)], disp.data, polynomial_order)
     fit = []
     for t in time:
         fit.append(np.polyval(coef, t))
-    return MAX(fit) / MAX(disp) - target
+    return MAX(fit) / MAX(disp.data) - target
