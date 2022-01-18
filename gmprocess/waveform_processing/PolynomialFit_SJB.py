@@ -185,32 +185,6 @@ def filtered_Facc(Facc, freq, fc, order):
     return filtered_Facc
 
 
-# def get_disp_frequency_domain(freq, Facc, N):
-#     Fdisp = []
-#     for facc, f in zip(Facc, freq):
-#         if f == 0:
-#             Fdisp.append(0.0)
-#         else:
-#             Fdisp.append(
-#                 (facc / 100) / (2.0j * np.pi * f) ** 2
-#             )  # convert from cm/s^2 to m/s^2
-#     disp = np.fft.irfft(Fdisp, n=N) * 100
-#     return disp
-
-
-# def get_disp_time_domain_zero_init(Facc, delta, N):
-#     acc_time = np.fft.irfft(Facc, n=N)
-#     disp = cumtrapz(cumtrapz(acc_time, dx=delta, initial=0), dx=delta, initial=0)
-#     return disp
-
-# def get_disp_time_domain_zero_mean(Facc, delta, N):
-#     acc_time = np.fft.irfft(Facc, n=N)
-#     vel = cumtrapz(acc_time, dx=delta, initial=0)
-#     vel -= np.mean(vel)
-#     disp = cumtrapz(vel,dx = delta, initial = 0)
-#     return disp
-
-
 def get_residual(time, disp, target, polynomial_order):
     coef = np.polyfit(time[0 : len(disp.data)], disp.data, polynomial_order)
     fit = []
