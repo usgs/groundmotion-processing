@@ -56,7 +56,9 @@ def PolynomialFit_SJB(
             )
         else:
             initial_corners = tr.getParameter("corner_frequencies")
-            f_hp = 0.0001  # GP: Want the initial bounds to encompass the solution
+            f_hp = initial_corners[
+                "highpass"
+            ]  # GP: Want the initial lower bound from SNR
 
             out = __ridder_log(
                 tr, f_hp, target, tol, polynomial_order, maxiter, maxfc, config
@@ -119,15 +121,10 @@ def __ridder_log(
 
     R2 = get_residual(time, disp2, target, polynomial_order)
     if (np.sign(R0) < 0) and (np.sign(R2) < 0):
-        # output = {
-        #     'status': True,
-        #     'fc (Hz)': fc0,
-        #     'acc (g)': np.fft.irfft(Facc0),
-        #     'vel (m/s)': get_vel(freq, Facc0),
-        #     'disp (m)': get_disp(freq, Facc0)
-        # }
         output = [True, fc0, np.abs(R0)]
+        logging.debug("fchp from SNR meets polynomial criterion")
         return output
+
     if (np.sign(R0) > 0) and (np.sign(R2) > 0):
         output = [False]
         return output
