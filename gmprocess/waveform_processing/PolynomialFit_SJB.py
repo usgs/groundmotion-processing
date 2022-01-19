@@ -58,7 +58,7 @@ def PolynomialFit_SJB(
             initial_corners = tr.getParameter("corner_frequencies")
             f_hp = initial_corners[
                 "highpass"
-            ]  # GP: Want the initial lower bound from SNR
+            ]  # GP: Want the initial lower bound from SNR or constant fchp
 
             out = __ridder_log(
                 tr, f_hp, target, tol, polynomial_order, maxiter, maxfc, config
