@@ -50,7 +50,6 @@ def test_fas():
             header={
                 "channel": "H" + str(idx),
                 "delta": dt,
-                "units": "acc",
                 "standard": {
                     "corner_frequency": np.nan,
                     "station_name": "",
@@ -66,7 +65,7 @@ def test_fas():
                     "process_time": "",
                     "horizontal_orientation": np.nan,
                     "vertical_orientation": np.nan,
-                    "units": "acc",
+                    "units": "cm/s/s",
                     "units_type": "acc",
                     "instrument_sensitivity": np.nan,
                     "instrument_damping": np.nan,

@@ -202,7 +202,7 @@ def read_dmg(filename, config=None, **kwargs):
         # For our purposes, we only want acceleration, so lets only return
         # that; we may need to change this later if others start using this
         # code and want to read in the other data.
-        if trace.stats["standard"]["units"] == units:
+        if trace.stats["standard"]["units_type"] == units:
             stream.append(trace)
     return [stream]
 
@@ -371,7 +371,7 @@ def _read_volume_two(filename, line_offset, location="", units="acc"):
 
     # read velocity data
     vel_hdr = hdr.copy()
-    vel_hdr["standard"]["units"] = "vel"
+    vel_hdr["standard"]["units_type"] = "vel"
     vel_hdr["npts"] = int_data[63]
     if vel_hdr["npts"] > 0:
         vel_rows, vel_fmt, unit = _get_data_format(filename, skip_rows, vel_hdr["npts"])
@@ -381,7 +381,8 @@ def _read_volume_two(filename, line_offset, location="", units="acc"):
 
     # read displacement data
     disp_hdr = hdr.copy()
-    disp_hdr["standard"]["units"] = "disp"
+    disp_hdr["standard"]["units_type"] = "disp"
+    disp_hdr["standard"]["units"] = "cm"
     disp_hdr["npts"] = int_data[65]
     if disp_hdr["npts"] > 0:
         disp_rows, disp_fmt, unit = _get_data_format(
@@ -541,6 +542,7 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=""):
 
     # Standard metadata
     standard["units_type"] = get_units_type(hdr["channel"])
+    standard["units"] = "cm/s/s"
     standard["horizontal_orientation"] = float(angle)
     standard["vertical_orientation"] = np.nan
     standard["instrument_period"] = flt_data[0]
@@ -560,7 +562,6 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=""):
     standard["instrument"] = station_line[39:47].strip()
     standard["sensor_serial_number"] = station_line[53:57].strip()
     standard["corner_frequency"] = np.nan
-    standard["units"] = "acc"
     standard["source"] = source
     standard["source_format"] = "dmg"
     standard["station_name"] = lines[5].strip()

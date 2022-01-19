@@ -56,7 +56,6 @@ def read_at2(dfile, horient=0.0):
     hdr["coordinates"] = {"latitude": 0.0, "longitude": 0.0, "elevation": 0.0}
 
     standard = {}
-    standard["units"] = "acc"
     standard["units_type"] = "acc"
     standard["horizontal_orientation"] = horient
     standard["vertical_orientation"] = np.nan

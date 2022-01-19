@@ -59,7 +59,7 @@ def test_radial_transverse():
                 "sensor_serial_number": "",
                 "process_level": "raw counts",
                 "process_time": "",
-                "units": "acc",
+                "units": "cm/s/s",
                 "units_type": "acc",
                 "instrument_sensitivity": np.nan,
                 "instrument_damping": np.nan,

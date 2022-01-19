@@ -153,7 +153,7 @@ def _read_header_lines(filename, offset):
     standard["station_name"] = station_name
     standard["structure_type"] = ""
     standard["corner_frequency"] = np.nan
-    standard["units"] = "acc"
+    standard["units"] = "cm/s/s"
     period_str, damping_str = re.findall(FLOATRE, lines[9])
     standard["instrument_period"] = float(period_str)
     if standard["instrument_period"] == 0:

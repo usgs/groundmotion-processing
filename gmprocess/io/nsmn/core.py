@@ -131,7 +131,8 @@ def _read_header(filename):
         standard["station_name"] = lines[1].split(":")[1].strip()
         standard["structure_type"] = ""
         standard["corner_frequency"] = np.nan
-        standard["units"] = "acc"
+        standard["units_type"] = "acc"
+        standard["units"] = "cm/s/s"
         standard["instrument_period"] = np.nan
         standard["instrument_damping"] = np.nan
         standard["horizontal_orientation"] = np.nan

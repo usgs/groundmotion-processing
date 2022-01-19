@@ -27,6 +27,8 @@ UNITS = {"PGA": r"%g", "PGV": r"cm/s", "SA": r"%g"}
 UNIT_CONVERSIONS = {
     "gal": 1,
     "cm/s/s": 1,
+    "cm/s^2": 1,
+    "cm/s**2": 1,
     "in/s/s": sp.inch * 100,
     "cm/s": 1,
     "in/s": sp.inch * 100,

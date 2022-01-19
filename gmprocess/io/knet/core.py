@@ -100,7 +100,8 @@ def read_knet(filename, config=None, **kwargs):
 
     hdr["sampling_rate"] = float(re.search("\\d+", lines[10].split()[2]).group())
     hdr["delta"] = 1 / hdr["sampling_rate"]
-    standard["units"] = "acc"
+    standard["units_type"] = "acc"
+    standard["units_type"] = "cm/s/s"
 
     dir_string = lines[12].split()[1].strip()
     # knet files have directions listed as N-S, E-W, or U-D,

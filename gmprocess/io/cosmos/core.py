@@ -148,10 +148,7 @@ FILTERS = {
 }
 
 PHYSICAL_UNITS = {
-    1: (
-        "s",
-        np.nan,
-    ),
+    1: ("s", np.nan),
     2: ("g", 980.665),
     3: ("ss & g", np.nan),
     4: ("cm/s/s", 1.0),
@@ -358,6 +355,7 @@ def _read_channel(filename, line_offset, location=""):
 
     # check units
     unit = hdr["format_specific"]["physical_units"]
+    hdr["standard"]["units"] = unit
     if unit in UNIT_CONVERSIONS:
         data *= UNIT_CONVERSIONS[unit]
         logging.debug(f"Data converted from {unit} to cm/s/s")
@@ -365,7 +363,7 @@ def _read_channel(filename, line_offset, location=""):
         if unit != "counts":
             raise ValueError(f"COSMOS: {unit} is not a supported unit.")
 
-    if hdr["standard"]["units"] != "acc":
+    if hdr["standard"]["units_type"] != "acc":
         raise ValueError("COSMOS: Only acceleration data accepted.")
 
     trace = StationTrace(data.copy(), Stats(hdr.copy()))
@@ -704,14 +702,14 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=""):
     physical_parameter = int(int_data[2])
     units = int(int_data[1])
     if units != unknown and units in UNITS:
-        standard["units"] = UNITS[units]
+        standard["units_type"] = UNITS[units]
     else:
         if physical_parameter in [2, 4, 7, 10, 11, 12, 23]:
-            standard["units"] = "acc"
+            standard["units_type"] = "acc"
         elif physical_parameter in [5, 8, 24]:
-            standard["units"] = "vel"
+            standard["units_type"] = "vel"
         elif physical_parameter in [6, 9, 25]:
-            standard["units"] = "disp"
+            standard["units_type"] = "disp"
     standard["source_format"] = "cosmos"
     standard["comments"] = ", ".join(cmt_data)
 
