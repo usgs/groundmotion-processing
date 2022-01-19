@@ -59,7 +59,7 @@ def test_dmg_v1():
 
     # test that the traces are acceleration
     for trace in stream1:
-        assert trace.stats["standard"]["units"] == "acc"
+        assert trace.stats["standard"]["units_type"] == "acc"
 
     # test metadata
     for trace in stream1:
@@ -114,7 +114,7 @@ def test_dmg():
 
         # test that the traces are acceleration
         for trace in stream1:
-            assert trace.stats["standard"]["units"] == "acc"
+            assert trace.stats["standard"]["units_type"] == "acc"
 
     # Test metadata
     stream = read_dmg(file1)[0]

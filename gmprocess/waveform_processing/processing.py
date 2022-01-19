@@ -269,7 +269,7 @@ def remove_response(
                         taper=False,
                     )
                     tr.differentiate()
-                    tr.stats.standard.units = output.lower()
+                    # tr.stats.standard.units_type = output.lower()
                     tr.stats.standard.process_level = PROCESS_LEVELS["V1"]
                 except BaseException as e:
                     reason = (
@@ -307,7 +307,8 @@ def remove_response(
                     if len(paz.poles) == 0 and len(paz.zeros) == 0:
                         tr.remove_sensitivity(inventory=inv)
                         tr.data *= M_TO_CM  # Convert from m to cm
-                        tr.stats.standard.units = output.lower()
+                        tr.stats.standard.units = ABBREV_UNITS[output]
+                        tr.stats.standard.units_type = output.lower()
                         tr.stats.standard.process_level = PROCESS_LEVELS["V1"]
                         tr.setProvenance(
                             "remove_response",
@@ -326,7 +327,8 @@ def remove_response(
                             taper=False,
                         )
                         tr.data *= M_TO_CM  # Convert from m to cm
-                        tr.stats.standard.units = output.lower()
+                        tr.stats.standard.units = ABBREV_UNITS[output]
+                        tr.stats.standard.units_type = output.lower()
                         tr.stats.standard.process_level = PROCESS_LEVELS["V1"]
                         tr.setProvenance(
                             "remove_response",
@@ -360,7 +362,8 @@ def remove_response(
             )
             tr.remove_sensitivity(inventory=inv)
             tr.data *= M_TO_CM  # Convert from m to cm
-            tr.stats.standard.units = output.lower()
+            tr.stats.standard.units = ABBREV_UNITS[output]
+            tr.stats.standard.units_type = output.lower()
             tr.stats.standard.process_level = PROCESS_LEVELS["V1"]
             tr.setProvenance(
                 "remove_response",

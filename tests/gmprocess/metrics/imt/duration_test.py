@@ -35,7 +35,6 @@ def test_duration():
         "delta": delta,
         "sampling_rate": sr,
         "npts": len(acc),
-        "units": "m/s/s",
         "channel": "HN1",
         "standard": {
             "corner_frequency": np.nan,
@@ -52,7 +51,7 @@ def test_duration():
             "process_time": "",
             "horizontal_orientation": np.nan,
             "vertical_orientation": np.nan,
-            "units": "acc",
+            "units": "m/s/s",
             "units_type": "acc",
             "instrument_sensitivity": np.nan,
             "instrument_damping": np.nan,

@@ -416,8 +416,8 @@ class StationStream(Stream):
 
 
 def _channel_from_stats(stats):
-    if stats.standard.units in UNITS:
-        units = UNITS[stats.standard.units]
+    if stats.standard.units_type in UNITS:
+        units = UNITS[stats.standard.units_type]
     else:
         units = ""
     instrument = stats.standard.instrument
@@ -444,7 +444,7 @@ def _channel_from_stats(stats):
     else:
         # we may have instrument sensitivity...
         frequency = 1 / stats["standard"]["instrument_period"]
-        units = stats.standard.units
+        units = stats.standard.units_type
         if not np.isnan(stats["standard"]["instrument_sensitivity"]):
             sens = stats["standard"]["instrument_sensitivity"]
         else:

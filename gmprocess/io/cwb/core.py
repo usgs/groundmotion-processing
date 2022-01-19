@@ -210,7 +210,8 @@ def _get_header_info(file, data):
     hdr["network"] = "TW"
     hdr["delta"] = 1 / hdr["sampling_rate"]
     hdr["calib"] = 1.0
-    standard["units"] = "acc"  # cm/s**2
+    standard["units_type"] = "acc"
+    standard["units"] = "cm/s^2"
     hdr["source"] = "Taiwan Central Weather Bureau"
     hdr["npts"] = nrows
     secs = int(data[-1, 0])

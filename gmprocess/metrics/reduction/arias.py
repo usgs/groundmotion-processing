@@ -73,7 +73,7 @@ class Arias(Reduction):
             # Create a copy of stats so we don't modify original data
             stats = trace.stats.copy()
             channel = stats.channel
-            stats.standard.units = "vel"
+            stats.standard.units_type = "vel"
             stats.npts = len(arias_intensity)
             arias_stream.append(StationTrace(arias_intensity, stats))
             arias_intensities[channel] = np.abs(np.max(arias_intensity))

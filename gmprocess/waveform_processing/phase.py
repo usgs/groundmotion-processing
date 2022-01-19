@@ -590,7 +590,7 @@ def pphase_pick(trace, period=None, damping=0.6, nbins=None, peak_selection=Fals
             - Signal-to-noise ratio in decibels
     """
     WAVEFORM_TYPES = {"acc": "sm", "vel": "wm"}
-    wftype = WAVEFORM_TYPES[trace.stats.standard["units"]]
+    wftype = WAVEFORM_TYPES[trace.stats.standard["units_type"]]
     if period == "None":
         if trace.stats.sampling_rate >= 100:
             period = 0.01
