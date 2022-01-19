@@ -8,6 +8,8 @@ from obspy.core.event.origin import Origin
 from obspy.core.event.magnitude import Magnitude
 from obspy.core.event.event import Event
 from obspy.core.utcdatetime import UTCDateTime
+from json.decoder import JSONDecodeError
+
 from libcomcat.search import get_event_by_id
 
 
@@ -208,7 +210,15 @@ def get_event_object(dict_or_id):
         Event: Obspy Event object.
     """
     if isinstance(dict_or_id, str):
-        event_dict = get_event_dict(dict_or_id)
+        try:
+            event_dict = get_event_dict(dict_or_id)
+        except JSONDecodeError as e:
+            logging.info(
+                "JSONDecodeError error encountered while retrieving event "
+                f"info for {dict_or_id}:"
+            )
+            logging.info(f"Error: {e}")
+            return None
     elif isinstance(dict_or_id, dict):
         event_dict = dict_or_id.copy()
     else:

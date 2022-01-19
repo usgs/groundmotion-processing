@@ -73,6 +73,10 @@ def get_events(eventids, textfile, eventinfo, directory, outdir=None):
         events = events_from_directory(directory)
     elif outdir is not None:
         events = events_from_directory(outdir)
+
+    # "events" elements are None if an error occurred, e.g., bad event id is specified.
+    events = [e for e in events if e is not None]
+
     return events
 
 
