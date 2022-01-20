@@ -252,15 +252,23 @@ processing:
     #     model_name: CantWell
 
     - get_corner_frequencies:
-        # Corner frequency selection can use constant values, or selected
-        # dynamically from the signal-to-noise-ratio.
+        # Corner frequency selection can use constant values, a function of magnitude, 
+        # or selected dynamically from the signal-to-noise-ratio.
 
-        # Valid options for "method" are "constant" and "snr".
+        # Valid options for "method" are: "constant", "magnitude", and "snr". Each have
+        # additional options below.
         method: snr
 
         constant:
             highpass: 0.08
             lowpass: 20.0
+
+        # The magnitude option is to suppport the corner frequency method used by 
+        # PRISM (https://doi.org/10.3133/ofr20171008; Table 1). 
+        magnitude:
+            minmag: [-999.0, 3.5, 5.5]
+            highpass: [0.5, 0.3, 0.1]
+            lowpass: [25.0, 35.0, 40.0]
 
         snr:
             # For dynamic filtering, we require a minimum SNR threshold between

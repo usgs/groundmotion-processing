@@ -50,6 +50,8 @@ class GenerateReportModule(base.SubcommandModule):
         for event in self.events:
             event_dir = os.path.join(self.gmrecords.data_path, event.id)
             pstreams = self.generate_diagnostic_plots(event)
+            if pstreams is None:
+                return
 
             logging.info(f"Generating summary report for event {event.id}...")
 
@@ -114,7 +116,8 @@ class GenerateReportModule(base.SubcommandModule):
                 config=config,
             )
             if not len(streams):
-                raise ValueError("No matching streams found.")
+                logging.info("No matching streams found. Cannot generate report.")
+                return
 
             for stream in streams:
                 pstreams.append(stream)

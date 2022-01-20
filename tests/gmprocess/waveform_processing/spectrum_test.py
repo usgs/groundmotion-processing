@@ -34,7 +34,7 @@ def test_fit_spectra():
         )
         st = compute_snr(st, 30)
         st = get_corner_frequencies(
-            st, method="constant", constant={"highpass": 0.08, "lowpass": 20.0}
+            st, event, method="constant", constant={"highpass": 0.08, "lowpass": 20.0}
         )
 
     for st in sc:
