@@ -62,6 +62,7 @@ def test_radial_transverse():
                 "units": "cm/s/s",
                 "units_type": "acc",
                 "instrument_sensitivity": np.nan,
+                "volts_to_counts": np.nan,
                 "instrument_damping": np.nan,
             }
         )

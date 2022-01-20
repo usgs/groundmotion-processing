@@ -97,6 +97,7 @@ setup(
             "gmrecords = gmprocess.bin.gmrecords:main",
             "gmworkspace = gmprocess.bin.gmworkspace:main",
             "list_metrics = gmprocess.bin.list_metrics:main",
+            "cwb_gather = gmprocess.bin.cwb_gather:main",
         ]
     },
     cmdclass={"build_ext": build_ext},
