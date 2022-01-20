@@ -51,7 +51,12 @@ M_TO_CM = 100.0
 
 # List of processing steps that require an origin
 # besides the arguments in the conf file.
-REQ_ORIGIN = ["fit_spectra", "trim_multiple_events", "check_clipping"]
+REQ_ORIGIN = [
+    "fit_spectra",
+    "trim_multiple_events",
+    "check_clipping",
+    "get_corner_frequencies",
+]
 
 
 TAPER_TYPES = {
@@ -500,19 +505,25 @@ def resample(st, new_sampling_rate=None, method=None, a=None, config=None):
     return st
 
 
-def get_corner_frequencies(st, method="constant", constant=None, snr=None, config=None):
+def get_corner_frequencies(
+    st, origin, method="constant", constant=None, snr=None, magnitude=None, config=None
+):
     """
     Select corner frequencies.
 
     Args:
         st (StationStream):
             Stream of data.
+        origin (ScalarEvent):
+            ScalarEvent object.
         method (str):
             Which method to use; currently allowed "snr" or "constant".
         constant(dict):
             Dictionary of `constant` method config options.
         snr (dict):
             Dictionary of `snr` method config options.
+        magnitude (dict):
+            Dictionary of `magnitude` method config options.
         config (dict):
             Configuration dictionary (or None). See get_config().
 
@@ -522,9 +533,11 @@ def get_corner_frequencies(st, method="constant", constant=None, snr=None, confi
 
     logging.debug("Setting corner frequencies...")
     if method == "constant":
-        st = corner_frequencies.get_constant(st, **constant)
+        st = corner_frequencies.from_constant(st, **constant)
+    elif method == "magnitude":
+        st = corner_frequencies.from_magnitude(st, origin, **magnitude)
     elif method == "snr":
-        st = corner_frequencies.get_snr(st, **snr)
+        st = corner_frequencies.from_snr(st, **snr)
         if snr["same_horiz"] and st.passed and st.num_horizontal > 1:
             lps = [tr.getParameter("corner_frequencies")["lowpass"] for tr in st]
             hps = [tr.getParameter("corner_frequencies")["highpass"] for tr in st]
@@ -545,7 +558,8 @@ def get_corner_frequencies(st, method="constant", constant=None, snr=None, confi
                     st[i].setParameter("corner_frequencies", cfdict)
     else:
         raise ValueError(
-            "Corner frequency 'method' must be either 'constant' or 'snr'."
+            "Corner frequency 'method' must be one of: 'constant', 'magnitude', or "
+            "'snr'."
         )
     return st
 

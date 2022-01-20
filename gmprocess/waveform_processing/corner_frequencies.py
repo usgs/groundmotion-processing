@@ -5,6 +5,8 @@
 Methods for handling/picking corner frequencies.
 """
 
+import numpy as np
+
 from gmprocess.waveform_processing.snr import compute_snr_trace
 
 # Options for tapering noise/signal windows
@@ -13,7 +15,7 @@ TAPER_TYPE = "hann"
 TAPER_SIDE = "both"
 
 
-def get_constant(st, highpass=0.08, lowpass=20.0):
+def from_constant(st, highpass=0.08, lowpass=20.0):
     """Use constant corner frequencies across all records.
 
     Args:
@@ -35,7 +37,41 @@ def get_constant(st, highpass=0.08, lowpass=20.0):
     return st
 
 
-def get_snr(st, same_horiz=True, bandwidth=20):
+def from_magnitude(
+    st,
+    origin,
+    minmag=[-999.0, 3.5, 5.5],
+    highpass=[0.5, 0.3, 0.1],
+    lowpass=[25.0, 35.0, 40.0],
+):
+    """Use constant corner frequencies across all records.
+
+    Args:
+        st (StationStream):
+            Stream of data.
+        origin (ScalarEvent):
+            ScalarEvent object.
+        highpass (float):
+            Highpass corner frequency (Hz).
+        lowpass (float):
+            Lowpass corner frequency (Hz).
+
+    Returns:
+        stream: stream with selected corner frequencies appended to records.
+    """
+    mag = origin.magnitude
+    max_idx = np.max(np.where(mag > np.array(minmag))[0])
+    hp_select = highpass[max_idx]
+    lp_select = lowpass[max_idx]
+    for tr in st:
+        tr.setParameter(
+            "corner_frequencies",
+            {"type": "magnitude", "highpass": hp_select, "lowpass": lp_select},
+        )
+    return st
+
+
+def from_snr(st, same_horiz=True, bandwidth=20):
     """Set corner frequencies from SNR.
 
     Args:

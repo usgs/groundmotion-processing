@@ -43,7 +43,7 @@ def test_process_waveforms(script_runner):
         assert "Adding waveforms for station TOW2" in ret.stderr
 
         ret = script_runner.run(
-            "gmrecords", "process_waveforms", "-n", "2", "-l", "dask"
+            "gmrecords", "process_waveforms", "-n", "2", "-l", "dasktest"
         )
         assert ret.success
 

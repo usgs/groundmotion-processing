@@ -160,7 +160,7 @@ class SubcommandModule(ABC):
             labels.remove("unprocessed")
         if not len(labels):
             logging.info(
-                f"No processed waveform data in workspace for event {self.eventid}"
+                f"No processed waveform data in: {self.workspace.dataset.filename}"
             )
             return
 

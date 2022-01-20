@@ -83,7 +83,7 @@ def test_corner_frequencies():
     for stream in processed_streams:
         if not stream.passed:
             continue
-        stream = get_corner_frequencies(stream, method="snr", snr=snr_config)
+        stream = get_corner_frequencies(stream, origin, method="snr", snr=snr_config)
         if stream[0].hasParameter("corner_frequencies"):
             cfdict = stream[0].getParameter("corner_frequencies")
             lp.append(cfdict["lowpass"])
@@ -108,7 +108,7 @@ def test_corner_frequencies():
     for stream in processed_streams:
         if not stream.passed:
             continue
-        stream = get_corner_frequencies(stream, method="snr", snr=snr_config)
+        stream = get_corner_frequencies(stream, origin, method="snr", snr=snr_config)
         if stream[0].hasParameter("corner_frequencies"):
             cfdict = stream[0].getParameter("corner_frequencies")
             lp.append(cfdict["lowpass"])
@@ -125,6 +125,70 @@ def test_corner_frequencies():
     np.testing.assert_allclose(np.sort(hps), [0.010265, 0.010265, 0.025275], atol=1e-6)
 
 
+def test_corner_frequencies_magnitude():
+    # Default config has 'constant' corner frequency method, so the need
+    # here is to force the 'magnitude' method.
+    data_files, origin = read_data_dir("geonet", "us1000778i", "*.V1A")
+    streams = []
+    for f in data_files:
+        streams += read_data(f)
+
+    sc = StreamCollection(streams)
+
+    config = get_config()
+
+    window_conf = config["windows"]
+
+    processed_streams = sc.copy()
+    for st in processed_streams:
+        if st.passed:
+            # Estimate noise/signal split time
+            event_time = origin.time
+            event_lon = origin.longitude
+            event_lat = origin.latitude
+            st = signal_split(st, origin)
+
+            # Estimate end of signal
+            end_conf = window_conf["signal_end"]
+            event_mag = origin.magnitude
+            print(st)
+            st = signal_end(
+                st,
+                event_time=event_time,
+                event_lon=event_lon,
+                event_lat=event_lat,
+                event_mag=event_mag,
+                **end_conf
+            )
+            wcheck_conf = window_conf["window_checks"]
+            st = window_checks(
+                st,
+                min_noise_duration=wcheck_conf["min_noise_duration"],
+                min_signal_duration=wcheck_conf["min_signal_duration"],
+            )
+
+    pconfig = config["processing"]
+
+    # Run get_corner_frequencies
+    test = [d for d in pconfig if list(d.keys())[0] == "get_corner_frequencies"]
+    cf_config = test[0]["get_corner_frequencies"]
+    mag_config = cf_config["magnitude"]
+
+    lp = []
+    hp = []
+    for stream in processed_streams:
+        if not stream.passed:
+            continue
+        stream = get_corner_frequencies(
+            stream, origin, method="magnitude", magnitude=mag_config
+        )
+        if stream[0].hasParameter("corner_frequencies"):
+            cfdict = stream[0].getParameter("corner_frequencies")
+            lp.append(cfdict["lowpass"])
+            hp.append(cfdict["highpass"])
+
+
 if __name__ == "__main__":
     os.environ["CALLED_FROM_PYTEST"] = "True"
     test_corner_frequencies()
+    test_corner_frequencies_magnitude()
