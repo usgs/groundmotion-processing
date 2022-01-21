@@ -3,6 +3,7 @@ requests>=2
 furo
 myst-nb
 myst-parser
+altair
 nbsphinx
 recommonmark
 sphinx-autoapi

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
-        <title>gmprocess.waveform_processing.processing - gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</title>
+        <title>gmprocess.waveform_processing.processing - gmprocess 1.1.9.dev306+gf9478618.d20220121 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.9.dev306+gf9478618.d20220121 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -185,6 +185,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../contents/tutorials/response_spectra.html">Response Spectra Calculation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../contents/tutorials/lme.html">Linear Mixed Effects Regressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../contents/tutorials/asdf_to_waveforms.html">Processed Waveforms from ASDF File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contents/tutorials/station_map.html">Plotting Seismograms on Station Map</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../contents/manual/index.html">Manual</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -511,7 +512,12 @@
 
 <span class="c1"># List of processing steps that require an origin</span>
 <span class="c1"># besides the arguments in the conf file.</span>
-<span class="n">REQ_ORIGIN</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"fit_spectra"</span><span class="p">,</span> <span class="s2">"trim_multiple_events"</span><span class="p">,</span> <span class="s2">"check_clipping"</span><span class="p">]</span>
+<span class="n">REQ_ORIGIN</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"fit_spectra"</span><span class="p">,</span>
+    <span class="s2">"trim_multiple_events"</span><span class="p">,</span>
+    <span class="s2">"check_clipping"</span><span class="p">,</span>
+    <span class="s2">"get_corner_frequencies"</span><span class="p">,</span>
+<span class="p">]</span>
 
 
 <span class="n">TAPER_TYPES</span> <span class="o">=</span> <span class="p">{</span>
@@ -729,7 +735,7 @@
                         <span class="n">taper</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="n">tr</span><span class="o">.</span><span class="n">differentiate</span><span class="p">()</span>
-                    <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                    <span class="c1"># tr.stats.standard.units_type = output.lower()</span>
                     <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">process_level</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="s2">"V1"</span><span class="p">]</span>
                 <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="n">reason</span> <span class="o">=</span> <span class="p">(</span>
@@ -767,7 +773,8 @@
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">paz</span><span class="o">.</span><span class="n">poles</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">paz</span><span class="o">.</span><span class="n">zeros</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                         <span class="n">tr</span><span class="o">.</span><span class="n">remove_sensitivity</span><span class="p">(</span><span class="n">inventory</span><span class="o">=</span><span class="n">inv</span><span class="p">)</span>
                         <span class="n">tr</span><span class="o">.</span><span class="n">data</span> <span class="o">*=</span> <span class="n">M_TO_CM</span>  <span class="c1"># Convert from m to cm</span>
-                        <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                        <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">ABBREV_UNITS</span><span class="p">[</span><span class="n">output</span><span class="p">]</span>
+                        <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
                         <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">process_level</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="s2">"V1"</span><span class="p">]</span>
                         <span class="n">tr</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span>
                             <span class="s2">"remove_response"</span><span class="p">,</span>
@@ -786,7 +793,8 @@
                             <span class="n">taper</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                         <span class="p">)</span>
                         <span class="n">tr</span><span class="o">.</span><span class="n">data</span> <span class="o">*=</span> <span class="n">M_TO_CM</span>  <span class="c1"># Convert from m to cm</span>
-                        <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                        <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">ABBREV_UNITS</span><span class="p">[</span><span class="n">output</span><span class="p">]</span>
+                        <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
                         <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">process_level</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="s2">"V1"</span><span class="p">]</span>
                         <span class="n">tr</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span>
                             <span class="s2">"remove_response"</span><span class="p">,</span>
@@ -820,7 +828,8 @@
             <span class="p">)</span>
             <span class="n">tr</span><span class="o">.</span><span class="n">remove_sensitivity</span><span class="p">(</span><span class="n">inventory</span><span class="o">=</span><span class="n">inv</span><span class="p">)</span>
             <span class="n">tr</span><span class="o">.</span><span class="n">data</span> <span class="o">*=</span> <span class="n">M_TO_CM</span>  <span class="c1"># Convert from m to cm</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">ABBREV_UNITS</span><span class="p">[</span><span class="n">output</span><span class="p">]</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">process_level</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="s2">"V1"</span><span class="p">]</span>
             <span class="n">tr</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span>
                 <span class="s2">"remove_response"</span><span class="p">,</span>
@@ -960,19 +969,25 @@
     <span class="k">return</span> <span class="n">st</span></div>
 
 
-<div class="viewcode-block" id="get_corner_frequencies"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.get_corner_frequencies">[docs]</a><span class="k">def</span> <span class="nf">get_corner_frequencies</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"constant"</span><span class="p">,</span> <span class="n">constant</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">snr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="get_corner_frequencies"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.get_corner_frequencies">[docs]</a><span class="k">def</span> <span class="nf">get_corner_frequencies</span><span class="p">(</span>
+    <span class="n">st</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"constant"</span><span class="p">,</span> <span class="n">constant</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">snr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">magnitude</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Select corner frequencies.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        st (StationStream):</span>
 <span class="sd">            Stream of data.</span>
+<span class="sd">        origin (ScalarEvent):</span>
+<span class="sd">            ScalarEvent object.</span>
 <span class="sd">        method (str):</span>
 <span class="sd">            Which method to use; currently allowed "snr" or "constant".</span>
 <span class="sd">        constant(dict):</span>
 <span class="sd">            Dictionary of `constant` method config options.</span>
 <span class="sd">        snr (dict):</span>
 <span class="sd">            Dictionary of `snr` method config options.</span>
+<span class="sd">        magnitude (dict):</span>
+<span class="sd">            Dictionary of `magnitude` method config options.</span>
 <span class="sd">        config (dict):</span>
 <span class="sd">            Configuration dictionary (or None). See get_config().</span>
 
@@ -982,9 +997,11 @@
 
     <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Setting corner frequencies..."</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">"constant"</span><span class="p">:</span>
-        <span class="n">st</span> <span class="o">=</span> <span class="n">corner_frequencies</span><span class="o">.</span><span class="n">get_constant</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="o">**</span><span class="n">constant</span><span class="p">)</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="n">corner_frequencies</span><span class="o">.</span><span class="n">from_constant</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="o">**</span><span class="n">constant</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">"magnitude"</span><span class="p">:</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="n">corner_frequencies</span><span class="o">.</span><span class="n">from_magnitude</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="o">**</span><span class="n">magnitude</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">"snr"</span><span class="p">:</span>
-        <span class="n">st</span> <span class="o">=</span> <span class="n">corner_frequencies</span><span class="o">.</span><span class="n">get_snr</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="o">**</span><span class="n">snr</span><span class="p">)</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="n">corner_frequencies</span><span class="o">.</span><span class="n">from_snr</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="o">**</span><span class="n">snr</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">snr</span><span class="p">[</span><span class="s2">"same_horiz"</span><span class="p">]</span> <span class="ow">and</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span> <span class="ow">and</span> <span class="n">st</span><span class="o">.</span><span class="n">num_horizontal</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">lps</span> <span class="o">=</span> <span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"corner_frequencies"</span><span class="p">)[</span><span class="s2">"lowpass"</span><span class="p">]</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">]</span>
             <span class="n">hps</span> <span class="o">=</span> <span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"corner_frequencies"</span><span class="p">)[</span><span class="s2">"highpass"</span><span class="p">]</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">]</span>
@@ -1005,7 +1022,8 @@
                     <span class="n">st</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">"corner_frequencies"</span><span class="p">,</span> <span class="n">cfdict</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">"Corner frequency 'method' must be either 'constant' or 'snr'."</span>
+            <span class="s2">"Corner frequency 'method' must be one of: 'constant', 'magnitude', or "</span>
+            <span class="s2">"'snr'."</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">st</span></div>
 

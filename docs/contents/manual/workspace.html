@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Configuration File" href="config_file.html" /><link rel="prev" title="Data Structures" href="data_structures.html" />
 
     <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
-        <title>Workspace - gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</title>
+        <title>Workspace - gmprocess 1.1.9.dev306+gf9478618.d20220121 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.1.9.dev306+gf9478618.d20220121 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -186,6 +186,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/response_spectra.html">Response Spectra Calculation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/lme.html">Linear Mixed Effects Regressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/asdf_to_waveforms.html">Processed Waveforms from ASDF File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/station_map.html">Plotting Seismograms on Station Map</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Manual</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
@@ -598,43 +599,43 @@ hierarchy is</p>
 -&gt; <em>NET.STA.LOC.CHA_EVENTID_LABEL</em> (dataset)</p>
 <p>The dataset is a byte string corresponding to JSON.</p>
 <p>Sample JSON for a trace processing parameters dataset:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">"baseline"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"polynomial_coefs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">      </span><span class="mf">-3.1244715639196995e-24</span><span class="p">,</span><span class="w"></span>
-<span class="w">      </span><span class="mf">1.1046838180719736e-19</span><span class="p">,</span><span class="w"></span>
-<span class="w">      </span><span class="mf">-1.2610591147149431e-15</span><span class="p">,</span><span class="w"></span>
-<span class="w">      </span><span class="mf">4.223265643969671e-12</span><span class="p">,</span><span class="w"></span>
-<span class="w">      </span><span class="mf">7.099592013855652e-09</span><span class="p">,</span><span class="w"></span>
-<span class="w">      </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
-<span class="w">      </span><span class="mi">0</span><span class="w"></span>
-<span class="w">    </span><span class="p">]</span><span class="w"></span>
-<span class="w">  </span><span class="p">},</span><span class="w"></span>
-<span class="w">  </span><span class="nt">"corner_frequencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"snr"</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"lowpass"</span><span class="p">:</span><span class="w"> </span><span class="mf">30.778610333622925</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"highpass"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.008053637150713472</span><span class="w"></span>
-<span class="w">  </span><span class="p">},</span><span class="w"></span>
-<span class="w">  </span><span class="nt">"snr_conf"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"threshold"</span><span class="p">:</span><span class="w"> </span><span class="mf">3.0</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"min_freq"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"bandwidth"</span><span class="p">:</span><span class="w"> </span><span class="mf">20.0</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"max_freq"</span><span class="p">:</span><span class="w"> </span><span class="mf">5.0</span><span class="w"></span>
-<span class="w">  </span><span class="p">},</span><span class="w"></span>
-<span class="w">  </span><span class="nt">"signal_split"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"picker_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"travel_time"</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"p_arrival"</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"split_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-07-06T03:20:46.346556Z"</span><span class="w"></span>
-<span class="w">  </span><span class="p">},</span><span class="w"></span>
-<span class="w">  </span><span class="nt">"signal_end"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"vsplit"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"floor"</span><span class="p">:</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"epsilon"</span><span class="p">:</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"end_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-07-06T03:23:09.315515Z"</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AS16"</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"model"</span><span class="w"></span>
-<span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">"baseline"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">"polynomial_coefs"</span><span class="p">:</span> <span class="p">[</span>
+      <span class="mf">-3.1244715639196995e-24</span><span class="p">,</span>
+      <span class="mf">1.1046838180719736e-19</span><span class="p">,</span>
+      <span class="mf">-1.2610591147149431e-15</span><span class="p">,</span>
+      <span class="mf">4.223265643969671e-12</span><span class="p">,</span>
+      <span class="mf">7.099592013855652e-09</span><span class="p">,</span>
+      <span class="mi">0</span><span class="p">,</span>
+      <span class="mi">0</span>
+    <span class="p">]</span>
+  <span class="p">},</span>
+  <span class="nt">"corner_frequencies"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"snr"</span><span class="p">,</span>
+    <span class="nt">"lowpass"</span><span class="p">:</span> <span class="mf">30.778610333622925</span><span class="p">,</span>
+    <span class="nt">"highpass"</span><span class="p">:</span> <span class="mf">0.008053637150713472</span>
+  <span class="p">},</span>
+  <span class="nt">"snr_conf"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">"threshold"</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span>
+    <span class="nt">"min_freq"</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">,</span>
+    <span class="nt">"bandwidth"</span><span class="p">:</span> <span class="mf">20.0</span><span class="p">,</span>
+    <span class="nt">"max_freq"</span><span class="p">:</span> <span class="mf">5.0</span>
+  <span class="p">},</span>
+  <span class="nt">"signal_split"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">"picker_type"</span><span class="p">:</span> <span class="s2">"travel_time"</span><span class="p">,</span>
+    <span class="nt">"method"</span><span class="p">:</span> <span class="s2">"p_arrival"</span><span class="p">,</span>
+    <span class="nt">"split_time"</span><span class="p">:</span> <span class="s2">"2019-07-06T03:20:46.346556Z"</span>
+  <span class="p">},</span>
+  <span class="nt">"signal_end"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">"vsplit"</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="nt">"floor"</span><span class="p">:</span> <span class="mi">120</span><span class="p">,</span>
+    <span class="nt">"epsilon"</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span>
+    <span class="nt">"end_time"</span><span class="p">:</span> <span class="s2">"2019-07-06T03:23:09.315515Z"</span><span class="p">,</span>
+    <span class="nt">"model"</span><span class="p">:</span> <span class="s2">"AS16"</span><span class="p">,</span>
+    <span class="nt">"method"</span><span class="p">:</span> <span class="s2">"model"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </section>
