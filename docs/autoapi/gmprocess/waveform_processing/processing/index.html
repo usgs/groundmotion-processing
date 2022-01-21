@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.waveform_processing.sanity_checks" href="../sanity_checks/index.html" /><link rel="prev" title="gmprocess.waveform_processing.pretesting" href="../pretesting/index.html" />
 
     <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
-        <title>gmprocess.waveform_processing.processing - gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</title>
+        <title>gmprocess.waveform_processing.processing - gmprocess 1.1.9.dev306+gf9478618.d20220121 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.9.dev306+gf9478618.d20220121 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -186,6 +186,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/response_spectra.html">Response Spectra Calculation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/lme.html">Linear Mixed Effects Regressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/asdf_to_waveforms.html">Processed Waveforms from ASDF File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/station_map.html">Plotting Seismograms on Station Map</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../contents/manual/index.html">Manual</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -489,7 +490,7 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.resample" title="gmprocess.waveform_processing.processing.resample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resample</span></code></a>(st, new_sampling_rate=None, method=None, a=None, config=None)</p></td>
 <td><p>Resample stream.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.get_corner_frequencies" title="gmprocess.waveform_processing.processing.get_corner_frequencies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_corner_frequencies</span></code></a>(st, method='constant', constant=None, snr=None, config=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.get_corner_frequencies" title="gmprocess.waveform_processing.processing.get_corner_frequencies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_corner_frequencies</span></code></a>(st, origin, method='constant', constant=None, snr=None, magnitude=None, config=None)</p></td>
 <td><p>Select corner frequencies.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.processing.taper" title="gmprocess.waveform_processing.processing.taper"><code class="xref py py-obj docutils literal notranslate"><span class="pre">taper</span></code></a>(st, type='hann', width=0.05, side='both', config=None)</p></td>
@@ -535,7 +536,7 @@
 <dd></dd></dl>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.processing.REQ_ORIGIN">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">REQ_ORIGIN</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['fit_spectra',</span> <span class="pre">'trim_multiple_events',</span> <span class="pre">'check_clipping']</span></em><a class="headerlink" href="#gmprocess.waveform_processing.processing.REQ_ORIGIN" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">REQ_ORIGIN</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['fit_spectra',</span> <span class="pre">'trim_multiple_events',</span> <span class="pre">'check_clipping',</span> <span class="pre">'get_corner_frequencies']</span></em><a class="headerlink" href="#gmprocess.waveform_processing.processing.REQ_ORIGIN" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.processing.TAPER_TYPES">
@@ -697,15 +698,17 @@ series.</p>
 </dd></dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.processing.get_corner_frequencies">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">get_corner_frequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'constant'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#get_corner_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.get_corner_frequencies" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.processing.</span></span><span class="sig-name descname"><span class="pre">get_corner_frequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'constant'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/processing.html#get_corner_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.processing.get_corner_frequencies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Select corner frequencies.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>st</strong> (<a class="reference internal" href="../../core/stationstream/index.html#gmprocess.core.stationstream.StationStream" title="gmprocess.core.stationstream.StationStream"><em>StationStream</em></a>) – Stream of data.</p></li>
+<li><p><strong>origin</strong> (<a class="reference internal" href="../../utils/event/index.html#gmprocess.utils.event.ScalarEvent" title="gmprocess.utils.event.ScalarEvent"><em>ScalarEvent</em></a>) – ScalarEvent object.</p></li>
 <li><p><strong>method</strong> (<em>str</em>) – Which method to use; currently allowed “snr” or “constant”.</p></li>
 <li><p><strong>constant</strong> (<em>dict</em>) – Dictionary of <cite>constant</cite> method config options.</p></li>
 <li><p><strong>snr</strong> (<em>dict</em>) – Dictionary of <cite>snr</cite> method config options.</p></li>
+<li><p><strong>magnitude</strong> (<em>dict</em>) – Dictionary of <cite>magnitude</cite> method config options.</p></li>
 <li><p><strong>config</strong> (<em>dict</em>) – Configuration dictionary (or None). See get_config().</p></li>
 </ul>
 </dd>

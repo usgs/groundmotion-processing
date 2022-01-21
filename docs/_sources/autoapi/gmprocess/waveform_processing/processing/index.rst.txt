@@ -49,7 +49,7 @@ Attributes
    
 
 .. py:data:: REQ_ORIGIN
-   :annotation: = ['fit_spectra', 'trim_multiple_events', 'check_clipping']
+   :annotation: = ['fit_spectra', 'trim_multiple_events', 'check_clipping', 'get_corner_frequencies']
 
    
 
@@ -186,18 +186,22 @@ Attributes
    :rtype: StationStream
 
 
-.. py:function:: get_corner_frequencies(st, method='constant', constant=None, snr=None, config=None)
+.. py:function:: get_corner_frequencies(st, origin, method='constant', constant=None, snr=None, magnitude=None, config=None)
 
    Select corner frequencies.
 
    :param st: Stream of data.
    :type st: StationStream
+   :param origin: ScalarEvent object.
+   :type origin: ScalarEvent
    :param method: Which method to use; currently allowed "snr" or "constant".
    :type method: str
    :param constant: Dictionary of `constant` method config options.
    :type constant: dict
    :param snr: Dictionary of `snr` method config options.
    :type snr: dict
+   :param magnitude: Dictionary of `magnitude` method config options.
+   :type magnitude: dict
    :param config: Configuration dictionary (or None). See get_config().
    :type config: dict
 

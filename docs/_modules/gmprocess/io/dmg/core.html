@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
-        <title>gmprocess.io.dmg.core - gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</title>
+        <title>gmprocess.io.dmg.core - gmprocess 1.1.9.dev306+gf9478618.d20220121 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev264+g5a1ccac.d20220107 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.9.dev306+gf9478618.d20220121 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -185,6 +185,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/response_spectra.html">Response Spectra Calculation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/lme.html">Linear Mixed Effects Regressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/asdf_to_waveforms.html">Processed Waveforms from ASDF File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/station_map.html">Plotting Seismograms on Station Map</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../contents/manual/index.html">Manual</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -662,7 +663,7 @@
         <span class="c1"># For our purposes, we only want acceleration, so lets only return</span>
         <span class="c1"># that; we may need to change this later if others start using this</span>
         <span class="c1"># code and want to read in the other data.</span>
-        <span class="k">if</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"units"</span><span class="p">]</span> <span class="o">==</span> <span class="n">units</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"units_type"</span><span class="p">]</span> <span class="o">==</span> <span class="n">units</span><span class="p">:</span>
             <span class="n">stream</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">stream</span><span class="p">]</span></div>
 
@@ -831,7 +832,7 @@
 
     <span class="c1"># read velocity data</span>
     <span class="n">vel_hdr</span> <span class="o">=</span> <span class="n">hdr</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">vel_hdr</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"units"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"vel"</span>
+    <span class="n">vel_hdr</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"units_type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"vel"</span>
     <span class="n">vel_hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">=</span> <span class="n">int_data</span><span class="p">[</span><span class="mi">63</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">vel_hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">vel_rows</span><span class="p">,</span> <span class="n">vel_fmt</span><span class="p">,</span> <span class="n">unit</span> <span class="o">=</span> <span class="n">_get_data_format</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">skip_rows</span><span class="p">,</span> <span class="n">vel_hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">])</span>
@@ -841,7 +842,8 @@
 
     <span class="c1"># read displacement data</span>
     <span class="n">disp_hdr</span> <span class="o">=</span> <span class="n">hdr</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">disp_hdr</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"units"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"disp"</span>
+    <span class="n">disp_hdr</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"units_type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"disp"</span>
+    <span class="n">disp_hdr</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"units"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"cm"</span>
     <span class="n">disp_hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">=</span> <span class="n">int_data</span><span class="p">[</span><span class="mi">65</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">disp_hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">disp_rows</span><span class="p">,</span> <span class="n">disp_fmt</span><span class="p">,</span> <span class="n">unit</span> <span class="o">=</span> <span class="n">_get_data_format</span><span class="p">(</span>
@@ -1001,6 +1003,7 @@
 
     <span class="c1"># Standard metadata</span>
     <span class="n">standard</span><span class="p">[</span><span class="s2">"units_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_units_type</span><span class="p">(</span><span class="n">hdr</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">])</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"units"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"cm/s/s"</span>
     <span class="n">standard</span><span class="p">[</span><span class="s2">"horizontal_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
     <span class="n">standard</span><span class="p">[</span><span class="s2">"vertical_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument_period"</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -1020,7 +1023,6 @@
     <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument"</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_line</span><span class="p">[</span><span class="mi">39</span><span class="p">:</span><span class="mi">47</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="n">standard</span><span class="p">[</span><span class="s2">"sensor_serial_number"</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_line</span><span class="p">[</span><span class="mi">53</span><span class="p">:</span><span class="mi">57</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="n">standard</span><span class="p">[</span><span class="s2">"corner_frequency"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"units"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"acc"</span>
     <span class="n">standard</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
     <span class="n">standard</span><span class="p">[</span><span class="s2">"source_format"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"dmg"</span>
     <span class="n">standard</span><span class="p">[</span><span class="s2">"station_name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
