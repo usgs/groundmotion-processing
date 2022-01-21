@@ -292,7 +292,8 @@ def _read_header(
     else:
         hdr["npts"] = int(hdr_data[3, 3])
     hdr["network"] = "NZ"
-    standard["units"] = "acc"
+    standard["units_type"] = "acc"
+    standard["units"] = "cm/s/s"
     standard["source"] = "New Zealand Institute of Geological and Nuclear Science"
     logging.debug(f"component: {component}")
     standard["vertical_orientation"] = np.nan

@@ -60,11 +60,11 @@ class Max(Reduction):
         times = {}
         if isinstance(self.reduction_data, (Stream, StationStream)):
             for trace in self.reduction_data:
-                if trace.stats.standard.units == "acc":
+                if trace.stats.standard.units_type == "acc":
                     key = "pga_time"
-                elif trace.stats.standard.units == "vel":
+                elif trace.stats.standard.units_type == "vel":
                     key = "pgv_time"
-                elif trace.stats.standard.units == "disp":
+                elif trace.stats.standard.units_type == "disp":
                     key = "pgd_time"
                 else:
                     key = "peak_time"

@@ -38,7 +38,7 @@ def test_usc():
 
         # test that the traces are acceleration
         for trace in stream:
-            assert trace.stats.standard.units == "acc"
+            assert trace.stats.standard.units_type == "acc"
         frac = trace.stats.format_specific.fractional_unit
         # compare the start/end points when converted to gals
         # can't be tested for all due to inconsistent sampling rate
@@ -84,7 +84,7 @@ def test_usc():
     assert stats.standard["sensor_serial_number"] == ""
     assert stats.standard["instrument"] == ""
     assert stats.standard["comments"] == ""
-    assert stats.standard["units"] == "acc"
+    assert stats.standard["units_type"] == "acc"
     assert stats.standard["structure_type"] == ""
     assert stats.standard["source_format"] == "usc"
     assert (

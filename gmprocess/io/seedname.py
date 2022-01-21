@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 
 
+from multiprocessing.sharedctypes import Value
+
+
 def get_channel_name(
     sample_rate, is_acceleration=True, is_vertical=False, is_north=True
 ):
@@ -44,11 +47,15 @@ def get_units_type(channel):
     channel code. The units type indicates whether the instrument natively
     measures acceleration or velocity.
     """
-
-    if channel[1] == "N":
+    inst_code = channel[1]
+    ACC_CODES = ["N"]
+    VEL_CODES = ["H", "L", "M"]
+    if inst_code in ACC_CODES:
         return "acc"
-    else:
+    elif inst_code in VEL_CODES:
         return "vel"
+    else:
+        raise ValueError("Unsupported instrument code.")
 
 
 def is_channel_north(angle):

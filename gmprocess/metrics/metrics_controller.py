@@ -272,9 +272,9 @@ class MetricsController(object):
             baseimt = imt
             # Determine whether an integration/differentiation step is
             # necessary
-            if imt == "pgv" and self.timeseries[0].stats.standard.units == "acc":
+            if imt == "pgv" and self.timeseries[0].stats.standard.units_type == "acc":
                 integrate = True
-            elif imt != "pgv" and self.timeseries[0].stats.standard.units == "vel":
+            elif imt != "pgv" and self.timeseries[0].stats.standard.units_type == "vel":
                 differentiate = True
             # SA and FAS imts include a period which must be parsed from
             # the imt string
@@ -462,8 +462,8 @@ class MetricsController(object):
             except BaseException as e:
                 # raise e
                 msg = (
-                    "Error in calculation of %r: %r. Result "
-                    "cell will be set to np.nan." % (imt_imc, str(e))
+                    f"Error in calculation of {imt_imc}: {str(e)}.  "
+                    "Result cell will be set to np.nan."
                 )
                 logging.warning(msg)
                 c2 = {"": np.nan}
@@ -617,7 +617,7 @@ class MetricsController(object):
                 "MetricsController: Input timeseries must be a StationStream."
             )
         for idx, trace in enumerate(self.timeseries):
-            units = trace.stats.standard.units
+            units = trace.stats.standard.units_type
             trace_length = len(trace.data)
             if units.lower() != "vel" and units.lower() != "acc":
                 raise PGMException(

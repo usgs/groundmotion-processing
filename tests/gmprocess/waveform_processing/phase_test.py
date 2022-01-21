@@ -64,7 +64,7 @@ def test_pphase_picker():
         "sampling_rate": 1 / dt,
         "npts": len(x),
         "starttime": UTCDateTime("1970-01-01"),
-        "standard": {"units": "acc"},
+        "standard": {"units_type": "acc"},
     }
     trace = Trace(data=x, header=hdr)
     stream = Stream(traces=[trace])
