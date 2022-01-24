@@ -58,26 +58,18 @@ class Integrate(Transform):
         """
         stream = StationStream([])
         for trace in self.transform_data:
-<<<<<<< HEAD
-            integrated_trace = trace.copy().integrate()
+            integrated_trace = trace.copy().integrate(config=config)
 
             # Need to handle units and units_type for lots of different possibilities.
-            if integrated_trace.stats.standard.units_type == "acc":
-                integrated_trace.stats.standard.units_type = "vel"
-            elif integrated_trace.stats.standard.units_type == "vel":
-                integrated_trace.stats.standard.units_type = "disp"
+            if integrated_trace.stats.standard.units == "acc":
+                integrated_trace.stats.standard.units = "vel"
+            elif integrated_trace.stats.standard.units == "vel":
+                integrated_trace.stats.standard.units = "disp"
 
             acc_unit_list = ["cm/s/s", "cm/s^2", "cm/s**2"]
             if integrated_trace.stats.standard.units in acc_unit_list:
                 integrated_trace.stats.standard.units = "cm/s"
             elif integrated_trace.stats.standard.units == "cm/s":
                 integrated_trace.stats.standard.units = "cm"
-=======
-            integrated_trace = trace.copy().integrate(config=config)
-            if integrated_trace.stats.standard.units == "acc":
-                integrated_trace.stats.standard.units = "vel"
-            elif integrated_trace.stats.standard.units == "vel":
-                integrated_trace.stats.standard.units = "disp"
->>>>>>> b4e5528b (revamp intergration throughout gmprocess to make it a StationTrace instance method.)
             stream.append(integrated_trace)
         return stream
