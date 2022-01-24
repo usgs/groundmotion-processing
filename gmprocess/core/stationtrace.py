@@ -389,27 +389,30 @@ class StationTrace(Trace):
             initial = config["integration"]["initial"]
             demean = config["integration"]["demean"]
 
-        if frequency:  # if integrating in frequency domain
-            N = len(self.data)
-            Facc = np.fft.rfft(self.data, n=N)
-            freq = np.fft.rfftfreq(N, self.stats.delta)
-            F = []
-            for facc, f in zip(Facc, freq):
-                if f == 0:
-                    F.append(initial)
-                else:
-                    F.append(
-                        (facc / 100) / (2.0j * np.pi * f)
-                    )  # convert from cm/s^2 to m/s^2
-            integral_result = np.fft.irfft(F, n=N) * 100  # convert back to cm
+        # check if integrating in frequency domain
+        if frequency:
+            # take discrete FFT and get the discretized frequencies
+            npts = len(self.data)
+            spec_in = np.fft.rfft(self.data, n=npts)
+            freq = np.fft.rfftfreq(npts, self.stats.delta)
+
+            # convert input spectra from cm to m, then integrate input spectra in frequency domain
+            spec_out = spec_in / 100 / 2.0j / np.pi / freq
+
+            # replace the first returned amplitude (which is usually zero) with the
+            # user defined initial value.
+            spec_out[0] = initial
+
+            # calculate inverse FFT back to time domain, convert back to cm
+            integral_result = np.fft.irfft(spec_out, n=npts) * 100
             self.data = integral_result
-            return self
-        else:  # if integrating in time domain
+        # if integrating in time domain
+        else:
             if demean:
                 self.data -= np.mean(self.data)
             integral_result = cumtrapz(self.data, dx=self.stats.delta, initial=initial)
             self.data = integral_result
-            return self
+        return self
 
     def getProvenanceKeys(self):
         """Get a list of all available provenance keys.
