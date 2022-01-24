@@ -61,10 +61,10 @@ class Integrate(Transform):
             integrated_trace = trace.copy().integrate(config=config)
 
             # Need to handle units and units_type for lots of different possibilities.
-            if integrated_trace.stats.standard.units == "acc":
-                integrated_trace.stats.standard.units = "vel"
-            elif integrated_trace.stats.standard.units == "vel":
-                integrated_trace.stats.standard.units = "disp"
+            if integrated_trace.stats.standard.units_type == "acc":
+                integrated_trace.stats.standard.units_type = "vel"
+            elif integrated_trace.stats.standard.units_type == "vel":
+                integrated_trace.stats.standard.units_type = "disp"
 
             acc_unit_list = ["cm/s/s", "cm/s^2", "cm/s**2"]
             if integrated_trace.stats.standard.units in acc_unit_list:
