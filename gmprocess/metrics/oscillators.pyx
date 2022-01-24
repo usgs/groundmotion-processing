@@ -189,24 +189,3 @@ def get_spectral(period, stream, damping=0.05, times=None, config=None):
             traces += [spect_trace]
         spect_stream = StationStream(traces)
         return spect_stream
-
-
-def get_velocity(stream):
-    """
-    Returns a stream of velocity with units of cm/s.
-    Args:
-        stream (obspy.core.stream.Stream):
-            Strong motion timeseries for one station.
-
-    Returns:
-        obpsy.core.stream.Stream: stream of velocity.
-    """
-    cdef int idx
-    veloc_stream = Stream()
-    for idx in range(len(stream)):
-        trace = stream[idx]
-        veloc_trace = trace.copy()
-        veloc_trace.integrate()
-        veloc_trace.stats['units'] = 'cm/s'
-        veloc_stream.append(veloc_trace)
-    return veloc_stream

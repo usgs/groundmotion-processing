@@ -43,16 +43,6 @@ def test_spectral():
     get_spectral(1.0, acc, 0.05)
 
 
-def test_velocity():
-    datafiles, _ = read_data_dir("geonet", "us1000778i", "20161113_110259_WTMC_20.V2A")
-    acc_file = datafiles[0]
-    acc = read_data(acc_file)[0]
-    target_v = Trace(acc.copy()[0].data, header=acc.copy()[0].stats).integrate()
-    v = acc[0].integrate()
-    np.testing.assert_allclose(v, target_v)
-
-
 if __name__ == "__main__":
     test_acceleration()
     test_spectral()
-    test_velocity()
