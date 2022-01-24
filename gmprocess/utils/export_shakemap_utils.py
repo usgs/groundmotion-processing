@@ -156,6 +156,9 @@ def create_json(
 
     station_feature_dict = {"type": "FeatureCollection", "features": station_features}
     stationfile = os.path.join(event_dir, f"{event.id}_groundmotions_dat.json")
+    # debugging
+    iterdict(station_feature_dict)
+    # end debugging
     with open(stationfile, "wt") as f:
         json.dump(station_feature_dict, f, allow_nan=False)
 
@@ -164,6 +167,15 @@ def create_json(
         json.dump(feature_dict, f, allow_nan=False)
 
     return (jsonfile, stationfile, nfeatures)
+
+
+def iterdict(d):
+    for k, v in d.items():
+        if isinstance(v, dict):
+            iterdict(v)
+        else:
+            if isinstance(v, float) and np.isnan(v):
+                print(k, ":", v)
 
 
 def _get_cosmos_code(desc):
