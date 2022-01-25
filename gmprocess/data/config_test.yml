@@ -494,11 +494,10 @@ metrics:
         spacing: linspace
         # Defines whether the above array is used. If False, only the
         # defined_periods are used
-        use_array: True
+        use_array: False
         # Defines a list of user defined periods that are not
         # predefined by the array of periods
-        defined_periods:
-          - 0.3
+        defined_periods: [0.3, 1.0, 3.0]
   fas:
       smoothing: konno_ohmachi
       bandwidth: 20.0

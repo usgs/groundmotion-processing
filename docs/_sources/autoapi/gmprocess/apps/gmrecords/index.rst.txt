@@ -25,11 +25,12 @@ Attributes
    gmprocess.apps.gmrecords.configobj
    gmprocess.apps.gmrecords.setuptools_scm
    gmprocess.apps.gmrecords.base
-   gmprocess.apps.gmrecords.config
+   gmprocess.apps.gmrecords.configmod
    gmprocess.apps.gmrecords.const
    gmprocess.apps.gmrecords.log_utils
    gmprocess.apps.gmrecords.projmod
    gmprocess.apps.gmrecords.init
+   gmprocess.apps.gmrecords.prompt
 
 
 .. py:data:: configobj
@@ -47,7 +48,7 @@ Attributes
 
    
 
-.. py:data:: config
+.. py:data:: configmod
    
 
    
@@ -68,6 +69,11 @@ Attributes
    
 
 .. py:data:: init
+   
+
+   
+
+.. py:data:: prompt
    
 
    

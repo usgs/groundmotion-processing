@@ -102,7 +102,9 @@ class StreamCollection(object):
                 if s[0].free_field:
                     newstreams.append(s)
                 else:
-                    logging.debug(f"Omitting station trace {s[0].id} from stream collection because it is not free field.")
+                    logging.debug(
+                        f"Omitting station trace {s[0].id} from stream collection because it is not free field."
+                    )
             else:
                 newstreams.append(s)
 
@@ -276,17 +278,23 @@ class StreamCollection(object):
                             )
 
     @classmethod
-    def from_directory(cls, directory):
+    def from_directory(cls, directory, use_default_config=False):
         """Create a StreamCollection instance from a directory of data.
 
         Args:
             directory (str):
                 Directory of ground motion files (streams) to be read.
+            use_default_config (bool):
+                Use default ("production") config.
 
         Returns:
             StreamCollection instance.
         """
-        streams, missed_files, errors = directory_to_streams(directory)
+        if use_default_config:
+            config = get_config(use_default=True)
+        else:
+            config = None
+        streams, missed_files, errors = directory_to_streams(directory, config=config)
 
         # Might eventually want to include some of the missed files and
         # error info but don't have a sensible place to put it currently.

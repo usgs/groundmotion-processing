@@ -214,15 +214,18 @@ def merge_dicts(dicts):
     return target
 
 
-def get_config(config_file=None, section=None):
+def get_config(config_file=None, section=None, use_default=False):
     """Gets the user defined config and validates it.
 
     Args:
         config_file:
             Path to config file to use. If None, uses defaults.
         section (str):
-            Name of section in the config to extract (i.e., 'fetchers',
-            'processing', 'pickers', etc.) If None, whole config is returned.
+            Name of section in the config to extract (i.e., 'fetchers', 'processing',
+            'pickers', etc.) If None, whole config is returned.
+        use_default (bool):
+            Use the default "production" config; this takes precedence  over project
+            config settings. Only intended for tutorials/documentation.
 
     Returns:
         dictionary:
@@ -231,6 +234,10 @@ def get_config(config_file=None, section=None):
         IndexError:
             If input section name is not found.
     """
+    if use_default:
+        data_dir = os.path.abspath(pkg_resources.resource_filename("gmprocess", "data"))
+        config_file = os.path.join(data_dir, constants.CONFIG_FILE_PRODUCTION)
+
     if config_file is None:
         # Try not to let tests interfere with actual system:
         if os.getenv("CALLED_FROM_PYTEST") is None:
@@ -269,6 +276,9 @@ def get_config(config_file=None, section=None):
             yaml = YAML()
             yaml.preserve_quotes = True
             config = yaml.load(f)
+
+    if use_default:
+        config["user"] = {"name": "Default", "email": "default@default.comf"}
 
     CONF_SCHEMA.validate(config)
 

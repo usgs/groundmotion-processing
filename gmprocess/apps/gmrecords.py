@@ -6,9 +6,11 @@ import sys
 import copy
 import importlib
 import pkgutil
+import pkg_resources
 import inspect
 import argparse
 import logging
+import shutil
 
 from .. import __version__ as VERSION
 from ..subcommands.lazy_loader import LazyLoader
@@ -17,11 +19,12 @@ configobj = LazyLoader("configobj", globals(), "configobj")
 setuptools_scm = LazyLoader("setuptools_scm", globals(), "setuptools_scm")
 
 base = LazyLoader("base", globals(), "gmprocess.subcommands.base")
-config = LazyLoader("config", globals(), "gmprocess.utils.config")
+configmod = LazyLoader("config", globals(), "gmprocess.utils.config")
 const = LazyLoader("const", globals(), "gmprocess.utils.constants")
 log_utils = LazyLoader("log_utils", globals(), "gmprocess.utils.logging")
 projmod = LazyLoader("projmod", globals(), "gmprocess.subcommands.projects")
 init = LazyLoader("init", globals(), "gmprocess.subcommands.init")
+prompt = LazyLoader("prompt", globals(), "gmprocess.utils.prompt")
 
 
 class GMrecordsApp(object):
@@ -137,16 +140,63 @@ class GMrecordsApp(object):
         )
         if os.getenv("CALLED_FROM_PYTEST") is not None:
             self.conf_path = const.PROJECTS_PATH_TEST
-        self.conf_file = os.path.join(self.conf_path, "config.yml")
-        if not os.path.isfile(self.conf_file):
-            print(f"Config file does not exist: {self.conf_file}")
-            print("Exiting.")
-            sys.exit(1)
+            data_dir = os.path.abspath(
+                pkg_resources.resource_filename("gmprocess", "data")
+            )
+            self.conf_file = os.path.normpath(
+                os.path.join(data_dir, const.CONFIG_FILE_TEST)
+            )
+        else:
+            self.conf_file = os.path.normpath(
+                os.path.join(self.conf_path, "config.yml")
+            )
+
+        print(self.conf_file)
+        print(self.data_path)
+        if (not os.path.exists(self.conf_file)) or (not os.path.exists(self.data_path)):
+            print(f"Config and/or data path does not exist for project: {self.project}")
+            config = self.projects_conf
+            project = self.project
+
+            conf_path = config["projects"][project]["conf_path"]
+            if os.path.exists(conf_path):
+                question = f"Okay to delete everything in: {conf_path}?\n"
+                if not prompt.query_yes_no(question, default="yes"):
+                    shutil.rmtree(conf_path, ignore_errors=True)
+                    print(f"\tDeleted conf directory {conf_path}:")
+
+            data_path = config["projects"][project]["data_path"]
+            if os.path.exists(data_path):
+                question = f"Okay to delete everything in: {data_path}?\n"
+                if not prompt.query_yes_no(question, default="yes"):
+                    shutil.rmtree(data_path, ignore_errors=True)
+                    print(f"\tDeleted conf directory {data_path}:")
+
+            del config["projects"][project]
+
+            if config["projects"].keys() == []:
+                print("No remaining projects in projects.conf")
+                default = None
+                newproject = "None"
+            else:
+                default = config["projects"].keys()[0]
+                newproject = projmod.Project(
+                    default, config["projects"][default], config.filename
+                )
+            config["project"] = default
+
+            config.filename = self.PROJECTS_FILE
+            config.write()
+            print(f"Deleted project: {project}")
+
+            print("\nSet to new project:\n")
+            print(newproject)
+            sys.exit(0)
 
         # Only run get_config for assemble and projects
         subcommands_need_conf = ["download", "assemble", "auto_shakemap"]
         if self.args.func.command_name in subcommands_need_conf:
-            self.conf = config.get_config(self.conf_file)
+            self.conf = configmod.get_config(self.conf_file)
 
     def _initial_setup(self):
         """

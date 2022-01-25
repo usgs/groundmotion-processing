@@ -59,14 +59,17 @@ Attributes
    :rtype: dictionary
 
 
-.. py:function:: get_config(config_file=None, section=None)
+.. py:function:: get_config(config_file=None, section=None, use_default=False)
 
    Gets the user defined config and validates it.
 
    :param config_file: Path to config file to use. If None, uses defaults.
-   :param section: Name of section in the config to extract (i.e., 'fetchers',
-                   'processing', 'pickers', etc.) If None, whole config is returned.
+   :param section: Name of section in the config to extract (i.e., 'fetchers', 'processing',
+                   'pickers', etc.) If None, whole config is returned.
    :type section: str
+   :param use_default: Use the default "production" config; this takes precedence  over project
+                       config settings. Only intended for tutorials/documentation.
+   :type use_default: bool
 
    :returns:     Configuration parameters.
    :rtype: dictionary

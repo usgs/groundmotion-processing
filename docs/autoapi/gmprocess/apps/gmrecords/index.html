@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.bin" href="../../bin/index.html" /><link rel="prev" title="gmprocess.apps" href="../index.html" />
 
     <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
-        <title>gmprocess.apps.gmrecords - gmprocess 1.1.9.dev306+gf9478618.d20220121 documentation</title>
+        <title>gmprocess.apps.gmrecords - gmprocess 1.1.11.dev287+g2de34742.d20220125 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.9.dev306+gf9478618.d20220121 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev287+g2de34742.d20220125 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -494,7 +494,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.apps.gmrecords.base" title="gmprocess.apps.gmrecords.base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.apps.gmrecords.config" title="gmprocess.apps.gmrecords.config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">config</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.apps.gmrecords.configmod" title="gmprocess.apps.gmrecords.configmod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">configmod</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.apps.gmrecords.const" title="gmprocess.apps.gmrecords.const"><code class="xref py py-obj docutils literal notranslate"><span class="pre">const</span></code></a></p></td>
@@ -507,6 +507,9 @@
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.apps.gmrecords.init" title="gmprocess.apps.gmrecords.init"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.apps.gmrecords.prompt" title="gmprocess.apps.gmrecords.prompt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prompt</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -524,8 +527,8 @@
 <span class="sig-prename descclassname"><span class="pre">gmprocess.apps.gmrecords.</span></span><span class="sig-name descname"><span class="pre">base</span></span><a class="headerlink" href="#gmprocess.apps.gmrecords.base" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py data">
-<dt class="sig sig-object py" id="gmprocess.apps.gmrecords.config">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.apps.gmrecords.</span></span><span class="sig-name descname"><span class="pre">config</span></span><a class="headerlink" href="#gmprocess.apps.gmrecords.config" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="gmprocess.apps.gmrecords.configmod">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.apps.gmrecords.</span></span><span class="sig-name descname"><span class="pre">configmod</span></span><a class="headerlink" href="#gmprocess.apps.gmrecords.configmod" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.apps.gmrecords.const">
@@ -542,6 +545,10 @@
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.apps.gmrecords.init">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.apps.gmrecords.</span></span><span class="sig-name descname"><span class="pre">init</span></span><a class="headerlink" href="#gmprocess.apps.gmrecords.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+<dl class="py data">
+<dt class="sig sig-object py" id="gmprocess.apps.gmrecords.prompt">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.apps.gmrecords.</span></span><span class="sig-name descname"><span class="pre">prompt</span></span><a class="headerlink" href="#gmprocess.apps.gmrecords.prompt" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="gmprocess.apps.gmrecords.GMrecordsApp">
@@ -657,11 +664,12 @@ easier to deal with.</p></li>
 <li><a class="reference internal" href="#gmprocess.apps.gmrecords.configobj">configobj</a></li>
 <li><a class="reference internal" href="#gmprocess.apps.gmrecords.setuptools_scm">setuptools_scm</a></li>
 <li><a class="reference internal" href="#gmprocess.apps.gmrecords.base">base</a></li>
-<li><a class="reference internal" href="#gmprocess.apps.gmrecords.config">config</a></li>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.configmod">configmod</a></li>
 <li><a class="reference internal" href="#gmprocess.apps.gmrecords.const">const</a></li>
 <li><a class="reference internal" href="#gmprocess.apps.gmrecords.log_utils">log_utils</a></li>
 <li><a class="reference internal" href="#gmprocess.apps.gmrecords.projmod">projmod</a></li>
 <li><a class="reference internal" href="#gmprocess.apps.gmrecords.init">init</a></li>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.prompt">prompt</a></li>
 <li><a class="reference internal" href="#gmprocess.apps.gmrecords.GMrecordsApp">GMrecordsApp</a><ul>
 <li><a class="reference internal" href="#gmprocess.apps.gmrecords.GMrecordsApp.main">main</a></li>
 <li><a class="reference internal" href="#gmprocess.apps.gmrecords.GMrecordsApp._load_config">_load_config</a></li>

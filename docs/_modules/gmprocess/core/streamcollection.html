@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
-        <title>gmprocess.core.streamcollection - gmprocess 1.1.9.dev306+gf9478618.d20220121 documentation</title>
+        <title>gmprocess.core.streamcollection - gmprocess 1.1.11.dev287+g2de34742.d20220125 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.9.dev306+gf9478618.d20220121 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev287+g2de34742.d20220125 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -563,7 +563,9 @@
                 <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">free_field</span><span class="p">:</span>
                     <span class="n">newstreams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Omitting station trace </span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> from stream collection because it is not free field."</span><span class="p">)</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">"Omitting station trace </span><span class="si">{</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> from stream collection because it is not free field."</span>
+                    <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">newstreams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 
@@ -737,17 +739,23 @@
                             <span class="p">)</span></div>
 
 <div class="viewcode-block" id="StreamCollection.from_directory"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/streamcollection/index.html#gmprocess.core.streamcollection.StreamCollection.from_directory">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_directory</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">directory</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_directory</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">use_default_config</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">"""Create a StreamCollection instance from a directory of data.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            directory (str):</span>
 <span class="sd">                Directory of ground motion files (streams) to be read.</span>
+<span class="sd">            use_default_config (bool):</span>
+<span class="sd">                Use default ("production") config.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            StreamCollection instance.</span>
 <span class="sd">        """</span>
-        <span class="n">streams</span><span class="p">,</span> <span class="n">missed_files</span><span class="p">,</span> <span class="n">errors</span> <span class="o">=</span> <span class="n">directory_to_streams</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">use_default_config</span><span class="p">:</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">use_default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">streams</span><span class="p">,</span> <span class="n">missed_files</span><span class="p">,</span> <span class="n">errors</span> <span class="o">=</span> <span class="n">directory_to_streams</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
 
         <span class="c1"># Might eventually want to include some of the missed files and</span>
         <span class="c1"># error info but don't have a sensible place to put it currently.</span>
