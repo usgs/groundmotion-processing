@@ -190,7 +190,7 @@ def read_dmg(filename, config=None, **kwargs):
                 trace_list += traces
         elif reader == "V1":
             traces, line_offset = _read_volume_one(
-                filename, line_offset, location=location, units=units
+                filename, line_offset, location=location, units=units, config=config
             )
             if traces is not None:
                 trace_list += traces
@@ -207,7 +207,7 @@ def read_dmg(filename, config=None, **kwargs):
     return [stream]
 
 
-def _read_volume_one(filename, line_offset, location="", units="acc"):
+def _read_volume_one(filename, line_offset, location="", units="acc", config=None):
     """Read channel data from DMG Volume 1 text file.
 
     Args:
@@ -217,6 +217,8 @@ def _read_volume_one(filename, line_offset, location="", units="acc"):
             Line offset to beginning of channel text block.
         units (str):
             units to get.
+        config (dict):
+            Configuration options.
 
     Returns:
         tuple: (list of obspy Trace, int line offset)
@@ -287,11 +289,11 @@ def _read_volume_one(filename, line_offset, location="", units="acc"):
     else:
         raise ValueError(f"DMG: {unit} is not a supported unit.")
 
-    acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()))
+    acc_trace = StationTrace(acc_data.copy(), Stats(hdr.copy()), config=config)
 
     # Check if the times were included in the file but were not evenly spaced
     if not evenly_spaced:
-        acc_trace = resample_uneven_trace(acc_trace, times, acc_data)
+        acc_trace = resample_uneven_trace(acc_trace, times, acc_data, config=config)
 
     response = {"input_units": "counts", "output_units": "cm/s^2"}
     acc_trace.setProvenance("remove_response", response)

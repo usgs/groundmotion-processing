@@ -272,6 +272,7 @@ def get_config(config_file=None, section=None, use_default=False):
         fmt = "Missing config file: %s."
         raise OSError(fmt % config_file)
     else:
+        print(f"*** {config_file} ***")
         with open(config_file, "r", encoding="utf-8") as f:
             yaml = YAML()
             yaml.preserve_quotes = True
