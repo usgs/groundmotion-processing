@@ -48,10 +48,12 @@ def get_events(eventids, textfile, eventinfo, directory, outdir=None):
             tevents = events_from_directory(directory)
         elif outdir is not None:
             tevents = events_from_directory(outdir)
+        eventidlist = [event.id for event in tevents]
         for eventid in eventids:
-            if len(tevents) and eventid in tevents:
-                event = [e for e in tevents if e.id == eventid][0]
-            else:
+            try:
+                idx = eventidlist.index(eventid)
+                event = tevents[idx]
+            except ValueError:
                 # This connects to comcat to get event, does not check for a
                 # local json file
                 event = get_event_object(eventid)
