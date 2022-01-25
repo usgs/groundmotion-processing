@@ -6,6 +6,7 @@ import sys
 import copy
 import importlib
 import pkgutil
+import pkg_resources
 import inspect
 import argparse
 import logging
@@ -137,7 +138,13 @@ class GMrecordsApp(object):
         )
         if os.getenv("CALLED_FROM_PYTEST") is not None:
             self.conf_path = const.PROJECTS_PATH_TEST
-        self.conf_file = os.path.join(self.conf_path, "config.yml")
+            data_dir = os.path.abspath(
+                pkg_resources.resource_filename("gmprocess", "data")
+            )
+            self.conf_file = os.path.join(data_dir, const.CONFIG_FILE_TEST)
+        else:
+            self.conf_file = os.path.join(self.conf_path, "config.yml")
+
         if not os.path.isfile(self.conf_file):
             print(f"Config file does not exist: {self.conf_file}")
             print("Exiting.")

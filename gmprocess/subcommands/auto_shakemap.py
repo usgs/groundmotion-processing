@@ -85,13 +85,16 @@ class AutoShakemapModule(base.SubcommandModule):
         # Chain together relevant subcommand modules:
         if (not gmrecords.args.skip_download) and (gmrecords.args.path is None):
             download.DownloadModule().main(gmrecords)
+
         if gmrecords.args.path is not None:
             import_data.ImportModule().main(gmrecords)
+
         assemble.AssembleModule().main(gmrecords)
         process_waveforms.ProcessWaveformsModule().main(gmrecords)
         compute_station_metrics.ComputeStationMetricsModule().main(gmrecords)
         compute_waveform_metrics.ComputeWaveformMetricsModule().main(gmrecords)
         export_shakemap.ExportShakeMapModule().main(gmrecords)
+
         if gmrecords.args.diagnostics:
             export_metric_tables.ExportMetricTablesModule().main(gmrecords)
             (generate_regression_plot.GenerateRegressionPlotModule().main(gmrecords))
