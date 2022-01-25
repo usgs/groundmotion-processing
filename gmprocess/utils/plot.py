@@ -36,6 +36,9 @@ AX1_HEIGHT = 0.8
 AX2_WIDTH = 0.1
 AX2_HEIGHT = 1.0
 
+# avoid this issue: https://github.com/matplotlib/matplotlib/issues/5907
+plt.rcParams["agg.path.chunksize"] = 10000
+
 
 def plot_regression(
     event_table,
