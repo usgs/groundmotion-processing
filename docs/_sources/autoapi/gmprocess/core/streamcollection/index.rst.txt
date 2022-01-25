@@ -135,13 +135,15 @@ Attributes
       :type origin: Origin
 
 
-   .. py:method:: from_directory(cls, directory)
+   .. py:method:: from_directory(cls, directory, use_default_config=False)
       :classmethod:
 
       Create a StreamCollection instance from a directory of data.
 
       :param directory: Directory of ground motion files (streams) to be read.
       :type directory: str
+      :param use_default_config: Use default ("production") config.
+      :type use_default_config: bool
 
       :returns: StreamCollection instance.
 

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
-        <title>gmprocess.utils.config - gmprocess 1.1.9.dev306+gf9478618.d20220121 documentation</title>
+        <title>gmprocess.utils.config - gmprocess 1.1.11.dev282+g3c7ee5ad.d20220125 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.9.dev306+gf9478618.d20220121 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev282+g3c7ee5ad.d20220125 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -675,15 +675,18 @@
     <span class="k">return</span> <span class="n">target</span></div>
 
 
-<div class="viewcode-block" id="get_config"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/config/index.html#gmprocess.utils.config.get_config">[docs]</a><span class="k">def</span> <span class="nf">get_config</span><span class="p">(</span><span class="n">config_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="get_config"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/config/index.html#gmprocess.utils.config.get_config">[docs]</a><span class="k">def</span> <span class="nf">get_config</span><span class="p">(</span><span class="n">config_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_default</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">"""Gets the user defined config and validates it.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        config_file:</span>
 <span class="sd">            Path to config file to use. If None, uses defaults.</span>
 <span class="sd">        section (str):</span>
-<span class="sd">            Name of section in the config to extract (i.e., 'fetchers',</span>
-<span class="sd">            'processing', 'pickers', etc.) If None, whole config is returned.</span>
+<span class="sd">            Name of section in the config to extract (i.e., 'fetchers', 'processing',</span>
+<span class="sd">            'pickers', etc.) If None, whole config is returned.</span>
+<span class="sd">        use_default (bool):</span>
+<span class="sd">            Use the default "production" config; this takes precedence  over project</span>
+<span class="sd">            config settings. Only intended for tutorials/documentation.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dictionary:</span>
@@ -692,6 +695,10 @@
 <span class="sd">        IndexError:</span>
 <span class="sd">            If input section name is not found.</span>
 <span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">use_default</span><span class="p">:</span>
+        <span class="n">data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">"gmprocess"</span><span class="p">,</span> <span class="s2">"data"</span><span class="p">))</span>
+        <span class="n">config_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">constants</span><span class="o">.</span><span class="n">CONFIG_FILE_PRODUCTION</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">config_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># Try not to let tests interfere with actual system:</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"CALLED_FROM_PYTEST"</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -730,6 +737,9 @@
             <span class="n">yaml</span> <span class="o">=</span> <span class="n">YAML</span><span class="p">()</span>
             <span class="n">yaml</span><span class="o">.</span><span class="n">preserve_quotes</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">config</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">use_default</span><span class="p">:</span>
+        <span class="n">config</span><span class="p">[</span><span class="s2">"user"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Default"</span><span class="p">,</span> <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"default@default.comf"</span><span class="p">}</span>
 
     <span class="n">CONF_SCHEMA</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 
