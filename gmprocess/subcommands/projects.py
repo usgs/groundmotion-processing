@@ -128,7 +128,7 @@ class ProjectsModule(base.SubcommandModule):
 
             question = (
                 "Are you sure you want to delete everything in:\n"
-                "%s\n--and--\n%s?\n" % (conf_path, data_path)
+                f"{conf_path}\n--and--\n{data_path}?\n"
             )
             if not prompt.query_yes_no(question, default="yes"):
                 sys.exit(0)
