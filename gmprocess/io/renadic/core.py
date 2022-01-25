@@ -212,6 +212,7 @@ def _read_header(lines, filename, table):
     # this field can be used for instrument correction
     # when data is in counts
     standard["instrument_sensitivity"] = inst_dict["SENSITIVITY"]
+    standard["volts_to_counts"] = np.nan
 
     # fill out the stats stuff
     try:

@@ -74,6 +74,11 @@ STANDARD_KEYS = {
         "required": False,
         "default": np.nan,
     },
+    "volts_to_counts": {
+        "type": float,
+        "required": False,
+        "default": np.nan,
+    },
     "comments": {"type": str, "required": False, "default": ""},
 }
 
@@ -423,13 +428,14 @@ class StationTrace(Trace):
         """
         return self.provenance
 
-    def getProvenanceDocument(self, base_prov=None):
+    def getProvenanceDocument(self, base_prov=None, gmprocess_version="unknown"):
         """Generate a provenance document.
 
         Args:
+            gmprocess_version (str):
+                gmprocess version string.
             base_prov:
                 Base provenance document.
-
         Returns:
             Provenance document.
         """
@@ -437,7 +443,7 @@ class StationTrace(Trace):
             pr = prov.model.ProvDocument()
             pr.add_namespace(*NS_SEIS)
             pr = _get_person_agent(pr)
-            pr = _get_software_agent(pr)
+            pr = _get_software_agent(pr, gmprocess_version)
             pr = _get_waveform_entity(self, pr)
         else:
             pr = _get_waveform_entity(self, copy.deepcopy(base_prov))
@@ -785,6 +791,7 @@ def _stats_from_inventory(data, inventory, seed_id, start_time):
         standard["source_format"] = "fdsn"
 
     standard["instrument_sensitivity"] = np.nan
+    standard["volts_to_counts"] = np.nan
     response = None
     if channel.response is not None:
         response = channel.response
@@ -800,6 +807,12 @@ def _stats_from_inventory(data, inventory, seed_id, start_time):
                 sensitivity = response.instrument_sensitivity.value * conversion
                 response.instrument_sensitivity.value = sensitivity
                 standard["instrument_sensitivity"] = sensitivity
+                # find the volts to counts stage and store that
+                if hasattr(response, "response_stages"):
+                    for stage in response.response_stages:
+                        if stage.input_units == "V" and stage.output_units == "COUNTS":
+                            standard["volts_to_counts"] = stage.stage_gain
+                            break
             else:
                 standard[
                     "instrument_sensitivity"
@@ -849,6 +862,7 @@ def _stats_from_header(header, config):
         }
         standard["source_format"] = header._format
         standard["instrument_sensitivity"] = np.nan
+        standard["volts_to_counts"] = np.nan
         response = None
     else:
         raise Exception("Format unsuppored without StationXML file.")
@@ -873,24 +887,29 @@ def _get_software_agent(pr, gmprocess_version):
     hashstr = "0000001"
     agent_id = f"seis_prov:sp001_sa_{hashstr}"
     giturl = "https://github.com/usgs/groundmotion-processing"
-    pr.agent(
-        agent_id,
-        other_attributes=(
-            (
-                ("prov:label", software),
+    try:
+        pr.agent(
+            agent_id,
+            other_attributes=(
                 (
-                    "prov:type",
-                    prov.identifier.QualifiedName(prov.constants.PROV, "SoftwareAgent"),
-                ),
-                ("seis_prov:software_name", software),
-                ("seis_prov:software_version", gmprocess_version),
-                (
-                    "seis_prov:website",
-                    prov.model.Literal(giturl, prov.constants.XSD_ANYURI),
-                ),
-            )
-        ),
-    )
+                    ("prov:label", software),
+                    (
+                        "prov:type",
+                        prov.identifier.QualifiedName(
+                            prov.constants.PROV, "SoftwareAgent"
+                        ),
+                    ),
+                    ("seis_prov:software_name", software),
+                    ("seis_prov:software_version", gmprocess_version),
+                    (
+                        "seis_prov:website",
+                        prov.model.Literal(giturl, prov.constants.XSD_ANYURI),
+                    ),
+                )
+            ),
+        )
+    except Exception as e:
+        x = 1
     return pr
 
 

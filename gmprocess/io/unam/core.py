@@ -322,6 +322,10 @@ def _read_header(filename):
     standard1["instrument_sensitivity"] = decfactor
     standard2["instrument_sensitivity"] = decfactor
 
+    standard0["volts_to_counts"] = np.nan
+    standard1["volts_to_counts"] = np.nan
+    standard2["volts_to_counts"] = np.nan
+
     return channels
 
 
