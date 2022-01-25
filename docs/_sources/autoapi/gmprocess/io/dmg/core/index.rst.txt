@@ -183,7 +183,7 @@ Attributes
    :rtype: Stream
 
 
-.. py:function:: _read_volume_one(filename, line_offset, location='', units='acc')
+.. py:function:: _read_volume_one(filename, line_offset, location='', units='acc', config=None)
 
    Read channel data from DMG Volume 1 text file.
 
@@ -193,6 +193,8 @@ Attributes
    :type line_offset: int
    :param units: units to get.
    :type units: str
+   :param config: Configuration options.
+   :type config: dict
 
    :returns: (list of obspy Trace, int line offset)
    :rtype: tuple

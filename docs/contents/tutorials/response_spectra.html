@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Linear Mixed Effects Regressions" href="lme.html" /><link rel="prev" title="Command Line Interface" href="cli.html" />
 
     <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
-        <title>Response Spectra Calculation and Comparison - gmprocess 1.1.11.dev282+g3c7ee5ad.d20220125 documentation</title>
+        <title>Response Spectra Calculation and Comparison - gmprocess 1.1.11.dev287+g2de34742.d20220125 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev282+g3c7ee5ad.d20220125 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev287+g2de34742.d20220125 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -559,15 +559,15 @@ metrics, including the response spectra</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3 StationStreams(s) in StreamCollection:
   3 StationTrace(s) in StationStream (failed):
     CI.CLC.--.HN2 | 2019-07-06T03:19:51.680000Z - 2019-07-06T03:20:52.210000Z | 100.0 Hz, 6054 samples (passed)
-    CI.CLC.--.HN1 | 2019-07-06T03:19:51.680000Z - 2019-07-06T03:20:52.210000Z | 100.0 Hz, 6054 samples (failed)
+    CI.CLC.--.HN1 | 2019-07-06T03:19:51.680000Z - 2019-07-06T03:20:52.210000Z | 100.0 Hz, 6054 samples (passed)
     CI.CLC.--.HNZ | 2019-07-06T03:19:51.680000Z - 2019-07-06T03:20:52.210000Z | 100.0 Hz, 6054 samples (failed)
-  3 StationTrace(s) in StationStream (failed):
+  3 StationTrace(s) in StationStream (passed):
     CI.TOW2.--.HN2 | 2019-07-06T03:19:53.060000Z - 2019-07-06T03:21:05.850000Z | 100.0 Hz, 7280 samples (passed)
-    CI.TOW2.--.HN1 | 2019-07-06T03:19:53.060000Z - 2019-07-06T03:21:05.850000Z | 100.0 Hz, 7280 samples (failed)
+    CI.TOW2.--.HN1 | 2019-07-06T03:19:53.060000Z - 2019-07-06T03:21:05.850000Z | 100.0 Hz, 7280 samples (passed)
     CI.TOW2.--.HNZ | 2019-07-06T03:19:53.060000Z - 2019-07-06T03:21:05.850000Z | 100.0 Hz, 7280 samples (passed)
-  3 StationTrace(s) in StationStream (failed):
+  3 StationTrace(s) in StationStream (passed):
     CI.CCC.--.HN2 | 2019-07-06T03:19:56.140000Z - 2019-07-06T03:21:28.800000Z | 100.0 Hz, 9267 samples (passed)
-    CI.CCC.--.HN1 | 2019-07-06T03:19:56.140000Z - 2019-07-06T03:21:28.800000Z | 100.0 Hz, 9267 samples (failed)
+    CI.CCC.--.HN1 | 2019-07-06T03:19:56.140000Z - 2019-07-06T03:21:28.800000Z | 100.0 Hz, 9267 samples (passed)
     CI.CCC.--.HNZ | 2019-07-06T03:19:56.140000Z - 2019-07-06T03:21:28.800000Z | 100.0 Hz, 9267 samples (passed)
 </pre></div>
 </div>
@@ -584,7 +584,7 @@ caused the failure, we can look at the <code class="docutils literal notranslate
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{'module': 'check_tail', 'reason': 'Displacement ratio is greater than 0.6'}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{'module': 'check_tail', 'reason': 'Displacement ratio is greater than 0.9'}
 </pre></div>
 </div>
 </div>
@@ -606,7 +606,21 @@ use the third stream (CI.CCC) for the rest of this tutorial.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>None
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                               Result
+IMT             IMC                  
+DURATION5-75    H2           9.010000
+                H1           8.610000
+                Z            9.610000
+DURATION5-95    H2          11.390000
+                H1          11.280000
+...                               ...
+SA(7.500)       Z            0.576295
+                ROTD(50.0)   4.033733
+SORTED_DURATION H2           5.600000
+                H1           5.900000
+                Z            6.560000
+
+[101 rows x 1 columns]
 </pre></div>
 </div>
 </div>
@@ -625,30 +639,6 @@ IMC</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rotd_dict</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">get_imc_dict</span><span class="p">(</span><span class="s1">'ROTD(50.0)'</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">folders</span><span class="o">/</span><span class="n">y9</span><span class="o">/</span><span class="n">prvx92xj1mvg268yxbgl09d1s6v3gn</span><span class="o">/</span><span class="n">T</span><span class="o">/</span><span class="n">ipykernel_35929</span><span class="o">/</span><span class="mf">349888471.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">rotd_dict</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">get_imc_dict</span><span class="p">(</span><span class="s1">'ROTD(50.0)'</span><span class="p">)</span>
-
-<span class="nn">~/Packages/groundmotion-processing/gmprocess/metrics/station_summary.py</span> in <span class="ni">get_imc_dict</span><span class="nt">(self, imc)</span>
-<span class="g g-Whitespace">    </span><span class="mi">883</span>         <span class="c1"># different IMTs are the different columns.</span>
-<span class="g g-Whitespace">    </span><span class="mi">884</span>         <span class="k">for</span> <span class="n">imc</span> <span class="ow">in</span> <span class="n">imclist</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">885</span>             <span class="n">row</span> <span class="o">=</span> <span class="n">_get_table_row</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stream</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="p">,</span> <span class="n">imc</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">886</span>             <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">887</span>                 <span class="k">continue</span>
-
-<span class="nn">~/Packages/groundmotion-processing/gmprocess/utils/tables.py</span> in <span class="ni">_get_table_row</span><span class="nt">(stream, summary, event, imc)</span>
-<span class="g g-Whitespace">    </span><span class="mi">135</span>         <span class="n">row</span><span class="p">[</span><span class="n">vs30_dict</span><span class="p">[</span><span class="s2">"column_header"</span><span class="p">]]</span> <span class="o">=</span> <span class="n">vs30_dict</span><span class="p">[</span><span class="s2">"value"</span><span class="p">]</span>
-<span class="g g-Whitespace">    </span><span class="mi">136</span> 
-<span class="ne">--&gt; </span><span class="mi">137</span>     <span class="n">imt_frame</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">pgms</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="n">imc</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">138</span>     <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">imt_frame</span><span class="o">.</span><span class="n">Result</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
-<span class="g g-Whitespace">    </span><span class="mi">139</span>     <span class="k">return</span> <span class="n">row</span>
-
-<span class="ne">AttributeError</span>: 'NoneType' object has no attribute 'xs'
 </pre></div>
 </div>
 </div>
@@ -715,6 +705,9 @@ and oscillator periods as arrays</p>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Spectral Acceleration (g)'</span><span class="p">);</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/response_spectra_19_0.png" src="../../_images/response_spectra_19_0.png"/>
 </div>
 </div>
 </section>
