@@ -273,8 +273,28 @@ def remove_response(
                         zero_mean=True,
                         taper=False,
                     )
+                    tr.setProvenance(
+                        "remove_response",
+                        {
+                            "method": "remove_response",
+                            "input_units": "counts",
+                            "output_units": ABBREV_UNITS["VEL"],
+                            "water_level": water_level,
+                            "pre_filt_freqs": f"{f1:f}, {f2:f}, {f3:f}, {f4:f}",
+                        },
+                    )
                     tr.differentiate()
-                    # tr.stats.standard.units_type = output.lower()
+                    tr.setProvenance(
+                        "differentiate",
+                        {
+                            "differentiation_method": "remove_response",
+                            "input_units": ABBREV_UNITS["VEL"],
+                            "output_units": ABBREV_UNITS[output],
+                        },
+                    )
+                    tr.data *= M_TO_CM  # Convert from m to cm
+                    tr.stats.standard.units = ABBREV_UNITS[output]
+                    tr.stats.standard.units_type = output.lower()
                     tr.stats.standard.process_level = PROCESS_LEVELS["V1"]
                 except BaseException as e:
                     reason = (
@@ -294,17 +314,6 @@ def remove_response(
                     tr.fail(reason)
                     continue
 
-                tr.data *= M_TO_CM  # Convert from m to cm
-                tr.setProvenance(
-                    "remove_response",
-                    {
-                        "method": "remove_response",
-                        "input_units": "counts",
-                        "output_units": ABBREV_UNITS[output],
-                        "water_level": water_level,
-                        "pre_filt_freqs": f"{f1:f}, {f2:f}, {f3:f}, {f4:f}",
-                    },
-                )
             elif tr.stats.channel[1] == "N":
                 try:
                     # If no poles and zeros are present in the xml file,
@@ -312,9 +321,6 @@ def remove_response(
                     if len(paz.poles) == 0 and len(paz.zeros) == 0:
                         tr.remove_sensitivity(inventory=inv)
                         tr.data *= M_TO_CM  # Convert from m to cm
-                        tr.stats.standard.units = ABBREV_UNITS[output]
-                        tr.stats.standard.units_type = output.lower()
-                        tr.stats.standard.process_level = PROCESS_LEVELS["V1"]
                         tr.setProvenance(
                             "remove_response",
                             {
@@ -323,6 +329,9 @@ def remove_response(
                                 "output_units": ABBREV_UNITS[output],
                             },
                         )
+                        tr.stats.standard.units = ABBREV_UNITS[output]
+                        tr.stats.standard.units_type = output.lower()
+                        tr.stats.standard.process_level = PROCESS_LEVELS["V1"]
                     else:
                         tr.remove_response(
                             inventory=inv,
@@ -332,9 +341,6 @@ def remove_response(
                             taper=False,
                         )
                         tr.data *= M_TO_CM  # Convert from m to cm
-                        tr.stats.standard.units = ABBREV_UNITS[output]
-                        tr.stats.standard.units_type = output.lower()
-                        tr.stats.standard.process_level = PROCESS_LEVELS["V1"]
                         tr.setProvenance(
                             "remove_response",
                             {
@@ -345,6 +351,9 @@ def remove_response(
                                 "pre_filt_freqs": f"{f1:f}, {f2:f}, {f3:f}, {f4:f}",
                             },
                         )
+                        tr.stats.standard.units = ABBREV_UNITS[output]
+                        tr.stats.standard.units_type = output.lower()
+                        tr.stats.standard.process_level = PROCESS_LEVELS["V1"]
                 except BaseException as e:
                     reason = (
                         "Encountered an error when attempting to remove "
@@ -367,9 +376,6 @@ def remove_response(
             )
             tr.remove_sensitivity(inventory=inv)
             tr.data *= M_TO_CM  # Convert from m to cm
-            tr.stats.standard.units = ABBREV_UNITS[output]
-            tr.stats.standard.units_type = output.lower()
-            tr.stats.standard.process_level = PROCESS_LEVELS["V1"]
             tr.setProvenance(
                 "remove_response",
                 {
@@ -378,6 +384,9 @@ def remove_response(
                     "output_units": ABBREV_UNITS[output],
                 },
             )
+            tr.stats.standard.units = ABBREV_UNITS[output]
+            tr.stats.standard.units_type = output.lower()
+            tr.stats.standard.process_level = PROCESS_LEVELS["V1"]
 
     return st
 

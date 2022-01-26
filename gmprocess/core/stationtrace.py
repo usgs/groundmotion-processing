@@ -323,10 +323,7 @@ class StationTrace(Trace):
 
         if "remove_response" not in self.getProvenanceKeys():
             self.stats.standard.units = "raw counts"
-        else:
-            self.stats.standard.units = REVERSE_UNITS[
-                self.getProvenance("remove_response")[0]["output_units"]
-            ]
+            self.stats.standard.units_type = get_units_type(self.stats.channel)
 
         # are all of the defined standard keys in the standard dictionary?
         req_keys = set(STANDARD_KEYS.keys())
@@ -415,6 +412,11 @@ class StationTrace(Trace):
         """
         provdict = {"prov_id": prov_id, "prov_attributes": prov_attributes}
         self.provenance.append(provdict)
+        if "output_units" in prov_attributes.keys():
+            self.stats.standard.units = prov_attributes["output_units"]
+            self.stats.standard.units_type = REVERSE_UNITS[
+                prov_attributes["output_units"]
+            ]
         self.validate()
 
     def getAllProvenance(self):
@@ -496,6 +498,7 @@ class StationTrace(Trace):
                         attr_val = UTCDateTime(attr_val)
                     params[key] = attr_val
                 self.setProvenance(sptype, params)
+
             self.setParameter("software", software)
             self.setParameter("user", person)
 
@@ -762,8 +765,9 @@ def _stats_from_inventory(data, inventory, seed_id, start_time):
     else:
         standard["vertical_orientation"] = np.nan
 
-    standard["units_type"] = get_units_type(channel_code)
-
+    # if "units_type" not in standard.keys() or standard["units_type"] == "":
+    #     standard["units_type"] = get_units_type(channel_code)
+    # print(f"Stationtrace.py line 761: {standard['units_type']}")
     if len(channel.comments):
         comments = " ".join(
             channel.comments[i].value for i in range(len(channel.comments))
@@ -846,14 +850,14 @@ def _stats_from_header(header, config):
         standard["source_file"] = ""
         standard["instrument"] = ""
         standard["sensor_serial_number"] = ""
-        standard["instrument"] = ""
-        standard["sensor_serial_number"] = ""
         standard["horizontal_orientation"] = float(header["sac"]["cmpaz"])
         # Note: vertical orientatin is defined here as angle from horizontal
         standard["vertical_orientation"] = 90.0 - float(header["sac"]["cmpinc"])
-        utype = get_units_type(header["channel"])
-        standard["units_type"] = utype
-        standard["units"] = UNITS[utype]
+        if "units_type" not in standard.keys() or standard["units_type"] == "":
+            utype = get_units_type(header["channel"])
+            standard["units_type"] = utype
+            standard["units"] = UNITS[utype]
+        print(f"Stationtrace.py line 844: {standard['units_type']}")
         standard["comments"] = ""
         standard["station_name"] = ""
         standard["station_name"] = header["station"]
