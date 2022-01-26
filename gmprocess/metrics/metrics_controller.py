@@ -386,7 +386,6 @@ class MetricsController(object):
                     rot = self.first_steps[step_str][str(period)][str(percentile)]
                 else:
                     rot = self.first_steps[step_str]
-
                 # -------------------------------------------------------------
                 # Transform 3
                 t3_mod = importlib.import_module(
