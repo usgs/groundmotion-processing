@@ -57,6 +57,7 @@ def read_at2(dfile, horient=0.0):
 
     standard = {}
     standard["units_type"] = "acc"
+    standard["units"] = "cm/s^2"  # actually g but we convert later
     standard["horizontal_orientation"] = horient
     standard["vertical_orientation"] = np.nan
     standard["source_file"] = dfile

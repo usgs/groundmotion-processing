@@ -234,7 +234,6 @@ def remove_response(
     Returns:
         StationStream: Instrument-response-corrected stream.
     """
-    print("Remove Response")
     output = "ACC"
 
     if inv is None:
@@ -281,6 +280,7 @@ def remove_response(
                             "input_units": "counts",
                             "output_units": ABBREV_UNITS["VEL"],
                             "water_level": water_level,
+                            "pre_filt_freqs": f"{f1:f}, {f2:f}, {f3:f}, {f4:f}",
                         },
                     )
                     tr.differentiate()
@@ -296,7 +296,6 @@ def remove_response(
                     tr.stats.standard.units = ABBREV_UNITS[output]
                     tr.stats.standard.units_type = output.lower()
                     tr.stats.standard.process_level = PROCESS_LEVELS["V1"]
-                    print(f"Processing.py line 298: {tr.stats.standard.units}")
                 except BaseException as e:
                     reason = (
                         "Encountered an error when attempting to remove "
@@ -389,8 +388,6 @@ def remove_response(
             tr.stats.standard.units_type = output.lower()
             tr.stats.standard.process_level = PROCESS_LEVELS["V1"]
 
-    for tr in st:
-        print(f"Processing.py line 391: {tr.stats.standard.units}")
     return st
 
 

@@ -151,8 +151,6 @@ class GMrecordsApp(object):
                 os.path.join(self.conf_path, "config.yml")
             )
 
-        print(self.conf_file)
-        print(self.data_path)
         if (not os.path.exists(self.conf_file)) or (not os.path.exists(self.data_path)):
             print(f"Config and/or data path does not exist for project: {self.project}")
             config = self.projects_conf

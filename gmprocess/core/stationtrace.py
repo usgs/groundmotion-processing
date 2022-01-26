@@ -323,11 +323,7 @@ class StationTrace(Trace):
 
         if "remove_response" not in self.getProvenanceKeys():
             self.stats.standard.units = "raw counts"
-        else:
-            self.stats.standard.units = REVERSE_UNITS[
-                self.getProvenance("remove_response")[0]["output_units"]
-            ]
-        print(f"Stationtrace.py line 325: {self.stats.standard.units}")
+            self.stats.standard.units_type = get_units_type(self.stats.channel)
 
         # are all of the defined standard keys in the standard dictionary?
         req_keys = set(STANDARD_KEYS.keys())
@@ -416,6 +412,11 @@ class StationTrace(Trace):
         """
         provdict = {"prov_id": prov_id, "prov_attributes": prov_attributes}
         self.provenance.append(provdict)
+        if "output_units" in prov_attributes.keys():
+            self.stats.standard.units = prov_attributes["output_units"]
+            self.stats.standard.units_type = REVERSE_UNITS[
+                prov_attributes["output_units"]
+            ]
         self.validate()
 
     def getAllProvenance(self):
@@ -497,6 +498,7 @@ class StationTrace(Trace):
                         attr_val = UTCDateTime(attr_val)
                     params[key] = attr_val
                 self.setProvenance(sptype, params)
+
             self.setParameter("software", software)
             self.setParameter("user", person)
 

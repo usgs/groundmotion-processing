@@ -48,7 +48,7 @@ def test_fas():
         trace = StationTrace(
             data=accels,
             header={
-                "channel": "H" + str(idx),
+                "channel": "HN" + str(idx),
                 "delta": dt,
                 "standard": {
                     "corner_frequency": np.nan,
