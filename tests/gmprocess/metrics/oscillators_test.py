@@ -1,17 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# stdlib imports
-import os
-
 # third party imports
 import numpy as np
-from obspy.core.trace import Trace
 
 # local imports
 from gmprocess.utils.constants import GAL_TO_PCTG
 from gmprocess.io.read import read_data
-from gmprocess.metrics.oscillators import get_acceleration, get_spectral, get_velocity
+from gmprocess.metrics.oscillators import get_acceleration, get_spectral
 from gmprocess.utils.test_utils import read_data_dir
 
 
