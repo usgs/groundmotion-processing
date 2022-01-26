@@ -7,6 +7,7 @@ from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.io.read import read_data
 from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.waveform_processing.integrate import get_disp, get_vel
+from gmprocess.utils.config import get_config
 
 
 def test_get_disp():
@@ -19,10 +20,13 @@ def test_get_disp():
 
     sc = StreamCollection(streams)
 
+    config = get_config()
+    config["integration"]["frequency"] = True
+
     final_disp = []
     for st in sc:
         for tr in st:
-            tmp_tr = get_disp(tr, method="frequency_domain")
+            tmp_tr = get_disp(tr, config=config)
             final_disp.append(tmp_tr.data[-1])
 
     target_final_disp = np.array(
@@ -41,10 +45,14 @@ def test_get_disp():
 
     np.testing.assert_allclose(final_disp, target_final_disp, atol=1e-6)
 
+    config["integration"]["frequency"] = False
+    config["integration"]["initial"] = 0.0
+    config["integration"]["demean"] = True
+
     final_disp = []
     for st in sc:
         for tr in st:
-            tmp_tr = get_disp(tr, method="time_domain_0init_0mean")
+            tmp_tr = get_disp(tr, config=config)
             final_disp.append(tmp_tr.data[-1])
 
     target_final_disp = np.array(
@@ -73,23 +81,25 @@ def test_get_vel():
 
     sc = StreamCollection(streams)
 
+    config = get_config()
+    config["integration"]["frequency"] = True
+
     final_vel = []
     for st in sc:
         for tr in st:
-            tmp_tr = get_vel(tr, method="frequency_domain")
+            tmp_tr = get_vel(tr, config=config)
             final_vel.append(tmp_tr.data[-1])
-
     target_final_vel = np.array(
         [
-            15.375974647780472,
-            -16.510746211468536,
-            4.903137112699634,
-            0.09343952407331428,
-            0.05247204800310405,
-            0.03024022273800924,
-            0.6851275446327221,
-            -0.13432774959189756,
-            -0.03563143746678422,
+            12.798541430544319,
+            -13.254963379788103,
+            4.6116344346716893,
+            0.16180115030961753,
+            0.019590534374707695,
+            0.041625675432115872,
+            0.41727678959211567,
+            -0.013212254758540733,
+            0.015239298475288782,
         ]
     )
 

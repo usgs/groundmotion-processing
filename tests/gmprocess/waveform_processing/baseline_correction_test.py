@@ -2,11 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import os
+from gmprocess.utils import config
 import numpy as np
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.io.read import read_data
 from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.waveform_processing.baseline_correction import correct_baseline
+from gmprocess.utils.config import get_config
 
 
 def test_correct_baseline():
@@ -20,9 +22,12 @@ def test_correct_baseline():
     sc = StreamCollection(streams)
     final_acc = []
 
+    config = get_config()
+    config["integration"]["frequency"] = True
+
     for st in sc:
         for tr in st:
-            tmp_tr = correct_baseline(tr)
+            tmp_tr = correct_baseline(tr, config=config)
             final_acc.append(tmp_tr.data[-1])
 
     target_final_acc = np.array(

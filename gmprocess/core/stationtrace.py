@@ -17,6 +17,7 @@ import prov
 import prov.model
 from obspy.core.utcdatetime import UTCDateTime
 import pandas as pd
+from scipy.integrate import cumtrapz
 
 # local imports
 from gmprocess.utils.config import get_config
@@ -365,6 +366,53 @@ class StationTrace(Trace):
         error_msg = type_error_msg + "\n" + required_error_msg
         if len(error_msg.strip()):
             raise KeyError(error_msg)
+
+    def integrate(self, frequency=False, initial=0.0, demean=False, config=None):
+        """Integrate a StationTrace with respect to either frequency or time.
+
+        Args:
+            frequency (bool):
+                Determine if we're integrating in frequency domain.
+                If not, integrate in time domain.
+            initial (float):
+                Define initial value returned in result.
+            demean (bool):
+                Remove mean from array before integrating.
+            config (dict):
+                Configuration dictionary (or None). See get_config().
+
+        Returns:
+            StationTrace: Input StationTrace is integrated and returned.
+        """
+        if config:
+            frequency = config["integration"]["frequency"]
+            initial = config["integration"]["initial"]
+            demean = config["integration"]["demean"]
+
+        # check if integrating in frequency domain
+        if frequency:
+            # take discrete FFT and get the discretized frequencies
+            npts = len(self.data)
+            spec_in = np.fft.rfft(self.data, n=npts)
+            freq = np.fft.rfftfreq(npts, self.stats.delta)
+
+            # convert input spectra from cm to m, then integrate input spectra in frequency domain
+            spec_out = spec_in / 100 / 2.0j / np.pi / freq
+
+            # replace the first returned amplitude (which is usually zero) with the
+            # user defined initial value.
+            spec_out[0] = initial
+
+            # calculate inverse FFT back to time domain, convert back to cm
+            integral_result = np.fft.irfft(spec_out, n=npts) * 100
+            self.data = integral_result
+        # if integrating in time domain
+        else:
+            if demean:
+                self.data -= np.mean(self.data)
+            integral_result = cumtrapz(self.data, dx=self.stats.delta, initial=initial)
+            self.data = integral_result
+        return self
 
     def getProvenanceKeys(self):
         """Get a list of all available provenance keys.

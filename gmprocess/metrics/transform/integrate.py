@@ -47,9 +47,9 @@ class Integrate(Transform):
             bandwidth=None,
             config=None,
         )
-        self.result = self.get_integral()
+        self.result = self.get_integral(config=config)
 
-    def get_integral(self):
+    def get_integral(self, config=None):
         """
         Calculated the integral of each trace's data.
 
@@ -58,7 +58,7 @@ class Integrate(Transform):
         """
         stream = StationStream([])
         for trace in self.transform_data:
-            integrated_trace = trace.copy().integrate()
+            integrated_trace = trace.copy().integrate(config=config)
 
             # Need to handle units and units_type for lots of different possibilities.
             if integrated_trace.stats.standard.units_type == "acc":

@@ -124,7 +124,7 @@ CONF_SCHEMA = Schema(
             },
             "duration": {"intervals": list},
         },
-        "integration": {"method": str},
+        "integration": {"frequency": bool, "initial": float, "demean": bool},
         "pickers": {
             "p_arrival_shift": float,
             Optional("ar"): {

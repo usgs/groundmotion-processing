@@ -7,6 +7,7 @@ from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.io.read import read_data
 from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.waveform_processing.PolynomialFit_SJB import PolynomialFit_SJB
+from gmprocess.utils.config import get_config
 
 
 def test_PolynomialFit_SJB():
@@ -20,6 +21,9 @@ def test_PolynomialFit_SJB():
     sc = StreamCollection(streams)
     output_fchp = []
 
+    config = get_config()
+    config["integration"]["frequency"] = True
+
     for st in sc:
         for tr in st:
             tr.setParameter(
@@ -27,7 +31,7 @@ def test_PolynomialFit_SJB():
                 {"type": "constant", "highpass": np.NAN, "lowpass": np.NaN},
             )
 
-        tmp_st = PolynomialFit_SJB(st)
+        tmp_st = PolynomialFit_SJB(st, config=config)
         for tr in tmp_st:
             initial_corners = tr.getParameter("corner_frequencies")
             output_fchp.append(initial_corners["highpass"])

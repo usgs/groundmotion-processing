@@ -1,16 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# stdlib imports
-import os
-
 # third party imports
 import numpy as np
 
 # local imports
 from gmprocess.utils.constants import GAL_TO_PCTG
 from gmprocess.io.read import read_data
-from gmprocess.metrics.oscillators import get_acceleration, get_spectral, get_velocity
+from gmprocess.metrics.oscillators import get_acceleration, get_spectral
 from gmprocess.utils.test_utils import read_data_dir
 
 
@@ -42,16 +39,6 @@ def test_spectral():
     get_spectral(1.0, acc, 0.05)
 
 
-def test_velocity():
-    datafiles, _ = read_data_dir("geonet", "us1000778i", "20161113_110259_WTMC_20.V2A")
-    acc_file = datafiles[0]
-    acc = read_data(acc_file)[0]
-    target_v = acc.copy().integrate()[0]
-    v = get_velocity(acc)
-    np.testing.assert_allclose(v[0], target_v)
-
-
 if __name__ == "__main__":
     test_acceleration()
     test_spectral()
-    test_velocity()
