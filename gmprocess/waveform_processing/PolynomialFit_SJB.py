@@ -56,27 +56,20 @@ def PolynomialFit_SJB(
             )
         else:
             initial_corners = tr.getParameter("corner_frequencies")
-            f_hp = initial_corners[
-                "highpass"
-            ]  # GP: Want the initial lower bound from SNR or constant fchp
+            f_hp = 0.0001
 
             out = __ridder_log(
                 tr, f_hp, target, tol, polynomial_order, maxiter, maxfc, config
             )
 
             if out[0] == True:
-                if out <= initial_corners["highpass"]:
-                    logging.debug(
-                        "Polyfit returns value less than SNR fchp. Adopting SNR fchp"
-                    )
-                else:
-                    initial_corners["highpass"] = out[1]
-                    tr.setParameter("corner_frequencies", initial_corners)
-                    logging.debug(
-                        "Ridder fchp passed to trace stats = %s with misfit %s",
-                        out[1],
-                        out[2],
-                    )
+                initial_corners["highpass"] = out[1]
+                tr.setParameter("corner_frequencies", initial_corners)
+                logging.debug(
+                    "Ridder fchp passed to trace stats = %s with misfit %s",
+                    out[1],
+                    out[2],
+                )
 
             else:
                 tr.fail(
