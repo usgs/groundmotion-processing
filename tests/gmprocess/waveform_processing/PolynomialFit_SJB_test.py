@@ -28,7 +28,7 @@ def test_PolynomialFit_SJB():
         for tr in st:
             tr.setParameter(
                 "corner_frequencies",
-                {"type": "constant", "highpass": 0.08, "lowpass": 20},
+                {"type": "constant", "highpass": 0.05, "lowpass": 20},
             )
 
         tmp_st = PolynomialFit_SJB(st, config=config)
@@ -38,15 +38,15 @@ def test_PolynomialFit_SJB():
 
     target_fchp = np.array(
         [
-            0.080000000006293967,
-            0.087713724604807489,
-            0.080000000002670851,
-            0.093946426171164152,
-            0.080000000003656799,
-            0.080000000000033447,
-            0.080000000005855859,
-            0.080000000010200967,
-            0.080000000000001195,
+            0.068504032933148967,
+            0.088654805911180065,
+            0.051921625174732117,
+            0.05,
+            0.05,
+            0.05,
+            0.064174286727031835,
+            0.077823186442020298,
+            0.05,
         ]
     )
 
