@@ -123,8 +123,18 @@ class ProjectsModule(base.SubcommandModule):
                 print(msg % (project, configfile, self.command_name))
                 sys.exit(1)
 
-            conf_path = config["projects"][project]["conf_path"]
-            data_path = config["projects"][project]["data_path"]
+            conf_path = os.path.normpath(
+                os.path.join(
+                    os.path.abspath(os.path.join(config.filename, os.pardir)),
+                    config["projects"][project]["conf_path"],
+                )
+            )
+            data_path = os.path.normpath(
+                os.path.join(
+                    os.path.abspath(os.path.join(config.filename, os.pardir)),
+                    config["projects"][project]["data_path"],
+                )
+            )
 
             question = (
                 "Are you sure you want to delete everything in:\n"
@@ -132,6 +142,7 @@ class ProjectsModule(base.SubcommandModule):
             )
             if not prompt.query_yes_no(question, default="yes"):
                 sys.exit(0)
+
             shutil.rmtree(conf_path, ignore_errors=True)
             shutil.rmtree(data_path, ignore_errors=True)
 
