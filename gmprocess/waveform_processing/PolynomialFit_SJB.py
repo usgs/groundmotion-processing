@@ -111,8 +111,8 @@ def __ridder_log(
     # acc = acc.taper(max_percentage=0.05, type="hann", side="both")
 
     # apply Tukey window
-    window = signal.tukey(len(acc), alpha=0.2)
-    acc = window * acc
+    window = signal.tukey(len(acc.data), alpha=0.2)
+    acc.data = window * acc.data
 
     time = np.linspace(0, acc.stats.delta * len(acc), len(acc))
     Facc = np.fft.rfft(acc, n=len(acc))
