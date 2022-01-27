@@ -125,7 +125,6 @@ def __ridder_log(
     R2 = get_residual(time, disp2, target, polynomial_order)
     if (np.sign(R0) < 0) and (np.sign(R2) < 0):
         output = [True, fc0, np.abs(R0)]
-        logging.debug("fchp from SNR meets polynomial criterion")
         return output
 
     if (np.sign(R0) > 0) and (np.sign(R2) > 0):
