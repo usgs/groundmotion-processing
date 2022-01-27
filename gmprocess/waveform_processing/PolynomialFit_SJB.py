@@ -69,8 +69,15 @@ def PolynomialFit_SJB(
                         "Polyfit returns value less than SNR fchp. Adopting SNR fchp"
                     )
                 else:
-                    initial_corners["highpass"] = out[1]
-                    tr.setParameter("corner_frequencies", initial_corners)
+                    tr.setParameter(
+                        "corner_frequencies",
+                        {
+                            "type": "snr_polyfit",
+                            "highpass": out[1],
+                            "lowpass": initial_corners["lowpass"],
+                        },
+                    )
+                    # tr.setParameter("corner_frequencies", initial_corners)
                     logging.debug(
                         "Ridder fchp passed to trace stats = %s with misfit %s",
                         out[1],
