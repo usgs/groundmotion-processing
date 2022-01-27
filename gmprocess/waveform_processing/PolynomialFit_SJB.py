@@ -5,6 +5,7 @@ import numpy as np
 import logging
 from gmprocess.utils.config import get_config
 from gmprocess.waveform_processing.integrate import get_disp
+from scipy import signal
 
 
 def PolynomialFit_SJB(
@@ -107,7 +108,11 @@ def __ridder_log(
     acc.detrend("demean")
 
     # apply window use Hann taper to be consistent
-    acc = acc.taper(max_percentage=0.05, type="hann", side="both")
+    # acc = acc.taper(max_percentage=0.05, type="hann", side="both")
+
+    # apply Tukey window
+    window = signal.tukey(len(acc), alpha=0.2)
+    acc = window * acc
 
     time = np.linspace(0, acc.stats.delta * len(acc), len(acc))
     Facc = np.fft.rfft(acc, n=len(acc))
