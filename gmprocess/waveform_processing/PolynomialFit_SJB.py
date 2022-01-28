@@ -77,7 +77,6 @@ def PolynomialFit_SJB(
                             "lowpass": initial_corners["lowpass"],
                         },
                     )
-                    # tr.setParameter("corner_frequencies", initial_corners)
                     logging.debug(
                         "Ridder fchp passed to trace stats = %s with misfit %s",
                         out[1],
@@ -113,9 +112,6 @@ def __ridder_log(
     output = {}
     acc = tr.copy()
     acc.detrend("demean")
-
-    # apply window use Hann taper to be consistent
-    # acc = acc.taper(max_percentage=0.05, type="hann", side="both")
 
     # apply Tukey window
     window = signal.tukey(len(acc.data), alpha=0.2)
