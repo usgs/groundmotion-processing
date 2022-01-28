@@ -333,6 +333,7 @@ def test_end_to_end():
 
 
 if __name__ == "__main__":
+    os.environ["CALLED_FROM_PYTEST"] = "True"
     test_get_channel_dict()
     test_controller()
     test_exceptions()

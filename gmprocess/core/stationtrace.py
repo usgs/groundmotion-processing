@@ -507,9 +507,12 @@ class StationTrace(Trace):
         self.provenance.append(provdict)
         if "output_units" in prov_attributes.keys():
             self.stats.standard.units = prov_attributes["output_units"]
-            self.stats.standard.units_type = REVERSE_UNITS[
-                prov_attributes["output_units"]
-            ]
+            try:
+                self.stats.standard.units_type = REVERSE_UNITS[
+                    prov_attributes["output_units"]
+                ]
+            except BaseException:
+                self.stats.standard.units_type = "unknown"
         self.validate()
 
     def getAllProvenance(self):

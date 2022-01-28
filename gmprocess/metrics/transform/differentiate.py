@@ -71,14 +71,5 @@ class Differentiate(Transform):
         stream = StationStream([])
         for trace in self.transform_data:
             differentiated_trace = trace.copy().differentiate()
-            if differentiated_trace.stats.standard.units_type == "vel":
-                differentiated_trace.stats.standard.units_type = "acc"
-            elif differentiated_trace.stats.standard.units_type == "dis":
-                differentiated_trace.stats.standard.units_type = "vel"
-            elif differentiated_trace.stats.standard.units_type == "acc":
-                differentiated_trace.stats.standard.units_type = "jerk"
-            else:
-                raise ValueError("Unsupported unit type.")
-            differentiated_trace.stats.standard.units += "/s"
             stream.append(differentiated_trace)
         return stream

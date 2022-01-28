@@ -1,3 +1,5 @@
+import os
+
 # third party imports
 from obspy.core.event import Origin
 from obspy.core.utcdatetime import UTCDateTime
@@ -36,4 +38,5 @@ def test_get_peak_time():
 
 
 if __name__ == "__main__":
+    os.environ["CALLED_FROM_PYTEST"] = "True"
     test_get_peak_time()

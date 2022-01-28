@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-from gmprocess.utils import config
 import numpy as np
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.io.read import read_data
@@ -32,15 +31,15 @@ def test_correct_baseline():
 
     target_final_acc = np.array(
         [
-            -0.55555187352854052,
-            2.1831940048288971,
-            -1.7749477126649993,
-            0.36988959067393229,
-            -0.73299742723316885,
-            0.1137765255648102,
-            -0.042977720010361237,
-            -0.017518138494959104,
-            -0.018422681637998786,
+            0.56461289786733748,
+            0.7635810301596887,
+            -1.5336827747344823,
+            0.37347216612067624,
+            -0.68279908493209274,
+            0.11194271460518387,
+            0.026918464474989107,
+            -0.0001845868080251542,
+            -0.015623699510497829,
         ]
     )
 

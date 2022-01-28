@@ -37,7 +37,7 @@ def test_PolynomialFit_SJB():
             output_fchp.append(initial_corners["highpass"])
 
     target_fchp = np.array(
-        [0.05, 0.05, 0.05, 0.05, 0.05427137650812542, 0.05, 0.05, 0.05, 0.05]
+        [0.05, 0.05, 0.05, 0.05, 0.056089747200310201, 0.05, 0.05, 0.05, 0.05]
     )
 
     np.testing.assert_allclose(output_fchp, target_fchp, atol=1e-6)
