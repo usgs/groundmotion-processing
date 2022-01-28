@@ -22,8 +22,6 @@ from gmprocess.waveform_processing import spectrum
 from gmprocess.metrics.oscillators import get_spectral
 from gmprocess.utils.constants import UNIT_CONVERSIONS
 from gmprocess.utils.config import get_config
-from gmprocess.waveform_processing.integrate import get_disp
-from gmprocess.waveform_processing.integrate import get_vel
 
 MIN_MAG = 4.0
 MAX_MAG = 7.0
@@ -58,7 +56,6 @@ def plot_regression(
 
     """
     fig = plt.figure(figsize=(10, 5))
-    # ax = plt.subplot(1, 1, 1)
     ax = fig.add_axes([BOTTOM, AX1_LEFT, AX1_WIDTH, AX1_HEIGHT])
 
     if distance_metric not in imc_table.columns:
@@ -488,7 +485,7 @@ def plot_moveout(
                     epilat,
                     epilon,
                 )[0]
-                / 1000
+                / 1000.0
             )
             max_amp_var_st = 0
             for tr in st:
@@ -521,7 +518,7 @@ def plot_moveout(
                 continue
             lat = trace.stats.coordinates["latitude"]
             lon = trace.stats.coordinates["longitude"]
-            distance = gps2dist_azimuth(lat, lon, epilat, epilon)[0] / 1000
+            distance = gps2dist_azimuth(lat, lon, epilat, epilon)[0] / 1000.0
 
             # Don't plot if past the maximum distance
             if max_dist is not None and distance > max_dist:
@@ -620,13 +617,11 @@ def summary_plots(st, directory, origin, config=None):
     # Compute velocity
     st_vel = st.copy()
     for tr in st_vel:
-        # tr = get_vel(tr, config=config)
         tr = tr.integrate(config=config)
 
     # Compute displacement
     st_dis = st.copy()
     for tr in st_dis:
-        # tr = get_disp(tr, config=config)
         tr = tr.integrate(config=config).integrate(config=config)
 
     # process channels in preferred sort order (i.e., HN1, HN2, HNZ)
