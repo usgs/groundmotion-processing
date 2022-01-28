@@ -24,7 +24,7 @@ from gmprocess.utils.config import get_config
 from gmprocess.io.seedname import get_units_type
 
 UNITS = {"acc": "cm/s^2", "vel": "cm/s"}
-REVERSE_UNITS = {"cm/s^2": "acc", "cm/s": "vel"}
+REVERSE_UNITS = {"cm/s^2": "acc", "cm/s": "vel", "cm": "disp"}
 
 PROCESS_LEVELS = {
     "V0": "raw counts",
@@ -367,6 +367,26 @@ class StationTrace(Trace):
         if len(error_msg.strip()):
             raise KeyError(error_msg)
 
+    def differentiate(self, method="gradient", **options):
+        input_units = self.stats.standard.units
+        if "/s^2" in input_units:
+            output_units = input_units.replace("/s^2", "/s^3")
+        elif "/s/s" in input_units:
+            output_units = input_units.replace("/s/s", "/s/s/s")
+        elif "/s" in input_units:
+            output_units = input_units.replace("/s", "/s/s")
+        else:
+            output_units = input_units + "/s"
+        self.setProvenance(
+            "differentiate",
+            {
+                "differentiation_method": method,
+                "input_units": self.stats.standard.units,
+                "output_units": output_units,
+            },
+        )
+        return super().differentiate(method, **options)
+
     def integrate(self, frequency=False, initial=0.0, demean=False, config=None):
         """Integrate a StationTrace with respect to either frequency or time.
 
@@ -389,29 +409,54 @@ class StationTrace(Trace):
             initial = config["integration"]["initial"]
             demean = config["integration"]["demean"]
 
-        # check if integrating in frequency domain
+        if demean:
+            self.data -= np.mean(self.data)
+
         if frequency:
+            # integrating in frequency domain
+            method = "frequency domain"
             # take discrete FFT and get the discretized frequencies
             npts = len(self.data)
             spec_in = np.fft.rfft(self.data, n=npts)
             freq = np.fft.rfftfreq(npts, self.stats.delta)
 
-            # convert input spectra from cm to m, then integrate input spectra in frequency domain
-            spec_out = spec_in / 100 / 2.0j / np.pi / freq
+            # Replace frequency of zero with 1.0 to avoid division by zero. This will
+            # cause the DC (mean) to be unchanged by the integration/division.
+            freq[0] = 1.0
+            spec_out = spec_in / 2.0j / np.pi / freq
 
-            # replace the first returned amplitude (which is usually zero) with the
-            # user defined initial value.
-            spec_out[0] = initial
+            # calculate inverse FFT back to time domain
+            integral_result = np.fft.irfft(spec_out, n=npts)
 
-            # calculate inverse FFT back to time domain, convert back to cm
-            integral_result = np.fft.irfft(spec_out, n=npts) * 100
-            self.data = integral_result
-        # if integrating in time domain
+            # Apply initial condition
+            shift = integral_result[0] - initial
+
+            self.data = integral_result - shift
+
         else:
-            if demean:
-                self.data -= np.mean(self.data)
+            # integrating in time domain
+            method = "time domain"
             integral_result = cumtrapz(self.data, dx=self.stats.delta, initial=initial)
             self.data = integral_result
+
+        input_units = self.stats.standard.units
+        if "/s^2" in input_units:
+            output_units = input_units.replace("/s^2", "/s")
+        elif "/s/s" in input_units:
+            output_units = input_units.replace("/s/s", "/s")
+        elif "/s" in input_units:
+            output_units = input_units.replace("/s", "")
+        else:
+            output_units = input_units + "*s"
+        self.setProvenance(
+            "integrate",
+            {
+                "integration_method": method,
+                "input_units": self.stats.standard.units,
+                "output_units": output_units,
+            },
+        )
+
         return self
 
     def getProvenanceKeys(self):
