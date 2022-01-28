@@ -28,7 +28,7 @@ def test_PolynomialFit_SJB():
         for tr in st:
             tr.setParameter(
                 "corner_frequencies",
-                {"type": "constant", "highpass": np.NAN, "lowpass": np.NaN},
+                {"type": "constant", "highpass": 0.05, "lowpass": 20},
             )
 
         tmp_st = PolynomialFit_SJB(st, config=config)
@@ -37,17 +37,7 @@ def test_PolynomialFit_SJB():
             output_fchp.append(initial_corners["highpass"])
 
     target_fchp = np.array(
-        [
-            0.068504032933123862,
-            0.088654805911294959,
-            0.051921625174727967,
-            0.044132073708851055,
-            0.044316733610217741,
-            0.016886763544486788,
-            0.064174286727038274,
-            0.077823186442056894,
-            0.037224807399398735,
-        ]
+        [0.05, 0.05, 0.05, 0.05, 0.05427137650812542, 0.05, 0.05, 0.05, 0.05]
     )
 
     np.testing.assert_allclose(output_fchp, target_fchp, atol=1e-6)

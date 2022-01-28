@@ -5,6 +5,7 @@ import numpy as np
 import logging
 from gmprocess.utils.config import get_config
 from gmprocess.waveform_processing.integrate import get_disp
+from scipy import signal
 
 
 def PolynomialFit_SJB(
@@ -56,20 +57,31 @@ def PolynomialFit_SJB(
             )
         else:
             initial_corners = tr.getParameter("corner_frequencies")
-            f_hp = 0.0001  # GP: Want the initial bounds to encompass the solution
+            f_hp = 0.0001
 
             out = __ridder_log(
                 tr, f_hp, target, tol, polynomial_order, maxiter, maxfc, config
             )
 
             if out[0] == True:
-                initial_corners["highpass"] = out[1]
-                tr.setParameter("corner_frequencies", initial_corners)
-                logging.debug(
-                    "Ridder fchp passed to trace stats = %s with misfit %s",
-                    out[1],
-                    out[2],
-                )
+                if out[1] <= initial_corners["highpass"]:
+                    logging.debug(
+                        "Polyfit returns value less than SNR fchp. Adopting SNR fchp"
+                    )
+                else:
+                    tr.setParameter(
+                        "corner_frequencies",
+                        {
+                            "type": "snr_polyfit",
+                            "highpass": out[1],
+                            "lowpass": initial_corners["lowpass"],
+                        },
+                    )
+                    logging.debug(
+                        "Ridder fchp passed to trace stats = %s with misfit %s",
+                        out[1],
+                        out[2],
+                    )
 
             else:
                 tr.fail(
@@ -101,8 +113,9 @@ def __ridder_log(
     acc = tr.copy()
     acc.detrend("demean")
 
-    # apply window use Hann taper to be consistent
-    acc = acc.taper(max_percentage=0.05, type="hann", side="both")
+    # apply Tukey window
+    window = signal.tukey(len(acc.data), alpha=0.2)
+    acc.data = window * acc.data
 
     time = np.linspace(0, acc.stats.delta * len(acc), len(acc))
     Facc = np.fft.rfft(acc, n=len(acc))
@@ -119,15 +132,9 @@ def __ridder_log(
 
     R2 = get_residual(time, disp2, target, polynomial_order)
     if (np.sign(R0) < 0) and (np.sign(R2) < 0):
-        # output = {
-        #     'status': True,
-        #     'fc (Hz)': fc0,
-        #     'acc (g)': np.fft.irfft(Facc0),
-        #     'vel (m/s)': get_vel(freq, Facc0),
-        #     'disp (m)': get_disp(freq, Facc0)
-        # }
         output = [True, fc0, np.abs(R0)]
         return output
+
     if (np.sign(R0) > 0) and (np.sign(R2) > 0):
         output = [False]
         return output
@@ -186,32 +193,6 @@ def filtered_Facc(Facc, freq, fc, order):
         else:
             filtered_Facc.append(Fa / (np.sqrt(1.0 + (fc / f) ** (2.0 * order))))
     return filtered_Facc
-
-
-# def get_disp_frequency_domain(freq, Facc, N):
-#     Fdisp = []
-#     for facc, f in zip(Facc, freq):
-#         if f == 0:
-#             Fdisp.append(0.0)
-#         else:
-#             Fdisp.append(
-#                 (facc / 100) / (2.0j * np.pi * f) ** 2
-#             )  # convert from cm/s^2 to m/s^2
-#     disp = np.fft.irfft(Fdisp, n=N) * 100
-#     return disp
-
-
-# def get_disp_time_domain_zero_init(Facc, delta, N):
-#     acc_time = np.fft.irfft(Facc, n=N)
-#     disp = cumtrapz(cumtrapz(acc_time, dx=delta, initial=0), dx=delta, initial=0)
-#     return disp
-
-# def get_disp_time_domain_zero_mean(Facc, delta, N):
-#     acc_time = np.fft.irfft(Facc, n=N)
-#     vel = cumtrapz(acc_time, dx=delta, initial=0)
-#     vel -= np.mean(vel)
-#     disp = cumtrapz(vel,dx = delta, initial = 0)
-#     return disp
 
 
 def get_residual(time, disp, target, polynomial_order):
