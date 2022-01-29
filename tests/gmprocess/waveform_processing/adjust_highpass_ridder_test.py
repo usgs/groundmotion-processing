@@ -50,7 +50,7 @@ def test_auto_fchp():
         ]
     )
 
-    np.testing.assert_allclose(output_fchp, target_fchp, atol=1e-6)
+    np.testing.assert_allclose(output_fchp, target_fchp, rtol=1e-5, atol=1e-6)
 
 
 if __name__ == "__main__":
