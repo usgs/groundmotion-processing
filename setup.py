@@ -16,6 +16,7 @@ ko_sourcefiles = [
     "gmprocess/waveform_processing/smoothing/konno_ohmachi.pyx",
     "gmprocess/waveform_processing/smoothing/smoothing.c",
 ]
+auto_fchp_sourcefiles = ["gmprocess/waveform_processing/auto_fchp.pyx"]
 
 libraries = []
 if os.name == "posix":
@@ -34,6 +35,14 @@ ext_modules = [
     Extension(
         "gmprocess.waveform_processing.smoothing.konno_ohmachi",
         ko_sourcefiles,
+        libraries=libraries,
+        include_dirs=[numpy.get_include()],
+        extra_compile_args=["-O2", "-Xpreprocessor", "-fopenmp"],
+        extra_link_args=["-Xpreprocessor", "-fopenmp"],
+    ),
+    Extension(
+        "gmprocess.waveform_processing.auto_fchp",
+        auto_fchp_sourcefiles,
         libraries=libraries,
         include_dirs=[numpy.get_include()],
         extra_compile_args=["-O2", "-Xpreprocessor", "-fopenmp"],

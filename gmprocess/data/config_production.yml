@@ -336,7 +336,7 @@ processing:
         type: hann
         width: 0.05
         side: both
-    - PolynomialFit_SJB:
+    - get_fchp:
        target: 0.02
        tol: 0.001
        polynomial_order: 6
