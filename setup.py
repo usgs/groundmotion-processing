@@ -29,7 +29,7 @@ ext_modules = [
         osc_sourcefiles,
         libraries=libraries,
         include_dirs=[numpy.get_include()],
-        extra_compile_args=["-O2", "-Xpreprocessor", "-fopenmp"],
+        extra_compile_args=["-O1", "-Xpreprocessor", "-fopenmp"],
         extra_link_args=["-Xpreprocessor", "-fopenmp"],
     ),
     Extension(
