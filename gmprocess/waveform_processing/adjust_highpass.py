@@ -109,7 +109,7 @@ def __disp_checks(
     trdis = correct_baseline(trdis, config)
 
     # Integrate to displacment
-    trdis = get_disp(trdis, method=config["integration"]["method"])
+    trdis = get_disp(trdis, config=config)
 
     # Checks
     ok = True
