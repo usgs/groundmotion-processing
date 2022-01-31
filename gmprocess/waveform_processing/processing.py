@@ -36,7 +36,7 @@ from gmprocess.waveform_processing.filtering import (
     highpass_filter,
 )  # NOQA
 from gmprocess.waveform_processing.adjust_highpass import adjust_highpass_corner  # NOQA
-from gmprocess.waveform_processing.PolynomialFit_SJB import PolynomialFit_SJB  # NOQA
+from gmprocess.waveform_processing.adjust_highpass_ridder import ridder_fchp  # NOQA
 from gmprocess.waveform_processing.zero_crossings import check_zero_crossings  # NOQA
 from gmprocess.waveform_processing.nn_quality_assurance import NNet_QA  # NOQA
 from gmprocess.waveform_processing.snr import compute_snr  # NOQA
