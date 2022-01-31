@@ -198,6 +198,51 @@ Attributes
       :raises ValueError: - When number of points in header does not match data length.
 
 
+   .. py:method:: differentiate(self, method='gradient', **options)
+
+      Differentiate the trace with respect to time.
+
+      :type method: str, optional
+      :param method: Method to use for differentiation. Defaults to
+          ``'gradient'``. See the `Supported Methods`_ section below for
+          further details.
+
+      .. note::
+
+          This operation is performed in place on the actual data arrays. The
+          raw data is not accessible anymore afterwards. To keep your
+          original data, use :meth:`~obspy.core.trace.Trace.copy` to create
+          a copy of your trace object.
+          This also makes an entry with information on the applied processing
+          in ``stats.processing`` of this trace.
+
+      .. rubric:: _`Supported Methods`
+
+      ``'gradient'``
+          The gradient is computed using central differences in the interior
+          and first differences at the boundaries. The returned gradient
+          hence has the same shape as the input array. (uses
+          :func:`numpy.gradient`)
+
+
+   .. py:method:: integrate(self, frequency=False, initial=0.0, demean=False, config=None)
+
+      Integrate a StationTrace with respect to either frequency or time.
+
+      :param frequency: Determine if we're integrating in frequency domain.
+                        If not, integrate in time domain.
+      :type frequency: bool
+      :param initial: Define initial value returned in result.
+      :type initial: float
+      :param demean: Remove mean from array before integrating.
+      :type demean: bool
+      :param config: Configuration dictionary (or None). See get_config().
+      :type config: dict
+
+      :returns: Input StationTrace is integrated and returned.
+      :rtype: StationTrace
+
+
    .. py:method:: getProvenanceKeys(self)
 
       Get a list of all available provenance keys.
@@ -241,10 +286,12 @@ Attributes
       :rtype: list
 
 
-   .. py:method:: getProvenanceDocument(self, base_prov=None)
+   .. py:method:: getProvenanceDocument(self, base_prov=None, gmprocess_version='unknown')
 
       Generate a provenance document.
 
+      :param gmprocess_version: gmprocess version string.
+      :type gmprocess_version: str
       :param base_prov: Base provenance document.
 
       :returns: Provenance document.

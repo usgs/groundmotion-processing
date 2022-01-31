@@ -158,9 +158,14 @@ Attributes
       :type event: Event
 
 
-   .. py:method:: addConfig(self, config=None)
+   .. py:method:: addConfig(self, config=None, force=False)
 
       Add config to an ASDF dataset and workspace attribute.
+
+      :param config: Configuration options.
+      :type config: dict
+      :param force: Add/overwrite config if it already exists.
+      :type force: bool
 
 
    .. py:method:: setConfig(self)

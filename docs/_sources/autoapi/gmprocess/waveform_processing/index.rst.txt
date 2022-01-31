@@ -19,8 +19,8 @@ Submodules
    :titlesonly:
    :maxdepth: 1
 
-   PolynomialFit_SJB/index.rst
    adjust_highpass/index.rst
+   adjust_highpass_ridder/index.rst
    baseline_correction/index.rst
    corner_frequencies/index.rst
    fft/index.rst

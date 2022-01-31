@@ -13,5 +13,6 @@ Submodules
    cesmd_fetcher/index.rst
    cesmd_search/index.rst
    core/index.rst
+   cosmos_writer/index.rst
 
 

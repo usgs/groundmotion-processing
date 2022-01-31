@@ -75,25 +75,11 @@ psc = process_streams(sc, event, conf)
 psc.describe()
 ```
 
-From the `describe` output, you can see that station CI.CLC failed the QA 
-checks that are applied during the `process_streams` command. You can also 
-see that it is because of a failure on the Z component. To investigate what 
-caused the failure, we can look at the `failure` trace parameter
+From the `describe` output, you can see that none of the stations the QA 
+checks that are applied during the `process_streams` command. 
 
-```{code-cell} ipython3
-print(psc[0][2].getParameter('failure'))
-```
-
-Note that the first index is to select the CI.CLC stream, and the second is to
-select the Z component.
-
-The output shows that the trace failed in the `check_tail` module with the 
-reason being that the tail velocity ratio is great than 0.3. This is a simple
-"sanity" check that is designed to avoid records with unphysical drifts. 
-Although the record is probably still usable in this case, we will continue
-use the third stream (CI.CCC) for the rest of this tutorial.
-
-We compute the response spectral with the StationSummary class
+We now compute the response spectral with the StationSummary class for 
+the third stream (CI.CCC)
 
 ```{code-cell} ipython3
 # Compute response spectra for one of the processed streams
