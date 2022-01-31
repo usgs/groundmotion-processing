@@ -298,7 +298,7 @@ class StreamCollection(object):
 
         # Might eventually want to include some of the missed files and
         # error info but don't have a sensible place to put it currently.
-        return cls(streams)
+        return cls(streams, config=config)
 
     @classmethod
     def from_traces(cls, traces):

@@ -336,12 +336,6 @@ processing:
         type: hann
         width: 0.05
         side: both
-    - get_fchp:
-       target: 0.02
-       tol: 0.001
-       polynomial_order: 6
-       maxiter: 30
-       maxfc: 0.5
        
     - highpass_filter:
         # Applies a Butterworth highpass filter using the highpass corner
