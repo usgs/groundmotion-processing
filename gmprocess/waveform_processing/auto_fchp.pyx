@@ -77,7 +77,7 @@ cdef double get_residual(double[:] time, double[:] disp, double target):
 def get_fchp(double dt, double[:] acc, double target, double tol, double order, int maxiter, double minfc, double maxfc):
     # subtract mean and apply Tukey window
     cdef int i
-    cdef double meanacc
+    cdef double meanacc=0.0
     for i in range(len(acc)):
         meanacc += acc[i]/len(acc)
     cdef double[:] window = signal.tukey(len(acc), alpha=0.2)
