@@ -14,6 +14,7 @@ Functions
 .. autoapisummary::
 
    gmprocess.utils.export_shakemap_utils.create_json
+   gmprocess.utils.export_shakemap_utils.iterdict
    gmprocess.utils.export_shakemap_utils._get_cosmos_code
    gmprocess.utils.export_shakemap_utils.get_station_feature
    gmprocess.utils.export_shakemap_utils.get_components
@@ -41,6 +42,9 @@ Functions
    :type expanded_imts: bool
    :param gmprocess_version: gmprocess version.
    :type gmprocess_version: str
+
+
+.. py:function:: iterdict(d)
 
 
 .. py:function:: _get_cosmos_code(desc)

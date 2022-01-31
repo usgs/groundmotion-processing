@@ -170,7 +170,7 @@ Attributes
       :rtype: dict or list
 
 
-   .. py:method:: getProvenanceDocuments(self, base_prov=None)
+   .. py:method:: getProvenanceDocuments(self, base_prov=None, gmprocess_version='unknown')
 
       Generate provenance Document.
 

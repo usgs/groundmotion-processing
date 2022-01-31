@@ -267,10 +267,32 @@ class StreamWorkspace(object):
         """
         self.dataset.add_quakeml(event)
 
-    def addConfig(self, config=None):
-        """Add config to an ASDF dataset and workspace attribute."""
+    def addConfig(self, config=None, force=False):
+        """Add config to an ASDF dataset and workspace attribute.
+
+        Args:
+            config (dict):
+                Configuration options.
+            force (bool):
+                Add/overwrite config if it already exists.
+        """
+        group_name = "config/config"
+        data_exists = group_name in self.dataset._auxiliary_data_group
+
+        if data_exists:
+            if force:
+                logging.warning("Removing existing conf from workspace.")
+                del self.dataset._auxiliary_data_group[group_name]
+            else:
+                logging.warning(
+                    "config already exists in workspace. Set force option to "
+                    "True if you want to overwrite."
+                )
+                return
+
         if config is None:
             config = get_config()
+
         self.config = config
         config_bytes = json.dumps(config).encode("utf-8")
         config_array = np.frombuffer(config_bytes, dtype=np.uint8)
@@ -280,7 +302,7 @@ class StreamWorkspace(object):
 
     def setConfig(self):
         """Get config from ASDF dataset and set as a workspace attribute."""
-        group_name = f"{'config'}/{'config'}"
+        group_name = "config/config"
         data_exists = group_name in self.dataset._auxiliary_data_group
         if not data_exists:
             logging.error("No config found in auxiliary data.")
@@ -481,6 +503,10 @@ class StreamWorkspace(object):
             StreamCollection: Object containing list of organized
             StationStreams.
         """
+        if config is None:
+            if hasattr(self, "config"):
+                config = self.config
+
         trace_auxholder = []
         stream_auxholder = []
         auxdata = self.dataset.auxiliary_data

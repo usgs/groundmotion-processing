@@ -1,7 +1,7 @@
-:py:mod:`gmprocess.waveform_processing.PolynomialFit_SJB`
-=========================================================
+:py:mod:`gmprocess.waveform_processing.adjust_highpass_ridder`
+==============================================================
 
-.. py:module:: gmprocess.waveform_processing.PolynomialFit_SJB
+.. py:module:: gmprocess.waveform_processing.adjust_highpass_ridder
 
 
 Module Contents
@@ -13,15 +13,24 @@ Functions
 
 .. autoapisummary::
 
-   gmprocess.waveform_processing.PolynomialFit_SJB.PolynomialFit_SJB
-   gmprocess.waveform_processing.PolynomialFit_SJB.__ridder_log
-   gmprocess.waveform_processing.PolynomialFit_SJB.MAX
-   gmprocess.waveform_processing.PolynomialFit_SJB.filtered_Facc
-   gmprocess.waveform_processing.PolynomialFit_SJB.get_residual
+   gmprocess.waveform_processing.adjust_highpass_ridder.ridder_fchp
 
 
 
-.. py:function:: PolynomialFit_SJB(st, target=0.02, tol=0.001, polynomial_order=6.0, maxiter=30, maxfc=0.5, config=None)
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.waveform_processing.adjust_highpass_ridder.FORDER
+
+
+.. py:data:: FORDER
+   :annotation: = 5.0
+
+   
+
+.. py:function:: ridder_fchp(st, target=0.02, tol=0.001, maxiter=30, maxfc=0.5, config=None)
 
    Search for highpass corner using Ridder's method.
 
@@ -40,8 +49,6 @@ Functions
    :type target: float
    :param tol: tolereance for matching the ratio target
    :type tol: float
-   :param polynomial_order: order of polynomial to fit to displacement time series.
-   :type polynomial_order: float
    :param maxiter: maximum number of allowed iterations in Ridder's method
    :type maxiter: float
    :param maxfc: Maximum allowable value of the highpass corner freq.
@@ -54,17 +61,5 @@ Functions
    :type config: dict
 
    :returns: StationStream.
-
-
-.. py:function:: __ridder_log(tr, f_hp, target=0.02, tol=0.001, polynomial_order=6, maxiter=30, maxfc=0.5, config=None)
-
-
-.. py:function:: MAX(vx)
-
-
-.. py:function:: filtered_Facc(Facc, freq, fc, order)
-
-
-.. py:function:: get_residual(time, disp, target, polynomial_order)
 
 

@@ -19,6 +19,7 @@ Functions
    gmprocess.io.cosmos.core._get_header_info
    gmprocess.io.cosmos.core._check_assign
    gmprocess.io.cosmos.core._read_lines
+   gmprocess.io.cosmos.core.write_cosmos
 
 
 
@@ -250,5 +251,8 @@ Attributes
 
    :returns: List of comments or array of data.
    :rtype: array-like
+
+
+.. py:function:: write_cosmos(filename, label)
 
 
