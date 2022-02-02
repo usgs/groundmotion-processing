@@ -125,7 +125,12 @@ CONF_SCHEMA = Schema(
             },
             "duration": {"intervals": list},
         },
-        "integration": {"frequency": bool, "initial": float, "demean": bool},
+        "integration": {
+            "frequency": bool,
+            "initial": float,
+            "demean": bool,
+            "taper": {"taper": bool, "type": str, "width": float, "side": str},
+        },
         "pickers": {
             "p_arrival_shift": float,
             Optional("ar"): {
