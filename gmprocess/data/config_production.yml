@@ -115,6 +115,12 @@ read:
     # to set it here:
     sac_source: Unknown
 
+    # Group records into StationStream objects? This enforces 3 orthogonal component
+    # groupings in which they have the same time span as well as other consistency 
+    # checks. Set to False for stuctural/geotech array data for which these
+    # do not make sense
+    use_stationstreams: True
+
 # -----------------------------------------------------------------------------
 # Options for separating noise/signal windows
 #
@@ -561,6 +567,7 @@ metrics:
 #         column_header: example_column_header
 #         readme_entry: example_readme_entry
 #         units: example_units
+
 # -----------------------------------------------------------------------------
 # This section is for options for integration method
 integration:
@@ -570,6 +577,7 @@ integration:
     initial: 0.0
     # Remove the mean of the data prior to integration.
     demean: False
+
 # -----------------------------------------------------------------------------
 # This section is for options for phase pickers
 pickers:

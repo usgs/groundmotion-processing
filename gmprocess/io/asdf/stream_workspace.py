@@ -28,6 +28,7 @@ from gmprocess.core.stationtrace import (
 )
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.core.streamarray import StreamArray
 from gmprocess.metrics.station_summary import StationSummary, XML_UNITS
 from gmprocess.utils.event import ScalarEvent
 from gmprocess.utils.tables import _get_table_row
@@ -90,6 +91,8 @@ FLATFILE_COLUMNS = {
         "Strike-parallel (T) coordinate, defined by Spudich and Chiou "
         "(2015; https://doi.org/10.3133/ofr20151028) (km)"
     ),
+    "Lowpass": "Channel lowpass frequency (Hz)",
+    "Highpass": "Channel highpass frequency (Hz)",
     "H1Lowpass": "H1 channel lowpass frequency (Hz)",
     "H1Highpass": "H1 channel highpass frequency (Hz)",
     "H2Lowpass": "H2 channel lowpass frequency (Hz)",
@@ -362,8 +365,7 @@ class StreamWorkspace(object):
 
         logging.debug(streams)
         for stream in streams:
-            station = stream[0].stats["station"]
-            logging.info(f"Adding waveforms for station {station}")
+            logging.info(f"Adding waveforms for station {stream.get_id()}")
             # is this a raw file? Check the trace for provenance info.
             is_raw = not len(stream[0].getProvenanceKeys())
 
@@ -404,10 +406,14 @@ class StreamWorkspace(object):
                 jsonbytes = json.dumps(jdict).encode("utf-8")
                 jsonarray = np.frombuffer(jsonbytes, dtype=np.uint8)
                 dtype = "StreamProcessingParameters"
+                if config["read"]["use_stationstreams"]:
+                    chancode = stream.get_inst()
+                else:
+                    chancode = stream[0].stats.channel
                 parampath = "/".join(
                     [
                         format_netsta(stream[0].stats),
-                        format_nslit(stream[0].stats, stream.get_inst(), tag),
+                        format_nslit(stream[0].stats, chancode, tag),
                     ]
                 )
                 self.dataset.add_auxiliary_data(
@@ -614,7 +620,10 @@ class StreamWorkspace(object):
         # No need to handle duplicates when retrieving stations from the
         # workspace file because it must have been handled before putting them
         # into the workspace file.
-        streams = StreamCollection(streams, handle_duplicates=False, config=config)
+        if config["read"]["use_stationstreams"]:
+            streams = StreamCollection(streams, handle_duplicates=False, config=config)
+        else:
+            streams = StreamArray(streams)
         return streams
 
     def getStations(self):
@@ -747,6 +756,11 @@ class StreamWorkspace(object):
                 logging.warning(fmt % (eventid, instrument, str(pgme)))
                 continue
 
+            if hasattr(streams[0], "use_array") and streams[0].use_array == True:
+                chancode = streams[0][0].stats.channel
+            else:
+                chancode = streams[0].get_inst()
+
             if calc_waveform_metrics and stream.passed:
                 xmlstr = summary.get_metric_xml()
                 if stream_label is not None:
@@ -756,7 +770,7 @@ class StreamWorkspace(object):
                 metricpath = "/".join(
                     [
                         format_netsta(stream[0].stats),
-                        format_nslit(stream[0].stats, stream.get_inst(), tag),
+                        format_nslit(stream[0].stats, chancode, tag),
                     ]
                 )
                 self.insert_aux(xmlstr, "WaveFormMetrics", metricpath)
@@ -766,7 +780,7 @@ class StreamWorkspace(object):
                 metricpath = "/".join(
                     [
                         format_netsta(stream[0].stats),
-                        format_nslit(stream[0].stats, stream.get_inst(), eventid),
+                        format_nslit(stream[0].stats, chancode, eventid),
                     ]
                 )
                 self.insert_aux(xmlstr, "StationMetrics", metricpath)
@@ -1148,6 +1162,10 @@ class StreamWorkspace(object):
         Returns:
             StationSummary: Object containing all stream metrics or None.
         """
+
+        # ----------------------------------------------------------- #
+        # Waveform Metrics
+
         if "WaveFormMetrics" not in self.dataset.auxiliary_data:
             msg = "Waveform metrics not found in workspace, cannot get stream metrics."
             logging.warning(msg)
@@ -1182,10 +1200,14 @@ class StreamWorkspace(object):
         else:
             stream_tag = streams[0].tag
 
-        metricpath = format_nslit(
-            streams[0][0].stats, streams[0].get_inst(), stream_tag
-        )
+        if hasattr(streams[0], "use_array") and streams[0].use_array == True:
+            chancode = streams[0][0].stats.channel
+        else:
+            chancode = streams[0].get_inst()
         top = format_netsta(streams[0][0].stats)
+
+        metricpath = format_nslit(streams[0][0].stats, chancode, stream_tag)
+
         if top in auxholder:
             tauxholder = auxholder[top]
             if metricpath not in tauxholder:
@@ -1201,11 +1223,19 @@ class StreamWorkspace(object):
         else:
             return
 
+        # ----------------------------------------------------------- #
+        # Station Metrics
         if "StationMetrics" not in self.dataset.auxiliary_data:
             logging.warning("Station metrics not found in workspace.")
             return None
         auxholder = self.dataset.auxiliary_data.StationMetrics
-        station_path = format_nslit(streams[0][0].stats, streams[0].get_inst(), eventid)
+
+        if hasattr(streams[0], "use_array") and streams[0].use_array == True:
+            chancode = streams[0][0].stats.channel
+        else:
+            chancode = streams[0].get_inst()
+        station_path = format_nslit(streams[0][0].stats, chancode, eventid)
+
         if top in auxholder:
             tauxholder = auxholder[top]
             if station_path not in tauxholder:

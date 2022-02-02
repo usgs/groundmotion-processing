@@ -120,7 +120,13 @@ read:
     # Also, data source is not included in SAC headers, so we provide an option
     # to set it here:
     sac_source: Unknown
-    
+
+    # Group records into StationStream objects? This enforces 3 orthogonal component
+    # groupings in which they have the same time span as well as other consistency 
+    # checks. Set to False for stuctural/geotech array data for which these
+    # do not make sense
+    use_stationstreams: True
+
 # -----------------------------------------------------------------------------
 # Options for separating noise/signal windows
 #

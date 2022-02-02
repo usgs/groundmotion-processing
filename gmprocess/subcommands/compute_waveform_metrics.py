@@ -90,13 +90,15 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
 
             for stream in streams:
                 if stream.passed:
+                    if config["read"]["use_stationstreams"]:
+                        chancode = stream.get_inst()
+                    else:
+                        chancode = stream[0].stats.channel
                     metricpaths.append(
                         "/".join(
                             [
                                 ws.format_netsta(stream[0].stats),
-                                ws.format_nslit(
-                                    stream[0].stats, stream.get_inst(), stream.tag
-                                ),
+                                ws.format_nslit(stream[0].stats, chancode, stream.tag),
                             ]
                         )
                     )

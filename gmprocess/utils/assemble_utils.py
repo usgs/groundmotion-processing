@@ -7,6 +7,7 @@ import logging
 
 # local imports
 from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.core.streamarray import StreamArray
 from gmprocess.utils.constants import WORKSPACE_NAME
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.io.read_directory import directory_to_streams
@@ -50,11 +51,15 @@ def assemble(event, config, directory, gmprocess_version):
     streams, _, _ = directory_to_streams(in_raw_dir, config=config)
     logging.debug("streams:")
     logging.debug(streams)
-    tcollection = StreamCollection(streams, **config["duplicate"])
 
-    if len(tcollection):
-        logging.debug("tcollection.describe():")
-        logging.debug(tcollection.describe())
+    if config["read"]["use_stationstreams"]:
+        stream_array = StreamCollection(streams, **config["duplicate"])
+    else:
+        stream_array = StreamArray(streams)
+
+    if len(stream_array):
+        logging.debug("stream_array.describe():")
+        logging.debug(stream_array.describe())
 
     # Create the workspace file and put the unprocessed waveforms in it
     workname = os.path.join(in_event_dir, WORKSPACE_NAME)
@@ -70,7 +75,7 @@ def assemble(event, config, directory, gmprocess_version):
     workspace.addGmprocessVersion(gmprocess_version)
     workspace.addConfig()
     workspace.addStreams(
-        event, tcollection, label="unprocessed", gmprocess_version=gmprocess_version
+        event, stream_array, label="unprocessed", gmprocess_version=gmprocess_version
     )
     logging.debug("workspace.dataset.waveforms.list():")
     logging.debug(workspace.dataset.waveforms.list())

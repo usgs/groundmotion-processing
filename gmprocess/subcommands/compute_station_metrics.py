@@ -213,7 +213,8 @@ class ComputeStationMetricsModule(base.SubcommandModule):
                 raise ValueError("No matching streams found.")
 
             for stream in streams:
-                logging.info(f"Calculating station metrics for {stream.get_id()}...")
+                streamid = stream.get_id()
+                logging.info(f"Calculating station metrics for {streamid}...")
                 summary = station_summary.StationSummary.from_config(
                     stream,
                     event=event,
@@ -251,12 +252,14 @@ class ComputeStationMetricsModule(base.SubcommandModule):
                         }
 
                 xmlstr = summary.get_station_xml()
+                if config["read"]["use_stationstreams"]:
+                    chancode = stream.get_inst()
+                else:
+                    chancode = stream[0].stats.channel
                 metricpath = "/".join(
                     [
                         ws.format_netsta(stream[0].stats),
-                        ws.format_nslit(
-                            stream[0].stats, stream.get_inst(), self.eventid
-                        ),
+                        ws.format_nslit(stream[0].stats, chancode, self.eventid),
                     ]
                 )
                 self.workspace.insert_aux(

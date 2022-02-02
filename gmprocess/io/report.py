@@ -181,7 +181,8 @@ def build_report_latex(
     for st in st_list:
         # Do NOT use os.path.join() here becuase even on windows, latex needs the path
         # to use linux-style forward slashs.
-        plot_path = f"plots/{origin.id}_{st.get_id()}.png"
+        streamid = st.get_id()
+        plot_path = f"plots/{origin.id}_{streamid}.png"
         SB = STREAMBLOCK.replace("[PLOTPATH]", plot_path)
         SB = SB.replace(
             "[EVENT]",

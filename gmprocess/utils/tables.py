@@ -35,8 +35,20 @@ def set_precisions(df):
 
 
 def _get_table_row(stream, summary, event, imc):
-
-    if imc == "Z":
+    if imc == "CHANNELS":
+        if len(stream) > 1:
+            raise ValueError("Stream must be length 1 to get row for imc==CHANNELS.")
+        chan = stream[0]
+        chan_lowfilt = chan.getProvenance("lowpass_filter")
+        chan_highfilt = chan.getProvenance("highpass_filter")
+        chan_lowpass = np.nan
+        chan_highpass = np.nan
+        if len(chan_lowfilt):
+            chan_lowpass = chan_lowfilt[0]["corner_frequency"]
+        if len(chan_highfilt):
+            chan_highpass = chan_highfilt[0]["corner_frequency"]
+        filter_dict = {"Lowpass": chan_lowpass, "Highpass": chan_highpass}
+    elif imc == "Z":
         z = stream.select(channel="*Z")
         if not len(z):
             return {}
