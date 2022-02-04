@@ -283,7 +283,7 @@ def test_exceptions():
         m = MetricsController("sa3.0", "channels", st3, config=config)
     except PGMException as e:
         passed = False
-    assert passed == False
+    assert passed == True
 
 
 def test_end_to_end():

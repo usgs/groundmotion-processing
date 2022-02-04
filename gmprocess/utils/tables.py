@@ -35,9 +35,9 @@ def set_precisions(df):
 
 
 def _get_table_row(stream, summary, event, imc):
-    if imc == "CHANNELS":
+    if imc.lower() == "channels":
         if len(stream) > 1:
-            raise ValueError("Stream must be length 1 to get row for imc==CHANNELS.")
+            raise ValueError("Stream must be length 1 to get row for imc=='channels'.")
         chan = stream[0]
         chan_lowfilt = chan.getProvenance("lowpass_filter")
         chan_highfilt = chan.getProvenance("highpass_filter")

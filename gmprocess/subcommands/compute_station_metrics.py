@@ -252,7 +252,7 @@ class ComputeStationMetricsModule(base.SubcommandModule):
                         }
 
                 xmlstr = summary.get_station_xml()
-                if config["read"]["use_stationstreams"]:
+                if config["read"]["use_streamcollection"]:
                     chancode = stream.get_inst()
                 else:
                     chancode = stream[0].stats.channel

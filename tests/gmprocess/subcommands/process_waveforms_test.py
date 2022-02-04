@@ -35,12 +35,12 @@ def test_process_waveforms(script_runner):
 
         # No new files created, check stderr
         assert "Finished processing streams." in ret.stderr
-        assert "Adding waveforms for station HSSP" in ret.stderr
-        assert "Adding waveforms for station 23178" in ret.stderr
-        assert "Adding waveforms for station 23837" in ret.stderr
-        assert "Adding waveforms for station CCC" in ret.stderr
-        assert "Adding waveforms for station CLC" in ret.stderr
-        assert "Adding waveforms for station TOW2" in ret.stderr
+        assert "Adding waveforms for station AZ.HSSP" in ret.stderr
+        assert "Adding waveforms for station CE.23178" in ret.stderr
+        assert "Adding waveforms for station CE.23837" in ret.stderr
+        assert "Adding waveforms for station CI.CCC" in ret.stderr
+        assert "Adding waveforms for station CI.CLC" in ret.stderr
+        assert "Adding waveforms for station CI.TOW2" in ret.stderr
 
         ret = script_runner.run(
             "gmrecords", "process_waveforms", "-n", "2", "-l", "dasktest"

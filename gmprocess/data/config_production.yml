@@ -115,11 +115,11 @@ read:
     # to set it here:
     sac_source: Unknown
 
-    # Group records into StationStream objects? This enforces 3 orthogonal component
-    # groupings in which they have the same time span as well as other consistency 
-    # checks. Set to False for stuctural/geotech array data for which these
+    # Group records with the StreamCollection object? This enforces 3 orthogonal 
+    # component groupings in which they have the same time span as well as other  
+    # consistency checks. Set to False for stuctural/geotech array data for which these
     # do not make sense
-    use_stationstreams: True
+    use_streamcollection: True
 
 # -----------------------------------------------------------------------------
 # Options for separating noise/signal windows

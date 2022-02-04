@@ -406,7 +406,7 @@ class StreamWorkspace(object):
                 jsonbytes = json.dumps(jdict).encode("utf-8")
                 jsonarray = np.frombuffer(jsonbytes, dtype=np.uint8)
                 dtype = "StreamProcessingParameters"
-                if config["read"]["use_stationstreams"]:
+                if config["read"]["use_streamcollection"]:
                     chancode = stream.get_inst()
                 else:
                     chancode = stream[0].stats.channel
@@ -512,6 +512,8 @@ class StreamWorkspace(object):
         if config is None:
             if hasattr(self, "config"):
                 config = self.config
+            else:
+                config = get_config()
 
         trace_auxholder = []
         stream_auxholder = []
@@ -617,10 +619,16 @@ class StreamWorkspace(object):
                                 stream.setStreamParam(key, value)
 
                     streams.append(stream)
-        # No need to handle duplicates when retrieving stations from the
+
+        # Note: no need to handle duplicates when retrieving stations from the
         # workspace file because it must have been handled before putting them
         # into the workspace file.
-        if config["read"]["use_stationstreams"]:
+
+        # For backwards compatibility, if use the StreamCollection class if
+        # "use_streamcollection" is not set.
+        if ("use_streamcollection" not in config["read"]) or config["read"][
+            "use_streamcollection"
+        ]:
             streams = StreamCollection(streams, handle_duplicates=False, config=config)
         else:
             streams = StreamArray(streams)
@@ -705,7 +713,9 @@ class StreamWorkspace(object):
             raise KeyError(fmt % eventid)
 
         if streams is None:
-            streams = self.getStreams(eventid, stations=stations, labels=labels)
+            streams = self.getStreams(
+                eventid, stations=stations, labels=labels, config=config
+            )
 
         event = self.getEvent(eventid)
 

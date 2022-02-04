@@ -34,16 +34,28 @@ class StreamArray(object):
             if not isinstance(st, StationStream):
                 raise TypeError("streams must be a list of StationStream objects.")
             else:
-                st.id = ".".join(
-                    [
-                        st[0].stats.network,
-                        st[0].stats.station,
-                        st[0].stats.location,
-                        st[0].stats.channel,
-                    ],
-                )
-                st.use_array = True
-                newstreams.append(st)
+                if hasattr(st, "tag"):
+                    stream_tag = st.tag
+                else:
+                    stream_tag = None
+                stream_params_keys = st.getStreamParamKeys()
+                for tr in st:
+                    new_st = StationStream(traces=[tr])
+                    new_st.id = ".".join(
+                        [
+                            tr.stats.network,
+                            tr.stats.station,
+                            tr.stats.location,
+                            tr.stats.channel,
+                        ],
+                    )
+                    if stream_tag is not None:
+                        new_st.tag = stream_tag
+                    if len(stream_params_keys):
+                        for k in stream_params_keys:
+                            new_st.setStreamParam(k, st.getStreamParam(k))
+                    new_st.use_array = True
+                    newstreams.append(new_st)
         self.streams = newstreams
 
     def describe(self):
