@@ -44,7 +44,7 @@ def generate_workspace():
     config = update_config(os.path.join(datadir, "config_min_freq_0p2.yml"))
 
     workspace = StreamWorkspace.open(tfilename)
-    raw_streams = workspace.getStreams(EVENTID, labels=["unprocessed"])
+    raw_streams = workspace.getStreams(EVENTID, labels=["unprocessed"], config=config)
     pstreams = process_streams(raw_streams, event, config=config)
     workspace.addStreams(event, pstreams, label=LABEL)
     workspace.calcMetrics(event.id, labels=[LABEL], config=config)

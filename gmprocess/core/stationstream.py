@@ -59,7 +59,7 @@ class StationStream(Stream):
     The StationStream class is meant for grouping Traces from the same
     "station". In practice, what this really means is usually all of the
     channels from one instrument, with the same start and end times. Thus,
-    he StationStream object has a get_id method, which returns a string that
+    the StationStream object has a get_id method, which returns a string that
     consists of the network code, station code, and the first two characters
     of the channel code, since these should all be applicable to all traces in
     the StationStream object.
@@ -218,23 +218,44 @@ class StationStream(Stream):
         # Check that id is consistent, and set id if it passes the check.
         if len(self):
             stats = self.traces[0].stats
-            id_str = f"{stats.network}.{stats.station}.{stats.channel[0:2]}"
+            if hasattr(self, "use_array") and self.use_array == True:
+                id_str = ".".join(
+                    [
+                        self[0].stats.network,
+                        self[0].stats.station,
+                        self[0].stats.location,
+                        self[0].stats.channel,
+                    ],
+                )
+            else:
+                id_str = f"{stats.network}.{stats.station}.{stats.channel[0:2]}"
 
             # Check that the id would be the same for all traces
             for tr in self:
                 stats = tr.stats
-                test_str = f"{stats.network}.{stats.station}.{stats.channel[0:2]}"
+                if hasattr(self, "use_array") and self.use_array == True:
+                    test_str = ".".join(
+                        [
+                            stats.network,
+                            stats.station,
+                            stats.location,
+                            stats.channel,
+                        ],
+                    )
+                else:
+                    test_str = f"{stats.network}.{stats.station}.{stats.channel[0:2]}"
+
                 if id_str != test_str:
                     raise ValueError("Inconsistent stream ID for different traces.")
             self.id = id_str
 
     def get_id(self):
-        """Get the StationStream ID.
+        """Unique identifier for the StationStream.
 
-        This consists of the network, station, and first two characters of the
-        channel (to indicate instrument type). This is currently consistent
-        with how the channels are grouped and ignores the location code because
-        it doesn't seem like it is defined in a consistent fashion.
+        For StreamArrays, this is the network, station, location, and channel code.
+
+        For StreamCollections, this is the network, station, and first two characters
+        of the channel (to indicate instrument type).
         """
         return self.id
 
@@ -243,8 +264,8 @@ class StationStream(Stream):
         return ".".join(self.get_id().split(".")[0:2])
 
     def get_inst(self):
-        """Get just the network and station compopnent of the ID."""
-        return self.get_id().split(".")[2]
+        """Get first two characters of the channel code."""
+        return self[0].stats.channel[0:2]
 
     @property
     def passed(self):

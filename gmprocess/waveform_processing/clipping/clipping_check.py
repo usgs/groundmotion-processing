@@ -34,7 +34,7 @@ def check_clipping(st, origin, threshold=0.2, config=None):
 
     """
     # Don't bother with test for strong motion instruments
-    chan_code = st.get_id().split(".")[2]
+    chan_code = st[0].stats.channel
     if chan_code[1] == "N":
         return st
 

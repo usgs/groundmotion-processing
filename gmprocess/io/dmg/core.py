@@ -244,12 +244,23 @@ def _read_volume_one(filename, line_offset, location="", units="acc", config=Non
     flt_data = _read_lines(skip_rows, V1_REAL_HDR_ROWS, V2_REAL_FMT, filename)
     skip_rows += V1_REAL_HDR_ROWS
 
+    # ------------------------------------------------------------------------------- #
     # according to the powers that defined the Network.Station.Channel.Location
     # "standard", Location is a two character field.  Most data providers,
     # including csmip/dmg here, don't always provide this.  We'll flag it as
     # "--".
 
-    hdr = _get_header_info_v1(int_data, flt_data, lines, "V1", location=location)
+    # Update Feb 4, 2022
+    # In order to be able to store structural/geotech array data in the ASDF file, we
+    # HAVE to use location code to uniquely identify the different instruments. The
+    # arrays can only be read in as StreamArrays and not StreamCollections. In such
+    # cases we will use the channel number as location code so that the data can be
+    # saved.
+    # ------------------------------------------------------------------------------- #
+
+    hdr = _get_header_info_v1(
+        int_data, flt_data, lines, "V1", location=location, config=config
+    )
     head, tail = os.path.split(filename)
     hdr["standard"]["source_file"] = tail or os.path.basename(head)
 
@@ -399,7 +410,7 @@ def _read_volume_two(filename, line_offset, location="", units="acc"):
     return (traces, new_offset)
 
 
-def _get_header_info_v1(int_data, flt_data, lines, level, location=""):
+def _get_header_info_v1(int_data, flt_data, lines, level, location="", config=None):
     """Return stats structure from various V1 headers.
 
     Output is a dictionary like this:
@@ -442,10 +453,16 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=""):
             V2 filtering (Hz)
 
     Args:
-        int_data (ndarray): Array of integer data
-        flt_data (ndarray): Array of float data
-        lines (list): List of text headers (str)
-        level (str): Process level code (V0, V1, V2, V3)
+        int_data (ndarray):
+            Array of integer data
+        flt_data (ndarray):
+            Array of float data
+        lines (list):
+            List of text headers (str)
+        level (str):
+            Process level code (V0, V1, V2, V3)
+        config (dict):
+            Config options.
 
     Returns:
         dictionary: Dictionary of header/metadata information
@@ -505,6 +522,11 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=""):
     if hdr["channel"].endswith("Z"):
         angle = "0.0"
     logging.debug(f"channel: {hdr['channel']}")
+
+    if config is not None:
+        if "use_streamcollection" in config["read"]:
+            if config["read"]["use_streamcollection"] == False:
+                location = f"{int(lines[6][6:7]):02d}"
 
     if location == "":
         hdr["location"] = "--"
@@ -566,7 +588,7 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location=""):
     standard["corner_frequency"] = np.nan
     standard["source"] = source
     standard["source_format"] = "dmg"
-    standard["station_name"] = lines[5].strip()
+    standard["station_name"] = lines[5][0:40].strip()
 
     # these fields can be used for instrument correction
     # when data is in counts

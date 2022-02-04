@@ -8,9 +8,7 @@ various rules, such as all traces within a stream are from the same station.
 """
 
 import re
-import copy
 import logging
-import fnmatch
 
 from obspy import UTCDateTime
 from obspy.core.event import Origin
@@ -18,9 +16,10 @@ from obspy.geodetics import gps2dist_azimuth
 import pandas as pd
 import numpy as np
 
-from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.core.stationtrace import REV_PROCESS_LEVELS
+from gmprocess.core.streamarray import StreamArray
 from gmprocess.core.stationstream import StationStream
+from gmprocess.core.stationtrace import REV_PROCESS_LEVELS
+from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.io.read_directory import directory_to_streams
 from gmprocess.utils.config import get_config
 
@@ -33,7 +32,7 @@ DEFAULT_IMCS = ["GREATER_OF_TWO_HORIZONTALS", "CHANNELS"]
 NETWORKS_USING_LOCATION = ["RE"]
 
 
-class StreamCollection(object):
+class StreamCollection(StreamArray):
     """A collection/list of StationStream objects.
 
     This is a list of StationStream objects, where the constituent
@@ -92,21 +91,24 @@ class StreamCollection(object):
         if not isinstance(streams, list):
             raise TypeError("streams must be a list of StationStream objects.")
         newstreams = []
-        for s in streams:
-            if not isinstance(s, StationStream):
+        for st in streams:
+            if not isinstance(st, StationStream):
                 raise TypeError("streams must be a list of StationStream objects.")
 
-            logging.debug(s.get_id())
+            logging.debug(st.get_id())
+            st.id = st.get_id()
+            st.use_array = False
 
             if drop_non_free:
-                if s[0].free_field:
-                    newstreams.append(s)
+                if st[0].free_field:
+                    newstreams.append(st)
                 else:
                     logging.debug(
-                        f"Omitting station trace {s[0].id} from stream collection because it is not free field."
+                        f"Omitting station trace {st[0].id} from stream collection "
+                        "because it is not free field."
                     )
             else:
-                newstreams.append(s)
+                newstreams.append(st)
 
         self.streams = newstreams
         if handle_duplicates:
@@ -119,19 +121,6 @@ class StreamCollection(object):
                 )
         self.__group_by_net_sta_inst()
         self.validate()
-
-    @property
-    def n_passed(self):
-        n_passed = 0
-        for stream in self:
-            if stream.passed:
-                n_passed += 1
-        return n_passed
-
-    @property
-    def n_failed(self):
-        n = len(self.streams)
-        return n - self.n_passed
 
     def validate(self):
         """Some validation checks across streams."""
@@ -436,94 +425,6 @@ class StreamCollection(object):
         for stream in self:
             summary += stream.__str__(indent=INDENT) + "\n"
         print(summary)
-
-    def __len__(self):
-        """Number of constituent StationStreams."""
-        return len(self.streams)
-
-    def __nonzero__(self):
-        return bool(len(self.traces))
-
-    def __add__(self, other):
-        if not isinstance(other, StreamCollection):
-            raise TypeError
-        streams = self.streams + other.streams
-        return self.__class__(streams)
-
-    def __iter__(self):
-        """Iterator for StreamCollection over constituent StationStreams."""
-        return list(self.streams).__iter__()
-
-    def __setitem__(self, index, stream):
-        self.streams.__setitem__(index, stream)
-
-    def __getitem__(self, index):
-        if isinstance(index, slice):
-            return self.__class__(stream=self.streams.__getitem__(index))
-        else:
-            return self.streams.__getitem__(index)
-
-    def __delitem__(self, index):
-        return self.streams.__delitem__(index)
-
-    def __getslice__(self, i, j, k=1):
-        return self.__class__(streams=self.streams[max(0, i) : max(0, j) : k])
-
-    def append(self, stream):
-        """Append a single StationStream object.
-
-        Args:
-            stream:
-                A StationStream object.
-        """
-        if isinstance(stream, StationStream):
-            streams = self.streams + [stream]
-            return self.__class__(streams)
-        else:
-            raise TypeError("Append only uspports adding a single StationStream.")
-
-    def pop(self, index=(-1)):
-        """Remove and return item at index (default last)."""
-        return self.streams.pop(index)
-
-    def copy(self):
-        """Copy method."""
-        return copy.deepcopy(self)
-
-    def select(self, network=None, station=None, instrument=None):
-        """Select Streams.
-
-        Return a new StreamCollection with only those StationStreams that
-        match network, station, and/or instrument selection criteria.
-
-        Based on obspy's `select` method for traces.
-
-        Args:
-            network (str):
-                Network code.
-            station (str):
-                Station code.
-            instrument (str):
-                Instrument code; i.e., the first two characters of the
-                channel.
-        """
-        sel = []
-        for st in self:
-            inst = st.get_inst()
-            net_sta = st.get_net_sta()
-            net = net_sta.split(".")[0]
-            sta = net_sta.split(".")[1]
-            if network is not None:
-                if not fnmatch.fnmatch(net.upper(), network.upper()):
-                    continue
-            if station is not None:
-                if not fnmatch.fnmatch(sta.upper(), station.upper()):
-                    continue
-            if instrument is not None:
-                if not fnmatch.fnmatch(inst.upper(), instrument.upper()):
-                    continue
-            sel.append(st)
-        return self.__class__(sel)
 
     def __group_by_net_sta_inst(self):
         trace_list = []

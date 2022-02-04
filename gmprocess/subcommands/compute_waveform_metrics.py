@@ -3,6 +3,7 @@
 
 import os
 import logging
+import warnings
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
@@ -75,7 +76,11 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
         metricpaths = []
         if self.gmrecords.args.num_processes > 0:
             futures = []
-            client = distributed.Client(n_workers=self.gmrecords.args.num_processes)
+            with warnings.catch_warnings():
+                warnings.filterwarnings(
+                    "ignore", message="Consider scattering large objects ahead of time"
+                )
+                client = distributed.Client(n_workers=self.gmrecords.args.num_processes)
 
         for station_id in station_list:
             # Cannot parallelize IO to ASDF file
@@ -90,13 +95,15 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
 
             for stream in streams:
                 if stream.passed:
+                    if config["read"]["use_streamcollection"]:
+                        chancode = stream.get_inst()
+                    else:
+                        chancode = stream[0].stats.channel
                     metricpaths.append(
                         "/".join(
                             [
                                 ws.format_netsta(stream[0].stats),
-                                ws.format_nslit(
-                                    stream[0].stats, stream.get_inst(), stream.tag
-                                ),
+                                ws.format_nslit(stream[0].stats, chancode, stream.tag),
                             ]
                         )
                     )

@@ -68,6 +68,7 @@ CONF_SCHEMA = Schema(
             "resample_rate": float,
             "sac_conversion_factor": float,
             "sac_source": str,
+            "use_streamcollection": bool,
         },
         "windows": {
             "signal_end": {

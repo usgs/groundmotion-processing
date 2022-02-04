@@ -121,7 +121,7 @@ class MetricsController(object):
         self._step_sets = self.get_steps()
         imtstr = "_".join(imts)
         if "_sa" in imtstr or imtstr.startswith("sa"):
-            self._times = self._get_horizontal_time()
+            self._times = self._get_time()
         else:
             self._times = None
         self.max_period = self._get_max_period()
@@ -747,6 +747,20 @@ class MetricsController(object):
             "MetricsController: At least one horizontal "
             "channel is required for calculations of SA, ROTD, GMROTD, GM."
         )
+
+    def _get_time(self):
+        """
+        Get the 'times' array.
+
+        Returns:
+            numpy.ndarray: Array of times.
+
+        """
+        for trace in self.timeseries:
+            times = np.linspace(
+                0.0, trace.stats.endtime - trace.stats.starttime, trace.stats.npts
+            )
+            return times
 
     def _get_subclass(self, classes, base_class):
         """

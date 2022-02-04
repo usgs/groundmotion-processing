@@ -93,6 +93,7 @@ read:
     # Resampling rate if times are unevenly spaced
     resample_rate: 200
 
+    use_streamcollection: True
 # -----------------------------------------------------------------------------
 # Options for separating noise/signal windows
 #

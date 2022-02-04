@@ -12,6 +12,7 @@ from obspy.taup import TauPyModel
 
 from gmprocess.core.stationtrace import PROCESS_LEVELS
 from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.core.streamarray import StreamArray
 from gmprocess.utils.config import get_config
 from gmprocess.waveform_processing.windows import (
     signal_split,
@@ -105,7 +106,7 @@ def process_streams(streams, origin, config=None):
         A StreamCollection object.
     """
 
-    if not isinstance(streams, StreamCollection):
+    if not isinstance(streams, (StreamCollection, StreamArray)):
         raise ValueError("streams must be a StreamCollection instance.")
 
     if config is None:
@@ -191,7 +192,8 @@ def process_streams(streams, origin, config=None):
     # -------------------------------------------------------------------------
     # Begin colocated instrument selection
     colocated_conf = config["colocated"]
-    streams.select_colocated(**colocated_conf, origin=origin)
+    if isinstance(streams, StreamCollection):
+        streams.select_colocated(**colocated_conf, origin=origin)
 
     for st in streams:
         for tr in st:
