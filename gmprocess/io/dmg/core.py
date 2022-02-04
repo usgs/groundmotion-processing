@@ -526,7 +526,7 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location="", config=No
     if config is not None:
         if "use_streamcollection" in config["read"]:
             if config["read"]["use_streamcollection"] == False:
-                location = f"{int(lines[6][6:7]):02d}"
+                location = f"{int(lines[6][5:7]):02d}"
 
     if location == "":
         hdr["location"] = "--"
