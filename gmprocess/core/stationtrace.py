@@ -428,17 +428,6 @@ class StationTrace(Trace):
             )
 
         if taper:
-            # # Split the noise and signal into two separate traces
-            # split_prov = tr.getParameter("signal_split")
-            # if isinstance(split_prov, list):
-            #     split_prov = split_prov[0]
-            # split_time = split_prov["split_time"]
-            # noise = tr.copy().trim(endtime=split_time)
-            # signal = tr.copy().trim(starttime=split_time)
-
-            # # Taper both windows
-            # noise.taper(max_percentage=taper_width, type=taper_type, side=taper_side)
-            # signal.taper(max_percentage=taper_width, type=taper_type, side=taper_side)
             self.taper(max_percentage=taper_width, type=taper_type, side=taper_side)
             self.setProvenance(
                 "taper",
