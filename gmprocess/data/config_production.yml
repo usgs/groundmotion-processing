@@ -577,16 +577,12 @@ integration:
     initial: 0.0
     # Remove the mean of the data prior to integration.
     demean: False
-<<<<<<< HEAD
-
-=======
     # Taper the data prior to integration.
     taper:
         taper: False
         type: hann
         width: 0.05
         side: both
->>>>>>> 2cd8f44d (Add taper step to integration method.)
 # -----------------------------------------------------------------------------
 # This section is for options for phase pickers
 pickers:
