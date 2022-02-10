@@ -401,7 +401,7 @@ class StationTrace(Trace):
             demean (bool):
                 Remove mean from array before integrating.
             taper (bool):
-                Taper the ends of both the noise and signal windows.
+                Taper the ends of entire trace.
             config (dict):
                 Configuration dictionary (or None). See get_config().
 
