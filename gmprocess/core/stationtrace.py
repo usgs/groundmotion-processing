@@ -387,7 +387,9 @@ class StationTrace(Trace):
         )
         return super().differentiate(method, **options)
 
-    def integrate(self, frequency=False, initial=0.0, demean=False, config=None):
+    def integrate(
+        self, frequency=False, initial=0.0, demean=False, taper=False, config=None
+    ):
         """Integrate a StationTrace with respect to either frequency or time.
 
         Args:
@@ -398,6 +400,8 @@ class StationTrace(Trace):
                 Define initial value returned in result.
             demean (bool):
                 Remove mean from array before integrating.
+            taper (bool):
+                Taper the ends of entire trace.
             config (dict):
                 Configuration dictionary (or None). See get_config().
 
@@ -408,9 +412,33 @@ class StationTrace(Trace):
             frequency = config["integration"]["frequency"]
             initial = config["integration"]["initial"]
             demean = config["integration"]["demean"]
+            taper = config["integration"]["taper"]["taper"]
+            taper_width = config["integration"]["taper"]["width"]
+            taper_type = config["integration"]["taper"]["type"]
+            taper_side = config["integration"]["taper"]["side"]
 
         if demean:
             self.data -= np.mean(self.data)
+            self.setProvenance(
+                "demean",
+                {
+                    "input_units": self.stats.standard.units,
+                    "output_units": self.stats.standard.units,
+                },
+            )
+
+        if taper:
+            self.taper(max_percentage=taper_width, type=taper_type, side=taper_side)
+            self.setProvenance(
+                "taper",
+                {
+                    "max_percentage": taper_width,
+                    "type": taper_type,
+                    "side": taper_side,
+                    "input_units": self.stats.standard.units,
+                    "output_units": self.stats.standard.units,
+                },
+            )
 
         if frequency:
             # integrating in frequency domain
