@@ -107,7 +107,43 @@ def test_get_vel():
     np.testing.assert_allclose(final_vel, target_final_vel, atol=1e-6)
 
 
+def test_integrate_taper():
+    data_files, origin = read_data_dir("geonet", "us1000778i", "*.V1A")
+    data_files.sort()
+    streams = []
+    for f in data_files:
+        streams += read_data(f)
+
+    sc = StreamCollection(streams)
+
+    config = get_config()
+    config["integration"]["taper"]["taper"] = True
+
+    final_vel = []
+    for st in sc:
+        for tr in st:
+            tmp_tr = tr.integrate(config=config)
+            final_vel.append(tmp_tr.data[-1])
+
+    target_final_vel = np.array(
+        [
+            3.896186e00,
+            -4.901823e00,
+            -5.722080e-01,
+            1.621672e-01,
+            -1.654317e-01,
+            -8.242356e-04,
+            -1.482590e-02,
+            1.504334e-01,
+            1.021050e-01,
+        ]
+    )
+
+    np.testing.assert_allclose(final_vel, target_final_vel, atol=1e-6)
+
+
 if __name__ == "__main__":
     os.environ["CALLED_FROM_PYTEST"] = "True"
     test_get_disp()
     test_get_vel()
+    test_integrate_taper()
