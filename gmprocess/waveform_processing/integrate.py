@@ -20,8 +20,6 @@ def get_disp(tr, config=None):
 
     """
     acc = tr.copy()
-    acc.detrend("demean")
-    acc.taper(max_percentage=0.05, type="hann", side="both")
     try:
         disp = acc.integrate(config=config).integrate(config=config)
     except Exception as e:
@@ -44,8 +42,6 @@ def get_vel(tr, config=None):
 
     """
     acc = tr.copy()
-    acc.detrend("demean")
-    acc.taper(max_percentage=0.05, type="hann", side="both")
     try:
         vel = acc.integrate(config=config)
     except Exception as e:
