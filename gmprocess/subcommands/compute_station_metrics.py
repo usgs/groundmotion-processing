@@ -115,13 +115,6 @@ class ComputeStationMetricsModule(base.SubcommandModule):
         self.origin = origin
         rupture = rupt.factory.get_rupture(origin, rupture_file)
 
-        sta_lats = []
-        sta_lons = []
-        sta_elev = []
-        self.sta_repi = []
-        self.sta_rhyp = []
-        self.sta_baz = []
-
         self._get_labels()
 
         for station_id in station_list:
@@ -135,88 +128,81 @@ class ComputeStationMetricsModule(base.SubcommandModule):
                 raise ValueError("No matching streams found.")
 
             for st in streams:
-                sta_lats.append(st[0].stats.coordinates.latitude)
-                sta_lons.append(st[0].stats.coordinates.longitude)
-                sta_elev.append(st[0].stats.coordinates.elevation)
                 geo_tuple = ob.gps2dist_azimuth(
                     st[0].stats.coordinates.latitude,
                     st[0].stats.coordinates.longitude,
                     origin.lat,
                     origin.lon,
                 )
-                self.sta_repi.append(geo_tuple[0] / M_PER_KM)
-                self.sta_baz.append(geo_tuple[1])
-                self.sta_rhyp.append(
-                    oqgeo.distance(
-                        st[0].stats.coordinates.longitude,
-                        st[0].stats.coordinates.latitude,
-                        -st[0].stats.coordinates.elevation / M_PER_KM,
-                        origin.lon,
-                        origin.lat,
-                        origin.depth,
-                    )
+                sta_repi = geo_tuple[0] / M_PER_KM
+                sta_baz = geo_tuple[1]
+                sta_rhyp = oqgeo.distance(
+                    st[0].stats.coordinates.longitude,
+                    st[0].stats.coordinates.latitude,
+                    -st[0].stats.coordinates.elevation / M_PER_KM,
+                    origin.lon,
+                    origin.lat,
+                    origin.depth,
                 )
 
-        if isinstance(rupture, rupt.point_rupture.PointRupture):
-            self._get_ps2ff_splines()
-            rjb_hat = self.rjb_spline(self.sta_repi)
-            rjb_mean = rjb_hat[0]
-            rjb_var = rjb_hat[1]
-            rrup_hat = self.rrup_spline(self.sta_repi)
-            rrup_mean = rrup_hat[0]
-            rrup_var = rrup_hat[1]
-            gc2_rx = np.full_like(rjb_mean, np.nan)
-            gc2_ry = np.full_like(rjb_mean, np.nan)
-            gc2_ry0 = np.full_like(rjb_mean, np.nan)
-            gc2_U = np.full_like(rjb_mean, np.nan)
-            gc2_T = np.full_like(rjb_mean, np.nan)
-        else:
-            sta_lons = np.array(sta_lons)
-            sta_lats = np.array(sta_lats)
-            elev = np.full_like(sta_lons, utils.constants.ELEVATION_FOR_DISTANCE_CALCS)
-            rrup_mean, rrup_var = rupture.computeRrup(sta_lons, sta_lats, elev)
-            rjb_mean, rjb_var = rupture.computeRjb(sta_lons, sta_lats, elev)
-            rrup_var = np.full_like(rrup_mean, np.nan)
-            rjb_var = np.full_like(rjb_mean, np.nan)
-            gc2_dict = rupture.computeGC2(sta_lons, sta_lats, elev)
-            gc2_rx = gc2_dict["rx"]
-            gc2_ry = gc2_dict["ry"]
-            gc2_ry0 = gc2_dict["ry0"]
-            gc2_U = gc2_dict["U"]
-            gc2_T = gc2_dict["T"]
+                if isinstance(rupture, rupt.point_rupture.PointRupture):
+                    self._get_ps2ff_splines()
+                    rjb_hat = self.rjb_spline(sta_repi)
+                    rjb_mean = rjb_hat[0]
+                    rjb_var = rjb_hat[1]
+                    rrup_hat = self.rrup_spline(sta_repi)
+                    rrup_mean = rrup_hat[0]
+                    rrup_var = rrup_hat[1]
+                    gc2_rx = np.full_like(rjb_mean, np.nan)
+                    gc2_ry = np.full_like(rjb_mean, np.nan)
+                    gc2_ry0 = np.full_like(rjb_mean, np.nan)
+                    gc2_U = np.full_like(rjb_mean, np.nan)
+                    gc2_T = np.full_like(rjb_mean, np.nan)
+                else:
+                    rrup_mean, rrup_var = rupture.computeRrup(
+                        np.array([st[0].stats.coordinates.longitude]),
+                        np.array([st[0].stats.coordinates.latitude]),
+                        utils.constants.ELEVATION_FOR_DISTANCE_CALCS,
+                    )
+                    rjb_mean, rjb_var = rupture.computeRjb(
+                        np.array([st[0].stats.coordinates.longitude]),
+                        np.array([st[0].stats.coordinates.latitude]),
+                        utils.constants.ELEVATION_FOR_DISTANCE_CALCS,
+                    )
+                    rrup_var = np.full_like(rrup_mean, np.nan)
+                    rjb_var = np.full_like(rjb_mean, np.nan)
+                    gc2_dict = rupture.computeGC2(
+                        np.array([st[0].stats.coordinates.longitude]),
+                        np.array([st[0].stats.coordinates.latitude]),
+                        utils.constants.ELEVATION_FOR_DISTANCE_CALCS,
+                    )
+                    gc2_rx = gc2_dict["rx"]
+                    gc2_ry = gc2_dict["ry"]
+                    gc2_ry0 = gc2_dict["ry0"]
+                    gc2_U = gc2_dict["U"]
+                    gc2_T = gc2_dict["T"]
 
-            # If we don't have a point rupture, then back azimuth needs
-            # to be calculated to the closest point on the rupture
-            self.sta_baz = []
-            for i in range(len(station_list)):
-                dists = []
-                bazs = []
-                for quad in rupture._quadrilaterals:
-                    P0, P1, P2, P3 = quad
-                    for point in [P0, P1]:
-                        dist, az, baz = ob.gps2dist_azimuth(
-                            point.y, point.x, sta_lats[i], sta_lons[i]
-                        )
-                        dists.append(dist)
-                        bazs.append(baz)
-                self.sta_baz.append(bazs[np.argmin(dists)])
+                    # If we don't have a point rupture, then back azimuth needs
+                    # to be calculated to the closest point on the rupture
+                    dists = []
+                    bazs = []
+                    for quad in rupture._quadrilaterals:
+                        P0, P1, P2, P3 = quad
+                        for point in [P0, P1]:
+                            dist, az, baz = ob.gps2dist_azimuth(
+                                point.y,
+                                point.x,
+                                st[0].stats.coordinates.latitude,
+                                st[0].stats.coordinates.longitude,
+                            )
+                            dists.append(dist)
+                            bazs.append(baz)
+                        sta_baz = bazs[np.argmin(dists)]
 
-        # for station_id in station_list:
-        for i, station_id in enumerate(station_list):
-            streams = self.workspace.getStreams(
-                event.id,
-                stations=[station_id],
-                labels=[self.gmrecords.args.label],
-                config=config,
-            )
-            if not len(streams):
-                raise ValueError("No matching streams found.")
-
-            for stream in streams:
-                streamid = stream.get_id()
+                streamid = st.get_id()
                 logging.info(f"Calculating station metrics for {streamid}...")
                 summary = station_summary.StationSummary.from_config(
-                    stream,
+                    st,
                     event=event,
                     config=config,
                     calc_waveform_metrics=False,
@@ -226,25 +212,26 @@ class ComputeStationMetricsModule(base.SubcommandModule):
                 )
 
                 summary._distances = {
-                    "epicentral": self.sta_repi[i],
-                    "hypocentral": self.sta_rhyp[i],
-                    "rupture": rrup_mean[i],
-                    "rupture_var": rrup_var[i],
-                    "joyner_boore": rjb_mean[i],
-                    "joyner_boore_var": rjb_var[i],
-                    "gc2_rx": gc2_rx[i],
-                    "gc2_ry": gc2_ry[i],
-                    "gc2_ry0": gc2_ry0[i],
-                    "gc2_U": gc2_U[i],
-                    "gc2_T": gc2_T[i],
+                    "epicentral": sta_repi,
+                    "hypocentral": sta_rhyp,
+                    "rupture": rrup_mean,
+                    "rupture_var": rrup_var,
+                    "joyner_boore": rjb_mean,
+                    "joyner_boore_var": rjb_var,
+                    "gc2_rx": gc2_rx,
+                    "gc2_ry": gc2_ry,
+                    "gc2_ry0": gc2_ry0,
+                    "gc2_U": gc2_U,
+                    "gc2_T": gc2_T,
                 }
-                summary._back_azimuth = self.sta_baz[i]
+                summary._back_azimuth = sta_baz
                 if self.vs30_grids is not None:
                     for vs30_name in self.vs30_grids.keys():
                         tmpgrid = self.vs30_grids[vs30_name]
                         summary._vs30[vs30_name] = {
                             "value": tmpgrid["grid_object"].getValue(
-                                float(sta_lats[i]), float(sta_lons[i])
+                                st[0].stats.coordinates.latitude,
+                                st[0].stats.coordinates.longitude,
                             ),
                             "column_header": tmpgrid["column_header"],
                             "readme_entry": tmpgrid["readme_entry"],
@@ -253,13 +240,13 @@ class ComputeStationMetricsModule(base.SubcommandModule):
 
                 xmlstr = summary.get_station_xml()
                 if config["read"]["use_streamcollection"]:
-                    chancode = stream.get_inst()
+                    chancode = st.get_inst()
                 else:
-                    chancode = stream[0].stats.channel
+                    chancode = st[0].stats.channel
                 metricpath = "/".join(
                     [
-                        ws.format_netsta(stream[0].stats),
-                        ws.format_nslit(stream[0].stats, chancode, self.eventid),
+                        ws.format_netsta(st[0].stats),
+                        ws.format_nslit(st[0].stats, chancode, self.eventid),
                     ]
                 )
                 self.workspace.insert_aux(
@@ -291,9 +278,9 @@ class ComputeStationMetricsModule(base.SubcommandModule):
             ar=aspect,
             mechanism=smech,
             mag_scaling=mscale,
-            n_repi=13,
-            min_repi=np.min(self.sta_repi) - 1e-5,
-            max_repi=np.max(self.sta_repi) + 0.1,
+            n_repi=30,
+            min_repi=0.1,
+            max_repi=2000,
             nxny=7,
             n_theta=19,
             n_dip=4,
