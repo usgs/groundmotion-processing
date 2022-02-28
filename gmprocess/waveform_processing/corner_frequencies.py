@@ -155,9 +155,14 @@ def from_snr(st, same_horiz=True, bandwidth=20):
                 )
                 low_corner = max(1 / duration, low_corner)
 
+                # Make sure highpass is greater than min freq of noise spectrum
+                n_noise = len(tr.getCached("noise_trace")["data"])
+                min_freq_noise = 1.0 / n_noise / tr.stats.delta
+                freq_hp = max(low_corner, min_freq_noise)
+
                 tr.setParameter(
                     "corner_frequencies",
-                    {"type": "snr", "highpass": low_corner, "lowpass": high_corner},
+                    {"type": "snr", "highpass": freq_hp, "lowpass": high_corner},
                 )
             else:
                 tr.fail("SNR not met within the required bandwidth.")
