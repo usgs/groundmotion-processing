@@ -51,17 +51,15 @@ def ridder_fchp(st, target=0.02, tol=0.001, maxiter=30, maxfc=0.5, config=None):
     for tr in st:
         initial_corners = tr.getParameter("corner_frequencies")
         initial_f_hp = initial_corners["highpass"]
-        minfc = 0.0001
 
         new_f_hp = get_fchp(
-            tr.stats.delta,
-            tr.data,
-            target,
-            tol,
-            FORDER,
-            maxiter,
-            minfc,
-            maxfc,
+            dt=tr.stats.delta,
+            acc=tr.data,
+            target=target,
+            tol=tol,
+            poly_order=FORDER,
+            maxiter=maxiter,
+            fchp_max=maxfc,
         )
 
         # Method did not converge if new_f_hp reaches maxfc
