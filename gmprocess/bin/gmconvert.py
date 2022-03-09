@@ -94,7 +94,9 @@ https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supp
 
     # Shared arguments
     parser = argmod.add_shared_args(parser)
-
+    if len(sys.argv) == 1:
+        parser.print_help(sys.stderr)
+        sys.exit(1)
     args = parser.parse_args()
 
     log.setup_logger(args)

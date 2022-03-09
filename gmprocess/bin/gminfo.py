@@ -38,6 +38,13 @@ COLUMNS = [
 
 ERROR_COLUMNS = ["Filename", "Error"]
 
+REV_PROCESS_LEVELS = {
+    "raw counts": "V0",
+    "uncorrected physical units": "V1",
+    "corrected physical units": "V2",
+    "derived time series": "V3",
+}
+
 
 def get_dataframe(filename, stream):
     df = pd.DataFrame(columns=COLUMNS, index=None)
@@ -194,6 +201,9 @@ def main():
     parser.add_argument("--quiet-errors", action="store_true", help=phelp)
     # Shared arguments
     parser = argmod.add_shared_args(parser)
+    if len(sys.argv) == 1:
+        parser.print_help(sys.stderr)
+        sys.exit(1)
     args = parser.parse_args()
 
     if not args.concise and args.save:
