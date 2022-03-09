@@ -301,4 +301,7 @@ class GMrecordsApp(object):
                 targ_dict.pop("long_flag", None)
                 parsers[-1].add_argument(*pargs, **targ_dict)
             parsers[-1].set_defaults(func=cdict["class"])
+        if len(sys.argv) == 1:
+            self.parser.print_help(sys.stderr)
+            sys.exit(1)
         self.args = self.parser.parse_args()

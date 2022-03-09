@@ -8,6 +8,7 @@ an HDF5 file.
 # stdlib imports
 import argparse
 import textwrap
+import sys
 
 # third party imports
 import h5py
@@ -173,6 +174,9 @@ class WorkspaceApp(object):
             dest="compute_storage",
             help=help_storage,
         )
+        if len(sys.argv) == 1:
+            parser.print_help(sys.stderr)
+            sys.exit(1)
         return parser.parse_args()
 
 

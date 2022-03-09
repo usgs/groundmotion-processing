@@ -2,6 +2,7 @@
 
 # stdlib imports
 import argparse
+import sys
 import json
 import pathlib
 import tarfile
@@ -76,14 +77,15 @@ def main():
      - For "Station", check "All Stations".
      - For "Location", choose "*" for all locations.
      - For "Channel", choose "HN?" for all strong motion stations.
-     - For "Start Time (UTC)", enter a time 30 seconds before the origin time of interest.
+     - For "Start Time (UTC)", enter a time 30 seconds before the origin time of 
+       interest.
      - For "End Time (UTC)", enter a time 7 minutes after the origin time of interest.
      - For "Label", enter any string that is descriptive to you.
 
      Click the "Submit" button, and you should see a "Success!" pop up.
      Next will be a screen showing a list of all of your downloads. Data
-     links will take a few minutes to process - click on the name of the generated miniseed
-     file to download it.
+     links will take a few minutes to process - click on the name of the generated 
+     miniseed file to download it.
 
      Pass these files along with the ComCat ID as described below.
     """
@@ -103,7 +105,9 @@ def main():
         "tarball",
         help="Tarball containing response files",
     )
-
+    if len(sys.argv) == 1:
+        parser.print_help(sys.stderr)
+        sys.exit(1)
     args = parser.parse_args()
 
     stations = read_stations()
