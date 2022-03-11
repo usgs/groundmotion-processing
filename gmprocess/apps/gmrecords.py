@@ -67,22 +67,12 @@ class GMrecordsApp(object):
 
         self.PROJECTS_PATH = PROJECTS_PATH
         self.PROJECTS_FILE = os.path.join(PROJECTS_PATH, "projects.conf")
-
-        self._parse_command_line()
-        self._load_config()
         self.gmprocess_version = VERSION
 
-        log_file = None
-        if self.args.log:
-            log_file = os.path.join(self.data_path, "log.txt")
-            print(f"Logging output sent to: {log_file}")
-
-        log_utils.setup_logger(self.args, log_file=log_file)
-        logging.info("Logging level includes INFO.")
-        logging.debug("Logging level includes DEBUG.")
-        logging.info(f"PROJECTS_PATH: {PROJECTS_PATH}")
-
-    def main(self):
+    def main(self, **kwargs):
+        self.args = argparse.Namespace(**kwargs) if kwargs else self._parse_command_line()
+        self._initialize()
+        
         if self.args.subcommand is None:
             self.parser.print_help()
         else:
@@ -106,6 +96,50 @@ class GMrecordsApp(object):
             # -----------------------------------------------------------------
             self.args.func().main(self)
 
+    def load_subcommands(self):
+        """Load information for subcommands."""
+        mod = importlib.import_module("gmprocess.subcommands")
+        subcommands = {
+            name: importlib.import_module(name)
+            for finder, name, ispkg in pkgutil.iter_modules(
+                mod.__path__, mod.__name__ + "."
+            )
+        }
+        self.classes = {}
+        for name, module in subcommands.items():
+            for m in inspect.getmembers(module, inspect.isclass):
+                if m[1].__module__ == name:
+                    core_class = getattr(module, m[0])
+                    # Check that core_class is a SubcommandModule becuase it is
+                    # possible that other classes will be defined in the
+                    # module.
+                    if not issubclass(core_class, base.SubcommandModule):
+                        continue
+                    # Check that command_name is a string because we want to
+                    # skip the SubcommandModule base class.
+                    if not isinstance(core_class.command_name, str):
+                        continue
+                    cmd = core_class.command_name
+                    if not cmd:
+                        continue
+                    self.classes[cmd] = {
+                        "class": core_class,
+                        "module": module,
+                        "mfile": module.__file__,
+                    }
+        
+    def _initialize(self):
+        self._load_config()
+        
+        log_file = None
+        if self.args.log:
+            log_file = os.path.join(self.data_path, "log.txt")
+            print(f"Logging output sent to: {log_file}")
+        log_utils.setup_logger(self.args, log_file=log_file)
+        logging.info("Logging level includes INFO.")
+        logging.debug("Logging level includes DEBUG.")
+        logging.info(f"PROJECTS_PATH: {self.PROJECTS_PATH}")        
+        
     def _load_config(self):
         if not os.path.isfile(self.PROJECTS_FILE):
             # If projects.conf file doesn't exist then we need to run the
@@ -251,35 +285,7 @@ class GMrecordsApp(object):
         )
 
         # Get subcommands and their arguments
-        mod = importlib.import_module("gmprocess.subcommands")
-        subcommands = {
-            name: importlib.import_module(name)
-            for finder, name, ispkg in pkgutil.iter_modules(
-                mod.__path__, mod.__name__ + "."
-            )
-        }
-        self.classes = {}
-        for name, module in subcommands.items():
-            for m in inspect.getmembers(module, inspect.isclass):
-                if m[1].__module__ == name:
-                    core_class = getattr(module, m[0])
-                    # Check that core_class is a SubcommandModule becuase it is
-                    # possible that other classes will be defined in the
-                    # module.
-                    if not issubclass(core_class, base.SubcommandModule):
-                        continue
-                    # Check that command_name is a string because we want to
-                    # skip the SubcommandModule base class.
-                    if not isinstance(core_class.command_name, str):
-                        continue
-                    cmd = core_class.command_name
-                    if not cmd:
-                        continue
-                    self.classes[cmd] = {
-                        "class": core_class,
-                        "module": module,
-                        "mfile": module.__file__,
-                    }
+        self.load_subcommands()
         parsers = []
         for cname, cdict in self.classes.items():
             command_description = inspect.getdoc(cdict["class"])
@@ -301,7 +307,4 @@ class GMrecordsApp(object):
                 targ_dict.pop("long_flag", None)
                 parsers[-1].add_argument(*pargs, **targ_dict)
             parsers[-1].set_defaults(func=cdict["class"])
-        if len(sys.argv) == 1:
-            self.parser.print_help(sys.stderr)
-            sys.exit(1)
-        self.args = self.parser.parse_args()
+        return self.parser.parse_args()
