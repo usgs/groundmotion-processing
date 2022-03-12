@@ -86,13 +86,13 @@ class SubcommandModule(ABC):
 
     def _summarize_files_created(self):
         if len(self.files_created):
-            print("\nThe following files have been created:")
+            logging.info("The following files have been created:")
             for file_type, file_list in self.files_created.items():
-                print(f"File type: {file_type}")
+                logging.info(f"File type: {file_type}")
                 for fname in file_list:
-                    print(f"\t{os.path.normpath(fname)}")
+                    logging.info(f"\t{os.path.normpath(fname)}")
         else:
-            print("No new files created.")
+            logging.info("No new files created.")
 
     def _get_pstreams(self):
         """Convenience method for recycled code."""

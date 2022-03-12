@@ -57,9 +57,8 @@ def assemble(event, config, directory, gmprocess_version):
     else:
         stream_array = StreamArray(streams)
 
-    if len(stream_array):
-        logging.debug("stream_array.describe():")
-        logging.debug(stream_array.describe())
+    logging.info("stream_array.describe():")
+    logging.info(stream_array.describe())
 
     # Create the workspace file and put the unprocessed waveforms in it
     workname = os.path.join(in_event_dir, WORKSPACE_NAME)

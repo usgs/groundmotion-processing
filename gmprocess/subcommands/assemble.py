@@ -56,7 +56,7 @@ class AssembleModule(base.SubcommandModule):
                 sys.exit(1)
             futures = client.map(self._assemble_event, self.events)
             for result in distributed.as_completed(futures, with_results=True):
-                print(result)
+                logging.info(result)
             client.shutdown()
         else:
             for event in self.events:

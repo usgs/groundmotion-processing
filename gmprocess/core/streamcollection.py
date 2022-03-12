@@ -420,11 +420,11 @@ class StreamCollection(StreamArray):
 
     def describe(self):
         """More verbose description of StreamCollection."""
-        summary = ""
-        summary += str(len(self.streams)) + " StationStreams(s) in StreamCollection:\n"
+        lines = [""]
+        lines += [str(len(self.streams)) + " StationStreams(s) in StreamCollection:"]
         for stream in self:
-            summary += stream.__str__(indent=INDENT) + "\n"
-        print(summary)
+            lines += [stream.__str__(indent=INDENT)]
+        return "\n".join(lines)
 
     def __group_by_net_sta_inst(self):
         trace_list = []

@@ -60,11 +60,12 @@ class StreamArray(object):
 
     def describe(self):
         """More verbose description of StreamArray."""
-        summary = ""
-        summary += str(len(self.streams)) + " StationStreams(s) in StreamArray:\n"
+        lines = []
+        lines += [""]
+        lines += [str(len(self.streams)) + " StationStreams(s) in StreamArray:"]
         for stream in self:
-            summary += stream.__str__(indent=INDENT) + "\n"
-        print(summary)
+            lines += [stream.__str__(indent=INDENT)]
+        return "\n".join(lines)
 
     def __len__(self):
         """Number of constituent StationStreams."""
