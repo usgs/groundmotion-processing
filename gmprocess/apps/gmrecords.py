@@ -77,7 +77,7 @@ class GMrecordsApp(object):
             self.parser.print_help()
         else:
             exclude_subcommands = ["projects", "proj", "init"]
-            if self.args.subcommand not in exclude_subcommands:
+            if self.args.subcommand not in exclude_subcommands and not self.args.quiet:
                 # Print the current project information to try to avoid
                 # confusion
                 selected_project = self.projects_conf["project"]
@@ -132,7 +132,7 @@ class GMrecordsApp(object):
         self._load_config()
 
         log_file = self.args.log or None
-        if log_file:
+        if log_file and not self.args.quiet:
             print(f"Logging output sent to: {log_file}")
         log_utils.setup_logger(self.args, log_file=log_file)
         logging.info("Logging level includes INFO.")
