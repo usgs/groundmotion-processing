@@ -130,10 +130,9 @@ class GMrecordsApp(object):
         
     def _initialize(self):
         self._load_config()
-        
-        log_file = None
-        if self.args.log:
-            log_file = os.path.join(self.data_path, "log.txt")
+
+        log_file = self.args.log or None
+        if log_file:
             print(f"Logging output sent to: {log_file}")
         log_utils.setup_logger(self.args, log_file=log_file)
         logging.info("Logging level includes INFO.")
@@ -274,8 +273,9 @@ class GMrecordsApp(object):
         self.parser.add_argument(
             "-l",
             "--log",
-            action="store_true",
-            default=False,
+            action="store",
+            type=str,
+            default=None,
             help="Log all output to a file in the project data directory.",
         )
 
