@@ -50,29 +50,27 @@ def setup_logger(args=None, level="info", log_file=None):
     logdict = {
         "version": 1,
         "formatters": {"standard": {"format": fmt, "datefmt": datefmt}},
-        "handlers": {
+        "loggers": {"": {"handlers": [], "level": loglevel, "propagate": True}},
+    }
+    if log_file is None:
+        logdict["handlers"] = {
             "stream": {
                 "level": loglevel,
                 "formatter": "standard",
                 "class": "logging.StreamHandler",
             }
-        },
-        "loggers": {"": {"handlers": ["stream"], "level": loglevel, "propagate": True}},
-    }
-
-    if log_file is not None:
-        logdict["handlers"]["event_file"] = {}
-        logdict["handlers"]["event_file"]["filename"] = log_file
-        if level == "debug":
-            logdict["handlers"]["event_file"]["level"] = logging.DEBUG
-        elif level == "quiet":
-            logdict["handlers"]["event_file"]["level"] = logging.ERROR
-        else:
-            logdict["handlers"]["event_file"]["level"] = logging.INFO
-        logdict["handlers"]["event_file"]["formatter"] = "standard"
-        logdict["handlers"]["event_file"]["class"] = "logging.FileHandler"
-        logdict["loggers"][""]["handlers"] = ["stream", "event_file"]
-
+        }
+        logdict["loggers"][""]["handlers"] = ["stream"]
+    else:
+        logdict["handlers"] = {
+            "event_file": {
+                "filename": log_file,
+                "level": loglevel,
+                "formatter": "standard",
+                "class": "logging.FileHandler",
+            }
+        }
+        logdict["loggers"][""]["handlers"] = ["event_file"]
     logging.config.dictConfig(logdict)
 
     # Have the logger capture anything from the 'warnings' package,
