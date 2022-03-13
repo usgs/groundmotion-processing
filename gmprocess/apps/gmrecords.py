@@ -70,12 +70,15 @@ class GMrecordsApp(object):
         self.gmprocess_version = VERSION
 
     def main(self, **kwargs):
-        self.args = argparse.Namespace(**kwargs) if kwargs else self._parse_command_line()
-        self._initialize()
-        
+        self.args = (
+            argparse.Namespace(**kwargs) if kwargs else self._parse_command_line()
+        )
+
         if self.args.subcommand is None:
             self.parser.print_help()
+            sys.exit()
         else:
+            self._initialize()
             exclude_subcommands = ["projects", "proj", "init"]
             if self.args.subcommand not in exclude_subcommands and not self.args.quiet:
                 # Print the current project information to try to avoid
@@ -127,7 +130,7 @@ class GMrecordsApp(object):
                         "module": module,
                         "mfile": module.__file__,
                     }
-        
+
     def _initialize(self):
         self._load_config()
 
@@ -137,8 +140,8 @@ class GMrecordsApp(object):
         log_utils.setup_logger(self.args, log_file=log_file)
         logging.info("Logging level includes INFO.")
         logging.debug("Logging level includes DEBUG.")
-        logging.info(f"PROJECTS_PATH: {self.PROJECTS_PATH}")        
-        
+        logging.info(f"PROJECTS_PATH: {self.PROJECTS_PATH}")
+
     def _load_config(self):
         if not os.path.isfile(self.PROJECTS_FILE):
             # If projects.conf file doesn't exist then we need to run the
