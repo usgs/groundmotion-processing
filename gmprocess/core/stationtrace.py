@@ -487,6 +487,56 @@ class StationTrace(Trace):
 
         return self
 
+        def filter(
+            self,
+            type="highpass",
+            freq=freq,
+            corners=filter_order,
+            zerophase=zerophase,
+            **options,
+        ):
+
+            if config:
+                frequency_domain = config["highpass_filter"]["frequency_domain"]
+                filter_order = config["filter_order"]["filter_order"]
+                number_of_passes = config["filter_order"]["number_of_passes"]
+
+            if type == "lowpass":
+                return super().filter(type, **options)
+            if frequency_domain is False:
+                tr.setProvenance(
+                    "highpass_filter",
+                    {
+                        "filter_type": "Butterworth",
+                        "frequency_domain": "False",
+                        "filter_order": filter_order,
+                        "number_of_passes": number_of_passes,
+                        "corner_frequency": freq,
+                    },
+                )
+                return super().filter(type, **options)
+
+            else:
+                signal_freq = self.getCached("signal_spectrum")["freq"]
+                signal_spec = self.getCached("signal_spectrum")["spec"]
+
+                filtered_spec = signal_spec / (
+                    np.sqrt(1.0 + (freq / signal_freq) ** (2.0 * filter_order))
+                )
+                self.data = np.fft.irfft(filtered_spec, n=np.len(self.data))
+
+                tr.setProvenance(
+                    "highpass_filter",
+                    {
+                        "filter_type": "Butterworth",
+                        "frequency_domain": "True",
+                        "filter_order": filter_order,
+                        "number_of_passes": number_of_passes,
+                        "corner_frequency": freq,
+                    },
+                )
+                return self
+
     def getProvenanceKeys(self):
         """Get a list of all available provenance keys.
 

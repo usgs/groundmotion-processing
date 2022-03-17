@@ -54,17 +54,9 @@ def highpass_filter_trace(tr, filter_order=5, number_of_passes=2):
     freq = freq_dict["highpass"]
     try:
         tr.filter(type="highpass", freq=freq, corners=filter_order, zerophase=zerophase)
-        tr.setProvenance(
-            "highpass_filter",
-            {
-                "filter_type": "Butterworth",
-                "filter_order": filter_order,
-                "number_of_passes": number_of_passes,
-                "corner_frequency": freq,
-            },
-        )
+        
     except BaseException as e:
-        tr.fail(f"Lowpass filter failed with excpetion: {e}")
+        tr.fail(f"Highpass filter failed with excpetion: {e}")
     return tr
 
 
