@@ -418,13 +418,18 @@ class StreamCollection(StreamArray):
         summary += f"    {self.n_failed} StationStreams(s) failed checks.\n"
         return summary
 
-    def describe(self):
+    def describe_string(self):
         """More verbose description of StreamCollection."""
         lines = [""]
         lines += [str(len(self.streams)) + " StationStreams(s) in StreamCollection:"]
         for stream in self:
             lines += [stream.__str__(indent=INDENT)]
         return "\n".join(lines)
+
+    def describe(self):
+        """Thin wrapper of describe_string() for printing to stdout"""
+        stream_descript  = self.describe_string()
+        print(stream_descript)
 
     def __group_by_net_sta_inst(self):
         trace_list = []
