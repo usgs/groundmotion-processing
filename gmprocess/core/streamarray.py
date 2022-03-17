@@ -58,7 +58,7 @@ class StreamArray(object):
                     newstreams.append(new_st)
         self.streams = newstreams
 
-    def describe(self):
+    def describe_string(self):
         """More verbose description of StreamArray."""
         lines = []
         lines += [""]
