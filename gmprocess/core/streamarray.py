@@ -67,6 +67,11 @@ class StreamArray(object):
             lines += [stream.__str__(indent=INDENT)]
         return "\n".join(lines)
 
+    def describe(self):
+        """Thin wrapper of describe_string() for printing to stdout"""
+        stream_descript  = self.describe_string()
+        print(stream_descript)
+
     def __len__(self):
         """Number of constituent StationStreams."""
         return len(self.streams)
