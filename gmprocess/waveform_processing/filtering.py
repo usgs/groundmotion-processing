@@ -2,13 +2,15 @@
 # -*- coding: utf-8 -*-
 
 
-def highpass_filter(st, filter_order=5, number_of_passes=2, config=None):
+def highpass_filter(st, frequency_domain = true, filter_order=5, number_of_passes=2, config=None):
     """
     Highpass filter.
 
     Args:
         st (StationStream):
             Stream of data.
+        frequency_domain (Bool):
+            If true, use gmprocess frequency domain implementation; if false, use ObsPy filters.
         filter_order (int):
             Filter order.
         number_of_passes (int):

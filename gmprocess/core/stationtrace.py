@@ -504,7 +504,7 @@ class StationTrace(Trace):
             if type == "lowpass":
                 return super().filter(type, **options)
             if frequency_domain is False:
-                tr.setProvenance(
+                self.setProvenance(
                     "highpass_filter",
                     {
                         "filter_type": "Butterworth",
@@ -520,12 +520,16 @@ class StationTrace(Trace):
                 signal_freq = self.getCached("signal_spectrum")["freq"]
                 signal_spec = self.getCached("signal_spectrum")["spec"]
 
-                filtered_spec = signal_spec / (
-                    np.sqrt(1.0 + (freq / signal_freq) ** (2.0 * filter_order))
+                filtered_spec[signal_freq == 0] = 0
+                filtered_spec[signal_freq != 0] = signal_spec / (
+                    np.sqrt(
+                        1.0
+                        + (freq / signal_freq[signal_freq != 0]) ** (2.0 * filter_order)
+                    )
                 )
                 self.data = np.fft.irfft(filtered_spec, n=np.len(self.data))
 
-                tr.setProvenance(
+                self.setProvenance(
                     "highpass_filter",
                     {
                         "filter_type": "Butterworth",
