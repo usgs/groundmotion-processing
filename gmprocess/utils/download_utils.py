@@ -58,8 +58,8 @@ def download(event, event_dir, config):
     download_rupture_file(event.id, event_dir)
 
     if len(tcollection):
-        logging.debug("tcollection.describe():")
-        logging.debug(tcollection.describe())
+        logging.debug("tcollection.describe_string():")
+        logging.debug(tcollection.describe_string())
 
     # Plot the raw waveforms
     with warnings.catch_warnings():
