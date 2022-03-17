@@ -345,6 +345,8 @@ processing:
     - highpass_filter:
         # Applies a Butterworth highpass filter using the highpass corner
         # determined with 'corner_frequencies' section.
+         # filter option can be "obspy_butterworth" or "frequency_butterworth"
+        filter_option: "obspy_butterworth"
         filter_order: 5
         number_of_passes: 2
 
