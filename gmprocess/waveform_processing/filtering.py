@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import logging
 
 
-def highpass_filter(st, frequency_domain = true, filter_order=5, number_of_passes=2, config=None):
+def highpass_filter(
+    st, frequency_domain=True, filter_order=5, number_of_passes=2, config=None
+):
     """
     Highpass filter.
 
@@ -10,7 +13,8 @@ def highpass_filter(st, frequency_domain = true, filter_order=5, number_of_passe
         st (StationStream):
             Stream of data.
         frequency_domain (Bool):
-            If true, use gmprocess frequency domain implementation; if false, use ObsPy filters.
+            If true, use gmprocess frequency domain implementation; "
+            " if false, use ObsPy filters."
         filter_order (int):
             Filter order.
         number_of_passes (int):
@@ -25,12 +29,12 @@ def highpass_filter(st, frequency_domain = true, filter_order=5, number_of_passe
         return st
 
     for tr in st:
-        tr = highpass_filter_trace(tr, filter_order, number_of_passes)
+        tr = highpass_filter_trace(tr, filter_order, number_of_passes, config)
 
     return st
 
 
-def highpass_filter_trace(tr, filter_order=5, number_of_passes=2):
+def highpass_filter_trace(tr, filter_order=5, number_of_passes=2, config=None):
     """
     Highpass filter.
 
@@ -51,12 +55,18 @@ def highpass_filter_trace(tr, filter_order=5, number_of_passes=2):
         zerophase = True
     else:
         raise ValueError("number_of_passes must be 1 or 2.")
-
-    freq_dict = tr.getParameter("corner_frequencies")
-    freq = freq_dict["highpass"]
     try:
-        tr.filter(type="highpass", freq=freq, corners=filter_order, zerophase=zerophase)
-        
+        freq_dict = tr.getParameter("corner_frequencies")
+        freq = freq_dict["highpass"]
+
+        tr.filter(
+            type="highpass",
+            config=config,
+            freq=freq,
+            corners=filter_order,
+            zerophase=zerophase,
+        )
+
     except BaseException as e:
         tr.fail(f"Highpass filter failed with excpetion: {e}")
     return tr

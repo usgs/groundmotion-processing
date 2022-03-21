@@ -302,6 +302,8 @@ processing:
     - highpass_filter:
         # Applies a Butterworth highpass filter using the highpass corner
         # determined with 'corner_frequencies' section.
+        # If true, use gmprocess frequency domain implementation; if false, use ObsPy filters
+        frequency_domain: False
         filter_order: 5
         number_of_passes: 2
 
