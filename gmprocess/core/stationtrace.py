@@ -494,12 +494,14 @@ class StationTrace(Trace):
         self,
         type="highpass",
         config=None,
+        freq=0.05,
         zerophase=False,
+        corners=5.0,
         **options,
     ):
 
         if type == "lowpass":
-            return super().filter(type, **options)
+            return super().filter(type, freq=freq, **options)
 
         if config is None:
             get_config()
@@ -514,17 +516,22 @@ class StationTrace(Trace):
             number_of_passes = hp_args["number_of_passes"]
 
         if frequency_domain is False:
-            logging.debug("set provenance")
             self.setProvenance(
                 "highpass_filter",
                 {
                     "filter_type": "Butterworth ObsPy",
-                    "filter_order": options["corners"],
+                    "filter_order": corners,
                     "number_of_passes": number_of_passes,
-                    "corner_frequency": options["freq"],
+                    "corner_frequency": freq,
                 },
             )
-            return super().filter(type=type, **options)
+            return super().filter(
+                type=type,
+                zerophase=zerophase,
+                corners=corners,
+                freq=freq,
+                **options,
+            )
 
         else:
             if zerophase is True:
@@ -542,9 +549,7 @@ class StationTrace(Trace):
             signal_freq[0] = 1.0
 
             # apply filter
-            filter = np.sqrt(
-                1.0 + (options["freq"] / signal_freq) ** (2.0 * options["corners"])
-            )
+            filter = np.sqrt(1.0 + (options["freq"] / signal_freq) ** (2.0 * corners))
             filtered_spec = signal_spec / filter
             filtered_spec[0] = 0.0
 
