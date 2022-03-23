@@ -127,7 +127,7 @@ def lowpass_filter_trace(tr, filter_order=5, number_of_passes=2):
         tr.setProvenance(
             "lowpass_filter",
             {
-                "filter_type": "Butterworth",
+                "filter_type": "Butterworth ObsPy",
                 "filter_order": filter_order,
                 "number_of_passes": number_of_passes,
                 "corner_frequency": freq,
