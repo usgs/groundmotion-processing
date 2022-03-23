@@ -9,6 +9,7 @@ from datetime import datetime
 import getpass
 import re
 import inspect
+import csv
 
 # third party imports
 import numpy as np
@@ -18,10 +19,12 @@ import prov.model
 from obspy.core.utcdatetime import UTCDateTime
 import pandas as pd
 from scipy.integrate import cumtrapz
+from obspy.signal.util import next_pow_2
 
 # local imports
 from gmprocess.utils.config import get_config
 from gmprocess.io.seedname import get_units_type
+from gmprocess.waveform_processing.fft import compute_fft
 
 UNITS = {"acc": "cm/s^2", "vel": "cm/s"}
 REVERSE_UNITS = {"cm/s^2": "acc", "cm/s": "vel", "cm": "disp"}
@@ -486,6 +489,86 @@ class StationTrace(Trace):
         )
 
         return self
+
+    def filter(
+        self,
+        type="highpass",
+        config=None,
+        freq=0.05,
+        corners=5.0,
+        zerophase=False,
+        **options,
+    ):
+
+        if type == "lowpass":
+            return super().filter(
+                type, freq=freq, corners=corners, zerophase=zerophase, **options
+            )
+
+        if config is None:
+            get_config()
+
+        processing_steps = config["processing"]
+        ps_names = [list(ps.keys())[0] for ps in processing_steps]
+        ind = int(np.where(np.array(ps_names) == "highpass_filter")[0][0])
+        hp_args = processing_steps[ind]["highpass_filter"]
+
+        frequency_domain = hp_args["frequency_domain"]
+        number_of_passes = hp_args["number_of_passes"]
+
+        if frequency_domain is False:
+            self.setProvenance(
+                "highpass_filter",
+                {
+                    "filter_type": "Butterworth ObsPy",
+                    "filter_order": corners,
+                    "number_of_passes": number_of_passes,
+                    "corner_frequency": freq,
+                },
+            )
+            return super().filter(
+                type,
+                freq=freq,
+                corners=corners,
+                zerophase=zerophase,
+                **options,
+            )
+
+        else:
+            if zerophase is True:
+                logging.warning(
+                    "Filter is only applied once in frequency domain, "
+                    "even if if number of passes is 2"
+                )
+
+            # compute fft
+            dt = self.stats.delta
+            orig_npts = self.stats.npts
+            nfft = next_pow_2(orig_npts)
+            signal_spec = np.fft.rfft(self.data, n=nfft)
+            signal_freq = np.fft.rfftfreq(nfft, dt)
+            signal_freq[0] = 1.0
+
+            # apply filter
+            filter = np.sqrt(1.0 + (freq / signal_freq) ** (2.0 * corners))
+            filtered_spec = signal_spec / filter
+            filtered_spec[0] = 0.0
+
+            # inverse fft to time domain
+            filtered_trace = np.fft.irfft(filtered_spec)
+            # get rid of padded zeros
+            self.data = filtered_trace[0:orig_npts]
+
+            self.setProvenance(
+                "highpass_filter",
+                {
+                    "filter_type": "Butterworth gmprocess",
+                    "filter_order": corners,
+                    "number_of_passes": number_of_passes,
+                    "corner_frequency": freq,
+                },
+            )
+            return self
 
     def getProvenanceKeys(self):
         """Get a list of all available provenance keys.

@@ -4,9 +4,11 @@ import os.path
 import numpy as np
 from gmprocess.io.geonet.core import is_geonet, read_geonet
 import pkg_resources
+from gmprocess.utils.config import get_config
 
 FILTER_FREQ = 0.02
 CORNERS = 4
+config = get_config()
 
 
 def test():
@@ -79,6 +81,7 @@ def test():
 
     # test the velocity values from one of the V2 files
     comps = [("20180212_211557_WPWS_20.V2A", 0.165, 0.509, -0.091)]
+
     for comp in comps:
         geonet_file = os.path.join(datadir_2018, comp[0])
         stream = read_geonet(geonet_file)[0]
@@ -88,7 +91,13 @@ def test():
             vtrace.detrend("linear")
             vtrace.detrend("demean")
             vtrace.taper(max_percentage=0.05, type="cosine")
-            vtrace.filter("highpass", freq=FILTER_FREQ, zerophase=True, corners=CORNERS)
+            vtrace.filter(
+                type="highpass",
+                freq=FILTER_FREQ,
+                config=config,
+                zerophase=True,
+                corners=CORNERS,
+            )
             vtrace.detrend("linear")
             vtrace.detrend("demean")
             vtrace.integrate()
