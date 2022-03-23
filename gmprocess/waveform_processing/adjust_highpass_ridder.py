@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import numpy as np
 from gmprocess.utils.config import get_config
 from gmprocess.waveform_processing.auto_fchp import get_fchp
 
@@ -48,6 +49,18 @@ def ridder_fchp(st, target=0.02, tol=0.001, maxiter=30, maxfc=0.5, config=None):
     if config is None:
         config = get_config()
 
+    processing_steps = config["processing"]
+    ps_names = [list(ps.keys())[0] for ps in processing_steps]
+    ind = int(np.where(np.array(ps_names) == "highpass_filter")[0][0])
+    hp_args = processing_steps[ind]["highpass_filter"]
+
+    frequency_domain = hp_args["frequency_domain"]
+
+    if frequency_domain is True:
+        filter_code = 1
+    elif frequency_domain is False:
+        filter_code = 0
+
     for tr in st:
         initial_corners = tr.getParameter("corner_frequencies")
         initial_f_hp = initial_corners["highpass"]
@@ -60,6 +73,7 @@ def ridder_fchp(st, target=0.02, tol=0.001, maxiter=30, maxfc=0.5, config=None):
             poly_order=FORDER,
             maxiter=maxiter,
             fchp_max=maxfc,
+            filter_type=filter_code,
         )
 
         # Method did not converge if new_f_hp reaches maxfc
