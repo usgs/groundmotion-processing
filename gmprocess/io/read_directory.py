@@ -68,7 +68,11 @@ def directory_to_streams(directory, config=None):
     except BaseException as e:
         raise e
     finally:
-        shutil.rmtree(intermediate_dir)
+        try:
+            shutil.rmtree(intermediate_dir)
+        except OSError:
+            shutil.rmtree(intermediate_dir)
+            
 
     return streams, unprocessed_files, unprocessed_file_errors
 
