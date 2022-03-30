@@ -165,6 +165,16 @@ class GMrecordsApp(object):
 
         self.projects_conf = configobj.ConfigObj(self.PROJECTS_FILE, encoding="utf-8")
         self._validate_config()
+        # self.current_project gets set by _validate_config if it is successful.
+        if not hasattr(self, "current_project"):
+            print("Project validation failed.")
+            print("This likely has occurred due to errors in the project conf file: ")
+            print(f"    {self.PROJECTS_FILE}")
+            print("Deleting this file and creating a new one with:")
+            print("    gmrecords proj -c")
+            print("will likely solve the problem.")
+            print("Exiting.")
+            sys.exit()
 
         self.conf_path = os.path.join(
             os.path.abspath(os.path.join(self.PROJECTS_FILE, os.pardir)),
@@ -233,6 +243,11 @@ class GMrecordsApp(object):
             self.conf = configmod.get_config(self.conf_file)
 
     def _validate_config(self):
+        if "CALLED_FROM_PYTEST" in os.environ:
+            self.project = self.projects_conf["project"]
+            self.current_project = self.projects_conf["projects"][self.project]
+            return
+
         # Check that all of the listed projects have the required keys and valid paths
         bad_projs = []
         for proj_name, proj in self.projects_conf["projects"].items():
@@ -252,14 +267,15 @@ class GMrecordsApp(object):
         if self.project in self.projects_conf["projects"]:
             self.current_project = self.projects_conf["projects"][self.project]
         else:
-            new_proj = self.projects_conf["projects"].keys()[0]
-            print(f'The currently configured project ("{self.project}") is not in the ')
-            print("list of available projects. ")
-            print(f'Switching to the "{new_proj}" project.')
-            self.project = new_proj
-            self.current_project = self.projects_conf["projects"][self.project]
-            self.projects_conf["project"] = new_proj
-            self.projects_conf.write()
+            if len(self.projects_conf["projects"]):
+                new_proj = self.projects_conf["projects"].keys()[0]
+                print(f'The currently configured project ("{self.project}") is not in ')
+                print("the list of available projects. ")
+                print(f'Switching to the "{new_proj}" project.')
+                self.project = new_proj
+                self.current_project = self.projects_conf["projects"][self.project]
+                self.projects_conf["project"] = new_proj
+                self.projects_conf.write()
 
     def _initial_setup(self):
         """
