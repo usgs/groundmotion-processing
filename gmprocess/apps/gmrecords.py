@@ -176,13 +176,15 @@ class GMrecordsApp(object):
             print("Exiting.")
             sys.exit()
 
-        self.conf_path = os.path.join(
-            os.path.abspath(os.path.join(self.PROJECTS_FILE, os.pardir)),
-            self.current_project["conf_path"],
+        self.conf_path = os.path.abspath(
+            os.path.join(
+                self.PROJECTS_FILE, os.pardir, self.current_project["conf_path"]
+            )
         )
-        self.data_path = os.path.join(
-            os.path.abspath(os.path.join(self.PROJECTS_FILE, os.pardir)),
-            self.current_project["data_path"],
+        self.data_path = os.path.abspath(
+            os.path.join(
+                self.PROJECTS_FILE, os.pardir, self.current_project["data_path"]
+            )
         )
         if os.getenv("CALLED_FROM_PYTEST") is not None:
             self.conf_path = const.PROJECTS_PATH_TEST
@@ -254,9 +256,13 @@ class GMrecordsApp(object):
             if ("conf_path" not in proj) or ("data_path" not in proj):
                 bad_projs.append(proj_name)
                 continue
-            if not (
-                os.path.isdir(proj["conf_path"]) and os.path.isdir(proj["data_path"])
-            ):
+            conf_path = os.path.abspath(
+                os.path.join(self.PROJECTS_FILE, os.pardir, proj["conf_path"])
+            )
+            data_path = os.path.abspath(
+                os.path.join(self.PROJECTS_FILE, os.pardir, proj["data_path"])
+            )
+            if not (os.path.isdir(conf_path) and os.path.isdir(data_path)):
                 bad_projs.append(proj_name)
         for bad in bad_projs:
             print(f'Problem encountered in "{bad}" project. Deleting.')
