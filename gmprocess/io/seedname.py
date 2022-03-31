@@ -49,7 +49,7 @@ def get_units_type(channel):
     """
     inst_code = channel[1]
     ACC_CODES = ["N"]
-    VEL_CODES = ["H", "L", "M"]
+    VEL_CODES = ["H", "L", "M", "P"]
     if inst_code in ACC_CODES:
         return "acc"
     elif inst_code in VEL_CODES:
