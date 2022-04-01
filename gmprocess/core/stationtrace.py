@@ -544,30 +544,31 @@ class StationTrace(Trace):
             # compute fft
             dt = self.stats.delta
             orig_npts = self.stats.npts
-            nfft = next_pow_2(orig_npts)
-            signal_spec = np.fft.rfft(self.data, n=nfft)
-            signal_freq = np.fft.rfftfreq(nfft, dt)
+            signal_spec = np.fft.rfft(self.data, n=orig_npts)
+            signal_freq = np.fft.rfftfreq(orig_npts, dt)
             signal_freq[0] = 1.0
 
             # apply filter
             filter = np.sqrt(1.0 + (freq / signal_freq) ** (2.0 * corners))
             filtered_spec = signal_spec / filter
             filtered_spec[0] = 0.0
+            signal_freq[0] = 0
 
             # inverse fft to time domain
-            filtered_trace = np.fft.irfft(filtered_spec)
+            filtered_trace = np.fft.irfft(filtered_spec, n=orig_npts)
             # get rid of padded zeros
-            self.data = filtered_trace[0:orig_npts]
+            self.data = filtered_trace
 
             self.setProvenance(
                 "highpass_filter",
                 {
-                    "filter_type": "Butterworth gmprocess",
+                    "filter_type": "gmprocess ObsPy",
                     "filter_order": corners,
                     "number_of_passes": number_of_passes,
                     "corner_frequency": freq,
                 },
             )
+
             return self
 
     def getProvenanceKeys(self):
