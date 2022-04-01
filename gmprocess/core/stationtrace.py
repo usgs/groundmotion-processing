@@ -562,7 +562,7 @@ class StationTrace(Trace):
             self.setProvenance(
                 "highpass_filter",
                 {
-                    "filter_type": "gmprocess ObsPy",
+                    "filter_type": "Butterworth gmprocess",
                     "filter_order": corners,
                     "number_of_passes": number_of_passes,
                     "corner_frequency": freq,
