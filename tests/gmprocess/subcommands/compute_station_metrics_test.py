@@ -97,3 +97,4 @@ def test_compute_station_metrics_rupt(script_runner):
 
 if __name__ == "__main__":
     test_compute_station_metrics()
+    test_compute_station_metrics_rupt()
