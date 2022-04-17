@@ -330,7 +330,7 @@ class GMrecordsApp(object):
             action="store",
             type=str,
             default=None,
-            help="Log all output to a file in the project data directory.",
+            help="Path to log file; if provided, loging is directed to this file.",
         )
 
         # Parsers for subcommands

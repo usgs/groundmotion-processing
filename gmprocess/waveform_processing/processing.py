@@ -27,24 +27,35 @@ from gmprocess.waveform_processing.baseline_correction import correct_baseline
 # Note: no QA on following imports because they need to be in namespace to be
 # discovered. They are not called directly so linters will think this is a
 # mistake.
-from gmprocess.waveform_processing.pretesting import (  # NOQA
+from gmprocess.waveform_processing.pretesting import (  # noqa: F401
     check_max_amplitude,
     check_sta_lta,
     check_free_field,
 )
-from gmprocess.waveform_processing.filtering import (
+from gmprocess.waveform_processing.filtering import (  # noqa: F401
     lowpass_filter,
     highpass_filter,
-)  # NOQA
-from gmprocess.waveform_processing.adjust_highpass import adjust_highpass_corner  # NOQA
-from gmprocess.waveform_processing.adjust_highpass_ridder import ridder_fchp  # NOQA
-from gmprocess.waveform_processing.zero_crossings import check_zero_crossings  # NOQA
-from gmprocess.waveform_processing.nn_quality_assurance import NNet_QA  # NOQA
-from gmprocess.waveform_processing.snr import compute_snr  # NOQA
-from gmprocess.waveform_processing.spectrum import fit_spectra  # NOQA
-from gmprocess.waveform_processing.windows import cut, trim_multiple_events  # NOQA
-from gmprocess.waveform_processing.clipping.clipping_check import check_clipping  # NOQA
-from gmprocess.waveform_processing.sanity_checks import check_tail  # NOQA
+)
+from gmprocess.waveform_processing.adjust_highpass import (  # noqa: F401
+    adjust_highpass_corner,
+)
+from gmprocess.waveform_processing.adjust_highpass_ridder import (  # noqa: F401
+    ridder_fchp,
+)
+from gmprocess.waveform_processing.zero_crossings import (  # noqa: F401
+    check_zero_crossings,
+)
+from gmprocess.waveform_processing.nn_quality_assurance import NNet_QA  # noqa: F401
+from gmprocess.waveform_processing.snr import compute_snr  # noqa: F401
+from gmprocess.waveform_processing.spectrum import fit_spectra  # noqa: F401
+from gmprocess.waveform_processing.windows import (  # noqa: F401
+    cut,
+    trim_multiple_events,
+)
+from gmprocess.waveform_processing.clipping.clipping_check import (  # noqa: F401
+    check_clipping,
+)
+from gmprocess.waveform_processing.sanity_checks import check_tail  # noqa: F401
 
 # -----------------------------------------------------------------------------
 
@@ -84,7 +95,7 @@ TAPER_TYPES = {
 ABBREV_UNITS = {"ACC": "cm/s^2", "VEL": "cm/s", "DISP": "cm"}
 
 
-def process_streams(streams, origin, config=None):
+def process_streams(streams, origin, config=None, old_streams=None):
     """
     Run processing steps from the config file.
 
@@ -95,12 +106,15 @@ def process_streams(streams, origin, config=None):
     steps are not applied once a check has failed.
 
     Args:
-        streams (list):
-            A StreamCollection object.
+        streams (StreamCollection):
+            A StreamCollection object of unprocessed streams.
         origin (ScalarEvent):
             ScalarEvent object.
         config (dict):
             Configuration dictionary (or None). See get_config().
+        old_streams (StreamCollection):
+            A StreamCollection object of previously processed streams that contain
+            manually reviewed information. None if not reprocessing.
 
     Returns:
         A StreamCollection object.
@@ -158,8 +172,25 @@ def process_streams(streams, origin, config=None):
     processing_steps = config["processing"]
 
     # Loop over streams
-    for stream in streams:
+    for i, stream in enumerate(streams):
         logging.info(f"Stream: {stream.get_id()}")
+
+        # Check if we are reprocessing (indicated by presence of old_streams)
+        if old_streams is not None:
+            old_stream = old_streams[i]
+            for j in range(len(old_stream)):
+                tr_old = old_stream[j]
+                # Check if old_streams have review parameters because it is not
+                # guaranteed
+                if tr_old.hasParameter("review"):
+                    review_dict = tr_old.getParameter("review")
+                    # Transfer review parameter from old stream to new
+                    stream[j].setParameter("review", review_dict)
+                    # Was it failed via manual review?
+                    if "accepted" in review_dict:
+                        if review_dict["accepted"] is False:
+                            stream[j].fail("Manual review")
+
         for processing_step_dict in processing_steps:
 
             key_list = list(processing_step_dict.keys())
@@ -575,6 +606,17 @@ def get_corner_frequencies(
             "Corner frequency 'method' must be one of: 'constant', 'magnitude', or "
             "'snr'."
         )
+
+    # Replace corners set in manual review
+    for tr in st:
+        if tr.hasParameter("review"):
+            review_dict = tr.getParameter("review")
+            if "corner_frequencies" in review_dict:
+                rev_fc_dict = review_dict["corner_frequencies"]
+                auto_fc_dict = tr.getParameter("corner_frequencies")
+                if "highpass" in rev_fc_dict:
+                    auto_fc_dict["highpass"] = rev_fc_dict["highpass"]
+                    tr.setParameter("corner_frequencies", auto_fc_dict)
     return st
 
 

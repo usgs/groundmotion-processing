@@ -327,7 +327,9 @@ class StreamWorkspace(object):
         gmprocess_version = "".join([chr(b) for b in bytelist])
         return gmprocess_version
 
-    def addStreams(self, event, streams, label=None, gmprocess_version="unknown"):
+    def addStreams(
+        self, event, streams, label=None, gmprocess_version="unknown", overwrite=False
+    ):
         """Add a sequence of StationStream objects to an ASDF file.
 
         Args:
@@ -340,6 +342,8 @@ class StreamWorkspace(object):
                 underscore.
             gmprocess_version (str):
                 gmprocess version.
+            overwrite (bool):
+                Overwrite streams if they exist?
         """
         if label is not None:
             if "_" in label:
@@ -378,6 +382,12 @@ class StreamWorkspace(object):
                 level = "raw"
             else:
                 level = "processed"
+
+            if overwrite:
+                net_sta = stream.get_net_sta()
+                if net_sta in self.dataset.waveforms:
+                    del self.dataset.waveforms[net_sta][tag]
+
             self.dataset.add_waveforms(stream, tag=tag, event_id=event)
 
             # add processing provenance info from traces
@@ -403,8 +413,6 @@ class StreamWorkspace(object):
                 # just to store a string in HDF, but other
                 # approaches failed. Suggestions are welcome.
                 jdict = _stringify_dict(jdict)
-                jsonbytes = json.dumps(jdict).encode("utf-8")
-                jsonarray = np.frombuffer(jsonbytes, dtype=np.uint8)
                 dtype = "StreamProcessingParameters"
                 if config["read"]["use_streamcollection"]:
                     chancode = stream.get_inst()
@@ -416,9 +424,8 @@ class StreamWorkspace(object):
                         format_nslit(stream[0].stats, chancode, tag),
                     ]
                 )
-                self.dataset.add_auxiliary_data(
-                    jsonarray, data_type=dtype, path=parampath, parameters={}
-                )
+
+                self.insert_aux(json.dumps(jdict), dtype, parampath, overwrite)
 
             # add processing parameters from traces
             for trace in stream:
@@ -440,12 +447,8 @@ class StreamWorkspace(object):
                     # just to store a string in HDF, but other
                     # approached failed. Suggestions are welcome.
                     jdict = _stringify_dict(jdict)
-                    jsonbytes = json.dumps(jdict).encode("utf-8")
-                    jsonarray = np.frombuffer(jsonbytes, dtype=np.uint8)
                     dtype = "TraceProcessingParameters"
-                    self.dataset.add_auxiliary_data(
-                        jsonarray, data_type=dtype, path=procname, parameters={}
-                    )
+                    self.insert_aux(json.dumps(jdict), dtype, procname, overwrite)
 
                 # Some processing data is computationally intensive to
                 # compute, so we store it in the 'Cache' group.
@@ -458,6 +461,12 @@ class StreamWorkspace(object):
                     for array_name, array in spectrum.items():
                         path = base_dtype + array_name.capitalize() + "/" + procname
                         try:
+                            group_name = f"Cache/{path}"
+                            data_exists = (
+                                group_name in self.dataset._auxiliary_data_group
+                            )
+                            if overwrite and data_exists:
+                                del self.dataset._auxiliary_data_group[group_name]
                             self.dataset.add_auxiliary_data(
                                 array, data_type="Cache", path=path, parameters={}
                             )
@@ -603,8 +612,34 @@ class StreamWorkspace(object):
                         for key, value in spectra.items():
                             trace.setCached(key, value)
 
+                    # get review information if it is present:
+                    if "review" in auxdata:
+                        if top in auxdata.review:
+                            if trace_path in auxdata.review[top]:
+                                tr_review = auxdata.review[top][trace_path]
+                                review_dict = {}
+                                if "accepted" in tr_review:
+                                    tr_acc = tr_review.accepted
+                                    review_dict["accepted"] = bool(tr_acc.data[0])
+                                    if "timestamp" in tr_acc.parameters:
+                                        review_dict["time"] = tr_acc.parameters[
+                                            "timestamp"
+                                        ]
+                                    if "username" in tr_acc.parameters:
+                                        review_dict["user"] = tr_acc.parameters[
+                                            "username"
+                                        ]
+                                if "corner_frequencies" in tr_review:
+                                    fc_dict = tr_review["corner_frequencies"]
+                                    review_dict["corner_frequencies"] = {}
+                                    if "highpass" in fc_dict:
+                                        review_dict["corner_frequencies"][
+                                            "highpass"
+                                        ] = fc_dict["highpass"].data[0]
+                                trace.setParameter("review", review_dict)
+
                     stream = StationStream(traces=[trace])
-                    stream.tag = tag  # testing this out
+                    stream.tag = tag
 
                     # get the stream processing parameters
                     stream_path = format_nslit(trace.stats, stream.get_inst(), tag)
@@ -667,9 +702,8 @@ class StreamWorkspace(object):
 
         databuf = datastr.encode("utf-8")
         data_array = np.frombuffer(databuf, dtype=np.uint8)
-        dtype = data_name
         self.dataset.add_auxiliary_data(
-            data_array, data_type=dtype, path=path, parameters={}
+            data_array, data_type=data_name, path=path, parameters={}
         )
 
     def calcMetrics(
@@ -766,7 +800,7 @@ class StreamWorkspace(object):
                 logging.warning(fmt % (eventid, instrument, str(pgme)))
                 continue
 
-            if hasattr(streams[0], "use_array") and streams[0].use_array == True:
+            if hasattr(streams[0], "use_array") and streams[0].use_array is True:
                 chancode = streams[0][0].stats.channel
             else:
                 chancode = streams[0].get_inst()
@@ -1210,7 +1244,7 @@ class StreamWorkspace(object):
         else:
             stream_tag = streams[0].tag
 
-        if hasattr(streams[0], "use_array") and streams[0].use_array == True:
+        if hasattr(streams[0], "use_array") and streams[0].use_array is True:
             chancode = streams[0][0].stats.channel
         else:
             chancode = streams[0].get_inst()
@@ -1240,7 +1274,7 @@ class StreamWorkspace(object):
             return None
         auxholder = self.dataset.auxiliary_data.StationMetrics
 
-        if hasattr(streams[0], "use_array") and streams[0].use_array == True:
+        if hasattr(streams[0], "use_array") and streams[0].use_array is True:
             chancode = streams[0][0].stats.channel
         else:
             chancode = streams[0].get_inst()

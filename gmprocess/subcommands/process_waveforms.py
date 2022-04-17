@@ -25,9 +25,7 @@ class ProcessWaveformsModule(base.SubcommandModule):
     aliases = ("process",)
 
     # Note: do not use the ARG_DICT entry for label because the explanation is
-    # different here: here it is used to set the label adn will default to
-    # the date/time, but in subsequent subcommands it is used for selecting
-    # from existing labels.
+    # different here.
     arguments = [
         arg_dicts.ARG_DICTS["eventid"],
         arg_dicts.ARG_DICTS["textfile"],
@@ -40,6 +38,13 @@ class ProcessWaveformsModule(base.SubcommandModule):
             ),
             "type": str,
             "default": None,
+        },
+        {
+            "short_flag": "-r",
+            "long_flag": "--reprocess",
+            "help": ("Reprocess data using manually review information."),
+            "default": False,
+            "action": "store_true",
         },
         arg_dicts.ARG_DICTS["num_processes"],
     ]
@@ -98,10 +103,29 @@ class ProcessWaveformsModule(base.SubcommandModule):
                 labels=["unprocessed"],
                 config=config,
             )
+            if self.gmrecords.args.reprocess:
+                # Don't use "processed_streams" variable name because that is what is
+                # being used for the result of THIS round of processing; thus, I'm
+                # using "old_streams" for the previously processed streams which
+                # contain the manually reviewed information
+                old_streams = workspace.getStreams(
+                    event.id,
+                    stations=[station_id],
+                    labels=[self.process_tag],
+                    config=config,
+                )
+            else:
+                old_streams = None
 
             if len(raw_streams):
+                if self.gmrecords.args.reprocess:
+                    process_type = "Reprocessing"
+                    plabel = self.process_tag
+                else:
+                    process_type = "Processing"
+                    plabel = "unprocessed"
                 logging.info(
-                    f"Processing '{'unprocessed'}' streams for event {event.id}..."
+                    f"{process_type} '{plabel}' streams for event {event.id}..."
                 )
                 if self.gmrecords.args.num_processes > 0:
                     future = client.submit(
@@ -109,11 +133,14 @@ class ProcessWaveformsModule(base.SubcommandModule):
                         raw_streams,
                         event,
                         config,
+                        old_streams,
                     )
                     futures.append(future)
                 else:
                     processed_streams.append(
-                        processing.process_streams(raw_streams, event, config)
+                        processing.process_streams(
+                            raw_streams, event, config, old_streams
+                        )
                     )
 
         if self.gmrecords.args.num_processes > 0:
@@ -122,12 +149,18 @@ class ProcessWaveformsModule(base.SubcommandModule):
             client.shutdown()
 
         # Cannot parallelize IO to ASDF file
+        if self.gmrecords.args.reprocess:
+            overwrite = True
+        else:
+            overwrite = False
+
         for processed_stream in processed_streams:
             workspace.addStreams(
                 event,
                 processed_stream,
                 label=self.process_tag,
                 gmprocess_version=self.gmrecords.gmprocess_version,
+                overwrite=overwrite,
             )
 
         workspace.close()
