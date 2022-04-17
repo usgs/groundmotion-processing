@@ -9,7 +9,6 @@ from datetime import datetime
 import getpass
 import re
 import inspect
-import csv
 
 # third party imports
 import numpy as np
@@ -19,12 +18,10 @@ import prov.model
 from obspy.core.utcdatetime import UTCDateTime
 import pandas as pd
 from scipy.integrate import cumtrapz
-from obspy.signal.util import next_pow_2
 
 # local imports
 from gmprocess.utils.config import get_config
 from gmprocess.io.seedname import get_units_type
-from gmprocess.waveform_processing.fft import compute_fft
 
 UNITS = {"acc": "cm/s^2", "vel": "cm/s"}
 REVERSE_UNITS = {"cm/s^2": "acc", "cm/s": "vel", "cm": "disp"}
@@ -1099,29 +1096,26 @@ def _get_software_agent(pr, gmprocess_version):
     hashstr = "0000001"
     agent_id = f"seis_prov:sp001_sa_{hashstr}"
     giturl = "https://github.com/usgs/groundmotion-processing"
-    try:
-        pr.agent(
-            agent_id,
-            other_attributes=(
+    pr.agent(
+        agent_id,
+        other_attributes=(
+            (
+                ("prov:label", software),
                 (
-                    ("prov:label", software),
-                    (
-                        "prov:type",
-                        prov.identifier.QualifiedName(
-                            prov.constants.PROV, "SoftwareAgent"
-                        ),
+                    "prov:type",
+                    prov.identifier.QualifiedName(
+                        prov.constants.PROV, "SoftwareAgent"
                     ),
-                    ("seis_prov:software_name", software),
-                    ("seis_prov:software_version", gmprocess_version),
-                    (
-                        "seis_prov:website",
-                        prov.model.Literal(giturl, prov.constants.XSD_ANYURI),
-                    ),
-                )
-            ),
-        )
-    except Exception as e:
-        x = 1
+                ),
+                ("seis_prov:software_name", software),
+                ("seis_prov:software_version", gmprocess_version),
+                (
+                    "seis_prov:website",
+                    prov.model.Literal(giturl, prov.constants.XSD_ANYURI),
+                ),
+            )
+        ),
+    )
     return pr
 
 
