@@ -6,7 +6,6 @@ import glob
 import sys
 
 # third party imports
-import logging
 import pytz
 from obspy.core.utcdatetime import UTCDateTime
 from obspy.clients.fdsn.header import URL_MAPPINGS, FDSNException
@@ -227,8 +226,12 @@ class FDSNFetcher(DataFetcher):
             root = logging.getLogger()
             fhandler = root.handlers[0]
             obspy_logger = logging.getLogger(OBSPY_LOGGER)
-            obspy_stream_handler = obspy_logger.handlers[0]
-            obspy_logger.removeHandler(obspy_stream_handler)
+            try:
+                obspy_stream_handler = obspy_logger.handlers[0]
+                obspy_logger.removeHandler(obspy_stream_handler)
+            except IndexError:
+                pass
+
             obspy_logger.addHandler(fhandler)
 
         # Circular domain around the epicenter.
@@ -303,7 +306,13 @@ class FDSNFetcher(DataFetcher):
                 sys.stdout = open(log_file, "a")
                 mdl = MassDownloader(providers=client_list, debug=True)
             else:
-                mdl = MassDownloader(providers=client_list)
+                try:
+                    # Need to turn off built in logging for ObsPy>=1.3.0
+                    mdl = MassDownloader(providers=client_list, configure_logging=False)
+                except TypeError:
+                    # For ObsPy<1.3.0 the configure_logging parameter doesn't exist
+                    mdl = MassDownloader(providers=client_list)
+
             logging.info("Downloading new MiniSEED files...")
             # The data will be downloaded to the ``./waveforms/`` and
             # ``./stations/`` folders with automatically chosen file names.
