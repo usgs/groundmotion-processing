@@ -218,7 +218,7 @@ class StationStream(Stream):
         # Check that id is consistent, and set id if it passes the check.
         if len(self):
             stats = self.traces[0].stats
-            if hasattr(self, "use_array") and self.use_array == True:
+            if hasattr(self, "use_array") and self.use_array is True:
                 id_str = ".".join(
                     [
                         self[0].stats.network,
@@ -233,7 +233,7 @@ class StationStream(Stream):
             # Check that the id would be the same for all traces
             for tr in self:
                 stats = tr.stats
-                if hasattr(self, "use_array") and self.use_array == True:
+                if hasattr(self, "use_array") and self.use_array is True:
                     test_str = ".".join(
                         [
                             stats.network,
@@ -262,6 +262,11 @@ class StationStream(Stream):
     def get_net_sta(self):
         """Get just the network and station compopnent of the ID."""
         return ".".join(self.get_id().split(".")[0:2])
+
+    def get_net_sta_loc(self):
+        """Get network, station, and location codes."""
+        stats = self[0].stats
+        return ".".join([stats.network, stats.station, stats.location])
 
     def get_inst(self):
         """Get first two characters of the channel code."""

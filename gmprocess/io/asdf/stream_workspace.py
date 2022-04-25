@@ -386,7 +386,14 @@ class StreamWorkspace(object):
             if overwrite:
                 net_sta = stream.get_net_sta()
                 if net_sta in self.dataset.waveforms:
-                    del self.dataset.waveforms[net_sta][tag]
+                    tmp_stream = self.dataset.waveforms[net_sta][tag]
+                    tmp_stats = tmp_stream[0].stats
+                    tmp_nsl = ".".join(
+                        [tmp_stats.network, tmp_stats.station, tmp_stats.location]
+                    )
+                    nsl = stream.get_net_sta_loc()
+                    if nsl == tmp_nsl:
+                        del self.dataset.waveforms[net_sta][tag]
 
             self.dataset.add_waveforms(stream, tag=tag, event_id=event)
 
@@ -547,6 +554,7 @@ class StreamWorkspace(object):
             self.dataset.q.station == sta_codes,
             self.dataset.q.tag == tag,
         ):
+            logging.debug(waveform)
             tags = waveform.get_waveform_tags()
             for tag in tags:
                 tstream = waveform[tag]
