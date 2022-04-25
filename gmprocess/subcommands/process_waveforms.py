@@ -114,6 +114,7 @@ class ProcessWaveformsModule(base.SubcommandModule):
                     labels=[self.process_tag],
                     config=config,
                 )
+                logging.debug(old_streams.describe())
             else:
                 old_streams = None
 
