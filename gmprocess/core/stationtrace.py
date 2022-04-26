@@ -535,7 +535,7 @@ class StationTrace(Trace):
             if zerophase is True:
                 logging.warning(
                     "Filter is only applied once in frequency domain, "
-                    "even if if number of passes is 2"
+                    "even if number of passes is 2"
                 )
 
             # compute fft
