@@ -132,7 +132,7 @@ TEXT_HEADER_LINES = [
 
 class Table4(object):
     def __init__(self, excelfile):
-        self._dataframe = pd.read_excel(excelfile)
+        self._dataframe = pd.read_excel(excelfile, na_filter=False)
 
     def get_cosmos_code(self, iris_code):
         row = self.get_row(iris_code)
@@ -151,7 +151,7 @@ class Table4(object):
 
     def get_matching_network(self, eventid):
         eventid = eventid.lower()
-        for idx, row in self._dataframe.iterrows():
+        for _, row in self._dataframe.iterrows():
             network = row["IRIS Code"].lower()
             if eventid.startswith(network):
                 return network
@@ -400,14 +400,17 @@ class IntHeader(object):
             f"{NUM_INT_ROWS} lines, Format= ({ffmt})"
         )
         self.start_line += (80 - len(self.start_line)) * " "
+
         # fill in data for int header
         self.header = np.ones((NUM_INT_ROWS, NUM_INT_COLS)) * MISSING_DATA_INT
+
         # Data/File Parameters
         self.header[0][0] = volume.value
         self.header[0][1] = TABLE1[trace.stats.standard.units_type]
         self.header[0][2] = TABLE2[trace.stats.standard.units_type]
         self.header[0][3] = int(COSMOS_FORMAT * 100)
         self.header[0][4] = SEISMIC_TRIGGER
+
         # Station Parameters
         self.header[1][0] = table4.get_cosmos_code(trace.stats.network)
         stype = trace.stats.standard.structure_type
@@ -415,14 +418,21 @@ class IntHeader(object):
             stype = "Unspecified"
         self.header[1][8] = REV_BUILDING_TYPES[stype]
         self.header[2][2] = len(stream)
+
         # Earthquake Parameters
         iris_network = table4.get_matching_network(
             scalar_event.id.replace("smi:local/", "")
         ).upper()
-        self.header[2][4] = TABLE7[iris_network]
-        self.header[2][5] = TABLE7[iris_network]
-        self.header[2][6] = TABLE7[iris_network]
-        self.header[2][7] = TABLE7[iris_network]
+        if iris_network in TABLE7:
+            source_code = TABLE7[iris_network]
+        else:
+            source_code = 200
+
+        self.header[2][4] = source_code
+        self.header[2][5] = source_code
+        self.header[2][6] = source_code
+        self.header[2][7] = source_code
+
         # Record Parameters
         self.header[3][9] = trace.stats.starttime.year
         self.header[4][0] = trace.stats.starttime.julday
@@ -430,15 +440,18 @@ class IntHeader(object):
         self.header[4][2] = trace.stats.starttime.day
         self.header[4][3] = trace.stats.starttime.hour
         self.header[4][4] = trace.stats.starttime.minute
+
         # Sensor/channel Parameters
         channels = [trace.stats.channel for trace in stream]
         channel_number = channels.index(trace.stats.channel) + 1
         self.header[4][9] = channel_number
         azimuth = trace.stats.standard.horizontal_orientation
+
         # 0 degrees is not an accepted azimuth angle...
         if azimuth == 0.0:
             azimuth = 360.0
         self.header[5][3] = azimuth
+
         # Filtering/processing parameters
         if volume == Volume.PROCESSED:
             lowpass_info = trace.getProvenance("lowpass_filter")[0]
@@ -471,10 +484,12 @@ class FloatHeader(object):
             f"{NUM_FLOAT_ROWS} lines , Format = ({ffmt})"
         )
         self.header = np.ones((NUM_FLOAT_ROWS, NUM_FLOAT_COLS)) * MISSING_DATA_FLOAT
+
         # Station parameters
         self.header[0][0] = trace.stats.coordinates.latitude
         self.header[0][1] = trace.stats.coordinates.longitude
         self.header[0][2] = trace.stats.coordinates.elevation
+
         # Earthquake parameters
         self.header[1][3] = scalar_event.latitude
         self.header[1][4] = scalar_event.longitude
@@ -488,6 +503,7 @@ class FloatHeader(object):
         )
         self.header[2][4] = dist / 1000  # m to km
         self.header[2][5] = az
+
         # Recorder/datalogger parameters
         if hasattr(trace.stats.standard, "volts_to_counts"):
             # volts to counts is counts/volt
@@ -503,6 +519,7 @@ class FloatHeader(object):
         self.header[4][5] = trace.stats.starttime.second
         self.header[5][3] = trace.stats.delta
         self.header[5][4] = dtime
+
         # Sensor/channel parameters
         self.header[6][3] = 1 / trace.stats.standard.instrument_period
         self.header[6][4] = trace.stats.standard.instrument_damping
