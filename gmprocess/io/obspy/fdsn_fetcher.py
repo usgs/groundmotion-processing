@@ -262,8 +262,12 @@ class FDSNFetcher(DataFetcher):
         # For each of the providers, check if we have a username and password
         # provided in the config. If we do, initialize the client with the
         # username and password. Otherwise, use default initalization.
+        providers = URL_MAPPINGS
+        if "IRISPH5" in providers.keys():
+            del providers["IRISPH5"]
+
         client_list = []
-        for provider_str in URL_MAPPINGS.keys():
+        for provider_str in providers.keys():
             if provider_str == GEO_NET_ARCHIVE_KEY:
                 dt = UTCDateTime.utcnow() - UTCDateTime(self.time)
                 if dt < GEONET_ARCHIVE_DAYS:
