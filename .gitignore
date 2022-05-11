@@ -24,3 +24,6 @@ dask-worker-space/
 MANIFEST.in
 # Vim tags
 tags
+# Ignore the C code that gets built by cython
+gmprocess/waveform_processing/smoothing/konno_ohmachi.c
+gmprocess/waveform_processing/auto_fchp.c

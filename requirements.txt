@@ -1,4 +1,4 @@
-python
+python>=3.8
 pip>=21.2
 c-compiler>=1.3
 cython>=0.29.23
@@ -11,7 +11,7 @@ libcomcat>=2.0.13
 lxml>=4.6.1
 mapio>=0.7.27
 matplotlib>=3.1.0
-numpy=1.21
+numpy>=1.21
 obspy>=1.2.1
 openmp>=8.0.1
 openpyxl>=3.0.8
