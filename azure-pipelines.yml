@@ -75,6 +75,8 @@ jobs:
           export CPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include
           echo "MacOS 10.15"
         fi
+      else
+        rm /usr/share/miniconda/pkgs/cache/*.json
       fi
       echo $(Agent.NAME)
       echo $(python.version)
