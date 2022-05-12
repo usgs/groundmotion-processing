@@ -20,7 +20,7 @@ prompt = LazyLoader("prompt", globals(), "gmprocess.utils.prompt")
 
 
 # Regular expression for checking valid email
-re_email = r"^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$"
+re_email = r"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
 
 
 class ProjectsModule(base.SubcommandModule):
