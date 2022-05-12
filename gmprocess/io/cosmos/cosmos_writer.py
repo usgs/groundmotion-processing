@@ -171,23 +171,28 @@ class TextHeader(object):
     # (filled in by constructor))
     header_fmt = OrderedDict()
     # header_fmt["param_type"] = ["{value:25s}", 0, None]
+
     # line 1
     header_fmt["param_type"] = ["{value:25s}", 0, None]
     header_fmt["cosmos_format"] = ["(Format v{value:05.2f} ", 26, None]
     header_fmt["number_lines"] = ["with {value:2d} text lines)", 40, None]
     header_fmt["agency_reserved"] = ["{value:19s}", 61, None]
+
     # line 2
     header_fmt["event_name"] = ["{value:40s}", 0, None]
     header_fmt["event_local_time"] = ["{value:40s}", 40, None]
+
     # line 3
     header_fmt["event_latitude"] = ["Hypocenter:{value:7.3f}", 0, None]
     header_fmt["event_longitude"] = ["{value:8.3f}", 21, None]
     header_fmt["event_depth"] = ["H={value:3d}km", 32, None]
     header_fmt["event_source"] = ["({value:4s})", 39, None]
     header_fmt["event_magnitude"] = ["M={value:3.1f}", 46, None]
+
     # line 4
     header_fmt["event_time"] = ["Origin: {value:26s}", 0, None]
     header_fmt["source_agency"] = ["({value:4s})", 35, None]
+
     # line 5
     header_fmt["network_number"] = ["Statn No: {value:02d}-", 0, None]
     header_fmt["station_number"] = ["{value:5d}", 13, None]
@@ -195,10 +200,12 @@ class TextHeader(object):
     header_fmt["station_code"] = ["{value:6s}", 28, None]
     header_fmt["network_abbrev"] = ["{value:4s}", 35, None]
     header_fmt["station_name"] = ["{value:40s}", 40, None]
+
     # line 6
     header_fmt["station_latitude"] = ["Coords:{value:-8.4f}", 0, None]
     header_fmt["station_longitude"] = ["{value:-9.4f}", 16, None]
     header_fmt["site_geology"] = ["Site geology:{value:40s}", 27, None]
+
     # line 7
     header_fmt["recorder_type"] = ["Recorder: {value:6s}", 0, None]
     header_fmt["recorder_serial"] = ["s/n:{value:5s}", 17, None]
@@ -206,30 +213,36 @@ class TextHeader(object):
     header_fmt["station_channels"] = [" Chns of {value:2d} at Sta)", 26, None]
     header_fmt["sensor_type"] = ["Sensor:{value:8s}", 50, None]
     header_fmt["sensor_serial"] = ["s/n {value:11s}", 68, None]
+
     # line 8
     header_fmt["record_start"] = ["Rcrd start time:{value:28s}", 0, None]
     header_fmt["time_quality"] = ["(Q={value:1s})", 45, None]
     header_fmt["record_id"] = ["RcrdId:{value:20s}", 51, None]
+
     # line 9
     header_fmt["channel_number"] = ["Sta Chan{value:4d}:", 8, None]
     header_fmt["channel_azimuth"] = ["{value:-3d} deg ", 13, None]
     header_fmt["recorder_channel_number"] = ["(Rcrdr Chan{value:3d}) ", 21, None]
     header_fmt["sensor_location"] = ["Location:{value:33s}", 37, None]
+
     # line 10
     header_fmt["record_duration"] = ["Raw record length ={value:8.3f} sec, ", 0, None]
     header_fmt["raw_maximum"] = ["Uncor max ={value:9.3f} ", 33, None]
     header_fmt["raw_maximum_units"] = ["{value:<6s} ", 53, None]
     header_fmt["raw_maximum_time"] = ["at {value:8.3f} sec", 59, None]
+
     # line 11
     header_fmt["processing_date"] = ["Processed:{value:28s}", 0, None]
     header_fmt["processing_agency"] = ["{value:5s}", 35, None]
     header_fmt["data_maximum"] = ["Max = {value:9.3f}", 41, None]
     header_fmt["data_maximum_units"] = ["{value:9s}", 57, None]
     header_fmt["data_maximum_time"] = ["at {value:7.3f} sec", 66, None]
+
     # line 12
     header_fmt["low_band_hz"] = ["Record filtered below{value:6.2f} Hz", 0, None]
     header_fmt["low_band_sec"] = ["(periods over{value:6.1f} secs)", 31, None]
     header_fmt["high_band_hz"] = ["and above{value:5.1f} Hz", 58, None]
+
     # line 13
     header_fmt["missing_data_str"] = ["{value:64s}", 0, None]
     header_fmt["missing_data_int"] = ["{value:7d}", 64, None]
@@ -256,16 +269,19 @@ class TextHeader(object):
         elif volume == Volume.PROCESSED:
             level = "Corrected"
         maxtime = trace.stats.delta * maxidx  # seconds since rec start
+
         # line 1
         self.set_header_value("param_type", f"{level} {quantity}")
         self.set_header_value("cosmos_format", COSMOS_FORMAT)
         self.set_header_value("number_lines", HEADER_LINES)
         self.set_header_value("agency_reserved", AGENCY_RESERVED)
+
         # line 2
         ename_str = f"M{scalar_event.magnitude} at {scalar_event.time}"
         self.set_header_value("event_name", ename_str)
         # Leaving local time blank, because it is hard to determine correctly
         self.set_header_value("event_local_time", "")
+
         # line 3
         self.set_header_value("event_latitude", scalar_event.latitude)
         self.set_header_value("event_longitude", scalar_event.longitude)
@@ -276,10 +292,12 @@ class TextHeader(object):
         abbrev = table4.get_agency_abbrev(iris_network)
         self.set_header_value("event_source", abbrev)
         self.set_header_value("event_magnitude", scalar_event.magnitude)
+
         # line 4
         etime = scalar_event.time.strftime(UTC_TIME_FMT)[:-5] + " UTC"
         self.set_header_value("event_time", etime)
         self.set_header_value("source_agency", abbrev)
+
         # line 5
         netnum = table4.get_cosmos_code(trace.stats.network)
         self.set_header_value("network_number", netnum)
@@ -290,10 +308,12 @@ class TextHeader(object):
             "network_abbrev", table4.get_agency_abbrev(trace.stats.network)
         )
         self.set_header_value("station_name", trace.stats.standard.station_name)
+
         # line 6
         self.set_header_value("station_latitude", trace.stats.coordinates.latitude)
         self.set_header_value("station_longitude", trace.stats.coordinates.longitude)
         self.set_header_value("site_geology", "Unknown")
+
         # line 7
         self.set_header_value("recorder_type", "")
         self.set_header_value("recorder_serial", "")
@@ -304,6 +324,7 @@ class TextHeader(object):
         self.set_header_value(
             "sensor_serial", trace.stats.standard.sensor_serial_number
         )
+
         # line 8
         stime = trace.stats.starttime.strftime(UTC_TIME_FMT)[:-3] + " UTC"
         self.set_header_value("record_start", stime)
@@ -314,6 +335,7 @@ class TextHeader(object):
             f"{trace.stats.channel}.{trace.stats.location}"
         )
         self.set_header_value("record_id", record_id)
+
         # line 9
         channels = [trace.stats.channel for trace in stream]
         channel_number = channels.index(trace.stats.channel) + 1
@@ -324,6 +346,7 @@ class TextHeader(object):
         self.set_header_value("channel_azimuth", int(azimuth))
         self.set_header_value("recorder_channel_number", channel_number)
         self.set_header_value("sensor_location", trace.stats.location)
+
         # line 10
         dtime = trace.stats.endtime - trace.stats.starttime  # duration secs
         self.set_header_value("record_duration", dtime)
@@ -337,6 +360,7 @@ class TextHeader(object):
             self.set_header_value("raw_maximum", 0)
             self.set_header_value("raw_maximum_units", "")
             self.set_header_value("raw_maximum_time", 0)
+
         # line 11
         ptimestr = trace.stats.standard.process_time
         pdate = ""
@@ -354,12 +378,14 @@ class TextHeader(object):
             "data_maximum_units", UNITS[trace.stats.standard.units_type]
         )
         self.set_header_value("data_maximum_time", maxtime)
+
         # line 12
         lowpass_info = trace.getProvenance("lowpass_filter")
         highpass_info = trace.getProvenance("highpass_filter")
         self.set_header_value("low_band_hz", highpass_info[0]["corner_frequency"])
         self.set_header_value("low_band_sec", 1 / highpass_info[0]["corner_frequency"])
         self.set_header_value("high_band_hz", lowpass_info[0]["corner_frequency"])
+
         # line 13
         miss_str = "Values used when parameter or data value is unknown/unspecified:"
         self.set_header_value("missing_data_str", miss_str)
@@ -405,6 +431,8 @@ class IntHeader(object):
         self.header = np.ones((NUM_INT_ROWS, NUM_INT_COLS)) * MISSING_DATA_INT
 
         # Data/File Parameters
+        # Note that notation here is that the indices indicate row/column number as
+        # described in the COSMOS documentation.
         self.header[0][0] = volume.value
         self.header[0][1] = TABLE1[trace.stats.standard.units_type]
         self.header[0][2] = TABLE2[trace.stats.standard.units_type]
@@ -537,6 +565,7 @@ class FloatHeader(object):
             highpass_info = trace.getProvenance("highpass_filter")[0]
             self.header[8][5] = highpass_info["corner_frequency"]
             self.header[9][2] = lowpass_info["corner_frequency"]
+
         # time history parameters
         self.header[10][1] = trace.stats.delta * 1000  # msecs
         self.header[10][2] = dtime
@@ -572,6 +601,7 @@ class DataBlock(object):
         itime = int(trace.stats.endtime - trace.stats.starttime)  # duration secs
         units = UNITS[trace.stats.standard.units_type]
         ffmt = cfmt_to_ffmt(DATA_FMT, NUM_DATA_COLS)
+
         # fill in comment fields that we use for overflow information
         self.comment_lines = []
         instrument = trace.stats.standard.instrument.replace("None", "").strip()
@@ -591,6 +621,7 @@ class DataBlock(object):
         self.write_comment("SCNL", scnl, "standard")
         pstr = f"Automatically processed using gmprocess version {gmprocess_version}"
         self.write_comment("PROCESS", pstr, "non-standard")
+
         # fill in data for float header
         self.start_lines = []
         ncomments = len(self.comment_lines)
@@ -667,80 +698,94 @@ class CosmosWriter(object):
             ds = self._workspace.dataset
             station_list = ds.waveforms.list()
             for station_id in station_list:
-                stream = self._workspace.getStreams(
+                streams = self._workspace.getStreams(
                     eventid, stations=[station_id], labels=[self._label]
-                )[0]
-                if not stream.passed:
-                    continue
-                logging.debug(f"Writing stream {stream.id}...")
-                nstreams += 1
-                for trace in stream:
-                    net = trace.stats.network
-                    sta = trace.stats.station
-                    cha = trace.stats.channel
-                    loc = trace.stats.location
-                    if trace.stats.standard.units_type != "acc":
-                        msg = (
-                            "Only supporting acceleration data at this "
-                            f"time. Skipping channel {cha}."
-                        )
-                        logging.debug(msg)
+                )
+                for stream in streams:
+                    if not stream.passed:
                         continue
-                    ntraces += 1
-                    stime = trace.stats.starttime.strftime("%Y%m%d%H%M%S")
+                    logging.info(f"Writing stream {stream.id}...")
+                    nstreams += 1
+                    for trace in stream:
+                        net = trace.stats.network
+                        sta = trace.stats.station
+                        cha = trace.stats.channel
+                        loc = trace.stats.location
+                        if trace.stats.standard.units_type != "acc":
+                            msg = (
+                                "Only supporting acceleration data at this "
+                                f"time. Skipping channel {cha}."
+                            )
+                            logging.info(msg)
+                            continue
+                        ntraces += 1
+                        stime = trace.stats.starttime.strftime("%Y%m%d%H%M%S")
 
-                    extension = "V0"
-                    if self._volume == Volume.CONVERTED:
-                        extension = "V1"
-                    elif self._volume == Volume.PROCESSED:
-                        extension = "V2"
-                    fname = f"{eventid}_{net}_{sta}_{cha}_{loc}_{stime}.{extension}"
-                    cosmos_filename = self._cosmos_directory / fname
-                    files.append(cosmos_filename)
-                    with open(cosmos_filename, "wt") as cosmos_file:
-                        logging.debug(f"Getting text header for {trace.id}")
-                        t1 = time.time()
-                        text_header = TextHeader(
-                            trace, scalar_event, stream, self._volume, gmprocess_version
-                        )
-                        t2 = time.time()
-                        t_text.append(t2 - t1)
-                        t1 = time.time()
-                        logging.debug(f"Getting int header for {trace.id}")
-                        int_header = IntHeader(
-                            trace, scalar_event, stream, self._volume, gmprocess_version
-                        )
-                        t2 = time.time()
-                        t_int.append(t2 - t1)
-                        logging.debug(f"Getting float header for {trace.id}")
-                        t1 = time.time()
-                        float_header = FloatHeader(trace, scalar_event, self._volume)
-                        t2 = time.time()
-                        t_float.append(t2 - t1)
-                        text_header.write(cosmos_file)
-                        int_header.write(cosmos_file)
-                        float_header.write(cosmos_file)
-                        logging.debug(f"Getting data block for {trace.id}")
-                        t1 = time.time()
-                        data_block = DataBlock(
-                            trace, self._volume, eventid, gmprocess_version
-                        )
-                        t2 = time.time()
-                        t_data.append(t2 - t1)
-                        t1 = time.time()
-                        data_block.write(cosmos_file)
-                        t2 = time.time()
-                        t_write.append(t2 - t1)
-        text_av = sum(t_text) / ntraces
-        int_av = sum(t_int) / ntraces
-        float_av = sum(t_float) / ntraces
-        data_av = sum(t_data) / ntraces
-        write_av = sum(t_write) / ntraces
-        logging.debug(f"Text header mean: {text_av}")
-        logging.debug(f"Int header mean: {int_av}")
-        logging.debug(f"Float header mean: {float_av}")
-        logging.debug(f"Data block mean: {data_av}")
-        logging.debug(f"Data write mean: {write_av}")
+                        extension = "V0"
+                        if self._volume == Volume.CONVERTED:
+                            extension = "V1"
+                        elif self._volume == Volume.PROCESSED:
+                            extension = "V2"
+                        fname = f"{eventid}_{net}_{sta}_{cha}_{loc}_{stime}.{extension}"
+                        cosmos_filename = self._cosmos_directory / fname
+                        files.append(cosmos_filename)
+                        with open(cosmos_filename, "wt") as cosmos_file:
+                            logging.debug(f"Getting text header for {trace.id}")
+                            t1 = time.time()
+                            text_header = TextHeader(
+                                trace,
+                                scalar_event,
+                                stream,
+                                self._volume,
+                                gmprocess_version,
+                            )
+                            t2 = time.time()
+                            t_text.append(t2 - t1)
+                            t1 = time.time()
+                            logging.debug(f"Getting int header for {trace.id}")
+                            int_header = IntHeader(
+                                trace,
+                                scalar_event,
+                                stream,
+                                self._volume,
+                                gmprocess_version,
+                            )
+                            t2 = time.time()
+                            t_int.append(t2 - t1)
+                            logging.debug(f"Getting float header for {trace.id}")
+                            t1 = time.time()
+                            float_header = FloatHeader(
+                                trace, scalar_event, self._volume
+                            )
+                            t2 = time.time()
+                            t_float.append(t2 - t1)
+                            text_header.write(cosmos_file)
+                            int_header.write(cosmos_file)
+                            float_header.write(cosmos_file)
+                            logging.debug(f"Getting data block for {trace.id}")
+                            t1 = time.time()
+                            data_block = DataBlock(
+                                trace, self._volume, eventid, gmprocess_version
+                            )
+                            t2 = time.time()
+                            t_data.append(t2 - t1)
+                            t1 = time.time()
+                            data_block.write(cosmos_file)
+                            t2 = time.time()
+                            t_write.append(t2 - t1)
+        if ntraces:
+            text_av = sum(t_text) / ntraces
+            int_av = sum(t_int) / ntraces
+            float_av = sum(t_float) / ntraces
+            data_av = sum(t_data) / ntraces
+            write_av = sum(t_write) / ntraces
+            logging.debug(f"Text header mean: {text_av}")
+            logging.debug(f"Int header mean: {int_av}")
+            logging.debug(f"Float header mean: {float_av}")
+            logging.debug(f"Data block mean: {data_av}")
+            logging.debug(f"Data write mean: {write_av}")
+        else:
+            logging.info("No traces processed.")
         return (files, nevents, nstreams, ntraces)
 
     def __del__(self):
