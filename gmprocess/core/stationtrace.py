@@ -504,10 +504,10 @@ class StationTrace(Trace):
             processing_steps = config["processing"]
             ps_names = [list(ps.keys())[0] for ps in processing_steps]
             ind = int(np.where(np.array(ps_names) == "lowpass_filter")[0][0])
-            hp_args = processing_steps[ind]["lowpass_filter"]
+            lp_args = processing_steps[ind]["lowpass_filter"]
 
-            frequency_domain = hp_args["frequency_domain"]
-            number_of_passes = hp_args["number_of_passes"]
+            frequency_domain = lp_args["frequency_domain"]
+            number_of_passes = lp_args["number_of_passes"]
 
             if frequency_domain is False:
                 self.setProvenance(
