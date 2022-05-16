@@ -98,7 +98,7 @@ def lowpass_filter(st, filter_order=5, number_of_passes=2, config=None):
     return st
 
 
-def lowpass_filter_trace(tr, filter_order=5, number_of_passes=2):
+def lowpass_filter_trace(tr, filter_order=5, number_of_passes=2, config=None):
     """
     Lowpass filter.
 
