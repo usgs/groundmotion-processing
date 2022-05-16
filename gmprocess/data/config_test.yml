@@ -353,6 +353,7 @@ processing:
     - lowpass_filter:
         # Applies a Butterworth lowpass filter using the lowpass corner
         # determined with 'corner_frequencies' section.
+        frequency_domain: False
         filter_order: 5
         number_of_passes: 2
 
