@@ -126,22 +126,13 @@ def lowpass_filter_trace(tr, filter_order=5, number_of_passes=2, config=None):
     freq = freq_dict["lowpass"]
     try:
         tr.filter(
-            type="highpass",
+            type="lowpass",
             config=config,
             freq=freq,
             corners=filter_order,
             zerophase=zerophase,
         )
 
-        # tr.setProvenance(
-        #     "lowpass_filter",
-        #     {
-        #         "filter_type": "Butterworth ObsPy",
-        #         "filter_order": filter_order,
-        #         "number_of_passes": number_of_passes,
-        #         "corner_frequency": freq,
-        #     },
-        # )
     except BaseException as e:
         tr.fail(f"Lowpass filter failed with excpetion: {e}")
     return tr

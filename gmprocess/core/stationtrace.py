@@ -520,7 +520,7 @@ class StationTrace(Trace):
                     },
                 )
                 return super().filter(
-                    type,
+                    type=type,
                     freq=freq,
                     corners=corners,
                     zerophase=zerophase,
