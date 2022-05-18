@@ -614,8 +614,11 @@ def get_corner_frequencies(
             if "corner_frequencies" in review_dict:
                 rev_fc_dict = review_dict["corner_frequencies"]
                 auto_fc_dict = tr.getParameter("corner_frequencies")
-                if "highpass" in rev_fc_dict:
-                    auto_fc_dict["highpass"] = rev_fc_dict["highpass"]
+                if ("highpass" in rev_fc_dict) or ("lowpass" in rev_fc_dict):
+                    if "highpass" in rev_fc_dict:
+                        auto_fc_dict["highpass"] = rev_fc_dict["highpass"]
+                    if "lowpass" in rev_fc_dict:
+                        auto_fc_dict["lowpass"] = rev_fc_dict["lowpass"]
                     tr.setParameter("corner_frequencies", auto_fc_dict)
     return st
 
