@@ -644,6 +644,10 @@ class StreamWorkspace(object):
                                         review_dict["corner_frequencies"][
                                             "highpass"
                                         ] = fc_dict["highpass"].data[0]
+                                    if "lowpass" in fc_dict:
+                                        review_dict["corner_frequencies"][
+                                            "lowpass"
+                                        ] = fc_dict["lowpass"].data[0]
                                 trace.setParameter("review", review_dict)
 
                     stream = StationStream(traces=[trace])
