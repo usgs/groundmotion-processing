@@ -10,7 +10,6 @@ import re
 # third party
 from obspy.core.stream import read
 from obspy import read_inventory
-import numpy as np
 
 # local imports
 from gmprocess.core.stationtrace import StationTrace

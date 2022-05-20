@@ -37,14 +37,8 @@ def fetch_data(
             Origin depth.
         magnitude (float):
             Origin magnitude.
-        radius (float):
-            Search radius (km).
-        dt (float):
-            Search time window (sec).
-        ddepth (float):
-            Search depth window (km).
-        dmag (float):
-            Search magnitude window (magnitude units).
+        config (dict):
+            Project config dictionary.
         rawdir (str):
             Path to location where raw data will be stored. If not specified,
             raw data will be deleted.
@@ -59,11 +53,11 @@ def fetch_data(
     """
     if config is None:
         config = get_config()
+
     tfetchers = find_fetchers(lat, lon)
 
     # Remove fetchers if they are not present in the conf file
     fetchers = {k: v for k, v in tfetchers.items() if k in config["fetchers"]}
-
     for fname in fetchers.keys():
         if fname not in config["fetchers"]:
             del fetchers[fname]
@@ -154,5 +148,7 @@ def find_fetchers(lat, lon):
                 if name == "DataFetcher":
                     continue
                 if inspect.isclass(obj) and issubclass(obj, DataFetcher):
-                    fetchers[name] = obj
+                    xmin, xmax, ymin, ymax = obj.BOUNDS
+                    if (xmin < lon < xmax) and (ymin < lat < ymax):
+                        fetchers[name] = obj
     return fetchers
