@@ -234,7 +234,12 @@ def build_report_latex(
         # Can we find pdflatex?
         try:
             pdflatex_bin = which("pdflatex")
-            pdflatex_options = "-interaction=nonstopmode -halt-on-error"
+            if os.name == "nt":
+                # seems that windows needs two dashes for the program options
+                flag = "--"
+            else:
+                flag = "-"
+            pdflatex_options = f"{flag}interaction=nonstopmode {flag}halt-on-error"
             cmd = f"{pdflatex_bin} {pdflatex_options} {file_name}"
             res, stdout, stderr = get_command_output(cmd)
             report_file = latex_file
