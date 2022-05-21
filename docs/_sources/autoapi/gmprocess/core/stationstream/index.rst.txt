@@ -71,7 +71,7 @@ Attributes
    The StationStream class is meant for grouping Traces from the same
    "station". In practice, what this really means is usually all of the
    channels from one instrument, with the same start and end times. Thus,
-   he StationStream object has a get_id method, which returns a string that
+   the StationStream object has a get_id method, which returns a string that
    consists of the network code, station code, and the first two characters
    of the channel code, since these should all be applicable to all traces in
    the StationStream object.
@@ -98,12 +98,12 @@ Attributes
 
    .. py:method:: get_id(self)
 
-      Get the StationStream ID.
+      Unique identifier for the StationStream.
 
-      This consists of the network, station, and first two characters of the
-      channel (to indicate instrument type). This is currently consistent
-      with how the channels are grouped and ignores the location code because
-      it doesn't seem like it is defined in a consistent fashion.
+      For StreamArrays, this is the network, station, location, and channel code.
+
+      For StreamCollections, this is the network, station, and first two characters
+      of the channel (to indicate instrument type).
 
 
    .. py:method:: get_net_sta(self)
@@ -111,9 +111,14 @@ Attributes
       Get just the network and station compopnent of the ID.
 
 
+   .. py:method:: get_net_sta_loc(self)
+
+      Get network, station, and location codes.
+
+
    .. py:method:: get_inst(self)
 
-      Get just the network and station compopnent of the ID.
+      Get first two characters of the channel code.
 
 
    .. py:method:: passed(self)

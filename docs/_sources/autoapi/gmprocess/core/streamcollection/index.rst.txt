@@ -70,7 +70,7 @@ Attributes
 
 .. py:class:: StreamCollection(streams=None, drop_non_free=True, handle_duplicates=True, max_dist_tolerance=None, preference_order=None, process_level_preference=None, format_preference=None, config=None)
 
-   Bases: :py:obj:`object`
+   Bases: :py:obj:`gmprocess.core.streamarray.StreamArray`
 
    A collection/list of StationStream objects.
 
@@ -85,14 +85,6 @@ Attributes
 
       - Check for and handle misaligned start times and end times.
       - Check units
-
-   .. py:method:: n_passed(self)
-      :property:
-
-
-   .. py:method:: n_failed(self)
-      :property:
-
 
    .. py:method:: validate(self)
 
@@ -229,72 +221,14 @@ Attributes
       String summary of the StreamCollection.
 
 
-   .. py:method:: describe(self)
+   .. py:method:: describe_string(self)
 
       More verbose description of StreamCollection.
 
 
-   .. py:method:: __len__(self)
+   .. py:method:: describe(self)
 
-      Number of constituent StationStreams.
-
-
-   .. py:method:: __nonzero__(self)
-
-
-   .. py:method:: __add__(self, other)
-
-
-   .. py:method:: __iter__(self)
-
-      Iterator for StreamCollection over constituent StationStreams.
-
-
-   .. py:method:: __setitem__(self, index, stream)
-
-
-   .. py:method:: __getitem__(self, index)
-
-
-   .. py:method:: __delitem__(self, index)
-
-
-   .. py:method:: __getslice__(self, i, j, k=1)
-
-
-   .. py:method:: append(self, stream)
-
-      Append a single StationStream object.
-
-      :param stream: A StationStream object.
-
-
-   .. py:method:: pop(self, index=-1)
-
-      Remove and return item at index (default last).
-
-
-   .. py:method:: copy(self)
-
-      Copy method.
-
-
-   .. py:method:: select(self, network=None, station=None, instrument=None)
-
-      Select Streams.
-
-      Return a new StreamCollection with only those StationStreams that
-      match network, station, and/or instrument selection criteria.
-
-      Based on obspy's `select` method for traces.
-
-      :param network: Network code.
-      :type network: str
-      :param station: Station code.
-      :type station: str
-      :param instrument: Instrument code; i.e., the first two characters of the
-                         channel.
-      :type instrument: str
+      Thin wrapper of describe_string() for printing to stdout
 
 
    .. py:method:: __group_by_net_sta_inst(self)

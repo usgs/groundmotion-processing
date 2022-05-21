@@ -32,14 +32,8 @@ Functions
    :type depth: float
    :param magnitude: Origin magnitude.
    :type magnitude: float
-   :param radius: Search radius (km).
-   :type radius: float
-   :param dt: Search time window (sec).
-   :type dt: float
-   :param ddepth: Search depth window (km).
-   :type ddepth: float
-   :param dmag: Search magnitude window (magnitude units).
-   :type dmag: float
+   :param config: Project config dictionary.
+   :type config: dict
    :param rawdir: Path to location where raw data will be stored. If not specified,
                   raw data will be deleted.
    :type rawdir: str

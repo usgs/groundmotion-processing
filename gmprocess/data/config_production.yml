@@ -41,53 +41,68 @@ fetchers:
         # define the magnitude search threshold (km)
         dmag: 0.3
     FDSNFetcher:
-        # search radius in decimal degrees
-        radius: 2.0
-        # seconds before arrival time
-        time_before: 30.0
-        # seconds after arrival time
-        time_after: 420.0
-        channels : ["BH?", "HH?", "BN?", "HN?"] # only get strong motion and high-gain channels
-        # channels : ["?N?"] # only get strong motion/broadband accelerometer data
+        # The domain section is for defining the search domain.
+        domain:
+            # Two domian types of supported: circular, rectangular
+            type: circular
+            # Arguments for the circular domain type
+            circular:
+                # Should the center be specified as earthquake epicenter?
+                use_epicenter: True
+                # If use_epicenter is false, then latitude and longtidue will be used.
+                latitude: 37.5
+                longitude: -122.0
+                # Radius units are decimal degrees
+                minradius: 0.0
+                maxradius: 3.0
+            # Arguments for the rectangular domain type
+            rectangular:
+                minlatitude: 33.0
+                maxlatitude: 37.0
+                minlongitude: -123.0
+                maxlongitude: -119.0
 
-        # List instruments that should be avoided.
-        # '?' and '*' wildcards are permissible.
-        exclude_patterns: ['*.*.??.LN?']
+        restrictions:
+            # seconds before origin time -- will be translated to "start_time" in the
+            # FDSN query 
+            time_before: 30.0
+            # seconds after origin time -- will be translated to "end_time"
+            time_after: 420.0
 
-        network: "*"
+            # Below here you can specify additional optional restriction keys. 
+            # See: https://docs.obspy.org/packages/autogen/obspy.clients.fdsn.mass_downloader.restrictions.Restrictions.html
 
-        # SY is a network for synthetic data
-        exclude_networks: ['SY', 'ZY', 'YH', 'YG', 'AM']
+            channel: "BH?, HH?, BN?, HN?" 
+            network: "*"
 
-        # uncomment this section to add stations that should be avoided
-        # exclude_stations:
-        #    - ABC*
+            # SY is a network for synthetic data, others listed here are network codes
+            # known to be problematic.
+            exclude_networks: ['SY', 'ZY', 'YH', 'YG', 'AM', 'PB']
 
-        # If True (default), MiniSEED files with gaps and/or overlaps will be rejected.
-        reject_channels_with_gaps: True
+            # The minimum length of the data as a fraction of the requested time frame.
+            # After a channel has been downloaded it will be checked that its total
+            # length is at least that fraction of the requested time span.
+            # Will be rejected otherwise. Must be between 0.0 and 1.0.
+            minimum_length: 0.1
 
-        # The minimum length of the data as a fraction of the requested time frame.
-        # After a channel has been downloaded it will be checked that its total
-        # length is at least that fraction of the requested time span.
-        # Will be rejected otherwise. Must be between 0.0 and 1.0.
-        minimum_length: 0.1
+            # Only download data that has accompanying StationXML metadata.
+            sanitize: True
 
-        # Only download data that has accompanying StationXML metadata.
-        sanitize: True
+            # The minimum inter-station distance.
+            # Data from any new station closer to any
+            # existing station will not be downloaded.
+            minimum_interstation_distance_in_m: 0.0
 
-        # The minimum inter-station distance.
-        # Data from any new station closer to any
-        # existing station will not be downloaded.
-        minimum_interstation_distance_in_m: 0.0
 
-        # For each of the FDSN providers, a username and password
-        # can be provided. This section does not need to contain all of the
-        # providers, just the ones you want to give a username and password.
+        # authentication:
+            # For each of the FDSN providers, a username and password
+            # can be provided. This section does not need to contain all of the
+            # providers, just the ones you want to give a username and password.
 
-        # Example:
-        # IRIS:
-        #     user: USERNAME
-        #     password: PASSWORD
+            # Example:
+            # IRIS:
+            #     user: USERNAME
+            #     password: PASSWORD
 
 
 # -----------------------------------------------------------------------------
@@ -120,6 +135,8 @@ read:
     # consistency checks. Set to False for stuctural/geotech array data for which these
     # do not make sense
     use_streamcollection: True
+
+    exclude_patterns: ['*.*.??.LN?']
 
 # -----------------------------------------------------------------------------
 # Options for separating noise/signal windows
@@ -349,7 +366,7 @@ processing:
         # If true, use gmprocess frequency domain implementation; if false, use ObsPy filters
         frequency_domain: True
         filter_order: 5.0
-        number_of_passes: 2.0
+        number_of_passes: 1.0
 
     - lowpass_filter:
         # Applies a Butterworth lowpass filter using the lowpass corner
@@ -357,7 +374,7 @@ processing:
         # If true, use gmprocess frequency domain implementation; if false, use ObsPy filters
         frequency_domain: True
         filter_order: 5.0
-        number_of_passes: 2.0
+        number_of_passes: 1.0
         
     - detrend:    
         detrending_method: pre

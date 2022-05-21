@@ -33,6 +33,7 @@ Attributes
    gmprocess.bin.gminfo.confmod
    gmprocess.bin.gminfo.COLUMNS
    gmprocess.bin.gminfo.ERROR_COLUMNS
+   gmprocess.bin.gminfo.REV_PROCESS_LEVELS
 
 
 .. py:data:: pd
@@ -67,6 +68,11 @@ Attributes
 
 .. py:data:: ERROR_COLUMNS
    :annotation: = ['Filename', 'Error']
+
+   
+
+.. py:data:: REV_PROCESS_LEVELS
+   
 
    
 

@@ -63,6 +63,9 @@ DMAG = 0.3
 
 
 class TurkeyFetcher(DataFetcher):
+    # this announces to the world the valid bounds for this fetcher.
+    BOUNDS = [25.664, 46.67, 34.132, 43.555]
+
     def __init__(
         self,
         time,
@@ -156,12 +159,6 @@ class TurkeyFetcher(DataFetcher):
         self.magnitude = magnitude
         self.ddepth = ddepth
         self.dmag = dmag
-        xmin = 25.664
-        xmax = 46.67
-        ymin = 34.132
-        ymax = 43.555
-        # this announces to the world the valid bounds for this fetcher.
-        self.BOUNDS = [xmin, xmax, ymin, ymax]
         self.drop_non_free = drop_non_free
 
     def getMatchingEvents(self, solve=True):

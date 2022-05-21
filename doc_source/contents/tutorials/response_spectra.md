@@ -70,13 +70,14 @@ The next step is to processing the streams and then compute a
 metrics, including the response spectra
 
 ```{code-cell} ipython3
+:tags: [remove-stderr]
 # Process the straems
 psc = process_streams(sc, event, conf)
 psc.describe()
 ```
 
-From the `describe` output, you can see that none of the stations the QA 
-checks that are applied during the `process_streams` command. 
+From the `describe` output, you can see that none of the stations failed
+the QA checks that are applied during the `process_streams` command. 
 
 We now compute the response spectral with the StationSummary class for 
 the third stream (CI.CCC)

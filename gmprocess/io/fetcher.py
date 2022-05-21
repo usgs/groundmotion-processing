@@ -15,14 +15,8 @@ class DataFetcher(object):
         lon,
         depth,
         magnitude,
-        user=None,
-        password=None,
-        radius=100,
-        dt=16,
-        ddepth=30,
-        dmag=0.3,
-        rawdir=None,
         config=None,
+        rawdir=None,
         drop_non_free=True,
         stream_collection=True,
     ):
@@ -39,24 +33,12 @@ class DataFetcher(object):
                 Origin depth.
             magnitude (float):
                 Origin magnitude.
-            user (str):
-                (Optional) username for site.
-            password (str):
-                (Optional) password for site.
-            radius (float):
-                Search radius (km).
-            dt (float):
-                Search time window (sec).
-            ddepth (float):
-                Search depth window (km).
-            dmag (float):
-                Search magnitude window (magnitude units).
-            rawdir (str):
-                Path to location where raw data will be stored.
-                If not specified, raw data will be deleted.
             config (dict):
                 Dictionary containing configuration.
                 If None, retrieve global config.
+            rawdir (str):
+                Path to location where raw data will be stored.
+                If not specified, raw data will be deleted.
             drop_non_free (bool):
                 Option to ignore non-free-field (borehole, sensors on
                 structures, etc.)

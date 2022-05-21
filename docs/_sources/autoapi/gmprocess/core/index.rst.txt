@@ -12,6 +12,7 @@ Submodules
 
    stationstream/index.rst
    stationtrace/index.rst
+   streamarray/index.rst
    streamcollection/index.rst
 
 

@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<FDSNStationXML xmlns="http://www.fdsn.org/xml/station/1" schemaVersion="1.1">
+  <Source>Taiwan Strong Motion Instrumentation Program via Central Weather Bureau</Source>
+  <Module>ObsPy 1.3.0</Module>
+  <ModuleURI>https://www.obspy.org</ModuleURI>
+  <Created>2022-05-21T19:42:49.165744Z</Created>
+  <Network code="TW">
+    <Description>source</Description>
+    <Station code="EAS">
+      <Description>{"standard": {"instrument_period": NaN, "instrument_damping": NaN, "process_time": "", "process_level": "uncorrected physical units", "structure_type": "", "corner_frequency": NaN, "source_file": "1-EAS.dat", "source_format": "cwb"}, "format_specific": {"dc_offset_z": -0.837, "dc_offset_h1": -2.273, "dc_offset_h2": -0.778}}</Description>
+      <Latitude unit="DEGREES">22.381</Latitude>
+      <Longitude unit="DEGREES">120.857</Longitude>
+      <Elevation unit="METERS">0.0</Elevation>
+      <Site>
+        <Name>Anshuo</Name>
+      </Site>
+      <CreationDate>1970-01-01T00:00:00.000000Z</CreationDate>
+      <TotalNumberChannels>3</TotalNumberChannels>
+      <Channel code="BNZ" locationCode="--">
+        <Comment>
+          <Value></Value>
+        </Comment>
+        <Latitude unit="DEGREES">22.381</Latitude>
+        <Longitude unit="DEGREES">120.857</Longitude>
+        <Elevation unit="METERS">0.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <SampleRate>50.0</SampleRate>
+        <CalibrationUnits>
+          <Name>acc</Name>
+        </CalibrationUnits>
+        <Sensor>
+          <Type>FBA</Type>
+          <SerialNumber></SerialNumber>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>nan</Frequency>
+            <InputUnits>
+              <Name>acc</Name>
+              <Description>None</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+              <Description>None</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+        </Response>
+      </Channel>
+      <Channel code="BN1" locationCode="--">
+        <Comment>
+          <Value></Value>
+        </Comment>
+        <Latitude unit="DEGREES">22.381</Latitude>
+        <Longitude unit="DEGREES">120.857</Longitude>
+        <Elevation unit="METERS">0.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <SampleRate>50.0</SampleRate>
+        <CalibrationUnits>
+          <Name>acc</Name>
+        </CalibrationUnits>
+        <Sensor>
+          <Type>FBA</Type>
+          <SerialNumber></SerialNumber>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>nan</Frequency>
+            <InputUnits>
+              <Name>acc</Name>
+              <Description>None</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+              <Description>None</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+        </Response>
+      </Channel>
+      <Channel code="BN2" locationCode="--">
+        <Comment>
+          <Value></Value>
+        </Comment>
+        <Latitude unit="DEGREES">22.381</Latitude>
+        <Longitude unit="DEGREES">120.857</Longitude>
+        <Elevation unit="METERS">0.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <SampleRate>50.0</SampleRate>
+        <CalibrationUnits>
+          <Name>acc</Name>
+        </CalibrationUnits>
+        <Sensor>
+          <Type>FBA</Type>
+          <SerialNumber></SerialNumber>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>nan</Frequency>
+            <InputUnits>
+              <Name>acc</Name>
+              <Description>None</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+              <Description>None</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+        </Response>
+      </Channel>
+    </Station>
+  </Network>
+</FDSNStationXML>

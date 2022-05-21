@@ -215,7 +215,7 @@ Attributes
    :rtype: tuple
 
 
-.. py:function:: _get_header_info_v1(int_data, flt_data, lines, level, location='')
+.. py:function:: _get_header_info_v1(int_data, flt_data, lines, level, location='', config=None)
 
    Return stats structure from various V1 headers.
 
@@ -266,6 +266,8 @@ Attributes
    :type lines: list
    :param level: Process level code (V0, V1, V2, V3)
    :type level: str
+   :param config: Config options.
+   :type config: dict
 
    :returns: Dictionary of header/metadata information
    :rtype: dictionary

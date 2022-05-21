@@ -12,33 +12,17 @@ from obspy.clients.fdsn.header import URL_MAPPINGS, FDSNException
 from obspy.clients.fdsn import Client
 from obspy.clients.fdsn.mass_downloader import (
     CircularDomain,
+    RectangularDomain,
     Restrictions,
     MassDownloader,
 )
 
 # local imports
-from gmprocess.io.fetcher import DataFetcher, _get_first_value
+from gmprocess.io.fetcher import DataFetcher
 from gmprocess.io.obspy.core import read_obspy
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.utils.config import get_config
 
-
-# default values for this fetcher
-# if None specified in constructor, AND no parameters specified in
-# config, then use these.
-RADIUS = 4  # dd
-TIME_BEFORE = 10  # seconds
-TIME_AFTER = 420  # seconds
-CHANNELS = ["HN[ZNE]"]  # default to only get strong motion stations
-EXCLUDE_NETWORKS = ["SY"]
-EXCLUDE_STATIONS = []
-REJECT_CHANNELS_WITH_GAPS = True
-MINIMUM_LENGTH = 0.1
-SANITIZE = True
-MINIMUM_INTERSTATION_DISTANCE_IN_M = 0.0
-NETWORK = "*"
-
-URL_ERROR_CODE = 200  # if we get this from a request, we're good
 
 OBSPY_LOGGER = "obspy.clients.fdsn.mass_downloader"
 
@@ -49,6 +33,8 @@ GEONET_REALTIME_URL = "http://service-nrt.geonet.org.nz"
 
 
 class FDSNFetcher(DataFetcher):
+    BOUNDS = [-180, 180, -90, 90]
+
     def __init__(
         self,
         time,
@@ -56,12 +42,8 @@ class FDSNFetcher(DataFetcher):
         lon,
         depth,
         magnitude,
-        radius=None,
-        time_before=None,
-        time_after=None,
-        channels=None,
-        rawdir=None,
         config=None,
+        rawdir=None,
         drop_non_free=True,
         stream_collection=True,
     ):
@@ -81,73 +63,20 @@ class FDSNFetcher(DataFetcher):
                 Origin depth.
             magnitude (float):
                 Origin magnitude.
-            radius (float):
-                Search radius (km).
-            time_before (float):
-                Seconds before arrival time (sec).
-            time_after (float):
-                Seconds after arrival time (sec).
-            rawdir (str):
-                Path to location where raw data will be stored.
-                If not specified, raw data will be deleted.
             config (dict):
                 Dictionary containing configuration.
                 If None, retrieve global config.
+            rawdir (str):
+                Path to location where raw data will be stored.
+                If not specified, raw data will be deleted.
             drop_non_free (bool):
                 Option to ignore non-free-field (borehole, sensors on
                 structures, etc.)
             stream_collection (bool):
                 Construct and return a StreamCollection instance?
         """
-        # what values do we use for search thresholds?
-        # In order of priority:
-        # 1) Not-None values passed in constructor
-        # 2) Configured values
-        # 3) DEFAULT values at top of the module
         if config is None:
             config = get_config()
-        cfg_radius = None
-        cfg_time_before = None
-        cfg_time_after = None
-        cfg_channels = None
-        exclude_networks = EXCLUDE_NETWORKS
-        exclude_stations = EXCLUDE_STATIONS
-        reject_channels_with_gaps = REJECT_CHANNELS_WITH_GAPS
-        minimum_length = MINIMUM_LENGTH
-        sanitize = SANITIZE
-        minimum_interstation_distance_in_m = MINIMUM_INTERSTATION_DISTANCE_IN_M
-        network = NETWORK
-        if "fetchers" in config:
-            if "FDSNFetcher" in config["fetchers"]:
-                fetch_cfg = config["fetchers"]["FDSNFetcher"]
-                if "radius" in fetch_cfg:
-                    cfg_radius = float(fetch_cfg["radius"])
-                if "time_before" in fetch_cfg:
-                    cfg_time_before = float(fetch_cfg["time_before"])
-                if "time_after" in fetch_cfg:
-                    cfg_time_after = float(fetch_cfg["time_after"])
-                if "channels" in fetch_cfg:
-                    cfg_channels = fetch_cfg["channels"]
-                if "exclude_networks" in fetch_cfg:
-                    exclude_networks = fetch_cfg["exclude_networks"]
-                if "exclude_stations" in fetch_cfg:
-                    exclude_stations = fetch_cfg["exclude_stations"]
-                if "reject_channels_with_gaps" in fetch_cfg:
-                    reject_channels_with_gaps = fetch_cfg["reject_channels_with_gaps"]
-                if "minimum_length" in fetch_cfg:
-                    minimum_length = fetch_cfg["minimum_length"]
-                if "sanitize" in fetch_cfg:
-                    sanitize = fetch_cfg["sanitize"]
-                if "minimum_interstation_distance_in_m" in fetch_cfg:
-                    minimum_interstation_distance_in_m = fetch_cfg[
-                        "minimum_interstation_distance_in_m"
-                    ]
-                if "network" in fetch_cfg:
-                    network = fetch_cfg["network"]
-        radius = _get_first_value(radius, cfg_radius, RADIUS)
-        time_before = _get_first_value(time_before, cfg_time_before, TIME_BEFORE)
-        time_after = _get_first_value(time_after, cfg_time_after, TIME_AFTER)
-        channels = _get_first_value(channels, cfg_channels, CHANNELS)
 
         tz = pytz.UTC
         if isinstance(time, UTCDateTime):
@@ -155,26 +84,12 @@ class FDSNFetcher(DataFetcher):
         self.time = tz.localize(time)
         self.lat = lat
         self.lon = lon
-        self.radius = radius
-        self.time_before = time_before
-        self.time_after = time_after
-        self.rawdir = rawdir
         self.depth = depth
         self.magnitude = magnitude
-        self.channels = channels
-        self.network = network
-
-        self.exclude_networks = exclude_networks
-        self.exclude_stations = exclude_stations
-        self.reject_channels_with_gaps = reject_channels_with_gaps
-        self.minimum_length = minimum_length
-        self.sanitize = sanitize
-        self.minimum_interstation_distance_in_m = minimum_interstation_distance_in_m
-
+        self.config = config
+        self.rawdir = rawdir
         self.drop_non_free = drop_non_free
         self.stream_collection = stream_collection
-        self.BOUNDS = [-180, 180, -90, 90]
-        self.config = config
 
     def getMatchingEvents(self, solve=True):
         """Return a list of dictionaries matching input parameters.
@@ -208,7 +123,10 @@ class FDSNFetcher(DataFetcher):
         # Bail out if FDSNFetcher not configured
         if "FDSNFetcher" not in self.config["fetchers"]:
             return
+
+        fdsn_conf = self.config["fetchers"]["FDSNFetcher"]
         rawdir = self.rawdir
+
         if self.rawdir is None:
             rawdir = tempfile.mkdtemp()
         else:
@@ -235,33 +153,31 @@ class FDSNFetcher(DataFetcher):
             obspy_logger.addHandler(fhandler)
 
         # Circular domain around the epicenter.
-        domain = CircularDomain(
-            latitude=self.lat, longitude=self.lon, minradius=0, maxradius=self.radius
-        )
+        if fdsn_conf["domain"]["type"] == "circular":
+            dconf = fdsn_conf["domain"]["circular"]
+            if dconf["use_epicenter"]:
+                dconf["latitude"] = self.lat
+                dconf["longitude"] = self.lon
+            dconf.pop("use_epicenter")
+            domain = CircularDomain(**dconf)
+        elif fdsn_conf["domain"]["type"] == "rectangular":
+            dconf = fdsn_conf["domain"]["rectangular"]
+            domain = RectangularDomain(**dconf)
+        else:
+            raise ValueError('Domain type must be either "circular" or "rectangular".')
 
-        min_dist = self.minimum_interstation_distance_in_m
-        restrictions = Restrictions(
-            # Define the temporal bounds of the waveform data.
-            starttime=origin_time - self.time_before,
-            endtime=origin_time + self.time_after,
-            network=self.network,
-            station="*",
-            location="*",
-            location_priorities=["*"],
-            reject_channels_with_gaps=self.reject_channels_with_gaps,
-            # Any trace that is shorter than 95 % of the
-            # desired total duration will be discarded.
-            minimum_length=self.minimum_length,
-            sanitize=self.sanitize,
-            minimum_interstation_distance_in_m=min_dist,
-            exclude_networks=self.exclude_networks,
-            exclude_stations=self.exclude_stations,
-            channel_priorities=self.channels,
-        )
+        rconf = fdsn_conf["restrictions"]
 
-        # For each of the providers, check if we have a username and password
-        # provided in the config. If we do, initialize the client with the
-        # username and password. Otherwise, use default initalization.
+        rconf["starttime"] = origin_time - rconf["time_before"]
+        rconf["endtime"] = origin_time + rconf["time_after"]
+        rconf.pop("time_before")
+        rconf.pop("time_after")
+
+        restrictions = Restrictions(**rconf)
+
+        # For each of the providers, check if we have a username and password provided
+        # in the config. If we do, initialize the client with the username and password.
+        # Otherwise, use default initalization.
         providers = URL_MAPPINGS
         if "IRISPH5" in providers.keys():
             del providers["IRISPH5"]

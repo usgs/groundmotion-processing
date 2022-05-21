@@ -188,6 +188,14 @@ Functions
       :raises PGMException: if there are no horizontal channels.
 
 
+   .. py:method:: _get_time(self)
+
+      Get the 'times' array.
+
+      :returns: Array of times.
+      :rtype: numpy.ndarray
+
+
    .. py:method:: _get_subclass(self, classes, base_class)
 
       Get the dynanically imported class required for the calculation step,
