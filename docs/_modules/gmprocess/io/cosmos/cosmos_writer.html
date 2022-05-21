@@ -4,17 +4,17 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.3.2, furo 2021.10.09"/>
-        <title>gmprocess.io.cosmos.cosmos_writer - gmprocess 1.1.11.dev339+g331fd3f6.d20220131 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
+        <title>gmprocess.io.cosmos.cosmos_writer - gmprocess 1.1.11.dev450+g2075fdf6.d20220521 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=16fb25fabf47304eee183a5e9af80b1ba98259b1" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -25,38 +25,38 @@
   --color-code-foreground: black;
   
   }
-  body[data-theme="dark"] {
-    --color-code-background: #202020;
-  --color-code-foreground: #d0d0d0;
-  
-  }
-  @media (prefers-color-scheme: dark) {
-    body:not([data-theme="light"]) {
+  @media not print {
+    body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
     }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
   }
 </style></head>
   <body>
+    
     <script>
       document.body.dataset.theme = localStorage.getItem("theme") || "auto";
     </script>
     
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <path stroke="none" d="M0 0h24v24H0z" />
-      <line x1="4" y1="6" x2="20" y2="6" />
-      <line x1="10" y1="12" x2="20" y2="12" />
-      <line x1="6" y1="18" x2="20" y2="18" />
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
     </svg>
   </symbol>
   <symbol id="svg-menu" viewBox="0 0 24 24">
     <title>Menu</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
       <line x1="3" y1="12" x2="21" y2="12"></line>
       <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -65,14 +65,14 @@
   </symbol>
   <symbol id="svg-arrow-right" viewBox="0 0 24 24">
     <title>Expand</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
       <polyline points="9 18 15 12 9 6"></polyline>
     </svg>
   </symbol>
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -87,7 +87,7 @@
   </symbol>
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
@@ -95,7 +95,7 @@
   </symbol>
   <symbol id="svg-sun-half" viewBox="0 0 24 24">
     <title>Auto light/dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
       <circle cx="12" cy="12" r="9" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev339+g331fd3f6.d20220131 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev450+g2075fdf6.d20220521 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -191,21 +191,33 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../contents/manual/index.html">Manual</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/data_structures.html">   Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/workspace.html">   Workspace</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/config_file.html">   Configuration File</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../contents/manual/config_file.html">   Configuration File</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/user.html">   user</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/fetchers.html">   fetchers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/read.html">   read</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/windows.html">   windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/processing.html">   processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/colocated.html">   colocated</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/duplicate.html">   duplicate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/build_report.html">   build_report</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/metrics.html">   metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/pickers.html">   pickers</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/processing.html">   Processing Steps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/utilities.html">   Utilities</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../contents/developer/index.html">Developer Resources</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../contents/developer/index.html">Developer Resources</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/developer/contributing.html">   Contributing Guidelines</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/developer/new_readers.html">   Adding New Data Readers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/developer/build_docs.html">   Building the Documentation</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/index.html">   API</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/apps/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.apps</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/index.html">   API</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/apps/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.apps</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/apps/gmrecords/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.apps.gmrecords</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/cwb_gather/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.cwb_gather</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/gmconvert/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmconvert</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/gminfo/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gminfo</span></code></a></li>
@@ -214,75 +226,76 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/list_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.list_metrics</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/core/stationstream/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.stationstream</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/core/stationtrace/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.stationtrace</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/core/streamarray/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.streamarray</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/core/streamcollection/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.streamcollection</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/asdf/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/asdf/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/asdf/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf.core</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/asdf/stream_workspace/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf.stream_workspace</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/asdf/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf.utils</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/bhrc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.bhrc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/bhrc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.bhrc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/bhrc/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.bhrc.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/cosmos/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cosmos</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/cosmos/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cosmos</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/cosmos/cesmd_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cosmos.cesmd_fetcher</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/cosmos/cesmd_search/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cosmos.cesmd_search</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/cosmos/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cosmos.core</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/cosmos/cosmos_writer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cosmos.cosmos_writer</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/cwb/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cwb</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/cwb/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cwb</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/cwb/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cwb.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/dmg/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.dmg</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/dmg/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.dmg</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/dmg/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.dmg.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/esm/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.esm</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/esm/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.esm</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/esm/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.esm.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/geonet/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.geonet</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/geonet/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.geonet</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/geonet/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.geonet.core</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/geonet/geonet_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.geonet.geonet_fetcher</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/knet/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.knet</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/knet/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.knet</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/knet/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.knet.core</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/knet/knet_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.knet.knet_fetcher</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/nsmn/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nsmn</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/nsmn/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nsmn</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/nsmn/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nsmn.core</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/nsmn/turkey_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nsmn.turkey_fetcher</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/obspy/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.obspy</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/obspy/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.obspy</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/obspy/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.obspy.core</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/obspy/fdsn_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.obspy.fdsn_fetcher</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/renadic/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.renadic</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/renadic/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.renadic</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/renadic/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.renadic.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/smc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.smc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/smc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.smc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/smc/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.smc.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/unam/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.unam</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/unam/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.unam</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/unam/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.unam.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/usc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.usc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/usc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.usc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/usc/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.usc.core</span></code></a></li>
 </ul>
 </li>
@@ -298,8 +311,8 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/io/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.utils</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/combination/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.combination</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/combination/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.combination</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/combination/arithmetic_mean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.combination.arithmetic_mean</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/combination/combination/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.combination.combination</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/combination/geometric_mean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.combination.geometric_mean</span></code></a></li>
@@ -308,7 +321,7 @@
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/combination/quadratic_mean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.combination.quadratic_mean</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imc/arithmetic_mean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc.arithmetic_mean</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imc/channels/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc.channels</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imc/geometric_mean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc.geometric_mean</span></code></a></li>
@@ -320,7 +333,7 @@
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imc/rotd/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc.rotd</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imt/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imt/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imt/arias/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt.arias</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imt/duration/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt.duration</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imt/fas/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt.fas</span></code></a></li>
@@ -331,7 +344,7 @@
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imt/sorted_duration/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt.sorted_duration</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/reduction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/reduction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/reduction/arias/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction.arias</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/reduction/duration/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction.duration</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/reduction/max/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction.max</span></code></a></li>
@@ -342,7 +355,7 @@
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/reduction/sorted_duration/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction.sorted_duration</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/rotation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.rotation</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/rotation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.rotation</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/rotation/gmrotd/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.rotation.gmrotd</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/rotation/null_rotation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.rotation.null_rotation</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/rotation/radial_transverse/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.rotation.radial_transverse</span></code></a></li>
@@ -350,7 +363,7 @@
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/rotation/rotd/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.rotation.rotd</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/transform/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.transform</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/transform/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.transform</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/transform/differentiate/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.transform.differentiate</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/transform/fft/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.transform.fft</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/transform/integrate/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.transform.integrate</span></code></a></li>
@@ -365,7 +378,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/station_summary/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.station_summary</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-32" name="toctree-checkbox-32" role="switch" type="checkbox"/><label for="toctree-checkbox-32"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/arg_dicts/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.arg_dicts</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/assemble/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.assemble</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/auto_shakemap/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.auto_shakemap</span></code></a></li>
@@ -388,7 +401,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/projects/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.projects</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-32" name="toctree-checkbox-32" role="switch" type="checkbox"/><label for="toctree-checkbox-32"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/args/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.args</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/assemble_utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.assemble_utils</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/base_utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.base_utils</span></code></a></li>
@@ -409,7 +422,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/usgs_id_cross_reference/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.usgs_id_cross_reference</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-34" name="toctree-checkbox-34" role="switch" type="checkbox"/><label for="toctree-checkbox-34"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/adjust_highpass/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/adjust_highpass_ridder/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass_ridder</span></code></a></li>
@@ -438,6 +451,7 @@
 
 </div>
 </div>
+
       </div>
       
     </div>
@@ -445,8 +459,13 @@
   <div class="main">
     <div class="content">
       <div class="article-container">
-        <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -595,7 +614,7 @@
 
 <div class="viewcode-block" id="Table4"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/cosmos/cosmos_writer/index.html#gmprocess.io.cosmos.cosmos_writer.Table4">[docs]</a><span class="k">class</span> <span class="nc">Table4</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">excelfile</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excelfile</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">excelfile</span><span class="p">,</span> <span class="n">na_filter</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Table4.get_cosmos_code"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/cosmos/cosmos_writer/index.html#gmprocess.io.cosmos.cosmos_writer.Table4.get_cosmos_code">[docs]</a>    <span class="k">def</span> <span class="nf">get_cosmos_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iris_code</span><span class="p">):</span>
         <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_row</span><span class="p">(</span><span class="n">iris_code</span><span class="p">)</span>
@@ -614,7 +633,7 @@
 
 <div class="viewcode-block" id="Table4.get_matching_network"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/cosmos/cosmos_writer/index.html#gmprocess.io.cosmos.cosmos_writer.Table4.get_matching_network">[docs]</a>    <span class="k">def</span> <span class="nf">get_matching_network</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eventid</span><span class="p">):</span>
         <span class="n">eventid</span> <span class="o">=</span> <span class="n">eventid</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataframe</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataframe</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
             <span class="n">network</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">"IRIS Code"</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">eventid</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">network</span>
@@ -634,23 +653,28 @@
     <span class="c1"># (filled in by constructor))</span>
     <span class="n">header_fmt</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
     <span class="c1"># header_fmt["param_type"] = ["{value:25s}", 0, None]</span>
+
     <span class="c1"># line 1</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"param_type"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"</span><span class="si">{value:25s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"cosmos_format"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"(Format v</span><span class="si">{value:05.2f}</span><span class="s2"> "</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"number_lines"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"with </span><span class="si">{value:2d}</span><span class="s2"> text lines)"</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"agency_reserved"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"</span><span class="si">{value:19s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
     <span class="c1"># line 2</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"event_name"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"</span><span class="si">{value:40s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"event_local_time"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"</span><span class="si">{value:40s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
     <span class="c1"># line 3</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"event_latitude"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Hypocenter:</span><span class="si">{value:7.3f}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"event_longitude"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"</span><span class="si">{value:8.3f}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"event_depth"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"H=</span><span class="si">{value:3d}</span><span class="s2">km"</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"event_source"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"(</span><span class="si">{value:4s}</span><span class="s2">)"</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"event_magnitude"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"M=</span><span class="si">{value:3.1f}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
     <span class="c1"># line 4</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"event_time"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Origin: </span><span class="si">{value:26s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"source_agency"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"(</span><span class="si">{value:4s}</span><span class="s2">)"</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
     <span class="c1"># line 5</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"network_number"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Statn No: </span><span class="si">{value:02d}</span><span class="s2">-"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"station_number"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"</span><span class="si">{value:5d}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
@@ -658,10 +682,12 @@
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"station_code"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"</span><span class="si">{value:6s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"network_abbrev"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"</span><span class="si">{value:4s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"station_name"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"</span><span class="si">{value:40s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
     <span class="c1"># line 6</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"station_latitude"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Coords:</span><span class="si">{value:-8.4f}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"station_longitude"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"</span><span class="si">{value:-9.4f}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"site_geology"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Site geology:</span><span class="si">{value:40s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
     <span class="c1"># line 7</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"recorder_type"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Recorder: </span><span class="si">{value:6s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"recorder_serial"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"s/n:</span><span class="si">{value:5s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
@@ -669,30 +695,36 @@
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"station_channels"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">" Chns of </span><span class="si">{value:2d}</span><span class="s2"> at Sta)"</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"sensor_type"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Sensor:</span><span class="si">{value:8s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"sensor_serial"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"s/n </span><span class="si">{value:11s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
     <span class="c1"># line 8</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"record_start"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Rcrd start time:</span><span class="si">{value:28s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"time_quality"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"(Q=</span><span class="si">{value:1s}</span><span class="s2">)"</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"record_id"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"RcrdId:</span><span class="si">{value:20s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
     <span class="c1"># line 9</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"channel_number"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Sta Chan</span><span class="si">{value:4d}</span><span class="s2">:"</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"channel_azimuth"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"</span><span class="si">{value:-3d}</span><span class="s2"> deg "</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"recorder_channel_number"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"(Rcrdr Chan</span><span class="si">{value:3d}</span><span class="s2">) "</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"sensor_location"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Location:</span><span class="si">{value:33s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
     <span class="c1"># line 10</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"record_duration"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Raw record length =</span><span class="si">{value:8.3f}</span><span class="s2"> sec, "</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"raw_maximum"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Uncor max =</span><span class="si">{value:9.3f}</span><span class="s2"> "</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"raw_maximum_units"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"</span><span class="si">{value:&lt;6s}</span><span class="s2"> "</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"raw_maximum_time"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"at </span><span class="si">{value:8.3f}</span><span class="s2"> sec"</span><span class="p">,</span> <span class="mi">59</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
     <span class="c1"># line 11</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"processing_date"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Processed:</span><span class="si">{value:28s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"processing_agency"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"</span><span class="si">{value:5s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"data_maximum"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Max = </span><span class="si">{value:9.3f}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"data_maximum_units"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"</span><span class="si">{value:9s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"data_maximum_time"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"at </span><span class="si">{value:7.3f}</span><span class="s2"> sec"</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
     <span class="c1"># line 12</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"low_band_hz"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Record filtered below</span><span class="si">{value:6.2f}</span><span class="s2"> Hz"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"low_band_sec"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"(periods over</span><span class="si">{value:6.1f}</span><span class="s2"> secs)"</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"high_band_hz"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"and above</span><span class="si">{value:5.1f}</span><span class="s2"> Hz"</span><span class="p">,</span> <span class="mi">58</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
     <span class="c1"># line 13</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"missing_data_str"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"</span><span class="si">{value:64s}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">"missing_data_int"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"</span><span class="si">{value:7d}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
@@ -719,16 +751,19 @@
         <span class="k">elif</span> <span class="n">volume</span> <span class="o">==</span> <span class="n">Volume</span><span class="o">.</span><span class="n">PROCESSED</span><span class="p">:</span>
             <span class="n">level</span> <span class="o">=</span> <span class="s2">"Corrected"</span>
         <span class="n">maxtime</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span> <span class="o">*</span> <span class="n">maxidx</span>  <span class="c1"># seconds since rec start</span>
+
         <span class="c1"># line 1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"param_type"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">quantity</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"cosmos_format"</span><span class="p">,</span> <span class="n">COSMOS_FORMAT</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"number_lines"</span><span class="p">,</span> <span class="n">HEADER_LINES</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"agency_reserved"</span><span class="p">,</span> <span class="n">AGENCY_RESERVED</span><span class="p">)</span>
+
         <span class="c1"># line 2</span>
         <span class="n">ename_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"M</span><span class="si">{</span><span class="n">scalar_event</span><span class="o">.</span><span class="n">magnitude</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="n">scalar_event</span><span class="o">.</span><span class="n">time</span><span class="si">}</span><span class="s2">"</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"event_name"</span><span class="p">,</span> <span class="n">ename_str</span><span class="p">)</span>
         <span class="c1"># Leaving local time blank, because it is hard to determine correctly</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"event_local_time"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+
         <span class="c1"># line 3</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"event_latitude"</span><span class="p">,</span> <span class="n">scalar_event</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"event_longitude"</span><span class="p">,</span> <span class="n">scalar_event</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
@@ -739,10 +774,12 @@
         <span class="n">abbrev</span> <span class="o">=</span> <span class="n">table4</span><span class="o">.</span><span class="n">get_agency_abbrev</span><span class="p">(</span><span class="n">iris_network</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"event_source"</span><span class="p">,</span> <span class="n">abbrev</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"event_magnitude"</span><span class="p">,</span> <span class="n">scalar_event</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
+
         <span class="c1"># line 4</span>
         <span class="n">etime</span> <span class="o">=</span> <span class="n">scalar_event</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">UTC_TIME_FMT</span><span class="p">)[:</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="s2">" UTC"</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"event_time"</span><span class="p">,</span> <span class="n">etime</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"source_agency"</span><span class="p">,</span> <span class="n">abbrev</span><span class="p">)</span>
+
         <span class="c1"># line 5</span>
         <span class="n">netnum</span> <span class="o">=</span> <span class="n">table4</span><span class="o">.</span><span class="n">get_cosmos_code</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"network_number"</span><span class="p">,</span> <span class="n">netnum</span><span class="p">)</span>
@@ -753,10 +790,12 @@
             <span class="s2">"network_abbrev"</span><span class="p">,</span> <span class="n">table4</span><span class="o">.</span><span class="n">get_agency_abbrev</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"station_name"</span><span class="p">,</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">station_name</span><span class="p">)</span>
+
         <span class="c1"># line 6</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"station_latitude"</span><span class="p">,</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"station_longitude"</span><span class="p">,</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"site_geology"</span><span class="p">,</span> <span class="s2">"Unknown"</span><span class="p">)</span>
+
         <span class="c1"># line 7</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"recorder_type"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"recorder_serial"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
@@ -767,6 +806,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span>
             <span class="s2">"sensor_serial"</span><span class="p">,</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">sensor_serial_number</span>
         <span class="p">)</span>
+
         <span class="c1"># line 8</span>
         <span class="n">stime</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">UTC_TIME_FMT</span><span class="p">)[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s2">" UTC"</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"record_start"</span><span class="p">,</span> <span class="n">stime</span><span class="p">)</span>
@@ -777,6 +817,7 @@
             <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"record_id"</span><span class="p">,</span> <span class="n">record_id</span><span class="p">)</span>
+
         <span class="c1"># line 9</span>
         <span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span> <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">]</span>
         <span class="n">channel_number</span> <span class="o">=</span> <span class="n">channels</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
@@ -787,6 +828,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"channel_azimuth"</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">azimuth</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"recorder_channel_number"</span><span class="p">,</span> <span class="n">channel_number</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"sensor_location"</span><span class="p">,</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+
         <span class="c1"># line 10</span>
         <span class="n">dtime</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span> <span class="o">-</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span>  <span class="c1"># duration secs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"record_duration"</span><span class="p">,</span> <span class="n">dtime</span><span class="p">)</span>
@@ -800,6 +842,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"raw_maximum"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"raw_maximum_units"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"raw_maximum_time"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
         <span class="c1"># line 11</span>
         <span class="n">ptimestr</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">process_time</span>
         <span class="n">pdate</span> <span class="o">=</span> <span class="s2">""</span>
@@ -817,12 +860,14 @@
             <span class="s2">"data_maximum_units"</span><span class="p">,</span> <span class="n">UNITS</span><span class="p">[</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span><span class="p">]</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"data_maximum_time"</span><span class="p">,</span> <span class="n">maxtime</span><span class="p">)</span>
+
         <span class="c1"># line 12</span>
         <span class="n">lowpass_info</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">"lowpass_filter"</span><span class="p">)</span>
         <span class="n">highpass_info</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">"highpass_filter"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"low_band_hz"</span><span class="p">,</span> <span class="n">highpass_info</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"corner_frequency"</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"low_band_sec"</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">highpass_info</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"corner_frequency"</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"high_band_hz"</span><span class="p">,</span> <span class="n">lowpass_info</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"corner_frequency"</span><span class="p">])</span>
+
         <span class="c1"># line 13</span>
         <span class="n">miss_str</span> <span class="o">=</span> <span class="s2">"Values used when parameter or data value is unknown/unspecified:"</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_header_value</span><span class="p">(</span><span class="s2">"missing_data_str"</span><span class="p">,</span> <span class="n">miss_str</span><span class="p">)</span>
@@ -863,14 +908,19 @@
             <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">NUM_INT_ROWS</span><span class="si">}</span><span class="s2"> lines, Format= (</span><span class="si">{</span><span class="n">ffmt</span><span class="si">}</span><span class="s2">)"</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start_line</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">80</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_line</span><span class="p">))</span> <span class="o">*</span> <span class="s2">" "</span>
+
         <span class="c1"># fill in data for int header</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">NUM_INT_ROWS</span><span class="p">,</span> <span class="n">NUM_INT_COLS</span><span class="p">))</span> <span class="o">*</span> <span class="n">MISSING_DATA_INT</span>
+
         <span class="c1"># Data/File Parameters</span>
+        <span class="c1"># Note that notation here is that the indices indicate row/column number as</span>
+        <span class="c1"># described in the COSMOS documentation.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">volume</span><span class="o">.</span><span class="n">value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">TABLE1</span><span class="p">[</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">TABLE2</span><span class="p">[</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">COSMOS_FORMAT</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">SEISMIC_TRIGGER</span>
+
         <span class="c1"># Station Parameters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">table4</span><span class="o">.</span><span class="n">get_cosmos_code</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span><span class="p">)</span>
         <span class="n">stype</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">structure_type</span>
@@ -878,14 +928,21 @@
             <span class="n">stype</span> <span class="o">=</span> <span class="s2">"Unspecified"</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="n">REV_BUILDING_TYPES</span><span class="p">[</span><span class="n">stype</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+
         <span class="c1"># Earthquake Parameters</span>
         <span class="n">iris_network</span> <span class="o">=</span> <span class="n">table4</span><span class="o">.</span><span class="n">get_matching_network</span><span class="p">(</span>
             <span class="n">scalar_event</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"smi:local/"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
         <span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">TABLE7</span><span class="p">[</span><span class="n">iris_network</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">TABLE7</span><span class="p">[</span><span class="n">iris_network</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">TABLE7</span><span class="p">[</span><span class="n">iris_network</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="n">TABLE7</span><span class="p">[</span><span class="n">iris_network</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">iris_network</span> <span class="ow">in</span> <span class="n">TABLE7</span><span class="p">:</span>
+            <span class="n">source_code</span> <span class="o">=</span> <span class="n">TABLE7</span><span class="p">[</span><span class="n">iris_network</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">source_code</span> <span class="o">=</span> <span class="mi">200</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_code</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_code</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_code</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="n">source_code</span>
+
         <span class="c1"># Record Parameters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">year</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">julday</span>
@@ -893,15 +950,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">day</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">hour</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">minute</span>
+
         <span class="c1"># Sensor/channel Parameters</span>
         <span class="n">channels</span> <span class="o">=</span> <span class="p">[</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span> <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">]</span>
         <span class="n">channel_number</span> <span class="o">=</span> <span class="n">channels</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="n">channel_number</span>
         <span class="n">azimuth</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">horizontal_orientation</span>
+
         <span class="c1"># 0 degrees is not an accepted azimuth angle...</span>
         <span class="k">if</span> <span class="n">azimuth</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">:</span>
             <span class="n">azimuth</span> <span class="o">=</span> <span class="mf">360.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">azimuth</span>
+
         <span class="c1"># Filtering/processing parameters</span>
         <span class="k">if</span> <span class="n">volume</span> <span class="o">==</span> <span class="n">Volume</span><span class="o">.</span><span class="n">PROCESSED</span><span class="p">:</span>
             <span class="n">lowpass_info</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">"lowpass_filter"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
@@ -934,10 +994,12 @@
             <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">NUM_FLOAT_ROWS</span><span class="si">}</span><span class="s2"> lines , Format = (</span><span class="si">{</span><span class="n">ffmt</span><span class="si">}</span><span class="s2">)"</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">NUM_FLOAT_ROWS</span><span class="p">,</span> <span class="n">NUM_FLOAT_COLS</span><span class="p">))</span> <span class="o">*</span> <span class="n">MISSING_DATA_FLOAT</span>
+
         <span class="c1"># Station parameters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">elevation</span>
+
         <span class="c1"># Earthquake parameters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">scalar_event</span><span class="o">.</span><span class="n">latitude</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">scalar_event</span><span class="o">.</span><span class="n">longitude</span>
@@ -951,6 +1013,7 @@
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist</span> <span class="o">/</span> <span class="mi">1000</span>  <span class="c1"># m to km</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">az</span>
+
         <span class="c1"># Recorder/datalogger parameters</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">,</span> <span class="s2">"volts_to_counts"</span><span class="p">):</span>
             <span class="c1"># volts to counts is counts/volt</span>
@@ -966,6 +1029,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">second</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">dtime</span>
+
         <span class="c1"># Sensor/channel parameters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">6</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">instrument_period</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">6</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">instrument_damping</span>
@@ -983,6 +1047,7 @@
             <span class="n">highpass_info</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">"highpass_filter"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">8</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">highpass_info</span><span class="p">[</span><span class="s2">"corner_frequency"</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">9</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">lowpass_info</span><span class="p">[</span><span class="s2">"corner_frequency"</span><span class="p">]</span>
+
         <span class="c1"># time history parameters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">10</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span> <span class="o">*</span> <span class="mi">1000</span>  <span class="c1"># msecs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="mi">10</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">dtime</span>
@@ -1018,6 +1083,7 @@
         <span class="n">itime</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span> <span class="o">-</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="p">)</span>  <span class="c1"># duration secs</span>
         <span class="n">units</span> <span class="o">=</span> <span class="n">UNITS</span><span class="p">[</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span><span class="p">]</span>
         <span class="n">ffmt</span> <span class="o">=</span> <span class="n">cfmt_to_ffmt</span><span class="p">(</span><span class="n">DATA_FMT</span><span class="p">,</span> <span class="n">NUM_DATA_COLS</span><span class="p">)</span>
+
         <span class="c1"># fill in comment fields that we use for overflow information</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">comment_lines</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">instrument</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">instrument</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"None"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
@@ -1037,6 +1103,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">write_comment</span><span class="p">(</span><span class="s2">"SCNL"</span><span class="p">,</span> <span class="n">scnl</span><span class="p">,</span> <span class="s2">"standard"</span><span class="p">)</span>
         <span class="n">pstr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Automatically processed using gmprocess version </span><span class="si">{</span><span class="n">gmprocess_version</span><span class="si">}</span><span class="s2">"</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">write_comment</span><span class="p">(</span><span class="s2">"PROCESS"</span><span class="p">,</span> <span class="n">pstr</span><span class="p">,</span> <span class="s2">"non-standard"</span><span class="p">)</span>
+
         <span class="c1"># fill in data for float header</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start_lines</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">ncomments</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">comment_lines</span><span class="p">)</span>
@@ -1113,80 +1180,94 @@
             <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workspace</span><span class="o">.</span><span class="n">dataset</span>
             <span class="n">station_list</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">waveforms</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">station_id</span> <span class="ow">in</span> <span class="n">station_list</span><span class="p">:</span>
-                <span class="n">stream</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workspace</span><span class="o">.</span><span class="n">getStreams</span><span class="p">(</span>
+                <span class="n">streams</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_workspace</span><span class="o">.</span><span class="n">getStreams</span><span class="p">(</span>
                     <span class="n">eventid</span><span class="p">,</span> <span class="n">stations</span><span class="o">=</span><span class="p">[</span><span class="n">station_id</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="p">]</span>
-                <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">stream</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
-                    <span class="k">continue</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Writing stream </span><span class="si">{</span><span class="n">stream</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
-                <span class="n">nstreams</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
-                    <span class="n">net</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span>
-                    <span class="n">sta</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span>
-                    <span class="n">cha</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span>
-                    <span class="n">loc</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span>
-                    <span class="k">if</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span> <span class="o">!=</span> <span class="s2">"acc"</span><span class="p">:</span>
-                        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-                            <span class="s2">"Only supporting acceleration data at this "</span>
-                            <span class="sa">f</span><span class="s2">"time. Skipping channel </span><span class="si">{</span><span class="n">cha</span><span class="si">}</span><span class="s2">."</span>
-                        <span class="p">)</span>
-                        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">stream</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
                         <span class="k">continue</span>
-                    <span class="n">ntraces</span> <span class="o">+=</span> <span class="mi">1</span>
-                    <span class="n">stime</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y%m</span><span class="si">%d</span><span class="s2">%H%M%S"</span><span class="p">)</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Writing stream </span><span class="si">{</span><span class="n">stream</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+                    <span class="n">nstreams</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+                        <span class="n">net</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span>
+                        <span class="n">sta</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span>
+                        <span class="n">cha</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span>
+                        <span class="n">loc</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span>
+                        <span class="k">if</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span> <span class="o">!=</span> <span class="s2">"acc"</span><span class="p">:</span>
+                            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                                <span class="s2">"Only supporting acceleration data at this "</span>
+                                <span class="sa">f</span><span class="s2">"time. Skipping channel </span><span class="si">{</span><span class="n">cha</span><span class="si">}</span><span class="s2">."</span>
+                            <span class="p">)</span>
+                            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                            <span class="k">continue</span>
+                        <span class="n">ntraces</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="n">stime</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y%m</span><span class="si">%d</span><span class="s2">%H%M%S"</span><span class="p">)</span>
 
-                    <span class="n">extension</span> <span class="o">=</span> <span class="s2">"V0"</span>
-                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume</span> <span class="o">==</span> <span class="n">Volume</span><span class="o">.</span><span class="n">CONVERTED</span><span class="p">:</span>
-                        <span class="n">extension</span> <span class="o">=</span> <span class="s2">"V1"</span>
-                    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume</span> <span class="o">==</span> <span class="n">Volume</span><span class="o">.</span><span class="n">PROCESSED</span><span class="p">:</span>
-                        <span class="n">extension</span> <span class="o">=</span> <span class="s2">"V2"</span>
-                    <span class="n">fname</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">eventid</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">net</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">sta</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">cha</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">loc</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">stime</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">extension</span><span class="si">}</span><span class="s2">"</span>
-                    <span class="n">cosmos_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cosmos_directory</span> <span class="o">/</span> <span class="n">fname</span>
-                    <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cosmos_filename</span><span class="p">)</span>
-                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">cosmos_filename</span><span class="p">,</span> <span class="s2">"wt"</span><span class="p">)</span> <span class="k">as</span> <span class="n">cosmos_file</span><span class="p">:</span>
-                        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Getting text header for </span><span class="si">{</span><span class="n">trace</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-                        <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-                        <span class="n">text_header</span> <span class="o">=</span> <span class="n">TextHeader</span><span class="p">(</span>
-                            <span class="n">trace</span><span class="p">,</span> <span class="n">scalar_event</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume</span><span class="p">,</span> <span class="n">gmprocess_version</span>
-                        <span class="p">)</span>
-                        <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-                        <span class="n">t_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="p">)</span>
-                        <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-                        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Getting int header for </span><span class="si">{</span><span class="n">trace</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-                        <span class="n">int_header</span> <span class="o">=</span> <span class="n">IntHeader</span><span class="p">(</span>
-                            <span class="n">trace</span><span class="p">,</span> <span class="n">scalar_event</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume</span><span class="p">,</span> <span class="n">gmprocess_version</span>
-                        <span class="p">)</span>
-                        <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-                        <span class="n">t_int</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="p">)</span>
-                        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Getting float header for </span><span class="si">{</span><span class="n">trace</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-                        <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-                        <span class="n">float_header</span> <span class="o">=</span> <span class="n">FloatHeader</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">scalar_event</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume</span><span class="p">)</span>
-                        <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-                        <span class="n">t_float</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="p">)</span>
-                        <span class="n">text_header</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cosmos_file</span><span class="p">)</span>
-                        <span class="n">int_header</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cosmos_file</span><span class="p">)</span>
-                        <span class="n">float_header</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cosmos_file</span><span class="p">)</span>
-                        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Getting data block for </span><span class="si">{</span><span class="n">trace</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-                        <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-                        <span class="n">data_block</span> <span class="o">=</span> <span class="n">DataBlock</span><span class="p">(</span>
-                            <span class="n">trace</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume</span><span class="p">,</span> <span class="n">eventid</span><span class="p">,</span> <span class="n">gmprocess_version</span>
-                        <span class="p">)</span>
-                        <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-                        <span class="n">t_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="p">)</span>
-                        <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-                        <span class="n">data_block</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cosmos_file</span><span class="p">)</span>
-                        <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-                        <span class="n">t_write</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="p">)</span>
-        <span class="n">text_av</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t_text</span><span class="p">)</span> <span class="o">/</span> <span class="n">ntraces</span>
-        <span class="n">int_av</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t_int</span><span class="p">)</span> <span class="o">/</span> <span class="n">ntraces</span>
-        <span class="n">float_av</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t_float</span><span class="p">)</span> <span class="o">/</span> <span class="n">ntraces</span>
-        <span class="n">data_av</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t_data</span><span class="p">)</span> <span class="o">/</span> <span class="n">ntraces</span>
-        <span class="n">write_av</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t_write</span><span class="p">)</span> <span class="o">/</span> <span class="n">ntraces</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Text header mean: </span><span class="si">{</span><span class="n">text_av</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Int header mean: </span><span class="si">{</span><span class="n">int_av</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Float header mean: </span><span class="si">{</span><span class="n">float_av</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Data block mean: </span><span class="si">{</span><span class="n">data_av</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Data write mean: </span><span class="si">{</span><span class="n">write_av</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                        <span class="n">extension</span> <span class="o">=</span> <span class="s2">"V0"</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume</span> <span class="o">==</span> <span class="n">Volume</span><span class="o">.</span><span class="n">CONVERTED</span><span class="p">:</span>
+                            <span class="n">extension</span> <span class="o">=</span> <span class="s2">"V1"</span>
+                        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume</span> <span class="o">==</span> <span class="n">Volume</span><span class="o">.</span><span class="n">PROCESSED</span><span class="p">:</span>
+                            <span class="n">extension</span> <span class="o">=</span> <span class="s2">"V2"</span>
+                        <span class="n">fname</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">eventid</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">net</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">sta</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">cha</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">loc</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">stime</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">extension</span><span class="si">}</span><span class="s2">"</span>
+                        <span class="n">cosmos_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cosmos_directory</span> <span class="o">/</span> <span class="n">fname</span>
+                        <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cosmos_filename</span><span class="p">)</span>
+                        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">cosmos_filename</span><span class="p">,</span> <span class="s2">"wt"</span><span class="p">)</span> <span class="k">as</span> <span class="n">cosmos_file</span><span class="p">:</span>
+                            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Getting text header for </span><span class="si">{</span><span class="n">trace</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                            <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                            <span class="n">text_header</span> <span class="o">=</span> <span class="n">TextHeader</span><span class="p">(</span>
+                                <span class="n">trace</span><span class="p">,</span>
+                                <span class="n">scalar_event</span><span class="p">,</span>
+                                <span class="n">stream</span><span class="p">,</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">_volume</span><span class="p">,</span>
+                                <span class="n">gmprocess_version</span><span class="p">,</span>
+                            <span class="p">)</span>
+                            <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                            <span class="n">t_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="p">)</span>
+                            <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Getting int header for </span><span class="si">{</span><span class="n">trace</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                            <span class="n">int_header</span> <span class="o">=</span> <span class="n">IntHeader</span><span class="p">(</span>
+                                <span class="n">trace</span><span class="p">,</span>
+                                <span class="n">scalar_event</span><span class="p">,</span>
+                                <span class="n">stream</span><span class="p">,</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">_volume</span><span class="p">,</span>
+                                <span class="n">gmprocess_version</span><span class="p">,</span>
+                            <span class="p">)</span>
+                            <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                            <span class="n">t_int</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="p">)</span>
+                            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Getting float header for </span><span class="si">{</span><span class="n">trace</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                            <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                            <span class="n">float_header</span> <span class="o">=</span> <span class="n">FloatHeader</span><span class="p">(</span>
+                                <span class="n">trace</span><span class="p">,</span> <span class="n">scalar_event</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume</span>
+                            <span class="p">)</span>
+                            <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                            <span class="n">t_float</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="p">)</span>
+                            <span class="n">text_header</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cosmos_file</span><span class="p">)</span>
+                            <span class="n">int_header</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cosmos_file</span><span class="p">)</span>
+                            <span class="n">float_header</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cosmos_file</span><span class="p">)</span>
+                            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Getting data block for </span><span class="si">{</span><span class="n">trace</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                            <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                            <span class="n">data_block</span> <span class="o">=</span> <span class="n">DataBlock</span><span class="p">(</span>
+                                <span class="n">trace</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_volume</span><span class="p">,</span> <span class="n">eventid</span><span class="p">,</span> <span class="n">gmprocess_version</span>
+                            <span class="p">)</span>
+                            <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                            <span class="n">t_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="p">)</span>
+                            <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                            <span class="n">data_block</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cosmos_file</span><span class="p">)</span>
+                            <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                            <span class="n">t_write</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ntraces</span><span class="p">:</span>
+            <span class="n">text_av</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t_text</span><span class="p">)</span> <span class="o">/</span> <span class="n">ntraces</span>
+            <span class="n">int_av</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t_int</span><span class="p">)</span> <span class="o">/</span> <span class="n">ntraces</span>
+            <span class="n">float_av</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t_float</span><span class="p">)</span> <span class="o">/</span> <span class="n">ntraces</span>
+            <span class="n">data_av</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t_data</span><span class="p">)</span> <span class="o">/</span> <span class="n">ntraces</span>
+            <span class="n">write_av</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">t_write</span><span class="p">)</span> <span class="o">/</span> <span class="n">ntraces</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Text header mean: </span><span class="si">{</span><span class="n">text_av</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Int header mean: </span><span class="si">{</span><span class="n">int_av</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Float header mean: </span><span class="si">{</span><span class="n">float_av</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Data block mean: </span><span class="si">{</span><span class="n">data_av</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Data write mean: </span><span class="si">{</span><span class="n">write_av</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"No traces processed."</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">nevents</span><span class="p">,</span> <span class="n">nstreams</span><span class="p">,</span> <span class="n">ntraces</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CosmosWriter.__del__"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/cosmos/cosmos_writer/index.html#gmprocess.io.cosmos.cosmos_writer.CosmosWriter.__del__">[docs]</a>    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1200,13 +1281,21 @@
           
           
         </div>
-
-        <div class="related-information">
-              Copyright &#169; Unlicense |
-            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
-              and
-              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
-              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Unlicense
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
         </div>
         
       </footer>
@@ -1221,11 +1310,14 @@
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/scripts/main.js"></script>
-    <script src="../../../../_static/togglebutton.js"></script>
+    <script src="../../../../_static/scripts/furo.js"></script>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
     <script src="../../../../_static/tabs.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     </body>
 </html>

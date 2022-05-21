@@ -48,7 +48,7 @@ fetchers:
             # Arguments for the circular domain type
             circular:
                 # Should the center be specified as earthquake epicenter?
-                use_epicener: True
+                use_epicenter: True
                 # If use_epicenter is false, then latitude and longtidue will be used.
                 latitude: 37.5
                 longitude: -122.0
@@ -135,6 +135,8 @@ read:
     # consistency checks. Set to False for stuctural/geotech array data for which these
     # do not make sense
     use_streamcollection: True
+
+    exclude_patterns: ['*.*.??.LN?']
 
 # -----------------------------------------------------------------------------
 # Options for separating noise/signal windows
@@ -364,7 +366,7 @@ processing:
         # If true, use gmprocess frequency domain implementation; if false, use ObsPy filters
         frequency_domain: True
         filter_order: 5.0
-        number_of_passes: 2.0
+        number_of_passes: 1.0
 
     - lowpass_filter:
         # Applies a Butterworth lowpass filter using the lowpass corner
@@ -372,7 +374,7 @@ processing:
         # If true, use gmprocess frequency domain implementation; if false, use ObsPy filters
         frequency_domain: True
         filter_order: 5.0
-        number_of_passes: 2.0
+        number_of_passes: 1.0
         
     - detrend:    
         detrending_method: pre

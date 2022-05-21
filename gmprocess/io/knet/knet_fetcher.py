@@ -84,6 +84,9 @@ MAGS[9.9] = 1065
 
 
 class KNETFetcher(DataFetcher):
+    # this announces to the world the valid bounds for this fetcher.
+    BOUNDS = [127.705, 147.393, 29.428, 46.109]
+
     def __init__(
         self,
         time,
@@ -220,12 +223,6 @@ class KNETFetcher(DataFetcher):
         self.ddepth = ddepth
         self.dmag = dmag
         self.jptime = self.time + timedelta(seconds=JST_OFFSET)
-        xmin = 127.705
-        xmax = 147.393
-        ymin = 29.428
-        ymax = 46.109
-        # this announces to the world the valid bounds for this fetcher.
-        self.BOUNDS = [xmin, xmax, ymin, ymax]
         self.drop_non_free = drop_non_free
         self.stream_collection = stream_collection
 

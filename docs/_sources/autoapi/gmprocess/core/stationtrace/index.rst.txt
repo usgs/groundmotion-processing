@@ -225,7 +225,7 @@ Attributes
           :func:`numpy.gradient`)
 
 
-   .. py:method:: integrate(self, frequency=False, initial=0.0, demean=False, config=None)
+   .. py:method:: integrate(self, frequency=False, initial=0.0, demean=False, taper=False, config=None)
 
       Integrate a StationTrace with respect to either frequency or time.
 
@@ -236,11 +236,76 @@ Attributes
       :type initial: float
       :param demean: Remove mean from array before integrating.
       :type demean: bool
+      :param taper: Taper the ends of entire trace.
+      :type taper: bool
       :param config: Configuration dictionary (or None). See get_config().
       :type config: dict
 
       :returns: Input StationTrace is integrated and returned.
       :rtype: StationTrace
+
+
+   .. py:method:: filter(self, type='highpass', config=None, freq=0.05, corners=5.0, zerophase=False, **options)
+
+      Filter the data of the current trace.
+
+      :type type: str
+      :param type: String that specifies which filter is applied (e.g.
+          ``"bandpass"``). See the `Supported Filter`_ section below for
+          further details.
+      :param options: Necessary keyword arguments for the respective filter
+          that will be passed on. (e.g. ``freqmin=1.0``, ``freqmax=20.0`` for
+          ``"bandpass"``)
+
+      .. note::
+
+          This operation is performed in place on the actual data arrays. The
+          raw data is not accessible anymore afterwards. To keep your
+          original data, use :meth:`~obspy.core.trace.Trace.copy` to create
+          a copy of your trace object.
+          This also makes an entry with information on the applied processing
+          in ``stats.processing`` of this trace.
+
+      .. rubric:: _`Supported Filter`
+
+      ``'bandpass'``
+          Butterworth-Bandpass (uses :func:`obspy.signal.filter.bandpass`).
+
+      ``'bandstop'``
+          Butterworth-Bandstop (uses :func:`obspy.signal.filter.bandstop`).
+
+      ``'lowpass'``
+          Butterworth-Lowpass (uses :func:`obspy.signal.filter.lowpass`).
+
+      ``'highpass'``
+          Butterworth-Highpass (uses :func:`obspy.signal.filter.highpass`).
+
+      ``'lowpass_cheby_2'``
+          Cheby2-Lowpass (uses :func:`obspy.signal.filter.lowpass_cheby_2`).
+
+      ``'lowpass_fir'`` (experimental)
+          FIR-Lowpass (uses :func:`obspy.signal.filter.lowpass_fir`).
+
+      ``'remez_fir'`` (experimental)
+          Minimax optimal bandpass using Remez algorithm (uses
+          :func:`obspy.signal.filter.remez_fir`).
+
+      .. rubric:: Example
+
+      >>> from obspy import read
+      >>> st = read()
+      >>> tr = st[0]
+      >>> tr.filter("highpass", freq=1.0)  # doctest: +ELLIPSIS
+      <...Trace object at 0x...>
+      >>> tr.plot()  # doctest: +SKIP
+
+      .. plot::
+
+          from obspy import read
+          st = read()
+          tr = st[0]
+          tr.filter("highpass", freq=1.0)
+          tr.plot()
 
 
    .. py:method:: getProvenanceKeys(self)

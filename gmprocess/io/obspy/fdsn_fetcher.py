@@ -4,7 +4,6 @@ import os.path
 import logging
 import glob
 import sys
-from typing import Type
 
 # third party imports
 import pytz
@@ -34,6 +33,8 @@ GEONET_REALTIME_URL = "http://service-nrt.geonet.org.nz"
 
 
 class FDSNFetcher(DataFetcher):
+    BOUNDS = [-180, 180, -90, 90]
+
     def __init__(
         self,
         time,
@@ -89,7 +90,6 @@ class FDSNFetcher(DataFetcher):
         self.rawdir = rawdir
         self.drop_non_free = drop_non_free
         self.stream_collection = stream_collection
-        self.BOUNDS = [-180, 180, -90, 90]
 
     def getMatchingEvents(self, solve=True):
         """Return a list of dictionaries matching input parameters.
@@ -155,6 +155,10 @@ class FDSNFetcher(DataFetcher):
         # Circular domain around the epicenter.
         if fdsn_conf["domain"]["type"] == "circular":
             dconf = fdsn_conf["domain"]["circular"]
+            if dconf["use_epicenter"]:
+                dconf["latitude"] = self.lat
+                dconf["longitude"] = self.lon
+            dconf.pop("use_epicenter")
             domain = CircularDomain(**dconf)
         elif fdsn_conf["domain"]["type"] == "rectangular":
             dconf = fdsn_conf["domain"]["rectangular"]
@@ -163,10 +167,11 @@ class FDSNFetcher(DataFetcher):
             raise ValueError('Domain type must be either "circular" or "rectangular".')
 
         rconf = fdsn_conf["restrictions"]
+
         rconf["starttime"] = origin_time - rconf["time_before"]
         rconf["endtime"] = origin_time + rconf["time_after"]
         rconf.pop("time_before")
-        rconf.pop("time_before")
+        rconf.pop("time_after")
 
         restrictions = Restrictions(**rconf)
 

@@ -73,7 +73,7 @@ Attributes
    
 
 .. py:data:: re_email
-   :annotation: = ^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$
+   :annotation: = ^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$
 
    
 

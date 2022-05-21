@@ -155,10 +155,11 @@ def read_obspy(filename, config=None, **kwargs):
         exclude_patterns = kwargs.get("exclude_patterns", EXCLUDE_PATTERNS)
     else:
         try:
-            fetch_cfg = config["fetchers"]
-            fdsn_cfg = fetch_cfg["FDSNFetcher"]
-            if "exclude_patterns" in fdsn_cfg:
-                exclude_patterns = fdsn_cfg["exclude_patterns"]
+            read_cfg = config["read"]
+            if "exclude_patterns" in read_cfg:
+                exclude_patterns = read_cfg["exclude_patterns"]
+            else:
+                exclude_patterns = EXCLUDE_PATTERNS
         except BaseException:
             exclude_patterns = EXCLUDE_PATTERNS
 

@@ -22,84 +22,12 @@ Attributes
 
 .. autoapisummary::
 
-   gmprocess.io.obspy.fdsn_fetcher.RADIUS
-   gmprocess.io.obspy.fdsn_fetcher.TIME_BEFORE
-   gmprocess.io.obspy.fdsn_fetcher.TIME_AFTER
-   gmprocess.io.obspy.fdsn_fetcher.CHANNELS
-   gmprocess.io.obspy.fdsn_fetcher.EXCLUDE_NETWORKS
-   gmprocess.io.obspy.fdsn_fetcher.EXCLUDE_STATIONS
-   gmprocess.io.obspy.fdsn_fetcher.REJECT_CHANNELS_WITH_GAPS
-   gmprocess.io.obspy.fdsn_fetcher.MINIMUM_LENGTH
-   gmprocess.io.obspy.fdsn_fetcher.SANITIZE
-   gmprocess.io.obspy.fdsn_fetcher.MINIMUM_INTERSTATION_DISTANCE_IN_M
-   gmprocess.io.obspy.fdsn_fetcher.NETWORK
-   gmprocess.io.obspy.fdsn_fetcher.URL_ERROR_CODE
    gmprocess.io.obspy.fdsn_fetcher.OBSPY_LOGGER
    gmprocess.io.obspy.fdsn_fetcher.GEONET_ARCHIVE_DAYS
    gmprocess.io.obspy.fdsn_fetcher.GEONET_ARCHIVE_URL
    gmprocess.io.obspy.fdsn_fetcher.GEO_NET_ARCHIVE_KEY
    gmprocess.io.obspy.fdsn_fetcher.GEONET_REALTIME_URL
 
-
-.. py:data:: RADIUS
-   :annotation: = 4
-
-   
-
-.. py:data:: TIME_BEFORE
-   :annotation: = 10
-
-   
-
-.. py:data:: TIME_AFTER
-   :annotation: = 420
-
-   
-
-.. py:data:: CHANNELS
-   :annotation: = ['HN[ZNE]']
-
-   
-
-.. py:data:: EXCLUDE_NETWORKS
-   :annotation: = ['SY']
-
-   
-
-.. py:data:: EXCLUDE_STATIONS
-   :annotation: = []
-
-   
-
-.. py:data:: REJECT_CHANNELS_WITH_GAPS
-   :annotation: = True
-
-   
-
-.. py:data:: MINIMUM_LENGTH
-   :annotation: = 0.1
-
-   
-
-.. py:data:: SANITIZE
-   :annotation: = True
-
-   
-
-.. py:data:: MINIMUM_INTERSTATION_DISTANCE_IN_M
-   :annotation: = 0.0
-
-   
-
-.. py:data:: NETWORK
-   :annotation: = *
-
-   
-
-.. py:data:: URL_ERROR_CODE
-   :annotation: = 200
-
-   
 
 .. py:data:: OBSPY_LOGGER
    :annotation: = obspy.clients.fdsn.mass_downloader
@@ -126,9 +54,14 @@ Attributes
 
    
 
-.. py:class:: FDSNFetcher(time, lat, lon, depth, magnitude, radius=None, time_before=None, time_after=None, channels=None, rawdir=None, config=None, drop_non_free=True, stream_collection=True)
+.. py:class:: FDSNFetcher(time, lat, lon, depth, magnitude, config=None, rawdir=None, drop_non_free=True, stream_collection=True)
 
    Bases: :py:obj:`gmprocess.io.fetcher.DataFetcher`
+
+   .. py:attribute:: BOUNDS
+      
+
+      
 
    .. py:method:: getMatchingEvents(self, solve=True)
 
