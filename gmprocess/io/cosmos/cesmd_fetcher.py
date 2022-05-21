@@ -39,6 +39,9 @@ TIMEFMT = "%Y-%m-%d %H:%M:%S"
 
 
 class CESMDFetcher(DataFetcher):
+    # this announces to the world the valid bounds for this fetcher.
+    BOUNDS = [-180, 180, -90, 90]
+
     def __init__(
         self,
         time,
@@ -174,12 +177,6 @@ class CESMDFetcher(DataFetcher):
         self.rawdir = rawdir
         self.depth = depth
         self.magnitude = magnitude
-        xmin = -199.528
-        xmax = -63.473
-        ymin = 17.44
-        ymax = 73.571
-        # this announces to the world the valid bounds for this fetcher.
-        self.BOUNDS = [xmin, xmax, ymin, ymax]
         self.drop_non_free = drop_non_free
         self.stream_collection = stream_collection
 

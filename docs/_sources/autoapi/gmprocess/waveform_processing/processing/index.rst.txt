@@ -63,7 +63,7 @@ Attributes
 
    
 
-.. py:function:: process_streams(streams, origin, config=None)
+.. py:function:: process_streams(streams, origin, config=None, old_streams=None)
 
    Run processing steps from the config file.
 
@@ -73,12 +73,15 @@ Attributes
    the parameter 'passed_checks' is set to False and subsequent processing
    steps are not applied once a check has failed.
 
-   :param streams: A StreamCollection object.
-   :type streams: list
+   :param streams: A StreamCollection object of unprocessed streams.
+   :type streams: StreamCollection
    :param origin: ScalarEvent object.
    :type origin: ScalarEvent
    :param config: Configuration dictionary (or None). See get_config().
    :type config: dict
+   :param old_streams: A StreamCollection object of previously processed streams that contain
+                       manually reviewed information. None if not reprocessing.
+   :type old_streams: StreamCollection
 
    :returns: A StreamCollection object.
 

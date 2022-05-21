@@ -53,7 +53,7 @@ CONF_SCHEMA = Schema(
                 "domain": {
                     "type": Or("circular", "rectangular"),
                     "circular": {
-                        "use_epicener": bool,
+                        "use_epicenter": bool,
                         "latitude": float,
                         "longitude": float,
                         "minradius": float,
@@ -92,6 +92,7 @@ CONF_SCHEMA = Schema(
             "sac_conversion_factor": float,
             "sac_source": str,
             "use_streamcollection": bool,
+            "exclude_patterns": list,
         },
         "windows": {
             "signal_end": {

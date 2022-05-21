@@ -78,6 +78,11 @@ Attributes
 
    Bases: :py:obj:`gmprocess.io.fetcher.DataFetcher`
 
+   .. py:attribute:: BOUNDS
+      :annotation: = [25.664, 46.67, 34.132, 43.555]
+
+      
+
    .. py:method:: getMatchingEvents(self, solve=True)
 
       Return a list of dictionaries matching input parameters.

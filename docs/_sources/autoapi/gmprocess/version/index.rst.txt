@@ -8,7 +8,7 @@ Module Contents
 ---------------
 
 .. py:data:: __version__
-   :annotation: = 1.1.11.dev336+g8dfbe7e1.d20220131
+   :annotation: = 1.1.11.dev438+gb58ee661.d20220516
 
    
 

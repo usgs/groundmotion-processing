@@ -88,6 +88,11 @@ Attributes
 
    Bases: :py:obj:`gmprocess.io.fetcher.DataFetcher`
 
+   .. py:attribute:: BOUNDS
+      
+
+      
+
    .. py:method:: getMatchingEvents(self, solve=True)
 
       Return a list of dictionaries matching input parameters.

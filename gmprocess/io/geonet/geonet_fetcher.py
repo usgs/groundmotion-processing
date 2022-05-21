@@ -47,6 +47,9 @@ DMAG = 0.3
 
 
 class GeoNetFetcher(object):
+    # this announces to the world the valid bounds for this fetcher.
+    BOUNDS = [158.555, 192.656, -51.553, -26.809]
+
     def __init__(
         self,
         time,
@@ -144,12 +147,6 @@ class GeoNetFetcher(object):
         self.magnitude = magnitude
         self.ddepth = ddepth
         self.dmag = dmag
-        xmin = 158.555
-        xmax = 192.656
-        ymin = -51.553
-        ymax = -26.809
-        # this announces to the world the valid bounds for this fetcher.
-        self.BOUNDS = [xmin, xmax, ymin, ymax]
         self.drop_non_free = drop_non_free
         self.stream_collection = stream_collection
 

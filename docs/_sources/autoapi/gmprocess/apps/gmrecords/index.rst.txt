@@ -105,10 +105,21 @@ Attributes
              files so that we can split up the current content to make it
              easier to deal with.
 
-   .. py:method:: main(self)
+   .. py:method:: main(self, **kwargs)
+
+
+   .. py:method:: load_subcommands(self)
+
+      Load information for subcommands.
+
+
+   .. py:method:: _initialize(self)
 
 
    .. py:method:: _load_config(self)
+
+
+   .. py:method:: _validate_config(self)
 
 
    .. py:method:: _initial_setup(self)

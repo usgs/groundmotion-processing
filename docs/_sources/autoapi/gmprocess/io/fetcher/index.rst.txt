@@ -25,7 +25,7 @@ Functions
 
 
 
-.. py:class:: DataFetcher(time, lat, lon, depth, magnitude, user=None, password=None, radius=100, dt=16, ddepth=30, dmag=0.3, rawdir=None, config=None, drop_non_free=True, stream_collection=True)
+.. py:class:: DataFetcher(time, lat, lon, depth, magnitude, config=None, rawdir=None, drop_non_free=True, stream_collection=True)
 
    Bases: :py:obj:`object`
 

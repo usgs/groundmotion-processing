@@ -183,7 +183,7 @@ Attributes
       Get gmprocess version from ASDF file.
 
 
-   .. py:method:: addStreams(self, event, streams, label=None, gmprocess_version='unknown')
+   .. py:method:: addStreams(self, event, streams, label=None, gmprocess_version='unknown', overwrite=False)
 
       Add a sequence of StationStream objects to an ASDF file.
 
@@ -196,6 +196,8 @@ Attributes
       :type label: str
       :param gmprocess_version: gmprocess version.
       :type gmprocess_version: str
+      :param overwrite: Overwrite streams if they exist?
+      :type overwrite: bool
 
 
    .. py:method:: getEventIds(self)

@@ -20,12 +20,15 @@ Functions
 
 
 
-.. py:function:: highpass_filter(st, filter_order=5, number_of_passes=2, config=None)
+.. py:function:: highpass_filter(st, frequency_domain=True, filter_order=5, number_of_passes=2, config=None)
 
    Highpass filter.
 
    :param st: Stream of data.
    :type st: StationStream
+   :param frequency_domain: If true, use gmprocess frequency domain implementation; "
+                            " if false, use ObsPy filters."
+   :type frequency_domain: Bool
    :param filter_order: Filter order.
    :type filter_order: int
    :param number_of_passes: Number of passes.
@@ -37,7 +40,7 @@ Functions
    :rtype: StationStream
 
 
-.. py:function:: highpass_filter_trace(tr, filter_order=5, number_of_passes=2)
+.. py:function:: highpass_filter_trace(tr, filter_order=5, number_of_passes=2, config=None)
 
    Highpass filter.
 
@@ -52,7 +55,7 @@ Functions
    :rtype: StationTrace
 
 
-.. py:function:: lowpass_filter(st, filter_order=5, number_of_passes=2, config=None)
+.. py:function:: lowpass_filter(st, frequency_domain=True, filter_order=5, number_of_passes=2, config=None)
 
    Lowpass filter.
 
@@ -69,7 +72,7 @@ Functions
    :rtype: StationStream
 
 
-.. py:function:: lowpass_filter_trace(tr, filter_order=5, number_of_passes=2)
+.. py:function:: lowpass_filter_trace(tr, filter_order=5, number_of_passes=2, config=None)
 
    Lowpass filter.
 

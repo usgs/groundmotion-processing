@@ -72,7 +72,6 @@ def directory_to_streams(directory, config=None):
             shutil.rmtree(intermediate_dir)
         except OSError:
             shutil.rmtree(intermediate_dir)
-            
 
     return streams, unprocessed_files, unprocessed_file_errors
 
