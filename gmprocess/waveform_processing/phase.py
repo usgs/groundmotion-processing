@@ -119,14 +119,14 @@ def STALTA_Earle(
 
     for i in range(np.size(ratio) - 1):
         if (
-            trigger is False
+            (not trigger)
             and ratio[i] >= threshold
             and ratio2[i] >= threshold2
             and ratio[i] > ratio[i + 1]
         ):
             triggers_on.append(i)
             trigger = True
-        elif trigger is True and ratio[i] <= threshdrop:
+        elif trigger and (ratio[i] <= threshdrop):
             triggers_off.append(i)
             trigger = False
 
@@ -565,24 +565,29 @@ def pphase_pick(trace, period=None, damping=0.6, nbins=None, peak_selection=Fals
     """Compute P-phase arrival time.
 
     Adapted from Python code written by Francisco Hernandez of the Puerto Rico
-    Strong Motion Program. That code was in turn adapted from Matlab code written by Dr. Erol
-    Kalkan, P.E. The algorithms are described here in full:
+    Strong Motion Program. That code was in turn adapted from Matlab code written by
+    Dr. Erol Kalkan, P.E. The algorithms are described here in full:
 
     Kalkan, E. (2016). "An automatic P-phase arrival time picker", Bull. of
     Seismol. Soc. of Am., 106, No. 3, doi: 10.1785/0120150111
 
     Args:
-        trace (StationTrace): StationTrace containing waveform (acceleration or velocity) data.
-        period (float): Undamped natural period of the sensor in seconds.
-            Defaults to 0.01s for sample rates >= 100, 0.1s for sample
-            rates < 100.
-        damping (float): Damping ratio.
-        nbins (int): Histogram bin size (default is 2/sampling interval). Regional or
-            teleseismic records may need different values of bin size for
-            better picking results)
-        selection (Selector): One of:
-            Selector.TO_PEAK - take segment of waveform from beginning to absolute peak value (recommended for fast processing).
-            Selector.FULL - take full waveform.
+        trace (StationTrace):
+            StationTrace containing waveform (acceleration or velocity) data.
+        period (float):
+            Undamped natural period of the sensor in seconds. Defaults to 0.01s for
+            sample rates >= 100, 0.1s for sample rates < 100.
+        damping (float):
+            Damping ratio.
+        nbins (int):
+            Histogram bin size (default is 2/sampling interval). Regional or
+            teleseismic records may need different values of bin size for better
+            picking results)
+        selection (Selector):
+            One of:
+                Selector.TO_PEAK - take segment of waveform from beginning to absolute
+                    peak value (recommended for fast processing).
+                Selector.FULL - take full waveform.
 
     Returns:
         tuple:
@@ -631,7 +636,7 @@ def pphase_pick(trace, period=None, damping=0.6, nbins=None, peak_selection=Fals
     # Construct a fixed-base viscously damped SDF oscillator
     omegan = 2 * np.pi / period  # natural frequency in radian/second
     C = 2 * damping * omegan  # viscous damping term
-    K = omegan ** 2  # stiffness term
+    K = omegan**2  # stiffness term
     y = np.zeros((2, len(trace_copy.data)))  # response vector
 
     # Solve second-order ordinary differential equation of motion

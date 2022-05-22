@@ -174,7 +174,6 @@ def process_streams(streams, origin, config=None, old_streams=None):
     # Loop over streams
     for i, stream in enumerate(streams):
         logging.info(f"Stream: {stream.get_id()}")
-
         # Check if we are reprocessing (indicated by presence of old_streams)
         if old_streams is not None:
             old_stream = old_streams[i]
@@ -188,7 +187,7 @@ def process_streams(streams, origin, config=None, old_streams=None):
                     stream[j].setParameter("review", review_dict)
                     # Was it failed via manual review?
                     if "accepted" in review_dict:
-                        if review_dict["accepted"] is False:
+                        if not review_dict["accepted"]:
                             stream[j].fail("Manual review")
 
         for processing_step_dict in processing_steps:
@@ -613,13 +612,17 @@ def get_corner_frequencies(
             review_dict = tr.getParameter("review")
             if "corner_frequencies" in review_dict:
                 rev_fc_dict = review_dict["corner_frequencies"]
-                auto_fc_dict = tr.getParameter("corner_frequencies")
+                if tr.hasParameter("corner_frequencies"):
+                    base_fc_dict = tr.getParameter("corner_frequencies")
+                    base_fc_dict["type"] = "reviewed"
+                else:
+                    base_fc_dict = {"type": "reviewed"}
                 if ("highpass" in rev_fc_dict) or ("lowpass" in rev_fc_dict):
                     if "highpass" in rev_fc_dict:
-                        auto_fc_dict["highpass"] = rev_fc_dict["highpass"]
+                        base_fc_dict["highpass"] = rev_fc_dict["highpass"]
                     if "lowpass" in rev_fc_dict:
-                        auto_fc_dict["lowpass"] = rev_fc_dict["lowpass"]
-                    tr.setParameter("corner_frequencies", auto_fc_dict)
+                        base_fc_dict["lowpass"] = rev_fc_dict["lowpass"]
+                    tr.setParameter("corner_frequencies", base_fc_dict)
     return st
 
 

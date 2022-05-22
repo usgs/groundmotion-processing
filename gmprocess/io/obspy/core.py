@@ -232,7 +232,7 @@ def read_obspy(filename, config=None, **kwargs):
         trace.stats["standard"]["source_file"] = tail or os.path.basename(head)
 
         traces.append(trace)
-    if no_match is True:
+    if no_match:
         stream = StationStream(traces=traces)
         streams.append(stream)
 
