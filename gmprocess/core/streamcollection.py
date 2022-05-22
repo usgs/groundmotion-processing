@@ -428,7 +428,7 @@ class StreamCollection(StreamArray):
 
     def describe(self):
         """Thin wrapper of describe_string() for printing to stdout"""
-        stream_descript  = self.describe_string()
+        stream_descript = self.describe_string()
         print(stream_descript)
 
     def __group_by_net_sta_inst(self):

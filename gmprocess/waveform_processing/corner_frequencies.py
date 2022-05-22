@@ -116,7 +116,7 @@ def from_snr(st, same_horiz=True, bandwidth=20):
             highs = []
             have_low = False
             for idx, f in enumerate(freq):
-                if have_low is False:
+                if not have_low:
                     if snr[idx] >= threshold:
                         lows.append(f)
                         have_low = True

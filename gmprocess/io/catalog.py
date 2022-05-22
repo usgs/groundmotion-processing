@@ -27,20 +27,33 @@ def convert_ids(
     USGS, and ISC catalogs.
 
     Args:
-        source_id (str): Event ID from the source catalog.
-        source_catalog (str): Source catalog (UNID, EMSC, INGV, USGS or ISC).
-        out_catalog (list): Catalogs (str) to convert ids options include: UNID, EMSC, INGV, USGS, ISC, or ALL.
-        collect_dloc (float): dloc parameter.
-        collect_dtmie (float): dtime parameter.
-        misfit_dloc (float): Misfit delta_loc parameter.
-        misit_dtime (float): Misfit delta_time parameter.
-        misfit_dmag (float): Misfit delta_mag parameter.
-        preferred_only (str): Select only the first event by catalog if 'true'.
-        include_info (str): Return info about the event if 'true'.
-        return_json (bool): Whether or not to return the entire JSON.
+        source_id (str):
+            Event ID from the source catalog.
+        source_catalog (str):
+            Source catalog (UNID, EMSC, INGV, USGS or ISC).
+        out_catalog (list):
+            Catalogs (str) to convert ids options include: UNID, EMSC, INGV, USGS,
+            ISC, or ALL.
+        collect_dloc (float):
+            dloc parameter.
+        collect_dtmie (float):
+            dtime parameter.
+        misfit_dloc (float):
+            Misfit delta_loc parameter.
+        misit_dtime (float):
+            Misfit delta_time parameter.
+        misfit_dmag (float):
+            Misfit delta_mag parameter.
+        preferred_only (str):
+            Select only the first event by catalog if 'true'.
+        include_info (str):
+            Return info about the event if 'true'.
+        return_json (bool):
+            Whether or not to return the entire JSON.
 
     Returns:
-        dict: Returns a dictionary mapping catalogs to event IDS if return_json is False.
+        dict: Returns a dictionary mapping catalogs to event IDS if return_json is
+            False.
         list: Returns a list of the JSON if return_json is true.
 
     """
@@ -69,7 +82,7 @@ def convert_ids(
     if output is None:
         raise Exception("No matching event IDs were found.")
 
-    if return_json is True:
+    if return_json:
         return output
     else:
         catalog_id_dict = dict()

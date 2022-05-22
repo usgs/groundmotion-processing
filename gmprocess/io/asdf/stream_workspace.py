@@ -812,7 +812,7 @@ class StreamWorkspace(object):
                 logging.warning(fmt % (eventid, instrument, str(pgme)))
                 continue
 
-            if hasattr(streams[0], "use_array") and streams[0].use_array is True:
+            if hasattr(streams[0], "use_array") and streams[0].use_array:
                 chancode = streams[0][0].stats.channel
             else:
                 chancode = streams[0].get_inst()
@@ -1256,7 +1256,7 @@ class StreamWorkspace(object):
         else:
             stream_tag = streams[0].tag
 
-        if hasattr(streams[0], "use_array") and streams[0].use_array is True:
+        if hasattr(streams[0], "use_array") and streams[0].use_array:
             chancode = streams[0][0].stats.channel
         else:
             chancode = streams[0].get_inst()
@@ -1286,7 +1286,7 @@ class StreamWorkspace(object):
             return None
         auxholder = self.dataset.auxiliary_data.StationMetrics
 
-        if hasattr(streams[0], "use_array") and streams[0].use_array is True:
+        if hasattr(streams[0], "use_array") and streams[0].use_array:
             chancode = streams[0][0].stats.channel
         else:
             chancode = streams[0].get_inst()
