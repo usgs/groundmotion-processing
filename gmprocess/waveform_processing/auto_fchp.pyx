@@ -154,7 +154,12 @@ def get_fchp(**kwargs):
         FiltFacc = filtered_Facc(Facc, freq, maxfc, filter_order)
     elif filter_type==0:
         tr = obs.Trace(acc, header={"dt":dt})
-        tr.filter(type="highpass", freq=maxfc/(0.5/dt), corners=filter_order, zerophase=True)
+        tr.filter(
+            type="highpass",
+            freq=maxfc/(0.5/dt),
+            corners=filter_order,
+            zerophase=True,
+        )
         FiltFacc = np.fft.rfft(tr.data)
     disp = get_disp(freq, FiltFacc)
     cdef double R2 = get_residual(time, disp, target, poly_order)
@@ -168,16 +173,27 @@ def get_fchp(**kwargs):
             FiltFacc = filtered_Facc(Facc, freq, fc1, filter_order)
         elif filter_type==0:
             tr = obs.Trace(acc, header={"dt":dt})
-            tr.filter(type="highpass", freq=fc1/(0.5/dt), corners=filter_order, zerophase=True)
+            tr.filter(
+                type="highpass",
+                freq=fc1/(0.5/dt),
+                corners=filter_order,
+                zerophase=True,
+            )
             FiltFacc = np.fft.rfft(tr.data)
         disp = get_disp(freq, FiltFacc)
         R1 = get_residual(time, disp, target, poly_order)
-        fc3 = np.exp(np.log(fc1) + (np.log(fc1) - np.log(fc0)) * np.sign(R0) * R1 / (np.sqrt(R1*R1 - R0*R2)))
+        fc3 = (np.exp(np.log(fc1) + (np.log(fc1) - np.log(fc0)) * np.sign(R0) * R1 / 
+               (np.sqrt(R1*R1 - R0*R2))))
         if filter_type==1:
             FiltFacc = filtered_Facc(Facc, freq, fc3, filter_order)
         elif filter_type==0:
             tr = obs.Trace(acc, header={"dt":dt})
-            tr.filter(type="highpass", freq=fc3/(0.5/dt), corners=filter_order, zerophase=True)
+            tr.filter(
+                type="highpass",
+                freq=fc3/(0.5/dt),
+                corners=filter_order,
+                zerophase=True
+            )
             FiltFacc = np.fft.rfft(tr.data)
         disp = get_disp(freq, FiltFacc)
         R3 = get_residual(time, disp, target, poly_order)

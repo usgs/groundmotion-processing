@@ -218,7 +218,7 @@ class StationStream(Stream):
         # Check that id is consistent, and set id if it passes the check.
         if len(self):
             stats = self.traces[0].stats
-            if hasattr(self, "use_array") and self.use_array is True:
+            if hasattr(self, "use_array") and self.use_array:
                 id_str = ".".join(
                     [
                         self[0].stats.network,
@@ -233,7 +233,7 @@ class StationStream(Stream):
             # Check that the id would be the same for all traces
             for tr in self:
                 stats = tr.stats
-                if hasattr(self, "use_array") and self.use_array is True:
+                if hasattr(self, "use_array") and self.use_array:
                     test_str = ".".join(
                         [
                             stats.network,

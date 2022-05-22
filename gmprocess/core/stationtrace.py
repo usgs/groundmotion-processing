@@ -297,6 +297,10 @@ class StationTrace(Trace):
                 Reason given for failure.
 
         """
+        if self.hasParameter("review"):
+            review_dict = self.getParameter("review")
+            if review_dict["accepted"]:
+                return
         istack = inspect.stack()
         calling_module = istack[1][3]
         self.setParameter("failure", {"module": calling_module, "reason": reason})
@@ -509,7 +513,7 @@ class StationTrace(Trace):
             frequency_domain = lp_args["frequency_domain"]
             number_of_passes = lp_args["number_of_passes"]
 
-            if frequency_domain is False:
+            if not frequency_domain:
                 self.setProvenance(
                     "lowpass_filter",
                     {
@@ -528,7 +532,7 @@ class StationTrace(Trace):
                 )
 
             else:
-                if zerophase is True:
+                if zerophase:
                     logging.warning(
                         "Filter is only applied once in frequency domain, "
                         "even if number of passes is 2"
@@ -571,7 +575,7 @@ class StationTrace(Trace):
             frequency_domain = hp_args["frequency_domain"]
             number_of_passes = hp_args["number_of_passes"]
 
-            if frequency_domain is False:
+            if not frequency_domain:
                 self.setProvenance(
                     "highpass_filter",
                     {
@@ -590,7 +594,7 @@ class StationTrace(Trace):
                 )
 
             else:
-                if zerophase is True:
+                if zerophase:
                     logging.warning(
                         "Filter is only applied once in frequency domain, "
                         "even if number of passes is 2"
