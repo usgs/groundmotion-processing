@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.waveform_processing.pretesting" href="../pretesting/index.html" /><link rel="prev" title="gmprocess.waveform_processing.nn_quality_assurance" href="../nn_quality_assurance/index.html" />
 
     <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.waveform_processing.phase - gmprocess 1.1.11.dev450+g2075fdf6.d20220521 documentation</title>
+        <title>gmprocess.waveform_processing.phase - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev450+g2075fdf6.d20220521 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -823,24 +823,29 @@ noise window (start of trace-&gt;minloc)</p>
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.phase.</span></span><span class="sig-name descname"><span class="pre">pphase_pick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">damping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peak_selection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/phase.html#pphase_pick"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.phase.pphase_pick" title="Permalink to this definition">#</a></dt>
 <dd><p>Compute P-phase arrival time.</p>
 <p>Adapted from Python code written by Francisco Hernandez of the Puerto Rico
-Strong Motion Program. That code was in turn adapted from Matlab code written by Dr. Erol
-Kalkan, P.E. The algorithms are described here in full:</p>
+Strong Motion Program. That code was in turn adapted from Matlab code written by
+Dr. Erol Kalkan, P.E. The algorithms are described here in full:</p>
 <p>Kalkan, E. (2016). “An automatic P-phase arrival time picker”, Bull. of
 Seismol. Soc. of Am., 106, No. 3, doi: 10.1785/0120150111</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>trace</strong> (<a class="reference internal" href="../../core/stationtrace/index.html#gmprocess.core.stationtrace.StationTrace" title="gmprocess.core.stationtrace.StationTrace"><em>StationTrace</em></a>) – StationTrace containing waveform (acceleration or velocity) data.</p></li>
-<li><p><strong>period</strong> (<em>float</em>) – Undamped natural period of the sensor in seconds.
-Defaults to 0.01s for sample rates &gt;= 100, 0.1s for sample
-rates &lt; 100.</p></li>
+<li><p><strong>period</strong> (<em>float</em>) – Undamped natural period of the sensor in seconds. Defaults to 0.01s for
+sample rates &gt;= 100, 0.1s for sample rates &lt; 100.</p></li>
 <li><p><strong>damping</strong> (<em>float</em>) – Damping ratio.</p></li>
 <li><p><strong>nbins</strong> (<em>int</em>) – Histogram bin size (default is 2/sampling interval). Regional or
-teleseismic records may need different values of bin size for
-better picking results)</p></li>
-<li><p><strong>selection</strong> (<em>Selector</em>) – One of:
-Selector.TO_PEAK - take segment of waveform from beginning to absolute peak value (recommended for fast processing).
-Selector.FULL - take full waveform.</p></li>
+teleseismic records may need different values of bin size for better
+picking results)</p></li>
+<li><p><strong>selection</strong> (<em>Selector</em>) – <dl>
+<dt>One of:</dt><dd><dl class="simple">
+<dt>Selector.TO_PEAK - take segment of waveform from beginning to absolute</dt><dd><p>peak value (recommended for fast processing).</p>
+</dd>
+</dl>
+<p>Selector.FULL - take full waveform.</p>
+</dd>
+</dl>
+</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

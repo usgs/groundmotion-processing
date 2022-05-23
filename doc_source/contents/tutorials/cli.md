@@ -59,7 +59,9 @@ file (locaed in the project conf path) to restrict the search radius:
 
 ```yaml
 FDSNFetcher:
-  radius: 0.1
+   domain:
+      circular:
+         maxradius: 0.1
 ```
 
 Now we will download data by specifying an event ID.
