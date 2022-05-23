@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.waveform_processing.phase - gmprocess 1.1.11.dev450+g2075fdf6.d20220521 documentation</title>
+        <title>gmprocess.waveform_processing.phase - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev450+g2075fdf6.d20220521 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -601,14 +601,14 @@
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">ratio</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
         <span class="k">if</span> <span class="p">(</span>
-            <span class="n">trigger</span> <span class="ow">is</span> <span class="kc">False</span>
+            <span class="p">(</span><span class="ow">not</span> <span class="n">trigger</span><span class="p">)</span>
             <span class="ow">and</span> <span class="n">ratio</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">threshold</span>
             <span class="ow">and</span> <span class="n">ratio2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">threshold2</span>
             <span class="ow">and</span> <span class="n">ratio</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">ratio</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
         <span class="p">):</span>
             <span class="n">triggers_on</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
             <span class="n">trigger</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">elif</span> <span class="n">trigger</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">ratio</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">threshdrop</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">trigger</span> <span class="ow">and</span> <span class="p">(</span><span class="n">ratio</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">threshdrop</span><span class="p">):</span>
             <span class="n">triggers_off</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
             <span class="n">trigger</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -1047,24 +1047,29 @@
     <span class="sd">"""Compute P-phase arrival time.</span>
 
 <span class="sd">    Adapted from Python code written by Francisco Hernandez of the Puerto Rico</span>
-<span class="sd">    Strong Motion Program. That code was in turn adapted from Matlab code written by Dr. Erol</span>
-<span class="sd">    Kalkan, P.E. The algorithms are described here in full:</span>
+<span class="sd">    Strong Motion Program. That code was in turn adapted from Matlab code written by</span>
+<span class="sd">    Dr. Erol Kalkan, P.E. The algorithms are described here in full:</span>
 
 <span class="sd">    Kalkan, E. (2016). "An automatic P-phase arrival time picker", Bull. of</span>
 <span class="sd">    Seismol. Soc. of Am., 106, No. 3, doi: 10.1785/0120150111</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        trace (StationTrace): StationTrace containing waveform (acceleration or velocity) data.</span>
-<span class="sd">        period (float): Undamped natural period of the sensor in seconds.</span>
-<span class="sd">            Defaults to 0.01s for sample rates &gt;= 100, 0.1s for sample</span>
-<span class="sd">            rates &lt; 100.</span>
-<span class="sd">        damping (float): Damping ratio.</span>
-<span class="sd">        nbins (int): Histogram bin size (default is 2/sampling interval). Regional or</span>
-<span class="sd">            teleseismic records may need different values of bin size for</span>
-<span class="sd">            better picking results)</span>
-<span class="sd">        selection (Selector): One of:</span>
-<span class="sd">            Selector.TO_PEAK - take segment of waveform from beginning to absolute peak value (recommended for fast processing).</span>
-<span class="sd">            Selector.FULL - take full waveform.</span>
+<span class="sd">        trace (StationTrace):</span>
+<span class="sd">            StationTrace containing waveform (acceleration or velocity) data.</span>
+<span class="sd">        period (float):</span>
+<span class="sd">            Undamped natural period of the sensor in seconds. Defaults to 0.01s for</span>
+<span class="sd">            sample rates &gt;= 100, 0.1s for sample rates &lt; 100.</span>
+<span class="sd">        damping (float):</span>
+<span class="sd">            Damping ratio.</span>
+<span class="sd">        nbins (int):</span>
+<span class="sd">            Histogram bin size (default is 2/sampling interval). Regional or</span>
+<span class="sd">            teleseismic records may need different values of bin size for better</span>
+<span class="sd">            picking results)</span>
+<span class="sd">        selection (Selector):</span>
+<span class="sd">            One of:</span>
+<span class="sd">                Selector.TO_PEAK - take segment of waveform from beginning to absolute</span>
+<span class="sd">                    peak value (recommended for fast processing).</span>
+<span class="sd">                Selector.FULL - take full waveform.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple:</span>
@@ -1113,7 +1118,7 @@
     <span class="c1"># Construct a fixed-base viscously damped SDF oscillator</span>
     <span class="n">omegan</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">period</span>  <span class="c1"># natural frequency in radian/second</span>
     <span class="n">C</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">damping</span> <span class="o">*</span> <span class="n">omegan</span>  <span class="c1"># viscous damping term</span>
-    <span class="n">K</span> <span class="o">=</span> <span class="n">omegan</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># stiffness term</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="n">omegan</span><span class="o">**</span><span class="mi">2</span>  <span class="c1"># stiffness term</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">trace_copy</span><span class="o">.</span><span class="n">data</span><span class="p">)))</span>  <span class="c1"># response vector</span>
 
     <span class="c1"># Solve second-order ordinary differential equation of motion</span>

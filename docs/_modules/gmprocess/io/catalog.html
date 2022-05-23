@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.catalog - gmprocess 1.1.11.dev450+g2075fdf6.d20220521 documentation</title>
+        <title>gmprocess.io.catalog - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev450+g2075fdf6.d20220521 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -509,20 +509,33 @@
 <span class="sd">    USGS, and ISC catalogs.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        source_id (str): Event ID from the source catalog.</span>
-<span class="sd">        source_catalog (str): Source catalog (UNID, EMSC, INGV, USGS or ISC).</span>
-<span class="sd">        out_catalog (list): Catalogs (str) to convert ids options include: UNID, EMSC, INGV, USGS, ISC, or ALL.</span>
-<span class="sd">        collect_dloc (float): dloc parameter.</span>
-<span class="sd">        collect_dtmie (float): dtime parameter.</span>
-<span class="sd">        misfit_dloc (float): Misfit delta_loc parameter.</span>
-<span class="sd">        misit_dtime (float): Misfit delta_time parameter.</span>
-<span class="sd">        misfit_dmag (float): Misfit delta_mag parameter.</span>
-<span class="sd">        preferred_only (str): Select only the first event by catalog if 'true'.</span>
-<span class="sd">        include_info (str): Return info about the event if 'true'.</span>
-<span class="sd">        return_json (bool): Whether or not to return the entire JSON.</span>
+<span class="sd">        source_id (str):</span>
+<span class="sd">            Event ID from the source catalog.</span>
+<span class="sd">        source_catalog (str):</span>
+<span class="sd">            Source catalog (UNID, EMSC, INGV, USGS or ISC).</span>
+<span class="sd">        out_catalog (list):</span>
+<span class="sd">            Catalogs (str) to convert ids options include: UNID, EMSC, INGV, USGS,</span>
+<span class="sd">            ISC, or ALL.</span>
+<span class="sd">        collect_dloc (float):</span>
+<span class="sd">            dloc parameter.</span>
+<span class="sd">        collect_dtmie (float):</span>
+<span class="sd">            dtime parameter.</span>
+<span class="sd">        misfit_dloc (float):</span>
+<span class="sd">            Misfit delta_loc parameter.</span>
+<span class="sd">        misit_dtime (float):</span>
+<span class="sd">            Misfit delta_time parameter.</span>
+<span class="sd">        misfit_dmag (float):</span>
+<span class="sd">            Misfit delta_mag parameter.</span>
+<span class="sd">        preferred_only (str):</span>
+<span class="sd">            Select only the first event by catalog if 'true'.</span>
+<span class="sd">        include_info (str):</span>
+<span class="sd">            Return info about the event if 'true'.</span>
+<span class="sd">        return_json (bool):</span>
+<span class="sd">            Whether or not to return the entire JSON.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        dict: Returns a dictionary mapping catalogs to event IDS if return_json is False.</span>
+<span class="sd">        dict: Returns a dictionary mapping catalogs to event IDS if return_json is</span>
+<span class="sd">            False.</span>
 <span class="sd">        list: Returns a list of the JSON if return_json is true.</span>
 
 <span class="sd">    """</span>
@@ -551,7 +564,7 @@
     <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"No matching event IDs were found."</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">return_json</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">return_json</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">output</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">catalog_id_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>

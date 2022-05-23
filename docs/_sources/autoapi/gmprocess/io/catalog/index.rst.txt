@@ -45,7 +45,8 @@ Attributes
    :type source_id: str
    :param source_catalog: Source catalog (UNID, EMSC, INGV, USGS or ISC).
    :type source_catalog: str
-   :param out_catalog: Catalogs (str) to convert ids options include: UNID, EMSC, INGV, USGS, ISC, or ALL.
+   :param out_catalog: Catalogs (str) to convert ids options include: UNID, EMSC, INGV, USGS,
+                       ISC, or ALL.
    :type out_catalog: list
    :param collect_dloc: dloc parameter.
    :type collect_dloc: float
@@ -64,7 +65,10 @@ Attributes
    :param return_json: Whether or not to return the entire JSON.
    :type return_json: bool
 
-   :returns: Returns a dictionary mapping catalogs to event IDS if return_json is False.
+   :returns:
+
+             Returns a dictionary mapping catalogs to event IDS if return_json is
+                 False.
              list: Returns a list of the JSON if return_json is true.
    :rtype: dict
 

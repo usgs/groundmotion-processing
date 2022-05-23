@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Response Spectra Calculation and Comparison" href="response_spectra.html" /><link rel="prev" title="Tutorials" href="index.html" />
 
     <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>Command Line Interface - gmprocess 1.1.11.dev450+g2075fdf6.d20220521 documentation</title>
+        <title>Command Line Interface - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev450+g2075fdf6.d20220521 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -581,7 +581,9 @@ for some data sources (e.g., CESMD).</p>
 <p>To limit the number of stations in this example, please edit the <code class="docutils literal notranslate"><span class="pre">config.yml</span></code>
 file (locaed in the project conf path) to restrict the search radius:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">FDSNFetcher</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span><span class="w"></span>
+<span class="w">   </span><span class="nt">domain</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">circular</span><span class="p">:</span><span class="w"></span>
+<span class="w">         </span><span class="nt">maxradius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Now we will download data by specifying an event ID.</p>
