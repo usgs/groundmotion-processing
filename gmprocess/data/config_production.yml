@@ -72,7 +72,7 @@ fetchers:
             # Below here you can specify additional optional restriction keys. 
             # See: https://docs.obspy.org/packages/autogen/obspy.clients.fdsn.mass_downloader.restrictions.Restrictions.html
 
-            channel: "BH?, HH?, BN?, HN?" 
+            channel: "BH?,HH?,BN?,HN?" 
             network: "*"
 
             # SY is a network for synthetic data, others listed here are network codes
