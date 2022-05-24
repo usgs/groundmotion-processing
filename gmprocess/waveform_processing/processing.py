@@ -442,6 +442,17 @@ def lowpass_max_frequency(st, fn_fac=0.9, config=None):
         return st
 
     for tr in st:
+        if tr.hasParameter("review"):
+            rdict = tr.getParameter("review")
+            if "corner_frequencies" in rdict:
+                rev_fc_dict = rdict["corner_frequencies"]
+                if "lowpass" in rev_fc_dict:
+                    logging.warning(
+                        f"Not applying lowpass_max_frequency for {tr} because the "
+                        "lowpass filter corner was set by manual review."
+                    )
+                    continue
+
         fn = 0.5 * tr.stats.sampling_rate
         max_flp = fn * fn_fac
         freq_dict = tr.getParameter("corner_frequencies")
