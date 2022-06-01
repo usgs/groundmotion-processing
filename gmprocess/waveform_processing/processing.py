@@ -221,9 +221,10 @@ def process_streams(streams, origin, config=None, old_streams=None):
 
     # -------------------------------------------------------------------------
     # Begin colocated instrument selection
-    colocated_conf = config["colocated"]
-    if isinstance(streams, StreamCollection):
-        streams.select_colocated(**colocated_conf, origin=origin)
+    if "colocated" in config:
+        colocated_conf = config["colocated"]
+        if isinstance(streams, StreamCollection):
+            streams.select_colocated(**colocated_conf, origin=origin)
 
     for st in streams:
         for tr in st:
