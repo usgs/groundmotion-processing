@@ -19,6 +19,7 @@ class Smooth_Select(Reduction):
         period=None,
         smoothing=None,
         interval=[5, 95],
+        config=None,
     ):
         """
         Args:
@@ -35,13 +36,20 @@ class Smooth_Select(Reduction):
             interval (list):
                 List of length 2 with the quantiles (0-1) for duration interval
                 calculation.
+            config (dict):
+                Config dictionary.
 
         Raises:
             PGMException: if the bandwidth, period, or smoothing values
             are None.
         """
         super().__init__(
-            reduction_data, bandwidth=None, percentile=None, period=None, smoothing=None
+            reduction_data,
+            bandwidth=bandwidth,
+            percentile=percentile,
+            period=period,
+            smoothing=smoothing,
+            config=config,
         )
         if period is None:
             raise PGMException(
