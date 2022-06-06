@@ -84,8 +84,10 @@ class Jerk(ClipDetection):
                 Is the trace clipped?
         """
         temp_tr = tr.copy()
-        temp_tr.differentiate()
-        temp_tr.differentiate()
+        # The algorithm was developed with time domain differentiation and so we want
+        # to force this to be consistent regardless of config options.
+        temp_tr.differentiate(frequency=False)
+        temp_tr.differentiate(frequency=False)
         abs_diff = np.abs(temp_tr.data)
         median_x100 = 100 * np.median(abs_diff)
         (i_jerk,) = np.where(abs_diff >= median_x100)

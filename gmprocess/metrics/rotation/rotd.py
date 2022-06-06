@@ -17,7 +17,7 @@ class Rotd(Rotation):
                 Defines the focal time, geographical location and magnitude of
                 an earthquake hypocenter. Default is None.
         """
-        super().__init__(rotation_data, event=None)
+        super().__init__(rotation_data, event=event)
         self.result = self.get_rotd()
 
     def get_rotd(self):

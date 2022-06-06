@@ -39,13 +39,13 @@ class Differentiate(Transform):
         """
         super().__init__(
             transform_data,
-            damping=None,
-            period=None,
-            times=None,
-            max_period=None,
-            allow_nans=None,
-            bandwidth=None,
-            config=None,
+            damping=damping,
+            period=period,
+            times=times,
+            max_period=max_period,
+            allow_nans=allow_nans,
+            bandwidth=bandwidth,
+            config=config,
         )
         self.result = self.get_derivative()
 
@@ -70,6 +70,9 @@ class Differentiate(Transform):
         """
         stream = StationStream([])
         for trace in self.transform_data:
-            differentiated_trace = trace.copy().differentiate()
+            diff_conf = self.config["differentiation"]
+            differentiated_trace = trace.copy().differentiate(
+                frequency=diff_conf["frequency"]
+            )
             stream.append(differentiated_trace)
         return stream

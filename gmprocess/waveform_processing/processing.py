@@ -316,15 +316,8 @@ def remove_response(
                             "pre_filt_freqs": f"{f1:f}, {f2:f}, {f3:f}, {f4:f}",
                         },
                     )
-                    tr.differentiate()
-                    tr.setProvenance(
-                        "differentiate",
-                        {
-                            "differentiation_method": "remove_response",
-                            "input_units": ABBREV_UNITS["VEL"],
-                            "output_units": ABBREV_UNITS[output],
-                        },
-                    )
+                    diff_conf = config["differentiation"]
+                    tr.differentiate(frequency=diff_conf["frequency"])
                     tr.data *= M_TO_CM  # Convert from m to cm
                     tr.stats.standard.units = ABBREV_UNITS[output]
                     tr.stats.standard.units_type = output.lower()
