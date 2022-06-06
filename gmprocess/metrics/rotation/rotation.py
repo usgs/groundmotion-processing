@@ -21,6 +21,7 @@ class Rotation(object):
                 an earthquake hypocenter. Default is None.
         """
         self.rotation_data = rotation_data
+        self.event = event
 
     def _get_horizontals(self):
         """

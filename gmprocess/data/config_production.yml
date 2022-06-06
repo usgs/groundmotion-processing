@@ -609,7 +609,7 @@ integration:
 # -----------------------------------------------------------------------------
 # This section is for options for differentiation
 differentiation:
-    # Frequency or time domain integration?
+    # Frequency or time domain differentation?
     frequency: True
 
 # -----------------------------------------------------------------------------

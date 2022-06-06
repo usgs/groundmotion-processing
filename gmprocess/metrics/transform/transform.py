@@ -36,6 +36,7 @@ class Transform(object):
             config (dict):
                 Configuration options.
         """
+        self.config = config
         self.transform_data = transform_data
 
     def _get_horizontals(self):

@@ -23,8 +23,7 @@ class Radial_Transverse(Rotation):
                 Defines the focal time, geographical location and
                 magnitude of an earthquake hypocenter. Default is None.
         """
-        super().__init__(rotation_data, event=None)
-        self.event = event
+        super().__init__(rotation_data, event=event)
         self.result = self.get_radial_transverse()
 
     def get_radial_transverse(self):
