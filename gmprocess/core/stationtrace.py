@@ -24,7 +24,13 @@ from gmprocess.utils.config import get_config
 from gmprocess.io.seedname import get_units_type
 
 UNITS = {"acc": "cm/s^2", "vel": "cm/s"}
-REVERSE_UNITS = {"cm/s^2": "acc", "cm/s": "vel", "cm": "disp"}
+REVERSE_UNITS = {
+    "cm/s^2": "acc",
+    "cm/s**2": "acc",
+    "cm/s/s": "acc",
+    "cm/s": "vel",
+    "cm": "disp",
+}
 
 PROCESS_LEVELS = {
     "V0": "raw counts",
@@ -371,7 +377,7 @@ class StationTrace(Trace):
         if len(error_msg.strip()):
             raise KeyError(error_msg)
 
-    def differentiate(self, method="gradient", **options):
+    def differentiate(self, frequency=True):
         input_units = self.stats.standard.units
         if "/s^2" in input_units:
             output_units = input_units.replace("/s^2", "/s^3")
@@ -381,6 +387,15 @@ class StationTrace(Trace):
             output_units = input_units.replace("/s", "/s/s")
         else:
             output_units = input_units + "/s"
+        if frequency:
+            method = "frequency"
+            spec_y = np.fft.rfft(self.data, len(self.data))
+            freq_y = np.fft.rfftfreq(len(self.data), d=self.stats.delta)
+            spec_dy = spec_y * (2j * np.pi * freq_y)
+            self.data = np.fft.irfft(spec_dy)
+        else:
+            method = "gradient"
+            self = super().differentiate(method=method)
         self.setProvenance(
             "differentiate",
             {
@@ -389,7 +404,7 @@ class StationTrace(Trace):
                 "output_units": output_units,
             },
         )
-        return super().differentiate(method, **options)
+        return self
 
     def integrate(
         self, frequency=False, initial=0.0, demean=False, taper=False, config=None

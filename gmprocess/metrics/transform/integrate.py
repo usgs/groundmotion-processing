@@ -39,13 +39,13 @@ class Integrate(Transform):
         """
         super().__init__(
             transform_data,
-            damping=None,
-            period=None,
-            times=None,
-            max_period=None,
-            allow_nans=None,
-            bandwidth=None,
-            config=None,
+            damping=damping,
+            period=period,
+            times=times,
+            max_period=max_period,
+            allow_nans=allow_nans,
+            bandwidth=bandwidth,
+            config=config,
         )
         self.result = self.get_integral(config=config)
 

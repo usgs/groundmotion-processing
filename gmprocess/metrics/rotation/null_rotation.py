@@ -10,7 +10,7 @@ class Null_Rotation(Rotation):
     other than returning the input rotation_data."""
 
     def __init__(self, rotation_data, event=None):
-        super().__init__(rotation_data, event=None)
+        super().__init__(rotation_data, event=event)
         self.result = self.get_rotation_data()
 
     def get_rotation_data(self):
