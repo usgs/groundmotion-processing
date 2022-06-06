@@ -605,6 +605,13 @@ integration:
         type: hann
         width: 0.05
         side: both
+
+# -----------------------------------------------------------------------------
+# This section is for options for differentiation
+differentiation:
+    # Frequency or time domain integration?
+    frequency: True
+
 # -----------------------------------------------------------------------------
 # This section is for options for phase pickers
 pickers:

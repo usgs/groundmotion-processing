@@ -21,6 +21,7 @@ class Max(Reduction):
         period=None,
         smoothing=None,
         interval=[5, 95],
+        config=None,
     ):
         """
         Args:
@@ -38,14 +39,17 @@ class Max(Reduction):
             interval (list):
                 List of length 2 with the quantiles (0-1) for duration interval
                 calculation.
+            config (dict):
+                Config dictionary.
         """
         super().__init__(
             reduction_data,
-            bandwidth=None,
-            percentile=None,
-            period=None,
-            smoothing=None,
-            interval=[5, 95],
+            bandwidth=bandwidth,
+            percentile=percentile,
+            period=period,
+            smoothing=smoothing,
+            interval=interval,
+            config=config,
         )
         self.result = self.get_max()
 

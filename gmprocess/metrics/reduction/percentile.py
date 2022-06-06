@@ -18,6 +18,7 @@ class Percentile(Reduction):
         period=None,
         smoothing=None,
         interval=[5, 95],
+        config=None,
     ):
         """
         Args:
@@ -35,12 +36,18 @@ class Percentile(Reduction):
             interval (list):
                 List of length 2 with the quantiles (0-1) for duration interval
                 calculation.
-
+            config (dict):
+                Config dictionary.
         Raises:
             PGMException: if the percentile value is None.
         """
         super().__init__(
-            reduction_data, bandwidth=None, percentile=None, period=None, smoothing=None
+            reduction_data,
+            bandwidth=bandwidth,
+            percentile=percentile,
+            period=period,
+            smoothing=smoothing,
+            config=config,
         )
         if percentile is None:
             raise PGMException(

@@ -114,7 +114,7 @@ def create_json(
         if station_feature is not None:
             station_features.append(station_feature)
 
-        components = get_components(metrics, stream)
+        components = get_components(metrics, stream, config)
         properties["components"] = components
 
         provenance = {}
@@ -253,7 +253,7 @@ def get_station_feature(stream, metrics, coordinates, expanded_imts=False):
     return station_feature
 
 
-def get_components(metrics, stream):
+def get_components(metrics, stream, config):
     FLOAT_MATCH = r"[0-9]*\.[0-9]*"
     components = OrderedDict()
     for imc in metrics.components:
@@ -310,7 +310,7 @@ def get_components(metrics, stream):
                 idx = np.where([trace.data >= peak_acc])[1][0]
                 peak_pga_time = (start + (delta * idx)).strftime(EVENT_TIMEFMT)
                 vel_trace = trace.copy()
-                vel_trace.integrate()
+                vel_trace.integrate(config)
                 peak_vel = vel_trace.data.max()
                 start = vel_trace.stats.starttime
                 delta = vel_trace.stats.delta
