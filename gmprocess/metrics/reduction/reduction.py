@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from gmprocess.utils.config import get_config
 
 
 class Reduction(object):
@@ -13,6 +14,7 @@ class Reduction(object):
         period=None,
         smoothing=None,
         interval=[5, 95],
+        config=None,
     ):
         """
         Args:
@@ -33,3 +35,6 @@ class Reduction(object):
         """
         self.period = period
         self.reduction_data = reduction_data
+        if config is None:
+            config = get_config()
+        self.config = config

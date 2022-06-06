@@ -434,7 +434,13 @@ class MetricsController(object):
                     inspect.getmembers(red_mod, inspect.isclass), "Reduction"
                 )
                 red = red_cls(
-                    c1, self.bandwidth, percentile, period, self.smooth_type, interval
+                    c1,
+                    self.bandwidth,
+                    percentile,
+                    period,
+                    self.smooth_type,
+                    interval,
+                    self.config,
                 ).result
 
                 if step_set["Reduction"] == "max" and isinstance(
@@ -525,9 +531,9 @@ class MetricsController(object):
         # If the first three steps (for this percentile and period) are already
         # available do not recalculate (continue)
 
-        ## this is where we need to fix things
-        ## check if transform 2 is oscillator, if not then no need to check period
-        ## also, I don't think there's a need to check percentile.
+        # this is where we need to fix things
+        # check if transform 2 is oscillator, if not then no need to check period
+        # also, I don't think there's a need to check percentile.
 
         s2_osc = s2 == "oscillator"
         # s2_osc = True

@@ -21,6 +21,7 @@ class Duration(Reduction):
         period=None,
         smoothing=None,
         interval=None,
+        config=None,
     ):
         """
         Args:
@@ -38,14 +39,17 @@ class Duration(Reduction):
             interval (list):
                 List of length 2 with the quantiles (0-1) for duration interval
                 calculation.
+            config (dict):
+                Config dictionary.
         """
         super().__init__(
             reduction_data,
-            bandwidth=None,
-            percentile=None,
-            period=None,
-            smoothing=None,
-            interval=None,
+            bandwidth=bandwidth,
+            percentile=percentile,
+            period=period,
+            smoothing=smoothing,
+            interval=interval,
+            config=config,
         )
         self.interval = interval
         self.result = self.get_duration()

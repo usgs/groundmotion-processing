@@ -155,6 +155,9 @@ CONF_SCHEMA = Schema(
             "demean": bool,
             "taper": {"taper": bool, "type": str, "width": float, "side": str},
         },
+        "differentiation": {
+            "frequency": bool,
+        },
         "pickers": {
             "p_arrival_shift": float,
             Optional("ar"): {
