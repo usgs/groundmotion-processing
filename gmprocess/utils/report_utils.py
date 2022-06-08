@@ -248,7 +248,7 @@ def draw_stations_map(pstreams, event, event_dir):
     earthquake_marker = mlines.Line2D(
         [],
         [],
-        color="red",
+        color="yellow",
         marker="*",
         markersize=12,
         label="Earthquake Epicenter",
