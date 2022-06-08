@@ -6,6 +6,7 @@ import os
 import numpy as np
 import pandas as pd
 import folium
+from folium import plugins
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 from impactutils.mapping.city import Cities
@@ -18,6 +19,7 @@ OCEAN_COLOR = "#96e8ff"
 LAND_COLOR = "#ededaf"
 PASSED_COLOR = "#00ac00"
 FAILED_COLOR = "#ff2222"
+EVENT_COLOR = "#FFFF00" #"#FF0000"
 MAP_PADDING = 1.1  # Station map padding value
 
 
@@ -80,39 +82,88 @@ def draw_stations_map(pstreams, event, event_dir):
     for i, r in failed_station_df.iterrows():
         station_info = "NET: {} LAT: {:.2f} LON: {:.2f} REASON: {}".format(
             r["network"], r["coords"][0], r["coords"][1], r["reason"]
-        )
-        folium.CircleMarker(
+        ) 
+  
+        failed_icon = folium.DivIcon(html=f""" 
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill="#ff2222" class="bi bi-triangle-fill" transform='rotate(180)' viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/>
+                </svg>
+            </div>""")
+
+        folium.Marker(
             location=r["coords"],
             tooltip=r["stnames"],
             popup=station_info,
-            color=FAILED_COLOR,
-            fill=True,
-            radius=6,
-        ).add_to(station_map)
+            icon=failed_icon).add_to(station_map)
 
+    # Then the passed stations
     for i, r in passed_station_df.iterrows():
         station_info = "NET: {}\n LAT: {:.2f} LON: {:.2f}".format(
             r["network"], r["coords"][0], r["coords"][1]
         )
-        folium.CircleMarker(
+        passed_icon = folium.DivIcon(html=f""" 
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill=\"""" + PASSED_COLOR + """\" class="bi bi-triangle-fill" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/>
+                </svg>
+            </div>""")
+
+        folium.Marker(
             location=r["coords"],
             tooltip=r["stnames"],
             popup=station_info,
-            color=PASSED_COLOR,
-            fill=True,
-            radius=10,
-        ).add_to(station_map)
+            icon=passed_icon).add_to(station_map)
 
+    # And finally the event itself
     event_info = "MAG: {} LAT: {:.2f} LON: {:.2f} DEPTH: {:.2f}".format(
         event.magnitude, event.latitude, event.longitude, event.depth
     )
-    folium.CircleMarker(
+    event_icon = folium.DivIcon(html=f""" 
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill=\"""" + EVENT_COLOR + """\" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                </svg>
+            </div>""")
+
+    folium.Marker(
         [event.latitude, event.longitude],
         popup=event_info,
-        color="yellow",
-        fill=True,
-        radius=15,
-    ).add_to(station_map)
+        fill_color=EVENT_COLOR,
+        icon=event_icon).add_to(station_map)
+    
+    station_map.get_root().html.add_child(
+        folium.Element(
+            """
+            <div style="position:absolute; font-family:Noto Sans UI Regular;
+                top: 50px; left: 50px; width: 165px; height: 100px; 
+                background-color:white; border:2px solid grey;z-index: 900;">
+
+                <div style="padding:5px;">
+                    <svg style="vertical-align:center" xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill=\"""" + FAILED_COLOR + """\" class="bi bi-triangle-fill" transform='rotate(180)' viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/>
+                    </svg>
+                    <text style="padding:5px">Passed Station</text>
+                </div>
+                
+                <div style="padding:5px;">
+                    <svg style="vertical-align:center" xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill=\"""" + PASSED_COLOR + """\" class="bi bi-triangle-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/>
+                    </svg>
+                    <text style="padding:5px">Failed Station</text>
+                </div>
+
+                <div style="padding:5px;">
+                    <svg style="vertical-align:center" xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill=\"""" + EVENT_COLOR + """\" class="bi bi-star-fill" viewBox="0 0 16 16">
+                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                    </svg>
+                    <text style="padding:5px">Earthquake Epicenter</text>
+                </div>
+
+            </div>
+            """
+        )
+    )
 
     html_mapfile = os.path.join(event_dir, "stations_map.html")
     station_map.save(html_mapfile)
