@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.metrics.transform.fft - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.metrics.transform.fft - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -495,7 +496,7 @@
 
 
 <div class="viewcode-block" id="FFT"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/transform/fft/index.html#gmprocess.metrics.transform.fft.FFT">[docs]</a><span class="k">class</span> <span class="nc">FFT</span><span class="p">(</span><span class="n">Transform</span><span class="p">):</span>
-    <span class="sd">"""Class for computing the fast fourier transform."""</span>
+    <span class="sd">&quot;&quot;&quot;Class for computing the fast fourier transform.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -508,7 +509,7 @@
         <span class="n">bandwidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            transform_data (obspy.core.stream.Stream or numpy.ndarray):</span>
 <span class="sd">                Intensity measurement component.</span>
@@ -525,7 +526,7 @@
 <span class="sd">            config (dict):</span>
 <span class="sd">                Configuration options.</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">transform_data</span><span class="p">,</span>
             <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -542,33 +543,33 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_fft</span><span class="p">()</span>
 
 <div class="viewcode-block" id="FFT.get_fft"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/transform/fft/index.html#gmprocess.metrics.transform.fft.FFT.get_fft">[docs]</a>    <span class="k">def</span> <span class="nf">get_fft</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
-<span class="sd">        Calculated the fft of each trace's data.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculated the fft of each trace&#39;s data.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            numpy.ndarray: Computed fourier amplitudes.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">fft_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform_data</span><span class="p">:</span>
 
             <span class="n">nfft</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_nfft</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
 
             <span class="c1"># Check if we already have computed the FFT for this trace</span>
-            <span class="k">if</span> <span class="n">trace</span><span class="o">.</span><span class="n">hasCached</span><span class="p">(</span><span class="s2">"fas_spectrum"</span><span class="p">):</span>
-                <span class="n">spectra</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">"fas_spectrum"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">trace</span><span class="o">.</span><span class="n">hasCached</span><span class="p">(</span><span class="s2">&quot;fas_spectrum&quot;</span><span class="p">):</span>
+                <span class="n">spectra</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">&quot;fas_spectrum&quot;</span><span class="p">)</span>
                 <span class="n">sampling_rate</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span>
                 <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="n">nfft</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">sampling_rate</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">spectra</span><span class="p">,</span> <span class="n">freqs</span> <span class="o">=</span> <span class="n">compute_fft</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">nfft</span><span class="p">)</span>
-                <span class="n">trace</span><span class="o">.</span><span class="n">setCached</span><span class="p">(</span><span class="s2">"fas_spectrum"</span><span class="p">,</span> <span class="n">spectra</span><span class="p">)</span>
+                <span class="n">trace</span><span class="o">.</span><span class="n">setCached</span><span class="p">(</span><span class="s2">&quot;fas_spectrum&quot;</span><span class="p">,</span> <span class="n">spectra</span><span class="p">)</span>
 
-            <span class="n">tdict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"freqs"</span><span class="p">:</span> <span class="n">freqs</span><span class="p">,</span> <span class="s2">"spectra"</span><span class="p">:</span> <span class="n">spectra</span><span class="p">}</span>
-            <span class="n">fft_dict</span><span class="p">[</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span> <span class="o">=</span> <span class="n">tdict</span>
+            <span class="n">tdict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;freqs&quot;</span><span class="p">:</span> <span class="n">freqs</span><span class="p">,</span> <span class="s2">&quot;spectra&quot;</span><span class="p">:</span> <span class="n">spectra</span><span class="p">}</span>
+            <span class="n">fft_dict</span><span class="p">[</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span> <span class="o">=</span> <span class="n">tdict</span>
 
         <span class="k">return</span> <span class="n">fft_dict</span></div>
 
 <div class="viewcode-block" id="FFT.get_nfft"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/transform/fft/index.html#gmprocess.metrics.transform.fft.FFT.get_nfft">[docs]</a>    <span class="k">def</span> <span class="nf">get_nfft</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trace</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If allow_nans is True, returns the number of points for the FFT that</span>
 <span class="sd">        will ensure that the Fourier Amplitude Spectrum can be computed without</span>
 <span class="sd">        returning NaNs (due to the spectral resolution requirements of the</span>
@@ -577,7 +578,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            int: Number of points for the FFT.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_nans</span><span class="p">:</span>
             <span class="n">nfft</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>

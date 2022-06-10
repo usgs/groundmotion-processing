@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.utils.prompt" href="../prompt/index.html" /><link rel="prev" title="gmprocess.utils.models" href="../models/index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.utils.plot - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.utils.plot - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -486,42 +487,45 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.plot.plot_regression" title="gmprocess.utils.plot.plot_regression"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_regression</span></code></a>(event_table, imc, imc_table, imt, filename, distance_metric='EpicentralDistance', colormap='viridis')</p></td>
-<td><p>Make summary "regression" plot.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.plot.plot_regression" title="gmprocess.utils.plot.plot_regression"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_regression</span></code></a>(event_table, imc, imc_table, imt, filename, distance_metric='EpicentralDistance', colormap='viridis')</p></td>
+<td><p>Make summary &quot;regression&quot; plot.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.plot.get_time_from_percent" title="gmprocess.utils.plot.get_time_from_percent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_time_from_percent</span></code></a>(NIa, p, dt)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.plot.get_time_from_percent" title="gmprocess.utils.plot.get_time_from_percent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_time_from_percent</span></code></a>(NIa, p, dt)</p></td>
 <td><p>Find the closest value to the desired percent of Arias intensity and</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.plot.plot_arias" title="gmprocess.utils.plot.plot_arias"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_arias</span></code></a>(stream, axes=None, axis_index=None, figsize=None, file=None, minfontsize=14, show=False, show_maximum=True, title=None, xlabel=None, ylabel=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.plot.plot_arias" title="gmprocess.utils.plot.plot_arias"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_arias</span></code></a>(stream, axes=None, axis_index=None, figsize=None, file=None, minfontsize=14, show=False, show_maximum=True, title=None, xlabel=None, ylabel=None)</p></td>
 <td><p>Create plots of arias intensity.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.plot.plot_durations" title="gmprocess.utils.plot.plot_durations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_durations</span></code></a>(stream, durations, axes=None, axis_index=None, figsize=None, file=None, minfontsize=14, show=False, title=None, xlabel=None, ylabel=None)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.plot.plot_durations" title="gmprocess.utils.plot.plot_durations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_durations</span></code></a>(stream, durations, axes=None, axis_index=None, figsize=None, file=None, minfontsize=14, show=False, title=None, xlabel=None, ylabel=None)</p></td>
 <td><p>Create plots of durations.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.plot.plot_moveout" title="gmprocess.utils.plot.plot_moveout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_moveout</span></code></a>(streams, epilat, epilon, orientation=None, max_dist=None, figsize=(10, 15), file=None, minfontsize=14, normalize=True, factor=0.2, alpha=0.25)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.plot.plot_moveout" title="gmprocess.utils.plot.plot_moveout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_moveout</span></code></a>(streams, epilat, epilon, orientation=None, max_dist=None, figsize=(10, 15), file=None, minfontsize=14, normalize=True, factor=0.2, alpha=0.25)</p></td>
 <td><p>Create moveout plot.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.plot.summary_plots" title="gmprocess.utils.plot.summary_plots"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summary_plots</span></code></a>(st, directory, origin, config=None)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.plot.summary_plots" title="gmprocess.utils.plot.summary_plots"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summary_plots</span></code></a>(st, directory, origin, config=None)</p></td>
 <td><p>Stream summary plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.plot.plot_oscillators" title="gmprocess.utils.plot.plot_oscillators"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_oscillators</span></code></a>(st, periods=[0.1, 2, 5, 10], file=None, show=False)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.plot.plot_oscillators" title="gmprocess.utils.plot.plot_oscillators"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_oscillators</span></code></a>(st, periods=[0.1, 2, 5, 10], file=None, show=False)</p></td>
 <td><p>Produces a figure of the oscillator responses for a StationStream. The</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.plot.MIN_MAG" title="gmprocess.utils.plot.MIN_MAG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MIN_MAG</span></code></a></p></td>
@@ -552,43 +556,53 @@
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.utils.plot.MIN_MAG">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.plot.</span></span><span class="sig-name descname"><span class="pre">MIN_MAG</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">4.0</span></em><a class="headerlink" href="#gmprocess.utils.plot.MIN_MAG" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.utils.plot.MAX_MAG">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.plot.</span></span><span class="sig-name descname"><span class="pre">MAX_MAG</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">7.0</span></em><a class="headerlink" href="#gmprocess.utils.plot.MAX_MAG" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.utils.plot.DELTA_MAG">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.plot.</span></span><span class="sig-name descname"><span class="pre">DELTA_MAG</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">0.5</span></em><a class="headerlink" href="#gmprocess.utils.plot.DELTA_MAG" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.utils.plot.BOTTOM">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.plot.</span></span><span class="sig-name descname"><span class="pre">BOTTOM</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">0.1</span></em><a class="headerlink" href="#gmprocess.utils.plot.BOTTOM" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.utils.plot.AX1_LEFT">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.plot.</span></span><span class="sig-name descname"><span class="pre">AX1_LEFT</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">0.1</span></em><a class="headerlink" href="#gmprocess.utils.plot.AX1_LEFT" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.utils.plot.AX1_WIDTH">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.plot.</span></span><span class="sig-name descname"><span class="pre">AX1_WIDTH</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">0.8</span></em><a class="headerlink" href="#gmprocess.utils.plot.AX1_WIDTH" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.utils.plot.AX1_HEIGHT">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.plot.</span></span><span class="sig-name descname"><span class="pre">AX1_HEIGHT</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">0.8</span></em><a class="headerlink" href="#gmprocess.utils.plot.AX1_HEIGHT" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.utils.plot.AX2_WIDTH">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.plot.</span></span><span class="sig-name descname"><span class="pre">AX2_WIDTH</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">0.1</span></em><a class="headerlink" href="#gmprocess.utils.plot.AX2_WIDTH" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.utils.plot.AX2_HEIGHT">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.plot.</span></span><span class="sig-name descname"><span class="pre">AX2_HEIGHT</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">1.0</span></em><a class="headerlink" href="#gmprocess.utils.plot.AX2_HEIGHT" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.plot.plot_regression">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.plot.</span></span><span class="sig-name descname"><span class="pre">plot_regression</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imc_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EpicentralDistance'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'viridis'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/plot.html#plot_regression"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.plot.plot_regression" title="Permalink to this definition">#</a></dt>
@@ -602,6 +616,7 @@ and then also report the standardized residuals.</p></li>
 </ul>
 </div>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.plot.get_time_from_percent">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.plot.</span></span><span class="sig-name descname"><span class="pre">get_time_from_percent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">NIa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/plot.html#get_time_from_percent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.plot.get_time_from_percent" title="Permalink to this definition">#</a></dt>
@@ -624,6 +639,7 @@ intensity.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.plot.plot_arias">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.plot.</span></span><span class="sig-name descname"><span class="pre">plot_arias</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minfontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_maximum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/plot.html#plot_arias"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.plot.plot_arias" title="Permalink to this definition">#</a></dt>
@@ -653,6 +669,7 @@ Required if axes is not None.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.plot.plot_durations">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.plot.</span></span><span class="sig-name descname"><span class="pre">plot_durations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">durations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minfontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/plot.html#plot_durations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.plot.plot_durations" title="Permalink to this definition">#</a></dt>
@@ -681,6 +698,7 @@ Required if axes is not None.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.plot.plot_moveout">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.plot.</span></span><span class="sig-name descname"><span class="pre">plot_moveout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">streams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epilat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orientation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(10,</span> <span class="pre">15)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minfontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/plot.html#plot_moveout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.plot.plot_moveout" title="Permalink to this definition">#</a></dt>
@@ -713,6 +731,7 @@ vertical space in the plot.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.plot.summary_plots">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.plot.</span></span><span class="sig-name descname"><span class="pre">summary_plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/plot.html#summary_plots"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.plot.summary_plots" title="Permalink to this definition">#</a></dt>
@@ -728,6 +747,7 @@ vertical space in the plot.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.plot.plot_oscillators">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.plot.</span></span><span class="sig-name descname"><span class="pre">plot_oscillators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.1,</span> <span class="pre">2,</span> <span class="pre">5,</span> <span class="pre">10]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/plot.html#plot_oscillators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.plot.plot_oscillators" title="Permalink to this definition">#</a></dt>
@@ -746,6 +766,7 @@ number of channels in the stream.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 </section>
 </section>

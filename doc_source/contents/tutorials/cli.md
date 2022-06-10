@@ -514,10 +514,20 @@ File type: Station map
    /Users/emthompson/gmprocess_projects/tutorial/data/nc72282711/stations_map.html
 ```
 
-```{figure} ../../_static/stations_map.png
-:height: 350px
-Example station map (PNG format).
-```
+<figure class="align-default" id="int_stn_map">
+   <iframe
+      src="../../_static/stations_map.html"
+      title="Example interactive station map"
+      style="width:100%; height:300px;"
+   ></iframe>
+
+   <figcaption>
+      <p>
+         <span class="caption-text">Example interactive station map.</span>
+         <a class="headerlink" href="#int_stn_map" title="Permalink to this image">#</a>
+      </p>
+   </figcaption>
+</figure>
 
 
 % Indices and tables

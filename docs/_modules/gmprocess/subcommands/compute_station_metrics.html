@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.subcommands.compute_station_metrics - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.subcommands.compute_station_metrics - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -488,48 +489,48 @@
 
 <span class="kn">from</span> <span class="nn">gmprocess.subcommands.lazy_loader</span> <span class="kn">import</span> <span class="n">LazyLoader</span>
 
-<span class="n">np</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"np"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"numpy"</span><span class="p">)</span>
-<span class="n">spint</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"spint"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"scipy.interpolate"</span><span class="p">)</span>
-<span class="n">gmt</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"gmt"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"mapio.gmt"</span><span class="p">)</span>
-<span class="n">ob</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"ob"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"obspy.geodetics.base"</span><span class="p">)</span>
-<span class="n">oqgeo</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"oqgeo"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"openquake.hazardlib.geo.geodetic"</span><span class="p">)</span>
-<span class="n">rupt</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"rupt"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"impactutils.rupture"</span><span class="p">)</span>
-<span class="n">ps2ff</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"ps2ff"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"ps2ff"</span><span class="p">)</span>
+<span class="n">np</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;np&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;numpy&quot;</span><span class="p">)</span>
+<span class="n">spint</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;spint&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;scipy.interpolate&quot;</span><span class="p">)</span>
+<span class="n">gmt</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;gmt&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;mapio.gmt&quot;</span><span class="p">)</span>
+<span class="n">ob</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;ob&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;obspy.geodetics.base&quot;</span><span class="p">)</span>
+<span class="n">oqgeo</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;oqgeo&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;openquake.hazardlib.geo.geodetic&quot;</span><span class="p">)</span>
+<span class="n">rupt</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;rupt&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;impactutils.rupture&quot;</span><span class="p">)</span>
+<span class="n">ps2ff</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;ps2ff&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;ps2ff&quot;</span><span class="p">)</span>
 
-<span class="n">arg_dicts</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"arg_dicts"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.arg_dicts"</span><span class="p">)</span>
-<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"base"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.base"</span><span class="p">)</span>
-<span class="n">utils</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"utils"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils"</span><span class="p">)</span>
-<span class="n">rupt_utils</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"rupt_utils"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.rupture_utils"</span><span class="p">)</span>
-<span class="n">ws</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"ws"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.io.asdf.stream_workspace"</span><span class="p">)</span>
+<span class="n">arg_dicts</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;arg_dicts&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.subcommands.arg_dicts&quot;</span><span class="p">)</span>
+<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;base&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.subcommands.base&quot;</span><span class="p">)</span>
+<span class="n">utils</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;utils&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.utils&quot;</span><span class="p">)</span>
+<span class="n">rupt_utils</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;rupt_utils&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.utils.rupture_utils&quot;</span><span class="p">)</span>
+<span class="n">ws</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;ws&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.io.asdf.stream_workspace&quot;</span><span class="p">)</span>
 <span class="n">station_summary</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span>
-    <span class="s2">"station_summary"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.metrics.station_summary"</span>
+    <span class="s2">&quot;station_summary&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.metrics.station_summary&quot;</span>
 <span class="p">)</span>
-<span class="n">confmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"confmod"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.config"</span><span class="p">)</span>
+<span class="n">confmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;confmod&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.utils.config&quot;</span><span class="p">)</span>
 
 <span class="n">M_PER_KM</span> <span class="o">=</span> <span class="mi">1000</span>
 
 
 <div class="viewcode-block" id="ComputeStationMetricsModule"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/compute_station_metrics/index.html#gmprocess.subcommands.compute_station_metrics.ComputeStationMetricsModule">[docs]</a><span class="k">class</span> <span class="nc">ComputeStationMetricsModule</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">SubcommandModule</span><span class="p">):</span>
-    <span class="sd">"""Compute station metrics."""</span>
+    <span class="sd">&quot;&quot;&quot;Compute station metrics.&quot;&quot;&quot;</span>
 
-    <span class="n">command_name</span> <span class="o">=</span> <span class="s2">"compute_station_metrics"</span>
-    <span class="n">aliases</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"sm"</span><span class="p">,)</span>
+    <span class="n">command_name</span> <span class="o">=</span> <span class="s2">&quot;compute_station_metrics&quot;</span>
+    <span class="n">aliases</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;sm&quot;</span><span class="p">,)</span>
 
     <span class="n">arguments</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"eventid"</span><span class="p">],</span>
-        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"textfile"</span><span class="p">],</span>
-        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"label"</span><span class="p">],</span>
-        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"overwrite"</span><span class="p">],</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">&quot;eventid&quot;</span><span class="p">],</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">&quot;textfile&quot;</span><span class="p">],</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">],</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">&quot;overwrite&quot;</span><span class="p">],</span>
     <span class="p">]</span>
 
 <div class="viewcode-block" id="ComputeStationMetricsModule.main"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/compute_station_metrics/index.html#gmprocess.subcommands.compute_station_metrics.ComputeStationMetricsModule.main">[docs]</a>    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gmrecords</span><span class="p">):</span>
-        <span class="sd">"""Compute station metrics.</span>
+        <span class="sd">&quot;&quot;&quot;Compute station metrics.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            gmrecords:</span>
 <span class="sd">                GMrecordsApp instance.</span>
-<span class="sd">        """</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Running subcommand '</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running subcommand &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span> <span class="o">=</span> <span class="n">gmrecords</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_arguments</span><span class="p">()</span>
@@ -542,36 +543,36 @@
 
 <div class="viewcode-block" id="ComputeStationMetricsModule._event_station_metrics"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/compute_station_metrics/index.html#gmprocess.subcommands.compute_station_metrics.ComputeStationMetricsModule._event_station_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">_event_station_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Computing station metrics for event </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">eventid</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Computing station metrics for event </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">eventid</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
         <span class="n">event_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span><span class="p">)</span>
         <span class="n">workname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span>
             <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="n">utils</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">WORKSPACE_NAME</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">workname</span><span class="p">):</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="s2">"No workspace file found for event </span><span class="si">%s</span><span class="s2">. Please run "</span>
-                <span class="s2">"subcommand 'assemble' to generate workspace file."</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span>
+                <span class="s2">&quot;No workspace file found for event </span><span class="si">%s</span><span class="s2">. Please run &quot;</span>
+                <span class="s2">&quot;subcommand &#39;assemble&#39; to generate workspace file.&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span>
             <span class="p">)</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Continuing to next event."</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Continuing to next event.&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span> <span class="o">=</span> <span class="n">ws</span><span class="o">.</span><span class="n">StreamWorkspace</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">workname</span><span class="p">)</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">dataset</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="s2">"config"</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span><span class="p">):</span>
             <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">config</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">config</span> <span class="o">=</span> <span class="n">confmod</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"vs30_grids"</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;vs30_grids&quot;</span><span class="p">):</span>
             <span class="n">vs30_grids</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">if</span> <span class="s2">"vs30"</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">"metrics"</span><span class="p">]:</span>
-                    <span class="n">vs30_grids</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"metrics"</span><span class="p">][</span><span class="s2">"vs30"</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">&quot;vs30&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">]:</span>
+                    <span class="n">vs30_grids</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;vs30&quot;</span><span class="p">]</span>
                     <span class="k">for</span> <span class="n">vs30_name</span> <span class="ow">in</span> <span class="n">vs30_grids</span><span class="p">:</span>
-                        <span class="n">vs30_grids</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">][</span><span class="s2">"grid_object"</span><span class="p">]</span> <span class="o">=</span> <span class="n">gmt</span><span class="o">.</span><span class="n">GMTGrid</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
-                            <span class="n">vs30_grids</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">][</span><span class="s2">"file"</span><span class="p">]</span>
+                        <span class="n">vs30_grids</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">][</span><span class="s2">&quot;grid_object&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gmt</span><span class="o">.</span><span class="n">GMTGrid</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+                            <span class="n">vs30_grids</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">][</span><span class="s2">&quot;file&quot;</span><span class="p">]</span>
                         <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">vs30_grids</span> <span class="o">=</span> <span class="n">vs30_grids</span>
 
@@ -583,15 +584,15 @@
         <span class="n">rupture_file</span> <span class="o">=</span> <span class="n">rupt_utils</span><span class="o">.</span><span class="n">get_rupture_file</span><span class="p">(</span><span class="n">event_dir</span><span class="p">)</span>
         <span class="n">origin</span> <span class="o">=</span> <span class="n">rupt</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">Origin</span><span class="p">(</span>
             <span class="p">{</span>
-                <span class="s2">"id"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span><span class="p">,</span>
-                <span class="s2">"netid"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-                <span class="s2">"network"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-                <span class="s2">"lat"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
-                <span class="s2">"lon"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
-                <span class="s2">"depth"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">depth_km</span><span class="p">,</span>
-                <span class="s2">"locstring"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-                <span class="s2">"mag"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-                <span class="s2">"time"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">time</span><span class="p">,</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span><span class="p">,</span>
+                <span class="s2">&quot;netid&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;network&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+                <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+                <span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">depth_km</span><span class="p">,</span>
+                <span class="s2">&quot;locstring&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;mag&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">time</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span>
@@ -607,7 +608,7 @@
                 <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">streams</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No matching streams found."</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No matching streams found.&quot;</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">:</span>
                 <span class="n">geo_tuple</span> <span class="o">=</span> <span class="n">ob</span><span class="o">.</span><span class="n">gps2dist_azimuth</span><span class="p">(</span>
@@ -658,13 +659,13 @@
                         <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span><span class="p">]),</span>
                         <span class="n">utils</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">ELEVATION_FOR_DISTANCE_CALCS</span><span class="p">,</span>
                     <span class="p">)</span>
-                    <span class="n">gc2_rx</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">"rx"</span><span class="p">]</span>
-                    <span class="n">gc2_ry</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">"ry"</span><span class="p">]</span>
-                    <span class="n">gc2_ry0</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">"ry0"</span><span class="p">]</span>
-                    <span class="n">gc2_U</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">"U"</span><span class="p">]</span>
-                    <span class="n">gc2_T</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">"T"</span><span class="p">]</span>
+                    <span class="n">gc2_rx</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">&quot;rx&quot;</span><span class="p">]</span>
+                    <span class="n">gc2_ry</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">&quot;ry&quot;</span><span class="p">]</span>
+                    <span class="n">gc2_ry0</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">&quot;ry0&quot;</span><span class="p">]</span>
+                    <span class="n">gc2_U</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">&quot;U&quot;</span><span class="p">]</span>
+                    <span class="n">gc2_T</span> <span class="o">=</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">]</span>
 
-                    <span class="c1"># If we don't have a point rupture, then back azimuth needs</span>
+                    <span class="c1"># If we don&#39;t have a point rupture, then back azimuth needs</span>
                     <span class="c1"># to be calculated to the closest point on the rupture</span>
                     <span class="n">dists</span> <span class="o">=</span> <span class="p">[]</span>
                     <span class="n">bazs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -682,7 +683,7 @@
                         <span class="n">sta_baz</span> <span class="o">=</span> <span class="n">bazs</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">dists</span><span class="p">)]</span>
 
                 <span class="n">streamid</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Calculating station metrics for </span><span class="si">{</span><span class="n">streamid</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Calculating station metrics for </span><span class="si">{</span><span class="n">streamid</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
                 <span class="n">summary</span> <span class="o">=</span> <span class="n">station_summary</span><span class="o">.</span><span class="n">StationSummary</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span>
                     <span class="n">st</span><span class="p">,</span>
                     <span class="n">event</span><span class="o">=</span><span class="n">event</span><span class="p">,</span>
@@ -694,38 +695,38 @@
                 <span class="p">)</span>
 
                 <span class="n">summary</span><span class="o">.</span><span class="n">_distances</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s2">"epicentral"</span><span class="p">:</span> <span class="n">sta_repi</span><span class="p">,</span>
-                    <span class="s2">"hypocentral"</span><span class="p">:</span> <span class="n">sta_rhyp</span><span class="p">,</span>
-                    <span class="s2">"rupture"</span><span class="p">:</span> <span class="n">rrup_mean</span><span class="p">,</span>
-                    <span class="s2">"rupture_var"</span><span class="p">:</span> <span class="n">rrup_var</span><span class="p">,</span>
-                    <span class="s2">"joyner_boore"</span><span class="p">:</span> <span class="n">rjb_mean</span><span class="p">,</span>
-                    <span class="s2">"joyner_boore_var"</span><span class="p">:</span> <span class="n">rjb_var</span><span class="p">,</span>
-                    <span class="s2">"gc2_rx"</span><span class="p">:</span> <span class="n">gc2_rx</span><span class="p">,</span>
-                    <span class="s2">"gc2_ry"</span><span class="p">:</span> <span class="n">gc2_ry</span><span class="p">,</span>
-                    <span class="s2">"gc2_ry0"</span><span class="p">:</span> <span class="n">gc2_ry0</span><span class="p">,</span>
-                    <span class="s2">"gc2_U"</span><span class="p">:</span> <span class="n">gc2_U</span><span class="p">,</span>
-                    <span class="s2">"gc2_T"</span><span class="p">:</span> <span class="n">gc2_T</span><span class="p">,</span>
+                    <span class="s2">&quot;epicentral&quot;</span><span class="p">:</span> <span class="n">sta_repi</span><span class="p">,</span>
+                    <span class="s2">&quot;hypocentral&quot;</span><span class="p">:</span> <span class="n">sta_rhyp</span><span class="p">,</span>
+                    <span class="s2">&quot;rupture&quot;</span><span class="p">:</span> <span class="n">rrup_mean</span><span class="p">,</span>
+                    <span class="s2">&quot;rupture_var&quot;</span><span class="p">:</span> <span class="n">rrup_var</span><span class="p">,</span>
+                    <span class="s2">&quot;joyner_boore&quot;</span><span class="p">:</span> <span class="n">rjb_mean</span><span class="p">,</span>
+                    <span class="s2">&quot;joyner_boore_var&quot;</span><span class="p">:</span> <span class="n">rjb_var</span><span class="p">,</span>
+                    <span class="s2">&quot;gc2_rx&quot;</span><span class="p">:</span> <span class="n">gc2_rx</span><span class="p">,</span>
+                    <span class="s2">&quot;gc2_ry&quot;</span><span class="p">:</span> <span class="n">gc2_ry</span><span class="p">,</span>
+                    <span class="s2">&quot;gc2_ry0&quot;</span><span class="p">:</span> <span class="n">gc2_ry0</span><span class="p">,</span>
+                    <span class="s2">&quot;gc2_U&quot;</span><span class="p">:</span> <span class="n">gc2_U</span><span class="p">,</span>
+                    <span class="s2">&quot;gc2_T&quot;</span><span class="p">:</span> <span class="n">gc2_T</span><span class="p">,</span>
                 <span class="p">}</span>
                 <span class="n">summary</span><span class="o">.</span><span class="n">_back_azimuth</span> <span class="o">=</span> <span class="n">sta_baz</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vs30_grids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">vs30_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vs30_grids</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                         <span class="n">tmpgrid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vs30_grids</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">]</span>
                         <span class="n">summary</span><span class="o">.</span><span class="n">_vs30</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                            <span class="s2">"value"</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">"grid_object"</span><span class="p">]</span><span class="o">.</span><span class="n">getValue</span><span class="p">(</span>
+                            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">&quot;grid_object&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">getValue</span><span class="p">(</span>
                                 <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
                                 <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
                             <span class="p">),</span>
-                            <span class="s2">"column_header"</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">"column_header"</span><span class="p">],</span>
-                            <span class="s2">"readme_entry"</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">"readme_entry"</span><span class="p">],</span>
-                            <span class="s2">"units"</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">"units"</span><span class="p">],</span>
+                            <span class="s2">&quot;column_header&quot;</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">&quot;column_header&quot;</span><span class="p">],</span>
+                            <span class="s2">&quot;readme_entry&quot;</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">&quot;readme_entry&quot;</span><span class="p">],</span>
+                            <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">],</span>
                         <span class="p">}</span>
 
                 <span class="n">xmlstr</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">get_station_xml</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">"read"</span><span class="p">][</span><span class="s2">"use_streamcollection"</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;read&quot;</span><span class="p">][</span><span class="s2">&quot;use_streamcollection&quot;</span><span class="p">]:</span>
                     <span class="n">chancode</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">get_inst</span><span class="p">()</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">chancode</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span>
-                <span class="n">metricpath</span> <span class="o">=</span> <span class="s2">"/"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">metricpath</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
                     <span class="p">[</span>
                         <span class="n">ws</span><span class="o">.</span><span class="n">format_netsta</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="p">),</span>
                         <span class="n">ws</span><span class="o">.</span><span class="n">format_nslit</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="p">,</span> <span class="n">chancode</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span><span class="p">),</span>
@@ -733,13 +734,13 @@
                 <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">insert_aux</span><span class="p">(</span>
                     <span class="n">xmlstr</span><span class="p">,</span>
-                    <span class="s2">"StationMetrics"</span><span class="p">,</span>
+                    <span class="s2">&quot;StationMetrics&quot;</span><span class="p">,</span>
                     <span class="n">metricpath</span><span class="p">,</span>
                     <span class="n">overwrite</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">overwrite</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                    <span class="s2">"Added station metrics to workspace files "</span>
-                    <span class="s2">"with tag '</span><span class="si">%s</span><span class="s2">'."</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">label</span>
+                    <span class="s2">&quot;Added station metrics to workspace files &quot;</span>
+                    <span class="s2">&quot;with tag &#39;</span><span class="si">%s</span><span class="s2">&#39;.&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">label</span>
                 <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -774,14 +775,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">rjb_spline</span> <span class="o">=</span> <span class="n">spint</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span>
             <span class="n">repi</span><span class="p">,</span>
             <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">Rjb_hat</span><span class="p">,</span> <span class="n">Rjb_var</span><span class="p">)),</span>
-            <span class="n">kind</span><span class="o">=</span><span class="s2">"linear"</span><span class="p">,</span>
+            <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span>
             <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">assume_sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rrup_spline</span> <span class="o">=</span> <span class="n">spint</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span>
             <span class="n">repi</span><span class="p">,</span>
             <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">Rrup_hat</span><span class="p">,</span> <span class="n">Rrup_var</span><span class="p">)),</span>
-            <span class="n">kind</span><span class="o">=</span><span class="s2">"linear"</span><span class="p">,</span>
+            <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span>
             <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">assume_sorted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span></div></div>

@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.bin.gminfo - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.bin.gminfo - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -494,37 +495,37 @@
 <span class="kn">from</span> <span class="nn">gmprocess.subcommands.lazy_loader</span> <span class="kn">import</span> <span class="n">LazyLoader</span>
 
 <span class="c1"># third party imports</span>
-<span class="n">pd</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"pd"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"pandas"</span><span class="p">)</span>
+<span class="n">pd</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;pd&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;pandas&quot;</span><span class="p">)</span>
 
 <span class="c1"># local imports</span>
-<span class="n">readmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"readmod"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.io.read"</span><span class="p">)</span>
-<span class="n">argmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"argmod"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.args"</span><span class="p">)</span>
-<span class="n">stationtrace</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"stationtrace"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.core.stationtrace"</span><span class="p">)</span>
-<span class="n">confmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"confmod"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.config"</span><span class="p">)</span>
+<span class="n">readmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;readmod&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.io.read&quot;</span><span class="p">)</span>
+<span class="n">argmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;argmod&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.utils.args&quot;</span><span class="p">)</span>
+<span class="n">stationtrace</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;stationtrace&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.core.stationtrace&quot;</span><span class="p">)</span>
+<span class="n">confmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;confmod&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.utils.config&quot;</span><span class="p">)</span>
 
 
 <span class="n">COLUMNS</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">"Filename"</span><span class="p">,</span>
-    <span class="s2">"Format"</span><span class="p">,</span>
-    <span class="s2">"Process Level"</span><span class="p">,</span>
-    <span class="s2">"Start Time"</span><span class="p">,</span>
-    <span class="s2">"End Time"</span><span class="p">,</span>
-    <span class="s2">"Duration (s)"</span><span class="p">,</span>
-    <span class="s2">"Network"</span><span class="p">,</span>
-    <span class="s2">"Station"</span><span class="p">,</span>
-    <span class="s2">"Channel"</span><span class="p">,</span>
-    <span class="s2">"Sampling Rate (Hz)"</span><span class="p">,</span>
-    <span class="s2">"Latitude"</span><span class="p">,</span>
-    <span class="s2">"Longitude"</span><span class="p">,</span>
+    <span class="s2">&quot;Filename&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Format&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Process Level&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Start Time&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;End Time&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Duration (s)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Network&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Station&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Channel&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Sampling Rate (Hz)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Latitude&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Longitude&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="n">ERROR_COLUMNS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Filename"</span><span class="p">,</span> <span class="s2">"Error"</span><span class="p">]</span>
+<span class="n">ERROR_COLUMNS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Filename&quot;</span><span class="p">,</span> <span class="s2">&quot;Error&quot;</span><span class="p">]</span>
 
 <span class="n">REV_PROCESS_LEVELS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"raw counts"</span><span class="p">:</span> <span class="s2">"V0"</span><span class="p">,</span>
-    <span class="s2">"uncorrected physical units"</span><span class="p">:</span> <span class="s2">"V1"</span><span class="p">,</span>
-    <span class="s2">"corrected physical units"</span><span class="p">:</span> <span class="s2">"V2"</span><span class="p">,</span>
-    <span class="s2">"derived time series"</span><span class="p">:</span> <span class="s2">"V3"</span><span class="p">,</span>
+    <span class="s2">&quot;raw counts&quot;</span><span class="p">:</span> <span class="s2">&quot;V0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;uncorrected physical units&quot;</span><span class="p">:</span> <span class="s2">&quot;V1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;corrected physical units&quot;</span><span class="p">:</span> <span class="s2">&quot;V2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;derived time series&quot;</span><span class="p">:</span> <span class="s2">&quot;V3&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 
 
@@ -533,20 +534,20 @@
     <span class="n">row</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">COLUMNS</span><span class="p">)</span>
     <span class="n">fpath</span><span class="p">,</span> <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
-        <span class="n">row</span><span class="p">[</span><span class="s2">"Filename"</span><span class="p">]</span> <span class="o">=</span> <span class="n">filename</span>
-        <span class="n">row</span><span class="p">[</span><span class="s2">"Format"</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"source_format"</span><span class="p">]</span>
-        <span class="n">plevel</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"process_level"</span><span class="p">]</span>
-        <span class="n">row</span><span class="p">[</span><span class="s2">"Process Level"</span><span class="p">]</span> <span class="o">=</span> <span class="n">REV_PROCESS_LEVELS</span><span class="p">[</span><span class="n">plevel</span><span class="p">]</span>
-        <span class="n">row</span><span class="p">[</span><span class="s2">"Start Time"</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span>
-        <span class="n">row</span><span class="p">[</span><span class="s2">"End Time"</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Filename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;source_format&quot;</span><span class="p">]</span>
+        <span class="n">plevel</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;process_level&quot;</span><span class="p">]</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Process Level&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">REV_PROCESS_LEVELS</span><span class="p">[</span><span class="n">plevel</span><span class="p">]</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Start Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;End Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span>
         <span class="n">dt</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span> <span class="o">-</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span>
-        <span class="n">row</span><span class="p">[</span><span class="s2">"Duration (s)"</span><span class="p">]</span> <span class="o">=</span> <span class="n">dt</span>
-        <span class="n">row</span><span class="p">[</span><span class="s2">"Network"</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span>
-        <span class="n">row</span><span class="p">[</span><span class="s2">"Station"</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span>
-        <span class="n">row</span><span class="p">[</span><span class="s2">"Channel"</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span>
-        <span class="n">row</span><span class="p">[</span><span class="s2">"Sampling Rate (Hz)"</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span>
-        <span class="n">row</span><span class="p">[</span><span class="s2">"Latitude"</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s2">"latitude"</span><span class="p">]</span>
-        <span class="n">row</span><span class="p">[</span><span class="s2">"Longitude"</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s2">"longitude"</span><span class="p">]</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Duration (s)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dt</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Network&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Station&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Channel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Sampling Rate (Hz)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Latitude&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">]</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Longitude&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">]</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">df</span></div>
@@ -559,7 +560,7 @@
     <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
         <span class="n">fpath</span><span class="p">,</span> <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">fpath</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">folders</span><span class="p">:</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Parsing files from subfolder </span><span class="si">{</span><span class="n">fpath</span><span class="si">}</span><span class="s2">...</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parsing files from subfolder </span><span class="si">{</span><span class="n">fpath</span><span class="si">}</span><span class="s2">...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">folders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fpath</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">streams</span> <span class="o">=</span> <span class="n">readmod</span><span class="o">.</span><span class="n">read_data</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -568,13 +569,13 @@
                 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="p">,</span> <span class="n">tdf</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">row</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">ERROR_COLUMNS</span><span class="p">)</span>
-            <span class="n">row</span><span class="p">[</span><span class="s2">"Filename"</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-            <span class="n">row</span><span class="p">[</span><span class="s2">"Error"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Filename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="n">errors</span> <span class="o">=</span> <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">continue</span>
 
     <span class="c1"># organize dataframe by network, station, and channel</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s2">"Network"</span><span class="p">,</span> <span class="s2">"Station"</span><span class="p">,</span> <span class="s2">"Channel"</span><span class="p">])</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s2">&quot;Network&quot;</span><span class="p">,</span> <span class="s2">&quot;Station&quot;</span><span class="p">,</span> <span class="s2">&quot;Channel&quot;</span><span class="p">])</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">save</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 
@@ -606,20 +607,20 @@
             <span class="n">stream</span> <span class="o">=</span> <span class="n">readmod</span><span class="o">.</span><span class="n">read_data</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">config</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">stats</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span>
             <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">stats</span><span class="p">[</span><span class="s2">"coordinates"</span><span class="p">][</span><span class="s2">"latitude"</span><span class="p">],</span>
-                <span class="n">stats</span><span class="p">[</span><span class="s2">"coordinates"</span><span class="p">][</span><span class="s2">"longitude"</span><span class="p">],</span>
-                <span class="n">stats</span><span class="p">[</span><span class="s2">"coordinates"</span><span class="p">][</span><span class="s2">"elevation"</span><span class="p">],</span>
+                <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="s2">&quot;latitude&quot;</span><span class="p">],</span>
+                <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="s2">&quot;longitude&quot;</span><span class="p">],</span>
+                <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="s2">&quot;elevation&quot;</span><span class="p">],</span>
             <span class="p">)</span>
-            <span class="n">locstr</span> <span class="o">=</span> <span class="s2">"Lat: </span><span class="si">%.4f</span><span class="s2"> Lon: </span><span class="si">%.4f</span><span class="s2"> Elev: </span><span class="si">%.1f</span><span class="s2">"</span> <span class="o">%</span> <span class="n">tpl</span>
+            <span class="n">locstr</span> <span class="o">=</span> <span class="s2">&quot;Lat: </span><span class="si">%.4f</span><span class="s2"> Lon: </span><span class="si">%.4f</span><span class="s2"> Elev: </span><span class="si">%.1f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">tpl</span>
             <span class="n">mydict</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
                 <span class="p">[</span>
-                    <span class="p">(</span><span class="s2">"Filename"</span><span class="p">,</span> <span class="n">fname</span><span class="p">),</span>
-                    <span class="p">(</span><span class="s2">"Format"</span><span class="p">,</span> <span class="n">fmt</span><span class="p">),</span>
-                    <span class="p">(</span><span class="s2">"Station"</span><span class="p">,</span> <span class="n">stats</span><span class="p">[</span><span class="s2">"station"</span><span class="p">]),</span>
-                    <span class="p">(</span><span class="s2">"Network"</span><span class="p">,</span> <span class="n">stats</span><span class="p">[</span><span class="s2">"network"</span><span class="p">]),</span>
-                    <span class="p">(</span><span class="s2">"Source"</span><span class="p">,</span> <span class="n">stats</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"source"</span><span class="p">]),</span>
-                    <span class="p">(</span><span class="s2">"Location"</span><span class="p">,</span> <span class="n">stats</span><span class="p">[</span><span class="s2">"location"</span><span class="p">]),</span>
-                    <span class="p">(</span><span class="s2">"Coordinates"</span><span class="p">,</span> <span class="n">locstr</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s2">&quot;Filename&quot;</span><span class="p">,</span> <span class="n">fname</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s2">&quot;Format&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s2">&quot;Station&quot;</span><span class="p">,</span> <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]),</span>
+                    <span class="p">(</span><span class="s2">&quot;Network&quot;</span><span class="p">,</span> <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">]),</span>
+                    <span class="p">(</span><span class="s2">&quot;Source&quot;</span><span class="p">,</span> <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;source&quot;</span><span class="p">]),</span>
+                    <span class="p">(</span><span class="s2">&quot;Location&quot;</span><span class="p">,</span> <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">]),</span>
+                    <span class="p">(</span><span class="s2">&quot;Coordinates&quot;</span><span class="p">,</span> <span class="n">locstr</span><span class="p">),</span>
                 <span class="p">]</span>
             <span class="p">)</span>
             <span class="nb">print</span><span class="p">()</span>
@@ -628,38 +629,38 @@
             <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
                 <span class="n">channel</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
                 <span class="n">stats</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span>
-                <span class="n">channel</span><span class="p">[</span><span class="s2">"Channel"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">]</span>
-                <span class="n">channel</span><span class="p">[</span><span class="s2">"Start Time"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[</span><span class="s2">"starttime"</span><span class="p">]</span>
-                <span class="n">channel</span><span class="p">[</span><span class="s2">"End Time"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[</span><span class="s2">"endtime"</span><span class="p">]</span>
-                <span class="n">channel</span><span class="p">[</span><span class="s2">"Number of Points"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span>
-                <span class="n">channel</span><span class="p">[</span><span class="s2">"Units"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"units"</span><span class="p">]</span>
-                <span class="n">channel</span><span class="p">[</span><span class="s2">"Peak Value"</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+                <span class="n">channel</span><span class="p">[</span><span class="s2">&quot;Channel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span>
+                <span class="n">channel</span><span class="p">[</span><span class="s2">&quot;Start Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;starttime&quot;</span><span class="p">]</span>
+                <span class="n">channel</span><span class="p">[</span><span class="s2">&quot;End Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;endtime&quot;</span><span class="p">]</span>
+                <span class="n">channel</span><span class="p">[</span><span class="s2">&quot;Number of Points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]</span>
+                <span class="n">channel</span><span class="p">[</span><span class="s2">&quot;Units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;units&quot;</span><span class="p">]</span>
+                <span class="n">channel</span><span class="p">[</span><span class="s2">&quot;Peak Value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
                 <span class="nb">print</span><span class="p">()</span>
                 <span class="n">chstr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
-                <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"</span><span class="se">\t</span><span class="s2">"</span> <span class="o">+</span> <span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">chstr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)]</span>
-                <span class="n">chstr</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+                <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">chstr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)]</span>
+                <span class="n">chstr</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">chstr</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">row</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">ERROR_COLUMNS</span><span class="p">)</span>
-            <span class="n">row</span><span class="p">[</span><span class="s2">"Filename"</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
-            <span class="n">row</span><span class="p">[</span><span class="s2">"Error"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Filename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;Error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="n">errors</span> <span class="o">=</span> <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">continue</span>
     <span class="k">return</span> <span class="n">errors</span></div>
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../autoapi/gmprocess/bin/gminfo/index.html#gmprocess.bin.gminfo.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">description</span> <span class="o">=</span> <span class="s2">"""Display summary information about a file, multiple files,</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Display summary information about a file, multiple files,</span>
 <span class="s2">    or directories of files containing strong motion data in the supported</span>
 <span class="s2">    formats.</span>
 <span class="s2">    Use the -p option to print errors for files that could not be read.</span>
 <span class="s2">    Use the -s option to save summary data AND errors to Excel/CSV format.</span>
-<span class="s2">    ."""</span>
+<span class="s2">    .&quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s2">"files_or_dir"</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">"+"</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"Files or directory to inspect."</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span>
+        <span class="s2">&quot;files_or_dir&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Files or directory to inspect.&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span>
     <span class="p">)</span>
-    <span class="n">chelp</span> <span class="o">=</span> <span class="s2">"""Print out results in concise CSV form. Columns are:</span>
+    <span class="n">chelp</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Print out results in concise CSV form. Columns are:</span>
 <span class="s2">    Filename</span>
 <span class="s2">    Format</span>
 <span class="s2">    Process Level</span>
@@ -673,14 +674,14 @@
 <span class="s2">    Sampling rate</span>
 <span class="s2">    Latitude</span>
 <span class="s2">    Longitude</span>
-<span class="s2">    """</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"-c"</span><span class="p">,</span> <span class="s2">"--concise"</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">"store_true"</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="n">chelp</span><span class="p">)</span>
-    <span class="n">shelp</span> <span class="o">=</span> <span class="s2">"""Save concise results to CSV/Excel file</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="s2">&quot;--concise&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="n">chelp</span><span class="p">)</span>
+    <span class="n">shelp</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Save concise results to CSV/Excel file</span>
 <span class="s2">    (format determined by extension (.xlsx for Excel, anything else for CSV.))</span>
-<span class="s2">    """</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"-s"</span><span class="p">,</span> <span class="s2">"--save"</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">"OUTFILE"</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="n">shelp</span><span class="p">)</span>
-    <span class="n">phelp</span> <span class="o">=</span> <span class="s2">"Print error log containing files that could not be parsed."</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--quiet-errors"</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">"store_true"</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="n">phelp</span><span class="p">)</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--save&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;OUTFILE&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="n">shelp</span><span class="p">)</span>
+    <span class="n">phelp</span> <span class="o">=</span> <span class="s2">&quot;Print error log containing files that could not be parsed.&quot;</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--quiet-errors&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="n">phelp</span><span class="p">)</span>
     <span class="c1"># Shared arguments</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argmod</span><span class="o">.</span><span class="n">add_shared_args</span><span class="p">(</span><span class="n">parser</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -689,23 +690,23 @@
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">concise</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">save</span><span class="p">:</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s2">"""</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">        ****************************************************************</span>
 <span class="s2">        Saving verbose output is not supported. Use -c and -s</span>
 <span class="s2">        options together to save tabular summary/error information about</span>
 <span class="s2">        the data.</span>
 <span class="s2">        ****************************************************************</span>
-<span class="s2">        """</span>
+<span class="s2">        &quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="n">msg</span><span class="p">))</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">)</span>
-    <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">"ignore"</span><span class="p">)</span>
-    <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.max_columns"</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
-    <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.max_colwidth"</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
-    <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.expand_frame_repr"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_columns&quot;</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.max_colwidth&quot;</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">&quot;display.expand_frame_repr&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
     <span class="n">files</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">files_or_dir</span>
     <span class="n">do_save</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">save</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -715,10 +716,10 @@
             <span class="n">df</span><span class="p">,</span> <span class="n">errors</span> <span class="o">=</span> <span class="n">render_dir</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">concise</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">concise</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="n">do_save</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">save</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">concise</span><span class="p">:</span>
                 <span class="n">fbase</span><span class="p">,</span> <span class="n">fext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">save</span><span class="p">)</span>
-                <span class="n">errfile</span> <span class="o">=</span> <span class="n">fbase</span> <span class="o">+</span> <span class="s2">"_errors"</span> <span class="o">+</span> <span class="n">fext</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Catalog written to </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">save</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Errors written to </span><span class="si">{</span><span class="n">errfile</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">fext</span> <span class="o">==</span> <span class="s2">".xlsx"</span><span class="p">:</span>
+                <span class="n">errfile</span> <span class="o">=</span> <span class="n">fbase</span> <span class="o">+</span> <span class="s2">&quot;_errors&quot;</span> <span class="o">+</span> <span class="n">fext</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Catalog written to </span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">save</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Errors written to </span><span class="si">{</span><span class="n">errfile</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">fext</span> <span class="o">==</span> <span class="s2">&quot;.xlsx&quot;</span><span class="p">:</span>
                     <span class="n">df</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">save</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
                     <span class="n">errors</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">errfile</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -731,7 +732,7 @@
         <span class="n">df</span><span class="p">,</span> <span class="n">errors</span> <span class="o">=</span> <span class="n">render_concise</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="n">do_save</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">save</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">fbase</span><span class="p">,</span> <span class="n">fext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">save</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">fext</span> <span class="o">==</span> <span class="s2">".xlsx"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">fext</span> <span class="o">==</span> <span class="s2">&quot;.xlsx&quot;</span><span class="p">:</span>
                 <span class="n">df</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">save</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">save</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -742,7 +743,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="n">errors</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span></div>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
         </article>

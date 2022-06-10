@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.waveform_processing" href="../../waveform_processing/index.html" /><link rel="prev" title="gmprocess.utils.test_utils" href="../test_utils/index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.utils.usgs_id_cross_reference - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.utils.usgs_id_cross_reference - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -486,54 +487,57 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.cross_reference_to_usgs_id" title="gmprocess.utils.usgs_id_cross_reference.cross_reference_to_usgs_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_reference_to_usgs_id</span></code></a>(project_name, eqids, mags, times, lats, lons)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.cross_reference_to_usgs_id" title="gmprocess.utils.usgs_id_cross_reference.cross_reference_to_usgs_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_reference_to_usgs_id</span></code></a>(project_name, eqids, mags, times, lats, lons)</p></td>
 <td><p>Look for potential event matches for events in data and return</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.match_to_usgs_id" title="gmprocess.utils.usgs_id_cross_reference.match_to_usgs_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">match_to_usgs_id</span></code></a>(eqids, mags, times, lats, lons)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.match_to_usgs_id" title="gmprocess.utils.usgs_id_cross_reference.match_to_usgs_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">match_to_usgs_id</span></code></a>(eqids, mags, times, lats, lons)</p></td>
 <td><p>Look for potential event matches for events in data and return a</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.get_magnitude_range" title="gmprocess.utils.usgs_id_cross_reference.get_magnitude_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_magnitude_range</span></code></a>(magnitudes)</p></td>
 <td><p>Determine magnitude span of events trying to be matched.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.parse_by_magnitude" title="gmprocess.utils.usgs_id_cross_reference.parse_by_magnitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_by_magnitude</span></code></a>(eqids, magnitudes, mag_range, event_matches)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.parse_by_magnitude" title="gmprocess.utils.usgs_id_cross_reference.parse_by_magnitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_by_magnitude</span></code></a>(eqids, magnitudes, mag_range, event_matches)</p></td>
 <td><p>Calculate the percentage of events in dataset that were matched with</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.plot_match_rate_by_mag" title="gmprocess.utils.usgs_id_cross_reference.plot_match_rate_by_mag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_match_rate_by_mag</span></code></a>(project_name, mag_range, mag_rates)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.plot_match_rate_by_mag" title="gmprocess.utils.usgs_id_cross_reference.plot_match_rate_by_mag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_match_rate_by_mag</span></code></a>(project_name, mag_range, mag_rates)</p></td>
 <td><p>Plot event match rate by magnitude.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.write_summary" title="gmprocess.utils.usgs_id_cross_reference.write_summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_summary</span></code></a>(project_name, event_matches)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.write_summary" title="gmprocess.utils.usgs_id_cross_reference.write_summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_summary</span></code></a>(project_name, event_matches)</p></td>
 <td><p>Write cross-referenced target event and USGS event attributes</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.set_target" title="gmprocess.utils.usgs_id_cross_reference.set_target"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_target</span></code></a>(mag, time, lat, lon)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.set_target" title="gmprocess.utils.usgs_id_cross_reference.set_target"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_target</span></code></a>(mag, time, lat, lon)</p></td>
 <td><p>Map time, mag, and location values of target event to a dictionary.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.set_buffer" title="gmprocess.utils.usgs_id_cross_reference.set_buffer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_buffer</span></code></a>(target)</p></td>
 <td><p>Map time, mag, and distance buffers for event query and error</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.find_events" title="gmprocess.utils.usgs_id_cross_reference.find_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_events</span></code></a>(target, buffer)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.find_events" title="gmprocess.utils.usgs_id_cross_reference.find_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_events</span></code></a>(target, buffer)</p></td>
 <td><p>Libcomcat query for potential matching events to the target.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.calculate_error" title="gmprocess.utils.usgs_id_cross_reference.calculate_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_error</span></code></a>(event, buffer, target)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.calculate_error" title="gmprocess.utils.usgs_id_cross_reference.calculate_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_error</span></code></a>(event, buffer, target)</p></td>
 <td><p>Find the squared distance, time, and magnitude error between a event</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.match_percentage" title="gmprocess.utils.usgs_id_cross_reference.match_percentage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">match_percentage</span></code></a>(eqids, event_matches)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.match_percentage" title="gmprocess.utils.usgs_id_cross_reference.match_percentage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">match_percentage</span></code></a>(eqids, event_matches)</p></td>
 <td><p>Calculate the percentage of events in dataset that were matched with</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.usgs_id_cross_reference.DELTA_MAG" title="gmprocess.utils.usgs_id_cross_reference.DELTA_MAG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DELTA_MAG</span></code></a></p></td>
@@ -552,27 +556,33 @@
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.utils.usgs_id_cross_reference.DELTA_MAG">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.usgs_id_cross_reference.</span></span><span class="sig-name descname"><span class="pre">DELTA_MAG</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">0.5</span></em><a class="headerlink" href="#gmprocess.utils.usgs_id_cross_reference.DELTA_MAG" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.utils.usgs_id_cross_reference.DELTA_HOUR">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.usgs_id_cross_reference.</span></span><span class="sig-name descname"><span class="pre">DELTA_HOUR</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">12</span></em><a class="headerlink" href="#gmprocess.utils.usgs_id_cross_reference.DELTA_HOUR" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.utils.usgs_id_cross_reference.DIST_SCALER">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.usgs_id_cross_reference.</span></span><span class="sig-name descname"><span class="pre">DIST_SCALER</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">20</span></em><a class="headerlink" href="#gmprocess.utils.usgs_id_cross_reference.DIST_SCALER" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.utils.usgs_id_cross_reference.COORD_KM_SCALER">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.usgs_id_cross_reference.</span></span><span class="sig-name descname"><span class="pre">COORD_KM_SCALER</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">0.009</span></em><a class="headerlink" href="#gmprocess.utils.usgs_id_cross_reference.COORD_KM_SCALER" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.utils.usgs_id_cross_reference.ERROR_THRESH">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.usgs_id_cross_reference.</span></span><span class="sig-name descname"><span class="pre">ERROR_THRESH</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">1.0</span></em><a class="headerlink" href="#gmprocess.utils.usgs_id_cross_reference.ERROR_THRESH" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.usgs_id_cross_reference.cross_reference_to_usgs_id">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.usgs_id_cross_reference.</span></span><span class="sig-name descname"><span class="pre">cross_reference_to_usgs_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eqids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mags</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lons</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/usgs_id_cross_reference.html#cross_reference_to_usgs_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.usgs_id_cross_reference.cross_reference_to_usgs_id" title="Permalink to this definition">#</a></dt>
@@ -592,6 +602,7 @@ lowest error.
 :param lons: Longitudes of target events to be cross-referenced.
 :type lons: np.array</p>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.usgs_id_cross_reference.match_to_usgs_id">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.usgs_id_cross_reference.</span></span><span class="sig-name descname"><span class="pre">match_to_usgs_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eqids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mags</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lons</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/usgs_id_cross_reference.html#match_to_usgs_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.usgs_id_cross_reference.match_to_usgs_id" title="Permalink to this definition">#</a></dt>
@@ -618,6 +629,7 @@ of matching USGS ID and event attributes.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.usgs_id_cross_reference.get_magnitude_range">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.usgs_id_cross_reference.</span></span><span class="sig-name descname"><span class="pre">get_magnitude_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">magnitudes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/usgs_id_cross_reference.html#get_magnitude_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.usgs_id_cross_reference.get_magnitude_range" title="Permalink to this definition">#</a></dt>
@@ -633,6 +645,7 @@ of matching USGS ID and event attributes.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.usgs_id_cross_reference.parse_by_magnitude">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.usgs_id_cross_reference.</span></span><span class="sig-name descname"><span class="pre">parse_by_magnitude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eqids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnitudes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mag_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_matches</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/usgs_id_cross_reference.html#parse_by_magnitude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.usgs_id_cross_reference.parse_by_magnitude" title="Permalink to this definition">#</a></dt>
@@ -657,6 +670,7 @@ a corresponding USGS event and ID by magnitude.
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.usgs_id_cross_reference.plot_match_rate_by_mag">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.usgs_id_cross_reference.</span></span><span class="sig-name descname"><span class="pre">plot_match_rate_by_mag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mag_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mag_rates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/usgs_id_cross_reference.html#plot_match_rate_by_mag"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.usgs_id_cross_reference.plot_match_rate_by_mag" title="Permalink to this definition">#</a></dt>
@@ -668,6 +682,7 @@ a corresponding USGS event and ID by magnitude.
 :param mag_rates: List of percentages of events matched by magnitude.
 :type mag_rates: list</p>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.usgs_id_cross_reference.write_summary">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.usgs_id_cross_reference.</span></span><span class="sig-name descname"><span class="pre">write_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_matches</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/usgs_id_cross_reference.html#write_summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.usgs_id_cross_reference.write_summary" title="Permalink to this definition">#</a></dt>
@@ -682,6 +697,7 @@ to excel file.
 <dl class="field-list simple">
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.usgs_id_cross_reference.set_target">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.usgs_id_cross_reference.</span></span><span class="sig-name descname"><span class="pre">set_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/usgs_id_cross_reference.html#set_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.usgs_id_cross_reference.set_target" title="Permalink to this definition">#</a></dt>
@@ -704,6 +720,7 @@ time, and location values.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.usgs_id_cross_reference.set_buffer">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.usgs_id_cross_reference.</span></span><span class="sig-name descname"><span class="pre">set_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/usgs_id_cross_reference.html#set_buffer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.usgs_id_cross_reference.set_buffer" title="Permalink to this definition">#</a></dt>
@@ -723,6 +740,7 @@ and distance buffers.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.usgs_id_cross_reference.find_events">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.usgs_id_cross_reference.</span></span><span class="sig-name descname"><span class="pre">find_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/usgs_id_cross_reference.html#find_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.usgs_id_cross_reference.find_events" title="Permalink to this definition">#</a></dt>
@@ -744,6 +762,7 @@ and distance buffers.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.usgs_id_cross_reference.calculate_error">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.usgs_id_cross_reference.</span></span><span class="sig-name descname"><span class="pre">calculate_error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/usgs_id_cross_reference.html#calculate_error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.usgs_id_cross_reference.calculate_error" title="Permalink to this definition">#</a></dt>
@@ -767,6 +786,7 @@ between the proposed matching event and the target event.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.usgs_id_cross_reference.match_percentage">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.usgs_id_cross_reference.</span></span><span class="sig-name descname"><span class="pre">match_percentage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eqids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_matches</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/usgs_id_cross_reference.html#match_percentage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.usgs_id_cross_reference.match_percentage" title="Permalink to this definition">#</a></dt>
@@ -787,6 +807,7 @@ a corresponding USGS event and ID.
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 </section>
 </section>

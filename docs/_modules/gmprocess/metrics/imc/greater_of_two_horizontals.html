@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.metrics.imc.greater_of_two_horizontals - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.metrics.imc.greater_of_two_horizontals - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -488,16 +489,16 @@
 
 
 <div class="viewcode-block" id="Greater_Of_Two_Horizontals"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/imc/greater_of_two_horizontals/index.html#gmprocess.metrics.imc.greater_of_two_horizontals.Greater_Of_Two_Horizontals">[docs]</a><span class="k">class</span> <span class="nc">Greater_Of_Two_Horizontals</span><span class="p">(</span><span class="n">IMC</span><span class="p">):</span>
-    <span class="sd">"""Class defining steps and invalid imts, for greater of two horizontals."""</span>
+    <span class="sd">&quot;&quot;&quot;Class defining steps and invalid imts, for greater of two horizontals.&quot;&quot;&quot;</span>
 
     <span class="c1"># making invalid IMTs a class variable because</span>
-    <span class="c1"># 1) it doesn't change with instances</span>
+    <span class="c1"># 1) it doesn&#39;t change with instances</span>
     <span class="c1"># 2) information can now be retrieved without</span>
     <span class="c1">#    instantiating first</span>
     <span class="n">_invalid_imts</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imc</span><span class="p">,</span> <span class="n">imt</span><span class="p">,</span> <span class="n">percentile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            imc (string):</span>
 <span class="sd">                Intensity measurement component.</span>
@@ -509,12 +510,12 @@
 <span class="sd">            period (float):</span>
 <span class="sd">                Period for fourier amplitude spectra and spectral amplitudes.</span>
 <span class="sd">                Default is None. Not used by greater of two horizontals.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">imc</span><span class="p">,</span> <span class="n">imt</span><span class="p">,</span> <span class="n">percentile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">"Rotation"</span><span class="p">:</span> <span class="s2">"null_rotation"</span><span class="p">,</span>
-            <span class="s2">"Combination1"</span><span class="p">:</span> <span class="s2">"null_combination"</span><span class="p">,</span>
-            <span class="s2">"Combination2"</span><span class="p">:</span> <span class="s2">"greater_of_two_horizontals"</span><span class="p">,</span>
+            <span class="s2">&quot;Rotation&quot;</span><span class="p">:</span> <span class="s2">&quot;null_rotation&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Combination1&quot;</span><span class="p">:</span> <span class="s2">&quot;null_combination&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Combination2&quot;</span><span class="p">:</span> <span class="s2">&quot;greater_of_two_horizontals&quot;</span><span class="p">,</span>
         <span class="p">}</span></div>
 </pre></div>
         </article>

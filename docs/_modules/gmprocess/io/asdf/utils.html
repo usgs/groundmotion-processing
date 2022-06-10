@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.asdf.utils - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.io.asdf.utils - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -480,31 +481,31 @@
         </div>
         <article role="main">
           <h1>Source code for gmprocess.io.asdf.utils</h1><div class="highlight"><pre>
-<span></span><span class="sd">"""Utilities for simple operations on an ASDF workspace.</span>
-<span class="sd">"""</span>
+<span></span><span class="sd">&quot;&quot;&quot;Utilities for simple operations on an ASDF workspace.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># third party imports</span>
 <span class="kn">import</span> <span class="nn">h5py</span>
 
 
 <div class="viewcode-block" id="TallyStorage"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/asdf/utils/index.html#gmprocess.io.asdf.utils.TallyStorage">[docs]</a><span class="k">class</span> <span class="nc">TallyStorage</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">"""Tally storage used within each group."""</span>
+    <span class="sd">&quot;&quot;&quot;Tally storage used within each group.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_detail</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Constructor.</span>
+        <span class="sd">&quot;&quot;&quot;Constructor.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            group_detail (list):</span>
 <span class="sd">                List of group names for which to tally subgroups and</span>
 <span class="sd">                datasets. By default only the storage is only reported</span>
 <span class="sd">                for the top-level groups.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">group_detail</span> <span class="o">=</span> <span class="n">group_detail</span> <span class="k">if</span> <span class="n">group_detail</span> <span class="k">else</span> <span class="p">[]</span>
         <span class="k">return</span>
 
 <div class="viewcode-block" id="TallyStorage.compute_dataset_storage"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/asdf/utils/index.html#gmprocess.io.asdf.utils.TallyStorage.compute_dataset_storage">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">compute_dataset_storage</span><span class="p">(</span><span class="n">dataset</span><span class="p">):</span>
-        <span class="sd">"""Compute the storage used by a dataset.</span>
+        <span class="sd">&quot;&quot;&quot;Compute the storage used by a dataset.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            dataset (h5py.Dataset):</span>
@@ -513,12 +514,12 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            int:</span>
 <span class="sd">                Storage of dataset in bytes.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">dataset</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="n">dataset</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">itemsize</span></div>
 
 <div class="viewcode-block" id="TallyStorage.compute_storage"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/asdf/utils/index.html#gmprocess.io.asdf.utils.TallyStorage.compute_storage">[docs]</a>    <span class="k">def</span> <span class="nf">compute_storage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">store_subtotals</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">"""Compute the storage for a group of items. By default only the total</span>
+        <span class="sd">&quot;&quot;&quot;Compute the storage for a group of items. By default only the total</span>
 <span class="sd">        storage is stored.</span>
 
 <span class="sd">        Args:</span>
@@ -534,7 +535,7 @@
 
 <span class="sd">            dict:</span>
 <span class="sd">                Dictionary of storage for items.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">subtotal_bytes</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">storage</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
@@ -544,17 +545,17 @@
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="n">store_subtotals</span><span class="p">:</span>
                     <span class="n">storage</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                        <span class="s2">"total_bytes"</span><span class="p">:</span> <span class="n">item_bytes</span><span class="p">,</span>
-                        <span class="s2">"groups"</span><span class="p">:</span> <span class="n">item_groups</span><span class="p">,</span>
+                        <span class="s2">&quot;total_bytes&quot;</span><span class="p">:</span> <span class="n">item_bytes</span><span class="p">,</span>
+                        <span class="s2">&quot;groups&quot;</span><span class="p">:</span> <span class="n">item_groups</span><span class="p">,</span>
                     <span class="p">}</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
                 <span class="n">item_bytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_dataset_storage</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">store_subtotals</span><span class="p">:</span>
-                    <span class="n">storage</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"total_bytes"</span><span class="p">:</span> <span class="n">item_bytes</span><span class="p">,</span> <span class="s2">"groups"</span><span class="p">:</span> <span class="p">{}}</span>
+                    <span class="n">storage</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;total_bytes&quot;</span><span class="p">:</span> <span class="n">item_bytes</span><span class="p">,</span> <span class="s2">&quot;groups&quot;</span><span class="p">:</span> <span class="p">{}}</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">"Group item '</span><span class="si">{}</span><span class="s2">' is of type '</span><span class="si">{}</span><span class="s2">', expected "</span>
-                    <span class="s2">"'h5.Dataset' or 'h5.Group'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+                    <span class="s2">&quot;Group item &#39;</span><span class="si">{}</span><span class="s2">&#39; is of type &#39;</span><span class="si">{}</span><span class="s2">&#39;, expected &quot;</span>
+                    <span class="s2">&quot;&#39;h5.Dataset&#39; or &#39;h5.Group&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
                 <span class="p">)</span>
             <span class="n">subtotal_bytes</span> <span class="o">+=</span> <span class="n">item_bytes</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">subtotal_bytes</span><span class="p">,</span> <span class="n">storage</span><span class="p">)</span></div></div>

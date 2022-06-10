@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.utils.config - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.utils.config - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -496,196 +497,196 @@
 
 <span class="n">CONF_SCHEMA</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span>
     <span class="p">{</span>
-        <span class="s2">"user"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">"email"</span><span class="p">:</span> <span class="nb">str</span><span class="p">},</span>
-        <span class="s2">"fetchers"</span><span class="p">:</span> <span class="p">{</span>
-            <span class="n">Optional</span><span class="p">(</span><span class="s2">"KNETFetcher"</span><span class="p">):</span> <span class="p">{</span>
-                <span class="s2">"user"</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                <span class="s2">"password"</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                <span class="s2">"radius"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"dt"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"ddepth"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"dmag"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"restrict_stations"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">},</span>
+        <span class="s2">&quot;fetchers&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;KNETFetcher&quot;</span><span class="p">):</span> <span class="p">{</span>
+                <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                <span class="s2">&quot;radius&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;dt&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;ddepth&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;dmag&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;restrict_stations&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
             <span class="p">},</span>
-            <span class="n">Optional</span><span class="p">(</span><span class="s2">"CESMDFetcher"</span><span class="p">):</span> <span class="p">{</span>
-                <span class="s2">"email"</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                <span class="s2">"process_type"</span><span class="p">:</span> <span class="n">Or</span><span class="p">(</span><span class="s2">"raw"</span><span class="p">,</span> <span class="s2">"processed"</span><span class="p">),</span>
-                <span class="s2">"station_type"</span><span class="p">:</span> <span class="n">Or</span><span class="p">(</span>
-                    <span class="s2">"Any"</span><span class="p">,</span>
-                    <span class="s2">"Array"</span><span class="p">,</span>
-                    <span class="s2">"Ground"</span><span class="p">,</span>
-                    <span class="s2">"Building"</span><span class="p">,</span>
-                    <span class="s2">"Bridge"</span><span class="p">,</span>
-                    <span class="s2">"Dam"</span><span class="p">,</span>
-                    <span class="s2">"Tunnel"</span><span class="p">,</span>
-                    <span class="s2">"Warf"</span><span class="p">,</span>
-                    <span class="s2">"Other"</span><span class="p">,</span>
+            <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;CESMDFetcher&quot;</span><span class="p">):</span> <span class="p">{</span>
+                <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                <span class="s2">&quot;process_type&quot;</span><span class="p">:</span> <span class="n">Or</span><span class="p">(</span><span class="s2">&quot;raw&quot;</span><span class="p">,</span> <span class="s2">&quot;processed&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;station_type&quot;</span><span class="p">:</span> <span class="n">Or</span><span class="p">(</span>
+                    <span class="s2">&quot;Any&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Array&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Ground&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Building&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Bridge&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Dam&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Tunnel&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Warf&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Other&quot;</span><span class="p">,</span>
                 <span class="p">),</span>
-                <span class="s2">"eq_radius"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"eq_dt"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"station_radius"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;eq_radius&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;eq_dt&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;station_radius&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
             <span class="p">},</span>
-            <span class="n">Optional</span><span class="p">(</span><span class="s2">"TurkeyFetcher"</span><span class="p">):</span> <span class="p">{</span>
-                <span class="s2">"radius"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"dt"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"ddepth"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"dmag"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;TurkeyFetcher&quot;</span><span class="p">):</span> <span class="p">{</span>
+                <span class="s2">&quot;radius&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;dt&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;ddepth&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;dmag&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
             <span class="p">},</span>
-            <span class="n">Optional</span><span class="p">(</span><span class="s2">"FDSNFetcher"</span><span class="p">):</span> <span class="p">{</span>
-                <span class="s2">"domain"</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">"type"</span><span class="p">:</span> <span class="n">Or</span><span class="p">(</span><span class="s2">"circular"</span><span class="p">,</span> <span class="s2">"rectangular"</span><span class="p">),</span>
-                    <span class="s2">"circular"</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s2">"use_epicenter"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-                        <span class="s2">"latitude"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                        <span class="s2">"longitude"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                        <span class="s2">"minradius"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                        <span class="s2">"maxradius"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;FDSNFetcher&quot;</span><span class="p">):</span> <span class="p">{</span>
+                <span class="s2">&quot;domain&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">Or</span><span class="p">(</span><span class="s2">&quot;circular&quot;</span><span class="p">,</span> <span class="s2">&quot;rectangular&quot;</span><span class="p">),</span>
+                    <span class="s2">&quot;circular&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;use_epicenter&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+                        <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                        <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                        <span class="s2">&quot;minradius&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                        <span class="s2">&quot;maxradius&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
                     <span class="p">},</span>
-                    <span class="s2">"rectangular"</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s2">"minlatitude"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                        <span class="s2">"maxlatitude"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                        <span class="s2">"minlongitude"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                        <span class="s2">"maxlongitude"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                    <span class="s2">&quot;rectangular&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;minlatitude&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                        <span class="s2">&quot;maxlatitude&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                        <span class="s2">&quot;minlongitude&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                        <span class="s2">&quot;maxlongitude&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
                     <span class="p">},</span>
                 <span class="p">},</span>
-                <span class="s2">"restrictions"</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">"time_before"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                    <span class="s2">"time_after"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                    <span class="n">Optional</span><span class="p">(</span><span class="s2">"chunklength_in_sec"</span><span class="p">):</span> <span class="nb">float</span><span class="p">,</span>
-                    <span class="n">Optional</span><span class="p">(</span><span class="s2">"network"</span><span class="p">):</span> <span class="nb">str</span><span class="p">,</span>
-                    <span class="n">Optional</span><span class="p">(</span><span class="s2">"station"</span><span class="p">):</span> <span class="nb">str</span><span class="p">,</span>
-                    <span class="n">Optional</span><span class="p">(</span><span class="s2">"location"</span><span class="p">):</span> <span class="nb">str</span><span class="p">,</span>
-                    <span class="n">Optional</span><span class="p">(</span><span class="s2">"channel"</span><span class="p">):</span> <span class="nb">str</span><span class="p">,</span>
-                    <span class="n">Optional</span><span class="p">(</span><span class="s2">"exclude_networks"</span><span class="p">):</span> <span class="nb">list</span><span class="p">,</span>
-                    <span class="n">Optional</span><span class="p">(</span><span class="s2">"exclude_stations"</span><span class="p">):</span> <span class="nb">list</span><span class="p">,</span>
-                    <span class="n">Optional</span><span class="p">(</span><span class="s2">"reject_channels_with_gaps"</span><span class="p">):</span> <span class="nb">bool</span><span class="p">,</span>
-                    <span class="n">Optional</span><span class="p">(</span><span class="s2">"minimum_length"</span><span class="p">):</span> <span class="nb">float</span><span class="p">,</span>
-                    <span class="n">Optional</span><span class="p">(</span><span class="s2">"sanitize"</span><span class="p">):</span> <span class="nb">bool</span><span class="p">,</span>
-                    <span class="n">Optional</span><span class="p">(</span><span class="s2">"minimum_interstation_distance_in_m"</span><span class="p">):</span> <span class="nb">float</span><span class="p">,</span>
-                    <span class="n">Optional</span><span class="p">(</span><span class="s2">"channel_priorities"</span><span class="p">):</span> <span class="nb">list</span><span class="p">,</span>
-                    <span class="n">Optional</span><span class="p">(</span><span class="s2">"location_priorities"</span><span class="p">):</span> <span class="nb">list</span><span class="p">,</span>
+                <span class="s2">&quot;restrictions&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;time_before&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                    <span class="s2">&quot;time_after&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                    <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;chunklength_in_sec&quot;</span><span class="p">):</span> <span class="nb">float</span><span class="p">,</span>
+                    <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;network&quot;</span><span class="p">):</span> <span class="nb">str</span><span class="p">,</span>
+                    <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;station&quot;</span><span class="p">):</span> <span class="nb">str</span><span class="p">,</span>
+                    <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">):</span> <span class="nb">str</span><span class="p">,</span>
+                    <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;channel&quot;</span><span class="p">):</span> <span class="nb">str</span><span class="p">,</span>
+                    <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;exclude_networks&quot;</span><span class="p">):</span> <span class="nb">list</span><span class="p">,</span>
+                    <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;exclude_stations&quot;</span><span class="p">):</span> <span class="nb">list</span><span class="p">,</span>
+                    <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;reject_channels_with_gaps&quot;</span><span class="p">):</span> <span class="nb">bool</span><span class="p">,</span>
+                    <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;minimum_length&quot;</span><span class="p">):</span> <span class="nb">float</span><span class="p">,</span>
+                    <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;sanitize&quot;</span><span class="p">):</span> <span class="nb">bool</span><span class="p">,</span>
+                    <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;minimum_interstation_distance_in_m&quot;</span><span class="p">):</span> <span class="nb">float</span><span class="p">,</span>
+                    <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;channel_priorities&quot;</span><span class="p">):</span> <span class="nb">list</span><span class="p">,</span>
+                    <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;location_priorities&quot;</span><span class="p">):</span> <span class="nb">list</span><span class="p">,</span>
                 <span class="p">},</span>
-                <span class="n">Optional</span><span class="p">(</span><span class="s2">"authentication"</span><span class="p">):</span> <span class="nb">dict</span><span class="p">,</span>
+                <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;authentication&quot;</span><span class="p">):</span> <span class="nb">dict</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">},</span>
-        <span class="s2">"read"</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">"metadata_directory"</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-            <span class="s2">"resample_rate"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-            <span class="s2">"sac_conversion_factor"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-            <span class="s2">"sac_source"</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-            <span class="s2">"use_streamcollection"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-            <span class="s2">"exclude_patterns"</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="s2">&quot;read&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;metadata_directory&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="s2">&quot;resample_rate&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="s2">&quot;sac_conversion_factor&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="s2">&quot;sac_source&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="s2">&quot;use_streamcollection&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+            <span class="s2">&quot;exclude_patterns&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
         <span class="p">},</span>
-        <span class="s2">"windows"</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">"signal_end"</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">"method"</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                <span class="s2">"vmin"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"floor"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"model"</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                <span class="s2">"epsilon"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="s2">&quot;windows&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;signal_end&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                <span class="s2">&quot;vmin&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;floor&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                <span class="s2">&quot;epsilon&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
             <span class="p">},</span>
-            <span class="s2">"window_checks"</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">"do_check"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-                <span class="s2">"min_noise_duration"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"min_signal_duration"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="s2">&quot;window_checks&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;do_check&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+                <span class="s2">&quot;min_noise_duration&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;min_signal_duration&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">},</span>
-        <span class="s2">"processing"</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
-        <span class="s2">"colocated"</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">"preference"</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
-            <span class="n">Optional</span><span class="p">(</span><span class="s2">"large_dist"</span><span class="p">):</span> <span class="p">{</span><span class="s2">"preference"</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="s2">"mag"</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="s2">"dist"</span><span class="p">:</span> <span class="nb">list</span><span class="p">},</span>
+        <span class="s2">&quot;processing&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="s2">&quot;colocated&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;preference&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+            <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;large_dist&quot;</span><span class="p">):</span> <span class="p">{</span><span class="s2">&quot;preference&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="s2">&quot;mag&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="s2">&quot;dist&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">},</span>
         <span class="p">},</span>
-        <span class="s2">"duplicate"</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">"max_dist_tolerance"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-            <span class="s2">"preference_order"</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
-            <span class="s2">"process_level_preference"</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
-            <span class="s2">"format_preference"</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="s2">&quot;duplicate&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;max_dist_tolerance&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="s2">&quot;preference_order&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+            <span class="s2">&quot;process_level_preference&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+            <span class="s2">&quot;format_preference&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
         <span class="p">},</span>
-        <span class="s2">"build_report"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"format"</span><span class="p">:</span> <span class="s2">"latex"</span><span class="p">},</span>
-        <span class="s2">"metrics"</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">"output_imcs"</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
-            <span class="s2">"output_imts"</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
-            <span class="s2">"sa"</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">"damping"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"periods"</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">"start"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                    <span class="s2">"stop"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                    <span class="s2">"num"</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                    <span class="s2">"spacing"</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                    <span class="s2">"use_array"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-                    <span class="s2">"defined_periods"</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
-                <span class="p">},</span>
-            <span class="p">},</span>
-            <span class="s2">"fas"</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">"smoothing"</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                <span class="s2">"bandwidth"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"allow_nans"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-                <span class="s2">"periods"</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">"start"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                    <span class="s2">"stop"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                    <span class="s2">"num"</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                    <span class="s2">"spacing"</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                    <span class="s2">"use_array"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-                    <span class="s2">"defined_periods"</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="s2">&quot;build_report&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;latex&quot;</span><span class="p">},</span>
+        <span class="s2">&quot;metrics&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;output_imcs&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+            <span class="s2">&quot;output_imts&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+            <span class="s2">&quot;sa&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;damping&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;periods&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                    <span class="s2">&quot;stop&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                    <span class="s2">&quot;num&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                    <span class="s2">&quot;spacing&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                    <span class="s2">&quot;use_array&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+                    <span class="s2">&quot;defined_periods&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
                 <span class="p">},</span>
             <span class="p">},</span>
-            <span class="s2">"duration"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"intervals"</span><span class="p">:</span> <span class="nb">list</span><span class="p">},</span>
+            <span class="s2">&quot;fas&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;smoothing&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                <span class="s2">&quot;bandwidth&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;allow_nans&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+                <span class="s2">&quot;periods&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                    <span class="s2">&quot;stop&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                    <span class="s2">&quot;num&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                    <span class="s2">&quot;spacing&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                    <span class="s2">&quot;use_array&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+                    <span class="s2">&quot;defined_periods&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;intervals&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">},</span>
         <span class="p">},</span>
-        <span class="s2">"integration"</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">"frequency"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-            <span class="s2">"initial"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-            <span class="s2">"demean"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-            <span class="s2">"taper"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"taper"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">"width"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="s2">"side"</span><span class="p">:</span> <span class="nb">str</span><span class="p">},</span>
+        <span class="s2">&quot;integration&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;frequency&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+            <span class="s2">&quot;initial&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="s2">&quot;demean&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+            <span class="s2">&quot;taper&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;taper&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="s2">&quot;side&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">},</span>
         <span class="p">},</span>
-        <span class="s2">"pickers"</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">"p_arrival_shift"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-            <span class="n">Optional</span><span class="p">(</span><span class="s2">"ar"</span><span class="p">):</span> <span class="p">{</span>
-                <span class="s2">"f1"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"f2"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"lta_p"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"sta_p"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"lta_s"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"sta_s"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"m_p"</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                <span class="s2">"m_s"</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                <span class="s2">"l_p"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"l_s"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"s_pick"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="s2">&quot;pickers&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;p_arrival_shift&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;ar&quot;</span><span class="p">):</span> <span class="p">{</span>
+                <span class="s2">&quot;f1&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;f2&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;lta_p&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;sta_p&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;lta_s&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;sta_s&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;m_p&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                <span class="s2">&quot;m_s&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                <span class="s2">&quot;l_p&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;l_s&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;s_pick&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
             <span class="p">},</span>
-            <span class="n">Optional</span><span class="p">(</span><span class="s2">"baer"</span><span class="p">):</span> <span class="p">{</span>
-                <span class="s2">"tdownmax"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"tupevent"</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                <span class="s2">"thr1"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"thr2"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"preset_len"</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                <span class="s2">"p_dur"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;baer&quot;</span><span class="p">):</span> <span class="p">{</span>
+                <span class="s2">&quot;tdownmax&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;tupevent&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                <span class="s2">&quot;thr1&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;thr2&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;preset_len&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                <span class="s2">&quot;p_dur&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
             <span class="p">},</span>
-            <span class="n">Optional</span><span class="p">(</span><span class="s2">"kalkan"</span><span class="p">):</span> <span class="p">{</span>
-                <span class="s2">"period"</span><span class="p">:</span> <span class="n">Or</span><span class="p">(</span><span class="s2">"None"</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span>
-                <span class="s2">"damping"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"nbins"</span><span class="p">:</span> <span class="n">Or</span><span class="p">(</span><span class="s2">"None"</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span>
-                <span class="s2">"peak_selection"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+            <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;kalkan&quot;</span><span class="p">):</span> <span class="p">{</span>
+                <span class="s2">&quot;period&quot;</span><span class="p">:</span> <span class="n">Or</span><span class="p">(</span><span class="s2">&quot;None&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span>
+                <span class="s2">&quot;damping&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;nbins&quot;</span><span class="p">:</span> <span class="n">Or</span><span class="p">(</span><span class="s2">&quot;None&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span>
+                <span class="s2">&quot;peak_selection&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
             <span class="p">},</span>
-            <span class="n">Optional</span><span class="p">(</span><span class="s2">"power"</span><span class="p">):</span> <span class="p">{</span>
-                <span class="s2">"highpass"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"lowpass"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"order"</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-                <span class="s2">"sta"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"sta2"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"lta"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"hanningWindow"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"threshDetect"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"threshDetect2"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                <span class="s2">"threshRestart"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">Optional</span><span class="p">(</span><span class="s2">&quot;power&quot;</span><span class="p">):</span> <span class="p">{</span>
+                <span class="s2">&quot;highpass&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;lowpass&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;order&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                <span class="s2">&quot;sta&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;sta2&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;lta&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;hanningWindow&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;threshDetect&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;threshDetect2&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                <span class="s2">&quot;threshRestart&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
             <span class="p">},</span>
-            <span class="s2">"travel_time"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"model"</span><span class="p">:</span> <span class="nb">str</span><span class="p">},</span>
+            <span class="s2">&quot;travel_time&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">},</span>
         <span class="p">},</span>
     <span class="p">}</span>
 <span class="p">)</span>
 
 
 <div class="viewcode-block" id="update_dict"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/config/index.html#gmprocess.utils.config.update_dict">[docs]</a><span class="k">def</span> <span class="nf">update_dict</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
-    <span class="sd">"""Merge values from source dictionary into target dictionary.</span>
+    <span class="sd">&quot;&quot;&quot;Merge values from source dictionary into target dictionary.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        target (dict):</span>
@@ -693,7 +694,7 @@
 
 <span class="sd">        source (dict):</span>
 <span class="sd">            Dictionary with values to be transferred to target dictionary.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">source</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
@@ -707,7 +708,7 @@
 
 
 <div class="viewcode-block" id="merge_dicts"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/config/index.html#gmprocess.utils.config.merge_dicts">[docs]</a><span class="k">def</span> <span class="nf">merge_dicts</span><span class="p">(</span><span class="n">dicts</span><span class="p">):</span>
-    <span class="sd">"""Merges a list of dictionaries into a new dictionary.</span>
+    <span class="sd">&quot;&quot;&quot;Merges a list of dictionaries into a new dictionary.</span>
 
 <span class="sd">    The order of the dictionaries in the list provides precedence of the</span>
 <span class="sd">    values, with values from subsequent dictionaries overriding earlier</span>
@@ -719,7 +720,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dictionary: Merged dictionary.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">target</span> <span class="o">=</span> <span class="n">dicts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">dicts</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
         <span class="n">update_dict</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
@@ -727,16 +728,16 @@
 
 
 <div class="viewcode-block" id="get_config"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/config/index.html#gmprocess.utils.config.get_config">[docs]</a><span class="k">def</span> <span class="nf">get_config</span><span class="p">(</span><span class="n">config_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">section</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_default</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">"""Gets the user defined config and validates it.</span>
+    <span class="sd">&quot;&quot;&quot;Gets the user defined config and validates it.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        config_file:</span>
 <span class="sd">            Path to config file to use. If None, uses defaults.</span>
 <span class="sd">        section (str):</span>
-<span class="sd">            Name of section in the config to extract (i.e., 'fetchers', 'processing',</span>
-<span class="sd">            'pickers', etc.) If None, whole config is returned.</span>
+<span class="sd">            Name of section in the config to extract (i.e., &#39;fetchers&#39;, &#39;processing&#39;,</span>
+<span class="sd">            &#39;pickers&#39;, etc.) If None, whole config is returned.</span>
 <span class="sd">        use_default (bool):</span>
-<span class="sd">            Use the default "production" config; this takes precedence  over project</span>
+<span class="sd">            Use the default &quot;production&quot; config; this takes precedence  over project</span>
 <span class="sd">            config settings. Only intended for tutorials/documentation.</span>
 
 <span class="sd">    Returns:</span>
@@ -745,30 +746,30 @@
 <span class="sd">    Raises:</span>
 <span class="sd">        IndexError:</span>
 <span class="sd">            If input section name is not found.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">use_default</span><span class="p">:</span>
-        <span class="n">data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">"gmprocess"</span><span class="p">,</span> <span class="s2">"data"</span><span class="p">))</span>
+        <span class="n">data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;gmprocess&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">))</span>
         <span class="n">config_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">constants</span><span class="o">.</span><span class="n">CONFIG_FILE_PRODUCTION</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">config_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># Try not to let tests interfere with actual system:</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"CALLED_FROM_PYTEST"</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;CALLED_FROM_PYTEST&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Not called from pytest -- Is there a local project?</span>
             <span class="n">local_proj</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">constants</span><span class="o">.</span><span class="n">PROJ_CONF_DIR</span><span class="p">)</span>
-            <span class="n">local_proj_conf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_proj</span><span class="p">,</span> <span class="s2">"projects.conf"</span><span class="p">)</span>
+            <span class="n">local_proj_conf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_proj</span><span class="p">,</span> <span class="s2">&quot;projects.conf&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">local_proj</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">local_proj_conf</span><span class="p">):</span>
-                <span class="c1"># There's a local project</span>
+                <span class="c1"># There&#39;s a local project</span>
                 <span class="n">config_file</span> <span class="o">=</span> <span class="n">__proj_to_conf_file</span><span class="p">(</span><span class="n">local_proj</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># Is there a system project?</span>
                 <span class="n">sys_proj</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">PROJECTS_PATH</span>
-                <span class="n">sys_proj_conf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sys_proj</span><span class="p">,</span> <span class="s2">"projects.conf"</span><span class="p">)</span>
+                <span class="n">sys_proj_conf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sys_proj</span><span class="p">,</span> <span class="s2">&quot;projects.conf&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">sys_proj</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">sys_proj_conf</span><span class="p">):</span>
                     <span class="n">config_file</span> <span class="o">=</span> <span class="n">__proj_to_conf_file</span><span class="p">(</span><span class="n">sys_proj</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># Fall back on conf file in repository</span>
                     <span class="n">data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span>
-                        <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">"gmprocess"</span><span class="p">,</span> <span class="s2">"data"</span><span class="p">)</span>
+                        <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;gmprocess&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span>
                     <span class="p">)</span>
                     <span class="n">config_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
                         <span class="n">data_dir</span><span class="p">,</span> <span class="n">constants</span><span class="o">.</span><span class="n">CONFIG_FILE_PRODUCTION</span>
@@ -776,27 +777,27 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># When called by pytest</span>
             <span class="n">data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span>
-                <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">"gmprocess"</span><span class="p">,</span> <span class="s2">"data"</span><span class="p">)</span>
+                <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;gmprocess&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="n">config_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">constants</span><span class="o">.</span><span class="n">CONFIG_FILE_TEST</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">config_file</span><span class="p">):</span>
-        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"Missing config file: </span><span class="si">%s</span><span class="s2">."</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;Missing config file: </span><span class="si">%s</span><span class="s2">.&quot;</span>
         <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="n">config_file</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">yaml</span> <span class="o">=</span> <span class="n">YAML</span><span class="p">()</span>
             <span class="n">yaml</span><span class="o">.</span><span class="n">preserve_quotes</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">config</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">use_default</span><span class="p">:</span>
-        <span class="n">config</span><span class="p">[</span><span class="s2">"user"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Default"</span><span class="p">,</span> <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"default@default.comf"</span><span class="p">}</span>
+        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Default&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;default@default.comf&quot;</span><span class="p">}</span>
 
     <span class="n">CONF_SCHEMA</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">section</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">section</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Section </span><span class="si">{</span><span class="n">section</span><span class="si">}</span><span class="s2"> not found in config file."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Section </span><span class="si">{</span><span class="n">section</span><span class="si">}</span><span class="s2"> not found in config file.&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="n">section</span><span class="p">]</span>
 
@@ -804,7 +805,7 @@
 
 
 <div class="viewcode-block" id="update_config"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/config/index.html#gmprocess.utils.config.update_config">[docs]</a><span class="k">def</span> <span class="nf">update_config</span><span class="p">(</span><span class="n">custom_cfg_file</span><span class="p">):</span>
-    <span class="sd">"""Merge custom config with default.</span>
+    <span class="sd">&quot;&quot;&quot;Merge custom config with default.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        custom_cfg_file (str):</span>
@@ -813,13 +814,13 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: Merged config dictionary.</span>
 
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">custom_cfg_file</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">config</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">custom_cfg_file</span><span class="p">,</span> <span class="s2">"rt"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">custom_cfg_file</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">yaml</span> <span class="o">=</span> <span class="n">YAML</span><span class="p">()</span>
             <span class="n">yaml</span><span class="o">.</span><span class="n">preserve_quotes</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">custom_cfg</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -832,17 +833,17 @@
 
 <div class="viewcode-block" id="__proj_to_conf_file"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/config/index.html#gmprocess.utils.config.__proj_to_conf_file">[docs]</a><span class="k">def</span> <span class="nf">__proj_to_conf_file</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
     <span class="c1"># We are switching from absolute to relative paths in this conf file. For</span>
-    <span class="c1"># backward compatibility, we're going to try to support both absolute and</span>
-    <span class="c1"># relative paths, which is why we need this "try" block to first assume</span>
+    <span class="c1"># backward compatibility, we&#39;re going to try to support both absolute and</span>
+    <span class="c1"># relative paths, which is why we need this &quot;try&quot; block to first assume</span>
     <span class="c1"># an absolute path and if the conf does not exist then try a relative path.</span>
-    <span class="n">proj_conf_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">"projects.conf"</span><span class="p">)</span>
-    <span class="n">projects_conf</span> <span class="o">=</span> <span class="n">ConfigObj</span><span class="p">(</span><span class="n">proj_conf_file</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
-    <span class="n">project</span> <span class="o">=</span> <span class="n">projects_conf</span><span class="p">[</span><span class="s2">"project"</span><span class="p">]</span>
-    <span class="n">current_project</span> <span class="o">=</span> <span class="n">projects_conf</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="n">project</span><span class="p">]</span>
-    <span class="n">conf_path</span> <span class="o">=</span> <span class="n">current_project</span><span class="p">[</span><span class="s2">"conf_path"</span><span class="p">]</span>
-    <span class="n">conf_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">conf_path</span><span class="p">,</span> <span class="s2">"config.yml"</span><span class="p">)</span>
+    <span class="n">proj_conf_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;projects.conf&quot;</span><span class="p">)</span>
+    <span class="n">projects_conf</span> <span class="o">=</span> <span class="n">ConfigObj</span><span class="p">(</span><span class="n">proj_conf_file</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="n">projects_conf</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">]</span>
+    <span class="n">current_project</span> <span class="o">=</span> <span class="n">projects_conf</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">project</span><span class="p">]</span>
+    <span class="n">conf_path</span> <span class="o">=</span> <span class="n">current_project</span><span class="p">[</span><span class="s2">&quot;conf_path&quot;</span><span class="p">]</span>
+    <span class="n">conf_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">conf_path</span><span class="p">,</span> <span class="s2">&quot;config.yml&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">conf_file</span><span class="p">):</span>
-        <span class="n">conf_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">conf_path</span><span class="p">,</span> <span class="s2">"config.yml"</span><span class="p">)</span>
+        <span class="n">conf_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">conf_path</span><span class="p">,</span> <span class="s2">&quot;config.yml&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">conf_file</span></div>
 </pre></div>
         </article>

@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.utils.tables - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.utils.tables - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -483,10 +484,10 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Module that provides functions for manipulating the various tables</span>
 <span class="sd">(pandas DataFrames) produced by gmprocess.</span>
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -495,7 +496,7 @@
 
 
 <div class="viewcode-block" id="set_precisions"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/tables/index.html#gmprocess.utils.tables.set_precisions">[docs]</a><span class="k">def</span> <span class="nf">set_precisions</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets the string format for float point number columns in the DataFrame.</span>
 
 <span class="sd">    Args:</span>
@@ -504,9 +505,9 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        pandas.DataFrame: The modified table.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># Create a copy so we're not modifying the original DF</span>
+    <span class="c1"># Create a copy so we&#39;re not modifying the original DF</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">regex</span><span class="p">,</span> <span class="n">str_format</span> <span class="ow">in</span> <span class="n">TABLE_FLOAT_STRING_FORMAT</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">r</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
@@ -517,116 +518,116 @@
 
 
 <div class="viewcode-block" id="_get_table_row"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/tables/index.html#gmprocess.utils.tables._get_table_row">[docs]</a><span class="k">def</span> <span class="nf">_get_table_row</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">summary</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">imc</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">imc</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"channels"</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">imc</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;channels&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Stream must be length 1 to get row for imc=='channels'."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Stream must be length 1 to get row for imc==&#39;channels&#39;.&quot;</span><span class="p">)</span>
         <span class="n">chan</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">chan_lowfilt</span> <span class="o">=</span> <span class="n">chan</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">"lowpass_filter"</span><span class="p">)</span>
-        <span class="n">chan_highfilt</span> <span class="o">=</span> <span class="n">chan</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">"highpass_filter"</span><span class="p">)</span>
+        <span class="n">chan_lowfilt</span> <span class="o">=</span> <span class="n">chan</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">&quot;lowpass_filter&quot;</span><span class="p">)</span>
+        <span class="n">chan_highfilt</span> <span class="o">=</span> <span class="n">chan</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">&quot;highpass_filter&quot;</span><span class="p">)</span>
         <span class="n">chan_lowpass</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
         <span class="n">chan_highpass</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chan_lowfilt</span><span class="p">):</span>
-            <span class="n">chan_lowpass</span> <span class="o">=</span> <span class="n">chan_lowfilt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"corner_frequency"</span><span class="p">]</span>
+            <span class="n">chan_lowpass</span> <span class="o">=</span> <span class="n">chan_lowfilt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;corner_frequency&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chan_highfilt</span><span class="p">):</span>
-            <span class="n">chan_highpass</span> <span class="o">=</span> <span class="n">chan_highfilt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"corner_frequency"</span><span class="p">]</span>
-        <span class="n">filter_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"Lowpass"</span><span class="p">:</span> <span class="n">chan_lowpass</span><span class="p">,</span> <span class="s2">"Highpass"</span><span class="p">:</span> <span class="n">chan_highpass</span><span class="p">}</span>
-    <span class="k">elif</span> <span class="n">imc</span> <span class="o">==</span> <span class="s2">"Z"</span><span class="p">:</span>
-        <span class="n">z</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s2">"*Z"</span><span class="p">)</span>
+            <span class="n">chan_highpass</span> <span class="o">=</span> <span class="n">chan_highfilt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;corner_frequency&quot;</span><span class="p">]</span>
+        <span class="n">filter_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Lowpass&quot;</span><span class="p">:</span> <span class="n">chan_lowpass</span><span class="p">,</span> <span class="s2">&quot;Highpass&quot;</span><span class="p">:</span> <span class="n">chan_highpass</span><span class="p">}</span>
+    <span class="k">elif</span> <span class="n">imc</span> <span class="o">==</span> <span class="s2">&quot;Z&quot;</span><span class="p">:</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s2">&quot;*Z&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">{}</span>
         <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">z_lowfilt</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">"lowpass_filter"</span><span class="p">)</span>
-        <span class="n">z_highfilt</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">"highpass_filter"</span><span class="p">)</span>
+        <span class="n">z_lowfilt</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">&quot;lowpass_filter&quot;</span><span class="p">)</span>
+        <span class="n">z_highfilt</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">&quot;highpass_filter&quot;</span><span class="p">)</span>
         <span class="n">z_lowpass</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
         <span class="n">z_highpass</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_lowfilt</span><span class="p">):</span>
-            <span class="n">z_lowpass</span> <span class="o">=</span> <span class="n">z_lowfilt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"corner_frequency"</span><span class="p">]</span>
+            <span class="n">z_lowpass</span> <span class="o">=</span> <span class="n">z_lowfilt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;corner_frequency&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_highfilt</span><span class="p">):</span>
-            <span class="n">z_highpass</span> <span class="o">=</span> <span class="n">z_highfilt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"corner_frequency"</span><span class="p">]</span>
-        <span class="n">filter_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"ZLowpass"</span><span class="p">:</span> <span class="n">z_lowpass</span><span class="p">,</span> <span class="s2">"ZHighpass"</span><span class="p">:</span> <span class="n">z_highpass</span><span class="p">}</span>
+            <span class="n">z_highpass</span> <span class="o">=</span> <span class="n">z_highfilt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;corner_frequency&quot;</span><span class="p">]</span>
+        <span class="n">filter_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ZLowpass&quot;</span><span class="p">:</span> <span class="n">z_lowpass</span><span class="p">,</span> <span class="s2">&quot;ZHighpass&quot;</span><span class="p">:</span> <span class="n">z_highpass</span><span class="p">}</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">h1</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s2">"*1"</span><span class="p">)</span>
-        <span class="n">h2</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s2">"*2"</span><span class="p">)</span>
+        <span class="n">h1</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s2">&quot;*1&quot;</span><span class="p">)</span>
+        <span class="n">h2</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s2">&quot;*2&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">h1</span><span class="p">):</span>
-            <span class="n">h1</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s2">"*N"</span><span class="p">)</span>
-            <span class="n">h2</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s2">"*E"</span><span class="p">)</span>
+            <span class="n">h1</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s2">&quot;*N&quot;</span><span class="p">)</span>
+            <span class="n">h2</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s2">&quot;*E&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">h1</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">h2</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">{}</span>
         <span class="n">h1</span> <span class="o">=</span> <span class="n">h1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">h2</span> <span class="o">=</span> <span class="n">h2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="n">h1_lowfilt</span> <span class="o">=</span> <span class="n">h1</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">"lowpass_filter"</span><span class="p">)</span>
-        <span class="n">h1_highfilt</span> <span class="o">=</span> <span class="n">h1</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">"highpass_filter"</span><span class="p">)</span>
+        <span class="n">h1_lowfilt</span> <span class="o">=</span> <span class="n">h1</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">&quot;lowpass_filter&quot;</span><span class="p">)</span>
+        <span class="n">h1_highfilt</span> <span class="o">=</span> <span class="n">h1</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">&quot;highpass_filter&quot;</span><span class="p">)</span>
         <span class="n">h1_lowpass</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
         <span class="n">h1_highpass</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">h1_lowfilt</span><span class="p">):</span>
-            <span class="n">h1_lowpass</span> <span class="o">=</span> <span class="n">h1_lowfilt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"corner_frequency"</span><span class="p">]</span>
+            <span class="n">h1_lowpass</span> <span class="o">=</span> <span class="n">h1_lowfilt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;corner_frequency&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">h1_highfilt</span><span class="p">):</span>
-            <span class="n">h1_highpass</span> <span class="o">=</span> <span class="n">h1_highfilt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"corner_frequency"</span><span class="p">]</span>
+            <span class="n">h1_highpass</span> <span class="o">=</span> <span class="n">h1_highfilt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;corner_frequency&quot;</span><span class="p">]</span>
 
-        <span class="n">h2_lowfilt</span> <span class="o">=</span> <span class="n">h2</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">"lowpass_filter"</span><span class="p">)</span>
-        <span class="n">h2_highfilt</span> <span class="o">=</span> <span class="n">h2</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">"highpass_filter"</span><span class="p">)</span>
+        <span class="n">h2_lowfilt</span> <span class="o">=</span> <span class="n">h2</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">&quot;lowpass_filter&quot;</span><span class="p">)</span>
+        <span class="n">h2_highfilt</span> <span class="o">=</span> <span class="n">h2</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">&quot;highpass_filter&quot;</span><span class="p">)</span>
         <span class="n">h2_lowpass</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
         <span class="n">h2_highpass</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">h2_lowfilt</span><span class="p">):</span>
-            <span class="n">h2_lowpass</span> <span class="o">=</span> <span class="n">h2_lowfilt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"corner_frequency"</span><span class="p">]</span>
+            <span class="n">h2_lowpass</span> <span class="o">=</span> <span class="n">h2_lowfilt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;corner_frequency&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">h2_highfilt</span><span class="p">):</span>
-            <span class="n">h2_highpass</span> <span class="o">=</span> <span class="n">h2_highfilt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"corner_frequency"</span><span class="p">]</span>
+            <span class="n">h2_highpass</span> <span class="o">=</span> <span class="n">h2_highfilt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;corner_frequency&quot;</span><span class="p">]</span>
         <span class="n">filter_dict</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">"H1Lowpass"</span><span class="p">:</span> <span class="n">h1_lowpass</span><span class="p">,</span>
-            <span class="s2">"H1Highpass"</span><span class="p">:</span> <span class="n">h1_highpass</span><span class="p">,</span>
-            <span class="s2">"H2Lowpass"</span><span class="p">:</span> <span class="n">h2_lowpass</span><span class="p">,</span>
-            <span class="s2">"H2Highpass"</span><span class="p">:</span> <span class="n">h2_highpass</span><span class="p">,</span>
+            <span class="s2">&quot;H1Lowpass&quot;</span><span class="p">:</span> <span class="n">h1_lowpass</span><span class="p">,</span>
+            <span class="s2">&quot;H1Highpass&quot;</span><span class="p">:</span> <span class="n">h1_highpass</span><span class="p">,</span>
+            <span class="s2">&quot;H2Lowpass&quot;</span><span class="p">:</span> <span class="n">h2_lowpass</span><span class="p">,</span>
+            <span class="s2">&quot;H2Highpass&quot;</span><span class="p">:</span> <span class="n">h2_highpass</span><span class="p">,</span>
         <span class="p">}</span>
 
     <span class="n">dists</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">distances</span>
 
     <span class="n">row</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">"EarthquakeId"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"smi:local/"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
-        <span class="s2">"EarthquakeTime"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">time</span><span class="p">,</span>
-        <span class="s2">"EarthquakeLatitude"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
-        <span class="s2">"EarthquakeLongitude"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
-        <span class="s2">"EarthquakeDepth"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">depth_km</span><span class="p">,</span>
-        <span class="s2">"EarthquakeMagnitude"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-        <span class="s2">"EarthquakeMagnitudeType"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">magnitude_type</span><span class="p">,</span>
-        <span class="s2">"Network"</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span><span class="p">,</span>
-        <span class="s2">"DataProvider"</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">source</span><span class="p">,</span>
-        <span class="s2">"StationCode"</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span><span class="p">,</span>
-        <span class="s2">"StationID"</span><span class="p">:</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_id</span><span class="p">(),</span>
-        <span class="s2">"StationDescription"</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">station_name</span><span class="p">,</span>
-        <span class="s2">"StationLatitude"</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
-        <span class="s2">"StationLongitude"</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
-        <span class="s2">"StationElevation"</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">elevation</span><span class="p">,</span>
-        <span class="s2">"SamplingRate"</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span><span class="p">,</span>
-        <span class="s2">"BackAzimuth"</span><span class="p">:</span> <span class="n">summary</span><span class="o">.</span><span class="n">_back_azimuth</span><span class="p">,</span>
-        <span class="s2">"EpicentralDistance"</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">"epicentral"</span><span class="p">],</span>
-        <span class="s2">"HypocentralDistance"</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">"hypocentral"</span><span class="p">],</span>
-        <span class="s2">"SourceFile"</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">source_file</span><span class="p">,</span>
+        <span class="s2">&quot;EarthquakeId&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;smi:local/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;EarthquakeTime&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">time</span><span class="p">,</span>
+        <span class="s2">&quot;EarthquakeLatitude&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+        <span class="s2">&quot;EarthquakeLongitude&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+        <span class="s2">&quot;EarthquakeDepth&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">depth_km</span><span class="p">,</span>
+        <span class="s2">&quot;EarthquakeMagnitude&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+        <span class="s2">&quot;EarthquakeMagnitudeType&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">magnitude_type</span><span class="p">,</span>
+        <span class="s2">&quot;Network&quot;</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span><span class="p">,</span>
+        <span class="s2">&quot;DataProvider&quot;</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">source</span><span class="p">,</span>
+        <span class="s2">&quot;StationCode&quot;</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span><span class="p">,</span>
+        <span class="s2">&quot;StationID&quot;</span><span class="p">:</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_id</span><span class="p">(),</span>
+        <span class="s2">&quot;StationDescription&quot;</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">station_name</span><span class="p">,</span>
+        <span class="s2">&quot;StationLatitude&quot;</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+        <span class="s2">&quot;StationLongitude&quot;</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+        <span class="s2">&quot;StationElevation&quot;</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">elevation</span><span class="p">,</span>
+        <span class="s2">&quot;SamplingRate&quot;</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span><span class="p">,</span>
+        <span class="s2">&quot;BackAzimuth&quot;</span><span class="p">:</span> <span class="n">summary</span><span class="o">.</span><span class="n">_back_azimuth</span><span class="p">,</span>
+        <span class="s2">&quot;EpicentralDistance&quot;</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">&quot;epicentral&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;HypocentralDistance&quot;</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">&quot;hypocentral&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;SourceFile&quot;</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">source_file</span><span class="p">,</span>
     <span class="p">}</span>
-    <span class="k">if</span> <span class="s2">"rupture"</span> <span class="ow">in</span> <span class="n">dists</span><span class="p">:</span>
-        <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"RuptureDistance"</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">"rupture"</span><span class="p">]})</span>
-        <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"RuptureDistanceVar"</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">"rupture_var"</span><span class="p">]})</span>
-    <span class="k">if</span> <span class="s2">"joyner_boore"</span> <span class="ow">in</span> <span class="n">dists</span><span class="p">:</span>
-        <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"JoynerBooreDistance"</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">"joyner_boore"</span><span class="p">]})</span>
-        <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"JoynerBooreDistanceVar"</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">"joyner_boore_var"</span><span class="p">]})</span>
-    <span class="k">if</span> <span class="s2">"gc2_rx"</span> <span class="ow">in</span> <span class="n">dists</span><span class="p">:</span>
-        <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"GC2_rx"</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">"gc2_rx"</span><span class="p">]})</span>
-    <span class="k">if</span> <span class="s2">"gc2_ry"</span> <span class="ow">in</span> <span class="n">dists</span><span class="p">:</span>
-        <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"GC2_ry"</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">"gc2_ry"</span><span class="p">]})</span>
-    <span class="k">if</span> <span class="s2">"gc2_ry0"</span> <span class="ow">in</span> <span class="n">dists</span><span class="p">:</span>
-        <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"GC2_ry0"</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">"gc2_ry0"</span><span class="p">]})</span>
-    <span class="k">if</span> <span class="s2">"gc2_U"</span> <span class="ow">in</span> <span class="n">dists</span><span class="p">:</span>
-        <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"GC2_U"</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">"gc2_U"</span><span class="p">]})</span>
-    <span class="k">if</span> <span class="s2">"gc2_T"</span> <span class="ow">in</span> <span class="n">dists</span><span class="p">:</span>
-        <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"GC2_T"</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">"gc2_T"</span><span class="p">]})</span>
+    <span class="k">if</span> <span class="s2">&quot;rupture&quot;</span> <span class="ow">in</span> <span class="n">dists</span><span class="p">:</span>
+        <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;RuptureDistance&quot;</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">&quot;rupture&quot;</span><span class="p">]})</span>
+        <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;RuptureDistanceVar&quot;</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">&quot;rupture_var&quot;</span><span class="p">]})</span>
+    <span class="k">if</span> <span class="s2">&quot;joyner_boore&quot;</span> <span class="ow">in</span> <span class="n">dists</span><span class="p">:</span>
+        <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;JoynerBooreDistance&quot;</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">&quot;joyner_boore&quot;</span><span class="p">]})</span>
+        <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;JoynerBooreDistanceVar&quot;</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">&quot;joyner_boore_var&quot;</span><span class="p">]})</span>
+    <span class="k">if</span> <span class="s2">&quot;gc2_rx&quot;</span> <span class="ow">in</span> <span class="n">dists</span><span class="p">:</span>
+        <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;GC2_rx&quot;</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">&quot;gc2_rx&quot;</span><span class="p">]})</span>
+    <span class="k">if</span> <span class="s2">&quot;gc2_ry&quot;</span> <span class="ow">in</span> <span class="n">dists</span><span class="p">:</span>
+        <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;GC2_ry&quot;</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">&quot;gc2_ry&quot;</span><span class="p">]})</span>
+    <span class="k">if</span> <span class="s2">&quot;gc2_ry0&quot;</span> <span class="ow">in</span> <span class="n">dists</span><span class="p">:</span>
+        <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;GC2_ry0&quot;</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">&quot;gc2_ry0&quot;</span><span class="p">]})</span>
+    <span class="k">if</span> <span class="s2">&quot;gc2_U&quot;</span> <span class="ow">in</span> <span class="n">dists</span><span class="p">:</span>
+        <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;GC2_U&quot;</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">&quot;gc2_U&quot;</span><span class="p">]})</span>
+    <span class="k">if</span> <span class="s2">&quot;gc2_T&quot;</span> <span class="ow">in</span> <span class="n">dists</span><span class="p">:</span>
+        <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;GC2_T&quot;</span><span class="p">:</span> <span class="n">dists</span><span class="p">[</span><span class="s2">&quot;gc2_T&quot;</span><span class="p">]})</span>
 
     <span class="c1"># Add the filter frequency information to the row</span>
     <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">filter_dict</span><span class="p">)</span>
 
     <span class="c1"># Add the Vs30 values to the row</span>
     <span class="k">for</span> <span class="n">vs30_dict</span> <span class="ow">in</span> <span class="n">summary</span><span class="o">.</span><span class="n">_vs30</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-        <span class="n">row</span><span class="p">[</span><span class="n">vs30_dict</span><span class="p">[</span><span class="s2">"column_header"</span><span class="p">]]</span> <span class="o">=</span> <span class="n">vs30_dict</span><span class="p">[</span><span class="s2">"value"</span><span class="p">]</span>
+        <span class="n">row</span><span class="p">[</span><span class="n">vs30_dict</span><span class="p">[</span><span class="s2">&quot;column_header&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">vs30_dict</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
 
     <span class="n">imt_frame</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">pgms</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="n">imc</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">row</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">imt_frame</span><span class="o">.</span><span class="n">Result</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
@@ -634,7 +635,7 @@
 
 
 <div class="viewcode-block" id="find_float"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/tables/index.html#gmprocess.utils.tables.find_float">[docs]</a><span class="k">def</span> <span class="nf">find_float</span><span class="p">(</span><span class="n">imt</span><span class="p">):</span>
-    <span class="sd">"""Find the float in an IMT string.</span>
+    <span class="sd">&quot;&quot;&quot;Find the float in an IMT string.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        imt (str):</span>
@@ -642,9 +643,9 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        float: the IMT float, if found, otherwise None.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[0-9]*\.[0-9]*"</span><span class="p">,</span> <span class="n">imt</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[0-9]*\.[0-9]*&quot;</span><span class="p">,</span> <span class="n">imt</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
     <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 </pre></div>

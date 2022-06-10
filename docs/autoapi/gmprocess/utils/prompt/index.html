@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.utils.report_utils" href="../report_utils/index.html" /><link rel="prev" title="gmprocess.utils.plot" href="../plot/index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.utils.prompt - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.utils.prompt - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -486,26 +487,28 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.prompt.query_yes_no" title="gmprocess.utils.prompt.query_yes_no"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query_yes_no</span></code></a>(question, default='yes')</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.prompt.query_yes_no" title="gmprocess.utils.prompt.query_yes_no"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query_yes_no</span></code></a>(question, default='yes')</p></td>
 <td><p>Ask a yes/no question via raw_input() and return their answer.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.prompt.make_dir" title="gmprocess.utils.prompt.make_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_dir</span></code></a>(pathstr, default)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.prompt.make_dir" title="gmprocess.utils.prompt.make_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_dir</span></code></a>(pathstr, default)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.prompt.set_project_paths" title="gmprocess.utils.prompt.set_project_paths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_project_paths</span></code></a>(default_conf, default_data)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.prompt.set_project_paths" title="gmprocess.utils.prompt.set_project_paths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_project_paths</span></code></a>(default_conf, default_data)</p></td>
 <td><p>Function to set project directories.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.prompt.get_default_project_paths" title="gmprocess.utils.prompt.get_default_project_paths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_default_project_paths</span></code></a>(project)</p></td>
 <td><p>Function to get default project paths.</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.prompt.query_yes_no">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.prompt.</span></span><span class="sig-name descname"><span class="pre">query_yes_no</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">question</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'yes'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/prompt.html#query_yes_no"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.prompt.query_yes_no" title="Permalink to this definition">#</a></dt>
@@ -527,20 +530,24 @@ an answer is required of the user).</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.prompt.make_dir">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.prompt.</span></span><span class="sig-name descname"><span class="pre">make_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathstr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/prompt.html#make_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.prompt.make_dir" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.prompt.set_project_paths">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.prompt.</span></span><span class="sig-name descname"><span class="pre">set_project_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default_conf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/prompt.html#set_project_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.prompt.set_project_paths" title="Permalink to this definition">#</a></dt>
 <dd><p>Function to set project directories.</p>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.prompt.get_default_project_paths">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.prompt.</span></span><span class="sig-name descname"><span class="pre">get_default_project_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/prompt.html#get_default_project_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.prompt.get_default_project_paths" title="Permalink to this definition">#</a></dt>
 <dd><p>Function to get default project paths.</p>
 </dd></dl>
+
 </section>
 </section>
 </section>

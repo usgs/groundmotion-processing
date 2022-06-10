@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.nsmn.turkey_fetcher - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.io.nsmn.turkey_fetcher - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -505,35 +506,35 @@
 <span class="kn">from</span> <span class="nn">gmprocess.utils.config</span> <span class="kn">import</span> <span class="n">get_config</span>
 
 
-<span class="n">SEARCH_URL</span> <span class="o">=</span> <span class="s2">"http://kyhdata.deprem.gov.tr/2K/kyhdata_v4.php?dst=TU9EVUxFX05BTUU9ZWFydGhxdWFrZSZNT0RVTEVfVEFTSz1zZWFyY2g%3D"</span>
+<span class="n">SEARCH_URL</span> <span class="o">=</span> <span class="s2">&quot;http://kyhdata.deprem.gov.tr/2K/kyhdata_v4.php?dst=TU9EVUxFX05BTUU9ZWFydGhxdWFrZSZNT0RVTEVfVEFTSz1zZWFyY2g%3D&quot;</span>
 
 <span class="n">EQ_FORM_DATA</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"from_day"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"from_month"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"from_year"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"from_md"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"to_md"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"to_day"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"to_month"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"to_year"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"from_ml"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"to_ml"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"from_epi_lat"</span><span class="p">:</span> <span class="s2">"34.00"</span><span class="p">,</span>
-    <span class="s2">"to_epi_lat"</span><span class="p">:</span> <span class="s2">"43.00"</span><span class="p">,</span>
-    <span class="s2">"from_ms"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"to_ms"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"from_epi_lon"</span><span class="p">:</span> <span class="s2">"24.0"</span><span class="p">,</span>
-    <span class="s2">"to_epi_lon"</span><span class="p">:</span> <span class="s2">"45.82"</span><span class="p">,</span>
-    <span class="s2">"from_mw"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"to_mw"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"from_depth"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"to_depth"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"from_mb"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-    <span class="s2">"to_mb"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+    <span class="s2">&quot;from_day&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from_month&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from_year&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from_md&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;to_md&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;to_day&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;to_month&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;to_year&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from_ml&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;to_ml&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from_epi_lat&quot;</span><span class="p">:</span> <span class="s2">&quot;34.00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;to_epi_lat&quot;</span><span class="p">:</span> <span class="s2">&quot;43.00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from_ms&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;to_ms&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from_epi_lon&quot;</span><span class="p">:</span> <span class="s2">&quot;24.0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;to_epi_lon&quot;</span><span class="p">:</span> <span class="s2">&quot;45.82&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from_mw&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;to_mw&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from_depth&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;to_depth&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from_mb&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;to_mb&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="c1"># 2019/03/13-13:48:00.00</span>
-<span class="n">TIMEFMT</span> <span class="o">=</span> <span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S"</span>
+<span class="n">TIMEFMT</span> <span class="o">=</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span>
 
 <span class="c1"># default values for this fetcher</span>
 <span class="c1"># if None specified in constructor, AND no parameters specified in</span>
@@ -565,7 +566,7 @@
         <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">drop_non_free</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">"""Create a TurkeyFetcher instance.</span>
+        <span class="sd">&quot;&quot;&quot;Create a TurkeyFetcher instance.</span>
 
 <span class="sd">        Download Turkish strong motion data from the Turkish NSMN site:</span>
 <span class="sd">        http://kyhdata.deprem.gov.tr/2K/kyhdata_v4.php</span>
@@ -598,7 +599,7 @@
 <span class="sd">            drop_non_free (bool):</span>
 <span class="sd">                Option to ignore non-free-field (borehole, sensors on</span>
 <span class="sd">                structures, etc.)</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># what values do we use for search thresholds?</span>
         <span class="c1"># In order of priority:</span>
         <span class="c1"># 1) Not-None values passed in constructor</span>
@@ -611,17 +612,17 @@
         <span class="n">cfg_ddepth</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">cfg_dmag</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="k">if</span> <span class="s2">"fetchers"</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">"TurkeyFetcher"</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">"fetchers"</span><span class="p">]:</span>
-                <span class="n">fetch_cfg</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"fetchers"</span><span class="p">][</span><span class="s2">"TurkeyFetcher"</span><span class="p">]</span>
-                <span class="k">if</span> <span class="s2">"radius"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"radius"</span><span class="p">])</span>
-                <span class="k">if</span> <span class="s2">"dt"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_dt</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"dt"</span><span class="p">])</span>
-                <span class="k">if</span> <span class="s2">"ddepth"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_ddepth</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"ddepth"</span><span class="p">])</span>
-                <span class="k">if</span> <span class="s2">"dmag"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_dmag</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"dmag"</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s2">&quot;fetchers&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;TurkeyFetcher&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;fetchers&quot;</span><span class="p">]:</span>
+                <span class="n">fetch_cfg</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;fetchers&quot;</span><span class="p">][</span><span class="s2">&quot;TurkeyFetcher&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">&quot;radius&quot;</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">&quot;radius&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="s2">&quot;dt&quot;</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_dt</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">&quot;dt&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="s2">&quot;ddepth&quot;</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_ddepth</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">&quot;ddepth&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="s2">&quot;dmag&quot;</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_dmag</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">&quot;dmag&quot;</span><span class="p">])</span>
 
         <span class="n">radius</span> <span class="o">=</span> <span class="n">_get_first_value</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="n">cfg_radius</span><span class="p">,</span> <span class="n">RADIUS</span><span class="p">)</span>
         <span class="n">dt</span> <span class="o">=</span> <span class="n">_get_first_value</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">cfg_dt</span><span class="p">,</span> <span class="n">DT</span><span class="p">)</span>
@@ -644,7 +645,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">drop_non_free</span> <span class="o">=</span> <span class="n">drop_non_free</span>
 
 <div class="viewcode-block" id="TurkeyFetcher.getMatchingEvents"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/nsmn/turkey_fetcher/index.html#gmprocess.io.nsmn.turkey_fetcher.TurkeyFetcher.getMatchingEvents">[docs]</a>    <span class="k">def</span> <span class="nf">getMatchingEvents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solve</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">"""Return a list of dictionaries matching input parameters.</span>
+        <span class="sd">&quot;&quot;&quot;Return a list of dictionaries matching input parameters.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            solve (bool):</span>
@@ -658,27 +659,27 @@
 <span class="sd">                  - lon Event longitude</span>
 <span class="sd">                  - depth Event depth</span>
 <span class="sd">                  - mag Event magnitude</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">get_turkey_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
-        <span class="n">lats</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"latitude"</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
-        <span class="n">lons</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"longitude"</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="n">lats</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="n">lons</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
         <span class="n">etime</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
-        <span class="n">dtimes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"origintime"</span><span class="p">]</span> <span class="o">-</span> <span class="n">etime</span><span class="p">)</span>
+        <span class="n">dtimes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;origintime&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">etime</span><span class="p">)</span>
         <span class="n">distances</span> <span class="o">=</span> <span class="n">geodetic_distance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">)</span>
         <span class="n">didx</span> <span class="o">=</span> <span class="n">distances</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span>
-        <span class="n">tidx</span> <span class="o">=</span> <span class="p">(</span><span class="n">dtimes</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">),</span> <span class="s2">"s"</span><span class="p">))</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="n">tidx</span> <span class="o">=</span> <span class="p">(</span><span class="n">dtimes</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">),</span> <span class="s2">&quot;s&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
         <span class="n">newdf</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">didx</span> <span class="o">&amp;</span> <span class="n">tidx</span><span class="p">]</span>
         <span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">newdf</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
             <span class="n">eventdict</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">"time"</span><span class="p">:</span> <span class="n">UTCDateTime</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"origintime"</span><span class="p">]),</span>
-                <span class="s2">"lat"</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">"latitude"</span><span class="p">],</span>
-                <span class="s2">"lon"</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">"longitude"</span><span class="p">],</span>
-                <span class="s2">"depth"</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">],</span>
-                <span class="s2">"url"</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">"url"</span><span class="p">],</span>
-                <span class="s2">"mag"</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">"magnitude"</span><span class="p">],</span>
+                <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">UTCDateTime</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;origintime&quot;</span><span class="p">]),</span>
+                <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;mag&quot;</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;magnitude&quot;</span><span class="p">],</span>
             <span class="p">}</span>
             <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eventdict</span><span class="p">)</span>
 
@@ -689,7 +690,7 @@
         <span class="k">return</span> <span class="n">events</span></div>
 
 <div class="viewcode-block" id="TurkeyFetcher.retrieveData"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/nsmn/turkey_fetcher/index.html#gmprocess.io.nsmn.turkey_fetcher.TurkeyFetcher.retrieveData">[docs]</a>    <span class="k">def</span> <span class="nf">retrieveData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_dict</span><span class="p">):</span>
-        <span class="sd">"""Retrieve data from NSMN, turn into StreamCollection.</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve data from NSMN, turn into StreamCollection.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            event (dict):</span>
@@ -698,7 +699,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            StreamCollection: StreamCollection object.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rawdir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rawdir</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rawdir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">rawdir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
@@ -707,44 +708,44 @@
                 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">rawdir</span><span class="p">)</span>
 
         <span class="n">urlparts</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">SEARCH_URL</span><span class="p">)</span>
-        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">event_dict</span><span class="p">[</span><span class="s2">"url"</span><span class="p">])</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">event_dict</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">])</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"TurkeyFetcher event url: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">event_dict</span><span class="p">[</span><span class="s2">"url"</span><span class="p">]))</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"TurkeyFetcher event response code: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;TurkeyFetcher event url: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">event_dict</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;TurkeyFetcher event response code: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
 
         <span class="n">data</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">text</span>
-        <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="s2">"lxml"</span><span class="p">)</span>
-        <span class="n">table</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">"table"</span><span class="p">,</span> <span class="s2">"tableType_01"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="s2">&quot;lxml&quot;</span><span class="p">)</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="s2">&quot;tableType_01&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">datafiles</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">"tr"</span><span class="p">):</span>
-            <span class="k">if</span> <span class="s2">"class"</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">attrs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;tr&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s2">&quot;class&quot;</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">attrs</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="n">col</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">"td"</span><span class="p">,</span> <span class="s2">"coltype01"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">href</span> <span class="o">=</span> <span class="n">col</span><span class="o">.</span><span class="n">contents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"href"</span><span class="p">]</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;td&quot;</span><span class="p">,</span> <span class="s2">&quot;coltype01&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">href</span> <span class="o">=</span> <span class="n">col</span><span class="o">.</span><span class="n">contents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">]</span>
             <span class="n">station_id</span> <span class="o">=</span> <span class="n">col</span><span class="o">.</span><span class="n">contents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">contents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">station_url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="s2">"http://"</span> <span class="o">+</span> <span class="n">urlparts</span><span class="o">.</span><span class="n">netloc</span><span class="p">,</span> <span class="n">href</span><span class="p">)</span>
+            <span class="n">station_url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="s2">&quot;http://&quot;</span> <span class="o">+</span> <span class="n">urlparts</span><span class="o">.</span><span class="n">netloc</span><span class="p">,</span> <span class="n">href</span><span class="p">)</span>
             <span class="n">req2</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">station_url</span><span class="p">)</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"TurkeyFetcher station url: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">station_url</span><span class="p">))</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"TurkeyFetcher station response code: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">req2</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;TurkeyFetcher station url: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">station_url</span><span class="p">))</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;TurkeyFetcher station response code: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">req2</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
             <span class="n">data2</span> <span class="o">=</span> <span class="n">req2</span><span class="o">.</span><span class="n">text</span>
-            <span class="n">soup2</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">data2</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="s2">"lxml"</span><span class="p">)</span>
-            <span class="n">center</span> <span class="o">=</span> <span class="n">soup2</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">"center"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">anchor</span> <span class="o">=</span> <span class="n">center</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">"a"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">href2</span> <span class="o">=</span> <span class="n">anchor</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"href"</span><span class="p">]</span>
-            <span class="n">data_url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="s2">"http://"</span> <span class="o">+</span> <span class="n">urlparts</span><span class="o">.</span><span class="n">netloc</span><span class="p">,</span> <span class="n">href2</span><span class="p">)</span>
+            <span class="n">soup2</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">data2</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="s2">&quot;lxml&quot;</span><span class="p">)</span>
+            <span class="n">center</span> <span class="o">=</span> <span class="n">soup2</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;center&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">anchor</span> <span class="o">=</span> <span class="n">center</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">href2</span> <span class="o">=</span> <span class="n">anchor</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">]</span>
+            <span class="n">data_url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="s2">&quot;http://&quot;</span> <span class="o">+</span> <span class="n">urlparts</span><span class="o">.</span><span class="n">netloc</span><span class="p">,</span> <span class="n">href2</span><span class="p">)</span>
             <span class="n">req3</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">data_url</span><span class="p">)</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"TurkeyFetcher data url: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">data_url</span><span class="p">))</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"TurkeyFetcher data response code: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">req3</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;TurkeyFetcher data url: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">data_url</span><span class="p">))</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;TurkeyFetcher data response code: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">req3</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">req3</span><span class="o">.</span><span class="n">text</span>
-            <span class="n">localfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rawdir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">station_id</span><span class="si">}</span><span class="s2">.txt"</span><span class="p">)</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Downloading Turkish data file </span><span class="si">{</span><span class="n">station_id</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">localfile</span><span class="p">,</span> <span class="s2">"wt"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">localfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rawdir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">station_id</span><span class="si">}</span><span class="s2">.txt&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Downloading Turkish data file </span><span class="si">{</span><span class="n">station_id</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">localfile</span><span class="p">,</span> <span class="s2">&quot;wt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
             <span class="n">datafiles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">localfile</span><span class="p">)</span>
 
         <span class="n">streams</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">dfile</span> <span class="ow">in</span> <span class="n">datafiles</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Reading datafile </span><span class="si">{</span><span class="n">dfile</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reading datafile </span><span class="si">{</span><span class="n">dfile</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
             <span class="n">streams</span> <span class="o">+=</span> <span class="n">read_nsmn</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rawdir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -757,7 +758,7 @@
 
 
 <div class="viewcode-block" id="get_turkey_dataframe"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/nsmn/turkey_fetcher/index.html#gmprocess.io.nsmn.turkey_fetcher.get_turkey_dataframe">[docs]</a><span class="k">def</span> <span class="nf">get_turkey_dataframe</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
-    <span class="sd">"""Retrieve a dataframe of events from the NSMN site.</span>
+    <span class="sd">&quot;&quot;&quot;Retrieve a dataframe of events from the NSMN site.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        time (datetime): Earthquake origin time.</span>
@@ -775,44 +776,44 @@
 <span class="sd">              MW, MB)</span>
 <span class="sd">        or None if no events are found.</span>
 
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">urlparts</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">SEARCH_URL</span><span class="p">)</span>
     <span class="n">url</span> <span class="o">=</span> <span class="n">SEARCH_URL</span>
     <span class="n">params</span> <span class="o">=</span> <span class="n">EQ_FORM_DATA</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
     <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">"from_year"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">start_time</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">"from_month"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%02i</span><span class="s2">"</span> <span class="o">%</span> <span class="n">start_time</span><span class="o">.</span><span class="n">month</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">"from_day"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%02i</span><span class="s2">"</span> <span class="o">%</span> <span class="n">start_time</span><span class="o">.</span><span class="n">day</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">"to_year"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">end_time</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">"to_month"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%02i</span><span class="s2">"</span> <span class="o">%</span> <span class="n">end_time</span><span class="o">.</span><span class="n">month</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">"to_day"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%02i</span><span class="s2">"</span> <span class="o">%</span> <span class="n">end_time</span><span class="o">.</span><span class="n">day</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;from_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">start_time</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;from_month&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%02i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">start_time</span><span class="o">.</span><span class="n">month</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;from_day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%02i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">start_time</span><span class="o">.</span><span class="n">day</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;to_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">end_time</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;to_month&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%02i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">end_time</span><span class="o">.</span><span class="n">month</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;to_day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%02i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">end_time</span><span class="o">.</span><span class="n">day</span>
     <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"TurkeyFetcher dataframe url: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"TurkeyFetcher dataframe response code: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;TurkeyFetcher dataframe url: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;TurkeyFetcher dataframe response code: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">text</span>
-    <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="s2">"lxml"</span><span class="p">)</span>
-    <span class="n">all_table</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">"table"</span><span class="p">,</span> <span class="s2">"tableType_01"</span><span class="p">)</span>
+    <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="s2">&quot;lxml&quot;</span><span class="p">)</span>
+    <span class="n">all_table</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="s2">&quot;tableType_01&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_table</span><span class="p">):</span>
         <span class="n">table</span> <span class="o">=</span> <span class="n">all_table</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">"id"</span><span class="p">,</span>
-            <span class="s2">"origintime"</span><span class="p">,</span>
-            <span class="s2">"latitude"</span><span class="p">,</span>
-            <span class="s2">"longitude"</span><span class="p">,</span>
-            <span class="s2">"depth"</span><span class="p">,</span>
-            <span class="s2">"magnitude"</span><span class="p">,</span>
-            <span class="s2">"url"</span><span class="p">,</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;origintime&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;latitude&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;longitude&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;depth&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;magnitude&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;url&quot;</span><span class="p">,</span>
         <span class="p">]</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">cols</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">"tr"</span><span class="p">):</span>
-            <span class="k">if</span> <span class="s2">"class"</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">attrs</span> <span class="ow">and</span> <span class="n">row</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"class"</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"headerRowType_01"</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;tr&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s2">&quot;class&quot;</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">attrs</span> <span class="ow">and</span> <span class="n">row</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;class&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;headerRowType_01&quot;</span><span class="p">]:</span>
                 <span class="k">continue</span>
-            <span class="n">cols</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">"td"</span><span class="p">,</span> <span class="s2">"coltype01"</span><span class="p">)</span>
-            <span class="n">href</span> <span class="o">=</span> <span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">contents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"href"</span><span class="p">]</span>
-            <span class="n">event_url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="s2">"http://"</span> <span class="o">+</span> <span class="n">urlparts</span><span class="o">.</span><span class="n">netloc</span><span class="p">,</span> <span class="n">href</span><span class="p">)</span>
+            <span class="n">cols</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;td&quot;</span><span class="p">,</span> <span class="s2">&quot;coltype01&quot;</span><span class="p">)</span>
+            <span class="n">href</span> <span class="o">=</span> <span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">contents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">]</span>
+            <span class="n">event_url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="s2">&quot;http://&quot;</span> <span class="o">+</span> <span class="n">urlparts</span><span class="o">.</span><span class="n">netloc</span><span class="p">,</span> <span class="n">href</span><span class="p">)</span>
             <span class="n">eid</span> <span class="o">=</span> <span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">contents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">contents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">datestr</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">contents</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">timestr</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">contents</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -826,21 +827,21 @@
                     <span class="n">mag</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">contents</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
                     <span class="n">mags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mag</span><span class="p">)</span>
             <span class="n">mag</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">mags</span><span class="p">)</span>
-            <span class="n">time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">datestr</span> <span class="o">+</span> <span class="s2">"T"</span> <span class="o">+</span> <span class="n">timestr</span><span class="p">,</span> <span class="n">TIMEFMT</span><span class="p">)</span>
-            <span class="n">time</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">tz_localize</span><span class="p">(</span><span class="s2">"UTC"</span><span class="p">)</span>
+            <span class="n">time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">datestr</span> <span class="o">+</span> <span class="s2">&quot;T&quot;</span> <span class="o">+</span> <span class="n">timestr</span><span class="p">,</span> <span class="n">TIMEFMT</span><span class="p">)</span>
+            <span class="n">time</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">tz_localize</span><span class="p">(</span><span class="s2">&quot;UTC&quot;</span><span class="p">)</span>
             <span class="n">edict</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">"id"</span><span class="p">:</span> <span class="n">eid</span><span class="p">,</span>
-                <span class="s2">"url"</span><span class="p">:</span> <span class="n">event_url</span><span class="p">,</span>
-                <span class="s2">"origintime"</span><span class="p">:</span> <span class="n">time</span><span class="p">,</span>
-                <span class="s2">"latitude"</span><span class="p">:</span> <span class="n">lat</span><span class="p">,</span>
-                <span class="s2">"longitude"</span><span class="p">:</span> <span class="n">lon</span><span class="p">,</span>
-                <span class="s2">"depth"</span><span class="p">:</span> <span class="n">depth</span><span class="p">,</span>
-                <span class="s2">"magnitude"</span><span class="p">:</span> <span class="n">mag</span><span class="p">,</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">eid</span><span class="p">,</span>
+                <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">event_url</span><span class="p">,</span>
+                <span class="s2">&quot;origintime&quot;</span><span class="p">:</span> <span class="n">time</span><span class="p">,</span>
+                <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="n">lat</span><span class="p">,</span>
+                <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="n">lon</span><span class="p">,</span>
+                <span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="n">depth</span><span class="p">,</span>
+                <span class="s2">&quot;magnitude&quot;</span><span class="p">:</span> <span class="n">mag</span><span class="p">,</span>
             <span class="p">}</span>
             <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">edict</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># make sure that origintime is actually a time</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">"origintime"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"origintime"</span><span class="p">])</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;origintime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;origintime&quot;</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">df</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span></div>

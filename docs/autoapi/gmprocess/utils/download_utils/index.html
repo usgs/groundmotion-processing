@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.utils.event" href="../event/index.html" /><link rel="prev" title="gmprocess.utils.constants" href="../constants/index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.utils.download_utils - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.utils.download_utils - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -486,33 +487,36 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.download" title="gmprocess.utils.download_utils.download"><code class="xref py py-obj docutils literal notranslate"><span class="pre">download</span></code></a>(event, event_dir, config)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.download" title="gmprocess.utils.download_utils.download"><code class="xref py py-obj docutils literal notranslate"><span class="pre">download</span></code></a>(event, event_dir, config)</p></td>
 <td><p>Download waveform data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.create_event_file" title="gmprocess.utils.download_utils.create_event_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_event_file</span></code></a>(event, event_dir)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.create_event_file" title="gmprocess.utils.download_utils.create_event_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_event_file</span></code></a>(event, event_dir)</p></td>
 <td><p>Write event.json file in event_dir.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.plot_raw" title="gmprocess.utils.download_utils.plot_raw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_raw</span></code></a>(rawdir, tcollection, event)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.plot_raw" title="gmprocess.utils.download_utils.plot_raw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_raw</span></code></a>(rawdir, tcollection, event)</p></td>
 <td><p>Make PNG plots of a collection of raw waveforms.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.download_rupture_file" title="gmprocess.utils.download_utils.download_rupture_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">download_rupture_file</span></code></a>(event_id, event_dir)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.download_rupture_file" title="gmprocess.utils.download_utils.download_rupture_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">download_rupture_file</span></code></a>(event_id, event_dir)</p></td>
 <td><p>Downlaod rupture file from Comcat.</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.TIMEFMT2" title="gmprocess.utils.download_utils.TIMEFMT2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TIMEFMT2</span></code></a></p></td>
@@ -522,15 +526,18 @@
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.utils.download_utils.TIMEFMT2">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.download_utils.</span></span><span class="sig-name descname"><span class="pre">TIMEFMT2</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">%Y-%m-%dT%H:%M:%S.%f</span></em><a class="headerlink" href="#gmprocess.utils.download_utils.TIMEFMT2" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.utils.download_utils.FLOAT_PATTERN">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.download_utils.</span></span><span class="sig-name descname"><span class="pre">FLOAT_PATTERN</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">[-+]?[0-9]*\.?[0-9]+</span></em><a class="headerlink" href="#gmprocess.utils.download_utils.FLOAT_PATTERN" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.download_utils.download">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.download_utils.</span></span><span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/download_utils.html#download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.download_utils.download" title="Permalink to this definition">#</a></dt>
@@ -545,6 +552,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.download_utils.create_event_file">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.download_utils.</span></span><span class="sig-name descname"><span class="pre">create_event_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/download_utils.html#create_event_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.download_utils.create_event_file" title="Permalink to this definition">#</a></dt>
@@ -558,6 +566,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.download_utils.plot_raw">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.download_utils.</span></span><span class="sig-name descname"><span class="pre">plot_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rawdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tcollection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/download_utils.html#plot_raw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.download_utils.plot_raw" title="Permalink to this definition">#</a></dt>
@@ -572,6 +581,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.download_utils.download_rupture_file">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.download_utils.</span></span><span class="sig-name descname"><span class="pre">download_rupture_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/download_utils.html#download_rupture_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.download_utils.download_rupture_file" title="Permalink to this definition">#</a></dt>
@@ -585,6 +595,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 </section>
 </section>

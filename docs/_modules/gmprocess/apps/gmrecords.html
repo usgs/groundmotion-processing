@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.apps.gmrecords - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.apps.gmrecords - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -497,27 +498,27 @@
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">VERSION</span>
 <span class="kn">from</span> <span class="nn">..subcommands.lazy_loader</span> <span class="kn">import</span> <span class="n">LazyLoader</span>
 
-<span class="n">configobj</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"configobj"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"configobj"</span><span class="p">)</span>
-<span class="n">setuptools_scm</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"setuptools_scm"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"setuptools_scm"</span><span class="p">)</span>
+<span class="n">configobj</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;configobj&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;configobj&quot;</span><span class="p">)</span>
+<span class="n">setuptools_scm</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;setuptools_scm&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;setuptools_scm&quot;</span><span class="p">)</span>
 
-<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"base"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.base"</span><span class="p">)</span>
-<span class="n">configmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"config"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.config"</span><span class="p">)</span>
-<span class="n">const</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"const"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.constants"</span><span class="p">)</span>
-<span class="n">log_utils</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"log_utils"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.logging"</span><span class="p">)</span>
-<span class="n">projmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"projmod"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.projects"</span><span class="p">)</span>
-<span class="n">init</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"init"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.init"</span><span class="p">)</span>
-<span class="n">prompt</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"prompt"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.prompt"</span><span class="p">)</span>
+<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;base&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.subcommands.base&quot;</span><span class="p">)</span>
+<span class="n">configmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.utils.config&quot;</span><span class="p">)</span>
+<span class="n">const</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;const&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.utils.constants&quot;</span><span class="p">)</span>
+<span class="n">log_utils</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;log_utils&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.utils.logging&quot;</span><span class="p">)</span>
+<span class="n">projmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;projmod&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.subcommands.projects&quot;</span><span class="p">)</span>
+<span class="n">init</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;init&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.subcommands.init&quot;</span><span class="p">)</span>
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;prompt&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.utils.prompt&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="GMrecordsApp"><a class="viewcode-back" href="../../../autoapi/gmprocess/apps/gmrecords/index.html#gmprocess.apps.gmrecords.GMrecordsApp">[docs]</a><span class="k">class</span> <span class="nc">GMrecordsApp</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">"""Main driver app for gmrpocess command-line interface.</span>
+    <span class="sd">&quot;&quot;&quot;Main driver app for gmrpocess command-line interface.</span>
 
 <span class="sd">    This is meant to replace the `gmprocess` program.</span>
 
 <span class="sd">    To limit the number of paths specified as arguments, this app relies on</span>
-<span class="sd">    some config options associated with "projects". Project information is</span>
-<span class="sd">    saved in `.gmprocess/projects.conf`, either in the user's home directory</span>
-<span class="sd">    for "system" level projects, or in a specific directory to allow for</span>
+<span class="sd">    some config options associated with &quot;projects&quot;. Project information is</span>
+<span class="sd">    saved in `.gmprocess/projects.conf`, either in the user&#39;s home directory</span>
+<span class="sd">    for &quot;system&quot; level projects, or in a specific directory to allow for</span>
 <span class="sd">    directory-specific projects.</span>
 
 <span class="sd">    GmpApp makes use subcommands that are specified in the</span>
@@ -527,19 +528,19 @@
 
 <span class="sd">    Projects contain:</span>
 <span class="sd">        - Path to the data directory. Note that this is equivalent to the</span>
-<span class="sd">          '--output-directory' path in gmprocess.</span>
+<span class="sd">          &#39;--output-directory&#39; path in gmprocess.</span>
 <span class="sd">        - Path to the conf directory, where config.yml is located.</span>
 <span class="sd">            * Note: The plan is for this directory to holds multiple conf</span>
 <span class="sd">              files so that we can split up the current content to make it</span>
 <span class="sd">              easier to deal with.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Try not to let tests interfere with actual system:</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"CALLED_FROM_PYTEST"</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;CALLED_FROM_PYTEST&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Not called from pytest</span>
             <span class="n">local_proj</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">const</span><span class="o">.</span><span class="n">PROJ_CONF_DIR</span><span class="p">)</span>
-            <span class="n">local_proj_conf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_proj</span><span class="p">,</span> <span class="s2">"projects.conf"</span><span class="p">)</span>
+            <span class="n">local_proj_conf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_proj</span><span class="p">,</span> <span class="s2">&quot;projects.conf&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">local_proj</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">local_proj_conf</span><span class="p">):</span>
                 <span class="n">PROJECTS_PATH</span> <span class="o">=</span> <span class="n">local_proj</span>
             <span class="k">else</span><span class="p">:</span>
@@ -548,7 +549,7 @@
             <span class="n">PROJECTS_PATH</span> <span class="o">=</span> <span class="n">const</span><span class="o">.</span><span class="n">PROJECTS_PATH_TEST</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_PATH</span> <span class="o">=</span> <span class="n">PROJECTS_PATH</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PROJECTS_PATH</span><span class="p">,</span> <span class="s2">"projects.conf"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_FILE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PROJECTS_PATH</span><span class="p">,</span> <span class="s2">&quot;projects.conf&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gmprocess_version</span> <span class="o">=</span> <span class="n">VERSION</span>
 
 <div class="viewcode-block" id="GMrecordsApp.main"><a class="viewcode-back" href="../../../autoapi/gmprocess/apps/gmrecords/index.html#gmprocess.apps.gmrecords.GMrecordsApp.main">[docs]</a>    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -561,33 +562,33 @@
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_initialize</span><span class="p">()</span>
-            <span class="n">exclude_subcommands</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"projects"</span><span class="p">,</span> <span class="s2">"proj"</span><span class="p">,</span> <span class="s2">"init"</span><span class="p">]</span>
+            <span class="n">exclude_subcommands</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">,</span> <span class="s2">&quot;proj&quot;</span><span class="p">,</span> <span class="s2">&quot;init&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">subcommand</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude_subcommands</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
                 <span class="c1"># Print the current project information to try to avoid</span>
                 <span class="c1"># confusion</span>
-                <span class="n">selected_project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">"project"</span><span class="p">]</span>
+                <span class="n">selected_project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">]</span>
                 <span class="n">proj</span> <span class="o">=</span> <span class="n">projmod</span><span class="o">.</span><span class="n">Project</span><span class="p">(</span>
                     <span class="n">selected_project</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="n">selected_project</span><span class="p">],</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">selected_project</span><span class="p">],</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span>
                 <span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">proj</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
             <span class="c1"># -----------------------------------------------------------------</span>
             <span class="c1"># This calls the init method of the subcommand that was specified</span>
-            <span class="c1"># at the command line and hands off the GmpApp object ("self") as</span>
+            <span class="c1"># at the command line and hands off the GmpApp object (&quot;self&quot;) as</span>
             <span class="c1"># the only argument to func.</span>
             <span class="c1"># -----------------------------------------------------------------</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">func</span><span class="p">()</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GMrecordsApp.load_subcommands"><a class="viewcode-back" href="../../../autoapi/gmprocess/apps/gmrecords/index.html#gmprocess.apps.gmrecords.GMrecordsApp.load_subcommands">[docs]</a>    <span class="k">def</span> <span class="nf">load_subcommands</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Load information for subcommands."""</span>
-        <span class="n">mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">"gmprocess.subcommands"</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot;Load information for subcommands.&quot;&quot;&quot;</span>
+        <span class="n">mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;gmprocess.subcommands&quot;</span><span class="p">)</span>
         <span class="n">subcommands</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">name</span><span class="p">:</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">finder</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">ispkg</span> <span class="ow">in</span> <span class="n">pkgutil</span><span class="o">.</span><span class="n">iter_modules</span><span class="p">(</span>
-                <span class="n">mod</span><span class="o">.</span><span class="n">__path__</span><span class="p">,</span> <span class="n">mod</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">"."</span>
+                <span class="n">mod</span><span class="o">.</span><span class="n">__path__</span><span class="p">,</span> <span class="n">mod</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span>
             <span class="p">)</span>
         <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="p">{}</span>
@@ -608,9 +609,9 @@
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">cmd</span><span class="p">:</span>
                         <span class="k">continue</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">classes</span><span class="p">[</span><span class="n">cmd</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                        <span class="s2">"class"</span><span class="p">:</span> <span class="n">core_class</span><span class="p">,</span>
-                        <span class="s2">"module"</span><span class="p">:</span> <span class="n">module</span><span class="p">,</span>
-                        <span class="s2">"mfile"</span><span class="p">:</span> <span class="n">module</span><span class="o">.</span><span class="vm">__file__</span><span class="p">,</span>
+                        <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="n">core_class</span><span class="p">,</span>
+                        <span class="s2">&quot;module&quot;</span><span class="p">:</span> <span class="n">module</span><span class="p">,</span>
+                        <span class="s2">&quot;mfile&quot;</span><span class="p">:</span> <span class="n">module</span><span class="o">.</span><span class="vm">__file__</span><span class="p">,</span>
                     <span class="p">}</span></div>
 
 <div class="viewcode-block" id="GMrecordsApp._initialize"><a class="viewcode-back" href="../../../autoapi/gmprocess/apps/gmrecords/index.html#gmprocess.apps.gmrecords.GMrecordsApp._initialize">[docs]</a>    <span class="k">def</span> <span class="nf">_initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -618,26 +619,26 @@
 
         <span class="n">log_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">log</span> <span class="ow">or</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">log_file</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Logging output sent to: </span><span class="si">{</span><span class="n">log_file</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Logging output sent to: </span><span class="si">{</span><span class="n">log_file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">log_utils</span><span class="o">.</span><span class="n">setup_logger</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="n">log_file</span><span class="o">=</span><span class="n">log_file</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Logging level includes INFO."</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Logging level includes DEBUG."</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"PROJECTS_PATH: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_PATH</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Logging level includes INFO.&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Logging level includes DEBUG.&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PROJECTS_PATH: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_PATH</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GMrecordsApp._load_config"><a class="viewcode-back" href="../../../autoapi/gmprocess/apps/gmrecords/index.html#gmprocess.apps.gmrecords.GMrecordsApp._load_config">[docs]</a>    <span class="k">def</span> <span class="nf">_load_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_FILE</span><span class="p">):</span>
-            <span class="c1"># If projects.conf file doesn't exist then we need to run the</span>
+            <span class="c1"># If projects.conf file doesn&#39;t exist then we need to run the</span>
             <span class="c1"># initial setup.</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"No project config file detected."</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"Please select a project setup option:"</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"(1) Initialize the current directory as a gmrecords"</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"    project, which will contain data and conf"</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"    subdirectories."</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"(2) Setup a project with data and conf locations that"</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"    are independent of the current directory."</span><span class="p">)</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">"&gt; "</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No project config file detected.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please select a project setup option:&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;(1) Initialize the current directory as a gmrecords&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    project, which will contain data and conf&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    subdirectories.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;(2) Setup a project with data and conf locations that&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    are independent of the current directory.&quot;</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;&gt; &quot;</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">response</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">"Not a valid response. Exiting."</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Not a valid response. Exiting.&quot;</span><span class="p">)</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">response</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">init</span><span class="o">.</span><span class="n">InitModule</span><span class="p">()</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -645,134 +646,134 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_initial_setup</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span> <span class="o">=</span> <span class="n">configobj</span><span class="o">.</span><span class="n">ConfigObj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_FILE</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span> <span class="o">=</span> <span class="n">configobj</span><span class="o">.</span><span class="n">ConfigObj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_FILE</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_config</span><span class="p">()</span>
         <span class="c1"># self.current_project gets set by _validate_config if it is successful.</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"current_project"</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"Project validation failed."</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"This likely has occurred due to errors in the project conf file: "</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_FILE</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"Deleting this file and creating a new one with:"</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"    gmrecords proj -c"</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"will likely solve the problem."</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"Exiting."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;current_project&quot;</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Project validation failed.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This likely has occurred due to errors in the project conf file: &quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_FILE</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Deleting this file and creating a new one with:&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    gmrecords proj -c&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;will likely solve the problem.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Exiting.&quot;</span><span class="p">)</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span>
             <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_FILE</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_project</span><span class="p">[</span><span class="s2">"conf_path"</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_FILE</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_project</span><span class="p">[</span><span class="s2">&quot;conf_path&quot;</span><span class="p">]</span>
             <span class="p">)</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span>
             <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_FILE</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_project</span><span class="p">[</span><span class="s2">"data_path"</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_FILE</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_project</span><span class="p">[</span><span class="s2">&quot;data_path&quot;</span><span class="p">]</span>
             <span class="p">)</span>
         <span class="p">)</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"CALLED_FROM_PYTEST"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;CALLED_FROM_PYTEST&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span> <span class="o">=</span> <span class="n">const</span><span class="o">.</span><span class="n">PROJECTS_PATH_TEST</span>
             <span class="n">data_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span>
-                <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">"gmprocess"</span><span class="p">,</span> <span class="s2">"data"</span><span class="p">)</span>
+                <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;gmprocess&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">conf_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">const</span><span class="o">.</span><span class="n">CONFIG_FILE_TEST</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">conf_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span><span class="p">,</span> <span class="s2">"config.yml"</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span><span class="p">,</span> <span class="s2">&quot;config.yml&quot;</span><span class="p">)</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf_file</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="p">)):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Config and/or data path does not exist for project: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Config and/or data path does not exist for project: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span>
             <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
 
-            <span class="n">conf_path</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s2">"conf_path"</span><span class="p">]</span>
+            <span class="n">conf_path</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s2">&quot;conf_path&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">conf_path</span><span class="p">):</span>
-                <span class="n">question</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Okay to delete everything in: </span><span class="si">{</span><span class="n">conf_path</span><span class="si">}</span><span class="s2">?</span><span class="se">\n</span><span class="s2">"</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">prompt</span><span class="o">.</span><span class="n">query_yes_no</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">"yes"</span><span class="p">):</span>
+                <span class="n">question</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Okay to delete everything in: </span><span class="si">{</span><span class="n">conf_path</span><span class="si">}</span><span class="s2">?</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">prompt</span><span class="o">.</span><span class="n">query_yes_no</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span><span class="p">):</span>
                     <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">conf_path</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\t</span><span class="s2">Deleted conf directory </span><span class="si">{</span><span class="n">conf_path</span><span class="si">}</span><span class="s2">:"</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Deleted conf directory </span><span class="si">{</span><span class="n">conf_path</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
 
-            <span class="n">data_path</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s2">"data_path"</span><span class="p">]</span>
+            <span class="n">data_path</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s2">&quot;data_path&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">data_path</span><span class="p">):</span>
-                <span class="n">question</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Okay to delete everything in: </span><span class="si">{</span><span class="n">data_path</span><span class="si">}</span><span class="s2">?</span><span class="se">\n</span><span class="s2">"</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">prompt</span><span class="o">.</span><span class="n">query_yes_no</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">"yes"</span><span class="p">):</span>
+                <span class="n">question</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Okay to delete everything in: </span><span class="si">{</span><span class="n">data_path</span><span class="si">}</span><span class="s2">?</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">prompt</span><span class="o">.</span><span class="n">query_yes_no</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span><span class="p">):</span>
                     <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\t</span><span class="s2">Deleted conf directory </span><span class="si">{</span><span class="n">data_path</span><span class="si">}</span><span class="s2">:"</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">Deleted conf directory </span><span class="si">{</span><span class="n">data_path</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
 
-            <span class="k">del</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="n">project</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">project</span><span class="p">]</span>
 
-            <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">==</span> <span class="p">[]:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">"No remaining projects in projects.conf"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">==</span> <span class="p">[]:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No remaining projects in projects.conf&quot;</span><span class="p">)</span>
                 <span class="n">default</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="n">newproject</span> <span class="o">=</span> <span class="s2">"None"</span>
+                <span class="n">newproject</span> <span class="o">=</span> <span class="s2">&quot;None&quot;</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">default</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">default</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">newproject</span> <span class="o">=</span> <span class="n">projmod</span><span class="o">.</span><span class="n">Project</span><span class="p">(</span>
-                    <span class="n">default</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="n">default</span><span class="p">],</span> <span class="n">config</span><span class="o">.</span><span class="n">filename</span>
+                    <span class="n">default</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">default</span><span class="p">],</span> <span class="n">config</span><span class="o">.</span><span class="n">filename</span>
                 <span class="p">)</span>
-            <span class="n">config</span><span class="p">[</span><span class="s2">"project"</span><span class="p">]</span> <span class="o">=</span> <span class="n">default</span>
+            <span class="n">config</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">default</span>
 
             <span class="n">config</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_FILE</span>
             <span class="n">config</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Deleted project: </span><span class="si">{</span><span class="n">project</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Deleted project: </span><span class="si">{</span><span class="n">project</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Set to new project:</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Set to new project:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">newproject</span><span class="p">)</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="c1"># Only run get_config for assemble and projects</span>
-        <span class="n">subcommands_need_conf</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"download"</span><span class="p">,</span> <span class="s2">"assemble"</span><span class="p">,</span> <span class="s2">"auto_shakemap"</span><span class="p">]</span>
+        <span class="n">subcommands_need_conf</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;download&quot;</span><span class="p">,</span> <span class="s2">&quot;assemble&quot;</span><span class="p">,</span> <span class="s2">&quot;auto_shakemap&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">command_name</span> <span class="ow">in</span> <span class="n">subcommands_need_conf</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">configmod</span><span class="o">.</span><span class="n">get_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf_file</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GMrecordsApp._validate_config"><a class="viewcode-back" href="../../../autoapi/gmprocess/apps/gmrecords/index.html#gmprocess.apps.gmrecords.GMrecordsApp._validate_config">[docs]</a>    <span class="k">def</span> <span class="nf">_validate_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="s2">"CALLED_FROM_PYTEST"</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">"project"</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">current_project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;CALLED_FROM_PYTEST&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">]</span>
             <span class="k">return</span>
 
         <span class="c1"># Check that all of the listed projects have the required keys and valid paths</span>
         <span class="n">bad_projs</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">proj_name</span><span class="p">,</span> <span class="n">proj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="p">(</span><span class="s2">"conf_path"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">proj</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">"data_path"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">proj</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">proj_name</span><span class="p">,</span> <span class="n">proj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;conf_path&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">proj</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">&quot;data_path&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">proj</span><span class="p">):</span>
                 <span class="n">bad_projs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">proj_name</span><span class="p">)</span>
                 <span class="k">continue</span>
             <span class="n">conf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_FILE</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">,</span> <span class="n">proj</span><span class="p">[</span><span class="s2">"conf_path"</span><span class="p">])</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_FILE</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">,</span> <span class="n">proj</span><span class="p">[</span><span class="s2">&quot;conf_path&quot;</span><span class="p">])</span>
             <span class="p">)</span>
             <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_FILE</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">,</span> <span class="n">proj</span><span class="p">[</span><span class="s2">"data_path"</span><span class="p">])</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_FILE</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">,</span> <span class="n">proj</span><span class="p">[</span><span class="s2">&quot;data_path&quot;</span><span class="p">])</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">conf_path</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">data_path</span><span class="p">)):</span>
                 <span class="n">bad_projs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">proj_name</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">bad</span> <span class="ow">in</span> <span class="n">bad_projs</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Problem encountered in "</span><span class="si">{</span><span class="n">bad</span><span class="si">}</span><span class="s1">" project. Deleting.'</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">bad</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Problem encountered in &quot;</span><span class="si">{</span><span class="n">bad</span><span class="si">}</span><span class="s1">&quot; project. Deleting.&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">bad</span><span class="p">)</span>
 
         <span class="c1"># Check that the selected project is in the list of projects</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">"project"</span><span class="p">]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">current_project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">]):</span>
-                <span class="n">new_proj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'The currently configured project ("</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="si">}</span><span class="s1">") is not in '</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">"the list of available projects. "</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Switching to the "</span><span class="si">{</span><span class="n">new_proj</span><span class="si">}</span><span class="s1">" project.'</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">]):</span>
+                <span class="n">new_proj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The currently configured project (&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="si">}</span><span class="s1">&quot;) is not in &#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;the list of available projects. &quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Switching to the &quot;</span><span class="si">{</span><span class="n">new_proj</span><span class="si">}</span><span class="s1">&quot; project.&#39;</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">new_proj</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">current_project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">"project"</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_proj</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_proj</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="o">.</span><span class="n">write</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="GMrecordsApp._initial_setup"><a class="viewcode-back" href="../../../autoapi/gmprocess/apps/gmrecords/index.html#gmprocess.apps.gmrecords.GMrecordsApp._initial_setup">[docs]</a>    <span class="k">def</span> <span class="nf">_initial_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initial setup of ~/.gmprogress/projects.conf; essentially invoke</span>
 <span class="sd">        # gmrecords projects -c</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_PATH</span><span class="p">):</span>
             <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_PATH</span><span class="p">)</span>
-        <span class="n">empty_conf</span> <span class="o">=</span> <span class="n">configobj</span><span class="o">.</span><span class="n">ConfigObj</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
+        <span class="n">empty_conf</span> <span class="o">=</span> <span class="n">configobj</span><span class="o">.</span><span class="n">ConfigObj</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
         <span class="n">empty_conf</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PROJECTS_FILE</span>
         <span class="n">projmod</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">empty_conf</span><span class="p">)</span>
         <span class="c1"># Need to exit here because if gmp projects -c is called when there is</span>
@@ -781,68 +782,68 @@
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GMrecordsApp._parse_command_line"><a class="viewcode-back" href="../../../autoapi/gmprocess/apps/gmrecords/index.html#gmprocess.apps.gmrecords.GMrecordsApp._parse_command_line">[docs]</a>    <span class="k">def</span> <span class="nf">_parse_command_line</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Parse command line arguments."""</span>
+        <span class="sd">&quot;&quot;&quot;Parse command line arguments.&quot;&quot;&quot;</span>
         <span class="c1"># Main program parser</span>
-        <span class="n">description</span> <span class="o">=</span> <span class="s2">"""</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">        gmrecords is a program for retrieving and processing ground motion</span>
 <span class="s2">        records, as well as exporting commonly used station and waveform</span>
 <span class="s2">        parameters for earthquake hazard analysis.</span>
-<span class="s2">        """</span>
+<span class="s2">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">)</span>
         <span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
         <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-            <span class="s2">"-d"</span><span class="p">,</span>
-            <span class="s2">"--debug"</span><span class="p">,</span>
-            <span class="n">action</span><span class="o">=</span><span class="s2">"store_true"</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="s2">"Print all informational messages."</span><span class="p">,</span>
+            <span class="s2">&quot;-d&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--debug&quot;</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Print all informational messages.&quot;</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-            <span class="s2">"-q"</span><span class="p">,</span> <span class="s2">"--quiet"</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">"store_true"</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"Print only errors."</span>
+            <span class="s2">&quot;-q&quot;</span><span class="p">,</span> <span class="s2">&quot;--quiet&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Print only errors.&quot;</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-            <span class="s2">"-v"</span><span class="p">,</span>
-            <span class="s2">"--version"</span><span class="p">,</span>
-            <span class="n">action</span><span class="o">=</span><span class="s2">"version"</span><span class="p">,</span>
-            <span class="n">version</span><span class="o">=</span><span class="s2">"</span><span class="si">%(prog)s</span><span class="s2"> "</span> <span class="o">+</span> <span class="n">VERSION</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="s2">"Print program version."</span><span class="p">,</span>
+            <span class="s2">&quot;-v&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--version&quot;</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;version&quot;</span><span class="p">,</span>
+            <span class="n">version</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%(prog)s</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="n">VERSION</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Print program version.&quot;</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-            <span class="s2">"-l"</span><span class="p">,</span>
-            <span class="s2">"--log"</span><span class="p">,</span>
-            <span class="n">action</span><span class="o">=</span><span class="s2">"store"</span><span class="p">,</span>
+            <span class="s2">&quot;-l&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--log&quot;</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store&quot;</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
             <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="s2">"Path to log file; if provided, loging is directed to this file."</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to log file; if provided, loging is directed to this file.&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># Parsers for subcommands</span>
         <span class="n">subparsers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">add_subparsers</span><span class="p">(</span>
-            <span class="n">title</span><span class="o">=</span><span class="s2">"Subcommands"</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">"subcommand"</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">"&lt;command&gt; (&lt;aliases&gt;)"</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Subcommands&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;subcommand&quot;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;&lt;command&gt; (&lt;aliases&gt;)&quot;</span>
         <span class="p">)</span>
 
         <span class="c1"># Get subcommands and their arguments</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_subcommands</span><span class="p">()</span>
         <span class="n">parsers</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">cname</span><span class="p">,</span> <span class="n">cdict</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">command_description</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getdoc</span><span class="p">(</span><span class="n">cdict</span><span class="p">[</span><span class="s2">"class"</span><span class="p">])</span>
+            <span class="n">command_description</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getdoc</span><span class="p">(</span><span class="n">cdict</span><span class="p">[</span><span class="s2">&quot;class&quot;</span><span class="p">])</span>
             <span class="n">parsers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
-                    <span class="n">cname</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="n">command_description</span><span class="p">,</span> <span class="n">aliases</span><span class="o">=</span><span class="n">cdict</span><span class="p">[</span><span class="s2">"class"</span><span class="p">]</span><span class="o">.</span><span class="n">aliases</span>
+                    <span class="n">cname</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="n">command_description</span><span class="p">,</span> <span class="n">aliases</span><span class="o">=</span><span class="n">cdict</span><span class="p">[</span><span class="s2">&quot;class&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">aliases</span>
                 <span class="p">)</span>
             <span class="p">)</span>
-            <span class="n">arg_list</span> <span class="o">=</span> <span class="n">cdict</span><span class="p">[</span><span class="s2">"class"</span><span class="p">]</span><span class="o">.</span><span class="n">arguments</span>
+            <span class="n">arg_list</span> <span class="o">=</span> <span class="n">cdict</span><span class="p">[</span><span class="s2">&quot;class&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">arguments</span>
             <span class="k">for</span> <span class="n">arg_dict</span> <span class="ow">in</span> <span class="n">arg_list</span><span class="p">:</span>
                 <span class="n">targ_dict</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">arg_dict</span><span class="p">)</span>
                 <span class="c1"># Move positional arguments to a list</span>
                 <span class="n">pargs</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="k">if</span> <span class="s2">"short_flag"</span> <span class="ow">in</span> <span class="n">arg_dict</span><span class="p">:</span>
-                    <span class="n">pargs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg_dict</span><span class="p">[</span><span class="s2">"short_flag"</span><span class="p">])</span>
-                <span class="k">if</span> <span class="s2">"long_flag"</span> <span class="ow">in</span> <span class="n">arg_dict</span><span class="p">:</span>
-                    <span class="n">pargs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg_dict</span><span class="p">[</span><span class="s2">"long_flag"</span><span class="p">])</span>
-                <span class="n">targ_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"short_flag"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-                <span class="n">targ_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"long_flag"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s2">&quot;short_flag&quot;</span> <span class="ow">in</span> <span class="n">arg_dict</span><span class="p">:</span>
+                    <span class="n">pargs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg_dict</span><span class="p">[</span><span class="s2">&quot;short_flag&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="s2">&quot;long_flag&quot;</span> <span class="ow">in</span> <span class="n">arg_dict</span><span class="p">:</span>
+                    <span class="n">pargs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg_dict</span><span class="p">[</span><span class="s2">&quot;long_flag&quot;</span><span class="p">])</span>
+                <span class="n">targ_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;short_flag&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">targ_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;long_flag&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
                 <span class="n">parsers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="o">*</span><span class="n">pargs</span><span class="p">,</span> <span class="o">**</span><span class="n">targ_dict</span><span class="p">)</span>
-            <span class="n">parsers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">cdict</span><span class="p">[</span><span class="s2">"class"</span><span class="p">])</span>
+            <span class="n">parsers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">cdict</span><span class="p">[</span><span class="s2">&quot;class&quot;</span><span class="p">])</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span></div></div>
 </pre></div>
         </article>

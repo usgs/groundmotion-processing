@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.cosmos.cesmd_fetcher - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.io.cosmos.cesmd_fetcher - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -512,12 +513,12 @@
 
 <span class="n">MAX_STATIONS</span> <span class="o">=</span> <span class="mi">200</span>
 
-<span class="n">STATION_TYPE</span> <span class="o">=</span> <span class="s2">"Ground"</span>
-<span class="n">PROCESS_TYPE</span> <span class="o">=</span> <span class="s2">"raw"</span>
+<span class="n">STATION_TYPE</span> <span class="o">=</span> <span class="s2">&quot;Ground&quot;</span>
+<span class="n">PROCESS_TYPE</span> <span class="o">=</span> <span class="s2">&quot;raw&quot;</span>
 
-<span class="n">URL_ERROR_CODE</span> <span class="o">=</span> <span class="mi">200</span>  <span class="c1"># if we get this from a request, we're good</span>
+<span class="n">URL_ERROR_CODE</span> <span class="o">=</span> <span class="mi">200</span>  <span class="c1"># if we get this from a request, we&#39;re good</span>
 
-<span class="n">TIMEFMT</span> <span class="o">=</span> <span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S"</span>
+<span class="n">TIMEFMT</span> <span class="o">=</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span>
 
 
 <div class="viewcode-block" id="CESMDFetcher"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/cosmos/cesmd_fetcher/index.html#gmprocess.io.cosmos.cesmd_fetcher.CESMDFetcher">[docs]</a><span class="k">class</span> <span class="nc">CESMDFetcher</span><span class="p">(</span><span class="n">DataFetcher</span><span class="p">):</span>
@@ -532,8 +533,8 @@
         <span class="n">depth</span><span class="p">,</span>
         <span class="n">magnitude</span><span class="p">,</span>
         <span class="n">email</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">process_type</span><span class="o">=</span><span class="s2">"raw"</span><span class="p">,</span>
-        <span class="n">station_type</span><span class="o">=</span><span class="s2">"Ground"</span><span class="p">,</span>
+        <span class="n">process_type</span><span class="o">=</span><span class="s2">&quot;raw&quot;</span><span class="p">,</span>
+        <span class="n">station_type</span><span class="o">=</span><span class="s2">&quot;Ground&quot;</span><span class="p">,</span>
         <span class="n">eq_radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">eq_dt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">station_radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -542,7 +543,7 @@
         <span class="n">drop_non_free</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">stream_collection</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">"""Create a CESMDFetcher instance.</span>
+        <span class="sd">&quot;&quot;&quot;Create a CESMDFetcher instance.</span>
 
 <span class="sd">        Download strong motion records from the CESMD site:</span>
 <span class="sd">        https://strongmotioncenter.org/wserv/records/builder/</span>
@@ -561,10 +562,10 @@
 <span class="sd">            email (str):</span>
 <span class="sd">                email address for CESMD site.</span>
 <span class="sd">            process_type (str):</span>
-<span class="sd">                One of 'raw' or 'processed'.</span>
+<span class="sd">                One of &#39;raw&#39; or &#39;processed&#39;.</span>
 <span class="sd">            station_type (str):</span>
-<span class="sd">                One of "Array", "Ground", "Building", "Bridge", "Dam",</span>
-<span class="sd">                "Tunnel", "Wharf", "Other"</span>
+<span class="sd">                One of &quot;Array&quot;, &quot;Ground&quot;, &quot;Building&quot;, &quot;Bridge&quot;, &quot;Dam&quot;,</span>
+<span class="sd">                &quot;Tunnel&quot;, &quot;Wharf&quot;, &quot;Other&quot;</span>
 <span class="sd">            eq_radius (float):</span>
 <span class="sd">                Earthquake search radius (km).</span>
 <span class="sd">            eq_dt (float):</span>
@@ -582,7 +583,7 @@
 <span class="sd">                structures, etc.)</span>
 <span class="sd">            stream_collection (bool):</span>
 <span class="sd">                Construct and return a StreamCollection instance?</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># what values do we use for search thresholds?</span>
         <span class="c1"># In order of priority:</span>
         <span class="c1"># 1) Not-None values passed in constructor</span>
@@ -596,21 +597,21 @@
         <span class="n">cfg_email</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">cfg_station_type</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">cfg_process_type</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="s2">"fetchers"</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">"CESMDFetcher"</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">"fetchers"</span><span class="p">]:</span>
-                <span class="n">fetch_cfg</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"fetchers"</span><span class="p">][</span><span class="s2">"CESMDFetcher"</span><span class="p">]</span>
-                <span class="k">if</span> <span class="s2">"eq_radius"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_eq_radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"eq_radius"</span><span class="p">])</span>
-                <span class="k">if</span> <span class="s2">"station_radius"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_station_radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"station_radius"</span><span class="p">])</span>
-                <span class="k">if</span> <span class="s2">"dt"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_eq_dt</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"eq_dt"</span><span class="p">])</span>
-                <span class="k">if</span> <span class="s2">"email"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_email</span> <span class="o">=</span> <span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"email"</span><span class="p">]</span>
-                <span class="k">if</span> <span class="s2">"process_type"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_process_type</span> <span class="o">=</span> <span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"process_type"</span><span class="p">]</span>
-                <span class="k">if</span> <span class="s2">"station_type"</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
-                    <span class="n">cfg_station_type</span> <span class="o">=</span> <span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">"station_type"</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">&quot;fetchers&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;CESMDFetcher&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;fetchers&quot;</span><span class="p">]:</span>
+                <span class="n">fetch_cfg</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;fetchers&quot;</span><span class="p">][</span><span class="s2">&quot;CESMDFetcher&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">&quot;eq_radius&quot;</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_eq_radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">&quot;eq_radius&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="s2">&quot;station_radius&quot;</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_station_radius</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">&quot;station_radius&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="s2">&quot;dt&quot;</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_eq_dt</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">&quot;eq_dt&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="s2">&quot;email&quot;</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_email</span> <span class="o">=</span> <span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">&quot;process_type&quot;</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_process_type</span> <span class="o">=</span> <span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">&quot;process_type&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">&quot;station_type&quot;</span> <span class="ow">in</span> <span class="n">fetch_cfg</span><span class="p">:</span>
+                    <span class="n">cfg_station_type</span> <span class="o">=</span> <span class="n">fetch_cfg</span><span class="p">[</span><span class="s2">&quot;station_type&quot;</span><span class="p">]</span>
 
         <span class="n">radius</span> <span class="o">=</span> <span class="n">_get_first_value</span><span class="p">(</span><span class="n">eq_radius</span><span class="p">,</span> <span class="n">cfg_eq_radius</span><span class="p">,</span> <span class="n">EQ_RADIUS</span><span class="p">)</span>
         <span class="n">station_radius</span> <span class="o">=</span> <span class="n">_get_first_value</span><span class="p">(</span>
@@ -627,19 +628,19 @@
             <span class="k">if</span> <span class="n">cfg_email</span><span class="p">:</span>
                 <span class="n">email</span> <span class="o">=</span> <span class="n">cfg_email</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"Email address is required to retrieve CESMD data."</span>
+                <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;Email address is required to retrieve CESMD data.&quot;</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">email</span> <span class="o">==</span> <span class="s2">"EMAIL"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">email</span> <span class="o">==</span> <span class="s2">&quot;EMAIL&quot;</span><span class="p">:</span>
             <span class="n">fmt</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">"Email address is required to retrieve CESMD</span><span class="se">\n</span><span class="s2">"</span>
-                <span class="s2">"data. This tool can download data from the CESMD</span><span class="se">\n</span><span class="s2">"</span>
-                <span class="s2">"website. However, for this to work you will first need </span><span class="se">\n</span><span class="s2">"</span>
-                <span class="s2">"to register your email address using this website:</span><span class="se">\n</span><span class="s2">"</span>
-                <span class="s2">"https://strongmotioncenter.org/cgi-bin/CESMD/register.pl</span><span class="se">\n</span><span class="s2">"</span>
-                <span class="s2">"Then create a custom config file by running the gmsetup</span><span class="se">\n</span><span class="s2">"</span>
-                <span class="s2">"program, and edit the fetchers:CESMDFetcher section</span><span class="se">\n</span><span class="s2">"</span>
-                <span class="s2">"to use your email address."</span>
+                <span class="s2">&quot;Email address is required to retrieve CESMD</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;data. This tool can download data from the CESMD</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;website. However, for this to work you will first need </span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;to register your email address using this website:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;https://strongmotioncenter.org/cgi-bin/CESMD/register.pl</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;Then create a custom config file by running the gmsetup</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;program, and edit the fetchers:CESMDFetcher section</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;to use your email address.&quot;</span>
             <span class="p">)</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
 
@@ -663,7 +664,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">stream_collection</span> <span class="o">=</span> <span class="n">stream_collection</span>
 
 <div class="viewcode-block" id="CESMDFetcher.getMatchingEvents"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/cosmos/cesmd_fetcher/index.html#gmprocess.io.cosmos.cesmd_fetcher.CESMDFetcher.getMatchingEvents">[docs]</a>    <span class="k">def</span> <span class="nf">getMatchingEvents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solve</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">"""Return a list of dictionaries matching input parameters.</span>
+        <span class="sd">&quot;&quot;&quot;Return a list of dictionaries matching input parameters.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            solve (bool):</span>
@@ -677,7 +678,7 @@
 <span class="sd">                  - lon Event longitude</span>
 <span class="sd">                  - depth Event depth</span>
 <span class="sd">                  - mag Event magnitude</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">metadata</span> <span class="o">=</span> <span class="n">get_metadata</span><span class="p">(</span>
                 <span class="n">eqlat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span>
@@ -692,7 +693,7 @@
         <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
-        <span class="n">tmp_events</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">"results"</span><span class="p">][</span><span class="s2">"events"</span><span class="p">]</span>
+        <span class="n">tmp_events</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">][</span><span class="s2">&quot;events&quot;</span><span class="p">]</span>
 
         <span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">idlist</span> <span class="o">=</span> <span class="p">[]</span>
@@ -700,14 +701,14 @@
             <span class="n">tevent</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="c1"># sometimes the metadata request returns duplicate events</span>
             <span class="c1"># strip those out here</span>
-            <span class="k">if</span> <span class="n">event</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="ow">in</span> <span class="n">idlist</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">event</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">idlist</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="n">idlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">[</span><span class="s2">"id"</span><span class="p">])</span>
-            <span class="n">tevent</span><span class="p">[</span><span class="s2">"time"</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">event</span><span class="p">[</span><span class="s2">"time"</span><span class="p">],</span> <span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S"</span><span class="p">)</span>
-            <span class="n">tevent</span><span class="p">[</span><span class="s2">"lat"</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s2">"latitude"</span><span class="p">]</span>
-            <span class="n">tevent</span><span class="p">[</span><span class="s2">"lon"</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s2">"longitude"</span><span class="p">]</span>
-            <span class="n">tevent</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">]</span>
-            <span class="n">tevent</span><span class="p">[</span><span class="s2">"mag"</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s2">"mag"</span><span class="p">]</span>
+            <span class="n">idlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">])</span>
+            <span class="n">tevent</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">event</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">],</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">)</span>
+            <span class="n">tevent</span><span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">]</span>
+            <span class="n">tevent</span><span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">]</span>
+            <span class="n">tevent</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span>
+            <span class="n">tevent</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">]</span>
             <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tevent</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
 
         <span class="k">if</span> <span class="n">solve</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -719,7 +720,7 @@
         <span class="k">return</span> <span class="n">events</span></div>
 
 <div class="viewcode-block" id="CESMDFetcher.retrieveData"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/cosmos/cesmd_fetcher/index.html#gmprocess.io.cosmos.cesmd_fetcher.CESMDFetcher.retrieveData">[docs]</a>    <span class="k">def</span> <span class="nf">retrieveData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_dict</span><span class="p">):</span>
-        <span class="sd">"""Retrieve data from NIED, turn into StreamCollection.</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve data from NIED, turn into StreamCollection.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            event (dict):</span>
@@ -728,21 +729,21 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            StreamCollection: StreamCollection object.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"Must call getMatchingEvents() first."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Must call getMatchingEvents() first.&quot;</span><span class="p">)</span>
 
         <span class="c1"># get matching event in metadata</span>
         <span class="n">has_event</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">"results"</span><span class="p">][</span><span class="s2">"events"</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="n">event</span><span class="p">[</span><span class="s2">"time"</span><span class="p">]</span> <span class="o">==</span> <span class="n">event_dict</span><span class="p">[</span><span class="s2">"time"</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">TIMEFMT</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">][</span><span class="s2">&quot;events&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">event</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">event_dict</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">TIMEFMT</span><span class="p">):</span>
                 <span class="n">has_event</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="n">nstations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">"count"</span><span class="p">]</span>
+                <span class="n">nstations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span>
                 <span class="k">break</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">has_event</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"Could not find matching event."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not find matching event.&quot;</span><span class="p">)</span>
 
         <span class="n">starttime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eq_dt</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">endtime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eq_dt</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
@@ -757,36 +758,36 @@
                     <span class="n">event_longitude</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span>
                     <span class="n">event_radius</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span>
                     <span class="n">process_level</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">process_type</span><span class="p">,</span>
-                    <span class="n">group_by</span><span class="o">=</span><span class="s2">"event"</span><span class="p">,</span>
+                    <span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;event&quot;</span><span class="p">,</span>
                     <span class="n">max_station_dist</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">station_radius</span><span class="p">,</span>
                     <span class="n">station_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">station_type</span><span class="p">,</span>
                     <span class="n">startdate</span><span class="o">=</span><span class="n">starttime</span><span class="p">,</span>
                     <span class="n">enddate</span><span class="o">=</span><span class="n">endtime</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-                <span class="n">eqfmt</span> <span class="o">=</span> <span class="s2">"M</span><span class="si">%.1f</span><span class="s2"> </span><span class="si">%s</span><span class="s2">"</span>
+                <span class="n">eqfmt</span> <span class="o">=</span> <span class="s2">&quot;M</span><span class="si">%.1f</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span>
                 <span class="n">eqdesc</span> <span class="o">=</span> <span class="n">eqfmt</span> <span class="o">%</span> <span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S"</span><span class="p">),</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">),</span>
                 <span class="p">)</span>
-                <span class="k">if</span> <span class="s2">"404"</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">):</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Could not find data records for </span><span class="si">{</span><span class="n">eqdesc</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s2">&quot;404&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">):</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find data records for </span><span class="si">{</span><span class="n">eqdesc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unplanned exception getting records for </span><span class="si">{</span><span class="n">eqdesc</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unplanned exception getting records for </span><span class="si">{</span><span class="n">eqdesc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="p">[]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># web service has a maximum number of stations you're allowed to</span>
+            <span class="c1"># web service has a maximum number of stations you&#39;re allowed to</span>
             <span class="c1"># fetch (note that this may not be the same as the number of files)</span>
-            <span class="c1"># so we're splitting up the stations by distance and downloading</span>
+            <span class="c1"># so we&#39;re splitting up the stations by distance and downloading</span>
             <span class="c1"># them in chunks.</span>
 
             <span class="c1"># the stations are grouped a little oddly in the results of</span>
-            <span class="c1"># the metadata - there are a number of "event" entries, all</span>
+            <span class="c1"># the metadata - there are a number of &quot;event&quot; entries, all</span>
             <span class="c1"># with the same ID, and they each contain some collection</span>
             <span class="c1"># of stations. We want all of those stations, so we need to</span>
-            <span class="c1"># iterate over the "events" and each station within them.</span>
+            <span class="c1"># iterate over the &quot;events&quot; and each station within them.</span>
             <span class="n">dataframe</span> <span class="o">=</span> <span class="n">get_stations_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
-            <span class="n">distances</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">dataframe</span><span class="p">[</span><span class="s2">"epidist"</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
+            <span class="n">distances</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">dataframe</span><span class="p">[</span><span class="s2">&quot;epidist&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span>
             <span class="n">nchunks</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span> <span class="o">/</span> <span class="n">MAX_STATIONS</span><span class="p">))</span>
             <span class="n">distance_chunks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="n">distances</span><span class="p">,</span> <span class="n">nchunks</span><span class="p">)</span>
             <span class="n">datafiles</span> <span class="o">=</span> <span class="p">[]</span>
@@ -802,7 +803,7 @@
                         <span class="n">event_longitude</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span>
                         <span class="n">event_radius</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span>
                         <span class="n">process_level</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">process_type</span><span class="p">,</span>
-                        <span class="n">group_by</span><span class="o">=</span><span class="s2">"event"</span><span class="p">,</span>
+                        <span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;event&quot;</span><span class="p">,</span>
                         <span class="n">min_station_dist</span><span class="o">=</span><span class="n">mindist</span><span class="p">,</span>
                         <span class="n">max_station_dist</span><span class="o">=</span><span class="n">maxdist</span><span class="p">,</span>
                         <span class="n">station_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">station_type</span><span class="p">,</span>
@@ -810,20 +811,20 @@
                         <span class="n">enddate</span><span class="o">=</span><span class="n">endtime</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">gpe</span><span class="p">:</span>
-                    <span class="n">eqfmt</span> <span class="o">=</span> <span class="s2">"M</span><span class="si">%.1f</span><span class="s2"> </span><span class="si">%s</span><span class="s2">"</span>
+                    <span class="n">eqfmt</span> <span class="o">=</span> <span class="s2">&quot;M</span><span class="si">%.1f</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span>
                     <span class="n">eqdesc</span> <span class="o">=</span> <span class="n">eqfmt</span> <span class="o">%</span> <span class="p">(</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S"</span><span class="p">),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">),</span>
                     <span class="p">)</span>
-                    <span class="k">if</span> <span class="s2">"404"</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">gpe</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="s2">&quot;404&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">gpe</span><span class="p">):</span>
                         <span class="n">fmt</span> <span class="o">=</span> <span class="p">(</span>
-                            <span class="s2">"Could not find data records for </span><span class="si">%s</span><span class="s2"> "</span>
-                            <span class="s2">"between </span><span class="si">%.1f</span><span class="s2"> km and </span><span class="si">%.1f</span><span class="s2"> km"</span>
+                            <span class="s2">&quot;Could not find data records for </span><span class="si">%s</span><span class="s2"> &quot;</span>
+                            <span class="s2">&quot;between </span><span class="si">%.1f</span><span class="s2"> km and </span><span class="si">%.1f</span><span class="s2"> km&quot;</span>
                         <span class="p">)</span>
                         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">eqdesc</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">))</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">"Unplanned exception getting records for </span><span class="si">{</span><span class="n">eqdesc</span><span class="si">}</span><span class="s2">"</span>
+                            <span class="sa">f</span><span class="s2">&quot;Unplanned exception getting records for </span><span class="si">{</span><span class="n">eqdesc</span><span class="si">}</span><span class="s2">&quot;</span>
                         <span class="p">)</span>
                     <span class="k">continue</span>
                 <span class="n">datafiles</span> <span class="o">+=</span> <span class="n">tfiles</span>
@@ -831,11 +832,11 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_collection</span><span class="p">:</span>
             <span class="n">streams</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">dfile</span> <span class="ow">in</span> <span class="n">datafiles</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Reading CESMD file </span><span class="si">{</span><span class="n">dfile</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reading CESMD file </span><span class="si">{</span><span class="n">dfile</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">streams</span> <span class="o">+=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Could not read </span><span class="si">{</span><span class="n">dfile</span><span class="si">}</span><span class="s1">: error "</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span><span class="si">}</span><span class="s1">"'</span><span class="p">)</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not read </span><span class="si">{</span><span class="n">dfile</span><span class="si">}</span><span class="s1">: error &quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
 
             <span class="n">stream_collection</span> <span class="o">=</span> <span class="n">StreamCollection</span><span class="p">(</span>
                 <span class="n">streams</span><span class="o">=</span><span class="n">streams</span><span class="p">,</span> <span class="n">drop_non_free</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">drop_non_free</span>
