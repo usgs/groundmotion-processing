@@ -488,10 +488,9 @@ than it would have looked with the smaller search radius.
 Example "regression" plot.
 ```
 
-## Station Maps
+## Station Map
 
-The `generate_station_maps` command makes two station maps; one is static and
-the other is an interactive HTML map.
+The `generate_station_maps` command makes an interactive HTML map that can be opened in a browser.
 
 ```
 $ gmrecords generate_station_maps
@@ -512,7 +511,6 @@ INFO 2021-11-12 19:46:05 | stationtrace.fail: __check_channels - NC.RWSVT.03.HNZ
 
 The following files have been created:
 File type: Station map
-   /Users/emthompson/gmprocess_projects/tutorial/data/nc72282711/stations_map.png
    /Users/emthompson/gmprocess_projects/tutorial/data/nc72282711/stations_map.html
 ```
 
