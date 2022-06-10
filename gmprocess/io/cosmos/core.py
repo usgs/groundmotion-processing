@@ -2,13 +2,10 @@
 
 # stdlib imports
 from datetime import datetime
-from dataclasses import dataclass
-from enum import Enum
 import os
 import re
 import pkg_resources
 import logging
-import pathlib
 
 # third party
 import numpy as np
@@ -716,6 +713,13 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=""):
             standard["units_type"] = "disp"
     standard["source_format"] = "cosmos"
     standard["comments"] = ", ".join(cmt_data)
+    # get undocumented SCNL code if it is present because location code doesn't seem to
+    # be reported in the header.
+    if "<SCNL>" in standard["comments"]:
+        scnl = re.search("<SCNL>(.*?)(?=\s)", standard["comments"]).group(1)
+        # Do not use channel from here because we got it from orientation info
+        # previously
+        hdr["station"], _, hdr["network"], hdr["location"] = scnl.split(".")
 
     # format specific metadata
     if physical_parameter in PHYSICAL_UNITS:
