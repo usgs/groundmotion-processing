@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.subcommands.import_data - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.subcommands.import_data - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -492,35 +493,35 @@
 
 <span class="kn">from</span> <span class="nn">gmprocess.subcommands.lazy_loader</span> <span class="kn">import</span> <span class="n">LazyLoader</span>
 
-<span class="n">arg_dicts</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"arg_dicts"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.arg_dicts"</span><span class="p">)</span>
-<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"base"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.base"</span><span class="p">)</span>
+<span class="n">arg_dicts</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;arg_dicts&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.subcommands.arg_dicts&quot;</span><span class="p">)</span>
+<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;base&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.subcommands.base&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="ImportModule"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/import_data/index.html#gmprocess.subcommands.import_data.ImportModule">[docs]</a><span class="k">class</span> <span class="nc">ImportModule</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">SubcommandModule</span><span class="p">):</span>
-    <span class="sd">"""Import data for an event into the project data directory."""</span>
+    <span class="sd">&quot;&quot;&quot;Import data for an event into the project data directory.&quot;&quot;&quot;</span>
 
-    <span class="n">command_name</span> <span class="o">=</span> <span class="s2">"import"</span>
+    <span class="n">command_name</span> <span class="o">=</span> <span class="s2">&quot;import&quot;</span>
 
     <span class="n">arguments</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"eventid"</span><span class="p">],</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">&quot;eventid&quot;</span><span class="p">],</span>
         <span class="p">{</span>
-            <span class="s2">"short_flag"</span><span class="p">:</span> <span class="s2">"-p"</span><span class="p">,</span>
-            <span class="s2">"long_flag"</span><span class="p">:</span> <span class="s2">"--path"</span><span class="p">,</span>
-            <span class="s2">"help"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"Path to file or directory containing data to import."</span><span class="p">),</span>
-            <span class="s2">"type"</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-            <span class="s2">"default"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;short_flag&quot;</span><span class="p">:</span> <span class="s2">&quot;-p&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;long_flag&quot;</span><span class="p">:</span> <span class="s2">&quot;--path&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;help&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;Path to file or directory containing data to import.&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">},</span>
     <span class="p">]</span>
 
 <div class="viewcode-block" id="ImportModule.main"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/import_data/index.html#gmprocess.subcommands.import_data.ImportModule.main">[docs]</a>    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gmrecords</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Import data for an event into the project data directory.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            gmrecords:</span>
 <span class="sd">                GMrecordsApp instance.</span>
-<span class="sd">        """</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Running subcommand '</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running subcommand &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span> <span class="o">=</span> <span class="n">gmrecords</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_arguments</span><span class="p">()</span>
 
@@ -529,19 +530,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_events</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Please provide a valid event id."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please provide a valid event id.&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Can only import data for one event at a time."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can only import data for one event at a time.&quot;</span><span class="p">)</span>
 
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Number of events to download: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of events to download: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Starting event: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting event: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">event_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">event_dir</span><span class="p">):</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">event_dir</span><span class="p">)</span>
 
-            <span class="n">raw_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="s2">"raw"</span><span class="p">)</span>
+            <span class="n">raw_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="s2">&quot;raw&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">raw_dir</span><span class="p">):</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">raw_dir</span><span class="p">)</span>
 
@@ -549,17 +550,17 @@
                 <span class="n">_</span><span class="p">,</span> <span class="n">import_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">import_path</span><span class="p">)</span>
                 <span class="n">src</span> <span class="o">=</span> <span class="n">import_path</span>
                 <span class="n">dst</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">raw_dir</span><span class="p">,</span> <span class="n">import_file</span><span class="p">)</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Importing </span><span class="si">{</span><span class="n">src</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Importing </span><span class="si">{</span><span class="n">src</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
                 <span class="c1"># Is this a zip or tar file? If so, extract</span>
                 <span class="k">if</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">is_zipfile</span><span class="p">(</span><span class="n">dst</span><span class="p">):</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Extracting </span><span class="si">{</span><span class="n">dst</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-                    <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">zfile</span><span class="p">:</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Extracting </span><span class="si">{</span><span class="n">dst</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zfile</span><span class="p">:</span>
                         <span class="n">zfile</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">raw_dir</span><span class="p">)</span>
                     <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">is_tarfile</span><span class="p">(</span><span class="n">dst</span><span class="p">):</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Extracting </span><span class="si">{</span><span class="n">dst</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-                    <span class="k">with</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">tar_file</span><span class="p">:</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Extracting </span><span class="si">{</span><span class="n">dst</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">with</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">tar_file</span><span class="p">:</span>
                         <span class="n">tar_file</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">raw_dir</span><span class="p">)</span>
                     <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">import_path</span><span class="p">):</span>
@@ -567,8 +568,8 @@
                 <span class="n">dst</span> <span class="o">=</span> <span class="n">raw_dir</span>
                 <span class="n">copy_tree</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Please provide a valid path to a file or directory"</span><span class="p">)</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Event </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> complete."</span><span class="p">)</span></div></div>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please provide a valid path to a file or directory&quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Event </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> complete.&quot;</span><span class="p">)</span></div></div>
 </pre></div>
         </article>
       </div>

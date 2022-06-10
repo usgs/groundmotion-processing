@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.nsmn.core - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.io.nsmn.core - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -500,34 +501,34 @@
 <span class="kn">from</span> <span class="nn">gmprocess.io.utils</span> <span class="kn">import</span> <span class="n">is_binary</span>
 
 
-<span class="n">TIMEFMT</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%d</span><span class="s2">/%m/%Y %H:%M:%S.</span><span class="si">%f</span><span class="s2">"</span>
-<span class="n">FLOATRE</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"[-+]?[0-9]*\.?[0-9]+"</span>
-<span class="n">INTRE</span> <span class="o">=</span> <span class="s2">"[-+]?[0-9]*"</span>
+<span class="n">TIMEFMT</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y %H:%M:%S.</span><span class="si">%f</span><span class="s2">&quot;</span>
+<span class="n">FLOATRE</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;[-+]?[0-9]*\.?[0-9]+&quot;</span>
+<span class="n">INTRE</span> <span class="o">=</span> <span class="s2">&quot;[-+]?[0-9]*&quot;</span>
 
 <span class="c1"># 20/07/2017 22:30:58.000000</span>
-<span class="n">TIME_RE</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"[0-9]</span><span class="si">{2}</span><span class="s2">/[0-9]</span><span class="si">{2}</span><span class="s2">/[0-9]</span><span class="si">{4}</span><span class="s2"> [0-9]</span><span class="si">{2}</span><span class="s2">:[0-9]</span><span class="si">{2}</span><span class="s2">:[0-9]</span><span class="si">{2}</span><span class="s2">\.?[0-9]*"</span>
+<span class="n">TIME_RE</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;[0-9]</span><span class="si">{2}</span><span class="s2">/[0-9]</span><span class="si">{2}</span><span class="s2">/[0-9]</span><span class="si">{4}</span><span class="s2"> [0-9]</span><span class="si">{2}</span><span class="s2">:[0-9]</span><span class="si">{2}</span><span class="s2">:[0-9]</span><span class="si">{2}</span><span class="s2">\.?[0-9]*&quot;</span>
 
 <span class="n">TEXT_HDR_ROWS</span> <span class="o">=</span> <span class="mi">18</span>
 
 <span class="n">COLWIDTH</span> <span class="o">=</span> <span class="mi">12</span>
 <span class="n">NCOLS</span> <span class="o">=</span> <span class="mi">3</span>
 
-<span class="n">SOURCE</span> <span class="o">=</span> <span class="s2">"National Strong-Motion Network of Turkey (TR-NSMN)"</span>
-<span class="n">SOURCE_FORMAT</span> <span class="o">=</span> <span class="s2">"NSMN"</span>
-<span class="n">NETWORK</span> <span class="o">=</span> <span class="s2">"TK"</span>
+<span class="n">SOURCE</span> <span class="o">=</span> <span class="s2">&quot;National Strong-Motion Network of Turkey (TR-NSMN)&quot;</span>
+<span class="n">SOURCE_FORMAT</span> <span class="o">=</span> <span class="s2">&quot;NSMN&quot;</span>
+<span class="n">NETWORK</span> <span class="o">=</span> <span class="s2">&quot;TK&quot;</span>
 
-<span class="n">LEVELS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"VOL1DS"</span><span class="p">:</span> <span class="s2">"V1"</span><span class="p">}</span>
+<span class="n">LEVELS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;VOL1DS&quot;</span><span class="p">:</span> <span class="s2">&quot;V1&quot;</span><span class="p">}</span>
 
 <span class="n">DECIG_TO_GALS</span> <span class="o">=</span> <span class="p">(</span><span class="n">constants</span><span class="o">.</span><span class="n">g</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span>
 
-<span class="n">MARKER</span> <span class="o">=</span> <span class="s2">"STRONG GROUND MOTION RECORDS OF TURKIYE"</span>
+<span class="n">MARKER</span> <span class="o">=</span> <span class="s2">&quot;STRONG GROUND MOTION RECORDS OF TURKIYE&quot;</span>
 
-<span class="n">ENCODING</span> <span class="o">=</span> <span class="s2">"ISO-8859-1"</span>
-<span class="c1"># ENCODING = 'utf-16-be'</span>
+<span class="n">ENCODING</span> <span class="o">=</span> <span class="s2">&quot;ISO-8859-1&quot;</span>
+<span class="c1"># ENCODING = &#39;utf-16-be&#39;</span>
 
 
 <div class="viewcode-block" id="is_nsmn"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/nsmn/core/index.html#gmprocess.io.nsmn.core.is_nsmn">[docs]</a><span class="k">def</span> <span class="nf">is_nsmn</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""Check to see if file is Turkish NSMN format.</span>
+    <span class="sd">&quot;&quot;&quot;Check to see if file is Turkish NSMN format.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        filename (str):</span>
@@ -537,10 +538,10 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: True if Turkish NSMN format, otherwise False.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">is_binary</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">False</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"rt"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">ENCODING</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">ENCODING</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">MARKER</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
@@ -549,7 +550,7 @@
 
 
 <div class="viewcode-block" id="read_nsmn"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/nsmn/core/index.html#gmprocess.io.nsmn.core.read_nsmn">[docs]</a><span class="k">def</span> <span class="nf">read_nsmn</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""Read the Turkish NSMN strong motion data format.</span>
+    <span class="sd">&quot;&quot;&quot;Read the Turkish NSMN strong motion data format.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        filename (str):</span>
@@ -560,23 +561,23 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        list: Sequence of one StationStream object containing 3 StationTrace</span>
 <span class="sd">        objects.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">header</span> <span class="o">=</span> <span class="n">_read_header</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
     <span class="n">header1</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
     <span class="n">header2</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
     <span class="n">header3</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
-    <span class="n">header1</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"horizontal_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">header1</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"vertical_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">header1</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_channel_name</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"sampling_rate"</span><span class="p">],</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-    <span class="n">header1</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"units_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_units_type</span><span class="p">(</span><span class="n">header1</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">])</span>
-    <span class="n">header2</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"horizontal_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="mf">90.0</span>
-    <span class="n">header2</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"vertical_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">header2</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_channel_name</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"sampling_rate"</span><span class="p">],</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-    <span class="n">header2</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"units_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_units_type</span><span class="p">(</span><span class="n">header2</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">])</span>
-    <span class="n">header3</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"horizontal_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">header3</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"vertical_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">header3</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_channel_name</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">"sampling_rate"</span><span class="p">],</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-    <span class="n">header3</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"units_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_units_type</span><span class="p">(</span><span class="n">header3</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">])</span>
+    <span class="n">header1</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;horizontal_orientation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">header1</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;vertical_orientation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">header1</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_channel_name</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;sampling_rate&quot;</span><span class="p">],</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">header1</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;units_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_units_type</span><span class="p">(</span><span class="n">header1</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">])</span>
+    <span class="n">header2</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;horizontal_orientation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">90.0</span>
+    <span class="n">header2</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;vertical_orientation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">header2</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_channel_name</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;sampling_rate&quot;</span><span class="p">],</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">header2</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;units_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_units_type</span><span class="p">(</span><span class="n">header2</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">])</span>
+    <span class="n">header3</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;horizontal_orientation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">header3</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;vertical_orientation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">header3</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_channel_name</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;sampling_rate&quot;</span><span class="p">],</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">header3</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;units_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_units_type</span><span class="p">(</span><span class="n">header3</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">])</span>
 
     <span class="c1"># three columns of NS, EW, UD</span>
     <span class="c1"># data = np.genfromtxt(filename, skip_header=TEXT_HDR_ROWS,</span>
@@ -586,12 +587,12 @@
     <span class="n">data2</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
     <span class="n">data3</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
     <span class="n">trace1</span> <span class="o">=</span> <span class="n">StationTrace</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data1</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header1</span><span class="p">)</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"input_units"</span><span class="p">:</span> <span class="s2">"counts"</span><span class="p">,</span> <span class="s2">"output_units"</span><span class="p">:</span> <span class="s2">"cm/s^2"</span><span class="p">}</span>
-    <span class="n">trace1</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s2">"remove_response"</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;input_units&quot;</span><span class="p">:</span> <span class="s2">&quot;counts&quot;</span><span class="p">,</span> <span class="s2">&quot;output_units&quot;</span><span class="p">:</span> <span class="s2">&quot;cm/s^2&quot;</span><span class="p">}</span>
+    <span class="n">trace1</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s2">&quot;remove_response&quot;</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
     <span class="n">trace2</span> <span class="o">=</span> <span class="n">StationTrace</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data2</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header2</span><span class="p">)</span>
-    <span class="n">trace2</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s2">"remove_response"</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+    <span class="n">trace2</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s2">&quot;remove_response&quot;</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
     <span class="n">trace3</span> <span class="o">=</span> <span class="n">StationTrace</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data3</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header3</span><span class="p">)</span>
-    <span class="n">trace3</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s2">"remove_response"</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+    <span class="n">trace3</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s2">&quot;remove_response&quot;</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
     <span class="n">stream</span> <span class="o">=</span> <span class="n">StationStream</span><span class="p">(</span><span class="n">traces</span><span class="o">=</span><span class="p">[</span><span class="n">trace1</span><span class="p">,</span> <span class="n">trace2</span><span class="p">,</span> <span class="n">trace3</span><span class="p">])</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">stream</span><span class="p">]</span></div>
 
@@ -601,63 +602,63 @@
     <span class="n">standard</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">coords</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">format_specific</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"rt"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">ENCODING</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">ENCODING</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">TEXT_HDR_ROWS</span><span class="p">)]</span>
         <span class="c1"># fill out the standard dictionary</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span> <span class="o">=</span> <span class="n">SOURCE</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"source_format"</span><span class="p">]</span> <span class="o">=</span> <span class="n">SOURCE_FORMAT</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument"</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"sensor_serial_number"</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"process_level"</span><span class="p">]</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="s2">"V1"</span><span class="p">]</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"process_time"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"station_name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"structure_type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"corner_frequency"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"units_type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"acc"</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"units"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"cm/s/s"</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument_period"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument_damping"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"horizontal_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"comments"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">15</span><span class="p">:</span><span class="mi">17</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SOURCE</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;source_format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SOURCE_FORMAT</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;instrument&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;sensor_serial_number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;process_level&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="s2">&quot;V1&quot;</span><span class="p">]</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;process_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;station_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;structure_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;corner_frequency&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;units_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;acc&quot;</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;cm/s/s&quot;</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;instrument_period&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;instrument_damping&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;horizontal_orientation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;comments&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">15</span><span class="p">:</span><span class="mi">17</span><span class="p">])</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="n">head</span><span class="p">,</span> <span class="n">tail</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"source_file"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tail</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;source_file&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tail</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
 
         <span class="c1"># these fields can be used for instrument correction</span>
         <span class="c1"># when data is in counts</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument_sensitivity"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"volts_to_counts"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;instrument_sensitivity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;volts_to_counts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
         <span class="c1"># fill out the stats stuff</span>
         <span class="n">stimestr</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">TIME_RE</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="mi">11</span><span class="p">])</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
         <span class="c1"># 20/07/2017 22:30:58.000000 (GMT)</span>
         <span class="n">stime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">stimestr</span><span class="p">,</span> <span class="n">TIMEFMT</span><span class="p">)</span>
-        <span class="n">header</span><span class="p">[</span><span class="s2">"starttime"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stime</span>
-        <span class="n">header</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-        <span class="n">header</span><span class="p">[</span><span class="s2">"delta"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-        <span class="n">header</span><span class="p">[</span><span class="s2">"sampling_rate"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">header</span><span class="p">[</span><span class="s2">"delta"</span><span class="p">]</span>
-        <span class="n">header</span><span class="p">[</span><span class="s2">"duration"</span><span class="p">]</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">*</span> <span class="n">header</span><span class="p">[</span><span class="s2">"delta"</span><span class="p">]</span>
-        <span class="n">header</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
-        <span class="n">header</span><span class="p">[</span><span class="s2">"station"</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="n">header</span><span class="p">[</span><span class="s2">"location"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"--"</span>
-        <span class="n">header</span><span class="p">[</span><span class="s2">"network"</span><span class="p">]</span> <span class="o">=</span> <span class="n">NETWORK</span>
+        <span class="n">header</span><span class="p">[</span><span class="s2">&quot;starttime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stime</span>
+        <span class="n">header</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="n">header</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="n">header</span><span class="p">[</span><span class="s2">&quot;sampling_rate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">]</span>
+        <span class="n">header</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">]</span>
+        <span class="n">header</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">header</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">header</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span>
+        <span class="n">header</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">NETWORK</span>
 
-        <span class="n">coordstr</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"-"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+        <span class="n">coordstr</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="n">lat_str</span><span class="p">,</span> <span class="n">lon_str</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">FLOATRE</span><span class="p">,</span> <span class="n">coordstr</span><span class="p">)</span>
-        <span class="n">altparts</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)</span>
+        <span class="n">altparts</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
         <span class="n">altitude</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">altparts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">altparts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()):</span>
             <span class="n">altitude</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">altparts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">"Setting elevation to 0.0"</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Setting elevation to 0.0&quot;</span><span class="p">)</span>
         <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">"latitude"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">lat_str</span><span class="p">),</span>
-            <span class="s2">"longitude"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">lon_str</span><span class="p">),</span>
-            <span class="s2">"elevation"</span><span class="p">:</span> <span class="n">altitude</span><span class="p">,</span>
+            <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">lat_str</span><span class="p">),</span>
+            <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">lon_str</span><span class="p">),</span>
+            <span class="s2">&quot;elevation&quot;</span><span class="p">:</span> <span class="n">altitude</span><span class="p">,</span>
         <span class="p">}</span>
 
-        <span class="n">header</span><span class="p">[</span><span class="s2">"coordinates"</span><span class="p">]</span> <span class="o">=</span> <span class="n">coords</span>
-        <span class="n">header</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">]</span> <span class="o">=</span> <span class="n">standard</span>
-        <span class="n">header</span><span class="p">[</span><span class="s2">"format_specific"</span><span class="p">]</span> <span class="o">=</span> <span class="n">format_specific</span>
+        <span class="n">header</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">coords</span>
+        <span class="n">header</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">standard</span>
+        <span class="n">header</span><span class="p">[</span><span class="s2">&quot;format_specific&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">format_specific</span>
 
         <span class="k">return</span> <span class="n">header</span></div>
 </pre></div>

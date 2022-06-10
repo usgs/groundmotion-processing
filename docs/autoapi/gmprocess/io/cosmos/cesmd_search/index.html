@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="gmprocess.io.cosmos.core" href="../core/index.html" /><link rel="prev" title="gmprocess.io.cosmos.cesmd_fetcher" href="../cesmd_fetcher/index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.cosmos.cesmd_search - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.io.cosmos.cesmd_search - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -486,30 +487,33 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_search.get_metadata" title="gmprocess.io.cosmos.cesmd_search.get_metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_metadata</span></code></a>(eqlat=None, eqlon=None, eqtime=None, eqradius=10, abandoned=False, station_type='Ground', eqtimewindow=10, station_radius=200)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_search.get_metadata" title="gmprocess.io.cosmos.cesmd_search.get_metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_metadata</span></code></a>(eqlat=None, eqlon=None, eqtime=None, eqradius=10, abandoned=False, station_type='Ground', eqtimewindow=10, station_radius=200)</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_search.get_stations_dataframe" title="gmprocess.io.cosmos.cesmd_search.get_stations_dataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_stations_dataframe</span></code></a>(metadata)</p></td>
 <td><p>Return a dataframe of station information from one event in CESMD</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_search.get_records" title="gmprocess.io.cosmos.cesmd_search.get_records"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_records</span></code></a>(output, email, unpack=False, process_level='raw', group_by='event', minpga=None, maxpga=None, min_station_dist=None, max_station_dist=None, network=None, station_type='Ground', include_inactive=False, station_name=None, min_station_latitude=None, max_station_latitude=None, min_station_longitude=None, max_station_longitude=None, station_latitude=None, station_longitude=None, radius_km=None, station_code=None, event_name=None, minmag=None, maxmag=None, fault_type=None, startdate=None, enddate=None, min_event_latitude=None, max_event_latitude=None, min_event_longitude=None, max_event_longitude=None, event_latitude=None, event_longitude=None, event_radius=None, eventid=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_search.get_records" title="gmprocess.io.cosmos.cesmd_search.get_records"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_records</span></code></a>(output, email, unpack=False, process_level='raw', group_by='event', minpga=None, maxpga=None, min_station_dist=None, max_station_dist=None, network=None, station_type='Ground', include_inactive=False, station_name=None, min_station_latitude=None, max_station_latitude=None, min_station_longitude=None, max_station_longitude=None, station_latitude=None, station_longitude=None, radius_km=None, station_code=None, event_name=None, minmag=None, maxmag=None, fault_type=None, startdate=None, enddate=None, min_event_latitude=None, max_event_latitude=None, min_event_longitude=None, max_event_longitude=None, event_latitude=None, event_longitude=None, event_radius=None, eventid=None)</p></td>
 <td><p>Retrieve strong motion waveform records from CESMD website.</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_search.URL_TEMPLATE" title="gmprocess.io.cosmos.cesmd_search.URL_TEMPLATE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">URL_TEMPLATE</span></code></a></p></td>
@@ -537,43 +541,53 @@
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.cesmd_search.URL_TEMPLATE">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.cesmd_search.</span></span><span class="sig-name descname"><span class="pre">URL_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">https://strongmotioncenter.org/wserv/records/query</span></em><a class="headerlink" href="#gmprocess.io.cosmos.cesmd_search.URL_TEMPLATE" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.cesmd_search.RETURN_TYPES">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.cesmd_search.</span></span><span class="sig-name descname"><span class="pre">RETURN_TYPES</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['dataset',</span> <span class="pre">'metadata']</span></em><a class="headerlink" href="#gmprocess.io.cosmos.cesmd_search.RETURN_TYPES" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.cesmd_search.PROCESS_LEVELS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.cesmd_search.</span></span><span class="sig-name descname"><span class="pre">PROCESS_LEVELS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['processed',</span> <span class="pre">'raw',</span> <span class="pre">'plots',</span> <span class="pre">'all']</span></em><a class="headerlink" href="#gmprocess.io.cosmos.cesmd_search.PROCESS_LEVELS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.cesmd_search.GROUP_OPTIONS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.cesmd_search.</span></span><span class="sig-name descname"><span class="pre">GROUP_OPTIONS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['station',</span> <span class="pre">'event']</span></em><a class="headerlink" href="#gmprocess.io.cosmos.cesmd_search.GROUP_OPTIONS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.cesmd_search.NETWORKS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.cesmd_search.</span></span><span class="sig-name descname"><span class="pre">NETWORKS</span></span><a class="headerlink" href="#gmprocess.io.cosmos.cesmd_search.NETWORKS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.cesmd_search.STATION_TYPES">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.cesmd_search.</span></span><span class="sig-name descname"><span class="pre">STATION_TYPES</span></span><a class="headerlink" href="#gmprocess.io.cosmos.cesmd_search.STATION_TYPES" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.cesmd_search.FAULT_TYPES">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.cesmd_search.</span></span><span class="sig-name descname"><span class="pre">FAULT_TYPES</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['NM',</span> <span class="pre">'RS',</span> <span class="pre">'SS']</span></em><a class="headerlink" href="#gmprocess.io.cosmos.cesmd_search.FAULT_TYPES" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.cesmd_search.KEY_TABLE">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.cesmd_search.</span></span><span class="sig-name descname"><span class="pre">KEY_TABLE</span></span><a class="headerlink" href="#gmprocess.io.cosmos.cesmd_search.KEY_TABLE" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.cesmd_search.get_metadata">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.cesmd_search.</span></span><span class="sig-name descname"><span class="pre">get_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eqlat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eqlon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eqtime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eqradius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">abandoned</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Ground'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eqtimewindow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/cosmos/cesmd_search.html#get_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.cosmos.cesmd_search.get_metadata" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.cesmd_search.get_stations_dataframe">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.cesmd_search.</span></span><span class="sig-name descname"><span class="pre">get_stations_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/cosmos/cesmd_search.html#get_stations_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.cosmos.cesmd_search.get_stations_dataframe" title="Permalink to this definition">#</a></dt>
@@ -606,6 +620,7 @@ metadata.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.cesmd_search.get_records">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.cesmd_search.</span></span><span class="sig-name descname"><span class="pre">get_records</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unpack</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'raw'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'event'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minpga</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxpga</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_station_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_station_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Ground'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_inactive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_station_latitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_station_latitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_station_longitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_station_longitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_latitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_longitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_km</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minmag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxmag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fault_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startdate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enddate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_event_latitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_event_latitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_event_longitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_event_longitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_latitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_longitude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eventid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/cosmos/cesmd_search.html#get_records"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.cosmos.cesmd_search.get_records" title="Permalink to this definition">#</a></dt>
@@ -662,6 +677,7 @@ directory name.)</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 </section>
 </section>

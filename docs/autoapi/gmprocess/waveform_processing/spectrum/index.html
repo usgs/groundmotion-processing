@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.waveform_processing.windows" href="../windows/index.html" /><link rel="prev" title="gmprocess.waveform_processing.snr" href="../snr/index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.waveform_processing.spectrum - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.waveform_processing.spectrum - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -487,28 +488,29 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.fit_spectra" title="gmprocess.waveform_processing.spectrum.fit_spectra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_spectra</span></code></a>(st, origin, kappa=0.035, RP=0.55, VHC=0.7071068, FSE=2.0, density=2.8, shear_vel=3.7, R0=1.0, moment_factor=100, min_stress=0.1, max_stress=10000, config=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.fit_spectra" title="gmprocess.waveform_processing.spectrum.fit_spectra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_spectra</span></code></a>(st, origin, kappa=0.035, RP=0.55, VHC=0.7071068, FSE=2.0, density=2.8, shear_vel=3.7, R0=1.0, moment_factor=100, min_stress=0.1, max_stress=10000, config=None)</p></td>
 <td><p>Fit spectra vaying stress_drop and moment.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.spectrum_cost" title="gmprocess.waveform_processing.spectrum.spectrum_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spectrum_cost</span></code></a>(x, freq, obs_spec, fmin, fmax, dist, kappa, RP, VHC=0.7071068, FSE=2.0, shear_vel=3.7, density=2.8, R0=1.0, gs_mod='REA99', q_mod='REA99', crust_mod='BT15')</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.spectrum_cost" title="gmprocess.waveform_processing.spectrum.spectrum_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spectrum_cost</span></code></a>(x, freq, obs_spec, fmin, fmax, dist, kappa, RP, VHC=0.7071068, FSE=2.0, shear_vel=3.7, density=2.8, R0=1.0, gs_mod='REA99', q_mod='REA99', crust_mod='BT15')</p></td>
 <td><p>Function to compute RMS log residuals for optimization.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.model" title="gmprocess.waveform_processing.spectrum.model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model</span></code></a>(x, freq, dist, kappa, RP=0.55, VHC=0.7071068, FSE=2.0, shear_vel=3.7, density=2.8, R0=1.0, gs_mod='REA99', q_mod='REA99', crust_mod='BT15')</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.model" title="gmprocess.waveform_processing.spectrum.model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">model</span></code></a>(x, freq, dist, kappa, RP=0.55, VHC=0.7071068, FSE=2.0, shear_vel=3.7, density=2.8, R0=1.0, gs_mod='REA99', q_mod='REA99', crust_mod='BT15')</p></td>
 <td><p>Piece together a model of the ground motion spectrum.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.brune" title="gmprocess.waveform_processing.spectrum.brune"><code class="xref py py-obj docutils literal notranslate"><span class="pre">brune</span></code></a>(freq, moment, stress_drop=150, RP=0.55, VHC=0.7071068, FSE=2.0, shear_vel=3.7, density=2.8, R0=1.0, output_units='ACC')</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.brune" title="gmprocess.waveform_processing.spectrum.brune"><code class="xref py py-obj docutils literal notranslate"><span class="pre">brune</span></code></a>(freq, moment, stress_drop=150, RP=0.55, VHC=0.7071068, FSE=2.0, shear_vel=3.7, density=2.8, R0=1.0, output_units='ACC')</p></td>
 <td><p>Compute Brune (1970, 1971) earthquake source spectrum.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.brune_f0" title="gmprocess.waveform_processing.spectrum.brune_f0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">brune_f0</span></code></a>(moment, stress_drop, shear_vel=3.7)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.brune_f0" title="gmprocess.waveform_processing.spectrum.brune_f0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">brune_f0</span></code></a>(moment, stress_drop, shear_vel=3.7)</p></td>
 <td><p>Compute Brune's corner frequency.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.brune_stress" title="gmprocess.waveform_processing.spectrum.brune_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">brune_stress</span></code></a>(moment, f0, shear_vel=3.7)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.brune_stress" title="gmprocess.waveform_processing.spectrum.brune_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">brune_stress</span></code></a>(moment, f0, shear_vel=3.7)</p></td>
 <td><p>Compute Brune's stress drop.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.moment_from_magnitude" title="gmprocess.waveform_processing.spectrum.moment_from_magnitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moment_from_magnitude</span></code></a>(magnitude)</p></td>
@@ -517,33 +519,35 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.magnitude_from_moment" title="gmprocess.waveform_processing.spectrum.magnitude_from_moment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">magnitude_from_moment</span></code></a>(moment)</p></td>
 <td><p>Compute moment from moment magnitude.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.path" title="gmprocess.waveform_processing.spectrum.path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">path</span></code></a>(freq, dist, gs_mod='REA99', q_mod='REA99')</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.path" title="gmprocess.waveform_processing.spectrum.path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">path</span></code></a>(freq, dist, gs_mod='REA99', q_mod='REA99')</p></td>
 <td><p>Path term, including geometric and anelastic attenuation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.site" title="gmprocess.waveform_processing.spectrum.site"><code class="xref py py-obj docutils literal notranslate"><span class="pre">site</span></code></a>(freq, kappa, crust_mod='BT15')</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.site" title="gmprocess.waveform_processing.spectrum.site"><code class="xref py py-obj docutils literal notranslate"><span class="pre">site</span></code></a>(freq, kappa, crust_mod='BT15')</p></td>
 <td><p>Site term, including crustal amplification and kappa.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.crustal_amplification" title="gmprocess.waveform_processing.spectrum.crustal_amplification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">crustal_amplification</span></code></a>(freq, model='BT15')</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.crustal_amplification" title="gmprocess.waveform_processing.spectrum.crustal_amplification"><code class="xref py py-obj docutils literal notranslate"><span class="pre">crustal_amplification</span></code></a>(freq, model='BT15')</p></td>
 <td><p>Crustal amplification model.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.geometrical_spreading" title="gmprocess.waveform_processing.spectrum.geometrical_spreading"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geometrical_spreading</span></code></a>(freq, dist, model='REA99')</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.geometrical_spreading" title="gmprocess.waveform_processing.spectrum.geometrical_spreading"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geometrical_spreading</span></code></a>(freq, dist, model='REA99')</p></td>
 <td><p>Effect of geometrical spreading.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.anelastic_attenuation" title="gmprocess.waveform_processing.spectrum.anelastic_attenuation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">anelastic_attenuation</span></code></a>(freq, dist, model='REA99')</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.anelastic_attenuation" title="gmprocess.waveform_processing.spectrum.anelastic_attenuation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">anelastic_attenuation</span></code></a>(freq, dist, model='REA99')</p></td>
 <td><p>Effect of anelastic attenuation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.finite_fault_factor" title="gmprocess.waveform_processing.spectrum.finite_fault_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">finite_fault_factor</span></code></a>(magnitude, model='BT15')</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.finite_fault_factor" title="gmprocess.waveform_processing.spectrum.finite_fault_factor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">finite_fault_factor</span></code></a>(magnitude, model='BT15')</p></td>
 <td><p>Finite fault factor for converting Rrup to an equivalent point source</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.spectrum.OUTPUT_UNITS" title="gmprocess.waveform_processing.spectrum.OUTPUT_UNITS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OUTPUT_UNITS</span></code></a></p></td>
@@ -553,15 +557,18 @@
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.spectrum.OUTPUT_UNITS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.spectrum.</span></span><span class="sig-name descname"><span class="pre">OUTPUT_UNITS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['ACC',</span> <span class="pre">'VEL',</span> <span class="pre">'DISP']</span></em><a class="headerlink" href="#gmprocess.waveform_processing.spectrum.OUTPUT_UNITS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.spectrum.M_TO_KM">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.spectrum.</span></span><span class="sig-name descname"><span class="pre">M_TO_KM</span></span><a class="headerlink" href="#gmprocess.waveform_processing.spectrum.M_TO_KM" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.spectrum.fit_spectra">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.spectrum.</span></span><span class="sig-name descname"><span class="pre">fit_spectra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.035</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RP</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.55</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">VHC</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7071068</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FSE</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_vel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moment_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_stress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_stress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/spectrum.html#fit_spectra"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.spectrum.fit_spectra" title="Permalink to this definition">#</a></dt>
@@ -595,6 +602,7 @@ optimization.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.spectrum.spectrum_cost">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.spectrum.</span></span><span class="sig-name descname"><span class="pre">spectrum_cost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs_spec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RP</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">VHC</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7071068</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FSE</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_vel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gs_mod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'REA99'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_mod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'REA99'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crust_mod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BT15'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/spectrum.html#spectrum_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.spectrum.spectrum_cost" title="Permalink to this definition">#</a></dt>
@@ -635,6 +643,7 @@ regions is about 0.03-0.04, and stable continental regions is about 0.006.</p></
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.spectrum.model">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.spectrum.</span></span><span class="sig-name descname"><span class="pre">model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RP</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.55</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">VHC</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7071068</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FSE</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_vel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gs_mod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'REA99'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_mod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'REA99'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crust_mod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BT15'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/spectrum.html#model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.spectrum.model" title="Permalink to this definition">#</a></dt>
@@ -668,6 +677,7 @@ regions is about 0.03-0.04, and stable continental regions is about 0.006.</p></
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.spectrum.brune">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.spectrum.</span></span><span class="sig-name descname"><span class="pre">brune</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_drop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">150</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RP</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.55</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">VHC</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7071068</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FSE</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_vel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ACC'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/spectrum.html#brune"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.spectrum.brune" title="Permalink to this definition">#</a></dt>
@@ -692,6 +702,7 @@ regions is about 0.03-0.04, and stable continental regions is about 0.006.</p></
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.spectrum.brune_f0">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.spectrum.</span></span><span class="sig-name descname"><span class="pre">brune_f0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stress_drop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_vel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/spectrum.html#brune_f0"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.spectrum.brune_f0" title="Permalink to this definition">#</a></dt>
@@ -712,6 +723,7 @@ regions is about 0.03-0.04, and stable continental regions is about 0.006.</p></
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.spectrum.brune_stress">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.spectrum.</span></span><span class="sig-name descname"><span class="pre">brune_stress</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shear_vel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/spectrum.html#brune_stress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.spectrum.brune_stress" title="Permalink to this definition">#</a></dt>
@@ -732,6 +744,7 @@ regions is about 0.03-0.04, and stable continental regions is about 0.006.</p></
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.spectrum.moment_from_magnitude">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.spectrum.</span></span><span class="sig-name descname"><span class="pre">moment_from_magnitude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">magnitude</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/spectrum.html#moment_from_magnitude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.spectrum.moment_from_magnitude" title="Permalink to this definition">#</a></dt>
@@ -748,6 +761,7 @@ regions is about 0.03-0.04, and stable continental regions is about 0.006.</p></
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.spectrum.magnitude_from_moment">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.spectrum.</span></span><span class="sig-name descname"><span class="pre">magnitude_from_moment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/spectrum.html#magnitude_from_moment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.spectrum.magnitude_from_moment" title="Permalink to this definition">#</a></dt>
@@ -764,6 +778,7 @@ regions is about 0.03-0.04, and stable continental regions is about 0.006.</p></
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.spectrum.path">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.spectrum.</span></span><span class="sig-name descname"><span class="pre">path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gs_mod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'REA99'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_mod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'REA99'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/spectrum.html#path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.spectrum.path" title="Permalink to this definition">#</a></dt>
@@ -785,6 +800,7 @@ regions is about 0.03-0.04, and stable continental regions is about 0.006.</p></
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.spectrum.site">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.spectrum.</span></span><span class="sig-name descname"><span class="pre">site</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crust_mod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BT15'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/spectrum.html#site"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.spectrum.site" title="Permalink to this definition">#</a></dt>
@@ -802,6 +818,7 @@ regions is about 0.03-0.04, and stable continental regions is about 0.006.</p></
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.spectrum.crustal_amplification">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.spectrum.</span></span><span class="sig-name descname"><span class="pre">crustal_amplification</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BT15'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/spectrum.html#crustal_amplification"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.spectrum.crustal_amplification" title="Permalink to this definition">#</a></dt>
@@ -817,6 +834,7 @@ regions is about 0.03-0.04, and stable continental regions is about 0.006.</p></
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.spectrum.geometrical_spreading">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.spectrum.</span></span><span class="sig-name descname"><span class="pre">geometrical_spreading</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'REA99'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/spectrum.html#geometrical_spreading"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.spectrum.geometrical_spreading" title="Permalink to this definition">#</a></dt>
@@ -838,6 +856,7 @@ regions is about 0.03-0.04, and stable continental regions is about 0.006.</p></
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.spectrum.anelastic_attenuation">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.spectrum.</span></span><span class="sig-name descname"><span class="pre">anelastic_attenuation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'REA99'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/spectrum.html#anelastic_attenuation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.spectrum.anelastic_attenuation" title="Permalink to this definition">#</a></dt>
@@ -857,6 +876,7 @@ regions is about 0.03-0.04, and stable continental regions is about 0.006.</p></
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.spectrum.finite_fault_factor">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.spectrum.</span></span><span class="sig-name descname"><span class="pre">finite_fault_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">magnitude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'BT15'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/spectrum.html#finite_fault_factor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.spectrum.finite_fault_factor" title="Permalink to this definition">#</a></dt>
@@ -877,6 +897,7 @@ distance.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 </section>
 </section>

@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.waveform_processing.zero_crossings" href="../zero_crossings/index.html" /><link rel="prev" title="gmprocess.waveform_processing.spectrum" href="../spectrum/index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.waveform_processing.windows - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.waveform_processing.windows - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -487,47 +488,52 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.cut" title="gmprocess.waveform_processing.windows.cut"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut</span></code></a>(st, sec_before_split=None, config=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.cut" title="gmprocess.waveform_processing.windows.cut"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut</span></code></a>(st, sec_before_split=None, config=None)</p></td>
 <td><p>Cut/trim the record.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.window_checks" title="gmprocess.waveform_processing.windows.window_checks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">window_checks</span></code></a>(st, min_noise_duration=0.5, min_signal_duration=5.0)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.window_checks" title="gmprocess.waveform_processing.windows.window_checks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">window_checks</span></code></a>(st, min_noise_duration=0.5, min_signal_duration=5.0)</p></td>
 <td><p>Check if the split/end windowing have long enough durations.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.signal_split" title="gmprocess.waveform_processing.windows.signal_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signal_split</span></code></a>(st, origin, model=None, picker_config=None, config=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.signal_split" title="gmprocess.waveform_processing.windows.signal_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signal_split</span></code></a>(st, origin, model=None, picker_config=None, config=None)</p></td>
 <td><p>This method tries to identifies the boundary between the noise and signal</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.signal_end" title="gmprocess.waveform_processing.windows.signal_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signal_end</span></code></a>(st, event_time, event_lon, event_lat, event_mag, method=None, vmin=None, floor=None, model=None, epsilon=2.0)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.signal_end" title="gmprocess.waveform_processing.windows.signal_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signal_end</span></code></a>(st, event_time, event_lon, event_lat, event_mag, method=None, vmin=None, floor=None, model=None, epsilon=2.0)</p></td>
 <td><p>Estimate end of signal by using a model of the 5-95% significant</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.trim_multiple_events" title="gmprocess.waveform_processing.windows.trim_multiple_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim_multiple_events</span></code></a>(st, origin, catalog, travel_time_df, pga_factor, pct_window_reject, gmpe, site_parameters, rupture_parameters)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.trim_multiple_events" title="gmprocess.waveform_processing.windows.trim_multiple_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim_multiple_events</span></code></a>(st, origin, catalog, travel_time_df, pga_factor, pct_window_reject, gmpe, site_parameters, rupture_parameters)</p></td>
 <td><p>Uses a catalog (list of ScalarEvents) to handle cases where a trace might</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.M_TO_KM" title="gmprocess.waveform_processing.windows.M_TO_KM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">M_TO_KM</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.windows.M_TO_KM">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.windows.</span></span><span class="sig-name descname"><span class="pre">M_TO_KM</span></span><a class="headerlink" href="#gmprocess.waveform_processing.windows.M_TO_KM" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.windows.cut">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.windows.</span></span><span class="sig-name descname"><span class="pre">cut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sec_before_split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/windows.html#cut"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.windows.cut" title="Permalink to this definition">#</a></dt>
@@ -557,6 +563,7 @@ record will be unchanged.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.windows.window_checks">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.windows.</span></span><span class="sig-name descname"><span class="pre">window_checks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_noise_duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_signal_duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/windows.html#window_checks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.windows.window_checks" title="Permalink to this definition">#</a></dt>
@@ -571,6 +578,7 @@ record will be unchanged.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.windows.signal_split">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.windows.</span></span><span class="sig-name descname"><span class="pre">signal_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picker_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/windows.html#signal_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.windows.signal_split" title="Permalink to this definition">#</a></dt>
@@ -597,6 +605,7 @@ stats[‘processing_parameters’][‘signal_split’] dictionary.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.windows.signal_end">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.windows.</span></span><span class="sig-name descname"><span class="pre">signal_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_mag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/windows.html#signal_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.windows.signal_end" title="Permalink to this definition">#</a></dt>
@@ -631,6 +640,7 @@ stats[‘processing_parameters’][‘signal_end’] dictionary.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.windows.trim_multiple_events">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.windows.</span></span><span class="sig-name descname"><span class="pre">trim_multiple_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">travel_time_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pga_factor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pct_window_reject</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gmpe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">site_parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rupture_parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/windows.html#trim_multiple_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.windows.trim_multiple_events" title="Permalink to this definition">#</a></dt>
@@ -690,6 +700,7 @@ appropriately.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 </section>
 </section>

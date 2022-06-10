@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.metrics.reduction.max - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.metrics.reduction.max - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -493,7 +494,7 @@
 
 
 <div class="viewcode-block" id="Max"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/reduction/max/index.html#gmprocess.metrics.reduction.max.Max">[docs]</a><span class="k">class</span> <span class="nc">Max</span><span class="p">(</span><span class="n">Reduction</span><span class="p">):</span>
-    <span class="sd">"""Class for calculation of maximum value."""</span>
+    <span class="sd">&quot;&quot;&quot;Class for calculation of maximum value.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -504,7 +505,7 @@
         <span class="n">smoothing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">interval</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span>
     <span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            reduction_data (obspy.core.stream.Stream or numpy.ndarray):</span>
 <span class="sd">                Intensity measurement component.</span>
@@ -520,7 +521,7 @@
 <span class="sd">            interval (list):</span>
 <span class="sd">                List of length 2 with the quantiles (0-1) for duration interval</span>
 <span class="sd">                calculation.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">reduction_data</span><span class="p">,</span>
             <span class="n">bandwidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -532,24 +533,24 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_max</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Max.get_max"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/reduction/max/index.html#gmprocess.metrics.reduction.max.Max.get_max">[docs]</a>    <span class="k">def</span> <span class="nf">get_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Performs calculation of maximum value.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            maximums: Dictionary of maximum value for each channel.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">maximums</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">times</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reduction_data</span><span class="p">,</span> <span class="p">(</span><span class="n">Stream</span><span class="p">,</span> <span class="n">StationStream</span><span class="p">)):</span>
             <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduction_data</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span> <span class="o">==</span> <span class="s2">"acc"</span><span class="p">:</span>
-                    <span class="n">key</span> <span class="o">=</span> <span class="s2">"pga_time"</span>
-                <span class="k">elif</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span> <span class="o">==</span> <span class="s2">"vel"</span><span class="p">:</span>
-                    <span class="n">key</span> <span class="o">=</span> <span class="s2">"pgv_time"</span>
-                <span class="k">elif</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span> <span class="o">==</span> <span class="s2">"disp"</span><span class="p">:</span>
-                    <span class="n">key</span> <span class="o">=</span> <span class="s2">"pgd_time"</span>
+                <span class="k">if</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span> <span class="o">==</span> <span class="s2">&quot;acc&quot;</span><span class="p">:</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;pga_time&quot;</span>
+                <span class="k">elif</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span> <span class="o">==</span> <span class="s2">&quot;vel&quot;</span><span class="p">:</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;pgv_time&quot;</span>
+                <span class="k">elif</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span> <span class="o">==</span> <span class="s2">&quot;disp&quot;</span><span class="p">:</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;pgd_time&quot;</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">key</span> <span class="o">=</span> <span class="s2">"peak_time"</span>
+                    <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;peak_time&quot;</span>
                 <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
                 <span class="n">dtimes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
                     <span class="mf">0.0</span><span class="p">,</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span> <span class="o">-</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="p">,</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span>

@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.utils.constants" href="../constants/index.html" /><link rel="prev" title="gmprocess.utils.base_utils" href="../base_utils/index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.utils.config - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.utils.config - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -486,19 +487,20 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.config.update_dict" title="gmprocess.utils.config.update_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_dict</span></code></a>(target, source)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.config.update_dict" title="gmprocess.utils.config.update_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_dict</span></code></a>(target, source)</p></td>
 <td><p>Merge values from source dictionary into target dictionary.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.config.merge_dicts" title="gmprocess.utils.config.merge_dicts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_dicts</span></code></a>(dicts)</p></td>
 <td><p>Merges a list of dictionaries into a new dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.config.get_config" title="gmprocess.utils.config.get_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_config</span></code></a>(config_file=None, section=None, use_default=False)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.config.get_config" title="gmprocess.utils.config.get_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_config</span></code></a>(config_file=None, section=None, use_default=False)</p></td>
 <td><p>Gets the user defined config and validates it.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.config.update_config" title="gmprocess.utils.config.update_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_config</span></code></a>(custom_cfg_file)</p></td>
@@ -508,25 +510,29 @@
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.config.CONF_SCHEMA" title="gmprocess.utils.config.CONF_SCHEMA"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CONF_SCHEMA</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.utils.config.CONF_SCHEMA">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.config.</span></span><span class="sig-name descname"><span class="pre">CONF_SCHEMA</span></span><a class="headerlink" href="#gmprocess.utils.config.CONF_SCHEMA" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.config.update_dict">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.config.</span></span><span class="sig-name descname"><span class="pre">update_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/config.html#update_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.config.update_dict" title="Permalink to this definition">#</a></dt>
@@ -540,6 +546,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.config.merge_dicts">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.config.</span></span><span class="sig-name descname"><span class="pre">merge_dicts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dicts</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/config.html#merge_dicts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.config.merge_dicts" title="Permalink to this definition">#</a></dt>
@@ -559,6 +566,7 @@ ones.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.config.get_config">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.config.</span></span><span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/config.html#get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.config.get_config" title="Permalink to this definition">#</a></dt>
@@ -584,6 +592,7 @@ config settings. Only intended for tutorials/documentation.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.config.update_config">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.config.</span></span><span class="sig-name descname"><span class="pre">update_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">custom_cfg_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/config.html#update_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.config.update_config" title="Permalink to this definition">#</a></dt>
@@ -600,10 +609,12 @@ config settings. Only intended for tutorials/documentation.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.config.__proj_to_conf_file">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.config.</span></span><span class="sig-name descname"><span class="pre">__proj_to_conf_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/config.html#__proj_to_conf_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.config.__proj_to_conf_file" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 </section>
 </section>
 </section>

@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.waveform_processing.nn_quality_assurance - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.waveform_processing.nn_quality_assurance - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -493,7 +494,7 @@
 
 
 <div class="viewcode-block" id="isNumber"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html#gmprocess.waveform_processing.nn_quality_assurance.isNumber">[docs]</a><span class="k">def</span> <span class="nf">isNumber</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if given input is a number.</span>
 
 <span class="sd">    Args:</span>
@@ -501,8 +502,8 @@
 <span class="sd">            Data to test</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        bool: True if is a number, False if isn't</span>
-<span class="sd">    """</span>
+<span class="sd">        bool: True if is a number, False if isn&#39;t</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
@@ -512,7 +513,7 @@
 
 
 <div class="viewcode-block" id="loadCSV"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html#gmprocess.waveform_processing.nn_quality_assurance.loadCSV">[docs]</a><span class="k">def</span> <span class="nf">loadCSV</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">row_ignore</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">col_ignore</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load csv files from a given path and returns a list of list.</span>
 <span class="sd">    For all imported data, check if is a number. If so, returns a</span>
 <span class="sd">    float. If not, returns a string.</span>
@@ -524,10 +525,10 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list of list: containing the data from the csv</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">M</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">:</span>
         <span class="n">readCSV</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">csvfile</span><span class="p">)</span>
 
         <span class="c1"># Skip header</span>
@@ -548,7 +549,7 @@
 
 
 <div class="viewcode-block" id="sigmoid"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html#gmprocess.waveform_processing.nn_quality_assurance.sigmoid">[docs]</a><span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">v_input</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Performs a sigmoid operation on the input (1/(e(-x)+1))</span>
 
 <span class="sd">    Args:</span>
@@ -556,7 +557,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        float: sigmoid result (a number between 0 and 1)</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">v_act</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v_input</span><span class="p">:</span>
         <span class="n">v_act</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">)))</span>
@@ -564,7 +565,7 @@
 
 
 <div class="viewcode-block" id="tanh"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html#gmprocess.waveform_processing.nn_quality_assurance.tanh">[docs]</a><span class="k">def</span> <span class="nf">tanh</span><span class="p">(</span><span class="n">v_input</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Performs a hyperbolic tangent operation on the input (2/(e(2x)+1))</span>
 
 <span class="sd">    Args:</span>
@@ -572,7 +573,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        float: tanh result (a number between -1 and 1)</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">v_act</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">v_input</span><span class="p">:</span>
         <span class="n">v_act</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
@@ -580,23 +581,23 @@
 
 
 <div class="viewcode-block" id="neuralNet"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html#gmprocess.waveform_processing.nn_quality_assurance.neuralNet">[docs]</a><span class="k">class</span> <span class="nc">neuralNet</span><span class="p">:</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class allowing the instantiation and use of simple (1 or 2 layers)</span>
 <span class="sd">    neural networks</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Instantiate an empty neural network (no weights, functions, or</span>
 <span class="sd">        biases loaded</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_input</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_neuron_H1</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_neuron_H2</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_output</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">activation_H1</span> <span class="o">=</span> <span class="s2">"NA"</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">activation_H2</span> <span class="o">=</span> <span class="s2">"NA"</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">activation_output</span> <span class="o">=</span> <span class="s2">"NA"</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation_H1</span> <span class="o">=</span> <span class="s2">&quot;NA&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation_H2</span> <span class="o">=</span> <span class="s2">&quot;NA&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation_output</span> <span class="o">=</span> <span class="s2">&quot;NA&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">w_H1</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">w_H2</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">b_H1</span> <span class="o">=</span> <span class="p">[]</span>
@@ -606,16 +607,16 @@
 
     <span class="c1"># loadNN: load and build neural network model</span>
 <div class="viewcode-block" id="neuralNet.loadNN"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html#gmprocess.waveform_processing.nn_quality_assurance.neuralNet.loadNN">[docs]</a>    <span class="k">def</span> <span class="nf">loadNN</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nn_path</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Populate an instantated neural netowrk with data contained in a</span>
 <span class="sd">        specific folder.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            nn_path (string): path to the folder containing the required</span>
 <span class="sd">            information (masterF.txt, weights.csv, biases.csv)</span>
-<span class="sd">        """</span>
-        <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s2">"masterF.txt"</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">masterF</span><span class="p">:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s2">&quot;masterF.txt&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">masterF</span><span class="p">:</span>
             <span class="n">readCSV</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">masterF</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">readCSV</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
@@ -637,29 +638,29 @@
 
         <span class="c1"># Load weights and biases</span>
         <span class="c1"># Weights first hidden layer</span>
-        <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s2">"weight_1.csv"</span><span class="p">)</span>
+        <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s2">&quot;weight_1.csv&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">w_H1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">loadCSV</span><span class="p">(</span><span class="n">data_path</span><span class="p">))</span>
         <span class="c1"># Biases first hidden layer</span>
-        <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s2">"bias_1.csv"</span><span class="p">)</span>
+        <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s2">&quot;bias_1.csv&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">b_H1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">loadCSV</span><span class="p">(</span><span class="n">data_path</span><span class="p">))</span>
         <span class="c1"># Weights output layer</span>
-        <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s2">"weight_output.csv"</span><span class="p">)</span>
+        <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s2">&quot;weight_output.csv&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">w_output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">loadCSV</span><span class="p">(</span><span class="n">data_path</span><span class="p">))</span>
         <span class="c1"># Biases output layer</span>
-        <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s2">"bias_output.csv"</span><span class="p">)</span>
+        <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s2">&quot;bias_output.csv&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">b_output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">loadCSV</span><span class="p">(</span><span class="n">data_path</span><span class="p">))</span>
 
         <span class="c1"># Second hidden layer</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_neuron_H2</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
             <span class="c1"># Weights second hidden layer</span>
-            <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s2">"weight_2.csv"</span><span class="p">)</span>
+            <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s2">&quot;weight_2.csv&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">w_H2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">loadCSV</span><span class="p">(</span><span class="n">data_path</span><span class="p">))</span>
             <span class="c1"># Biases second hidden layer</span>
-            <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s2">"bias_2.csv"</span><span class="p">)</span>
+            <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="s2">&quot;bias_2.csv&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">b_H2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">loadCSV</span><span class="p">(</span><span class="n">data_path</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="neuralNet.useNN"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html#gmprocess.waveform_processing.nn_quality_assurance.neuralNet.useNN">[docs]</a>    <span class="k">def</span> <span class="nf">useNN</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v_input</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Use a populated neural network (i.e. from the input, returns the</span>
 <span class="sd">        classification score or the regression result).</span>
 
@@ -670,33 +671,33 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            v_inter (np.array): numpy array containing the results.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">v_inter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
         <span class="c1"># Transform input if required</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v_input</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="n">v_input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">v_input</span><span class="p">)</span>
 
         <span class="c1"># First layer</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_H1</span> <span class="o">==</span> <span class="s2">"sigmoid"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_H1</span> <span class="o">==</span> <span class="s2">&quot;sigmoid&quot;</span><span class="p">:</span>
             <span class="n">v_inter</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_input</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_H1</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_H1</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_H1</span> <span class="o">==</span> <span class="s2">"tanh"</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_H1</span> <span class="o">==</span> <span class="s2">&quot;tanh&quot;</span><span class="p">:</span>
             <span class="n">v_inter</span> <span class="o">=</span> <span class="n">tanh</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_input</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_H1</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_H1</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">v_inter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_input</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_H1</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_H1</span>
 
         <span class="c1"># If second layer exist</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_neuron_H2</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_H2</span> <span class="o">==</span> <span class="s2">"sigmoid"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_H2</span> <span class="o">==</span> <span class="s2">&quot;sigmoid&quot;</span><span class="p">:</span>
                 <span class="n">v_inter</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_inter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_H2</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_H2</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_H2</span> <span class="o">==</span> <span class="s2">"tanh"</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_H2</span> <span class="o">==</span> <span class="s2">&quot;tanh&quot;</span><span class="p">:</span>
                 <span class="n">v_inter</span> <span class="o">=</span> <span class="n">tanh</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_inter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_H2</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_H2</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">v_inter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_inter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_H2</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_H2</span>
 
         <span class="c1"># Final layer</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_output</span> <span class="o">==</span> <span class="s2">"sigmoid"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_output</span> <span class="o">==</span> <span class="s2">&quot;sigmoid&quot;</span><span class="p">:</span>
             <span class="n">v_inter</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_inter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_output</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_output</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_output</span> <span class="o">==</span> <span class="s2">"tanh"</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation_output</span> <span class="o">==</span> <span class="s2">&quot;tanh&quot;</span><span class="p">:</span>
             <span class="n">v_inter</span> <span class="o">=</span> <span class="n">tanh</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_inter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_output</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_output</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">v_inter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v_inter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_output</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_output</span>
@@ -705,20 +706,20 @@
 
 
 <div class="viewcode-block" id="deskewData"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html#gmprocess.waveform_processing.nn_quality_assurance.deskewData">[docs]</a><span class="k">def</span> <span class="nf">deskewData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Performs the deskewing operations used in Bellagamba et al. (2019) on the</span>
 <span class="sd">    quality metrics vector. Depending on the selected model.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        data (list of floats): 20 quality metrics computed as described in the</span>
 <span class="sd">        paper</span>
-<span class="sd">        model_name (string): name of the selected model. Available 'Cant' and</span>
-<span class="sd">        'CantWell' as described in the paper</span>
+<span class="sd">        model_name (string): name of the selected model. Available &#39;Cant&#39; and</span>
+<span class="sd">        &#39;CantWell&#39; as described in the paper</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list of float: processed (deskewed) data</span>
-<span class="sd">    """</span>
-    <span class="k">if</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s2">"Cant"</span><span class="p">:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s2">&quot;Cant&quot;</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">11</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">15</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">16</span><span class="p">:</span>
                 <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
@@ -754,7 +755,7 @@
                 <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">**</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">data</span>
 
-    <span class="k">elif</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s2">"CantWell"</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s2">&quot;CantWell&quot;</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">11</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">15</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">16</span><span class="p">:</span>
                 <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
@@ -792,7 +793,7 @@
 
 
 <div class="viewcode-block" id="standardizeData"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html#gmprocess.waveform_processing.nn_quality_assurance.standardizeData">[docs]</a><span class="k">def</span> <span class="nf">standardizeData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Performs a standardization operation on the given data ((X-mu)/sigma)</span>
 
 <span class="sd">    Args:</span>
@@ -806,7 +807,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list o float: standardized data</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
         <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">mu</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">/</span> <span class="n">sigma</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
@@ -814,7 +815,7 @@
 
 
 <div class="viewcode-block" id="decorrelateData"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html#gmprocess.waveform_processing.nn_quality_assurance.decorrelateData">[docs]</a><span class="k">def</span> <span class="nf">decorrelateData</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Decorrelate the data based on a Mahalanobis tranform. The transformation</span>
 <span class="sd">    matrix is given as an input.</span>
 
@@ -826,7 +827,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list of float containing the decorrelated data</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -835,7 +836,7 @@
 
 
 <div class="viewcode-block" id="preprocessQualityMetrics"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html#gmprocess.waveform_processing.nn_quality_assurance.preprocessQualityMetrics">[docs]</a><span class="k">def</span> <span class="nf">preprocessQualityMetrics</span><span class="p">(</span><span class="n">qm</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Pre-process the quality metrics according to Bellagamba et al. (2019)</span>
 <span class="sd">    (i.e. deskews, standardizes and decorrelates the quality metrics)</span>
 
@@ -843,20 +844,20 @@
 <span class="sd">        qm (list of float):</span>
 <span class="sd">            quality metrics estimated according to the paper</span>
 <span class="sd">        model_name (string):</span>
-<span class="sd">            name of the used model for processing. Available: 'Cant' and</span>
-<span class="sd">            'CantWell'.</span>
+<span class="sd">            name of the used model for processing. Available: &#39;Cant&#39; and</span>
+<span class="sd">            &#39;CantWell&#39;.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        list of float containing the pre-processed quality metrics.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Building dir path from model name</span>
-    <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="s2">"nn_qa"</span><span class="p">)</span>
+    <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;nn_qa&quot;</span><span class="p">)</span>
     <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
-    <span class="n">data_path</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">"gmprocess"</span><span class="p">,</span> <span class="n">data_path</span><span class="p">)</span>
+    <span class="n">data_path</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;gmprocess&quot;</span><span class="p">,</span> <span class="n">data_path</span><span class="p">)</span>
 
     <span class="c1"># Get resource from the correct dir</span>
-    <span class="n">M</span> <span class="o">=</span> <span class="n">loadCSV</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">"M.csv"</span><span class="p">))</span>
-    <span class="n">csv_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">"mu_sigma.csv"</span><span class="p">)</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">loadCSV</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;M.csv&quot;</span><span class="p">))</span>
+    <span class="n">csv_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;mu_sigma.csv&quot;</span><span class="p">)</span>
     <span class="p">[</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">]</span> <span class="o">=</span> <span class="n">loadCSV</span><span class="p">(</span><span class="n">csv_dir</span><span class="p">)</span>
 
     <span class="c1"># Deskew, standardize and decorrelate data</span>
@@ -868,7 +869,7 @@
 
 
 <div class="viewcode-block" id="get_husid"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html#gmprocess.waveform_processing.nn_quality_assurance.get_husid">[docs]</a><span class="k">def</span> <span class="nf">get_husid</span><span class="p">(</span><span class="n">acceleration</span><span class="p">,</span> <span class="n">time_vector</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the Husid vector, defined as int{acceleration ** 2.}</span>
 
 <span class="sd">    Args:</span>
@@ -876,14 +877,14 @@
 <span class="sd">            Vector of acceleration values</span>
 <span class="sd">        time_vector (np.array):</span>
 <span class="sd">            Time vector in seconds</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">husid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">cumtrapz</span><span class="p">(</span><span class="n">acceleration</span> <span class="o">**</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">time_vector</span><span class="p">)])</span>
     <span class="n">AI</span> <span class="o">=</span> <span class="n">husid</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">husid</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">husid</span><span class="p">,</span> <span class="n">AI</span></div>
 
 
 <div class="viewcode-block" id="getFreqIndex"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html#gmprocess.waveform_processing.nn_quality_assurance.getFreqIndex">[docs]</a><span class="k">def</span> <span class="nf">getFreqIndex</span><span class="p">(</span><span class="n">ft_freq</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Gets the indices of a frequency range in the frequency vector</span>
 
 <span class="sd">    Args:</span>
@@ -896,7 +897,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        int, int: the indices bounding the range</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">lower_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ft_freq</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">lower</span><span class="p">]</span>
     <span class="n">upper_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ft_freq</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">upper</span><span class="p">]</span>
     <span class="n">lower_index</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">lower_indices</span><span class="p">)</span>
@@ -905,7 +906,7 @@
 
 
 <div class="viewcode-block" id="getHusidIndex"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html#gmprocess.waveform_processing.nn_quality_assurance.getHusidIndex">[docs]</a><span class="k">def</span> <span class="nf">getHusidIndex</span><span class="p">(</span><span class="n">husid</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the index of the husid for a particular threshold</span>
 
 <span class="sd">    Args:</span>
@@ -916,14 +917,14 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        int: the index of the latest value below the threshold</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">husid_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">husid</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">]</span>
     <span class="n">husid_index</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">husid_indices</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">husid_index</span></div>
 
 
 <div class="viewcode-block" id="calculateSNR_min"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html#gmprocess.waveform_processing.nn_quality_assurance.calculateSNR_min">[docs]</a><span class="k">def</span> <span class="nf">calculateSNR_min</span><span class="p">(</span><span class="n">ft_freq</span><span class="p">,</span> <span class="n">snr</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the SNR min between 0.1 and 20 Hz</span>
 
 <span class="sd">    Args:</span>
@@ -934,7 +935,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        float: min snr between 0.1 and 20 Hz</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Frequencies must be available between 0.1 and 20 Hz</span>
     <span class="n">lower_index</span><span class="p">,</span> <span class="n">upper_index</span> <span class="o">=</span> <span class="n">getFreqIndex</span><span class="p">(</span><span class="n">ft_freq</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
     <span class="n">snr_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">snr</span><span class="p">[</span><span class="n">lower_index</span><span class="p">:</span><span class="n">upper_index</span><span class="p">])</span>
@@ -942,7 +943,7 @@
 
 
 <div class="viewcode-block" id="calculateHusid"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html#gmprocess.waveform_processing.nn_quality_assurance.calculateHusid">[docs]</a><span class="k">def</span> <span class="nf">calculateHusid</span><span class="p">(</span><span class="n">acc</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the husid and Arias of a signal.</span>
 
 <span class="sd">    Args:</span>
@@ -956,7 +957,7 @@
 <span class="sd">        AI: vector of floats</span>
 <span class="sd">        Arias: float, max value of AI</span>
 <span class="sd">        husid index at 5, 75 and 95% (used for duration)</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">husid</span><span class="p">,</span> <span class="n">AI</span> <span class="o">=</span> <span class="n">get_husid</span><span class="p">(</span><span class="n">acc</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
     <span class="n">Arias</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">husid</span><span class="p">)</span>
     <span class="n">husid_index_5</span> <span class="o">=</span> <span class="n">getHusidIndex</span><span class="p">(</span><span class="n">AI</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
@@ -966,7 +967,7 @@
 
 
 <div class="viewcode-block" id="getClassificationMetrics"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html#gmprocess.waveform_processing.nn_quality_assurance.getClassificationMetrics">[docs]</a><span class="k">def</span> <span class="nf">getClassificationMetrics</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">p_pick</span><span class="p">,</span> <span class="n">delta_t</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the quality metrics as in Bellagamba et al. (2019). More details</span>
 <span class="sd">    in the paper.</span>
 
@@ -984,7 +985,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        List of float containing the quality metrics (size = 20)</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">########################################</span>
     <span class="c1"># Acceleration units changed into g!!! #</span>
     <span class="c1">#    Vertical component not used!!!    #</span>
@@ -992,16 +993,16 @@
 
     <span class="c1"># Extract data from dictionary</span>
     <span class="c1"># First horizontal comp</span>
-    <span class="n">acc_comp1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s2">"acc_comp1"</span><span class="p">])</span> <span class="o">/</span> <span class="mf">981.0</span>
-    <span class="n">smooth_ft1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s2">"smooth_ft1"</span><span class="p">])</span> <span class="o">/</span> <span class="mf">981.0</span>
-    <span class="n">smooth_ft1_freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s2">"smooth_ft1_freq"</span><span class="p">])</span>
-    <span class="n">smooth_ft1_pe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s2">"smooth_ft1_pe"</span><span class="p">])</span> <span class="o">/</span> <span class="mf">981.0</span>
-    <span class="n">snr1_freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s2">"snr1_freq"</span><span class="p">])</span>
+    <span class="n">acc_comp1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s2">&quot;acc_comp1&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="mf">981.0</span>
+    <span class="n">smooth_ft1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s2">&quot;smooth_ft1&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="mf">981.0</span>
+    <span class="n">smooth_ft1_freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s2">&quot;smooth_ft1_freq&quot;</span><span class="p">])</span>
+    <span class="n">smooth_ft1_pe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s2">&quot;smooth_ft1_pe&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="mf">981.0</span>
+    <span class="n">snr1_freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s2">&quot;snr1_freq&quot;</span><span class="p">])</span>
 
     <span class="c1"># Second horizontal comp</span>
-    <span class="n">acc_comp2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s2">"acc_comp2"</span><span class="p">])</span> <span class="o">/</span> <span class="mf">981.0</span>
-    <span class="n">smooth_ft2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s2">"smooth_ft2"</span><span class="p">])</span> <span class="o">/</span> <span class="mf">981.0</span>
-    <span class="n">smooth_ft2_pe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s2">"smooth_ft2_pe"</span><span class="p">])</span> <span class="o">/</span> <span class="mf">981.0</span>
+    <span class="n">acc_comp2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s2">&quot;acc_comp2&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="mf">981.0</span>
+    <span class="n">smooth_ft2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s2">&quot;smooth_ft2&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="mf">981.0</span>
+    <span class="n">smooth_ft2_pe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tr</span><span class="p">[</span><span class="s2">&quot;smooth_ft2_pe&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="mf">981.0</span>
 
     <span class="c1"># Sample rate</span>
     <span class="n">sample_rate</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">delta_t</span>
@@ -1059,7 +1060,7 @@
         <span class="n">tail_ratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">tail_ratio1</span> <span class="o">*</span> <span class="n">tail_ratio2</span><span class="p">)</span>
         <span class="n">tailnoise_ratio</span> <span class="o">=</span> <span class="n">tail_ratio</span> <span class="o">/</span> <span class="n">PN_average</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"PGA1 or PGA2 is 0"</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;PGA1 or PGA2 is 0&quot;</span><span class="p">)</span>
         <span class="n">tail_ratio1</span> <span class="o">=</span> <span class="mf">1.0</span>
         <span class="n">tail_ratio2</span> <span class="o">=</span> <span class="mf">1.0</span>
         <span class="n">tail_ratio</span> <span class="o">=</span> <span class="mf">1.0</span>
@@ -1074,7 +1075,7 @@
         <span class="n">mtail_ratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mtail_ratio1</span> <span class="o">*</span> <span class="n">mtail_ratio2</span><span class="p">)</span>
         <span class="n">mtailnoise_ratio</span> <span class="o">=</span> <span class="n">mtail_ratio</span> <span class="o">/</span> <span class="n">PN</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"PGA1 or PGA2 is 0"</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;PGA1 or PGA2 is 0&quot;</span><span class="p">)</span>
         <span class="n">mtail_ratio1</span> <span class="o">=</span> <span class="mf">1.0</span>
         <span class="n">mtail_ratio2</span> <span class="o">=</span> <span class="mf">1.0</span>
         <span class="n">mtail_ratio</span> <span class="o">=</span> <span class="mf">1.0</span>
@@ -1088,7 +1089,7 @@
         <span class="n">head_ratio2</span> <span class="o">=</span> <span class="n">head_average2</span> <span class="o">/</span> <span class="n">PGA2</span>
         <span class="n">head_ratio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">head_ratio1</span> <span class="o">*</span> <span class="n">head_ratio2</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"PGA1 or PGA2 is 0"</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;PGA1 or PGA2 is 0&quot;</span><span class="p">)</span>
         <span class="n">head_ratio1</span> <span class="o">=</span> <span class="mf">1.0</span>
         <span class="n">head_ratio2</span> <span class="o">=</span> <span class="mf">1.0</span>
         <span class="n">head_ratio</span> <span class="o">=</span> <span class="mf">1.0</span>
@@ -1144,7 +1145,7 @@
 
     <span class="c1"># snr metrics - min, max and averages</span>
     <span class="n">lower_index</span><span class="p">,</span> <span class="n">upper_index</span> <span class="o">=</span> <span class="n">getFreqIndex</span><span class="p">(</span><span class="n">smooth_ft1_freq</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
-    <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">):</span>
         <span class="n">snrgm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">smooth_ftgm</span><span class="p">,</span> <span class="n">smooth_ftgm_pe</span><span class="p">)</span>
     <span class="n">snr_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">snrgm</span><span class="p">[</span><span class="n">lower_index</span><span class="p">:</span><span class="n">upper_index</span><span class="p">])</span>
     <span class="n">snr_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">snrgm</span><span class="p">)</span>
@@ -1264,7 +1265,7 @@
 
 
 <div class="viewcode-block" id="computeQualityMetrics"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html#gmprocess.waveform_processing.nn_quality_assurance.computeQualityMetrics">[docs]</a><span class="k">def</span> <span class="nf">computeQualityMetrics</span><span class="p">(</span><span class="n">st</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the 2 horizontal components and format the P-wave arrival time before</span>
 <span class="sd">    launching the computation of the qualtiy metrics as in Bellagamba et al.</span>
 <span class="sd">    (2019)</span>
@@ -1274,7 +1275,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        List of float containing the 20 quality metrics</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Initialize dictionary of variables necessary to the computation of the QM</span>
     <span class="n">tr</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -1282,67 +1283,67 @@
     <span class="n">ind</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="k">for</span> <span class="n">tr_i</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-        <span class="k">if</span> <span class="s2">"Z"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s2">&quot;Z&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
             <span class="n">ind</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
             <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">ind</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"v"</span><span class="p">)</span>
+            <span class="n">ind</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">)</span>
 
     <span class="c1"># Extract required info from each trace in the stream</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">tr_i</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"v"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;v&quot;</span><span class="p">:</span>
             <span class="c1"># Raw accelerogram (debiased and detrended)</span>
-            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">"acc_comp"</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">&quot;acc_comp&quot;</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">data</span>
 
             <span class="c1"># Fourier spectrum</span>
-            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">"ft"</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">"signal_spectrum"</span><span class="p">)[</span><span class="s2">"spec"</span><span class="p">]</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">&quot;ft&quot;</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">&quot;signal_spectrum&quot;</span><span class="p">)[</span><span class="s2">&quot;spec&quot;</span><span class="p">]</span>
 
             <span class="c1"># Frequ of the Fourier spectrum</span>
-            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">"ft"</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"_freq"</span>
-            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">"signal_spectrum"</span><span class="p">)[</span><span class="s2">"freq"</span><span class="p">]</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">&quot;ft&quot;</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_freq&quot;</span>
+            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">&quot;signal_spectrum&quot;</span><span class="p">)[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span>
 
             <span class="c1"># Smoothed Fourier spectrum</span>
-            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">"smooth_ft"</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">sig_spec</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">"smooth_signal_spectrum"</span><span class="p">)[</span><span class="s2">"spec"</span><span class="p">]</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">&quot;smooth_ft&quot;</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">sig_spec</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">&quot;smooth_signal_spectrum&quot;</span><span class="p">)[</span><span class="s2">&quot;spec&quot;</span><span class="p">]</span>
             <span class="n">sig_spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">sig_spec</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">sig_spec</span><span class="p">)</span>
             <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sig_spec</span>
 
             <span class="c1"># Freq of he smoothed Fourier spectrum</span>
-            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">"smooth_ft"</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"_freq"</span>
-            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">"smooth_signal_spectrum"</span><span class="p">)[</span><span class="s2">"freq"</span><span class="p">]</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">&quot;smooth_ft&quot;</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_freq&quot;</span>
+            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">&quot;smooth_signal_spectrum&quot;</span><span class="p">)[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span>
 
             <span class="c1"># Fourier spectrum of the pre-event trace</span>
-            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">"ft"</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"_pe"</span>
-            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">"noise_spectrum"</span><span class="p">)[</span><span class="s2">"spec"</span><span class="p">]</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">&quot;ft&quot;</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_pe&quot;</span>
+            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">&quot;noise_spectrum&quot;</span><span class="p">)[</span><span class="s2">&quot;spec&quot;</span><span class="p">]</span>
 
             <span class="c1"># Frequ of the Fourier spectrum (pre-event trace)</span>
-            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">"ft"</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"_freq_pe"</span>
-            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">"noise_spectrum"</span><span class="p">)[</span><span class="s2">"freq"</span><span class="p">]</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">&quot;ft&quot;</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_freq_pe&quot;</span>
+            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">&quot;noise_spectrum&quot;</span><span class="p">)[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span>
 
             <span class="c1"># Smoothed Fourier spectrum of the pre-event trace</span>
-            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">"smooth_ft"</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"_pe"</span>
-            <span class="n">noise_spec</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">"smooth_noise_spectrum"</span><span class="p">)[</span><span class="s2">"spec"</span><span class="p">]</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">&quot;smooth_ft&quot;</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_pe&quot;</span>
+            <span class="n">noise_spec</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">&quot;smooth_noise_spectrum&quot;</span><span class="p">)[</span><span class="s2">&quot;spec&quot;</span><span class="p">]</span>
             <span class="n">noise_spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">noise_spec</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">noise_spec</span><span class="p">)</span>
             <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">noise_spec</span>
 
             <span class="c1"># SNR</span>
-            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">"snr"</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">"snr"</span><span class="p">)[</span><span class="s2">"snr"</span><span class="p">]</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">&quot;snr&quot;</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">&quot;snr&quot;</span><span class="p">)[</span><span class="s2">&quot;snr&quot;</span><span class="p">]</span>
 
             <span class="c1"># SNR freq</span>
-            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">"snr"</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"_freq"</span>
-            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">"snr"</span><span class="p">)[</span><span class="s2">"freq"</span><span class="p">]</span>
+            <span class="n">str_i</span> <span class="o">=</span> <span class="s2">&quot;snr&quot;</span> <span class="o">+</span> <span class="n">ind</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_freq&quot;</span>
+            <span class="n">tr</span><span class="p">[</span><span class="n">str_i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tr_i</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">&quot;snr&quot;</span><span class="p">)[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span>
 
         <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
 
     <span class="c1"># P-wave arrival time</span>
-    <span class="n">split_prov</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"signal_split"</span><span class="p">)</span>
+    <span class="n">split_prov</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;signal_split&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">split_prov</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">split_prov</span> <span class="o">=</span> <span class="n">split_prov</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">split_time</span> <span class="o">=</span> <span class="n">split_prov</span><span class="p">[</span><span class="s2">"split_time"</span><span class="p">]</span>
+    <span class="n">split_time</span> <span class="o">=</span> <span class="n">split_prov</span><span class="p">[</span><span class="s2">&quot;split_time&quot;</span><span class="p">]</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span>
     <span class="n">p_pick</span> <span class="o">=</span> <span class="n">split_time</span> <span class="o">-</span> <span class="n">start_time</span>
 
@@ -1356,18 +1357,18 @@
 
 
 <div class="viewcode-block" id="NNet_QA"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html#gmprocess.waveform_processing.nn_quality_assurance.NNet_QA">[docs]</a><span class="k">def</span> <span class="nf">NNet_QA</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">acceptance_threshold</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Assess the quality of a stream by analyzing its two horizontal components</span>
 <span class="sd">    as described in Bellagamba et al. (2019). Performs three steps:</span>
 <span class="sd">    1) Compute the quality metrics (see paper for more info)</span>
 <span class="sd">    2) Preprocess the quality metrics (deskew, standardize and decorrelate)</span>
 <span class="sd">    3) Evaluate the quality using a neural network-based model</span>
-<span class="sd">    Two models are available: 'Cant' and 'CantWell'.</span>
+<span class="sd">    Two models are available: &#39;Cant&#39; and &#39;CantWell&#39;.</span>
 <span class="sd">    To minimize the number of low quality ground motion included, the natural</span>
 <span class="sd">    acceptance threshold 0.5 can be raised (up to an extreme value of 0.95).</span>
 <span class="sd">    Recommended parameters are:</span>
 <span class="sd">    -   acceptance_threshold = 0.5 or 0.6</span>
-<span class="sd">    -   model_name = 'CantWell'</span>
+<span class="sd">    -   model_name = &#39;CantWell&#39;</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        st (list of traces):</span>
@@ -1376,25 +1377,25 @@
 <span class="sd">        acceptance_threshold (float):</span>
 <span class="sd">            Threshold from which GM records are considered acceptable.</span>
 <span class="sd">        model_name (string):</span>
-<span class="sd">            name of the used model ('Cant' or 'CantWell')</span>
+<span class="sd">            name of the used model (&#39;Cant&#39; or &#39;CantWell&#39;)</span>
 <span class="sd">        config (dict):</span>
 <span class="sd">            Configuration dictionary (or None). See get_config().</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        st: stream of traces tagged with quality scores and flags,</span>
 <span class="sd">        used model name and acceptance threshold</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># This check only works if we have two horizontal components in the stream</span>
     <span class="k">if</span> <span class="n">st</span><span class="o">.</span><span class="n">num_horizontal</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
             <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span>
-                <span class="s2">"Stream does not contain two horiztonal components. "</span>
-                <span class="s2">"NNet QA check will not be performed."</span>
+                <span class="s2">&quot;Stream does not contain two horiztonal components. &quot;</span>
+                <span class="s2">&quot;NNet QA check will not be performed.&quot;</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">st</span>
 
-    <span class="c1"># Also need to check that we don't have data arrays of all zeros, as this</span>
+    <span class="c1"># Also need to check that we don&#39;t have data arrays of all zeros, as this</span>
     <span class="c1"># will cause problems</span>
     <span class="n">all_zeros</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
@@ -1404,15 +1405,15 @@
     <span class="k">if</span> <span class="n">all_zeros</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
             <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span>
-                <span class="s2">"The data contains all zeros, so the "</span>
-                <span class="s2">"NNet_QA check is not able to be performed."</span>
+                <span class="s2">&quot;The data contains all zeros, so the &quot;</span>
+                <span class="s2">&quot;NNet_QA check is not able to be performed.&quot;</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">st</span>
 
     <span class="c1"># Check that we have the required trace parameters</span>
     <span class="n">have_params</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">{</span><span class="s2">"signal_spectrum"</span><span class="p">,</span> <span class="s2">"noise_spectrum"</span><span class="p">,</span> <span class="s2">"snr"</span><span class="p">}</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">{</span><span class="s2">&quot;signal_spectrum&quot;</span><span class="p">,</span> <span class="s2">&quot;noise_spectrum&quot;</span><span class="p">,</span> <span class="s2">&quot;snr&quot;</span><span class="p">}</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span>
             <span class="nb">set</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">getCachedNames</span><span class="p">())</span>
         <span class="p">):</span>
             <span class="n">have_params</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1420,15 +1421,15 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">have_params</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
             <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span>
-                <span class="s2">"One or more traces in the stream does have the required "</span>
-                <span class="s2">"trace parameters to perform the NNet_QA check."</span>
+                <span class="s2">&quot;One or more traces in the stream does have the required &quot;</span>
+                <span class="s2">&quot;trace parameters to perform the NNet_QA check.&quot;</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">st</span>
 
     <span class="c1"># Create the path to the NN folder based on model name</span>
-    <span class="n">nn_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="s2">"nn_qa"</span><span class="p">)</span>
+    <span class="n">nn_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;nn_qa&quot;</span><span class="p">)</span>
     <span class="n">nn_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nn_path</span><span class="p">,</span> <span class="n">model_name</span><span class="p">)</span>
-    <span class="n">nn_path</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">"gmprocess"</span><span class="p">,</span> <span class="n">nn_path</span><span class="p">)</span>
+    <span class="n">nn_path</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;gmprocess&quot;</span><span class="p">,</span> <span class="n">nn_path</span><span class="p">)</span>
 
     <span class="c1"># Compute the quality metrics</span>
     <span class="n">qm</span> <span class="o">=</span> <span class="n">computeQualityMetrics</span><span class="p">(</span><span class="n">st</span><span class="p">)</span>
@@ -1451,16 +1452,16 @@
     <span class="c1"># Add parameters to Stream (acceptance threshold, model_name, score_lowQ,</span>
     <span class="c1"># score_highQ, highQualityFlag)</span>
     <span class="n">nnet_dict</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">"accept_thres"</span><span class="p">:</span> <span class="n">acceptance_threshold</span><span class="p">,</span>
-        <span class="s2">"model_name"</span><span class="p">:</span> <span class="n">model_name</span><span class="p">,</span>
-        <span class="s2">"score_LQ"</span><span class="p">:</span> <span class="n">scores</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="s2">"score_HQ"</span><span class="p">:</span> <span class="n">scores</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-        <span class="s2">"pass_QA"</span><span class="p">:</span> <span class="n">flag_accept</span><span class="p">,</span>
+        <span class="s2">&quot;accept_thres&quot;</span><span class="p">:</span> <span class="n">acceptance_threshold</span><span class="p">,</span>
+        <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="n">model_name</span><span class="p">,</span>
+        <span class="s2">&quot;score_LQ&quot;</span><span class="p">:</span> <span class="n">scores</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;score_HQ&quot;</span><span class="p">:</span> <span class="n">scores</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="s2">&quot;pass_QA&quot;</span><span class="p">:</span> <span class="n">flag_accept</span><span class="p">,</span>
     <span class="p">}</span>
-    <span class="n">st</span><span class="o">.</span><span class="n">setStreamParam</span><span class="p">(</span><span class="s2">"nnet_qa"</span><span class="p">,</span> <span class="n">nnet_dict</span><span class="p">)</span>
+    <span class="n">st</span><span class="o">.</span><span class="n">setStreamParam</span><span class="p">(</span><span class="s2">&quot;nnet_qa&quot;</span><span class="p">,</span> <span class="n">nnet_dict</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">flag_accept</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"Failed NNet QA check."</span><span class="p">)</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;Failed NNet QA check.&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 </pre></div>

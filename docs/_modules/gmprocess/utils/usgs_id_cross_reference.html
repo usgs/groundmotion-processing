@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.utils.usgs_id_cross_reference - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.utils.usgs_id_cross_reference - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -489,7 +490,7 @@
 <span class="kn">from</span> <span class="nn">libcomcat.search</span> <span class="kn">import</span> <span class="n">search</span>
 <span class="kn">from</span> <span class="nn">gmprocess.utils.logging</span> <span class="kn">import</span> <span class="n">setup_logger</span>
 
-<span class="n">setup_logger</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s2">"info"</span><span class="p">)</span>
+<span class="n">setup_logger</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s2">&quot;info&quot;</span><span class="p">)</span>
 
 <span class="n">DELTA_MAG</span> <span class="o">=</span> <span class="mf">0.5</span>
 <span class="c1"># Can change if target event only has month, day, and year</span>
@@ -500,7 +501,7 @@
 
 
 <div class="viewcode-block" id="cross_reference_to_usgs_id"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/usgs_id_cross_reference/index.html#gmprocess.utils.usgs_id_cross_reference.cross_reference_to_usgs_id">[docs]</a><span class="k">def</span> <span class="nf">cross_reference_to_usgs_id</span><span class="p">(</span><span class="n">project_name</span><span class="p">,</span> <span class="n">eqids</span><span class="p">,</span> <span class="n">mags</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Look for potential event matches for events in data and return</span>
 <span class="sd">    a dictionary mapping the event IDs to the repsective match with the</span>
 <span class="sd">    lowest error.</span>
@@ -517,7 +518,7 @@
 <span class="sd">            Latitudes of target events to be cross-referenced.</span>
 <span class="sd">        lons (np.array):</span>
 <span class="sd">            Longitudes of target events to be cross-referenced.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">event_matches</span> <span class="o">=</span> <span class="n">match_to_usgs_id</span><span class="p">(</span><span class="n">eqids</span><span class="p">,</span> <span class="n">mags</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">)</span>
     <span class="n">mag_range</span> <span class="o">=</span> <span class="n">get_magnitude_range</span><span class="p">(</span><span class="n">mags</span><span class="p">)</span>
     <span class="n">mag_rates</span> <span class="o">=</span> <span class="n">parse_by_magnitude</span><span class="p">(</span><span class="n">eqids</span><span class="p">,</span> <span class="n">mags</span><span class="p">,</span> <span class="n">mag_range</span><span class="p">,</span> <span class="n">event_matches</span><span class="p">)</span>
@@ -526,7 +527,7 @@
 
 
 <div class="viewcode-block" id="match_to_usgs_id"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/usgs_id_cross_reference/index.html#gmprocess.utils.usgs_id_cross_reference.match_to_usgs_id">[docs]</a><span class="k">def</span> <span class="nf">match_to_usgs_id</span><span class="p">(</span><span class="n">eqids</span><span class="p">,</span> <span class="n">mags</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Look for potential event matches for events in data and return a</span>
 <span class="sd">    dictionary mapping the event IDs to the repsective match with</span>
 <span class="sd">    the lowest error.</span>
@@ -544,10 +545,10 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        event_matches (dictionary): Map of target event IDs to dictionary</span>
 <span class="sd">        of matching USGS ID and event attributes.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Converting datetime object</span>
     <span class="n">times</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"O"</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">)</span>
+        <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;O&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1e9</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">times</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">datetime64</span><span class="p">)</span>
     <span class="p">]</span>
@@ -561,16 +562,16 @@
         <span class="n">buffer</span> <span class="o">=</span> <span class="n">set_buffer</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
 
         <span class="n">match_dict</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">"magnitude"</span><span class="p">:</span> <span class="n">target</span><span class="p">[</span><span class="s2">"mag"</span><span class="p">],</span>
-            <span class="s2">"time"</span><span class="p">:</span> <span class="n">target</span><span class="p">[</span><span class="s2">"time"</span><span class="p">],</span>
-            <span class="s2">"latitude"</span><span class="p">:</span> <span class="n">target</span><span class="p">[</span><span class="s2">"lat"</span><span class="p">],</span>
-            <span class="s2">"longitude"</span><span class="p">:</span> <span class="n">target</span><span class="p">[</span><span class="s2">"lon"</span><span class="p">],</span>
-            <span class="s2">"usgs_id"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">"usgs_magnitude"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">"usgs_time"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">"usgs_latitude"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">"usgs_longitude"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">"error"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;magnitude&quot;</span><span class="p">:</span> <span class="n">target</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">target</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="n">target</span><span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="n">target</span><span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;usgs_id&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;usgs_magnitude&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;usgs_time&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;usgs_latitude&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;usgs_longitude&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="c1"># Libcomcat search for matching events</span>
@@ -578,7 +579,7 @@
             <span class="n">usgs_events</span> <span class="o">=</span> <span class="n">find_events</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">buffer</span><span class="p">)</span>
             <span class="n">num_events_found</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">usgs_events</span><span class="p">)</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="s2">"EQID </span><span class="si">%s</span><span class="s2">: </span><span class="si">%d</span><span class="s2"> potential match(es) found"</span> <span class="o">%</span> <span class="p">(</span><span class="n">eqid</span><span class="p">,</span> <span class="n">num_events_found</span><span class="p">)</span>
+                <span class="s2">&quot;EQID </span><span class="si">%s</span><span class="s2">: </span><span class="si">%d</span><span class="s2"> potential match(es) found&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">eqid</span><span class="p">,</span> <span class="n">num_events_found</span><span class="p">)</span>
             <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">num_events_found</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -591,7 +592,7 @@
                     <span class="n">total_error</span> <span class="o">=</span> <span class="n">calculate_error</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
                     <span class="n">is_unique</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span>
                         <span class="p">[</span>
-                            <span class="kc">True</span> <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="s2">"usgs_id"</span><span class="p">]</span> <span class="o">!=</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span> <span class="k">else</span> <span class="kc">False</span>
+                            <span class="kc">True</span> <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="s2">&quot;usgs_id&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span> <span class="k">else</span> <span class="kc">False</span>
                             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">event_matches</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
                         <span class="p">]</span>
                     <span class="p">)</span>
@@ -600,20 +601,20 @@
                         <span class="n">min_error</span> <span class="o">=</span> <span class="n">total_error</span>
                 <span class="n">usgs_event</span> <span class="o">=</span> <span class="n">matching_event</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"NO MATCH FOUND"</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;NO MATCH FOUND&quot;</span><span class="p">)</span>
                 <span class="n">event_matches</span><span class="p">[</span><span class="n">eqid</span><span class="p">]</span> <span class="o">=</span> <span class="n">match_dict</span>
                 <span class="k">continue</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Match Error: </span><span class="si">{</span><span class="n">min_error</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Match Error: </span><span class="si">{</span><span class="n">min_error</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">min_error</span> <span class="o">&gt;=</span> <span class="n">ERROR_THRESH</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"HIGH ERROR"</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;HIGH ERROR&quot;</span><span class="p">)</span>
                 <span class="n">warning_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eqid</span><span class="p">)</span>
 
-            <span class="n">match_dict</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]</span> <span class="o">=</span> <span class="n">min_error</span>
-            <span class="n">match_dict</span><span class="p">[</span><span class="s2">"usgs_id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">usgs_event</span><span class="o">.</span><span class="n">id</span>
-            <span class="n">match_dict</span><span class="p">[</span><span class="s2">"usgs_magnitude"</span><span class="p">]</span> <span class="o">=</span> <span class="n">usgs_event</span><span class="o">.</span><span class="n">magnitude</span>
-            <span class="n">match_dict</span><span class="p">[</span><span class="s2">"usgs_time"</span><span class="p">]</span> <span class="o">=</span> <span class="n">usgs_event</span><span class="o">.</span><span class="n">time</span>
-            <span class="n">match_dict</span><span class="p">[</span><span class="s2">"usgs_latitude"</span><span class="p">]</span> <span class="o">=</span> <span class="n">usgs_event</span><span class="o">.</span><span class="n">latitude</span>
-            <span class="n">match_dict</span><span class="p">[</span><span class="s2">"usgs_longitude"</span><span class="p">]</span> <span class="o">=</span> <span class="n">usgs_event</span><span class="o">.</span><span class="n">longitude</span>
+            <span class="n">match_dict</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">min_error</span>
+            <span class="n">match_dict</span><span class="p">[</span><span class="s2">&quot;usgs_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">usgs_event</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">match_dict</span><span class="p">[</span><span class="s2">&quot;usgs_magnitude&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">usgs_event</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="n">match_dict</span><span class="p">[</span><span class="s2">&quot;usgs_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">usgs_event</span><span class="o">.</span><span class="n">time</span>
+            <span class="n">match_dict</span><span class="p">[</span><span class="s2">&quot;usgs_latitude&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">usgs_event</span><span class="o">.</span><span class="n">latitude</span>
+            <span class="n">match_dict</span><span class="p">[</span><span class="s2">&quot;usgs_longitude&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">usgs_event</span><span class="o">.</span><span class="n">longitude</span>
 
             <span class="n">event_matches</span><span class="p">[</span><span class="n">eqid</span><span class="p">]</span> <span class="o">=</span> <span class="n">match_dict</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
@@ -621,19 +622,19 @@
             <span class="n">event_matches</span><span class="p">[</span><span class="n">eqid</span><span class="p">]</span> <span class="o">=</span> <span class="n">match_dict</span>
 
     <span class="n">match_rate</span> <span class="o">=</span> <span class="n">match_percentage</span><span class="p">(</span><span class="n">eqids</span><span class="p">,</span> <span class="n">event_matches</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Event Matching Success: </span><span class="si">{</span><span class="n">match_rate</span> <span class="o">*</span> <span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> %"</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Event Matching Success: </span><span class="si">{</span><span class="n">match_rate</span> <span class="o">*</span> <span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> %&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">event_matches</span></div>
 
 
 <div class="viewcode-block" id="get_magnitude_range"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/usgs_id_cross_reference/index.html#gmprocess.utils.usgs_id_cross_reference.get_magnitude_range">[docs]</a><span class="k">def</span> <span class="nf">get_magnitude_range</span><span class="p">(</span><span class="n">magnitudes</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determine magnitude span of events trying to be matched.</span>
 <span class="sd">    Args:</span>
 <span class="sd">        magnitudes (array):</span>
 <span class="sd">           Array of event magnitudes.</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        mag_range (list): Integer range of event magnitudes.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">max_m</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">magnitudes</span><span class="p">)</span>
     <span class="n">max_l</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">magnitudes</span><span class="p">)</span>
     <span class="n">mag_range</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">max_l</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_m</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
@@ -641,7 +642,7 @@
 
 
 <div class="viewcode-block" id="parse_by_magnitude"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/usgs_id_cross_reference/index.html#gmprocess.utils.usgs_id_cross_reference.parse_by_magnitude">[docs]</a><span class="k">def</span> <span class="nf">parse_by_magnitude</span><span class="p">(</span><span class="n">eqids</span><span class="p">,</span> <span class="n">magnitudes</span><span class="p">,</span> <span class="n">mag_range</span><span class="p">,</span> <span class="n">event_matches</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the percentage of events in dataset that were matched with</span>
 <span class="sd">    a corresponding USGS event and ID by magnitude.</span>
 <span class="sd">    Args:</span>
@@ -656,7 +657,7 @@
 <span class="sd">            IDs (if found).</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        mag_rates (list): List of event match percentages by magnitude.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mag_rates</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">int_mags</span> <span class="o">=</span> <span class="n">magnitudes</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">mag</span> <span class="ow">in</span> <span class="n">mag_range</span><span class="p">:</span>
@@ -669,7 +670,7 @@
 
 
 <div class="viewcode-block" id="plot_match_rate_by_mag"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/usgs_id_cross_reference/index.html#gmprocess.utils.usgs_id_cross_reference.plot_match_rate_by_mag">[docs]</a><span class="k">def</span> <span class="nf">plot_match_rate_by_mag</span><span class="p">(</span><span class="n">project_name</span><span class="p">,</span> <span class="n">mag_range</span><span class="p">,</span> <span class="n">mag_rates</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot event match rate by magnitude.</span>
 <span class="sd">    Args:</span>
 <span class="sd">        project_name (string):</span>
@@ -678,19 +679,19 @@
 <span class="sd">            Integer range of event magnitudes.</span>
 <span class="sd">        mag_rates (list):</span>
 <span class="sd">            List of percentages of events matched by magnitude.</span>
-<span class="sd">    """</span>
-    <span class="n">plot_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">project_name</span><span class="si">}</span><span class="s2">_found_rate_by_mag.png"</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Generating bar graph '</span><span class="si">{</span><span class="n">plot_name</span><span class="si">}</span><span class="s2">'..."</span><span class="p">)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plot_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">project_name</span><span class="si">}</span><span class="s2">_found_rate_by_mag.png&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generating bar graph &#39;</span><span class="si">{</span><span class="n">plot_name</span><span class="si">}</span><span class="s2">&#39;...&quot;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">mag_range</span><span class="p">,</span> <span class="n">mag_rates</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">"Magnitude"</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">"Match Rate (%)"</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"""Event IDs to USGS Event IDs </span><span class="se">\n</span><span class="s2"> Match Rate by Magnitude"""</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Magnitude&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Match Rate (%)&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Event IDs to USGS Event IDs </span><span class="se">\n</span><span class="s2"> Match Rate by Magnitude&quot;&quot;&quot;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">plot_name</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"COMPLETE"</span><span class="p">)</span></div>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;COMPLETE&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="write_summary"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/usgs_id_cross_reference/index.html#gmprocess.utils.usgs_id_cross_reference.write_summary">[docs]</a><span class="k">def</span> <span class="nf">write_summary</span><span class="p">(</span><span class="n">project_name</span><span class="p">,</span> <span class="n">event_matches</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Write cross-referenced target event and USGS event attributes</span>
 <span class="sd">    to excel file.</span>
 <span class="sd">    Args:</span>
@@ -699,32 +700,32 @@
 <span class="sd">        event_matches (dictionary):</span>
 <span class="sd">            Map of target event ids to dictionary of matching</span>
 <span class="sd">            USGS ID and other event attributes.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">summary_data</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">"project"</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">"eqid"</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">"magnitude"</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">"latitude"</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">"longitude"</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">"time"</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">"usgs_id"</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">"usgs_magnitude"</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">"usgs_latitude"</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">"usgs_longitude"</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">"usgs_time"</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;project&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;eqid&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;magnitude&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;usgs_id&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;usgs_magnitude&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;usgs_latitude&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;usgs_longitude&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;usgs_time&quot;</span><span class="p">:</span> <span class="p">[],</span>
     <span class="p">}</span>
-    <span class="n">summary_data</span><span class="p">[</span><span class="s2">"project"</span><span class="p">]</span> <span class="o">=</span> <span class="n">project_name</span>
-    <span class="n">summary_data</span><span class="p">[</span><span class="s2">"eqid"</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_matches</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-    <span class="n">ignore_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"project"</span><span class="p">,</span> <span class="s2">"eqid"</span><span class="p">]</span>
+    <span class="n">summary_data</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">project_name</span>
+    <span class="n">summary_data</span><span class="p">[</span><span class="s2">&quot;eqid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">event_matches</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="n">ignore_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">,</span> <span class="s2">&quot;eqid&quot;</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">summary_data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">-</span> <span class="n">ignore_keys</span><span class="p">:</span>
         <span class="n">summary_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">val</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">event_matches</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
     <span class="n">summary_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">summary_data</span><span class="p">)</span>
     <span class="n">summary_data</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">summary_data</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
-    <span class="n">summary_data</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">project_name</span><span class="si">}</span><span class="s2">_usgs_ids_cross_reference.xlsx"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+    <span class="n">summary_data</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">project_name</span><span class="si">}</span><span class="s2">_usgs_ids_cross_reference.xlsx&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="set_target"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/usgs_id_cross_reference/index.html#gmprocess.utils.usgs_id_cross_reference.set_target">[docs]</a><span class="k">def</span> <span class="nf">set_target</span><span class="p">(</span><span class="n">mag</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Map time, mag, and location values of target event to a dictionary.</span>
 <span class="sd">    Args:</span>
 <span class="sd">        mag (float):</span>
@@ -738,13 +739,13 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        targets (dictionary): Dictionary of target event magnitude,</span>
 <span class="sd">        time, and location values.</span>
-<span class="sd">    """</span>
-    <span class="n">target</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"mag"</span><span class="p">:</span> <span class="n">mag</span><span class="p">,</span> <span class="s2">"time"</span><span class="p">:</span> <span class="n">time</span><span class="p">,</span> <span class="s2">"lat"</span><span class="p">:</span> <span class="n">lat</span><span class="p">,</span> <span class="s2">"lon"</span><span class="p">:</span> <span class="n">lon</span><span class="p">}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;mag&quot;</span><span class="p">:</span> <span class="n">mag</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">time</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="n">lat</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="n">lon</span><span class="p">}</span>
     <span class="k">return</span> <span class="n">target</span></div>
 
 
 <div class="viewcode-block" id="set_buffer"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/usgs_id_cross_reference/index.html#gmprocess.utils.usgs_id_cross_reference.set_buffer">[docs]</a><span class="k">def</span> <span class="nf">set_buffer</span><span class="p">(</span><span class="n">target</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Map time, mag, and distance buffers for event query and error</span>
 <span class="sd">    calculation to a dictionary.</span>
 <span class="sd">    Args:</span>
@@ -754,18 +755,18 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        buffer (dictionary): Dictionary of time, magnitude,</span>
 <span class="sd">        and distance buffers.</span>
-<span class="sd">    """</span>
-    <span class="k">if</span> <span class="n">target</span><span class="p">[</span><span class="s2">"time"</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%M:%S"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"00:00"</span><span class="p">:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">target</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%M:%S&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;00:00&quot;</span><span class="p">:</span>
         <span class="n">DELTA_HOUR</span> <span class="o">=</span> <span class="mi">24</span>
     <span class="n">time_buffer</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="n">DELTA_HOUR</span><span class="p">)</span>
     <span class="c1"># Search radius scaled by target event magnitude</span>
-    <span class="n">distance_buffer</span> <span class="o">=</span> <span class="n">DIST_SCALER</span> <span class="o">*</span> <span class="n">target</span><span class="p">[</span><span class="s2">"mag"</span><span class="p">]</span>
-    <span class="n">buffer</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"mag"</span><span class="p">:</span> <span class="n">DELTA_MAG</span><span class="p">,</span> <span class="s2">"time"</span><span class="p">:</span> <span class="n">time_buffer</span><span class="p">,</span> <span class="s2">"dist"</span><span class="p">:</span> <span class="n">distance_buffer</span><span class="p">}</span>
+    <span class="n">distance_buffer</span> <span class="o">=</span> <span class="n">DIST_SCALER</span> <span class="o">*</span> <span class="n">target</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">]</span>
+    <span class="n">buffer</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;mag&quot;</span><span class="p">:</span> <span class="n">DELTA_MAG</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">time_buffer</span><span class="p">,</span> <span class="s2">&quot;dist&quot;</span><span class="p">:</span> <span class="n">distance_buffer</span><span class="p">}</span>
     <span class="k">return</span> <span class="n">buffer</span></div>
 
 
 <div class="viewcode-block" id="find_events"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/usgs_id_cross_reference/index.html#gmprocess.utils.usgs_id_cross_reference.find_events">[docs]</a><span class="k">def</span> <span class="nf">find_events</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">buffer</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Libcomcat query for potential matching events to the target.</span>
 <span class="sd">    Args:</span>
 <span class="sd">        target (dictionary):</span>
@@ -775,21 +776,21 @@
 <span class="sd">            and distance buffers.</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        usgs_events (list): List of Libcomcat SummaryEvents.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">usgs_event</span> <span class="o">=</span> <span class="n">search</span><span class="p">(</span>
-        <span class="n">starttime</span><span class="o">=</span><span class="n">target</span><span class="p">[</span><span class="s2">"time"</span><span class="p">]</span> <span class="o">-</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">"time"</span><span class="p">],</span>
-        <span class="n">endtime</span><span class="o">=</span><span class="n">target</span><span class="p">[</span><span class="s2">"time"</span><span class="p">]</span> <span class="o">+</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">"time"</span><span class="p">],</span>
-        <span class="n">latitude</span><span class="o">=</span><span class="n">target</span><span class="p">[</span><span class="s2">"lat"</span><span class="p">],</span>
-        <span class="n">longitude</span><span class="o">=</span><span class="n">target</span><span class="p">[</span><span class="s2">"lon"</span><span class="p">],</span>
-        <span class="n">maxradiuskm</span><span class="o">=</span><span class="n">buffer</span><span class="p">[</span><span class="s2">"dist"</span><span class="p">],</span>
-        <span class="n">maxmagnitude</span><span class="o">=</span><span class="n">target</span><span class="p">[</span><span class="s2">"mag"</span><span class="p">]</span> <span class="o">+</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">"mag"</span><span class="p">],</span>
-        <span class="n">minmagnitude</span><span class="o">=</span><span class="n">target</span><span class="p">[</span><span class="s2">"mag"</span><span class="p">]</span> <span class="o">-</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">"mag"</span><span class="p">],</span>
+        <span class="n">starttime</span><span class="o">=</span><span class="n">target</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">],</span>
+        <span class="n">endtime</span><span class="o">=</span><span class="n">target</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">],</span>
+        <span class="n">latitude</span><span class="o">=</span><span class="n">target</span><span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">],</span>
+        <span class="n">longitude</span><span class="o">=</span><span class="n">target</span><span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">],</span>
+        <span class="n">maxradiuskm</span><span class="o">=</span><span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;dist&quot;</span><span class="p">],</span>
+        <span class="n">maxmagnitude</span><span class="o">=</span><span class="n">target</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">],</span>
+        <span class="n">minmagnitude</span><span class="o">=</span><span class="n">target</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">],</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">usgs_event</span></div>
 
 
 <div class="viewcode-block" id="calculate_error"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/usgs_id_cross_reference/index.html#gmprocess.utils.usgs_id_cross_reference.calculate_error">[docs]</a><span class="k">def</span> <span class="nf">calculate_error</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Find the squared distance, time, and magnitude error between a event</span>
 <span class="sd">    and a target event.</span>
 <span class="sd">    Args:</span>
@@ -803,21 +804,21 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        total_error (float): Float (0-3) giving the total error</span>
 <span class="sd">        between the proposed matching event and the target event.</span>
-<span class="sd">    """</span>
-    <span class="n">mag_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">-</span> <span class="n">target</span><span class="p">[</span><span class="s2">"mag"</span><span class="p">])</span> <span class="o">/</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">"mag"</span><span class="p">]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mag_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">-</span> <span class="n">target</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">]</span>
     <span class="n">time_error</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="n">event</span><span class="o">.</span><span class="n">time</span> <span class="o">-</span> <span class="n">target</span><span class="p">[</span><span class="s2">"time"</span><span class="p">])</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">())</span>
-        <span class="o">/</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">"time"</span><span class="p">]</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="n">event</span><span class="o">.</span><span class="n">time</span> <span class="o">-</span> <span class="n">target</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">())</span>
+        <span class="o">/</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
     <span class="p">)</span>
     <span class="n">dist_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">latitude</span> <span class="o">-</span> <span class="n">target</span><span class="p">[</span><span class="s2">"lat"</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">longitude</span> <span class="o">-</span> <span class="n">target</span><span class="p">[</span><span class="s2">"lon"</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
-    <span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">COORD_KM_SCALER</span> <span class="o">*</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">"dist"</span><span class="p">])</span>
+        <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">latitude</span> <span class="o">-</span> <span class="n">target</span><span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">longitude</span> <span class="o">-</span> <span class="n">target</span><span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">COORD_KM_SCALER</span> <span class="o">*</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;dist&quot;</span><span class="p">])</span>
     <span class="n">total_error</span> <span class="o">=</span> <span class="n">mag_error</span> <span class="o">+</span> <span class="n">time_error</span> <span class="o">+</span> <span class="n">dist_error</span>
     <span class="k">return</span> <span class="n">total_error</span></div>
 
 
 <div class="viewcode-block" id="match_percentage"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/usgs_id_cross_reference/index.html#gmprocess.utils.usgs_id_cross_reference.match_percentage">[docs]</a><span class="k">def</span> <span class="nf">match_percentage</span><span class="p">(</span><span class="n">eqids</span><span class="p">,</span> <span class="n">event_matches</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the percentage of events in dataset that were matched with</span>
 <span class="sd">    a corresponding USGS event and ID.</span>
 <span class="sd">    Args:</span>
@@ -828,9 +829,9 @@
 <span class="sd">            USGS ID and other event attributes.</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        rate (float): Percent (0 to 1) of events matched.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">eqids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">eqids</span><span class="p">)</span>
-    <span class="n">rate</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">bool</span><span class="p">(</span><span class="n">event_matches</span><span class="p">[</span><span class="n">eqid</span><span class="p">][</span><span class="s2">"usgs_id"</span><span class="p">])</span> <span class="k">for</span> <span class="n">eqid</span> <span class="ow">in</span> <span class="n">eqids</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">eqids</span><span class="p">)</span>
+    <span class="n">rate</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">bool</span><span class="p">(</span><span class="n">event_matches</span><span class="p">[</span><span class="n">eqid</span><span class="p">][</span><span class="s2">&quot;usgs_id&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">eqid</span> <span class="ow">in</span> <span class="n">eqids</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">eqids</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">rate</span></div>
 </pre></div>
         </article>

@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.waveform_processing.pretesting - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.waveform_processing.pretesting - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -483,15 +484,15 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Pretesting methods.</span>
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">obspy.signal.trigger</span> <span class="kn">import</span> <span class="n">classic_sta_lta</span>
 
 
 <div class="viewcode-block" id="check_free_field"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/pretesting/index.html#gmprocess.waveform_processing.pretesting.check_free_field">[docs]</a><span class="k">def</span> <span class="nf">check_free_field</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">reject_non_free_field</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks free field status of stream.</span>
 
 <span class="sd">    Args:</span>
@@ -504,20 +505,20 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Stream that has been checked for free field status.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">st</span>
 
     <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">trace</span><span class="o">.</span><span class="n">free_field</span> <span class="ow">and</span> <span class="n">reject_non_free_field</span><span class="p">:</span>
-            <span class="n">trace</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"Failed free field sensor check."</span><span class="p">)</span>
+            <span class="n">trace</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;Failed free field sensor check.&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 
 
 <div class="viewcode-block" id="check_sta_lta"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/pretesting/index.html#gmprocess.waveform_processing.pretesting.check_sta_lta">[docs]</a><span class="k">def</span> <span class="nf">check_sta_lta</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">sta_length</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">lta_length</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
-<span class="sd">    Checks that the maximum STA/LTA ratio for AT LEAST ONE of the stream's</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks that the maximum STA/LTA ratio for AT LEAST ONE of the stream&#39;s</span>
 <span class="sd">    traces is above a certain threshold.</span>
 
 <span class="sd">    Args:</span>
@@ -534,7 +535,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Stream that has been checked for sta/lta requirements.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">st</span>
 
@@ -545,19 +546,19 @@
             <span class="n">sta_lta</span> <span class="o">=</span> <span class="n">classic_sta_lta</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">sta_length</span> <span class="o">*</span> <span class="n">sr</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nlta</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">sta_lta</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">:</span>
                 <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span>
-                    <span class="s2">"Failed sta/lta check because threshold sta/lta is not exceeded."</span>
+                    <span class="s2">&quot;Failed sta/lta check because threshold sta/lta is not exceeded.&quot;</span>
                 <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span>
-                <span class="s2">"Failed sta/lta check because record length is shorter "</span>
-                <span class="s2">"than lta length."</span>
+                <span class="s2">&quot;Failed sta/lta check because record length is shorter &quot;</span>
+                <span class="s2">&quot;than lta length.&quot;</span>
             <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 
 
 <div class="viewcode-block" id="check_max_amplitude"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/pretesting/index.html#gmprocess.waveform_processing.pretesting.check_max_amplitude">[docs]</a><span class="k">def</span> <span class="nf">check_max_amplitude</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mf">2e6</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks that the maximum amplitude of the traces in the stream are ALL</span>
 <span class="sd">    within a defined range. Only applied to counts/raw data.</span>
 
@@ -573,16 +574,16 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Stream that has been checked for maximum amplitude criteria.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">st</span>
 
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
         <span class="c1"># Only perform amplitude/clipping check if data has not been converted</span>
         <span class="c1"># to physical units</span>
-        <span class="k">if</span> <span class="s2">"remove_response"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tr</span><span class="o">.</span><span class="n">getProvenanceKeys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s2">&quot;remove_response&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tr</span><span class="o">.</span><span class="n">getProvenanceKeys</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="nb">min</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="o">&gt;</span> <span class="nb">float</span><span class="p">(</span><span class="nb">max</span><span class="p">):</span>
-                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"Failed max amplitude check."</span><span class="p">)</span>
+                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;Failed max amplitude check.&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 </pre></div>

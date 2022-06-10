@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.metrics.rotation.radial_transverse - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.metrics.rotation.radial_transverse - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -494,49 +495,49 @@
 
 
 <div class="viewcode-block" id="Radial_Transverse"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/rotation/radial_transverse/index.html#gmprocess.metrics.rotation.radial_transverse.Radial_Transverse">[docs]</a><span class="k">class</span> <span class="nc">Radial_Transverse</span><span class="p">(</span><span class="n">Rotation</span><span class="p">):</span>
-    <span class="sd">"""Class for computing the Radial Transverse rotation."""</span>
+    <span class="sd">&quot;&quot;&quot;Class for computing the Radial Transverse rotation.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation_data</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            rotation_data (obspy.core.stream.Stream or numpy.ndarray):</span>
 <span class="sd">                Intensity measurement component.</span>
 <span class="sd">            event (ScalarEvent):</span>
 <span class="sd">                Defines the focal time, geographical location and</span>
 <span class="sd">                magnitude of an earthquake hypocenter. Default is None.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">rotation_data</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">event</span> <span class="o">=</span> <span class="n">event</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_radial_transverse</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Radial_Transverse.get_radial_transverse"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/rotation/radial_transverse/index.html#gmprocess.metrics.rotation.radial_transverse.Radial_Transverse.get_radial_transverse">[docs]</a>    <span class="k">def</span> <span class="nf">get_radial_transverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Performs radial transverse rotation.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            radial_transverse: StationStream with the radial and</span>
 <span class="sd">                    transverse components.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">st_copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotation_data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">st_n</span> <span class="o">=</span> <span class="n">st_copy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"[N1]"</span><span class="p">)</span>
-        <span class="n">st_e</span> <span class="o">=</span> <span class="n">st_copy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">"[E2]"</span><span class="p">)</span>
+        <span class="n">st_n</span> <span class="o">=</span> <span class="n">st_copy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;[N1]&quot;</span><span class="p">)</span>
+        <span class="n">st_e</span> <span class="o">=</span> <span class="n">st_copy</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="s2">&quot;[E2]&quot;</span><span class="p">)</span>
 
         <span class="c1"># Check that we have one northing and one easting channel</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">st_e</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">st_n</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                <span class="s2">"Radial_Transverse: Stream must have one north and one east channel."</span>
+                <span class="s2">&quot;Radial_Transverse: Stream must have one north and one east channel.&quot;</span>
             <span class="p">)</span>
 
         <span class="c1"># Check that the orientations are orthogonal</span>
         <span class="n">ho1</span> <span class="o">=</span> <span class="n">st_e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">horizontal_orientation</span>
         <span class="n">ho2</span> <span class="o">=</span> <span class="n">st_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">horizontal_orientation</span>
         <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ho1</span> <span class="o">-</span> <span class="n">ho2</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">90</span><span class="p">,</span> <span class="mi">270</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"Radial_Transverse: Channels must be orthogonal."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Radial_Transverse: Channels must be orthogonal.&quot;</span><span class="p">)</span>
 
         <span class="c1"># Check that the lengths of the two channels are the same</span>
         <span class="k">if</span> <span class="n">st_e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span> <span class="o">!=</span> <span class="n">st_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-                <span class="s2">"Radial_Transverse: East and north channels must have same length."</span>
+                <span class="s2">&quot;Radial_Transverse: East and north channels must have same length.&quot;</span>
             <span class="p">)</span>
 
         <span class="c1"># First, rotate to North-East components if not already</span>
@@ -555,8 +556,8 @@
             <span class="n">st_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">newdata</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">st_e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">newdata</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-        <span class="n">st_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">st_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"N"</span>
-        <span class="n">st_e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">st_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"E"</span>
+        <span class="n">st_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">st_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;N&quot;</span>
+        <span class="n">st_e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="n">st_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;E&quot;</span>
 
         <span class="c1"># For some reason the rotation does not update the channel</span>
         <span class="c1"># name in the rotation if it is not an obspy stream</span>
@@ -568,7 +569,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
         <span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">ne_stream</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">"NE-&gt;RT"</span><span class="p">,</span> <span class="n">back_azimuth</span><span class="o">=</span><span class="n">baz</span><span class="p">)</span>
+        <span class="n">ne_stream</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;NE-&gt;RT&quot;</span><span class="p">,</span> <span class="n">back_azimuth</span><span class="o">=</span><span class="n">baz</span><span class="p">)</span>
         <span class="n">radial_transverse</span> <span class="o">=</span> <span class="n">StationStream</span><span class="p">([</span><span class="n">ne_stream</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ne_stream</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
         <span class="k">return</span> <span class="n">radial_transverse</span></div></div>
 </pre></div>

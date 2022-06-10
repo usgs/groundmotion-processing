@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.core.streamarray" href="../streamarray/index.html" /><link rel="prev" title="gmprocess.core.stationstream" href="../stationstream/index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.core.stationtrace - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.core.stationtrace - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -486,53 +487,58 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.core.stationtrace.StationTrace" title="gmprocess.core.stationtrace.StationTrace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationTrace</span></code></a></p></td>
 <td><p>Subclass of Obspy Trace object which holds more metadata.</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.core.stationtrace._stats_from_inventory" title="gmprocess.core.stationtrace._stats_from_inventory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_stats_from_inventory</span></code></a>(data, inventory, seed_id, start_time)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.core.stationtrace._stats_from_inventory" title="gmprocess.core.stationtrace._stats_from_inventory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_stats_from_inventory</span></code></a>(data, inventory, seed_id, start_time)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.core.stationtrace._stats_from_header" title="gmprocess.core.stationtrace._stats_from_header"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_stats_from_header</span></code></a>(header, config)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.core.stationtrace._stats_from_header" title="gmprocess.core.stationtrace._stats_from_header"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_stats_from_header</span></code></a>(header, config)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.core.stationtrace._get_software_agent" title="gmprocess.core.stationtrace._get_software_agent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_software_agent</span></code></a>(pr, gmprocess_version)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.core.stationtrace._get_software_agent" title="gmprocess.core.stationtrace._get_software_agent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_software_agent</span></code></a>(pr, gmprocess_version)</p></td>
 <td><p>Get the seis-prov entity for the gmprocess software.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.core.stationtrace._get_person_agent" title="gmprocess.core.stationtrace._get_person_agent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_person_agent</span></code></a>(pr, config=None)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.core.stationtrace._get_person_agent" title="gmprocess.core.stationtrace._get_person_agent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_person_agent</span></code></a>(pr, config=None)</p></td>
 <td><p>Get the seis-prov entity for the user software.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.core.stationtrace._get_waveform_entity" title="gmprocess.core.stationtrace._get_waveform_entity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_waveform_entity</span></code></a>(trace, pr)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.core.stationtrace._get_waveform_entity" title="gmprocess.core.stationtrace._get_waveform_entity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_waveform_entity</span></code></a>(trace, pr)</p></td>
 <td><p>Get the seis-prov entity for an input Trace.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.core.stationtrace._get_activity" title="gmprocess.core.stationtrace._get_activity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_activity</span></code></a>(pr, activity, attributes, sequence)</p></td>
-<td><p>Get the seis-prov entity for an input processing "activity".</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.core.stationtrace._get_activity" title="gmprocess.core.stationtrace._get_activity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_activity</span></code></a>(pr, activity, attributes, sequence)</p></td>
+<td><p>Get the seis-prov entity for an input processing &quot;activity&quot;.</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.core.stationtrace.UNITS" title="gmprocess.core.stationtrace.UNITS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UNITS</span></code></a></p></td>
@@ -584,71 +590,88 @@
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.UNITS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">UNITS</span></span><a class="headerlink" href="#gmprocess.core.stationtrace.UNITS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.REVERSE_UNITS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">REVERSE_UNITS</span></span><a class="headerlink" href="#gmprocess.core.stationtrace.REVERSE_UNITS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.PROCESS_LEVELS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">PROCESS_LEVELS</span></span><a class="headerlink" href="#gmprocess.core.stationtrace.PROCESS_LEVELS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.REV_PROCESS_LEVELS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">REV_PROCESS_LEVELS</span></span><a class="headerlink" href="#gmprocess.core.stationtrace.REV_PROCESS_LEVELS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.LENGTH_CONVERSIONS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">LENGTH_CONVERSIONS</span></span><a class="headerlink" href="#gmprocess.core.stationtrace.LENGTH_CONVERSIONS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.MAX_DIP_OFFSET">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">MAX_DIP_OFFSET</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">0.1</span></em><a class="headerlink" href="#gmprocess.core.stationtrace.MAX_DIP_OFFSET" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.STANDARD_KEYS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">STANDARD_KEYS</span></span><a class="headerlink" href="#gmprocess.core.stationtrace.STANDARD_KEYS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.INT_TYPES">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">INT_TYPES</span></span><a class="headerlink" href="#gmprocess.core.stationtrace.INT_TYPES" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.FLOAT_TYPES">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">FLOAT_TYPES</span></span><a class="headerlink" href="#gmprocess.core.stationtrace.FLOAT_TYPES" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.TIMEFMT">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">TIMEFMT</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">%Y-%m-%dT%H:%M:%SZ</span></em><a class="headerlink" href="#gmprocess.core.stationtrace.TIMEFMT" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.TIMEFMT_MS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">TIMEFMT_MS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">%Y-%m-%dT%H:%M:%S.%fZ</span></em><a class="headerlink" href="#gmprocess.core.stationtrace.TIMEFMT_MS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.NS_PREFIX">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">NS_PREFIX</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">seis_prov</span></em><a class="headerlink" href="#gmprocess.core.stationtrace.NS_PREFIX" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.NS_SEIS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">NS_SEIS</span></span><a class="headerlink" href="#gmprocess.core.stationtrace.NS_SEIS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.MAX_ID_LEN">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">MAX_ID_LEN</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">12</span></em><a class="headerlink" href="#gmprocess.core.stationtrace.MAX_ID_LEN" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.PROV_TIME_FMT">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">PROV_TIME_FMT</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">%Y-%m-%dT%H:%M:%S.%fZ</span></em><a class="headerlink" href="#gmprocess.core.stationtrace.PROV_TIME_FMT" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.ACTIVITIES">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">ACTIVITIES</span></span><a class="headerlink" href="#gmprocess.core.stationtrace.ACTIVITIES" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">StationTrace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">np.array([])</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inventory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace" title="Permalink to this definition">#</a></dt>
@@ -697,6 +720,7 @@ arbitrary metadata in the form of a dictionary as trace property
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.fail">
 <span class="sig-name descname"><span class="pre">fail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.fail"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.fail" title="Permalink to this definition">#</a></dt>
@@ -709,6 +733,7 @@ provided, plus the name of the calling function.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.validate">
 <span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.validate" title="Permalink to this definition">#</a></dt>
@@ -730,6 +755,7 @@ provided, plus the name of the calling function.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.differentiate">
 <span class="sig-name descname"><span class="pre">differentiate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gradient'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.differentiate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.differentiate" title="Permalink to this definition">#</a></dt>
@@ -759,6 +785,7 @@ hence has the same shape as the input array. (uses
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.integrate">
 <span class="sig-name descname"><span class="pre">integrate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">demean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">taper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.integrate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.integrate" title="Permalink to this definition">#</a></dt>
@@ -782,6 +809,7 @@ If not, integrate in time domain.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.filter">
 <span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'highpass'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corners</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zerophase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.filter" title="Permalink to this definition">#</a></dt>
@@ -790,11 +818,11 @@ If not, integrate in time domain.</p></li>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>type</strong> (<em>str</em>) – String that specifies which filter is applied (e.g.
-<code class="docutils literal notranslate"><span class="pre">"bandpass"</span></code>). See the <a class="reference internal" href="#supported-filter">Supported Filter</a> section below for
+<code class="docutils literal notranslate"><span class="pre">&quot;bandpass&quot;</span></code>). See the <a class="reference internal" href="#supported-filter">Supported Filter</a> section below for
 further details.</p></li>
 <li><p><strong>options</strong> – Necessary keyword arguments for the respective filter
 that will be passed on. (e.g. <code class="docutils literal notranslate"><span class="pre">freqmin=1.0</span></code>, <code class="docutils literal notranslate"><span class="pre">freqmax=20.0</span></code> for
-<code class="docutils literal notranslate"><span class="pre">"bandpass"</span></code>)</p></li>
+<code class="docutils literal notranslate"><span class="pre">&quot;bandpass&quot;</span></code>)</p></li>
 </ul>
 </dd>
 </dl>
@@ -829,12 +857,13 @@ in <code class="docutils literal notranslate"><span class="pre">stats.processing
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">obspy</span> <span class="kn">import</span> <span class="n">read</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">st</span> <span class="o">=</span> <span class="n">read</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tr</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tr</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">"highpass"</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>  
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tr</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s2">&quot;highpass&quot;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>  
 <span class="go">&lt;...Trace object at 0x...&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tr</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>  
 </pre></div>
 </div>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.getProvenanceKeys">
 <span class="sig-name descname"><span class="pre">getProvenanceKeys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.getProvenanceKeys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.getProvenanceKeys" title="Permalink to this definition">#</a></dt>
@@ -848,6 +877,7 @@ in <code class="docutils literal notranslate"><span class="pre">stats.processing
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.getProvenance">
 <span class="sig-name descname"><span class="pre">getProvenance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prov_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.getProvenance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.getProvenance" title="Permalink to this definition">#</a></dt>
@@ -865,6 +895,7 @@ in <code class="docutils literal notranslate"><span class="pre">stats.processing
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.setProvenance">
 <span class="sig-name descname"><span class="pre">setProvenance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prov_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prov_attributes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.setProvenance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.setProvenance" title="Permalink to this definition">#</a></dt>
@@ -879,6 +910,7 @@ in <code class="docutils literal notranslate"><span class="pre">stats.processing
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.getAllProvenance">
 <span class="sig-name descname"><span class="pre">getAllProvenance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.getAllProvenance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.getAllProvenance" title="Permalink to this definition">#</a></dt>
@@ -894,6 +926,7 @@ in <code class="docutils literal notranslate"><span class="pre">stats.processing
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.getProvenanceDocument">
 <span class="sig-name descname"><span class="pre">getProvenanceDocument</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_prov</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gmprocess_version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'unknown'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.getProvenanceDocument"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.getProvenanceDocument" title="Permalink to this definition">#</a></dt>
@@ -910,10 +943,12 @@ in <code class="docutils literal notranslate"><span class="pre">stats.processing
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.setProvenanceDocument">
 <span class="sig-name descname"><span class="pre">setProvenanceDocument</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">provdoc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.setProvenanceDocument"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.setProvenanceDocument" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.hasParameter">
 <span class="sig-name descname"><span class="pre">hasParameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.hasParameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.hasParameter" title="Permalink to this definition">#</a></dt>
@@ -930,6 +965,7 @@ in <code class="docutils literal notranslate"><span class="pre">stats.processing
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.setParameter">
 <span class="sig-name descname"><span class="pre">setParameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_attributes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.setParameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.setParameter" title="Permalink to this definition">#</a></dt>
@@ -943,6 +979,7 @@ in <code class="docutils literal notranslate"><span class="pre">stats.processing
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.setCached">
 <span class="sig-name descname"><span class="pre">setCached</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">array_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.setCached"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.setCached" title="Permalink to this definition">#</a></dt>
@@ -963,6 +1000,7 @@ in <code class="docutils literal notranslate"><span class="pre">stats.processing
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.getCached">
 <span class="sig-name descname"><span class="pre">getCached</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.getCached"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.getCached" title="Permalink to this definition">#</a></dt>
@@ -979,11 +1017,13 @@ in <code class="docutils literal notranslate"><span class="pre">stats.processing
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.hasCached">
 <span class="sig-name descname"><span class="pre">hasCached</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.hasCached"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.hasCached" title="Permalink to this definition">#</a></dt>
 <dd><p>Check if StationTrace has cached attribute.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.getCachedNames">
 <span class="sig-name descname"><span class="pre">getCachedNames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.getCachedNames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.getCachedNames" title="Permalink to this definition">#</a></dt>
@@ -997,6 +1037,7 @@ in <code class="docutils literal notranslate"><span class="pre">stats.processing
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.getParameterKeys">
 <span class="sig-name descname"><span class="pre">getParameterKeys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.getParameterKeys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.getParameterKeys" title="Permalink to this definition">#</a></dt>
@@ -1010,6 +1051,7 @@ in <code class="docutils literal notranslate"><span class="pre">stats.processing
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.getParameter">
 <span class="sig-name descname"><span class="pre">getParameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.getParameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.getParameter" title="Permalink to this definition">#</a></dt>
@@ -1026,10 +1068,12 @@ in <code class="docutils literal notranslate"><span class="pre">stats.processing
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.getProvDataFrame">
 <span class="sig-name descname"><span class="pre">getProvDataFrame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.getProvDataFrame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.getProvDataFrame" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.getProvSeries">
 <span class="sig-name descname"><span class="pre">getProvSeries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.getProvSeries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.getProvSeries" title="Permalink to this definition">#</a></dt>
@@ -1049,20 +1093,25 @@ trace.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace.StationTrace.__str__">
 <span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#StationTrace.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace.StationTrace.__str__" title="Permalink to this definition">#</a></dt>
 <dd><p>Extends Trace __str__.</p>
 </dd></dl>
+
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace._stats_from_inventory">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">_stats_from_inventory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inventory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#_stats_from_inventory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace._stats_from_inventory" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace._stats_from_header">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">_stats_from_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">header</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#_stats_from_header"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace._stats_from_header" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace._get_software_agent">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">_get_software_agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gmprocess_version</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#_get_software_agent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace._get_software_agent" title="Permalink to this definition">#</a></dt>
@@ -1082,6 +1131,7 @@ trace.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace._get_person_agent">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">_get_person_agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#_get_person_agent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace._get_person_agent" title="Permalink to this definition">#</a></dt>
@@ -1101,6 +1151,7 @@ trace.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace._get_waveform_entity">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">_get_waveform_entity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#_get_waveform_entity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace._get_waveform_entity" title="Permalink to this definition">#</a></dt>
@@ -1120,6 +1171,7 @@ trace.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.core.stationtrace._get_activity">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationtrace.</span></span><span class="sig-name descname"><span class="pre">_get_activity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationtrace.html#_get_activity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationtrace._get_activity" title="Permalink to this definition">#</a></dt>
@@ -1145,6 +1197,7 @@ performed.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 </section>
 </section>

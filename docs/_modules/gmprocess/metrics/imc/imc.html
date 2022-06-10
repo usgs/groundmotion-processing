@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.metrics.imc.imc - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.metrics.imc.imc - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -488,10 +489,10 @@
 
 
 <div class="viewcode-block" id="IMC"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/imc/imc/index.html#gmprocess.metrics.imc.imc.IMC">[docs]</a><span class="k">class</span> <span class="nc">IMC</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">"""Base class for the IMC classes."""</span>
+    <span class="sd">&quot;&quot;&quot;Base class for the IMC classes.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imc</span><span class="p">,</span> <span class="n">imt</span><span class="p">,</span> <span class="n">percentile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            imc (string):</span>
 <span class="sd">                Intensity measurement component.</span>
@@ -502,7 +503,7 @@
 <span class="sd">            period (float):</span>
 <span class="sd">                Period for fourier amplitude spectra and spectral amplitudes.</span>
 <span class="sd">                Default is None. Not used by AM.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">imc</span> <span class="o">=</span> <span class="n">imc</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">imt</span> <span class="o">=</span> <span class="n">imt</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">period</span>
@@ -511,14 +512,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_available_imts</span> <span class="o">=</span> <span class="n">imts</span>
 
 <div class="viewcode-block" id="IMC.valid_combination"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/imc/imc/index.html#gmprocess.metrics.imc.imc.IMC.valid_combination">[docs]</a>    <span class="k">def</span> <span class="nf">valid_combination</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imt</span><span class="p">):</span>
-        <span class="sd">"""Checks whether the combinations of imt and imc is valid.</span>
+        <span class="sd">&quot;&quot;&quot;Checks whether the combinations of imt and imc is valid.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            imt: (string):</span>
 <span class="sd">                Intensity measurement type.</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: Whether or not the pair is valid.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">imt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imt</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">imt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_available_imts</span> <span class="ow">and</span> <span class="n">imt</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invalid_imts</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
@@ -527,12 +528,12 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">steps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Steps for the imt/imc computation.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            self._steps: Steps for the imt/imc computation as a dictionary.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span></div>
 </pre></div>
         </article>

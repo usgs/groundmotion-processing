@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.waveform_processing.corner_frequencies - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.waveform_processing.corner_frequencies - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -483,9 +484,9 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Methods for handling/picking corner frequencies.</span>
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -493,12 +494,12 @@
 
 <span class="c1"># Options for tapering noise/signal windows</span>
 <span class="n">TAPER_WIDTH</span> <span class="o">=</span> <span class="mf">0.05</span>
-<span class="n">TAPER_TYPE</span> <span class="o">=</span> <span class="s2">"hann"</span>
-<span class="n">TAPER_SIDE</span> <span class="o">=</span> <span class="s2">"both"</span>
+<span class="n">TAPER_TYPE</span> <span class="o">=</span> <span class="s2">&quot;hann&quot;</span>
+<span class="n">TAPER_SIDE</span> <span class="o">=</span> <span class="s2">&quot;both&quot;</span>
 
 
 <div class="viewcode-block" id="from_constant"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/corner_frequencies/index.html#gmprocess.waveform_processing.corner_frequencies.from_constant">[docs]</a><span class="k">def</span> <span class="nf">from_constant</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">highpass</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">lowpass</span><span class="o">=</span><span class="mf">20.0</span><span class="p">):</span>
-    <span class="sd">"""Use constant corner frequencies across all records.</span>
+    <span class="sd">&quot;&quot;&quot;Use constant corner frequencies across all records.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        st (StationStream):</span>
@@ -510,11 +511,11 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        stream: stream with selected corner frequencies appended to records.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
         <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span>
-            <span class="s2">"corner_frequencies"</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"constant"</span><span class="p">,</span> <span class="s2">"highpass"</span><span class="p">:</span> <span class="n">highpass</span><span class="p">,</span> <span class="s2">"lowpass"</span><span class="p">:</span> <span class="n">lowpass</span><span class="p">},</span>
+            <span class="s2">&quot;corner_frequencies&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;constant&quot;</span><span class="p">,</span> <span class="s2">&quot;highpass&quot;</span><span class="p">:</span> <span class="n">highpass</span><span class="p">,</span> <span class="s2">&quot;lowpass&quot;</span><span class="p">:</span> <span class="n">lowpass</span><span class="p">},</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">st</span></div>
 
@@ -526,7 +527,7 @@
     <span class="n">highpass</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span>
     <span class="n">lowpass</span><span class="o">=</span><span class="p">[</span><span class="mf">25.0</span><span class="p">,</span> <span class="mf">35.0</span><span class="p">,</span> <span class="mf">40.0</span><span class="p">],</span>
 <span class="p">):</span>
-    <span class="sd">"""Use constant corner frequencies across all records.</span>
+    <span class="sd">&quot;&quot;&quot;Use constant corner frequencies across all records.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        st (StationStream):</span>
@@ -540,21 +541,21 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        stream: stream with selected corner frequencies appended to records.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mag</span> <span class="o">=</span> <span class="n">origin</span><span class="o">.</span><span class="n">magnitude</span>
     <span class="n">max_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mag</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">minmag</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">hp_select</span> <span class="o">=</span> <span class="n">highpass</span><span class="p">[</span><span class="n">max_idx</span><span class="p">]</span>
     <span class="n">lp_select</span> <span class="o">=</span> <span class="n">lowpass</span><span class="p">[</span><span class="n">max_idx</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
         <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span>
-            <span class="s2">"corner_frequencies"</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"magnitude"</span><span class="p">,</span> <span class="s2">"highpass"</span><span class="p">:</span> <span class="n">hp_select</span><span class="p">,</span> <span class="s2">"lowpass"</span><span class="p">:</span> <span class="n">lp_select</span><span class="p">},</span>
+            <span class="s2">&quot;corner_frequencies&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;magnitude&quot;</span><span class="p">,</span> <span class="s2">&quot;highpass&quot;</span><span class="p">:</span> <span class="n">hp_select</span><span class="p">,</span> <span class="s2">&quot;lowpass&quot;</span><span class="p">:</span> <span class="n">lp_select</span><span class="p">},</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">st</span></div>
 
 
 <div class="viewcode-block" id="from_snr"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/corner_frequencies/index.html#gmprocess.waveform_processing.corner_frequencies.from_snr">[docs]</a><span class="k">def</span> <span class="nf">from_snr</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">same_horiz</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
-    <span class="sd">"""Set corner frequencies from SNR.</span>
+    <span class="sd">&quot;&quot;&quot;Set corner frequencies from SNR.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        st (StationStream):</span>
@@ -567,31 +568,31 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        stream: stream with selected corner frequencies appended to records.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-        <span class="c1"># Check for prior calculation of 'snr'</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasCached</span><span class="p">(</span><span class="s2">"snr"</span><span class="p">):</span>
+        <span class="c1"># Check for prior calculation of &#39;snr&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasCached</span><span class="p">(</span><span class="s2">&quot;snr&quot;</span><span class="p">):</span>
             <span class="n">tr</span> <span class="o">=</span> <span class="n">compute_snr_trace</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">)</span>
 
-        <span class="c1"># If the SNR doesn't exist then it must have failed because it didn't</span>
+        <span class="c1"># If the SNR doesn&#39;t exist then it must have failed because it didn&#39;t</span>
         <span class="c1"># have nough points in the noise or signal windows</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">"failure"</span><span class="p">):</span>
-            <span class="n">snr_conf</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"snr_conf"</span><span class="p">)</span>
-            <span class="n">threshold</span> <span class="o">=</span> <span class="n">snr_conf</span><span class="p">[</span><span class="s2">"threshold"</span><span class="p">]</span>
-            <span class="n">min_freq</span> <span class="o">=</span> <span class="n">snr_conf</span><span class="p">[</span><span class="s2">"min_freq"</span><span class="p">]</span>
-            <span class="n">max_freq</span> <span class="o">=</span> <span class="n">snr_conf</span><span class="p">[</span><span class="s2">"max_freq"</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;failure&quot;</span><span class="p">):</span>
+            <span class="n">snr_conf</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;snr_conf&quot;</span><span class="p">)</span>
+            <span class="n">threshold</span> <span class="o">=</span> <span class="n">snr_conf</span><span class="p">[</span><span class="s2">&quot;threshold&quot;</span><span class="p">]</span>
+            <span class="n">min_freq</span> <span class="o">=</span> <span class="n">snr_conf</span><span class="p">[</span><span class="s2">&quot;min_freq&quot;</span><span class="p">]</span>
+            <span class="n">max_freq</span> <span class="o">=</span> <span class="n">snr_conf</span><span class="p">[</span><span class="s2">&quot;max_freq&quot;</span><span class="p">]</span>
 
-            <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasCached</span><span class="p">(</span><span class="s2">"snr"</span><span class="p">):</span>
-                <span class="n">snr_dict</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">"snr"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasCached</span><span class="p">(</span><span class="s2">&quot;snr&quot;</span><span class="p">):</span>
+                <span class="n">snr_dict</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">&quot;snr&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span>
-                    <span class="s2">"Cannot use SNR to pick corners because SNR could not "</span>
-                    <span class="s2">"be calculated."</span>
+                    <span class="s2">&quot;Cannot use SNR to pick corners because SNR could not &quot;</span>
+                    <span class="s2">&quot;be calculated.&quot;</span>
                 <span class="p">)</span>
                 <span class="k">continue</span>
 
-            <span class="n">snr</span> <span class="o">=</span> <span class="n">snr_dict</span><span class="p">[</span><span class="s2">"snr"</span><span class="p">]</span>
-            <span class="n">freq</span> <span class="o">=</span> <span class="n">snr_dict</span><span class="p">[</span><span class="s2">"freq"</span><span class="p">]</span>
+            <span class="n">snr</span> <span class="o">=</span> <span class="n">snr_dict</span><span class="p">[</span><span class="s2">&quot;snr&quot;</span><span class="p">]</span>
+            <span class="n">freq</span> <span class="o">=</span> <span class="n">snr_dict</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span>
 
             <span class="c1"># Loop through frequencies to find low corner and high corner</span>
             <span class="n">lows</span> <span class="o">=</span> <span class="p">[]</span>
@@ -611,9 +612,9 @@
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">continue</span>
 
-            <span class="c1"># If we didn't find any corners</span>
+            <span class="c1"># If we didn&#39;t find any corners</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">lows</span><span class="p">:</span>
-                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"SNR not greater than required threshold."</span><span class="p">)</span>
+                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;SNR not greater than required threshold.&quot;</span><span class="p">)</span>
                 <span class="k">continue</span>
 
             <span class="c1"># If we find an extra low, add another high for the maximum</span>
@@ -633,21 +634,21 @@
                 <span class="c1"># Check to make sure that the highpass corner frequency is not</span>
                 <span class="c1"># less than 1 / the duration of the waveform</span>
                 <span class="n">duration</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"signal_end"</span><span class="p">)[</span><span class="s2">"end_time"</span><span class="p">]</span> <span class="o">-</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span>
+                    <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;signal_end&quot;</span><span class="p">)[</span><span class="s2">&quot;end_time&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span>
                 <span class="p">)</span>
                 <span class="n">low_corner</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">duration</span><span class="p">,</span> <span class="n">low_corner</span><span class="p">)</span>
 
                 <span class="c1"># Make sure highpass is greater than min freq of noise spectrum</span>
-                <span class="n">n_noise</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">"noise_trace"</span><span class="p">)[</span><span class="s2">"data"</span><span class="p">])</span>
+                <span class="n">n_noise</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">&quot;noise_trace&quot;</span><span class="p">)[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
                 <span class="n">min_freq_noise</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">n_noise</span> <span class="o">/</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span>
                 <span class="n">freq_hp</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">low_corner</span><span class="p">,</span> <span class="n">min_freq_noise</span><span class="p">)</span>
 
                 <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span>
-                    <span class="s2">"corner_frequencies"</span><span class="p">,</span>
-                    <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"snr"</span><span class="p">,</span> <span class="s2">"highpass"</span><span class="p">:</span> <span class="n">freq_hp</span><span class="p">,</span> <span class="s2">"lowpass"</span><span class="p">:</span> <span class="n">high_corner</span><span class="p">},</span>
+                    <span class="s2">&quot;corner_frequencies&quot;</span><span class="p">,</span>
+                    <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;snr&quot;</span><span class="p">,</span> <span class="s2">&quot;highpass&quot;</span><span class="p">:</span> <span class="n">freq_hp</span><span class="p">,</span> <span class="s2">&quot;lowpass&quot;</span><span class="p">:</span> <span class="n">high_corner</span><span class="p">},</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"SNR not met within the required bandwidth."</span><span class="p">)</span>
+                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;SNR not met within the required bandwidth.&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">st</span></div>
 </pre></div>
         </article>

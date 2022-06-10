@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.waveform_processing.phase" href="../phase/index.html" /><link rel="prev" title="gmprocess.waveform_processing.integrate" href="../integrate/index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.waveform_processing.nn_quality_assurance - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.waveform_processing.nn_quality_assurance - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -486,30 +487,33 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.neuralNet" title="gmprocess.waveform_processing.nn_quality_assurance.neuralNet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">neuralNet</span></code></a></p></td>
 <td><p>Class allowing the instantiation and use of simple (1 or 2 layers)</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.isNumber" title="gmprocess.waveform_processing.nn_quality_assurance.isNumber"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isNumber</span></code></a>(s)</p></td>
 <td><p>Check if given input is a number.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.loadCSV" title="gmprocess.waveform_processing.nn_quality_assurance.loadCSV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loadCSV</span></code></a>(data_path, row_ignore=0, col_ignore=0)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.loadCSV" title="gmprocess.waveform_processing.nn_quality_assurance.loadCSV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">loadCSV</span></code></a>(data_path, row_ignore=0, col_ignore=0)</p></td>
 <td><p>Load csv files from a given path and returns a list of list.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.sigmoid" title="gmprocess.waveform_processing.nn_quality_assurance.sigmoid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sigmoid</span></code></a>(v_input)</p></td>
@@ -518,44 +522,45 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.tanh" title="gmprocess.waveform_processing.nn_quality_assurance.tanh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tanh</span></code></a>(v_input)</p></td>
 <td><p>Performs a hyperbolic tangent operation on the input (2/(e(2x)+1))</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.deskewData" title="gmprocess.waveform_processing.nn_quality_assurance.deskewData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deskewData</span></code></a>(data, model_name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.deskewData" title="gmprocess.waveform_processing.nn_quality_assurance.deskewData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deskewData</span></code></a>(data, model_name)</p></td>
 <td><p>Performs the deskewing operations used in Bellagamba et al. (2019) on the</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.standardizeData" title="gmprocess.waveform_processing.nn_quality_assurance.standardizeData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">standardizeData</span></code></a>(data, mu, sigma)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.standardizeData" title="gmprocess.waveform_processing.nn_quality_assurance.standardizeData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">standardizeData</span></code></a>(data, mu, sigma)</p></td>
 <td><p>Performs a standardization operation on the given data ((X-mu)/sigma)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.decorrelateData" title="gmprocess.waveform_processing.nn_quality_assurance.decorrelateData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decorrelateData</span></code></a>(data, M)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.decorrelateData" title="gmprocess.waveform_processing.nn_quality_assurance.decorrelateData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decorrelateData</span></code></a>(data, M)</p></td>
 <td><p>Decorrelate the data based on a Mahalanobis tranform. The transformation</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.preprocessQualityMetrics" title="gmprocess.waveform_processing.nn_quality_assurance.preprocessQualityMetrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocessQualityMetrics</span></code></a>(qm, model_name)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.preprocessQualityMetrics" title="gmprocess.waveform_processing.nn_quality_assurance.preprocessQualityMetrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocessQualityMetrics</span></code></a>(qm, model_name)</p></td>
 <td><p>Pre-process the quality metrics according to Bellagamba et al. (2019)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.get_husid" title="gmprocess.waveform_processing.nn_quality_assurance.get_husid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_husid</span></code></a>(acceleration, time_vector)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.get_husid" title="gmprocess.waveform_processing.nn_quality_assurance.get_husid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_husid</span></code></a>(acceleration, time_vector)</p></td>
 <td><p>Returns the Husid vector, defined as int{acceleration ** 2.}</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.getFreqIndex" title="gmprocess.waveform_processing.nn_quality_assurance.getFreqIndex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getFreqIndex</span></code></a>(ft_freq, lower, upper)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.getFreqIndex" title="gmprocess.waveform_processing.nn_quality_assurance.getFreqIndex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getFreqIndex</span></code></a>(ft_freq, lower, upper)</p></td>
 <td><p>Gets the indices of a frequency range in the frequency vector</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.getHusidIndex" title="gmprocess.waveform_processing.nn_quality_assurance.getHusidIndex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getHusidIndex</span></code></a>(husid, threshold)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.getHusidIndex" title="gmprocess.waveform_processing.nn_quality_assurance.getHusidIndex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getHusidIndex</span></code></a>(husid, threshold)</p></td>
 <td><p>Returns the index of the husid for a particular threshold</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.calculateSNR_min" title="gmprocess.waveform_processing.nn_quality_assurance.calculateSNR_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculateSNR_min</span></code></a>(ft_freq, snr)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.calculateSNR_min" title="gmprocess.waveform_processing.nn_quality_assurance.calculateSNR_min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculateSNR_min</span></code></a>(ft_freq, snr)</p></td>
 <td><p>Calculate the SNR min between 0.1 and 20 Hz</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.calculateHusid" title="gmprocess.waveform_processing.nn_quality_assurance.calculateHusid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculateHusid</span></code></a>(acc, t)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.calculateHusid" title="gmprocess.waveform_processing.nn_quality_assurance.calculateHusid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculateHusid</span></code></a>(acc, t)</p></td>
 <td><p>Calculate the husid and Arias of a signal.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.getClassificationMetrics" title="gmprocess.waveform_processing.nn_quality_assurance.getClassificationMetrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getClassificationMetrics</span></code></a>(tr, p_pick, delta_t)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.getClassificationMetrics" title="gmprocess.waveform_processing.nn_quality_assurance.getClassificationMetrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getClassificationMetrics</span></code></a>(tr, p_pick, delta_t)</p></td>
 <td><p>Compute the quality metrics as in Bellagamba et al. (2019). More details</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.computeQualityMetrics" title="gmprocess.waveform_processing.nn_quality_assurance.computeQualityMetrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">computeQualityMetrics</span></code></a>(st)</p></td>
 <td><p>Get the 2 horizontal components and format the P-wave arrival time before</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.NNet_QA" title="gmprocess.waveform_processing.nn_quality_assurance.NNet_QA"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NNet_QA</span></code></a>(st, acceptance_threshold, model_name, config=None)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.NNet_QA" title="gmprocess.waveform_processing.nn_quality_assurance.NNet_QA"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NNet_QA</span></code></a>(st, acceptance_threshold, model_name, config=None)</p></td>
 <td><p>Assess the quality of a stream by analyzing its two horizontal components</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.nn_quality_assurance.isNumber">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance.</span></span><span class="sig-name descname"><span class="pre">isNumber</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#isNumber"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.isNumber" title="Permalink to this definition">#</a></dt>
@@ -572,6 +577,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.nn_quality_assurance.loadCSV">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance.</span></span><span class="sig-name descname"><span class="pre">loadCSV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_ignore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col_ignore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#loadCSV"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.loadCSV" title="Permalink to this definition">#</a></dt>
@@ -594,6 +600,7 @@ float. If not, returns a string.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.nn_quality_assurance.sigmoid">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance.</span></span><span class="sig-name descname"><span class="pre">sigmoid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v_input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#sigmoid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.sigmoid" title="Permalink to this definition">#</a></dt>
@@ -610,6 +617,7 @@ float. If not, returns a string.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.nn_quality_assurance.tanh">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance.</span></span><span class="sig-name descname"><span class="pre">tanh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v_input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#tanh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.tanh" title="Permalink to this definition">#</a></dt>
@@ -626,6 +634,7 @@ float. If not, returns a string.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.nn_quality_assurance.neuralNet">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance.</span></span><span class="sig-name descname"><span class="pre">neuralNet</span></span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#neuralNet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.neuralNet" title="Permalink to this definition">#</a></dt>
@@ -645,6 +654,7 @@ specific folder.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.nn_quality_assurance.neuralNet.useNN">
 <span class="sig-name descname"><span class="pre">useNN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#neuralNet.useNN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.neuralNet.useNN" title="Permalink to this definition">#</a></dt>
@@ -666,7 +676,9 @@ classification score or the regression result).</p>
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.nn_quality_assurance.deskewData">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance.</span></span><span class="sig-name descname"><span class="pre">deskewData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#deskewData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.deskewData" title="Permalink to this definition">#</a></dt>
@@ -689,6 +701,7 @@ quality metrics vector. Depending on the selected model.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.nn_quality_assurance.standardizeData">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance.</span></span><span class="sig-name descname"><span class="pre">standardizeData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#standardizeData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.standardizeData" title="Permalink to this definition">#</a></dt>
@@ -710,6 +723,7 @@ and not the number of point to standardize)</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.nn_quality_assurance.decorrelateData">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance.</span></span><span class="sig-name descname"><span class="pre">decorrelateData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#decorrelateData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.decorrelateData" title="Permalink to this definition">#</a></dt>
@@ -727,6 +741,7 @@ matrix is given as an input.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.nn_quality_assurance.preprocessQualityMetrics">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance.</span></span><span class="sig-name descname"><span class="pre">preprocessQualityMetrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#preprocessQualityMetrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.preprocessQualityMetrics" title="Permalink to this definition">#</a></dt>
@@ -745,6 +760,7 @@ matrix is given as an input.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.nn_quality_assurance.get_husid">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance.</span></span><span class="sig-name descname"><span class="pre">get_husid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">acceleration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#get_husid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.get_husid" title="Permalink to this definition">#</a></dt>
@@ -758,6 +774,7 @@ matrix is given as an input.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.nn_quality_assurance.getFreqIndex">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance.</span></span><span class="sig-name descname"><span class="pre">getFreqIndex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ft_freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#getFreqIndex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.getFreqIndex" title="Permalink to this definition">#</a></dt>
@@ -778,6 +795,7 @@ matrix is given as an input.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.nn_quality_assurance.getHusidIndex">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance.</span></span><span class="sig-name descname"><span class="pre">getHusidIndex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">husid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#getHusidIndex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.getHusidIndex" title="Permalink to this definition">#</a></dt>
@@ -797,6 +815,7 @@ matrix is given as an input.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.nn_quality_assurance.calculateSNR_min">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance.</span></span><span class="sig-name descname"><span class="pre">calculateSNR_min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ft_freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#calculateSNR_min"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.calculateSNR_min" title="Permalink to this definition">#</a></dt>
@@ -816,6 +835,7 @@ matrix is given as an input.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.nn_quality_assurance.calculateHusid">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance.</span></span><span class="sig-name descname"><span class="pre">calculateHusid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">acc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#calculateHusid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.calculateHusid" title="Permalink to this definition">#</a></dt>
@@ -838,6 +858,7 @@ husid index at 5, 75 and 95% (used for duration)</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.nn_quality_assurance.getClassificationMetrics">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance.</span></span><span class="sig-name descname"><span class="pre">getClassificationMetrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_pick</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta_t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#getClassificationMetrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.getClassificationMetrics" title="Permalink to this definition">#</a></dt>
@@ -863,6 +884,7 @@ record</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.nn_quality_assurance.computeQualityMetrics">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance.</span></span><span class="sig-name descname"><span class="pre">computeQualityMetrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#computeQualityMetrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.computeQualityMetrics" title="Permalink to this definition">#</a></dt>
@@ -878,6 +900,7 @@ launching the computation of the qualtiy metrics as in Bellagamba et al.
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.nn_quality_assurance.NNet_QA">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance.</span></span><span class="sig-name descname"><span class="pre">NNet_QA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acceptance_threshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/nn_quality_assurance.html#NNet_QA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.nn_quality_assurance.NNet_QA" title="Permalink to this definition">#</a></dt>
@@ -911,6 +934,7 @@ used model name and acceptance threshold</p>
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 </section>
 </section>

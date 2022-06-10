@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="gmprocess.io.cosmos.cosmos_writer" href="../cosmos_writer/index.html" /><link rel="prev" title="gmprocess.io.cosmos.cesmd_search" href="../cesmd_search/index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.cosmos.core - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.io.cosmos.core - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -486,42 +487,45 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.core.is_cosmos" title="gmprocess.io.cosmos.core.is_cosmos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_cosmos</span></code></a>(filename, config=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.core.is_cosmos" title="gmprocess.io.cosmos.core.is_cosmos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_cosmos</span></code></a>(filename, config=None)</p></td>
 <td><p>Check to see if file is a COSMOS V0/V1 strong motion file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.core.read_cosmos" title="gmprocess.io.cosmos.core.read_cosmos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_cosmos</span></code></a>(filename, config=None, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.core.read_cosmos" title="gmprocess.io.cosmos.core.read_cosmos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_cosmos</span></code></a>(filename, config=None, **kwargs)</p></td>
 <td><p>Read COSMOS V1/V2 strong motion file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.core._read_channel" title="gmprocess.io.cosmos.core._read_channel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_read_channel</span></code></a>(filename, line_offset, location='')</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.core._read_channel" title="gmprocess.io.cosmos.core._read_channel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_read_channel</span></code></a>(filename, line_offset, location='')</p></td>
 <td><p>Read channel data from COSMOS V1/V2 text file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.core._get_header_info" title="gmprocess.io.cosmos.core._get_header_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_header_info</span></code></a>(int_data, flt_data, lines, cmt_data, location='')</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.core._get_header_info" title="gmprocess.io.cosmos.core._get_header_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_header_info</span></code></a>(int_data, flt_data, lines, cmt_data, location='')</p></td>
 <td><p>Return stats structure from various headers.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.core._check_assign" title="gmprocess.io.cosmos.core._check_assign"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_assign</span></code></a>(value, unknown, default)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.core._check_assign" title="gmprocess.io.cosmos.core._check_assign"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_assign</span></code></a>(value, unknown, default)</p></td>
 <td><p>Check for the unknown flag and return the correct value.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.core._read_lines" title="gmprocess.io.cosmos.core._read_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_read_lines</span></code></a>(skip_rows, filename)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.core._read_lines" title="gmprocess.io.cosmos.core._read_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_read_lines</span></code></a>(skip_rows, filename)</p></td>
 <td><p>Read lines of comments and data exluding headers.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.core.write_cosmos" title="gmprocess.io.cosmos.core.write_cosmos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_cosmos</span></code></a>(filename, label)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.core.write_cosmos" title="gmprocess.io.cosmos.core.write_cosmos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_cosmos</span></code></a>(filename, label)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.cosmos.core.MICRO_TO_VOLT" title="gmprocess.io.cosmos.core.MICRO_TO_VOLT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MICRO_TO_VOLT</span></code></a></p></td>
@@ -567,63 +571,78 @@
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core.MICRO_TO_VOLT">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">MICRO_TO_VOLT</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">1000000.0</span></em><a class="headerlink" href="#gmprocess.io.cosmos.core.MICRO_TO_VOLT" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core.MSEC_TO_SEC">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">MSEC_TO_SEC</span></span><a class="headerlink" href="#gmprocess.io.cosmos.core.MSEC_TO_SEC" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core.TEXT_HDR_ROWS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">TEXT_HDR_ROWS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">14</span></em><a class="headerlink" href="#gmprocess.io.cosmos.core.TEXT_HDR_ROWS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core.VALID_MARKERS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">VALID_MARKERS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['CORRECTED</span> <span class="pre">ACCELERATION',</span> <span class="pre">'UNCORRECTED</span> <span class="pre">ACCELERATION',</span> <span class="pre">'RAW</span> <span class="pre">ACCELERATION</span> <span class="pre">COUNTS']</span></em><a class="headerlink" href="#gmprocess.io.cosmos.core.VALID_MARKERS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core.code_file">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">code_file</span></span><a class="headerlink" href="#gmprocess.io.cosmos.core.code_file" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core.CODES">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">CODES</span></span><a class="headerlink" href="#gmprocess.io.cosmos.core.CODES" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core.BUILDING_TYPES">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">BUILDING_TYPES</span></span><a class="headerlink" href="#gmprocess.io.cosmos.core.BUILDING_TYPES" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core.COSMOS_NETWORKS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">COSMOS_NETWORKS</span></span><a class="headerlink" href="#gmprocess.io.cosmos.core.COSMOS_NETWORKS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core.COSMOS_ORIENTATIONS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">COSMOS_ORIENTATIONS</span></span><a class="headerlink" href="#gmprocess.io.cosmos.core.COSMOS_ORIENTATIONS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core.VALID_AZIMUTH_INTS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">VALID_AZIMUTH_INTS</span></span><a class="headerlink" href="#gmprocess.io.cosmos.core.VALID_AZIMUTH_INTS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core.FILTERS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">FILTERS</span></span><a class="headerlink" href="#gmprocess.io.cosmos.core.FILTERS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core.PHYSICAL_UNITS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">PHYSICAL_UNITS</span></span><a class="headerlink" href="#gmprocess.io.cosmos.core.PHYSICAL_UNITS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core.UNITS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">UNITS</span></span><a class="headerlink" href="#gmprocess.io.cosmos.core.UNITS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core.SENSOR_TYPES">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">SENSOR_TYPES</span></span><a class="headerlink" href="#gmprocess.io.cosmos.core.SENSOR_TYPES" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core.is_cosmos">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">is_cosmos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/cosmos/core.html#is_cosmos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.cosmos.core.is_cosmos" title="Permalink to this definition">#</a></dt>
@@ -643,6 +662,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core.read_cosmos">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">read_cosmos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/cosmos/core.html#read_cosmos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.cosmos.core.read_cosmos" title="Permalink to this definition">#</a></dt>
@@ -672,6 +692,7 @@ data (cm/s**2).</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core._read_channel">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">_read_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/cosmos/core.html#_read_channel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.cosmos.core._read_channel" title="Permalink to this definition">#</a></dt>
@@ -691,6 +712,7 @@ data (cm/s**2).</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core._get_header_info">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">_get_header_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">int_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flt_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmt_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/cosmos/core.html#_get_header_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.cosmos.core._get_header_info" title="Permalink to this definition">#</a></dt>
@@ -801,11 +823,13 @@ data (cm/s**2).</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core._check_assign">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">_check_assign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unknown</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/cosmos/core.html#_check_assign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.cosmos.core._check_assign" title="Permalink to this definition">#</a></dt>
 <dd><p>Check for the unknown flag and return the correct value.</p>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core._read_lines">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">_read_lines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skip_rows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/cosmos/core.html#_read_lines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.cosmos.core._read_lines" title="Permalink to this definition">#</a></dt>
@@ -825,10 +849,12 @@ data (cm/s**2).</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.core.write_cosmos">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.cosmos.core.</span></span><span class="sig-name descname"><span class="pre">write_cosmos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/cosmos/core.html#write_cosmos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.cosmos.core.write_cosmos" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 </section>
 </section>
 </section>

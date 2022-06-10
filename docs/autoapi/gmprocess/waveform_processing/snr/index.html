@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.waveform_processing.spectrum" href="../spectrum/index.html" /><link rel="prev" title="gmprocess.waveform_processing.sanity_checks" href="../sanity_checks/index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.waveform_processing.snr - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.waveform_processing.snr - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -486,30 +487,33 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.snr.compute_snr_trace" title="gmprocess.waveform_processing.snr.compute_snr_trace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_snr_trace</span></code></a>(tr, bandwidth, mag=None, check=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.snr.compute_snr_trace" title="gmprocess.waveform_processing.snr.compute_snr_trace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_snr_trace</span></code></a>(tr, bandwidth, mag=None, check=None)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.snr.compute_snr" title="gmprocess.waveform_processing.snr.compute_snr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_snr</span></code></a>(st, bandwidth, mag=None, check=None, config=None)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.snr.compute_snr" title="gmprocess.waveform_processing.snr.compute_snr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_snr</span></code></a>(st, bandwidth, mag=None, check=None, config=None)</p></td>
 <td><p>Compute SNR dictionaries for a stream, looping over all traces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.snr.snr_check" title="gmprocess.waveform_processing.snr.snr_check"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snr_check</span></code></a>(tr, mag, threshold=3.0, min_freq='f0', max_freq=5.0, f0_options={'stress_drop': 10, 'shear_vel': 3.7, 'ceiling': 2.0, 'floor': 0.1})</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.snr.snr_check" title="gmprocess.waveform_processing.snr.snr_check"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snr_check</span></code></a>(tr, mag, threshold=3.0, min_freq='f0', max_freq=5.0, f0_options={'stress_drop': 10, 'shear_vel': 3.7, 'ceiling': 2.0, 'floor': 0.1})</p></td>
 <td><p>Check signal-to-noise ratio.</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.snr.TAPER_WIDTH" title="gmprocess.waveform_processing.snr.TAPER_WIDTH"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TAPER_WIDTH</span></code></a></p></td>
@@ -525,27 +529,33 @@
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.snr.TAPER_WIDTH">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.snr.</span></span><span class="sig-name descname"><span class="pre">TAPER_WIDTH</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">0.05</span></em><a class="headerlink" href="#gmprocess.waveform_processing.snr.TAPER_WIDTH" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.snr.TAPER_TYPE">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.snr.</span></span><span class="sig-name descname"><span class="pre">TAPER_TYPE</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">hann</span></em><a class="headerlink" href="#gmprocess.waveform_processing.snr.TAPER_TYPE" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.snr.TAPER_SIDE">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.snr.</span></span><span class="sig-name descname"><span class="pre">TAPER_SIDE</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">both</span></em><a class="headerlink" href="#gmprocess.waveform_processing.snr.TAPER_SIDE" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.snr.MIN_POINTS_IN_WINDOW">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.snr.</span></span><span class="sig-name descname"><span class="pre">MIN_POINTS_IN_WINDOW</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">10</span></em><a class="headerlink" href="#gmprocess.waveform_processing.snr.MIN_POINTS_IN_WINDOW" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.snr.compute_snr_trace">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.snr.</span></span><span class="sig-name descname"><span class="pre">compute_snr_trace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bandwidth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/snr.html#compute_snr_trace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.snr.compute_snr_trace" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.snr.compute_snr">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.snr.</span></span><span class="sig-name descname"><span class="pre">compute_snr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bandwidth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/snr.html#compute_snr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.snr.compute_snr" title="Permalink to this definition">#</a></dt>
@@ -564,6 +574,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.snr.snr_check">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.snr.</span></span><span class="sig-name descname"><span class="pre">snr_check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'f0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f0_options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'stress_drop':</span> <span class="pre">10,</span> <span class="pre">'shear_vel':</span> <span class="pre">3.7,</span> <span class="pre">'ceiling':</span> <span class="pre">2.0,</span> <span class="pre">'floor':</span> <span class="pre">0.1}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/snr.html#snr_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.snr.snr_check" title="Permalink to this definition">#</a></dt>
@@ -589,6 +600,7 @@ Brune corner frequency will be used.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 </section>
 </section>

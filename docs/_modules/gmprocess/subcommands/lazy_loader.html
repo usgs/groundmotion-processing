@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.subcommands.lazy_loader - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.subcommands.lazy_loader - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -480,21 +481,21 @@
         </div>
         <article role="main">
           <h1>Source code for gmprocess.subcommands.lazy_loader</h1><div class="highlight"><pre>
-<span></span><span class="sd">"""</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Lazy loader class from TensorFlow:</span>
 <span class="sd">https://github.com/tensorflow/tensorflow/blob/master/tensorflow/python/util/lazy_loader.py</span>
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">importlib</span>
 <span class="kn">import</span> <span class="nn">types</span>
 
 
 <div class="viewcode-block" id="LazyLoader"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/lazy_loader/index.html#gmprocess.subcommands.lazy_loader.LazyLoader">[docs]</a><span class="k">class</span> <span class="nc">LazyLoader</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">):</span>
-    <span class="sd">"""Lazily import a module, mainly to avoid pulling in large dependencies.</span>
+    <span class="sd">&quot;&quot;&quot;Lazily import a module, mainly to avoid pulling in large dependencies.</span>
 
 <span class="sd">    `contrib`, and `ffmpeg` are examples of modules that are large and not always</span>
 <span class="sd">    needed, and this allows them to only be loaded when they are used.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># The lint error here is incorrect.</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -506,11 +507,11 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">LazyLoader</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
 <div class="viewcode-block" id="LazyLoader._load"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/lazy_loader/index.html#gmprocess.subcommands.lazy_loader.LazyLoader._load">[docs]</a>    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># Import the target module and insert it into the parent's namespace</span>
+        <span class="c1"># Import the target module and insert it into the parent&#39;s namespace</span>
         <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parent_module_globals</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_local_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">module</span>
 
-        <span class="c1"># Update this object's dict so that if someone keeps a reference to the</span>
+        <span class="c1"># Update this object&#39;s dict so that if someone keeps a reference to the</span>
         <span class="c1">#   LazyLoader, lookups are efficient (__getattr__ is only called on lookups</span>
         <span class="c1">#   that fail).</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>

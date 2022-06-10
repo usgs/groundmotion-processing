@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.metrics.reduction.smooth_select - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.metrics.reduction.smooth_select - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -502,7 +503,7 @@
         <span class="n">smoothing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">interval</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">95</span><span class="p">],</span>
     <span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            reduction_data (obspy.core.stream.Stream or numpy.ndarray):</span>
 <span class="sd">                Intensity measurement component.</span>
@@ -521,24 +522,24 @@
 <span class="sd">        Raises:</span>
 <span class="sd">            PGMException: if the bandwidth, period, or smoothing values</span>
 <span class="sd">            are None.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">reduction_data</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">percentile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">smoothing</span><span class="o">=</span><span class="kc">None</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">period</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span>
-                <span class="s2">"Smooth_Select: The period value must "</span>
-                <span class="s2">"be defined and of type float or int."</span>
+                <span class="s2">&quot;Smooth_Select: The period value must &quot;</span>
+                <span class="s2">&quot;be defined and of type float or int.&quot;</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">bandwidth</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span>
-                <span class="s2">"Smooth_Select: The bandwidth value must "</span>
-                <span class="s2">"be defined and of type float or int."</span>
+                <span class="s2">&quot;Smooth_Select: The bandwidth value must &quot;</span>
+                <span class="s2">&quot;be defined and of type float or int.&quot;</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">smoothing</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span>
-                <span class="s2">"Smooth_Select: The smoothing value must "</span>
-                <span class="s2">"be defined and of type string."</span>
+                <span class="s2">&quot;Smooth_Select: The smoothing value must &quot;</span>
+                <span class="s2">&quot;be defined and of type string.&quot;</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">period</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">smoothing</span> <span class="o">=</span> <span class="n">smoothing</span>
@@ -546,15 +547,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pick</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Smooth_Select.get_pick"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/reduction/smooth_select/index.html#gmprocess.metrics.reduction.smooth_select.Smooth_Select.get_pick">[docs]</a>    <span class="k">def</span> <span class="nf">get_pick</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Performs smoothing and picks values for each defined period.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            picked: Dictionary of values for each period.</span>
-<span class="sd">        """</span>
-        <span class="k">if</span> <span class="s2">"freqs"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduction_data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;freqs&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduction_data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="c1"># Horizontal channels have been combined</span>
-            <span class="n">picked</span> <span class="o">=</span> <span class="p">{</span><span class="s2">""</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pick_spectra</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reduction_data</span><span class="p">)}</span>
+            <span class="n">picked</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pick_spectra</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reduction_data</span><span class="p">)}</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Channels have not been combined, so we need to return</span>
             <span class="c1"># a dictionary with keys for each channel</span>
@@ -564,11 +565,11 @@
         <span class="k">return</span> <span class="n">picked</span></div>
 
 <div class="viewcode-block" id="Smooth_Select._pick_spectra"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/reduction/smooth_select/index.html#gmprocess.metrics.reduction.smooth_select.Smooth_Select._pick_spectra">[docs]</a>    <span class="k">def</span> <span class="nf">_pick_spectra</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="n">freqs</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">"freqs"</span><span class="p">]</span>
-        <span class="n">spectra</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">"spectra"</span><span class="p">]</span>
+        <span class="n">freqs</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;freqs&quot;</span><span class="p">]</span>
+        <span class="n">spectra</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;spectra&quot;</span><span class="p">]</span>
         <span class="n">fas_frequencies</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">])</span>
         <span class="n">smoothed_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">fas_frequencies</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">smoothing</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"konno_ohmachi"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">smoothing</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;konno_ohmachi&quot;</span><span class="p">:</span>
             <span class="n">konno_ohmachi_smooth</span><span class="p">(</span>
                 <span class="n">spectra</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">),</span>
                 <span class="n">freqs</span><span class="p">,</span>

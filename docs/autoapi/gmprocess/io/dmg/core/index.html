@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="gmprocess.io.esm" href="../../esm/index.html" /><link rel="prev" title="gmprocess.io.dmg" href="../index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.dmg.core - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.io.dmg.core - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -486,10 +487,11 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core._get_date" title="gmprocess.io.dmg.core._get_date"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_date</span></code></a>(line)</p></td>
@@ -498,48 +500,50 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core._get_time" title="gmprocess.io.dmg.core._get_time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_time</span></code></a>(line)</p></td>
 <td><p>Parse a timdelta object with hour, minute, fractional second info found</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core.is_dmg" title="gmprocess.io.dmg.core.is_dmg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_dmg</span></code></a>(filename, config=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core.is_dmg" title="gmprocess.io.dmg.core.is_dmg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_dmg</span></code></a>(filename, config=None)</p></td>
 <td><p>Check to see if file is a DMG strong motion file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core.read_dmg" title="gmprocess.io.dmg.core.read_dmg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_dmg</span></code></a>(filename, config=None, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core.read_dmg" title="gmprocess.io.dmg.core.read_dmg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_dmg</span></code></a>(filename, config=None, **kwargs)</p></td>
 <td><p>Read DMG strong motion file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core._read_volume_one" title="gmprocess.io.dmg.core._read_volume_one"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_read_volume_one</span></code></a>(filename, line_offset, location='', units='acc', config=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core._read_volume_one" title="gmprocess.io.dmg.core._read_volume_one"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_read_volume_one</span></code></a>(filename, line_offset, location='', units='acc', config=None)</p></td>
 <td><p>Read channel data from DMG Volume 1 text file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core._read_volume_two" title="gmprocess.io.dmg.core._read_volume_two"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_read_volume_two</span></code></a>(filename, line_offset, location='', units='acc')</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core._read_volume_two" title="gmprocess.io.dmg.core._read_volume_two"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_read_volume_two</span></code></a>(filename, line_offset, location='', units='acc')</p></td>
 <td><p>Read channel data from DMG text file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core._get_header_info_v1" title="gmprocess.io.dmg.core._get_header_info_v1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_header_info_v1</span></code></a>(int_data, flt_data, lines, level, location='', config=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core._get_header_info_v1" title="gmprocess.io.dmg.core._get_header_info_v1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_header_info_v1</span></code></a>(int_data, flt_data, lines, level, location='', config=None)</p></td>
 <td><p>Return stats structure from various V1 headers.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core._get_header_info" title="gmprocess.io.dmg.core._get_header_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_header_info</span></code></a>(int_data, flt_data, lines, level, location='')</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core._get_header_info" title="gmprocess.io.dmg.core._get_header_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_header_info</span></code></a>(int_data, flt_data, lines, level, location='')</p></td>
 <td><p>Return stats structure from various headers.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core._get_coords" title="gmprocess.io.dmg.core._get_coords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_coords</span></code></a>(latitude_str, longitude_str)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core._get_coords" title="gmprocess.io.dmg.core._get_coords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_coords</span></code></a>(latitude_str, longitude_str)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core._get_channel" title="gmprocess.io.dmg.core._get_channel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_channel</span></code></a>(angle, sampling_rate)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core._get_channel" title="gmprocess.io.dmg.core._get_channel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_channel</span></code></a>(angle, sampling_rate)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core._read_lines" title="gmprocess.io.dmg.core._read_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_read_lines</span></code></a>(skip_rows, max_rows, widths, filename)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core._read_lines" title="gmprocess.io.dmg.core._read_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_read_lines</span></code></a>(skip_rows, max_rows, widths, filename)</p></td>
 <td><p>Read lines of headers and.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core._get_data_format" title="gmprocess.io.dmg.core._get_data_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_data_format</span></code></a>(filename, skip_rows, npts)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core._get_data_format" title="gmprocess.io.dmg.core._get_data_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_data_format</span></code></a>(filename, skip_rows, npts)</p></td>
 <td><p>Read data header and return the format.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core._get_units" title="gmprocess.io.dmg.core._get_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_units</span></code></a>(line)</p></td>
 <td><p>Parse units from a text line.</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.dmg.core.V1_TEXT_HDR_ROWS" title="gmprocess.io.dmg.core.V1_TEXT_HDR_ROWS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">V1_TEXT_HDR_ROWS</span></code></a></p></td>
@@ -591,82 +595,101 @@
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core.V1_TEXT_HDR_ROWS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">V1_TEXT_HDR_ROWS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">13</span></em><a class="headerlink" href="#gmprocess.io.dmg.core.V1_TEXT_HDR_ROWS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core.V1_INT_HDR_ROWS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">V1_INT_HDR_ROWS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">7</span></em><a class="headerlink" href="#gmprocess.io.dmg.core.V1_INT_HDR_ROWS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core.V1_REAL_HDR_ROWS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">V1_REAL_HDR_ROWS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">7</span></em><a class="headerlink" href="#gmprocess.io.dmg.core.V1_REAL_HDR_ROWS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core.V2_TEXT_HDR_ROWS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">V2_TEXT_HDR_ROWS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">25</span></em><a class="headerlink" href="#gmprocess.io.dmg.core.V2_TEXT_HDR_ROWS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core.V2_INT_HDR_ROWS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">V2_INT_HDR_ROWS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">7</span></em><a class="headerlink" href="#gmprocess.io.dmg.core.V2_INT_HDR_ROWS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core.V2_INT_FMT">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">V2_INT_FMT</span></span><a class="headerlink" href="#gmprocess.io.dmg.core.V2_INT_FMT" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core.V2_REAL_HDR_ROWS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">V2_REAL_HDR_ROWS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">13</span></em><a class="headerlink" href="#gmprocess.io.dmg.core.V2_REAL_HDR_ROWS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core.V2_REAL_FMT">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">V2_REAL_FMT</span></span><a class="headerlink" href="#gmprocess.io.dmg.core.V2_REAL_FMT" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core.V1_MARKER">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">V1_MARKER</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">UNCORRECTED</span> <span class="pre">ACCELEROGRAM</span> <span class="pre">DATA</span></em><a class="headerlink" href="#gmprocess.io.dmg.core.V1_MARKER" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core.V2_MARKER">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">V2_MARKER</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">CORRECTED</span> <span class="pre">ACCELEROGRAM</span></em><a class="headerlink" href="#gmprocess.io.dmg.core.V2_MARKER" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core.V3_MARKER">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">V3_MARKER</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">RESPONSE</span> <span class="pre">AND</span> <span class="pre">FOURIER</span> <span class="pre">AMPLITUDE</span> <span class="pre">SPECTRA</span></em><a class="headerlink" href="#gmprocess.io.dmg.core.V3_MARKER" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core.DATE_PATTERNS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">DATE_PATTERNS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['[0-9]{2}/[0-9]{2}/[0-9]{2}',</span> <span class="pre">'[0-9]{2}/[0-9]{1}/[0-9]{2}',</span> <span class="pre">'[0-9]{1}/[0-9]{2}/[0-9]{2}',...</span></em><a class="headerlink" href="#gmprocess.io.dmg.core.DATE_PATTERNS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core.TIME_MATCH">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">TIME_MATCH</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">[0-9]{2}:[0-9]{2}:..\.[0-9]{1}</span></em><a class="headerlink" href="#gmprocess.io.dmg.core.TIME_MATCH" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core.code_file">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">code_file</span></span><a class="headerlink" href="#gmprocess.io.dmg.core.code_file" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core.CODES">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">CODES</span></span><a class="headerlink" href="#gmprocess.io.dmg.core.CODES" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core.UNITS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">UNITS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['acc',</span> <span class="pre">'vel',</span> <span class="pre">'disp']</span></em><a class="headerlink" href="#gmprocess.io.dmg.core.UNITS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core._get_date">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">_get_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/dmg/core.html#_get_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.dmg.core._get_date" title="Permalink to this definition">#</a></dt>
 <dd><p>Parse a datetime object with month/day/year info found from string.</p>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core._get_time">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">_get_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/dmg/core.html#_get_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.dmg.core._get_time" title="Permalink to this definition">#</a></dt>
 <dd><p>Parse a timdelta object with hour, minute, fractional second info found
 from string.</p>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core.is_dmg">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">is_dmg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/dmg/core.html#is_dmg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.dmg.core.is_dmg" title="Permalink to this definition">#</a></dt>
@@ -688,6 +711,7 @@ from string.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core.read_dmg">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">read_dmg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/dmg/core.html#read_dmg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.dmg.core.read_dmg" title="Permalink to this definition">#</a></dt>
@@ -716,6 +740,7 @@ from string.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core._read_volume_one">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">_read_volume_one</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'acc'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/dmg/core.html#_read_volume_one"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.dmg.core._read_volume_one" title="Permalink to this definition">#</a></dt>
@@ -737,6 +762,7 @@ from string.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core._read_volume_two">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">_read_volume_two</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'acc'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/dmg/core.html#_read_volume_two"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.dmg.core._read_volume_two" title="Permalink to this definition">#</a></dt>
@@ -757,6 +783,7 @@ from string.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core._get_header_info_v1">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">_get_header_info_v1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">int_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flt_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/dmg/core.html#_get_header_info_v1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.dmg.core._get_header_info_v1" title="Permalink to this definition">#</a></dt>
@@ -837,6 +864,7 @@ from string.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core._get_header_info">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">_get_header_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">int_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flt_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/dmg/core.html#_get_header_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.dmg.core._get_header_info" title="Permalink to this definition">#</a></dt>
@@ -917,14 +945,17 @@ COSMOS_NETWORKS</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core._get_coords">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">_get_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">latitude_str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">longitude_str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/dmg/core.html#_get_coords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.dmg.core._get_coords" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core._get_channel">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">_get_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_rate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/dmg/core.html#_get_channel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.dmg.core._get_channel" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core._read_lines">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">_read_lines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skip_rows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_rows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">widths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/dmg/core.html#_read_lines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.dmg.core._read_lines" title="Permalink to this definition">#</a></dt>
@@ -944,6 +975,7 @@ COSMOS_NETWORKS</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core._get_data_format">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">_get_data_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_rows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npts</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/dmg/core.html#_get_data_format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.dmg.core._get_data_format" title="Permalink to this definition">#</a></dt>
@@ -964,6 +996,7 @@ COSMOS_NETWORKS</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.dmg.core._get_units">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.dmg.core.</span></span><span class="sig-name descname"><span class="pre">_get_units</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/dmg/core.html#_get_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.dmg.core._get_units" title="Permalink to this definition">#</a></dt>
@@ -974,6 +1007,7 @@ COSMOS_NETWORKS</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 </section>
 </section>

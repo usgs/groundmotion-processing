@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.stream - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.io.stream - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -496,12 +497,12 @@
 <span class="kn">from</span> <span class="nn">gmprocess.core.streamcollection</span> <span class="kn">import</span> <span class="n">StreamCollection</span>
 
 
-<span class="n">DEFAULT_IMTS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"PGA"</span><span class="p">,</span> <span class="s2">"PGV"</span><span class="p">,</span> <span class="s2">"SA(0.3)"</span><span class="p">,</span> <span class="s2">"SA(1.0)"</span><span class="p">,</span> <span class="s2">"SA(3.0)"</span><span class="p">]</span>
-<span class="n">DEFAULT_IMCS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"GREATER_OF_TWO_HORIZONTALS"</span><span class="p">,</span> <span class="s2">"CHANNELS"</span><span class="p">]</span>
+<span class="n">DEFAULT_IMTS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;PGA&quot;</span><span class="p">,</span> <span class="s2">&quot;PGV&quot;</span><span class="p">,</span> <span class="s2">&quot;SA(0.3)&quot;</span><span class="p">,</span> <span class="s2">&quot;SA(1.0)&quot;</span><span class="p">,</span> <span class="s2">&quot;SA(3.0)&quot;</span><span class="p">]</span>
+<span class="n">DEFAULT_IMCS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;GREATER_OF_TWO_HORIZONTALS&quot;</span><span class="p">,</span> <span class="s2">&quot;CHANNELS&quot;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="directory_to_dataframe"><a class="viewcode-back" href="../../../autoapi/gmprocess/io/stream/index.html#gmprocess.io.stream.directory_to_dataframe">[docs]</a><span class="k">def</span> <span class="nf">directory_to_dataframe</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">imcs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">imts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">process</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">"""Extract peak ground motions from list of Stream objects.</span>
+    <span class="sd">&quot;&quot;&quot;Extract peak ground motions from list of Stream objects.</span>
 <span class="sd">    Note: The PGM columns underneath each channel will be variable</span>
 <span class="sd">    depending on the units of the Stream being passed in (velocity</span>
 <span class="sd">    sensors can only generate PGV) and on the imtlist passed in by</span>
@@ -554,9 +555,9 @@
 <span class="sd">                - SA(0.3) Pseudo-spectral acceleration at 0.3 seconds (%g).</span>
 <span class="sd">                - SA(1.0) Pseudo-spectral acceleration at 1.0 seconds (%g).</span>
 <span class="sd">                - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">streams</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s2">"*"</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">)):</span>
         <span class="n">streams</span> <span class="o">+=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
     <span class="n">grouped_streams</span> <span class="o">=</span> <span class="n">StreamCollection</span><span class="p">(</span><span class="n">streams</span><span class="p">)</span>
 
@@ -567,7 +568,7 @@
 
 
 <div class="viewcode-block" id="streams_to_dataframe"><a class="viewcode-back" href="../../../autoapi/gmprocess/io/stream/index.html#gmprocess.io.stream.streams_to_dataframe">[docs]</a><span class="k">def</span> <span class="nf">streams_to_dataframe</span><span class="p">(</span><span class="n">streams</span><span class="p">,</span> <span class="n">imcs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">imts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""Extract peak ground motions from list of processed StationStream</span>
+    <span class="sd">&quot;&quot;&quot;Extract peak ground motions from list of processed StationStream</span>
 <span class="sd">    objects.</span>
 
 <span class="sd">    Note: The PGM columns underneath each channel will be variable</span>
@@ -622,7 +623,7 @@
 <span class="sd">                - SA(0.3) Pseudo-spectral acceleration at 0.3 seconds (%g).</span>
 <span class="sd">                - SA(1.0) Pseudo-spectral acceleration at 1.0 seconds (%g).</span>
 <span class="sd">                - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">imcs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">station_summary_imcs</span> <span class="o">=</span> <span class="n">DEFAULT_IMCS</span>
@@ -657,13 +658,13 @@
         <span class="k">if</span> <span class="n">idx1</span> <span class="ow">in</span> <span class="n">all_matches</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="n">matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx1</span><span class="p">]</span>
-        <span class="n">network</span> <span class="o">=</span> <span class="n">trace1</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"network"</span><span class="p">]</span>
-        <span class="n">station</span> <span class="o">=</span> <span class="n">trace1</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"station"</span><span class="p">]</span>
+        <span class="n">network</span> <span class="o">=</span> <span class="n">trace1</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">]</span>
+        <span class="n">station</span> <span class="o">=</span> <span class="n">trace1</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">idx2</span><span class="p">,</span> <span class="n">trace2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">trace_list</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">idx1</span> <span class="o">!=</span> <span class="n">idx2</span> <span class="ow">and</span> <span class="n">idx1</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">all_matches</span><span class="p">:</span>
                 <span class="k">if</span> <span class="p">(</span>
-                    <span class="n">network</span> <span class="o">==</span> <span class="n">trace2</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"network"</span><span class="p">]</span>
-                    <span class="ow">and</span> <span class="n">station</span> <span class="o">==</span> <span class="n">trace2</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"station"</span><span class="p">]</span>
+                    <span class="n">network</span> <span class="o">==</span> <span class="n">trace2</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">]</span>
+                    <span class="ow">and</span> <span class="n">station</span> <span class="o">==</span> <span class="n">trace2</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span>
                 <span class="p">):</span>
                     <span class="n">matches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx2</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
