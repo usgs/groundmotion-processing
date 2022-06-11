@@ -40,7 +40,6 @@ def get_events(eventids, textfile, eventinfo, directory, outdir=None):
 
     """
     events = []
-    breakpoint()
     if eventids is not None:
         # Get list of events from directory if it has been provided
         tevents = []
