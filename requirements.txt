@@ -19,6 +19,7 @@ pandas>=1.0
 ps2ff>=1.5.2
 pyasdf>=0.7
 pytest>=6.2
+pytest-recording>=0.12
 pytest-cov>=2.12
 pytest-console-scripts>=1.2
 requests>=2.23

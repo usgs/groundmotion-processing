@@ -218,12 +218,13 @@ class FDSNFetcher(DataFetcher):
                 logging.warning(f"Unable to initalize client {provider_str}")
 
         if len(client_list):
+            for handler in root.handlers:
+                if hasattr(handler, "baseFilename"):
+                    log_file = getattr(handler, "baseFilename")
+            if "log_file" in vars() or "log_file" in globals():
+                sys.stdout = open(log_file, "a")
             # Pass off the initalized clients to the Mass Downloader
             if logging.getLevelName(root.level) == "DEBUG":
-                for handler in root.handlers:
-                    if hasattr(handler, "baseFilename"):
-                        log_file = getattr(handler, "baseFilename")
-                sys.stdout = open(log_file, "a")
                 mdl = MassDownloader(providers=client_list, debug=True)
             else:
                 try:
@@ -239,7 +240,8 @@ class FDSNFetcher(DataFetcher):
             mdl.download(
                 domain, restrictions, mseed_storage=rawdir, stationxml_storage=rawdir
             )
-            sys.stdout.close()
+            if "log_file" in vars() or "log_file" in globals():
+                sys.stdout.close()
 
             if self.stream_collection:
                 seed_files = glob.glob(os.path.join(rawdir, "*.mseed"))

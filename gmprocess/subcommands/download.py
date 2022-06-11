@@ -3,6 +3,7 @@
 
 import os
 import logging
+import copy
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
@@ -56,5 +57,5 @@ class DownloadModule(base.SubcommandModule):
                 os.makedirs(event_dir)
 
             download_utils.download(
-                event=event, event_dir=event_dir, config=gmrecords.conf
+                event=event, event_dir=event_dir, config=copy.deepcopy(gmrecords.conf)
             )
