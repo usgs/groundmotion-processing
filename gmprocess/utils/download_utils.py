@@ -12,6 +12,7 @@ import requests
 # third party imports
 from libcomcat.search import get_event_by_id
 from obspy.geodetics.base import locations2degrees
+from obspy.core.utcdatetime import UTCDateTime
 from obspy.taup import TauPyModel
 import matplotlib.pyplot as plt
 
@@ -81,9 +82,25 @@ def create_event_file(event, event_dir):
 
     # download event.json for event
     eventid = event.origins[-1].resource_id.id
-    event = get_event_by_id(eventid)
-    req = requests.get(event.detail_url)
-    data = json.loads(req.text)
+    try:
+        tevent = get_event_by_id(eventid)
+        req = requests.get(tevent.detail_url)
+        data = json.loads(req.text)
+    except BaseException:
+        # convert time to comcat time
+        ctime = (event.time - UTCDateTime("1970-01-01T00:00:00.000Z")) * 1000.0
+        data = {
+            "type": "Feature",
+            "properties": {
+                "mag": event.magnitude,
+                "time": ctime,
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [event.longitude, event.latitude, event.depth / 1000.0],
+            },
+            "id": eventid,
+        }
 
     # dump the event.json file to the event directory
     eventfile = os.path.join(event_dir, "event.json")
@@ -169,7 +186,11 @@ def download_rupture_file(event_id, event_dir):
         event_dir (str):
             Event directory.
     """
-    event = get_event_by_id(event_id)
+    try:
+        event = get_event_by_id(event_id)
+    except BaseException:
+        logging.info(f"{event_id} not found in ComCat.")
+        return
     try:
         shakemap_prod = event.getProducts("shakemap")
         shakemap_prod[0].getContent(

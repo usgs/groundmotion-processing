@@ -52,10 +52,11 @@ ARG_DICTS = {
     "textfile": {
         "short_flag": "-t",
         "long_flag": "--textfile",
-        "help": (
-            "Text file containing lines of ComCat Event IDs or event "
-            "information (ID TIME LAT LON DEPTH MAG)."
-        ),
+        "help": """CSV file containing either: (1) a single column in which that column
+        contains ComCat event IDs, or (2) six columns in which those columns are:
+        id (string, no spaces), time (any ISO standard for date/time), latitutde
+        (float, decimal degrees), longitude (float, decimal degrees), depth (float, km),
+        magnitude (float).""",
         "type": str,
         "default": None,
     },

@@ -28,7 +28,6 @@ def get_events(eventids, textfile, eventinfo, directory, outdir=None):
                 - longitude Longitude in decimal degrees.
                 - depth Depth in kilometers.
                 - magnitude Earthquake magnitude.
-                - magnitude_type Earthquake magnitude type.
         directory (str):
             Path to a directory containing event subdirectories, each
             containing an event.json file, where the ID in the json file
@@ -134,14 +133,13 @@ def parse_event_file(eventfile):
     Files can contain:
         - one column, in which case that column
           contains ComCat event IDs.
-        - Seven columns, in which case those columns should be:
+        - Six columns, in which case those columns should be:
           - id: any string (no spaces)
           - time: Any ISO standard for date/time.
           - lat: Earthquake latitude in decimal degrees.
           - lon: Earthquake longitude in decimal degrees.
           - depth: Earthquake longitude in kilometers.
           - magnitude: Earthquake magnitude.
-          - magnitude_type: Earthquake magnitude type.
 
     NB: THERE SHOULD NOT BE ANY HEADERS ON THIS FILE!
 
@@ -154,14 +152,14 @@ def parse_event_file(eventfile):
 
     """
     df = pd.read_csv(eventfile, sep=",", header=None)
-    nrows, ncols = df.shape
+    _, ncols = df.shape
     events = []
     if ncols == 1:
         df.columns = ["eventid"]
-        for idx, row in df.iterrows():
+        for _, row in df.iterrows():
             event = get_event_object(row["eventid"])
             events.append(event)
-    elif ncols == 7:
+    elif ncols == 6:
         df.columns = [
             "id",
             "time",
@@ -169,10 +167,9 @@ def parse_event_file(eventfile):
             "lon",
             "depth",
             "magnitude",
-            "magnitude_type",
         ]
         df["time"] = pd.to_datetime(df["time"])
-        for idx, row in df.iterrows():
+        for _, row in df.iterrows():
             rowdict = row.to_dict()
             event = get_event_object(rowdict)
             events.append(event)
