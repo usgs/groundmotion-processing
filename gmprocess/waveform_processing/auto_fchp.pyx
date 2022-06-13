@@ -123,7 +123,7 @@ def get_fchp(**kwargs):
     if "tukey_alpha" in kwargs:
         tukey_alpha = kwargs["tukey_alpha"]
     else:
-        tukey_alpha = 0.20
+        tukey_alpha = 0.05
     
     if "filter_type" in kwargs:
         filter_type = kwargs["filter_type"]
