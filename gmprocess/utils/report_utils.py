@@ -72,10 +72,17 @@ def draw_stations_map(pstreams, event, event_dir):
 
     # Plot the failed first
     for i, r in failed_station_df.iterrows():
-        station_info = "NET: {} LAT: {:.2f} LON: {:.2f} REASON: {}".format(
+        station_info = "<b>NETWORK:</b> {}<br> <b>LAT:</b> {:.4f}&deg; <b>LON:</b> {:.4f}&deg;<br> <b>FAILURE MSG:</b><br> <i>'{}'</i>".format(
             r["network"], r["coords"][0], r["coords"][1], r["reason"]
         ) 
-  
+        failed_popup = folium.Popup(station_info,
+            min_width=250,
+             max_width=250)
+
+        failed_tooltip= folium.Tooltip("<b>Station:</b> {}".format(
+            r["stnames"])
+        )
+
         failed_icon = folium.DivIcon(html=f""" 
             <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill="#ff2222" class="bi bi-triangle-fill" transform='rotate(180)' viewBox="0 0 16 16">
@@ -85,15 +92,24 @@ def draw_stations_map(pstreams, event, event_dir):
 
         folium.Marker(
             location=r["coords"],
-            tooltip=r["stnames"],
-            popup=station_info,
+            tooltip=failed_tooltip,
+            popup=failed_popup,
             icon=failed_icon).add_to(station_map)
 
     # Then the passed stations
     for i, r in passed_station_df.iterrows():
-        station_info = "NET: {}\n LAT: {:.2f} LON: {:.2f}".format(
+        station_info = "<b>NETWORK:</b> {}<br> <b>LAT:</b> {:.4f}&deg; <b>LON:</b> {:.4f}&deg;".format(
             r["network"], r["coords"][0], r["coords"][1]
         )
+
+        passed_popup = folium.Popup(station_info,
+            min_width=180,
+            max_width=180)
+
+        passed_tooltip = folium.Tooltip("<b>Station:</b> {}".format(
+            r["stnames"])
+        )
+
         passed_icon = folium.DivIcon(html=f""" 
             <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill=\"""" + PASSED_COLOR + """\" class="bi bi-triangle-fill" viewBox="0 0 16 16">
@@ -103,13 +119,20 @@ def draw_stations_map(pstreams, event, event_dir):
 
         folium.Marker(
             location=r["coords"],
-            tooltip=r["stnames"],
-            popup=station_info,
+            tooltip=passed_tooltip,
+            popup=passed_popup,
             icon=passed_icon).add_to(station_map)
 
     # And finally the event itself
-    event_info = "MAG: {} LAT: {:.2f} LON: {:.2f} DEPTH: {:.2f}".format(
-        event.magnitude, event.latitude, event.longitude, event.depth
+    event_info = "<b>EVENT ID:</b> {}<br> <b>MAG:</b> {}<br> <b>LAT:</b> {:.4f}&deg; <b>LON:</b> {:.4f}&deg;<br> <b>DEPTH:</b> {:.2f} km".format(
+        event.id,  event.magnitude, event.latitude, event.longitude, (event.depth/1000.0)
+    )
+    event_popup = folium.Popup(event_info,
+            min_width=180,
+            max_width=180)
+
+    event_tooltip = folium.Tooltip("<b>EVENT ID:</b> {}".format(
+        event.id)
     )
     event_icon = folium.DivIcon(html=f""" 
             <div>
@@ -120,7 +143,8 @@ def draw_stations_map(pstreams, event, event_dir):
 
     folium.Marker(
         [event.latitude, event.longitude],
-        popup=event_info,
+        tooltip=event_tooltip,
+        popup=event_popup,
         fill_color=EVENT_COLOR,
         icon=event_icon).add_to(station_map)
     

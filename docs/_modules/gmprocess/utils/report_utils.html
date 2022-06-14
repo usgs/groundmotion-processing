@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
-        <title>gmprocess.utils.report_utils - gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</title>
+        <title>gmprocess.utils.report_utils - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev467+ge16ffeea.d20220610 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -555,10 +555,17 @@
 
     <span class="c1"># Plot the failed first</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">failed_station_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-        <span class="n">station_info</span> <span class="o">=</span> <span class="s2">&quot;NET: </span><span class="si">{}</span><span class="s2"> LAT: </span><span class="si">{:.2f}</span><span class="s2"> LON: </span><span class="si">{:.2f}</span><span class="s2"> REASON: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">station_info</span> <span class="o">=</span> <span class="s2">&quot;&lt;b&gt;NETWORK:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&lt;br&gt; &lt;b&gt;LAT:&lt;/b&gt; </span><span class="si">{:.4f}</span><span class="s2">&amp;deg; &lt;b&gt;LON:&lt;/b&gt; </span><span class="si">{:.4f}</span><span class="s2">&amp;deg;&lt;br&gt; &lt;b&gt;FAILURE MSG:&lt;/b&gt;&lt;br&gt; &lt;i&gt;&#39;</span><span class="si">{}</span><span class="s2">&#39;&lt;/i&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">r</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;reason&quot;</span><span class="p">]</span>
         <span class="p">)</span> 
-  
+        <span class="n">failed_popup</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="n">station_info</span><span class="p">,</span>
+            <span class="n">min_width</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
+             <span class="n">max_width</span><span class="o">=</span><span class="mi">250</span><span class="p">)</span>
+
+        <span class="n">failed_tooltip</span><span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Tooltip</span><span class="p">(</span><span class="s2">&quot;&lt;b&gt;Station:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">r</span><span class="p">[</span><span class="s2">&quot;stnames&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
+
         <span class="n">failed_icon</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">DivIcon</span><span class="p">(</span><span class="n">html</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot; </span>
 <span class="s2">            &lt;div&gt;</span>
 <span class="s2">                &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; stroke=&quot;black&quot; stroke-linecap=&quot;square&quot; fill=&quot;#ff2222&quot; class=&quot;bi bi-triangle-fill&quot; transform=&#39;rotate(180)&#39; viewBox=&quot;0 0 16 16&quot;&gt;</span>
@@ -568,15 +575,24 @@
 
         <span class="n">folium</span><span class="o">.</span><span class="n">Marker</span><span class="p">(</span>
             <span class="n">location</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">],</span>
-            <span class="n">tooltip</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;stnames&quot;</span><span class="p">],</span>
-            <span class="n">popup</span><span class="o">=</span><span class="n">station_info</span><span class="p">,</span>
+            <span class="n">tooltip</span><span class="o">=</span><span class="n">failed_tooltip</span><span class="p">,</span>
+            <span class="n">popup</span><span class="o">=</span><span class="n">failed_popup</span><span class="p">,</span>
             <span class="n">icon</span><span class="o">=</span><span class="n">failed_icon</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">station_map</span><span class="p">)</span>
 
     <span class="c1"># Then the passed stations</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">passed_station_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-        <span class="n">station_info</span> <span class="o">=</span> <span class="s2">&quot;NET: </span><span class="si">{}</span><span class="se">\n</span><span class="s2"> LAT: </span><span class="si">{:.2f}</span><span class="s2"> LON: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">station_info</span> <span class="o">=</span> <span class="s2">&quot;&lt;b&gt;NETWORK:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&lt;br&gt; &lt;b&gt;LAT:&lt;/b&gt; </span><span class="si">{:.4f}</span><span class="s2">&amp;deg; &lt;b&gt;LON:&lt;/b&gt; </span><span class="si">{:.4f}</span><span class="s2">&amp;deg;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">r</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
         <span class="p">)</span>
+
+        <span class="n">passed_popup</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="n">station_info</span><span class="p">,</span>
+            <span class="n">min_width</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span>
+            <span class="n">max_width</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
+
+        <span class="n">passed_tooltip</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Tooltip</span><span class="p">(</span><span class="s2">&quot;&lt;b&gt;Station:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">r</span><span class="p">[</span><span class="s2">&quot;stnames&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
+
         <span class="n">passed_icon</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">DivIcon</span><span class="p">(</span><span class="n">html</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot; </span>
 <span class="s2">            &lt;div&gt;</span>
 <span class="s2">                &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; stroke=&quot;black&quot; stroke-linecap=&quot;square&quot; fill=</span><span class="se">\&quot;</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">+</span> <span class="n">PASSED_COLOR</span> <span class="o">+</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\&quot;</span><span class="s2"> class=&quot;bi bi-triangle-fill&quot; viewBox=&quot;0 0 16 16&quot;&gt;</span>
@@ -586,13 +602,20 @@
 
         <span class="n">folium</span><span class="o">.</span><span class="n">Marker</span><span class="p">(</span>
             <span class="n">location</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">],</span>
-            <span class="n">tooltip</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;stnames&quot;</span><span class="p">],</span>
-            <span class="n">popup</span><span class="o">=</span><span class="n">station_info</span><span class="p">,</span>
+            <span class="n">tooltip</span><span class="o">=</span><span class="n">passed_tooltip</span><span class="p">,</span>
+            <span class="n">popup</span><span class="o">=</span><span class="n">passed_popup</span><span class="p">,</span>
             <span class="n">icon</span><span class="o">=</span><span class="n">passed_icon</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">station_map</span><span class="p">)</span>
 
     <span class="c1"># And finally the event itself</span>
-    <span class="n">event_info</span> <span class="o">=</span> <span class="s2">&quot;MAG: </span><span class="si">{}</span><span class="s2"> LAT: </span><span class="si">{:.2f}</span><span class="s2"> LON: </span><span class="si">{:.2f}</span><span class="s2"> DEPTH: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="n">event</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">depth</span>
+    <span class="n">event_info</span> <span class="o">=</span> <span class="s2">&quot;&lt;b&gt;EVENT ID:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&lt;br&gt; &lt;b&gt;MAG:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&lt;br&gt; &lt;b&gt;LAT:&lt;/b&gt; </span><span class="si">{:.4f}</span><span class="s2">&amp;deg; &lt;b&gt;LON:&lt;/b&gt; </span><span class="si">{:.4f}</span><span class="s2">&amp;deg;&lt;br&gt; &lt;b&gt;DEPTH:&lt;/b&gt; </span><span class="si">{:.2f}</span><span class="s2"> km&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>  <span class="n">event</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">depth</span><span class="o">/</span><span class="mf">1000.0</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">event_popup</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="n">event_info</span><span class="p">,</span>
+            <span class="n">min_width</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span>
+            <span class="n">max_width</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
+
+    <span class="n">event_tooltip</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Tooltip</span><span class="p">(</span><span class="s2">&quot;&lt;b&gt;EVENT ID:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="n">event_icon</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">DivIcon</span><span class="p">(</span><span class="n">html</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot; </span>
 <span class="s2">            &lt;div&gt;</span>
@@ -603,7 +626,8 @@
 
     <span class="n">folium</span><span class="o">.</span><span class="n">Marker</span><span class="p">(</span>
         <span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">],</span>
-        <span class="n">popup</span><span class="o">=</span><span class="n">event_info</span><span class="p">,</span>
+        <span class="n">tooltip</span><span class="o">=</span><span class="n">event_tooltip</span><span class="p">,</span>
+        <span class="n">popup</span><span class="o">=</span><span class="n">event_popup</span><span class="p">,</span>
         <span class="n">fill_color</span><span class="o">=</span><span class="n">EVENT_COLOR</span><span class="p">,</span>
         <span class="n">icon</span><span class="o">=</span><span class="n">event_icon</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">station_map</span><span class="p">)</span>
     
