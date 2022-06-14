@@ -514,14 +514,6 @@ File type: Station map
    /Users/emthompson/gmprocess_projects/tutorial/data/nc72282711/stations_map.html
 ```
 
-
-<!-- <iframe
-   src="../../_static/stations_map.html"
-   title="Example interactive station map"
-   style="width:100%; height:300px;"
->
-</iframe> -->
-
 <figure class="align-default" id="int_stn_map">
    <iframe
       src="../../_static/stations_map.html"
