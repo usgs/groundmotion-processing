@@ -54,8 +54,8 @@ CONF_SCHEMA = Schema(
                     "type": Or("circular", "rectangular"),
                     "circular": {
                         "use_epicenter": bool,
-                        Optional("latitude"): float,
-                        Optional("longitude"): float,
+                        "latitude": float,
+                        "longitude": float,
                         "minradius": float,
                         "maxradius": float,
                     },
