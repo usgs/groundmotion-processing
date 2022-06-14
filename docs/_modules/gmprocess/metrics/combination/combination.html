@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.metrics.combination.combination - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.metrics.combination.combination - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -492,18 +493,18 @@
 
 
 <div class="viewcode-block" id="Combination"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/combination/combination/index.html#gmprocess.metrics.combination.combination.Combination">[docs]</a><span class="k">class</span> <span class="nc">Combination</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">"""Base class for combination calculations."""</span>
+    <span class="sd">&quot;&quot;&quot;Base class for combination calculations.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">combination_data</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            combination_data (obspy.core.stream.Stream or numpy.ndarray):</span>
 <span class="sd">                Data for calculation.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">combination_data</span> <span class="o">=</span> <span class="n">combination_data</span>
 
 <div class="viewcode-block" id="Combination._get_horizontals"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/combination/combination/index.html#gmprocess.metrics.combination.combination.Combination._get_horizontals">[docs]</a>    <span class="k">def</span> <span class="nf">_get_horizontals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Gets the two horizontal components.</span>
 
 <span class="sd">        Returns:</span>
@@ -514,35 +515,35 @@
 <span class="sd">            PGMException: if there are less than or greater than two</span>
 <span class="sd">                horizontal channels, or if the length of the traces are</span>
 <span class="sd">                not equal.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">horizontal_channels</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">combination_data</span><span class="p">,</span> <span class="p">(</span><span class="n">StationStream</span><span class="p">,</span> <span class="n">Stream</span><span class="p">)):</span>
             <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">combination_data</span><span class="p">:</span>
                 <span class="c1"># Group all of the max values from traces without</span>
                 <span class="c1"># Z in the channel name</span>
-                <span class="k">if</span> <span class="s2">"Z"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
+                <span class="k">if</span> <span class="s2">&quot;Z&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
                     <span class="n">horizontal_channels</span> <span class="o">+=</span> <span class="p">[</span><span class="n">trace</span><span class="p">]</span>
             <span class="c1"># Test the horizontals</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">horizontal_channels</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s2">"Combination: More than two horizontal channels."</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s2">&quot;Combination: More than two horizontal channels.&quot;</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">horizontal_channels</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s2">"Combination: Less than two horizontal channels."</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s2">&quot;Combination: Less than two horizontal channels.&quot;</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">horizontal_channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">horizontal_channels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span>
-                    <span class="s2">"Combination: Horizontal channels have different lengths."</span>
+                    <span class="s2">&quot;Combination: Horizontal channels have different lengths.&quot;</span>
                 <span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">combination_data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">channel_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">combination_data</span><span class="p">:</span>
                 <span class="c1"># Group all of the max values from traces without</span>
                 <span class="c1"># Z in the channel name</span>
-                <span class="k">if</span> <span class="s2">"Z"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">channel_key</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;Z&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">channel_key</span><span class="p">:</span>
                     <span class="n">horizontal_channels</span> <span class="o">+=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">combination_data</span><span class="p">[</span><span class="n">channel_key</span><span class="p">]]</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">horizontal_channels</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s2">"Combination: More than two horizontal channels."</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s2">&quot;Combination: More than two horizontal channels.&quot;</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">horizontal_channels</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s2">"Combination: Less than two horizontal channels."</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s2">&quot;Combination: Less than two horizontal channels.&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s2">"Combination: Invalid input data type"</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span><span class="s2">&quot;Combination: Invalid input data type&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">horizontal_channels</span></div></div>
 </pre></div>
         </article>

@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.waveform_processing.filtering - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.waveform_processing.filtering - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -487,15 +488,15 @@
 <div class="viewcode-block" id="highpass_filter"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/filtering/index.html#gmprocess.waveform_processing.filtering.highpass_filter">[docs]</a><span class="k">def</span> <span class="nf">highpass_filter</span><span class="p">(</span>
     <span class="n">st</span><span class="p">,</span> <span class="n">frequency_domain</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">filter_order</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">number_of_passes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Highpass filter.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        st (StationStream):</span>
 <span class="sd">            Stream of data.</span>
 <span class="sd">        frequency_domain (Bool):</span>
-<span class="sd">            If true, use gmprocess frequency domain implementation; "</span>
-<span class="sd">            " if false, use ObsPy filters."</span>
+<span class="sd">            If true, use gmprocess frequency domain implementation; &quot;</span>
+<span class="sd">            &quot; if false, use ObsPy filters.&quot;</span>
 <span class="sd">        filter_order (int):</span>
 <span class="sd">            Filter order.</span>
 <span class="sd">        number_of_passes (int):</span>
@@ -505,7 +506,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        StationStream: Filtered streams.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">st</span>
 
@@ -516,7 +517,7 @@
 
 
 <div class="viewcode-block" id="highpass_filter_trace"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/filtering/index.html#gmprocess.waveform_processing.filtering.highpass_filter_trace">[docs]</a><span class="k">def</span> <span class="nf">highpass_filter_trace</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">filter_order</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">number_of_passes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Highpass filter.</span>
 
 <span class="sd">    Args:</span>
@@ -529,19 +530,19 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        StationTrace: Filtered trace.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">number_of_passes</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">zerophase</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">elif</span> <span class="n">number_of_passes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
         <span class="n">zerophase</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"number_of_passes must be 1 or 2."</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;number_of_passes must be 1 or 2.&quot;</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">freq_dict</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"corner_frequencies"</span><span class="p">)</span>
-        <span class="n">freq</span> <span class="o">=</span> <span class="n">freq_dict</span><span class="p">[</span><span class="s2">"highpass"</span><span class="p">]</span>
+        <span class="n">freq_dict</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;corner_frequencies&quot;</span><span class="p">)</span>
+        <span class="n">freq</span> <span class="o">=</span> <span class="n">freq_dict</span><span class="p">[</span><span class="s2">&quot;highpass&quot;</span><span class="p">]</span>
 
         <span class="n">tr</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-            <span class="nb">type</span><span class="o">=</span><span class="s2">"highpass"</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;highpass&quot;</span><span class="p">,</span>
             <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
             <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span>
             <span class="n">corners</span><span class="o">=</span><span class="n">filter_order</span><span class="p">,</span>
@@ -549,14 +550,14 @@
         <span class="p">)</span>
 
     <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Highpass filter failed with excpetion: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Highpass filter failed with excpetion: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">tr</span></div>
 
 
 <div class="viewcode-block" id="lowpass_filter"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/filtering/index.html#gmprocess.waveform_processing.filtering.lowpass_filter">[docs]</a><span class="k">def</span> <span class="nf">lowpass_filter</span><span class="p">(</span>
     <span class="n">st</span><span class="p">,</span> <span class="n">frequency_domain</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">filter_order</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">number_of_passes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Lowpass filter.</span>
 
 <span class="sd">    Args:</span>
@@ -571,7 +572,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        StationStream: Filtered streams.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">st</span>
 
@@ -582,7 +583,7 @@
 
 
 <div class="viewcode-block" id="lowpass_filter_trace"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/filtering/index.html#gmprocess.waveform_processing.filtering.lowpass_filter_trace">[docs]</a><span class="k">def</span> <span class="nf">lowpass_filter_trace</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">filter_order</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">number_of_passes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Lowpass filter.</span>
 
 <span class="sd">    Args:</span>
@@ -595,19 +596,19 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        StationTrace: Filtered trace.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">number_of_passes</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">zerophase</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">elif</span> <span class="n">number_of_passes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
         <span class="n">zerophase</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"number_of_passes must be 1 or 2."</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;number_of_passes must be 1 or 2.&quot;</span><span class="p">)</span>
 
-    <span class="n">freq_dict</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"corner_frequencies"</span><span class="p">)</span>
-    <span class="n">freq</span> <span class="o">=</span> <span class="n">freq_dict</span><span class="p">[</span><span class="s2">"lowpass"</span><span class="p">]</span>
+    <span class="n">freq_dict</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;corner_frequencies&quot;</span><span class="p">)</span>
+    <span class="n">freq</span> <span class="o">=</span> <span class="n">freq_dict</span><span class="p">[</span><span class="s2">&quot;lowpass&quot;</span><span class="p">]</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">tr</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-            <span class="nb">type</span><span class="o">=</span><span class="s2">"lowpass"</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;lowpass&quot;</span><span class="p">,</span>
             <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
             <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span>
             <span class="n">corners</span><span class="o">=</span><span class="n">filter_order</span><span class="p">,</span>
@@ -615,7 +616,7 @@
         <span class="p">)</span>
 
     <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Lowpass filter failed with excpetion: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Lowpass filter failed with excpetion: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">tr</span></div>
 </pre></div>
         </article>

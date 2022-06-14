@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="gmprocess.io.catalog" href="../../catalog/index.html" /><link rel="prev" title="gmprocess.io.usc" href="../index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.usc.core - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.io.usc.core - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -486,45 +487,48 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.usc.core.is_usc" title="gmprocess.io.usc.core.is_usc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_usc</span></code></a>(filename, config=None, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.usc.core.is_usc" title="gmprocess.io.usc.core.is_usc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_usc</span></code></a>(filename, config=None, **kwargs)</p></td>
 <td><p>Check to see if file is a USC strong motion file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.usc.core._check_header" title="gmprocess.io.usc.core._check_header"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_header</span></code></a>(start, stop, filename)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.usc.core._check_header" title="gmprocess.io.usc.core._check_header"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_check_header</span></code></a>(start, stop, filename)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.usc.core.read_usc" title="gmprocess.io.usc.core.read_usc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_usc</span></code></a>(filename, config=None, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.usc.core.read_usc" title="gmprocess.io.usc.core.read_usc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_usc</span></code></a>(filename, config=None, **kwargs)</p></td>
 <td><p>Read USC V1 strong motion file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.usc.core.read_volume_one" title="gmprocess.io.usc.core.read_volume_one"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_volume_one</span></code></a>(filename, location='', alternate=False)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.usc.core.read_volume_one" title="gmprocess.io.usc.core.read_volume_one"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_volume_one</span></code></a>(filename, location='', alternate=False)</p></td>
 <td><p>Read channel data from USC volume 1 text file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.usc.core._read_channel" title="gmprocess.io.usc.core._read_channel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_read_channel</span></code></a>(filename, line_offset, volume, location='', alternate=False)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.usc.core._read_channel" title="gmprocess.io.usc.core._read_channel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_read_channel</span></code></a>(filename, line_offset, volume, location='', alternate=False)</p></td>
 <td><p>Read channel data from USC V1 text file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.usc.core._get_header_info" title="gmprocess.io.usc.core._get_header_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_header_info</span></code></a>(int_data, flt_data, lines, volume, location='')</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.usc.core._get_header_info" title="gmprocess.io.usc.core._get_header_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_header_info</span></code></a>(int_data, flt_data, lines, volume, location='')</p></td>
 <td><p>Return stats structure from various headers.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.usc.core._dms2dd" title="gmprocess.io.usc.core._dms2dd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_dms2dd</span></code></a>(degrees, minutes, seconds)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.usc.core._dms2dd" title="gmprocess.io.usc.core._dms2dd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_dms2dd</span></code></a>(degrees, minutes, seconds)</p></td>
 <td><p>Helper method for converting degrees, minutes, seconds to decimal.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.usc.core._get_units" title="gmprocess.io.usc.core._get_units"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_units</span></code></a>(line)</p></td>
 <td><p>Parse units from a text line.</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.usc.core.VOLUMES" title="gmprocess.io.usc.core.VOLUMES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VOLUMES</span></code></a></p></td>
@@ -534,15 +538,18 @@
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.usc.core.VOLUMES">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.usc.core.</span></span><span class="sig-name descname"><span class="pre">VOLUMES</span></span><a class="headerlink" href="#gmprocess.io.usc.core.VOLUMES" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.usc.core.USC_ORIENTATIONS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.usc.core.</span></span><span class="sig-name descname"><span class="pre">USC_ORIENTATIONS</span></span><a class="headerlink" href="#gmprocess.io.usc.core.USC_ORIENTATIONS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.usc.core.is_usc">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.usc.core.</span></span><span class="sig-name descname"><span class="pre">is_usc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/usc/core.html#is_usc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.usc.core.is_usc" title="Permalink to this definition">#</a></dt>
@@ -563,10 +570,12 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.usc.core._check_header">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.usc.core.</span></span><span class="sig-name descname"><span class="pre">_check_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/usc/core.html#_check_header"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.usc.core._check_header" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.usc.core.read_usc">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.usc.core.</span></span><span class="sig-name descname"><span class="pre">read_usc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/usc/core.html#read_usc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.usc.core.read_usc" title="Permalink to this definition">#</a></dt>
@@ -588,6 +597,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.usc.core.read_volume_one">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.usc.core.</span></span><span class="sig-name descname"><span class="pre">read_volume_one</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/usc/core.html#read_volume_one"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.usc.core.read_volume_one" title="Permalink to this definition">#</a></dt>
@@ -604,6 +614,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.usc.core._read_channel">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.usc.core.</span></span><span class="sig-name descname"><span class="pre">_read_channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/usc/core.html#_read_channel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.usc.core._read_channel" title="Permalink to this definition">#</a></dt>
@@ -624,6 +635,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.usc.core._get_header_info">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.usc.core.</span></span><span class="sig-name descname"><span class="pre">_get_header_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">int_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flt_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/usc/core.html#_get_header_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.usc.core._get_header_info" title="Permalink to this definition">#</a></dt>
@@ -684,6 +696,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.usc.core._dms2dd">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.usc.core.</span></span><span class="sig-name descname"><span class="pre">_dms2dd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degrees</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minutes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/usc/core.html#_dms2dd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.usc.core._dms2dd" title="Permalink to this definition">#</a></dt>
@@ -704,6 +717,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.usc.core._get_units">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.usc.core.</span></span><span class="sig-name descname"><span class="pre">_get_units</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/usc/core.html#_get_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.usc.core._get_units" title="Permalink to this definition">#</a></dt>
@@ -714,6 +728,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 </section>
 </section>

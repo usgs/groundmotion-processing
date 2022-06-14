@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.utils.base_utils - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.utils.base_utils - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -495,7 +496,7 @@
 
 
 <div class="viewcode-block" id="get_events"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/base_utils/index.html#gmprocess.utils.base_utils.get_events">[docs]</a><span class="k">def</span> <span class="nf">get_events</span><span class="p">(</span><span class="n">eventids</span><span class="p">,</span> <span class="n">textfile</span><span class="p">,</span> <span class="n">eventinfo</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">outdir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""Find the list of events.</span>
+    <span class="sd">&quot;&quot;&quot;Find the list of events.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        eventids (list or None):</span>
@@ -521,7 +522,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        list: ScalarEvent objects.</span>
 
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">eventids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># Get list of events from directory if it has been provided</span>
@@ -558,7 +559,7 @@
     <span class="k">elif</span> <span class="n">outdir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">events</span> <span class="o">=</span> <span class="n">events_from_directory</span><span class="p">(</span><span class="n">outdir</span><span class="p">)</span>
 
-    <span class="c1"># "events" elements are None if an error occurred, e.g., bad event id is specified.</span>
+    <span class="c1"># &quot;events&quot; elements are None if an error occurred, e.g., bad event id is specified.</span>
     <span class="n">events</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">events</span> <span class="k">if</span> <span class="n">e</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">events</span></div>
@@ -570,7 +571,7 @@
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">eventfiles</span><span class="p">):</span>
         <span class="n">events</span> <span class="o">=</span> <span class="n">read_event_json_files</span><span class="p">(</span><span class="n">eventfiles</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">eventids</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">f</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"."</span><span class="p">)]</span>
+        <span class="n">eventids</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">f</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)]</span>
         <span class="k">for</span> <span class="n">eventid</span> <span class="ow">in</span> <span class="n">eventids</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">event</span> <span class="o">=</span> <span class="n">get_event_object</span><span class="p">(</span><span class="n">eventid</span><span class="p">)</span>
@@ -582,15 +583,15 @@
                     <span class="n">old_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">eventid</span><span class="p">)</span>
                     <span class="n">new_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
                     <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">old_dir</span><span class="p">,</span> <span class="n">new_dir</span><span class="p">)</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Directory </span><span class="si">{</span><span class="n">old_dir</span><span class="si">}</span><span class="s2"> has been renamed to </span><span class="si">{</span><span class="n">new_dir</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Directory </span><span class="si">{</span><span class="n">old_dir</span><span class="si">}</span><span class="s2"> has been renamed to </span><span class="si">{</span><span class="n">new_dir</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Could not get info for event id: </span><span class="si">{</span><span class="n">eventid</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not get info for event id: </span><span class="si">{</span><span class="n">eventid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">events</span></div>
 
 
 <div class="viewcode-block" id="get_event_files"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/base_utils/index.html#gmprocess.utils.base_utils.get_event_files">[docs]</a><span class="k">def</span> <span class="nf">get_event_files</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
-    <span class="sd">"""Get list of event.json files found underneath a data directory.</span>
+    <span class="sd">&quot;&quot;&quot;Get list of event.json files found underneath a data directory.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        directory (str):</span>
@@ -600,18 +601,18 @@
 <span class="sd">            the directory under which it is found.</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        List of event.json files.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">eventfiles</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"event.json"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;event.json&quot;</span><span class="p">:</span>
                 <span class="n">fullname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
                 <span class="n">eventfiles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fullname</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">eventfiles</span></div>
 
 
 <div class="viewcode-block" id="parse_event_file"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/base_utils/index.html#gmprocess.utils.base_utils.parse_event_file">[docs]</a><span class="k">def</span> <span class="nf">parse_event_file</span><span class="p">(</span><span class="n">eventfile</span><span class="p">):</span>
-    <span class="sd">"""Parse text file containing basic event information.</span>
+    <span class="sd">&quot;&quot;&quot;Parse text file containing basic event information.</span>
 
 <span class="sd">    Files can contain:</span>
 <span class="sd">        - one column, in which case that column</span>
@@ -634,26 +635,26 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        list: ScalarEvent objects constructed from list of event information.</span>
 
-<span class="sd">    """</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">eventfile</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">","</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">eventfile</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">ncols</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"eventid"</span><span class="p">]</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;eventid&quot;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-            <span class="n">event</span> <span class="o">=</span> <span class="n">get_event_object</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">"eventid"</span><span class="p">])</span>
+            <span class="n">event</span> <span class="o">=</span> <span class="n">get_event_object</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;eventid&quot;</span><span class="p">])</span>
             <span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">ncols</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
         <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">"id"</span><span class="p">,</span>
-            <span class="s2">"time"</span><span class="p">,</span>
-            <span class="s2">"lat"</span><span class="p">,</span>
-            <span class="s2">"lon"</span><span class="p">,</span>
-            <span class="s2">"depth"</span><span class="p">,</span>
-            <span class="s2">"magnitude"</span><span class="p">,</span>
-            <span class="s2">"magnitude_type"</span><span class="p">,</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;time&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;lat&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;lon&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;depth&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;magnitude&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;magnitude_type&quot;</span><span class="p">,</span>
         <span class="p">]</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">"time"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"time"</span><span class="p">])</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">])</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
             <span class="n">rowdict</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
             <span class="n">event</span> <span class="o">=</span> <span class="n">get_event_object</span><span class="p">(</span><span class="n">rowdict</span><span class="p">)</span>
@@ -664,7 +665,7 @@
 
 
 <div class="viewcode-block" id="read_event_json_files"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/base_utils/index.html#gmprocess.utils.base_utils.read_event_json_files">[docs]</a><span class="k">def</span> <span class="nf">read_event_json_files</span><span class="p">(</span><span class="n">eventfiles</span><span class="p">):</span>
-    <span class="sd">"""Read event.json file and return ScalarEvent object.</span>
+    <span class="sd">&quot;&quot;&quot;Read event.json file and return ScalarEvent object.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        eventfiles (list):</span>
@@ -672,23 +673,23 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        list: ScalarEvent objects.</span>
 
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">events</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">eventfile</span> <span class="ow">in</span> <span class="n">eventfiles</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">eventfile</span><span class="p">,</span> <span class="s2">"rt"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">eventfile</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">event</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">origintime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span>
-                    <span class="n">event</span><span class="p">[</span><span class="s2">"properties"</span><span class="p">][</span><span class="s2">"time"</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="n">pytz</span><span class="o">.</span><span class="n">utc</span>
+                    <span class="n">event</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">][</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="n">pytz</span><span class="o">.</span><span class="n">utc</span>
                 <span class="p">)</span>
                 <span class="n">evdict</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s2">"id"</span><span class="p">:</span> <span class="n">event</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span>
-                    <span class="s2">"time"</span><span class="p">:</span> <span class="n">origintime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S.</span><span class="si">%f</span><span class="s2">"</span><span class="p">),</span>
-                    <span class="s2">"lat"</span><span class="p">:</span> <span class="n">event</span><span class="p">[</span><span class="s2">"geometry"</span><span class="p">][</span><span class="s2">"coordinates"</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
-                    <span class="s2">"lon"</span><span class="p">:</span> <span class="n">event</span><span class="p">[</span><span class="s2">"geometry"</span><span class="p">][</span><span class="s2">"coordinates"</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
-                    <span class="s2">"depth"</span><span class="p">:</span> <span class="n">event</span><span class="p">[</span><span class="s2">"geometry"</span><span class="p">][</span><span class="s2">"coordinates"</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span>
-                    <span class="s2">"magnitude"</span><span class="p">:</span> <span class="n">event</span><span class="p">[</span><span class="s2">"properties"</span><span class="p">][</span><span class="s2">"mag"</span><span class="p">],</span>
-                    <span class="s2">"magnitude_type"</span><span class="p">:</span> <span class="n">event</span><span class="p">[</span><span class="s2">"properties"</span><span class="p">][</span><span class="s2">"magType"</span><span class="p">],</span>
+                    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">event</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+                    <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">origintime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S.</span><span class="si">%f</span><span class="s2">&quot;</span><span class="p">),</span>
+                    <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="n">event</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">][</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="n">event</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">][</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="n">event</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">][</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span>
+                    <span class="s2">&quot;magnitude&quot;</span><span class="p">:</span> <span class="n">event</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">][</span><span class="s2">&quot;mag&quot;</span><span class="p">],</span>
+                    <span class="s2">&quot;magnitude_type&quot;</span><span class="p">:</span> <span class="n">event</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">][</span><span class="s2">&quot;magType&quot;</span><span class="p">],</span>
                 <span class="p">}</span>
                 <span class="n">event</span> <span class="o">=</span> <span class="n">get_event_object</span><span class="p">(</span><span class="n">evdict</span><span class="p">)</span>
 

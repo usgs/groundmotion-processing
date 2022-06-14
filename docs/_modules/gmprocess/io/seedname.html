@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.seedname - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.io.seedname - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -490,7 +491,7 @@
 <div class="viewcode-block" id="get_channel_name"><a class="viewcode-back" href="../../../autoapi/gmprocess/io/seedname/index.html#gmprocess.io.seedname.get_channel_name">[docs]</a><span class="k">def</span> <span class="nf">get_channel_name</span><span class="p">(</span>
     <span class="n">sample_rate</span><span class="p">,</span> <span class="n">is_acceleration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_vertical</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_north</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">):</span>
-    <span class="sd">"""Create a SEED compliant channel name.</span>
+    <span class="sd">&quot;&quot;&quot;Create a SEED compliant channel name.</span>
 
 <span class="sd">    SEED spec: http://www.fdsn.org/seed_manual/SEEDManual_V2.4_Appendix-A.pdf</span>
 
@@ -503,45 +504,45 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        str: Three character channel name according to SEED spec.</span>
 
-<span class="sd">    """</span>
-    <span class="n">band</span> <span class="o">=</span> <span class="s2">"H"</span>  <span class="c1"># High Broad Band</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">band</span> <span class="o">=</span> <span class="s2">&quot;H&quot;</span>  <span class="c1"># High Broad Band</span>
     <span class="k">if</span> <span class="n">sample_rate</span> <span class="o">&lt;</span> <span class="mi">80</span> <span class="ow">and</span> <span class="n">sample_rate</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
-        <span class="n">band</span> <span class="o">=</span> <span class="s2">"B"</span>
+        <span class="n">band</span> <span class="o">=</span> <span class="s2">&quot;B&quot;</span>
 
-    <span class="n">code</span> <span class="o">=</span> <span class="s2">"N"</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;N&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_acceleration</span><span class="p">:</span>
-        <span class="n">code</span> <span class="o">=</span> <span class="s2">"H"</span>  <span class="c1"># low-gain velocity sensors are very rare</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;H&quot;</span>  <span class="c1"># low-gain velocity sensors are very rare</span>
 
     <span class="k">if</span> <span class="n">is_vertical</span><span class="p">:</span>
-        <span class="n">number</span> <span class="o">=</span> <span class="s2">"Z"</span>
+        <span class="n">number</span> <span class="o">=</span> <span class="s2">&quot;Z&quot;</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">number</span> <span class="o">=</span> <span class="s2">"2"</span>
+        <span class="n">number</span> <span class="o">=</span> <span class="s2">&quot;2&quot;</span>
         <span class="k">if</span> <span class="n">is_north</span><span class="p">:</span>
-            <span class="n">number</span> <span class="o">=</span> <span class="s2">"1"</span>
+            <span class="n">number</span> <span class="o">=</span> <span class="s2">&quot;1&quot;</span>
 
     <span class="n">channel</span> <span class="o">=</span> <span class="n">band</span> <span class="o">+</span> <span class="n">code</span> <span class="o">+</span> <span class="n">number</span>
     <span class="k">return</span> <span class="n">channel</span></div>
 
 
 <div class="viewcode-block" id="get_units_type"><a class="viewcode-back" href="../../../autoapi/gmprocess/io/seedname/index.html#gmprocess.io.seedname.get_units_type">[docs]</a><span class="k">def</span> <span class="nf">get_units_type</span><span class="p">(</span><span class="n">channel</span><span class="p">):</span>
-    <span class="sd">"""</span>
-<span class="sd">    Determines the units type ('acc' or 'vel') based on the three-character</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determines the units type (&#39;acc&#39; or &#39;vel&#39;) based on the three-character</span>
 <span class="sd">    channel code. The units type indicates whether the instrument natively</span>
 <span class="sd">    measures acceleration or velocity.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">inst_code</span> <span class="o">=</span> <span class="n">channel</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">ACC_CODES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"N"</span><span class="p">]</span>
-    <span class="n">VEL_CODES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"H"</span><span class="p">,</span> <span class="s2">"L"</span><span class="p">,</span> <span class="s2">"M"</span><span class="p">,</span> <span class="s2">"P"</span><span class="p">]</span>
+    <span class="n">ACC_CODES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;N&quot;</span><span class="p">]</span>
+    <span class="n">VEL_CODES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="s2">&quot;P&quot;</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">inst_code</span> <span class="ow">in</span> <span class="n">ACC_CODES</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">"acc"</span>
+        <span class="k">return</span> <span class="s2">&quot;acc&quot;</span>
     <span class="k">elif</span> <span class="n">inst_code</span> <span class="ow">in</span> <span class="n">VEL_CODES</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">"vel"</span>
+        <span class="k">return</span> <span class="s2">&quot;vel&quot;</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Unsupported instrument code."</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unsupported instrument code.&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="is_channel_north"><a class="viewcode-back" href="../../../autoapi/gmprocess/io/seedname/index.html#gmprocess.io.seedname.is_channel_north">[docs]</a><span class="k">def</span> <span class="nf">is_channel_north</span><span class="p">(</span><span class="n">angle</span><span class="p">):</span>
-    <span class="sd">"""Determine whether horizontal angle is closer to North/South than</span>
+    <span class="sd">&quot;&quot;&quot;Determine whether horizontal angle is closer to North/South than</span>
 <span class="sd">    East/West.</span>
 
 <span class="sd">    Args:</span>
@@ -551,7 +552,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        bool:</span>
 <span class="sd">            True if closer to North/South than East/West, False otherwise.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">angle</span> <span class="o">&gt;</span> <span class="mi">315</span> <span class="ow">or</span> <span class="n">angle</span> <span class="o">&lt;</span> <span class="mi">45</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">angle</span> <span class="o">&gt;</span> <span class="mi">135</span> <span class="ow">and</span> <span class="n">angle</span> <span class="o">&lt;</span> <span class="mi">225</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">else</span><span class="p">:</span>

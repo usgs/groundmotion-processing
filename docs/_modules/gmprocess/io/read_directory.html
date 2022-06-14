@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.read_directory - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.io.read_directory - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -482,10 +483,10 @@
           <h1>Source code for gmprocess.io.read_directory</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Module for methods for reading in directories of data, particularly messy data</span>
 <span class="sd">from CESMD.</span>
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">glob</span>
@@ -496,11 +497,11 @@
 <span class="kn">from</span> <span class="nn">gmprocess.io.read</span> <span class="kn">import</span> <span class="n">read_data</span>
 <span class="kn">from</span> <span class="nn">gmprocess.io.utils</span> <span class="kn">import</span> <span class="n">flatten_directory</span>
 
-<span class="n">EXT_IGNORE</span> <span class="o">=</span> <span class="p">[</span><span class="s2">".gif"</span><span class="p">,</span> <span class="s2">".csv"</span><span class="p">,</span> <span class="s2">".dis"</span><span class="p">,</span> <span class="s2">".abc"</span><span class="p">,</span> <span class="s2">".zip"</span><span class="p">,</span> <span class="s2">".rs2"</span><span class="p">,</span> <span class="s2">".fs1"</span><span class="p">,</span> <span class="s2">".xml"</span><span class="p">]</span>
+<span class="n">EXT_IGNORE</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;.gif&quot;</span><span class="p">,</span> <span class="s2">&quot;.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;.dis&quot;</span><span class="p">,</span> <span class="s2">&quot;.abc&quot;</span><span class="p">,</span> <span class="s2">&quot;.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;.rs2&quot;</span><span class="p">,</span> <span class="s2">&quot;.fs1&quot;</span><span class="p">,</span> <span class="s2">&quot;.xml&quot;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="directory_to_streams"><a class="viewcode-back" href="../../../autoapi/gmprocess/io/read_directory/index.html#gmprocess.io.read_directory.directory_to_streams">[docs]</a><span class="k">def</span> <span class="nf">directory_to_streams</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""Read in a directory of data to a list of streams.</span>
+    <span class="sd">&quot;&quot;&quot;Read in a directory of data to a list of streams.</span>
 
 <span class="sd">    Note:</span>
 <span class="sd">    If the directory only includes files that are readable by this library</span>
@@ -519,13 +520,13 @@
 <span class="sd">                List of unprocessed files,</span>
 <span class="sd">                List of errors associated with trying to read unprocessed</span>
 <span class="sd">                files).</span>
-<span class="sd">    """</span>
-    <span class="c1"># Use a temp dir so that we don't modify data on disk since that may not be</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Use a temp dir so that we don&#39;t modify data on disk since that may not be</span>
     <span class="c1"># expected or desired in all cases. We create the temporary directory in</span>
     <span class="c1"># the parent directory, which permits using shutil.copytree to duplicate</span>
     <span class="c1"># the data prior to processing.</span>
     <span class="n">intermediate_dir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">(</span><span class="nb">dir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">directory</span><span class="p">))</span>
-    <span class="n">temp_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">intermediate_dir</span><span class="p">,</span> <span class="s2">"directory_to_streams"</span><span class="p">)</span>
+    <span class="n">temp_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">intermediate_dir</span><span class="p">,</span> <span class="s2">&quot;directory_to_streams&quot;</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">temp_dir</span><span class="p">)</span>
         <span class="n">flatten_directory</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">)</span>
@@ -535,15 +536,15 @@
         <span class="n">streams</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">unprocessed_files</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">unprocessed_file_errors</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="s2">"*"</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">)):</span>
             <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
             <span class="n">file_ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">file_name</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">file_ext</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">EXT_IGNORE</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Attempting to read: </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Attempting to read: </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                     <span class="n">streams</span> <span class="o">+=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
-                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Failed to read file: </span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to read file: </span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                     <span class="n">unprocessed_files</span> <span class="o">+=</span> <span class="p">[</span><span class="n">file_path</span><span class="p">]</span>
                     <span class="n">unprocessed_file_errors</span> <span class="o">+=</span> <span class="p">[</span><span class="n">ex</span><span class="p">]</span>
 

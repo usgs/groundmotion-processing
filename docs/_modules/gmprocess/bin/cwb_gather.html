@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.bin.cwb_gather - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.bin.cwb_gather - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -500,12 +501,12 @@
 
 
 <div class="viewcode-block" id="read_stations"><a class="viewcode-back" href="../../../autoapi/gmprocess/bin/cwb_gather/index.html#gmprocess.bin.cwb_gather.read_stations">[docs]</a><span class="k">def</span> <span class="nf">read_stations</span><span class="p">():</span>
-    <span class="n">stationfile</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">".."</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"GDMSstations.json"</span>
-    <span class="n">jdict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">stationfile</span><span class="p">,</span> <span class="s2">"rt"</span><span class="p">))</span>
+    <span class="n">stationfile</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;..&quot;</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span> <span class="o">/</span> <span class="s2">&quot;GDMSstations.json&quot;</span>
+    <span class="n">jdict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">stationfile</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">))</span>
     <span class="n">stations</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">station</span> <span class="ow">in</span> <span class="n">jdict</span><span class="p">:</span>
         <span class="n">deployment</span> <span class="o">=</span> <span class="n">station</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">network</span> <span class="o">=</span> <span class="s2">"TW"</span>
+        <span class="n">network</span> <span class="o">=</span> <span class="s2">&quot;TW&quot;</span>
         <span class="n">station_code</span> <span class="o">=</span> <span class="n">station</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">latitude</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">station</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
         <span class="n">longitude</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">station</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
@@ -513,20 +514,20 @@
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">elevation</span><span class="p">):</span>
             <span class="n">elevation</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="n">station_dict</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">"network"</span><span class="p">:</span> <span class="n">network</span><span class="p">,</span>
-            <span class="s2">"deployment"</span><span class="p">:</span> <span class="n">deployment</span><span class="p">,</span>
-            <span class="s2">"station"</span><span class="p">:</span> <span class="n">station_code</span><span class="p">,</span>
-            <span class="s2">"latitude"</span><span class="p">:</span> <span class="n">latitude</span><span class="p">,</span>
-            <span class="s2">"longitude"</span><span class="p">:</span> <span class="n">longitude</span><span class="p">,</span>
-            <span class="s2">"elevation"</span><span class="p">:</span> <span class="n">elevation</span><span class="p">,</span>
+            <span class="s2">&quot;network&quot;</span><span class="p">:</span> <span class="n">network</span><span class="p">,</span>
+            <span class="s2">&quot;deployment&quot;</span><span class="p">:</span> <span class="n">deployment</span><span class="p">,</span>
+            <span class="s2">&quot;station&quot;</span><span class="p">:</span> <span class="n">station_code</span><span class="p">,</span>
+            <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="n">latitude</span><span class="p">,</span>
+            <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="n">longitude</span><span class="p">,</span>
+            <span class="s2">&quot;elevation&quot;</span><span class="p">:</span> <span class="n">elevation</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">network</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">station_code</span><span class="si">}</span><span class="s2">"</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">network</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">station_code</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">stations</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_dict</span>
     <span class="k">return</span> <span class="n">stations</span></div>
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../autoapi/gmprocess/bin/cwb_gather/index.html#gmprocess.bin.cwb_gather.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">desc</span> <span class="o">=</span> <span class="s2">"""Convert CWB data from web site into form ingestible by gmprocess.</span>
+    <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Convert CWB data from web site into form ingestible by gmprocess.</span>
 
 <span class="s2">    To obtain CWB strong motion data, create an account on the CWB GDMS-2020 website:</span>
 
@@ -534,58 +535,58 @@
 
 <span class="s2">    To retrieve strong motion response files:</span>
 
-<span class="s2">    Click on the "Data" icon, then click on "Instrument Response". </span>
+<span class="s2">    Click on the &quot;Data&quot; icon, then click on &quot;Instrument Response&quot;. </span>
 
-<span class="s2">     - For "Output Format", choose "RESP file".</span>
-<span class="s2">     - For "Network", choose "CWBSN".</span>
-<span class="s2">     - For "Station", check "All Stations".</span>
-<span class="s2">     - For "Location", choose "*" for all locations.</span>
-<span class="s2">     - For "Channel", choose "HN?" for all strong motion stations.</span>
-<span class="s2">     - For "Start Time (UTC)", enter a date before the event of interest.</span>
-<span class="s2">     - For "End Time (UTC)", enter a date after the event of interest.</span>
-<span class="s2">     - For "Label", enter any string that is descriptive to you.</span>
+<span class="s2">     - For &quot;Output Format&quot;, choose &quot;RESP file&quot;.</span>
+<span class="s2">     - For &quot;Network&quot;, choose &quot;CWBSN&quot;.</span>
+<span class="s2">     - For &quot;Station&quot;, check &quot;All Stations&quot;.</span>
+<span class="s2">     - For &quot;Location&quot;, choose &quot;*&quot; for all locations.</span>
+<span class="s2">     - For &quot;Channel&quot;, choose &quot;HN?&quot; for all strong motion stations.</span>
+<span class="s2">     - For &quot;Start Time (UTC)&quot;, enter a date before the event of interest.</span>
+<span class="s2">     - For &quot;End Time (UTC)&quot;, enter a date after the event of interest.</span>
+<span class="s2">     - For &quot;Label&quot;, enter any string that is descriptive to you.</span>
 
-<span class="s2">     Click the "Submit" button, and you should see a "Success!" pop up.</span>
+<span class="s2">     Click the &quot;Submit&quot; button, and you should see a &quot;Success!&quot; pop up.</span>
 <span class="s2">     Next will be a screen showing a list of all of your downloads. Response data</span>
 <span class="s2">     links should appear fairly quickly - click on the name of the generated gzipped</span>
-<span class="s2">     "tarball" file to download it.</span>
+<span class="s2">     &quot;tarball&quot; file to download it.</span>
 
 <span class="s2">    To retrieve a strong motion data file:</span>
 
-<span class="s2">    Click on the "Data" icon, then click on "Multi-Station Waveform Data". </span>
+<span class="s2">    Click on the &quot;Data&quot; icon, then click on &quot;Multi-Station Waveform Data&quot;. </span>
 
-<span class="s2">     - For "Output Format", choose "MiniSEED".</span>
-<span class="s2">     - For "Network", choose "CWBSN".</span>
-<span class="s2">     - For "Station", check "All Stations".</span>
-<span class="s2">     - For "Location", choose "*" for all locations.</span>
-<span class="s2">     - For "Channel", choose "HN?" for all strong motion stations.</span>
-<span class="s2">     - For "Start Time (UTC)", enter a time 30 seconds before the origin time of </span>
+<span class="s2">     - For &quot;Output Format&quot;, choose &quot;MiniSEED&quot;.</span>
+<span class="s2">     - For &quot;Network&quot;, choose &quot;CWBSN&quot;.</span>
+<span class="s2">     - For &quot;Station&quot;, check &quot;All Stations&quot;.</span>
+<span class="s2">     - For &quot;Location&quot;, choose &quot;*&quot; for all locations.</span>
+<span class="s2">     - For &quot;Channel&quot;, choose &quot;HN?&quot; for all strong motion stations.</span>
+<span class="s2">     - For &quot;Start Time (UTC)&quot;, enter a time 30 seconds before the origin time of </span>
 <span class="s2">       interest.</span>
-<span class="s2">     - For "End Time (UTC)", enter a time 7 minutes after the origin time of interest.</span>
-<span class="s2">     - For "Label", enter any string that is descriptive to you.</span>
+<span class="s2">     - For &quot;End Time (UTC)&quot;, enter a time 7 minutes after the origin time of interest.</span>
+<span class="s2">     - For &quot;Label&quot;, enter any string that is descriptive to you.</span>
 
-<span class="s2">     Click the "Submit" button, and you should see a "Success!" pop up.</span>
+<span class="s2">     Click the &quot;Submit&quot; button, and you should see a &quot;Success!&quot; pop up.</span>
 <span class="s2">     Next will be a screen showing a list of all of your downloads. Data</span>
 <span class="s2">     links will take a few minutes to process - click on the name of the generated </span>
 <span class="s2">     miniseed file to download it.</span>
 
 <span class="s2">     Pass these files along with the ComCat ID as described below.</span>
-<span class="s2">    """</span>
+<span class="s2">    &quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
         <span class="n">description</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span>
         <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">RawDescriptionHelpFormatter</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s2">"event"</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">"ComCat Event ID"</span><span class="p">,</span>
+        <span class="s2">&quot;event&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;ComCat Event ID&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s2">"seedfile"</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">"Miniseed file containing all relevant data"</span><span class="p">,</span>
+        <span class="s2">&quot;seedfile&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Miniseed file containing all relevant data&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s2">"tarball"</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">"Tarball containing response files"</span><span class="p">,</span>
+        <span class="s2">&quot;tarball&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Tarball containing response files&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
@@ -593,15 +594,15 @@
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
     <span class="n">stations</span> <span class="o">=</span> <span class="n">read_stations</span><span class="p">()</span>
-    <span class="n">CONF_PATH</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">".gmprocess"</span>
-    <span class="n">PROJECTS_FILE</span> <span class="o">=</span> <span class="n">CONF_PATH</span> <span class="o">/</span> <span class="s2">"projects.conf"</span>
-    <span class="n">projects_conf</span> <span class="o">=</span> <span class="n">configobj</span><span class="o">.</span><span class="n">ConfigObj</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">PROJECTS_FILE</span><span class="p">),</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
-    <span class="n">project</span> <span class="o">=</span> <span class="n">projects_conf</span><span class="p">[</span><span class="s2">"project"</span><span class="p">]</span>
-    <span class="n">current_project</span> <span class="o">=</span> <span class="n">projects_conf</span><span class="p">[</span><span class="s2">"projects"</span><span class="p">][</span><span class="n">project</span><span class="p">]</span>
-    <span class="n">data_parts</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">PurePath</span><span class="p">(</span><span class="n">current_project</span><span class="p">[</span><span class="s2">"data_path"</span><span class="p">])</span><span class="o">.</span><span class="n">parts</span>
+    <span class="n">CONF_PATH</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;.gmprocess&quot;</span>
+    <span class="n">PROJECTS_FILE</span> <span class="o">=</span> <span class="n">CONF_PATH</span> <span class="o">/</span> <span class="s2">&quot;projects.conf&quot;</span>
+    <span class="n">projects_conf</span> <span class="o">=</span> <span class="n">configobj</span><span class="o">.</span><span class="n">ConfigObj</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">PROJECTS_FILE</span><span class="p">),</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="n">projects_conf</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">]</span>
+    <span class="n">current_project</span> <span class="o">=</span> <span class="n">projects_conf</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">project</span><span class="p">]</span>
+    <span class="n">data_parts</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">PurePath</span><span class="p">(</span><span class="n">current_project</span><span class="p">[</span><span class="s2">&quot;data_path&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">parts</span>
     <span class="n">data_path</span> <span class="o">=</span> <span class="n">CONF_PATH</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="o">*</span><span class="n">data_parts</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
     <span class="n">event_path</span> <span class="o">=</span> <span class="n">data_path</span> <span class="o">/</span> <span class="n">args</span><span class="o">.</span><span class="n">event</span>
-    <span class="n">raw_path</span> <span class="o">=</span> <span class="n">event_path</span> <span class="o">/</span> <span class="s2">"raw"</span>
+    <span class="n">raw_path</span> <span class="o">=</span> <span class="n">event_path</span> <span class="o">/</span> <span class="s2">&quot;raw&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">event_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="n">event_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
         <span class="n">raw_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
@@ -609,23 +610,23 @@
     <span class="c1"># some of these files are returned from CWB web site in time chunks</span>
     <span class="c1"># using this merge method joins up all of the traces with the same</span>
     <span class="c1"># NSCL. Thanks Obspy!</span>
-    <span class="n">stream</span> <span class="o">=</span> <span class="n">raw_stream</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">fill_value</span><span class="o">=</span><span class="s2">"interpolate"</span><span class="p">,</span> <span class="n">interpolation_samples</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">stream</span> <span class="o">=</span> <span class="n">raw_stream</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot;interpolate&quot;</span><span class="p">,</span> <span class="n">interpolation_samples</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
         <span class="n">network</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span>
         <span class="n">station</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span>
         <span class="n">channel</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span>
         <span class="n">location</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span>
-        <span class="n">starttime_str</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y%m</span><span class="si">%d</span><span class="s2">T%H%M%SZ"</span><span class="p">)</span>
-        <span class="n">endtime_str</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y%m</span><span class="si">%d</span><span class="s2">T%H%M%SZ"</span><span class="p">)</span>
+        <span class="n">starttime_str</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">T%H%M%SZ&quot;</span><span class="p">)</span>
+        <span class="n">endtime_str</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">T%H%M%SZ&quot;</span><span class="p">)</span>
         <span class="n">fname</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">network</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">station</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">location</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">channel</span><span class="si">}</span><span class="s2">__"</span>
-            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">starttime_str</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">endtime_str</span><span class="si">}</span><span class="s2">.mseed"</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">network</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">station</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">location</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">channel</span><span class="si">}</span><span class="s2">__&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">starttime_str</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">endtime_str</span><span class="si">}</span><span class="s2">.mseed&quot;</span>
         <span class="p">)</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="n">raw_path</span> <span class="o">/</span> <span class="n">fname</span>
-        <span class="n">trace</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"MSEED"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span><span class="si">}</span><span class="s2"> channels written to </span><span class="si">{</span><span class="n">raw_path</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+        <span class="n">trace</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;MSEED&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span><span class="si">}</span><span class="s2"> channels written to </span><span class="si">{</span><span class="n">raw_path</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
     <span class="n">responses</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">with</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">tarball</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">tarball</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">tarball</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">tarball</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">tarball</span><span class="o">.</span><span class="n">getmembers</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">member</span><span class="o">.</span><span class="n">isdir</span><span class="p">():</span>
                 <span class="k">continue</span>
@@ -635,15 +636,15 @@
                 <span class="n">netcode</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">code</span>
                 <span class="n">station</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">stations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">stacode</span> <span class="o">=</span> <span class="n">station</span><span class="o">.</span><span class="n">code</span>
-                <span class="n">resp_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">netcode</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">stacode</span><span class="si">}</span><span class="s2">"</span>
+                <span class="n">resp_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">netcode</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">stacode</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="k">if</span> <span class="n">resp_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stations</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">"No station coordinates available for station </span><span class="si">{</span><span class="n">resp_name</span><span class="si">}</span><span class="s2">. Skipping."</span>
+                        <span class="sa">f</span><span class="s2">&quot;No station coordinates available for station </span><span class="si">{</span><span class="n">resp_name</span><span class="si">}</span><span class="s2">. Skipping.&quot;</span>
                     <span class="p">)</span>
                     <span class="k">continue</span>
-                <span class="n">latitude</span> <span class="o">=</span> <span class="n">stations</span><span class="p">[</span><span class="n">resp_name</span><span class="p">][</span><span class="s2">"latitude"</span><span class="p">]</span>
-                <span class="n">longitude</span> <span class="o">=</span> <span class="n">stations</span><span class="p">[</span><span class="n">resp_name</span><span class="p">][</span><span class="s2">"longitude"</span><span class="p">]</span>
-                <span class="n">elevation</span> <span class="o">=</span> <span class="n">stations</span><span class="p">[</span><span class="n">resp_name</span><span class="p">][</span><span class="s2">"elevation"</span><span class="p">]</span>
+                <span class="n">latitude</span> <span class="o">=</span> <span class="n">stations</span><span class="p">[</span><span class="n">resp_name</span><span class="p">][</span><span class="s2">&quot;latitude&quot;</span><span class="p">]</span>
+                <span class="n">longitude</span> <span class="o">=</span> <span class="n">stations</span><span class="p">[</span><span class="n">resp_name</span><span class="p">][</span><span class="s2">&quot;longitude&quot;</span><span class="p">]</span>
+                <span class="n">elevation</span> <span class="o">=</span> <span class="n">stations</span><span class="p">[</span><span class="n">resp_name</span><span class="p">][</span><span class="s2">&quot;elevation&quot;</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">resp_name</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">:</span>
                     <span class="n">old_inventory</span> <span class="o">=</span> <span class="n">responses</span><span class="p">[</span><span class="n">resp_name</span><span class="p">]</span>
                     <span class="n">old_station</span> <span class="o">=</span> <span class="n">old_inventory</span><span class="o">.</span><span class="n">networks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -664,26 +665,26 @@
                             <span class="n">channel</span><span class="o">.</span><span class="n">elevation</span> <span class="o">=</span> <span class="n">elevation</span>
                     <span class="n">responses</span><span class="p">[</span><span class="n">resp_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">inventory</span>
     <span class="k">for</span> <span class="n">resp_name</span><span class="p">,</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">responses</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">fname</span> <span class="o">=</span> <span class="n">resp_name</span> <span class="o">+</span> <span class="s2">".xml"</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">resp_name</span> <span class="o">+</span> <span class="s2">&quot;.xml&quot;</span>
         <span class="n">filename</span> <span class="o">=</span> <span class="n">raw_path</span> <span class="o">/</span> <span class="n">fname</span>
-        <span class="n">response</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"stationxml"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">responses</span><span class="p">)</span><span class="si">}</span><span class="s2"> station responses written to </span><span class="si">{</span><span class="n">raw_path</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;stationxml&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">responses</span><span class="p">)</span><span class="si">}</span><span class="s2"> station responses written to </span><span class="si">{</span><span class="n">raw_path</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
     <span class="n">scalar_event</span> <span class="o">=</span> <span class="n">get_event_object</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">event</span><span class="p">)</span>
     <span class="n">create_event_file</span><span class="p">(</span><span class="n">scalar_event</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">event_path</span><span class="p">))</span>
-    <span class="n">event_file</span> <span class="o">=</span> <span class="n">event_path</span> <span class="o">/</span> <span class="s2">"event.json"</span>
-    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Created event file at </span><span class="si">{</span><span class="n">event_file</span><span class="si">}</span><span class="s2">."</span>
+    <span class="n">event_file</span> <span class="o">=</span> <span class="n">event_path</span> <span class="o">/</span> <span class="s2">&quot;event.json&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Created event file at </span><span class="si">{</span><span class="n">event_file</span><span class="si">}</span><span class="s2">.&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">event_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Error: Failed to create </span><span class="si">{</span><span class="n">event_file</span><span class="si">}</span><span class="s2">."</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Error: Failed to create </span><span class="si">{</span><span class="n">event_file</span><span class="si">}</span><span class="s2">.&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
     <span class="n">download_rupture_file</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">event</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">event_path</span><span class="p">))</span>
-    <span class="n">rupture_file</span> <span class="o">=</span> <span class="n">event_path</span> <span class="o">/</span> <span class="s2">"rupture.json"</span>
-    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Created rupture file at </span><span class="si">{</span><span class="n">rupture_file</span><span class="si">}</span><span class="s2">."</span>
+    <span class="n">rupture_file</span> <span class="o">=</span> <span class="n">event_path</span> <span class="o">/</span> <span class="s2">&quot;rupture.json&quot;</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Created rupture file at </span><span class="si">{</span><span class="n">rupture_file</span><span class="si">}</span><span class="s2">.&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">rupture_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Error: Failed to create </span><span class="si">{</span><span class="n">rupture_file</span><span class="si">}</span><span class="s2">."</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Error: Failed to create </span><span class="si">{</span><span class="n">rupture_file</span><span class="si">}</span><span class="s2">.&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
         </article>

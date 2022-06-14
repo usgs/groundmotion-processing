@@ -26,6 +26,7 @@ Attributes
    gmprocess.utils.report_utils.LAND_COLOR
    gmprocess.utils.report_utils.PASSED_COLOR
    gmprocess.utils.report_utils.FAILED_COLOR
+   gmprocess.utils.report_utils.EVENT_COLOR
    gmprocess.utils.report_utils.MAP_PADDING
 
 
@@ -46,6 +47,11 @@ Attributes
 
 .. py:data:: FAILED_COLOR
    :annotation: = #ff2222
+
+   
+
+.. py:data:: EVENT_COLOR
+   :annotation: = #FFFF00
 
    
 

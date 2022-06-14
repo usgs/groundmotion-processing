@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.metrics.metrics_controller - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.metrics.metrics_controller - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -507,10 +508,10 @@
     <span class="n">reverse_dict</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">channel_number</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="k">for</span> <span class="n">channel_name</span> <span class="ow">in</span> <span class="n">channel_names</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">channel_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"Z"</span><span class="p">):</span>
-            <span class="n">channel_dict</span><span class="p">[</span><span class="s2">"Z"</span><span class="p">]</span> <span class="o">=</span> <span class="n">channel_name</span>
+        <span class="k">if</span> <span class="n">channel_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">):</span>
+            <span class="n">channel_dict</span><span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">channel_name</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">cname</span> <span class="o">=</span> <span class="s2">"H</span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="n">channel_number</span>
+            <span class="n">cname</span> <span class="o">=</span> <span class="s2">&quot;H</span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">channel_number</span>
             <span class="n">channel_number</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">channel_dict</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span> <span class="o">=</span> <span class="n">channel_name</span>
 
@@ -519,9 +520,9 @@
 
 
 <div class="viewcode-block" id="MetricsController"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/metrics_controller/index.html#gmprocess.metrics.metrics_controller.MetricsController">[docs]</a><span class="k">class</span> <span class="nc">MetricsController</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class for compiling metrics.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -535,7 +536,7 @@
         <span class="n">allow_nans</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">"""Initialize MetricsController class.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize MetricsController class.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            imts (list):</span>
@@ -564,7 +565,7 @@
 
 <span class="sd">        Raises:</span>
 <span class="sd">            PGMException: Requires an event for radial_transfer imcs.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">imts</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
             <span class="n">imts</span> <span class="o">=</span> <span class="p">[</span><span class="n">imts</span><span class="p">]</span>
@@ -574,9 +575,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">clean_imts</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">imts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imts</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">imcs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">imc</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">imc</span> <span class="ow">in</span> <span class="n">imcs</span><span class="p">])))</span>
-        <span class="k">if</span> <span class="s2">"radial_transverse"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">imcs</span> <span class="ow">and</span> <span class="n">event</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;radial_transverse&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">imcs</span> <span class="ow">and</span> <span class="n">event</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span>
-                <span class="s2">"MetricsController: Event is required for radial_transverse imc"</span>
+                <span class="s2">&quot;MetricsController: Event is required for radial_transverse imc&quot;</span>
             <span class="p">)</span>
 
         <span class="c1"># dictionary to serve as translator between</span>
@@ -592,17 +593,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span> <span class="o">=</span> <span class="n">bandwidth</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">allow_nans</span> <span class="o">=</span> <span class="n">allow_nans</span>
         <span class="k">if</span> <span class="n">damping</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">damping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">"metrics"</span><span class="p">][</span><span class="s2">"sa"</span><span class="p">][</span><span class="s2">"damping"</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">damping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;sa&quot;</span><span class="p">][</span><span class="s2">&quot;damping&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">smooth_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">smooth_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">"metrics"</span><span class="p">][</span><span class="s2">"fas"</span><span class="p">][</span><span class="s2">"smoothing"</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">smooth_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;fas&quot;</span><span class="p">][</span><span class="s2">&quot;smoothing&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">bandwidth</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">"metrics"</span><span class="p">][</span><span class="s2">"fas"</span><span class="p">][</span><span class="s2">"bandwidth"</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;fas&quot;</span><span class="p">][</span><span class="s2">&quot;bandwidth&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">allow_nans</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">allow_nans</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">"metrics"</span><span class="p">][</span><span class="s2">"fas"</span><span class="p">][</span><span class="s2">"allow_nans"</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">allow_nans</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;fas&quot;</span><span class="p">][</span><span class="s2">&quot;allow_nans&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_available_imts</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_available_imcs</span> <span class="o">=</span> <span class="n">gather_pgms</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_step_sets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_steps</span><span class="p">()</span>
-        <span class="n">imtstr</span> <span class="o">=</span> <span class="s2">"_"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">imts</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s2">"_sa"</span> <span class="ow">in</span> <span class="n">imtstr</span> <span class="ow">or</span> <span class="n">imtstr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"sa"</span><span class="p">):</span>
+        <span class="n">imtstr</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">imts</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;_sa&quot;</span> <span class="ow">in</span> <span class="n">imtstr</span> <span class="ow">or</span> <span class="n">imtstr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;sa&quot;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_times</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_time</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_times</span> <span class="o">=</span> <span class="kc">None</span>
@@ -612,7 +613,7 @@
 
 <div class="viewcode-block" id="MetricsController.from_config"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/metrics_controller/index.html#gmprocess.metrics.metrics_controller.MetricsController.from_config">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">timeseries</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create class instance from a config. Can be a custom config or the</span>
 <span class="sd">        default config found in ~/.gmprocess/config.yml.</span>
 
@@ -632,85 +633,85 @@
 <span class="sd">        Notes:</span>
 <span class="sd">            Custom configs must be in the following format:</span>
 <span class="sd">            {</span>
-<span class="sd">                'metrics':</span>
-<span class="sd">                    'output_imcs': &lt;list&gt;,</span>
-<span class="sd">                    'output_imts': &lt;list&gt;,</span>
-<span class="sd">                    'sa':{</span>
-<span class="sd">                        'damping': &lt;float&gt;,</span>
-<span class="sd">                        'periods': {</span>
-<span class="sd">                            'start': &lt;float&gt;,</span>
-<span class="sd">                            'stop': &lt;float&gt;,</span>
-<span class="sd">                            'num': &lt;float&gt;,</span>
-<span class="sd">                            'spacing': &lt;string&gt;,</span>
-<span class="sd">                            'use_array': &lt;bool&gt;,</span>
-<span class="sd">                            'defined_periods': &lt;list&gt;,</span>
+<span class="sd">                &#39;metrics&#39;:</span>
+<span class="sd">                    &#39;output_imcs&#39;: &lt;list&gt;,</span>
+<span class="sd">                    &#39;output_imts&#39;: &lt;list&gt;,</span>
+<span class="sd">                    &#39;sa&#39;:{</span>
+<span class="sd">                        &#39;damping&#39;: &lt;float&gt;,</span>
+<span class="sd">                        &#39;periods&#39;: {</span>
+<span class="sd">                            &#39;start&#39;: &lt;float&gt;,</span>
+<span class="sd">                            &#39;stop&#39;: &lt;float&gt;,</span>
+<span class="sd">                            &#39;num&#39;: &lt;float&gt;,</span>
+<span class="sd">                            &#39;spacing&#39;: &lt;string&gt;,</span>
+<span class="sd">                            &#39;use_array&#39;: &lt;bool&gt;,</span>
+<span class="sd">                            &#39;defined_periods&#39;: &lt;list&gt;,</span>
 <span class="sd">                        }</span>
 <span class="sd">                    },</span>
-<span class="sd">                    'fas':{</span>
-<span class="sd">                        'smoothing': &lt;str&gt;,</span>
-<span class="sd">                        'bandwidth': &lt;float&gt;,</span>
-<span class="sd">                        'allow_nans': &lt;bool&gt;,</span>
-<span class="sd">                        'periods': {</span>
-<span class="sd">                            'start': &lt;float&gt;,</span>
-<span class="sd">                            'stop': &lt;float&gt;,</span>
-<span class="sd">                            'num': &lt;float&gt;,</span>
-<span class="sd">                            'spacing': &lt;string&gt;,</span>
-<span class="sd">                            'use_array': &lt;bool&gt;,</span>
-<span class="sd">                            'defined_periods': &lt;list&gt;,</span>
+<span class="sd">                    &#39;fas&#39;:{</span>
+<span class="sd">                        &#39;smoothing&#39;: &lt;str&gt;,</span>
+<span class="sd">                        &#39;bandwidth&#39;: &lt;float&gt;,</span>
+<span class="sd">                        &#39;allow_nans&#39;: &lt;bool&gt;,</span>
+<span class="sd">                        &#39;periods&#39;: {</span>
+<span class="sd">                            &#39;start&#39;: &lt;float&gt;,</span>
+<span class="sd">                            &#39;stop&#39;: &lt;float&gt;,</span>
+<span class="sd">                            &#39;num&#39;: &lt;float&gt;,</span>
+<span class="sd">                            &#39;spacing&#39;: &lt;string&gt;,</span>
+<span class="sd">                            &#39;use_array&#39;: &lt;bool&gt;,</span>
+<span class="sd">                            &#39;defined_periods&#39;: &lt;list&gt;,</span>
 <span class="sd">                        }</span>
 <span class="sd">                    },</span>
-<span class="sd">                    'duration':{</span>
-<span class="sd">                        'intervals': &lt;list&gt;</span>
+<span class="sd">                    &#39;duration&#39;:{</span>
+<span class="sd">                        &#39;intervals&#39;: &lt;list&gt;</span>
 <span class="sd">                    }</span>
 <span class="sd">            }</span>
-<span class="sd">            Currently the only acceptied smoothing type is 'konno_ohmachi',</span>
-<span class="sd">            and the options for spacing are 'linspace' or 'logspace'.</span>
-<span class="sd">        """</span>
+<span class="sd">            Currently the only acceptied smoothing type is &#39;konno_ohmachi&#39;,</span>
+<span class="sd">            and the options for spacing are &#39;linspace&#39; or &#39;logspace&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
-        <span class="n">metrics</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"metrics"</span><span class="p">]</span>
-        <span class="n">config_imts</span> <span class="o">=</span> <span class="p">[</span><span class="n">imt</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">imt</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">"output_imts"</span><span class="p">]]</span>
-        <span class="n">imcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">imc</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">imc</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">"output_imcs"</span><span class="p">]]</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">]</span>
+        <span class="n">config_imts</span> <span class="o">=</span> <span class="p">[</span><span class="n">imt</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">imt</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;output_imts&quot;</span><span class="p">]]</span>
+        <span class="n">imcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">imc</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">imc</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;output_imcs&quot;</span><span class="p">]]</span>
         <span class="c1"># append periods for sa and fas, interval for duration</span>
         <span class="n">imts</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">imt</span> <span class="ow">in</span> <span class="n">config_imts</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">imt</span> <span class="o">==</span> <span class="s2">"sa"</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">"sa"</span><span class="p">][</span><span class="s2">"periods"</span><span class="p">][</span><span class="s2">"use_array"</span><span class="p">]:</span>
-                    <span class="n">start</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">"sa"</span><span class="p">][</span><span class="s2">"periods"</span><span class="p">][</span><span class="s2">"start"</span><span class="p">]</span>
-                    <span class="n">stop</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">"sa"</span><span class="p">][</span><span class="s2">"periods"</span><span class="p">][</span><span class="s2">"stop"</span><span class="p">]</span>
-                    <span class="n">num</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">"sa"</span><span class="p">][</span><span class="s2">"periods"</span><span class="p">][</span><span class="s2">"num"</span><span class="p">]</span>
-                    <span class="k">if</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">"sa"</span><span class="p">][</span><span class="s2">"periods"</span><span class="p">][</span><span class="s2">"spacing"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"logspace"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">imt</span> <span class="o">==</span> <span class="s2">&quot;sa&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;sa&quot;</span><span class="p">][</span><span class="s2">&quot;periods&quot;</span><span class="p">][</span><span class="s2">&quot;use_array&quot;</span><span class="p">]:</span>
+                    <span class="n">start</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;sa&quot;</span><span class="p">][</span><span class="s2">&quot;periods&quot;</span><span class="p">][</span><span class="s2">&quot;start&quot;</span><span class="p">]</span>
+                    <span class="n">stop</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;sa&quot;</span><span class="p">][</span><span class="s2">&quot;periods&quot;</span><span class="p">][</span><span class="s2">&quot;stop&quot;</span><span class="p">]</span>
+                    <span class="n">num</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;sa&quot;</span><span class="p">][</span><span class="s2">&quot;periods&quot;</span><span class="p">][</span><span class="s2">&quot;num&quot;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;sa&quot;</span><span class="p">][</span><span class="s2">&quot;periods&quot;</span><span class="p">][</span><span class="s2">&quot;spacing&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;logspace&quot;</span><span class="p">:</span>
                         <span class="n">periods</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">num</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">periods</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">num</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">periods</span><span class="p">:</span>
-                        <span class="n">imts</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"sa"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">period</span><span class="p">)]</span>
+                        <span class="n">imts</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sa&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">period</span><span class="p">)]</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">"sa"</span><span class="p">][</span><span class="s2">"periods"</span><span class="p">][</span><span class="s2">"defined_periods"</span><span class="p">]:</span>
-                        <span class="n">imts</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"sa"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">period</span><span class="p">)]</span>
-            <span class="k">elif</span> <span class="n">imt</span> <span class="o">==</span> <span class="s2">"fas"</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">"fas"</span><span class="p">][</span><span class="s2">"periods"</span><span class="p">][</span><span class="s2">"use_array"</span><span class="p">]:</span>
-                    <span class="n">start</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">"fas"</span><span class="p">][</span><span class="s2">"periods"</span><span class="p">][</span><span class="s2">"start"</span><span class="p">]</span>
-                    <span class="n">stop</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">"fas"</span><span class="p">][</span><span class="s2">"periods"</span><span class="p">][</span><span class="s2">"stop"</span><span class="p">]</span>
-                    <span class="n">num</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">"fas"</span><span class="p">][</span><span class="s2">"periods"</span><span class="p">][</span><span class="s2">"num"</span><span class="p">]</span>
-                    <span class="k">if</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">"fas"</span><span class="p">][</span><span class="s2">"periods"</span><span class="p">][</span><span class="s2">"spacing"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"logspace"</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;sa&quot;</span><span class="p">][</span><span class="s2">&quot;periods&quot;</span><span class="p">][</span><span class="s2">&quot;defined_periods&quot;</span><span class="p">]:</span>
+                        <span class="n">imts</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;sa&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">period</span><span class="p">)]</span>
+            <span class="k">elif</span> <span class="n">imt</span> <span class="o">==</span> <span class="s2">&quot;fas&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;fas&quot;</span><span class="p">][</span><span class="s2">&quot;periods&quot;</span><span class="p">][</span><span class="s2">&quot;use_array&quot;</span><span class="p">]:</span>
+                    <span class="n">start</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;fas&quot;</span><span class="p">][</span><span class="s2">&quot;periods&quot;</span><span class="p">][</span><span class="s2">&quot;start&quot;</span><span class="p">]</span>
+                    <span class="n">stop</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;fas&quot;</span><span class="p">][</span><span class="s2">&quot;periods&quot;</span><span class="p">][</span><span class="s2">&quot;stop&quot;</span><span class="p">]</span>
+                    <span class="n">num</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;fas&quot;</span><span class="p">][</span><span class="s2">&quot;periods&quot;</span><span class="p">][</span><span class="s2">&quot;num&quot;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;fas&quot;</span><span class="p">][</span><span class="s2">&quot;periods&quot;</span><span class="p">][</span><span class="s2">&quot;spacing&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;logspace&quot;</span><span class="p">:</span>
                         <span class="n">periods</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">num</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">periods</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">num</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">periods</span><span class="p">:</span>
-                        <span class="n">imts</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"fas"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">period</span><span class="p">)]</span>
+                        <span class="n">imts</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;fas&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">period</span><span class="p">)]</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">"fas"</span><span class="p">][</span><span class="s2">"periods"</span><span class="p">][</span><span class="s2">"defined_periods"</span><span class="p">]:</span>
-                        <span class="n">imts</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"fas"</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">period</span><span class="p">)]</span>
-            <span class="k">elif</span> <span class="n">imt</span> <span class="o">==</span> <span class="s2">"duration"</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">"duration"</span><span class="p">][</span><span class="s2">"intervals"</span><span class="p">]:</span>
-                    <span class="n">imts</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"duration"</span> <span class="o">+</span> <span class="n">interval</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">period</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;fas&quot;</span><span class="p">][</span><span class="s2">&quot;periods&quot;</span><span class="p">][</span><span class="s2">&quot;defined_periods&quot;</span><span class="p">]:</span>
+                        <span class="n">imts</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;fas&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">period</span><span class="p">)]</span>
+            <span class="k">elif</span> <span class="n">imt</span> <span class="o">==</span> <span class="s2">&quot;duration&quot;</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">][</span><span class="s2">&quot;intervals&quot;</span><span class="p">]:</span>
+                    <span class="n">imts</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;duration&quot;</span> <span class="o">+</span> <span class="n">interval</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">imts</span> <span class="o">+=</span> <span class="p">[</span><span class="n">imt</span><span class="p">]</span>
-        <span class="n">damping</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">"sa"</span><span class="p">][</span><span class="s2">"damping"</span><span class="p">]</span>
-        <span class="n">smoothing</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">"fas"</span><span class="p">][</span><span class="s2">"smoothing"</span><span class="p">]</span>
-        <span class="n">bandwidth</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">"fas"</span><span class="p">][</span><span class="s2">"bandwidth"</span><span class="p">]</span>
-        <span class="n">allow_nans</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">"fas"</span><span class="p">][</span><span class="s2">"allow_nans"</span><span class="p">]</span>
+        <span class="n">damping</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;sa&quot;</span><span class="p">][</span><span class="s2">&quot;damping&quot;</span><span class="p">]</span>
+        <span class="n">smoothing</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;fas&quot;</span><span class="p">][</span><span class="s2">&quot;smoothing&quot;</span><span class="p">]</span>
+        <span class="n">bandwidth</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;fas&quot;</span><span class="p">][</span><span class="s2">&quot;bandwidth&quot;</span><span class="p">]</span>
+        <span class="n">allow_nans</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="s2">&quot;fas&quot;</span><span class="p">][</span><span class="s2">&quot;allow_nans&quot;</span><span class="p">]</span>
         <span class="n">controller</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">imts</span><span class="p">,</span>
             <span class="n">imcs</span><span class="p">,</span>
@@ -727,16 +728,16 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">step_sets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Dictionary of steps for each imt/imc pair.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dictionary: Defines a set of steps for each imt/imc pair.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_sets</span>
 
 <div class="viewcode-block" id="MetricsController.get_steps"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/metrics_controller/index.html#gmprocess.metrics.metrics_controller.MetricsController.get_steps">[docs]</a>    <span class="k">def</span> <span class="nf">get_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets up the step_sets dictionary.</span>
 
 <span class="sd">        Returns:</span>
@@ -744,7 +745,7 @@
 
 <span class="sd">        Notes:</span>
 <span class="sd">            Invalid imcs and imts will not be added to the dictionary.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">pgm_steps</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">imt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">imts</span><span class="p">:</span>
             <span class="n">period</span> <span class="o">=</span> <span class="kc">None</span>
@@ -754,27 +755,27 @@
             <span class="n">baseimt</span> <span class="o">=</span> <span class="n">imt</span>
             <span class="c1"># Determine whether an integration/differentiation step is</span>
             <span class="c1"># necessary</span>
-            <span class="k">if</span> <span class="n">imt</span> <span class="o">==</span> <span class="s2">"pgv"</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeseries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span> <span class="o">==</span> <span class="s2">"acc"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">imt</span> <span class="o">==</span> <span class="s2">&quot;pgv&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeseries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span> <span class="o">==</span> <span class="s2">&quot;acc&quot;</span><span class="p">:</span>
                 <span class="n">integrate</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">elif</span> <span class="n">imt</span> <span class="o">!=</span> <span class="s2">"pgv"</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeseries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span> <span class="o">==</span> <span class="s2">"vel"</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">imt</span> <span class="o">!=</span> <span class="s2">&quot;pgv&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeseries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span> <span class="o">==</span> <span class="s2">&quot;vel&quot;</span><span class="p">:</span>
                 <span class="n">differentiate</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="c1"># SA and FAS imts include a period which must be parsed from</span>
             <span class="c1"># the imt string</span>
-            <span class="k">if</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"sa"</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;sa&quot;</span><span class="p">):</span>
                 <span class="n">period</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_period</span><span class="p">(</span><span class="n">imt</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">period</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">continue</span>
-                <span class="n">imt</span> <span class="o">=</span> <span class="s2">"sa"</span>
-            <span class="k">elif</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"fas"</span><span class="p">):</span>
+                <span class="n">imt</span> <span class="o">=</span> <span class="s2">&quot;sa&quot;</span>
+            <span class="k">elif</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;fas&quot;</span><span class="p">):</span>
                 <span class="n">period</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_period</span><span class="p">(</span><span class="n">imt</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">period</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">continue</span>
-                <span class="n">imt</span> <span class="o">=</span> <span class="s2">"fas"</span>
-            <span class="k">elif</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"duration"</span><span class="p">):</span>
+                <span class="n">imt</span> <span class="o">=</span> <span class="s2">&quot;fas&quot;</span>
+            <span class="k">elif</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;duration&quot;</span><span class="p">):</span>
                 <span class="n">interval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_interval</span><span class="p">(</span><span class="n">imt</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">interval</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">continue</span>
-                <span class="n">imt</span> <span class="o">=</span> <span class="s2">"duration"</span>
+                <span class="n">imt</span> <span class="o">=</span> <span class="s2">&quot;duration&quot;</span>
             <span class="k">if</span> <span class="n">imt</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_available_imts</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="k">for</span> <span class="n">imc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">imcs</span><span class="p">:</span>
@@ -782,24 +783,24 @@
                 <span class="n">baseimc</span> <span class="o">=</span> <span class="n">imc</span>
                 <span class="c1"># ROTD and GMROTD imcs include a period which must be parsed</span>
                 <span class="c1"># from the imc string</span>
-                <span class="k">if</span> <span class="s2">"rot"</span> <span class="ow">in</span> <span class="n">imc</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;rot&quot;</span> <span class="ow">in</span> <span class="n">imc</span><span class="p">:</span>
                     <span class="n">percentile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_percentile</span><span class="p">(</span><span class="n">imc</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">imc</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"gm"</span><span class="p">):</span>
-                        <span class="n">imc</span> <span class="o">=</span> <span class="s2">"gmrotd"</span>
+                    <span class="k">if</span> <span class="n">imc</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;gm&quot;</span><span class="p">):</span>
+                        <span class="n">imc</span> <span class="o">=</span> <span class="s2">&quot;gmrotd&quot;</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">imc</span> <span class="o">=</span> <span class="s2">"rotd"</span>
+                        <span class="n">imc</span> <span class="o">=</span> <span class="s2">&quot;rotd&quot;</span>
                 <span class="k">if</span> <span class="n">imc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_available_imcs</span><span class="p">:</span>
                     <span class="k">continue</span>
                 <span class="c1"># Import</span>
-                <span class="n">imt_path</span> <span class="o">=</span> <span class="s2">"gmprocess.metrics.imt."</span>
-                <span class="n">imc_path</span> <span class="o">=</span> <span class="s2">"gmprocess.metrics.imc."</span>
+                <span class="n">imt_path</span> <span class="o">=</span> <span class="s2">&quot;gmprocess.metrics.imt.&quot;</span>
+                <span class="n">imc_path</span> <span class="o">=</span> <span class="s2">&quot;gmprocess.metrics.imc.&quot;</span>
                 <span class="n">imt_mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">imt_path</span> <span class="o">+</span> <span class="n">imt</span><span class="p">)</span>
                 <span class="n">imc_mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">imc_path</span> <span class="o">+</span> <span class="n">imc</span><span class="p">)</span>
                 <span class="n">imt_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_subclass</span><span class="p">(</span>
-                    <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">imt_mod</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">),</span> <span class="s2">"IMT"</span>
+                    <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">imt_mod</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">),</span> <span class="s2">&quot;IMT&quot;</span>
                 <span class="p">)</span>
                 <span class="n">imc_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_subclass</span><span class="p">(</span>
-                    <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">imc_mod</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">),</span> <span class="s2">"IMC"</span>
+                    <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">imc_mod</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">),</span> <span class="s2">&quot;IMC&quot;</span>
                 <span class="p">)</span>
                 <span class="n">imt_class_instance</span> <span class="o">=</span> <span class="n">imt_class</span><span class="p">(</span><span class="n">imt</span><span class="p">,</span> <span class="n">imc</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">imt_class_instance</span><span class="o">.</span><span class="n">valid_combination</span><span class="p">(</span><span class="n">imc</span><span class="p">):</span>
@@ -808,25 +809,25 @@
                 <span class="c1"># Get Steps</span>
                 <span class="n">steps</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">differentiate</span><span class="p">:</span>
-                    <span class="n">steps</span><span class="p">[</span><span class="s2">"Transform1"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"differentiate"</span>
+                    <span class="n">steps</span><span class="p">[</span><span class="s2">&quot;Transform1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;differentiate&quot;</span>
                 <span class="k">elif</span> <span class="n">integrate</span><span class="p">:</span>
-                    <span class="n">steps</span><span class="p">[</span><span class="s2">"Transform1"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"integrate"</span>
+                    <span class="n">steps</span><span class="p">[</span><span class="s2">&quot;Transform1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;integrate&quot;</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">steps</span><span class="p">[</span><span class="s2">"Transform1"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"null_transform"</span>
+                    <span class="n">steps</span><span class="p">[</span><span class="s2">&quot;Transform1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;null_transform&quot;</span>
                 <span class="n">imt_steps</span> <span class="o">=</span> <span class="n">imt_class_instance</span><span class="o">.</span><span class="n">steps</span>
                 <span class="n">imc_steps</span> <span class="o">=</span> <span class="n">imc_class_instance</span><span class="o">.</span><span class="n">steps</span>
                 <span class="n">steps</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">imt_steps</span><span class="p">)</span>
                 <span class="n">steps</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">imc_steps</span><span class="p">)</span>
-                <span class="n">steps</span><span class="p">[</span><span class="s2">"period"</span><span class="p">]</span> <span class="o">=</span> <span class="n">period</span>
-                <span class="n">steps</span><span class="p">[</span><span class="s2">"interval"</span><span class="p">]</span> <span class="o">=</span> <span class="n">interval</span>
-                <span class="n">steps</span><span class="p">[</span><span class="s2">"percentile"</span><span class="p">]</span> <span class="o">=</span> <span class="n">percentile</span>
-                <span class="n">steps</span><span class="p">[</span><span class="s2">"imc"</span><span class="p">]</span> <span class="o">=</span> <span class="n">imc</span>
-                <span class="n">steps</span><span class="p">[</span><span class="s2">"imt"</span><span class="p">]</span> <span class="o">=</span> <span class="n">imt</span>
-                <span class="n">pgm_steps</span><span class="p">[</span><span class="n">baseimt</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="n">baseimc</span><span class="p">]</span> <span class="o">=</span> <span class="n">steps</span>
+                <span class="n">steps</span><span class="p">[</span><span class="s2">&quot;period&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">period</span>
+                <span class="n">steps</span><span class="p">[</span><span class="s2">&quot;interval&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">interval</span>
+                <span class="n">steps</span><span class="p">[</span><span class="s2">&quot;percentile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">percentile</span>
+                <span class="n">steps</span><span class="p">[</span><span class="s2">&quot;imc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">imc</span>
+                <span class="n">steps</span><span class="p">[</span><span class="s2">&quot;imt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">imt</span>
+                <span class="n">pgm_steps</span><span class="p">[</span><span class="n">baseimt</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">baseimc</span><span class="p">]</span> <span class="o">=</span> <span class="n">steps</span>
         <span class="k">return</span> <span class="n">pgm_steps</span></div>
 
 <div class="viewcode-block" id="MetricsController.execute_steps"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/metrics_controller/index.html#gmprocess.metrics.metrics_controller.MetricsController.execute_steps">[docs]</a>    <span class="k">def</span> <span class="nf">execute_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Executes the steps defined by the step_sets dictionary.</span>
 
 <span class="sd">        Returns:</span>
@@ -836,45 +837,45 @@
 <span class="sd">            If a set of steps fail, then the error will be logged and the</span>
 <span class="sd">            next step set will begin. The result cell of the dataframe will be</span>
 <span class="sd">            filled with a np.nan value.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># paths</span>
-        <span class="n">transform_path</span> <span class="o">=</span> <span class="s2">"gmprocess.metrics.transform."</span>
-        <span class="n">rotation_path</span> <span class="o">=</span> <span class="s2">"gmprocess.metrics.rotation."</span>
-        <span class="n">combination_path</span> <span class="o">=</span> <span class="s2">"gmprocess.metrics.combination."</span>
-        <span class="n">reduction_path</span> <span class="o">=</span> <span class="s2">"gmprocess.metrics.reduction."</span>
+        <span class="n">transform_path</span> <span class="o">=</span> <span class="s2">&quot;gmprocess.metrics.transform.&quot;</span>
+        <span class="n">rotation_path</span> <span class="o">=</span> <span class="s2">&quot;gmprocess.metrics.rotation.&quot;</span>
+        <span class="n">combination_path</span> <span class="o">=</span> <span class="s2">&quot;gmprocess.metrics.combination.&quot;</span>
+        <span class="n">reduction_path</span> <span class="o">=</span> <span class="s2">&quot;gmprocess.metrics.reduction.&quot;</span>
 
         <span class="c1"># Initialize dictionary for storing the results</span>
         <span class="n">result_dict</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">imt_imc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">step_sets</span><span class="p">):</span>
             <span class="n">step_set</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_sets</span><span class="p">[</span><span class="n">imt_imc</span><span class="p">]</span>
-            <span class="n">period</span> <span class="o">=</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">"period"</span><span class="p">]</span>
-            <span class="n">interval</span> <span class="o">=</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">"interval"</span><span class="p">]</span>
-            <span class="n">percentile</span> <span class="o">=</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">"percentile"</span><span class="p">]</span>
+            <span class="n">period</span> <span class="o">=</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">&quot;period&quot;</span><span class="p">]</span>
+            <span class="n">interval</span> <span class="o">=</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">&quot;interval&quot;</span><span class="p">]</span>
+            <span class="n">percentile</span> <span class="o">=</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">&quot;percentile&quot;</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">period</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">period</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">percentile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">percentile</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">percentile</span><span class="p">)</span>
 
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">s1</span> <span class="o">=</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">"Transform1"</span><span class="p">]</span>
-                <span class="n">s2</span> <span class="o">=</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">"Transform2"</span><span class="p">]</span>
-                <span class="n">s3</span> <span class="o">=</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">"Rotation"</span><span class="p">]</span>
-                <span class="n">step_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">s1</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">s2</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">s3</span><span class="si">}</span><span class="s2">"</span>
+                <span class="n">s1</span> <span class="o">=</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">&quot;Transform1&quot;</span><span class="p">]</span>
+                <span class="n">s2</span> <span class="o">=</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">&quot;Transform2&quot;</span><span class="p">]</span>
+                <span class="n">s3</span> <span class="o">=</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">&quot;Rotation&quot;</span><span class="p">]</span>
+                <span class="n">step_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s1</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">s2</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">s3</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">perform_first_steps</span><span class="p">(</span>
                     <span class="n">period</span><span class="p">,</span> <span class="n">percentile</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">s3</span><span class="p">,</span> <span class="n">transform_path</span><span class="p">,</span> <span class="n">rotation_path</span>
                 <span class="p">)</span>
                 <span class="c1"># if True:</span>
-                <span class="k">if</span> <span class="n">s2</span> <span class="o">==</span> <span class="s2">"oscillator"</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">s2</span> <span class="o">==</span> <span class="s2">&quot;oscillator&quot;</span><span class="p">:</span>
                     <span class="n">rot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_steps</span><span class="p">[</span><span class="n">step_str</span><span class="p">][</span><span class="nb">str</span><span class="p">(</span><span class="n">period</span><span class="p">)][</span><span class="nb">str</span><span class="p">(</span><span class="n">percentile</span><span class="p">)]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">rot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_steps</span><span class="p">[</span><span class="n">step_str</span><span class="p">]</span>
                 <span class="c1"># -------------------------------------------------------------</span>
                 <span class="c1"># Transform 3</span>
                 <span class="n">t3_mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span>
-                    <span class="n">transform_path</span> <span class="o">+</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">"Transform3"</span><span class="p">]</span>
+                    <span class="n">transform_path</span> <span class="o">+</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">&quot;Transform3&quot;</span><span class="p">]</span>
                 <span class="p">)</span>
                 <span class="n">t3_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_subclass</span><span class="p">(</span>
-                    <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">t3_mod</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">),</span> <span class="s2">"Transform"</span>
+                    <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">t3_mod</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">),</span> <span class="s2">&quot;Transform&quot;</span>
                 <span class="p">)</span>
                 <span class="n">t3</span> <span class="o">=</span> <span class="n">t3_cls</span><span class="p">(</span>
                     <span class="n">rot</span><span class="p">,</span>
@@ -890,10 +891,10 @@
                 <span class="c1"># -------------------------------------------------------------</span>
                 <span class="c1"># Combination 1</span>
                 <span class="n">c1_mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span>
-                    <span class="n">combination_path</span> <span class="o">+</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">"Combination1"</span><span class="p">]</span>
+                    <span class="n">combination_path</span> <span class="o">+</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">&quot;Combination1&quot;</span><span class="p">]</span>
                 <span class="p">)</span>
                 <span class="n">c1_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_subclass</span><span class="p">(</span>
-                    <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">c1_mod</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">),</span> <span class="s2">"Combination"</span>
+                    <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">c1_mod</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">),</span> <span class="s2">&quot;Combination&quot;</span>
                 <span class="p">)</span>
                 <span class="n">c1</span> <span class="o">=</span> <span class="n">c1_cls</span><span class="p">(</span><span class="n">t3</span><span class="p">)</span><span class="o">.</span><span class="n">result</span>
 
@@ -904,26 +905,26 @@
                 <span class="c1">#   step is not compatible with anything other than the max</span>
                 <span class="c1">#   of either the time history or the oscillator.</span>
                 <span class="c1"># * I think real solution is to have two reduction steps</span>
-                <span class="c1"># * For now, I'm just going to disallow the percentile based</span>
+                <span class="c1"># * For now, I&#39;m just going to disallow the percentile based</span>
                 <span class="c1">#   methods with duration to avoid the incompatibility.</span>
                 <span class="c1"># * Currently, the percentile reduction uses the length</span>
                 <span class="c1">#   of c1 to decide if it needs to take the max of the</span>
                 <span class="c1">#   data before applying the reduction.</span>
                 <span class="n">red_mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span>
-                    <span class="n">reduction_path</span> <span class="o">+</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">"Reduction"</span><span class="p">]</span>
+                    <span class="n">reduction_path</span> <span class="o">+</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">&quot;Reduction&quot;</span><span class="p">]</span>
                 <span class="p">)</span>
                 <span class="n">red_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_subclass</span><span class="p">(</span>
-                    <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">red_mod</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">),</span> <span class="s2">"Reduction"</span>
+                    <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">red_mod</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">),</span> <span class="s2">&quot;Reduction&quot;</span>
                 <span class="p">)</span>
                 <span class="n">red</span> <span class="o">=</span> <span class="n">red_cls</span><span class="p">(</span>
                     <span class="n">c1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bandwidth</span><span class="p">,</span> <span class="n">percentile</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">smooth_type</span><span class="p">,</span> <span class="n">interval</span>
                 <span class="p">)</span><span class="o">.</span><span class="n">result</span>
 
-                <span class="k">if</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">"Reduction"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"max"</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="k">if</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">&quot;Reduction&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;max&quot;</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
                     <span class="n">c1</span><span class="p">,</span> <span class="p">(</span><span class="n">Stream</span><span class="p">,</span> <span class="n">StationStream</span><span class="p">)</span>
                 <span class="p">):</span>
                     <span class="n">times</span> <span class="o">=</span> <span class="n">red</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-                    <span class="k">if</span> <span class="n">imt_imc</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"channels"</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">imt_imc</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;channels&quot;</span><span class="p">:</span>
                         <span class="k">for</span> <span class="n">chan</span> <span class="ow">in</span> <span class="n">times</span><span class="p">:</span>
                             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">times</span><span class="p">[</span><span class="n">chan</span><span class="p">]:</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">timeseries</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="n">chan</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span>
@@ -934,25 +935,25 @@
                 <span class="c1"># -------------------------------------------------------------</span>
                 <span class="c1"># Combination 2</span>
                 <span class="n">c2_mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span>
-                    <span class="n">combination_path</span> <span class="o">+</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">"Combination2"</span><span class="p">]</span>
+                    <span class="n">combination_path</span> <span class="o">+</span> <span class="n">step_set</span><span class="p">[</span><span class="s2">&quot;Combination2&quot;</span><span class="p">]</span>
                 <span class="p">)</span>
                 <span class="n">c2_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_subclass</span><span class="p">(</span>
-                    <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">c2_mod</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">),</span> <span class="s2">"Combination"</span>
+                    <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">c2_mod</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">),</span> <span class="s2">&quot;Combination&quot;</span>
                 <span class="p">)</span>
                 <span class="n">c2</span> <span class="o">=</span> <span class="n">c2_cls</span><span class="p">(</span><span class="n">red</span><span class="p">)</span><span class="o">.</span><span class="n">result</span>
             <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="c1"># raise e</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">"Error in calculation of </span><span class="si">{</span><span class="n">imt_imc</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">.  "</span>
-                    <span class="s2">"Result cell will be set to np.nan."</span>
+                    <span class="sa">f</span><span class="s2">&quot;Error in calculation of </span><span class="si">{</span><span class="n">imt_imc</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">.  &quot;</span>
+                    <span class="s2">&quot;Result cell will be set to np.nan.&quot;</span>
                 <span class="p">)</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-                <span class="n">c2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">""</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">}</span>
+                <span class="n">c2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">}</span>
 
-            <span class="c1"># we don't want to have separate columns for 'HN1' and 'HNN' and</span>
-            <span class="c1"># 'BHN'. Instead we want all of these to be considered as simply</span>
-            <span class="c1"># the "first horizontal channel".</span>
-            <span class="k">if</span> <span class="s2">"channels"</span> <span class="ow">in</span> <span class="n">imt_imc</span><span class="p">:</span>
+            <span class="c1"># we don&#39;t want to have separate columns for &#39;HN1&#39; and &#39;HNN&#39; and</span>
+            <span class="c1"># &#39;BHN&#39;. Instead we want all of these to be considered as simply</span>
+            <span class="c1"># the &quot;first horizontal channel&quot;.</span>
+            <span class="k">if</span> <span class="s2">&quot;channels&quot;</span> <span class="ow">in</span> <span class="n">imt_imc</span><span class="p">:</span>
                 <span class="n">channel_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">c2</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel_dict</span><span class="p">,</span> <span class="n">reverse_dict</span><span class="p">)</span> <span class="o">=</span> <span class="n">_get_channel_dict</span><span class="p">(</span><span class="n">channel_names</span><span class="p">)</span>
                 <span class="n">new_c2</span> <span class="o">=</span> <span class="p">{}</span>
@@ -976,12 +977,12 @@
         <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">df</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">"IMT"</span><span class="p">,</span> <span class="s2">"IMC"</span><span class="p">])</span></div>
+            <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">&quot;IMT&quot;</span><span class="p">,</span> <span class="s2">&quot;IMC&quot;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="MetricsController.perform_first_steps"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/metrics_controller/index.html#gmprocess.metrics.metrics_controller.MetricsController.perform_first_steps">[docs]</a>    <span class="k">def</span> <span class="nf">perform_first_steps</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">percentile</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">s3</span><span class="p">,</span> <span class="n">transform_path</span><span class="p">,</span> <span class="n">rotation_path</span>
     <span class="p">):</span>
-        <span class="sd">"""Perform the first three metric steps.</span>
+        <span class="sd">&quot;&quot;&quot;Perform the first three metric steps.</span>
 
 <span class="sd">        To reduce reduncy in the calculations, we save the results of the</span>
 <span class="sd">        first three steps.</span>
@@ -989,7 +990,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            transform_path (str): The path to the transformation calculations.</span>
 <span class="sd">            rotation_path (str): The path to the rotation calculations.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_steps</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">step_streams</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1003,15 +1004,15 @@
         <span class="k">if</span> <span class="n">percentile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">percentile</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">percentile</span><span class="p">)</span>
         <span class="c1"># get the first three steps</span>
-        <span class="n">step</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">s1</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">s2</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">s3</span><span class="si">}</span><span class="s2">"</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s1</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">s2</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">s3</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="c1"># If the first three steps (for this percentile and period) are already</span>
         <span class="c1"># available do not recalculate (continue)</span>
 
         <span class="c1">## this is where we need to fix things</span>
         <span class="c1">## check if transform 2 is oscillator, if not then no need to check period</span>
-        <span class="c1">## also, I don't think there's a need to check percentile.</span>
+        <span class="c1">## also, I don&#39;t think there&#39;s a need to check percentile.</span>
 
-        <span class="n">s2_osc</span> <span class="o">=</span> <span class="n">s2</span> <span class="o">==</span> <span class="s2">"oscillator"</span>
+        <span class="n">s2_osc</span> <span class="o">=</span> <span class="n">s2</span> <span class="o">==</span> <span class="s2">&quot;oscillator&quot;</span>
         <span class="c1"># s2_osc = True</span>
         <span class="k">if</span> <span class="n">s2_osc</span><span class="p">:</span>
             <span class="k">if</span> <span class="p">(</span>
@@ -1032,7 +1033,7 @@
         <span class="c1"># Transform 1</span>
         <span class="n">t1_mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">transform_path</span> <span class="o">+</span> <span class="n">s1</span><span class="p">)</span>
         <span class="n">t1_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_subclass</span><span class="p">(</span>
-            <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">t1_mod</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">),</span> <span class="s2">"Transform"</span>
+            <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">t1_mod</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">),</span> <span class="s2">&quot;Transform&quot;</span>
         <span class="p">)</span>
         <span class="n">t1</span> <span class="o">=</span> <span class="n">t1_cls</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">timeseries</span><span class="p">,</span>
@@ -1048,7 +1049,7 @@
         <span class="c1"># Transform 2</span>
         <span class="n">t2_mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">transform_path</span> <span class="o">+</span> <span class="n">s2</span><span class="p">)</span>
         <span class="n">t2_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_subclass</span><span class="p">(</span>
-            <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">t2_mod</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">),</span> <span class="s2">"Transform"</span>
+            <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">t2_mod</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">),</span> <span class="s2">&quot;Transform&quot;</span>
         <span class="p">)</span>
         <span class="n">t2</span> <span class="o">=</span> <span class="n">t2_cls</span><span class="p">(</span>
             <span class="n">t1</span><span class="p">,</span>
@@ -1064,7 +1065,7 @@
         <span class="c1"># Rotation</span>
         <span class="n">rot_mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">rotation_path</span> <span class="o">+</span> <span class="n">s3</span><span class="p">)</span>
         <span class="n">rot_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_subclass</span><span class="p">(</span>
-            <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">rot_mod</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">),</span> <span class="s2">"Rotation"</span>
+            <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">rot_mod</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">),</span> <span class="s2">&quot;Rotation&quot;</span>
         <span class="p">)</span>
         <span class="n">rot</span> <span class="o">=</span> <span class="n">rot_cls</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="p">)</span><span class="o">.</span><span class="n">result</span>
 
@@ -1083,41 +1084,41 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">first_steps</span> <span class="o">=</span> <span class="n">step_streams</span></div>
 
 <div class="viewcode-block" id="MetricsController.validate_stream"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/metrics_controller/index.html#gmprocess.metrics.metrics_controller.MetricsController.validate_stream">[docs]</a>    <span class="k">def</span> <span class="nf">validate_stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Validates that the input is a StationStream, the units are either</span>
-<span class="sd">        'vel' or 'acc', and the length of the traces are all equal.</span>
+<span class="sd">        &#39;vel&#39; or &#39;acc&#39;, and the length of the traces are all equal.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            PGMException: for the cases where</span>
 <span class="sd">                    1. The input is not a StationStream.</span>
 <span class="sd">                    2. The units are not velocity or acceleration.</span>
 <span class="sd">                    3. The length of the traces are not equal.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timeseries</span><span class="p">,</span> <span class="n">StationStream</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span>
-                <span class="s2">"MetricsController: Input timeseries must be a StationStream."</span>
+                <span class="s2">&quot;MetricsController: Input timeseries must be a StationStream.&quot;</span>
             <span class="p">)</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">trace</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timeseries</span><span class="p">):</span>
             <span class="n">units</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span>
             <span class="n">trace_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">"vel"</span> <span class="ow">and</span> <span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">"acc"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;vel&quot;</span> <span class="ow">and</span> <span class="n">units</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;acc&quot;</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span>
-                    <span class="s2">"MetricsController: Trace units must be either 'vel' or 'acc'."</span>
+                    <span class="s2">&quot;MetricsController: Trace units must be either &#39;vel&#39; or &#39;acc&#39;.&quot;</span>
                 <span class="p">)</span>
             <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">standard_length</span> <span class="o">=</span> <span class="n">trace_length</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">trace_length</span> <span class="o">!=</span> <span class="n">standard_length</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span>
-                        <span class="s2">"MetricsController: Traces must all be the same length."</span>
+                        <span class="s2">&quot;MetricsController: Traces must all be the same length.&quot;</span>
                     <span class="p">)</span></div>
 
 <div class="viewcode-block" id="MetricsController.add_upsampled_traces"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/metrics_controller/index.html#gmprocess.metrics.metrics_controller.MetricsController.add_upsampled_traces">[docs]</a>    <span class="k">def</span> <span class="nf">add_upsampled_traces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Convenience method for adding upsampled waveform to traces.</span>
+        <span class="sd">&quot;&quot;&quot;Convenience method for adding upsampled waveform to traces.</span>
 
 <span class="sd">        This adds a *single* upsampled version of the waveform to each trace</span>
 <span class="sd">        for the smallest requested oscillator period.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">st</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeseries</span>
         <span class="n">min_period</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_min_period</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">min_period</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1133,11 +1134,11 @@
                 <span class="n">rtr</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
                 <span class="c1"># resampling happens in place</span>
                 <span class="n">rtr</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">new_sample_rate</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-                <span class="n">upsampled_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"data"</span><span class="p">:</span> <span class="n">rtr</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s2">"dt"</span><span class="p">:</span> <span class="n">rtr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span><span class="p">,</span> <span class="s2">"np"</span><span class="p">:</span> <span class="n">new_np</span><span class="p">}</span>
-                <span class="n">tr</span><span class="o">.</span><span class="n">setCached</span><span class="p">(</span><span class="s2">"upsampled"</span><span class="p">,</span> <span class="n">upsampled_dict</span><span class="p">)</span></div>
+                <span class="n">upsampled_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">rtr</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;dt&quot;</span><span class="p">:</span> <span class="n">rtr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span><span class="p">,</span> <span class="s2">&quot;np&quot;</span><span class="p">:</span> <span class="n">new_np</span><span class="p">}</span>
+                <span class="n">tr</span><span class="o">.</span><span class="n">setCached</span><span class="p">(</span><span class="s2">&quot;upsampled&quot;</span><span class="p">,</span> <span class="n">upsampled_dict</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="MetricsController._format"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/metrics_controller/index.html#gmprocess.metrics.metrics_controller.MetricsController._format">[docs]</a>    <span class="k">def</span> <span class="nf">_format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates a dataframe row(rows) structured as:</span>
 <span class="sd">        imt imc result</span>
 
@@ -1145,7 +1146,7 @@
 <span class="sd">            result (dict):</span>
 <span class="sd">                Result of the imt/imc calculation.</span>
 <span class="sd">            steps (dict):</span>
-<span class="sd">                The set of steps that are used to calculate 'result'.</span>
+<span class="sd">                The set of steps that are used to calculate &#39;result&#39;.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            pandas.DataFrame: Dataframe listing the imc, imt, and result in</span>
@@ -1153,63 +1154,63 @@
 <span class="sd">                    |    IMT    |    IMC    |    Result    |</span>
 <span class="sd">                    ----------------------------------------</span>
 <span class="sd">                    |   &lt;imt&gt;   |   &lt;imc&gt;   |    &lt;value&gt;   |</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dfdict</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-        <span class="n">dfdict</span><span class="p">[</span><span class="s2">"IMT"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">dfdict</span><span class="p">[</span><span class="s2">"IMC"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">dfdict</span><span class="p">[</span><span class="s2">"Result"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dfdict</span><span class="p">[</span><span class="s2">&quot;IMT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dfdict</span><span class="p">[</span><span class="s2">&quot;IMC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dfdict</span><span class="p">[</span><span class="s2">&quot;Result&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="c1"># We need the information about the type of imc/imt to</span>
         <span class="c1"># generate the appropirate strings that append period or percentile</span>
-        <span class="n">imc</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="s2">"imc"</span><span class="p">]</span>
-        <span class="n">imt</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="s2">"imt"</span><span class="p">]</span>
-        <span class="n">period</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="s2">"period"</span><span class="p">]</span>
-        <span class="n">percentile</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="s2">"percentile"</span><span class="p">]</span>
-        <span class="n">interval</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="s2">"interval"</span><span class="p">]</span>
+        <span class="n">imc</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="s2">&quot;imc&quot;</span><span class="p">]</span>
+        <span class="n">imt</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="s2">&quot;imt&quot;</span><span class="p">]</span>
+        <span class="n">period</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="s2">&quot;period&quot;</span><span class="p">]</span>
+        <span class="n">percentile</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="s2">&quot;percentile&quot;</span><span class="p">]</span>
+        <span class="n">interval</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="s2">&quot;interval&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">period</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">sfmt</span> <span class="o">=</span> <span class="n">METRICS_XML_FLOAT_STRING_FORMAT</span><span class="p">[</span><span class="s2">"period"</span><span class="p">]</span>
-            <span class="n">tmp_imt_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">imt</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">sfmt</span><span class="si">}</span><span class="s2">)"</span>
+            <span class="n">sfmt</span> <span class="o">=</span> <span class="n">METRICS_XML_FLOAT_STRING_FORMAT</span><span class="p">[</span><span class="s2">&quot;period&quot;</span><span class="p">]</span>
+            <span class="n">tmp_imt_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">imt</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">sfmt</span><span class="si">}</span><span class="s2">)&quot;</span>
             <span class="n">imt_str</span> <span class="o">=</span> <span class="n">tmp_imt_str</span> <span class="o">%</span> <span class="nb">float</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">interval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">imt_str</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s%i</span><span class="s2">-</span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">imt</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">interval</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">interval</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">imt_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s%i</span><span class="s2">-</span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">imt</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="n">interval</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">interval</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">imt_str</span> <span class="o">=</span> <span class="n">imt</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">percentile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">imc_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">imc</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">percentile</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span>
+            <span class="n">imc_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">imc</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="nb">float</span><span class="p">(</span><span class="n">percentile</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">imc_str</span> <span class="o">=</span> <span class="n">imc</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
 
         <span class="c1"># For the cases such as channels or radial_transverse, where multiple</span>
         <span class="c1"># components are returned</span>
-        <span class="k">if</span> <span class="n">imt</span> <span class="o">==</span> <span class="s2">"pga"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">imt</span> <span class="o">==</span> <span class="s2">&quot;pga&quot;</span><span class="p">:</span>
             <span class="n">multiplier</span> <span class="o">=</span> <span class="n">GAL_TO_PCTG</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">multiplier</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-                <span class="n">dfdict</span><span class="p">[</span><span class="s2">"IMT"</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">imt_str</span><span class="p">]</span>
-                <span class="n">dfdict</span><span class="p">[</span><span class="s2">"IMC"</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">r</span><span class="p">]</span>
-                <span class="n">dfdict</span><span class="p">[</span><span class="s2">"Result"</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">*</span> <span class="n">multiplier</span><span class="p">]</span>
+                <span class="n">dfdict</span><span class="p">[</span><span class="s2">&quot;IMT&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">imt_str</span><span class="p">]</span>
+                <span class="n">dfdict</span><span class="p">[</span><span class="s2">&quot;IMC&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">r</span><span class="p">]</span>
+                <span class="n">dfdict</span><span class="p">[</span><span class="s2">&quot;Result&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">*</span> <span class="n">multiplier</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Deal with nan values for channels and radial transverse</span>
-            <span class="k">if</span> <span class="n">imc</span> <span class="o">==</span> <span class="s2">"radial_transverse"</span> <span class="ow">and</span> <span class="s2">""</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-                <span class="n">dfdict</span><span class="p">[</span><span class="s2">"IMT"</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">imt_str</span><span class="p">,</span> <span class="n">imt_str</span><span class="p">]</span>
-                <span class="n">dfdict</span><span class="p">[</span><span class="s2">"IMC"</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"HNR"</span><span class="p">,</span> <span class="s2">"HNT"</span><span class="p">]</span>
-                <span class="n">dfdict</span><span class="p">[</span><span class="s2">"Result"</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>
-            <span class="k">elif</span> <span class="n">imc</span> <span class="o">==</span> <span class="s2">"channels"</span> <span class="ow">and</span> <span class="s2">""</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-                <span class="n">dfdict</span><span class="p">[</span><span class="s2">"IMT"</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">imt_str</span><span class="p">,</span> <span class="n">imt_str</span><span class="p">,</span> <span class="n">imt_str</span><span class="p">]</span>
-                <span class="n">dfdict</span><span class="p">[</span><span class="s2">"IMC"</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"HN1"</span><span class="p">,</span> <span class="s2">"HN2"</span><span class="p">,</span> <span class="s2">"HNZ"</span><span class="p">]</span>
-                <span class="n">dfdict</span><span class="p">[</span><span class="s2">"Result"</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">imc</span> <span class="o">==</span> <span class="s2">&quot;radial_transverse&quot;</span> <span class="ow">and</span> <span class="s2">&quot;&quot;</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+                <span class="n">dfdict</span><span class="p">[</span><span class="s2">&quot;IMT&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">imt_str</span><span class="p">,</span> <span class="n">imt_str</span><span class="p">]</span>
+                <span class="n">dfdict</span><span class="p">[</span><span class="s2">&quot;IMC&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;HNR&quot;</span><span class="p">,</span> <span class="s2">&quot;HNT&quot;</span><span class="p">]</span>
+                <span class="n">dfdict</span><span class="p">[</span><span class="s2">&quot;Result&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">imc</span> <span class="o">==</span> <span class="s2">&quot;channels&quot;</span> <span class="ow">and</span> <span class="s2">&quot;&quot;</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+                <span class="n">dfdict</span><span class="p">[</span><span class="s2">&quot;IMT&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">imt_str</span><span class="p">,</span> <span class="n">imt_str</span><span class="p">,</span> <span class="n">imt_str</span><span class="p">]</span>
+                <span class="n">dfdict</span><span class="p">[</span><span class="s2">&quot;IMC&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;HN1&quot;</span><span class="p">,</span> <span class="s2">&quot;HN2&quot;</span><span class="p">,</span> <span class="s2">&quot;HNZ&quot;</span><span class="p">]</span>
+                <span class="n">dfdict</span><span class="p">[</span><span class="s2">&quot;Result&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">dfdict</span><span class="p">[</span><span class="s2">"IMT"</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">imt_str</span><span class="p">]</span>
-                <span class="n">dfdict</span><span class="p">[</span><span class="s2">"IMC"</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">imc_str</span><span class="p">]</span>
+                <span class="n">dfdict</span><span class="p">[</span><span class="s2">&quot;IMT&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">imt_str</span><span class="p">]</span>
+                <span class="n">dfdict</span><span class="p">[</span><span class="s2">&quot;IMC&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">imc_str</span><span class="p">]</span>
                 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-                    <span class="n">dfdict</span><span class="p">[</span><span class="s2">"Result"</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">*</span> <span class="n">multiplier</span><span class="p">]</span>
+                    <span class="n">dfdict</span><span class="p">[</span><span class="s2">&quot;Result&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">*</span> <span class="n">multiplier</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">dfdict</span></div>
 
 <div class="viewcode-block" id="MetricsController._get_horizontal_time"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/metrics_controller/index.html#gmprocess.metrics.metrics_controller.MetricsController._get_horizontal_time">[docs]</a>    <span class="k">def</span> <span class="nf">_get_horizontal_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
-<span class="sd">        Get the 'times' array for a horizontal channel. This is required for</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the &#39;times&#39; array for a horizontal channel. This is required for</span>
 <span class="sd">        spectral accelerations where a rotation (rotd) is requested.</span>
 
 <span class="sd">        Returns:</span>
@@ -1217,27 +1218,27 @@
 
 <span class="sd">        Raises:</span>
 <span class="sd">            PGMException: if there are no horizontal channels.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeseries</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">"Z"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
+            <span class="k">if</span> <span class="s2">&quot;Z&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
                 <span class="c1"># times = trace.times()</span>
                 <span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
                     <span class="mf">0.0</span><span class="p">,</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span> <span class="o">-</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="p">,</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span>
                 <span class="p">)</span>
                 <span class="k">return</span> <span class="n">times</span>
         <span class="k">raise</span> <span class="n">PGMException</span><span class="p">(</span>
-            <span class="s2">"MetricsController: At least one horizontal "</span>
-            <span class="s2">"channel is required for calculations of SA, ROTD, GMROTD, GM."</span>
+            <span class="s2">&quot;MetricsController: At least one horizontal &quot;</span>
+            <span class="s2">&quot;channel is required for calculations of SA, ROTD, GMROTD, GM.&quot;</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="MetricsController._get_time"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/metrics_controller/index.html#gmprocess.metrics.metrics_controller.MetricsController._get_time">[docs]</a>    <span class="k">def</span> <span class="nf">_get_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
-<span class="sd">        Get the 'times' array.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the &#39;times&#39; array.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            numpy.ndarray: Array of times.</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeseries</span><span class="p">:</span>
             <span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
                 <span class="mf">0.0</span><span class="p">,</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span> <span class="o">-</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="p">,</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span>
@@ -1245,7 +1246,7 @@
             <span class="k">return</span> <span class="n">times</span></div>
 
 <div class="viewcode-block" id="MetricsController._get_subclass"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/metrics_controller/index.html#gmprocess.metrics.metrics_controller.MetricsController._get_subclass">[docs]</a>    <span class="k">def</span> <span class="nf">_get_subclass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">classes</span><span class="p">,</span> <span class="n">base_class</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the dynanically imported class required for the calculation step,</span>
 <span class="sd">        while ignoring the base class.</span>
 
@@ -1255,16 +1256,16 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            class: Class for the calculation.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># The first item in the list is the string representation of the class</span>
         <span class="c1"># the second item is the class itself</span>
         <span class="k">for</span> <span class="n">cls_tupple</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">cls_tupple</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">base_class</span> <span class="ow">and</span> <span class="n">cls_tupple</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"PGMException"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cls_tupple</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">base_class</span> <span class="ow">and</span> <span class="n">cls_tupple</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;PGMException&quot;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">cls_tupple</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="MetricsController._parse_period"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/metrics_controller/index.html#gmprocess.metrics.metrics_controller.MetricsController._parse_period">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_period</span><span class="p">(</span><span class="n">imt</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parses the period from the imt.</span>
 
 <span class="sd">        Args:</span>
@@ -1280,11 +1281,11 @@
 
 <span class="sd">        Notes:</span>
 <span class="sd">            Can be either a float or integer.</span>
-<span class="sd">        """</span>
-        <span class="n">period</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\d+"</span><span class="p">,</span> <span class="n">imt</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">period</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\d+&quot;</span><span class="p">,</span> <span class="n">imt</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">period</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">period</span> <span class="o">=</span> <span class="s2">"."</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
+            <span class="n">period</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">period</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">period</span> <span class="o">=</span> <span class="n">period</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1293,7 +1294,7 @@
 
 <div class="viewcode-block" id="MetricsController._parse_interval"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/metrics_controller/index.html#gmprocess.metrics.metrics_controller.MetricsController._parse_interval">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_interval</span><span class="p">(</span><span class="n">imt</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parses the interval from the imt string.</span>
 
 <span class="sd">        Args:</span>
@@ -1306,16 +1307,16 @@
 
 <span class="sd">        Notes:</span>
 <span class="sd">            Can be either a float or integer.</span>
-<span class="sd">        """</span>
-        <span class="n">tmpstr</span> <span class="o">=</span> <span class="n">imt</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"duration"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tmpstr</span> <span class="o">=</span> <span class="n">imt</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;duration&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">tmpstr</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">tmpstr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)]</span>
+            <span class="k">return</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">tmpstr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="MetricsController._parse_percentile"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/metrics_controller/index.html#gmprocess.metrics.metrics_controller.MetricsController._parse_percentile">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_percentile</span><span class="p">(</span><span class="n">imc</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parses the percentile from the imc.</span>
 
 <span class="sd">        Args:</span>
@@ -1332,10 +1333,10 @@
 
 <span class="sd">        Notes:</span>
 <span class="sd">            Can be either a float or integer.</span>
-<span class="sd">        """</span>
-        <span class="n">percentile</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\d+"</span><span class="p">,</span> <span class="n">imc</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">percentile</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\d+&quot;</span><span class="p">,</span> <span class="n">imc</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">percentile</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">percentile</span> <span class="o">=</span> <span class="s2">"."</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">percentile</span><span class="p">)</span>
+            <span class="n">percentile</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">percentile</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">percentile</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">percentile</span> <span class="o">=</span> <span class="n">percentile</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1367,19 +1368,19 @@
 <div class="viewcode-block" id="MetricsController.clean_imts"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/metrics_controller/index.html#gmprocess.metrics.metrics_controller.MetricsController.clean_imts">[docs]</a>    <span class="k">def</span> <span class="nf">clean_imts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">cleaned_imts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">imt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imts</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"fas"</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;fas&quot;</span><span class="p">):</span>
                 <span class="n">period</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_period</span><span class="p">(</span><span class="n">imt</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">period</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">continue</span>
                 <span class="n">cleaned_imts</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">"fas(</span><span class="si">{</span><span class="n">METRICS_XML_FLOAT_STRING_FORMAT</span><span class="p">[</span><span class="s1">'period'</span><span class="p">]</span><span class="si">}</span><span class="s2">)"</span> <span class="o">%</span> <span class="nb">float</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
+                    <span class="sa">f</span><span class="s2">&quot;fas(</span><span class="si">{</span><span class="n">METRICS_XML_FLOAT_STRING_FORMAT</span><span class="p">[</span><span class="s1">&#39;period&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="nb">float</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
                 <span class="p">)</span>
-            <span class="k">elif</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"sa"</span><span class="p">):</span>
+            <span class="k">elif</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;sa&quot;</span><span class="p">):</span>
                 <span class="n">period</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_period</span><span class="p">(</span><span class="n">imt</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">period</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">continue</span>
                 <span class="n">cleaned_imts</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">"sa(</span><span class="si">{</span><span class="n">METRICS_XML_FLOAT_STRING_FORMAT</span><span class="p">[</span><span class="s1">'period'</span><span class="p">]</span><span class="si">}</span><span class="s2">)"</span> <span class="o">%</span> <span class="nb">float</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
+                    <span class="sa">f</span><span class="s2">&quot;sa(</span><span class="si">{</span><span class="n">METRICS_XML_FLOAT_STRING_FORMAT</span><span class="p">[</span><span class="s1">&#39;period&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="nb">float</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">cleaned_imts</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">imt</span><span class="p">)</span>

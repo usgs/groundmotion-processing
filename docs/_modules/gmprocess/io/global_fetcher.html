@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.global_fetcher - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.io.global_fetcher - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -506,7 +507,7 @@
     <span class="n">drop_non_free</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">stream_collection</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">"""Retrieve data using any DataFetcher subclass.</span>
+    <span class="sd">&quot;&quot;&quot;Retrieve data using any DataFetcher subclass.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        time (datetime):</span>
@@ -532,16 +533,16 @@
 
 <span class="sd">     Returns:</span>
 <span class="sd">        StreamCollection: StreamCollection object.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
 
     <span class="n">tfetchers</span> <span class="o">=</span> <span class="n">find_fetchers</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
 
     <span class="c1"># Remove fetchers if they are not present in the conf file</span>
-    <span class="n">fetchers</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">tfetchers</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">"fetchers"</span><span class="p">]}</span>
+    <span class="n">fetchers</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">tfetchers</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;fetchers&quot;</span><span class="p">]}</span>
     <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">fetchers</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">fname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">"fetchers"</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">fname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;fetchers&quot;</span><span class="p">]:</span>
             <span class="k">del</span> <span class="n">fetchers</span><span class="p">[</span><span class="n">fname</span><span class="p">]</span>
 
     <span class="n">instances</span> <span class="o">=</span> <span class="p">[]</span>
@@ -560,7 +561,7 @@
                 <span class="n">stream_collection</span><span class="o">=</span><span class="n">stream_collection</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">fmt</span> <span class="o">=</span> <span class="s1">'Could not instantiate Fetcher </span><span class="si">%s</span><span class="s1">, due to error</span><span class="se">\n</span><span class="s1"> "</span><span class="si">%s</span><span class="s1">"'</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;Could not instantiate Fetcher </span><span class="si">%s</span><span class="s1">, due to error</span><span class="se">\n</span><span class="s1"> &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span>
             <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="n">fetchname</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="n">fmt</span> <span class="o">%</span> <span class="n">tpl</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
@@ -570,12 +571,12 @@
         <span class="k">if</span> <span class="p">(</span><span class="n">xmin</span> <span class="o">&lt;</span> <span class="n">lon</span> <span class="o">&lt;</span> <span class="n">xmax</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">ymin</span> <span class="o">&lt;</span> <span class="n">lat</span> <span class="o">&lt;</span> <span class="n">ymax</span><span class="p">):</span>
             <span class="n">instances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fetchinst</span><span class="p">)</span>
 
-    <span class="n">efmt</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2"> M</span><span class="si">%.1f</span><span class="s2"> (</span><span class="si">%.4f</span><span class="s2">,</span><span class="si">%.4f</span><span class="s2">)"</span>
+    <span class="n">efmt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> M</span><span class="si">%.1f</span><span class="s2"> (</span><span class="si">%.4f</span><span class="s2">,</span><span class="si">%.4f</span><span class="s2">)&quot;</span>
     <span class="n">etpl</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">magnitude</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
     <span class="n">esummary</span> <span class="o">=</span> <span class="n">efmt</span> <span class="o">%</span> <span class="n">etpl</span>
     <span class="n">streams</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">fetcher</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">:</span>
-        <span class="k">if</span> <span class="s2">"FDSN"</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">fetcher</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;FDSN&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">fetcher</span><span class="p">):</span>
             <span class="n">tstreams</span> <span class="o">=</span> <span class="n">fetcher</span><span class="o">.</span><span class="n">retrieveData</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">streams</span><span class="p">:</span>
                 <span class="n">streams</span> <span class="o">=</span> <span class="n">streams</span> <span class="o">+</span> <span class="n">tstreams</span>
@@ -585,7 +586,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">events</span> <span class="o">=</span> <span class="n">fetcher</span><span class="o">.</span><span class="n">getMatchingEvents</span><span class="p">(</span><span class="n">solve</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">):</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s2">"No event matching </span><span class="si">%s</span><span class="s2"> found by class </span><span class="si">%s</span><span class="s2">"</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;No event matching </span><span class="si">%s</span><span class="s2"> found by class </span><span class="si">%s</span><span class="s2">&quot;</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span> <span class="o">%</span> <span class="p">(</span><span class="n">esummary</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">fetcher</span><span class="p">)))</span>
                 <span class="k">continue</span>
             <span class="n">tstreams</span> <span class="o">=</span> <span class="n">fetcher</span><span class="o">.</span><span class="n">retrieveData</span><span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -601,7 +602,7 @@
 
 
 <div class="viewcode-block" id="find_fetchers"><a class="viewcode-back" href="../../../autoapi/gmprocess/io/global_fetcher/index.html#gmprocess.io.global_fetcher.find_fetchers">[docs]</a><span class="k">def</span> <span class="nf">find_fetchers</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">):</span>
-    <span class="sd">"""Create a dictionary of classname:class to be used in main().</span>
+    <span class="sd">&quot;&quot;&quot;Create a dictionary of classname:class to be used in main().</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        lat (float):</span>
@@ -612,22 +613,22 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: Dictionary of classname:class where each class</span>
 <span class="sd">            is a subclass of shakemap.coremods.base.CoreModule.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">fetchers</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">"gmprocess"</span><span class="p">,</span> <span class="s2">"io"</span><span class="p">))</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;gmprocess&quot;</span><span class="p">,</span> <span class="s2">&quot;io&quot;</span><span class="p">))</span>
     <span class="k">for</span> <span class="p">(</span><span class="n">rootdir</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span><span class="p">)</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">rootdir</span> <span class="o">==</span> <span class="n">root</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="k">for</span> <span class="n">tfile</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
             <span class="n">modfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rootdir</span><span class="p">,</span> <span class="n">tfile</span><span class="p">)</span>
-            <span class="n">modname</span> <span class="o">=</span> <span class="n">modfile</span><span class="p">[</span><span class="n">modfile</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">"gmprocess"</span><span class="p">)</span> <span class="p">:]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">".py"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
-            <span class="n">modname</span> <span class="o">=</span> <span class="n">modname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">,</span> <span class="s2">"."</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">modname</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"__"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">modname</span> <span class="o">=</span> <span class="n">modfile</span><span class="p">[</span><span class="n">modfile</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">&quot;gmprocess&quot;</span><span class="p">)</span> <span class="p">:]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.py&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">modname</span> <span class="o">=</span> <span class="n">modname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">modname</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">modname</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">mod</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"DataFetcher"</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;DataFetcher&quot;</span><span class="p">:</span>
                     <span class="k">continue</span>
                 <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">DataFetcher</span><span class="p">):</span>
                     <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">BOUNDS</span>

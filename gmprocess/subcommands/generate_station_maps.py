@@ -76,8 +76,7 @@ class GenerateHTMLMapModule(base.SubcommandModule):
                 for stream in streams:
                     pstreams.append(stream)
 
-            mapfiles = report_utils.draw_stations_map(pstreams, event, event_dir)
-            for file in mapfiles:
-                self.append_file("Station map", file)
+            mapfile = report_utils.draw_stations_map(pstreams, event, event_dir)
+            self.append_file("Station map", mapfile)
 
         self._summarize_files_created()

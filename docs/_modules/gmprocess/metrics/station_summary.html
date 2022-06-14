@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.metrics.station_summary - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.metrics.station_summary - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -504,13 +505,13 @@
 <span class="kn">from</span> <span class="nn">gmprocess.utils.tables</span> <span class="kn">import</span> <span class="n">_get_table_row</span><span class="p">,</span> <span class="n">find_float</span>
 
 <span class="n">XML_UNITS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"pga"</span><span class="p">:</span> <span class="s2">"</span><span class="si">%g</span><span class="s2">"</span><span class="p">,</span>
-    <span class="s2">"pgv"</span><span class="p">:</span> <span class="s2">"cm/s"</span><span class="p">,</span>
-    <span class="s2">"sa"</span><span class="p">:</span> <span class="s2">"</span><span class="si">%g</span><span class="s2">"</span><span class="p">,</span>
-    <span class="s2">"arias"</span><span class="p">:</span> <span class="s2">"m/s"</span><span class="p">,</span>
-    <span class="s2">"fas"</span><span class="p">:</span> <span class="s2">"cm/s"</span><span class="p">,</span>
-    <span class="s2">"duration"</span><span class="p">:</span> <span class="s2">"s"</span><span class="p">,</span>
-    <span class="s2">"sorted_duration"</span><span class="p">:</span> <span class="s2">"s"</span><span class="p">,</span>
+    <span class="s2">&quot;pga&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%g</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pgv&quot;</span><span class="p">:</span> <span class="s2">&quot;cm/s&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sa&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%g</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;arias&quot;</span><span class="p">:</span> <span class="s2">&quot;m/s&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fas&quot;</span><span class="p">:</span> <span class="s2">&quot;cm/s&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sorted_duration&quot;</span><span class="p">:</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="n">DEFAULT_DAMPING</span> <span class="o">=</span> <span class="mf">0.05</span>
@@ -519,9 +520,9 @@
 
 
 <div class="viewcode-block" id="StationSummary"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/station_summary/index.html#gmprocess.metrics.station_summary.StationSummary">[docs]</a><span class="k">class</span> <span class="nc">StationSummary</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class for returning pgm values for specific components.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bandwidth</span> <span class="o">=</span> <span class="kc">None</span>
@@ -544,83 +545,83 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">available_imcs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper method for getting a list of components.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: List of available components (str).</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gather_pgms</span><span class="p">()[</span><span class="mi">1</span><span class="p">]]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">available_imts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper method for getting a list of measurement types.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: List of available measurement types (str).</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gather_pgms</span><span class="p">()[</span><span class="mi">0</span><span class="p">]]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">bandwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper method for getting the defined bandwidth.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            float: Bandwidth used in smoothing.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bandwidth</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">components</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper method returning a list of requested/calculated components.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: List of requested/calculated components (str).</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper method returning the coordinates of the station.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: List of coordinates (str).</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coordinates</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">damping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper method for getting the damping used in the spectral amplitude</span>
 <span class="sd">        calculation.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            float: Damping used in SA calculation.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_damping</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">elevation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper method for getting the station elevation.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            float: Station elevation</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_elevation</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">distances</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper method for getting the distances.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: Dictionary of distance measurements.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distances</span>
 
 <div class="viewcode-block" id="StationSummary.from_config"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/station_summary/index.html#gmprocess.metrics.station_summary.StationSummary.from_config">[docs]</a>    <span class="nd">@classmethod</span>
@@ -634,7 +635,7 @@
         <span class="n">rupture</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">vs30_grids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            stream (obspy.core.stream.Stream):</span>
 <span class="sd">                Strong motion timeseries for one station.</span>
@@ -658,14 +659,14 @@
 <span class="sd">        Note:</span>
 <span class="sd">            Assumes a processed stream with units of gal (1 cm/s^2).</span>
 <span class="sd">            No processing is done by this class.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
         <span class="n">station</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
 
-        <span class="n">damping</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"metrics"</span><span class="p">][</span><span class="s2">"sa"</span><span class="p">][</span><span class="s2">"damping"</span><span class="p">]</span>
-        <span class="n">smoothing</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"metrics"</span><span class="p">][</span><span class="s2">"fas"</span><span class="p">][</span><span class="s2">"smoothing"</span><span class="p">]</span>
-        <span class="n">bandwidth</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"metrics"</span><span class="p">][</span><span class="s2">"fas"</span><span class="p">][</span><span class="s2">"bandwidth"</span><span class="p">]</span>
+        <span class="n">damping</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;sa&quot;</span><span class="p">][</span><span class="s2">&quot;damping&quot;</span><span class="p">]</span>
+        <span class="n">smoothing</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;fas&quot;</span><span class="p">][</span><span class="s2">&quot;smoothing&quot;</span><span class="p">]</span>
+        <span class="n">bandwidth</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;fas&quot;</span><span class="p">][</span><span class="s2">&quot;bandwidth&quot;</span><span class="p">]</span>
 
         <span class="n">station</span><span class="o">.</span><span class="n">_damping</span> <span class="o">=</span> <span class="n">damping</span>
         <span class="n">station</span><span class="o">.</span><span class="n">_smoothing</span> <span class="o">=</span> <span class="n">smoothing</span>
@@ -684,11 +685,11 @@
                 <span class="n">station</span><span class="o">.</span><span class="n">_components</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">imcs</span>
                 <span class="n">station</span><span class="o">.</span><span class="n">_imts</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">imts</span>
                 <span class="n">station</span><span class="o">.</span><span class="n">pgms</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
-                    <span class="p">{</span><span class="s2">"IMT"</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">"IMC"</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">"Result"</span><span class="p">:</span> <span class="p">[]}</span>
+                    <span class="p">{</span><span class="s2">&quot;IMT&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;IMC&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;Result&quot;</span><span class="p">:</span> <span class="p">[]}</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">station</span><span class="o">.</span><span class="n">_components</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">pgms</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s2">"IMC"</span><span class="p">))</span>
-                <span class="n">station</span><span class="o">.</span><span class="n">_imts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">pgms</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s2">"IMT"</span><span class="p">))</span>
+                <span class="n">station</span><span class="o">.</span><span class="n">_components</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">pgms</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s2">&quot;IMC&quot;</span><span class="p">))</span>
+                <span class="n">station</span><span class="o">.</span><span class="n">_imts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">pgms</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s2">&quot;IMT&quot;</span><span class="p">))</span>
                 <span class="n">station</span><span class="o">.</span><span class="n">pgms</span> <span class="o">=</span> <span class="n">pgms</span>
         <span class="k">if</span> <span class="n">calc_station_metrics</span><span class="p">:</span>
             <span class="n">station</span><span class="o">.</span><span class="n">compute_station_metrics</span><span class="p">(</span><span class="n">rupture</span><span class="p">,</span> <span class="n">vs30_grids</span><span class="p">)</span>
@@ -697,7 +698,7 @@
 
 <div class="viewcode-block" id="StationSummary.from_pgms"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/station_summary/index.html#gmprocess.metrics.station_summary.StationSummary.from_pgms">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_pgms</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">station_code</span><span class="p">,</span> <span class="n">pgms</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            station_code (str):</span>
 <span class="sd">                Station code for the given pgms.</span>
@@ -713,11 +714,11 @@
 
 <span class="sd">            ```</span>
 <span class="sd">                {</span>
-<span class="sd">                  'SA1.0': {</span>
-<span class="sd">                    'H2': 84.23215974982956,</span>
-<span class="sd">                    'H1': 135.9267934939141,</span>
-<span class="sd">                    'GREATER_OF_TWO_HORIZONTALS': 135.9267934939141,</span>
-<span class="sd">                    'Z': 27.436966897028416</span>
+<span class="sd">                  &#39;SA1.0&#39;: {</span>
+<span class="sd">                    &#39;H2&#39;: 84.23215974982956,</span>
+<span class="sd">                    &#39;H1&#39;: 135.9267934939141,</span>
+<span class="sd">                    &#39;GREATER_OF_TWO_HORIZONTALS&#39;: 135.9267934939141,</span>
+<span class="sd">                    &#39;Z&#39;: 27.436966897028416</span>
 <span class="sd">                  },</span>
 <span class="sd">                  ...</span>
 <span class="sd">                }</span>
@@ -725,16 +726,16 @@
 
 <span class="sd">            This should be the default format for significant ground motion</span>
 <span class="sd">            parametric data from COMCAT.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">station</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="n">station</span><span class="o">.</span><span class="n">_station_code</span> <span class="o">=</span> <span class="n">station_code</span>
-        <span class="n">dfdict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"IMT"</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">"IMC"</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">"Result"</span><span class="p">:</span> <span class="p">[]}</span>
+        <span class="n">dfdict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;IMT&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;IMC&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;Result&quot;</span><span class="p">:</span> <span class="p">[]}</span>
         <span class="k">for</span> <span class="n">imt</span> <span class="ow">in</span> <span class="n">pgms</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">imc</span> <span class="ow">in</span> <span class="n">pgms</span><span class="p">[</span><span class="n">imt</span><span class="p">]:</span>
-                <span class="n">dfdict</span><span class="p">[</span><span class="s2">"IMT"</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">imt</span><span class="p">]</span>
-                <span class="n">dfdict</span><span class="p">[</span><span class="s2">"IMC"</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">imc</span><span class="p">]</span>
-                <span class="n">dfdict</span><span class="p">[</span><span class="s2">"Result"</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">pgms</span><span class="p">[</span><span class="n">imt</span><span class="p">][</span><span class="n">imc</span><span class="p">]]</span>
-        <span class="n">pgmdf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dfdict</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">"IMT"</span><span class="p">,</span> <span class="s2">"IMC"</span><span class="p">])</span>
+                <span class="n">dfdict</span><span class="p">[</span><span class="s2">&quot;IMT&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">imt</span><span class="p">]</span>
+                <span class="n">dfdict</span><span class="p">[</span><span class="s2">&quot;IMC&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">imc</span><span class="p">]</span>
+                <span class="n">dfdict</span><span class="p">[</span><span class="s2">&quot;Result&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">pgms</span><span class="p">[</span><span class="n">imt</span><span class="p">][</span><span class="n">imc</span><span class="p">]]</span>
+        <span class="n">pgmdf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dfdict</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">&quot;IMT&quot;</span><span class="p">,</span> <span class="s2">&quot;IMC&quot;</span><span class="p">])</span>
         <span class="n">station</span><span class="o">.</span><span class="n">pgms</span> <span class="o">=</span> <span class="n">pgmdf</span>
         <span class="n">imts</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">pgms</span><span class="p">]</span>
         <span class="n">components</span> <span class="o">=</span> <span class="p">[]</span>
@@ -764,7 +765,7 @@
         <span class="n">rupture</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">vs30_grids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            stream (obspy.core.stream.Stream):</span>
 <span class="sd">                Strong motion timeseries for one station.</span>
@@ -799,7 +800,7 @@
 <span class="sd">        Note:</span>
 <span class="sd">            Assumes a processed stream with units of gal (1 cm/s^2).</span>
 <span class="sd">            No processing is done by this class.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
         <span class="n">station</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
@@ -807,13 +808,13 @@
         <span class="n">components</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">damping</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">damping</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"metrics"</span><span class="p">][</span><span class="s2">"sa"</span><span class="p">][</span><span class="s2">"damping"</span><span class="p">]</span>
+            <span class="n">damping</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;sa&quot;</span><span class="p">][</span><span class="s2">&quot;damping&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">smoothing</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">smoothing</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"metrics"</span><span class="p">][</span><span class="s2">"fas"</span><span class="p">][</span><span class="s2">"smoothing"</span><span class="p">]</span>
+            <span class="n">smoothing</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;fas&quot;</span><span class="p">][</span><span class="s2">&quot;smoothing&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">bandwidth</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">bandwidth</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"metrics"</span><span class="p">][</span><span class="s2">"fas"</span><span class="p">][</span><span class="s2">"bandwidth"</span><span class="p">]</span>
+            <span class="n">bandwidth</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;fas&quot;</span><span class="p">][</span><span class="s2">&quot;bandwidth&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">allow_nans</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">allow_nans</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"metrics"</span><span class="p">][</span><span class="s2">"fas"</span><span class="p">][</span><span class="s2">"allow_nans"</span><span class="p">]</span>
+            <span class="n">allow_nans</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;fas&quot;</span><span class="p">][</span><span class="s2">&quot;allow_nans&quot;</span><span class="p">]</span>
 
         <span class="n">station</span><span class="o">.</span><span class="n">_damping</span> <span class="o">=</span> <span class="n">damping</span>
         <span class="n">station</span><span class="o">.</span><span class="n">_smoothing</span> <span class="o">=</span> <span class="n">smoothing</span>
@@ -840,18 +841,18 @@
                 <span class="n">station</span><span class="o">.</span><span class="n">_components</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">imcs</span>
                 <span class="n">station</span><span class="o">.</span><span class="n">_imts</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">imts</span>
                 <span class="n">station</span><span class="o">.</span><span class="n">pgms</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
-                    <span class="p">{</span><span class="s2">"IMT"</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">"IMC"</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">"Result"</span><span class="p">:</span> <span class="p">[]}</span>
+                    <span class="p">{</span><span class="s2">&quot;IMT&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;IMC&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;Result&quot;</span><span class="p">:</span> <span class="p">[]}</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">station</span><span class="o">.</span><span class="n">_components</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">pgms</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s2">"IMC"</span><span class="p">))</span>
-                <span class="n">station</span><span class="o">.</span><span class="n">_imts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">pgms</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s2">"IMT"</span><span class="p">))</span>
+                <span class="n">station</span><span class="o">.</span><span class="n">_components</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">pgms</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s2">&quot;IMC&quot;</span><span class="p">))</span>
+                <span class="n">station</span><span class="o">.</span><span class="n">_imts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">pgms</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s2">&quot;IMT&quot;</span><span class="p">))</span>
                 <span class="n">station</span><span class="o">.</span><span class="n">pgms</span> <span class="o">=</span> <span class="n">pgms</span>
         <span class="k">if</span> <span class="n">calc_station_metrics</span><span class="p">:</span>
             <span class="n">station</span><span class="o">.</span><span class="n">compute_station_metrics</span><span class="p">(</span><span class="n">rupture</span><span class="p">,</span> <span class="n">vs30_grids</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">station</span></div>
 
 <div class="viewcode-block" id="StationSummary.get_pgm"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/station_summary/index.html#gmprocess.metrics.station_summary.StationSummary.get_pgm">[docs]</a>    <span class="k">def</span> <span class="nf">get_pgm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imt</span><span class="p">,</span> <span class="n">imc</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Finds the imt/imc value requested.</span>
 
 <span class="sd">        Args:</span>
@@ -862,7 +863,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            float: Value for the imt, imc requested.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">imt</span> <span class="o">=</span> <span class="n">imt</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
         <span class="n">imc</span> <span class="o">=</span> <span class="n">imc</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">imt</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">imts</span> <span class="ow">or</span> <span class="n">imc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
@@ -871,28 +872,28 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pgms</span><span class="o">.</span><span class="n">Result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">imt</span><span class="p">,</span> <span class="n">imc</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="StationSummary.get_summary"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/station_summary/index.html#gmprocess.metrics.station_summary.StationSummary.get_summary">[docs]</a>    <span class="k">def</span> <span class="nf">get_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"STATION"</span><span class="p">,</span> <span class="s2">"NAME"</span><span class="p">,</span> <span class="s2">"SOURCE"</span><span class="p">,</span> <span class="s2">"NETID"</span><span class="p">,</span> <span class="s2">"LAT"</span><span class="p">,</span> <span class="s2">"LON"</span><span class="p">,</span> <span class="s2">"ELEVATION"</span><span class="p">]</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;STATION&quot;</span><span class="p">,</span> <span class="s2">&quot;NAME&quot;</span><span class="p">,</span> <span class="s2">&quot;SOURCE&quot;</span><span class="p">,</span> <span class="s2">&quot;NETID&quot;</span><span class="p">,</span> <span class="s2">&quot;LAT&quot;</span><span class="p">,</span> <span class="s2">&quot;LON&quot;</span><span class="p">,</span> <span class="s2">&quot;ELEVATION&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distances</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">dist_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distances</span><span class="p">:</span>
-                <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dist_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="s2">"_DISTANCE"</span><span class="p">)</span>
+                <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dist_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;_DISTANCE&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vs30</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">vs30_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vs30</span><span class="p">:</span>
                 <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vs30_type</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
         <span class="c1"># set meta_data</span>
         <span class="n">row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
         <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">station_code</span>
-        <span class="n">name_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"station_name"</span><span class="p">]</span>
+        <span class="n">name_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;station_name&quot;</span><span class="p">]</span>
         <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">name_str</span>
-        <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span>
         <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
-        <span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"network"</span><span class="p">]</span>
+        <span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">]</span>
         <span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">row</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elevation</span>
         <span class="n">imcs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span>
         <span class="n">imts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imts</span>
         <span class="n">pgms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pgms</span>
-        <span class="n">meta_columns</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_product</span><span class="p">([</span><span class="n">columns</span><span class="p">,</span> <span class="p">[</span><span class="s2">""</span><span class="p">]])</span>
+        <span class="n">meta_columns</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_product</span><span class="p">([</span><span class="n">columns</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]])</span>
         <span class="n">meta_dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">row</span><span class="p">]),</span> <span class="n">columns</span><span class="o">=</span><span class="n">meta_columns</span><span class="p">)</span>
         <span class="n">pgm_columns</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_product</span><span class="p">([</span><span class="n">imcs</span><span class="p">,</span> <span class="n">imts</span><span class="p">])</span>
         <span class="n">pgm_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">imts</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">imcs</span><span class="p">)))</span>
@@ -911,49 +912,49 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">imts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper method returning a list of requested/calculated measurement</span>
 <span class="sd">        types.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: List of requested/calculated measurement types (str).</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_imts</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">pgms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
-<span class="sd">        Helper method returning a station's pgms.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Helper method returning a station&#39;s pgms.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dictionary: Pgms for each imt and imc.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pgms</span>
 
     <span class="nd">@pgms</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">pgms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pgms</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper method to set the pgms attribute.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            pgms (list): Dictionary of pgms for each imt and imc.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_pgms</span> <span class="o">=</span> <span class="n">pgms</span>
 
 <div class="viewcode-block" id="StationSummary.set_metadata"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/station_summary/index.html#gmprocess.metrics.station_summary.StationSummary.set_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">set_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the metadata for the station</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">stats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_starttime</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">starttime</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_station_code</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">station</span>
-        <span class="k">if</span> <span class="s2">"coordinates"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stats</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;coordinates&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stats</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_elevation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_coordinates</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
             <span class="k">return</span>
         <span class="n">lat</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span>
         <span class="n">lon</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span>
-        <span class="k">if</span> <span class="s2">"elevation"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span>
+        <span class="k">if</span> <span class="s2">&quot;elevation&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span>
             <span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">elevation</span>
         <span class="p">):</span>
             <span class="n">elev</span> <span class="o">=</span> <span class="mi">0</span>
@@ -964,88 +965,88 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">smoothing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper method for getting the defined smoothing used for the</span>
 <span class="sd">        calculation FAS.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            string: Smoothing method used.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_smoothing</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">starttime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
-<span class="sd">        Helper method returning a station's starttime.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Helper method returning a station&#39;s starttime.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Start time for one station.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_starttime</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">station_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
-<span class="sd">        Helper method returning a station's station code.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Helper method returning a station&#39;s station code.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Station code for one station.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_station_code</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">stream</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
-<span class="sd">        Helper method returning a station's stream.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Helper method returning a station&#39;s stream.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            obspy.core.stream.Stream: Stream for one station.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream</span>
 
     <span class="nd">@stream</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">stream</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Helper method to set the stream attribute.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            stream (obspy.core.stream.Stream): Stream for one station.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">"Setting failed: the stream object cannot be "</span>
-                <span class="s2">"changed. A new instance of StationSummary must be created."</span>
+                <span class="s2">&quot;Setting failed: the stream object cannot be &quot;</span>
+                <span class="s2">&quot;changed. A new instance of StationSummary must be created.&quot;</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">Stream</span><span class="p">):</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Setting failed: not a stream object."</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"station"</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">station_code</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Setting failed: not a stream object.&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">station_code</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">"Setting failed: stream station does not match "</span>
-                    <span class="s2">"StationSummary.station_code."</span>
+                    <span class="s2">&quot;Setting failed: stream station does not match &quot;</span>
+                    <span class="s2">&quot;StationSummary.station_code.&quot;</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_stream</span> <span class="o">=</span> <span class="n">stream</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
-<span class="sd">        Helper method returning a station's summary.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Helper method returning a station&#39;s summary.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            pandas.Dataframe: Summary for one station.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_summary</span><span class="p">()</span>
 
 <div class="viewcode-block" id="StationSummary.from_xml"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/station_summary/index.html#gmprocess.metrics.station_summary.StationSummary.from_xml">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_xml</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">xml_stream</span><span class="p">,</span> <span class="n">xml_station</span><span class="p">):</span>
-        <span class="sd">"""Instantiate a StationSummary from metrics XML stored in ASDF file.</span>
+        <span class="sd">&quot;&quot;&quot;Instantiate a StationSummary from metrics XML stored in ASDF file.</span>
 
 <span class="sd">        &lt;waveform_metrics&gt;</span>
 <span class="sd">            &lt;rot_d50&gt;</span>
-<span class="sd">                &lt;pga units="m/s**2"&gt;0.45&lt;/pga&gt;</span>
-<span class="sd">                &lt;sa percent_damping="5.0" units="g"&gt;</span>
-<span class="sd">                &lt;value period="2.0"&gt;0.2&lt;/value&gt;</span>
+<span class="sd">                &lt;pga units=&quot;m/s**2&quot;&gt;0.45&lt;/pga&gt;</span>
+<span class="sd">                &lt;sa percent_damping=&quot;5.0&quot; units=&quot;g&quot;&gt;</span>
+<span class="sd">                &lt;value period=&quot;2.0&quot;&gt;0.2&lt;/value&gt;</span>
 <span class="sd">            &lt;/rot_d50&gt;</span>
 <span class="sd">            &lt;maximum_component&gt;</span>
 <span class="sd">            &lt;/maximum_component&gt;</span>
@@ -1053,8 +1054,8 @@
 
 <span class="sd">        &lt;station_metrics&gt;</span>
 <span class="sd">            &lt;distances&gt;</span>
-<span class="sd">            &lt;hypocentral units="km"&gt;100&lt;/hypocentral&gt;</span>
-<span class="sd">            &lt;epicentral units="km"&gt;120&lt;/epicentral&gt;</span>
+<span class="sd">            &lt;hypocentral units=&quot;km&quot;&gt;100&lt;/hypocentral&gt;</span>
+<span class="sd">            &lt;epicentral units=&quot;km&quot;&gt;120&lt;/epicentral&gt;</span>
 <span class="sd">            &lt;/distances&gt;</span>
 <span class="sd">        &lt;/station_metrics&gt;</span>
 
@@ -1067,7 +1068,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            object: StationSummary Object summarizing all station metrics.</span>
 
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">imtlist</span> <span class="o">=</span> <span class="n">gather_pgms</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">xml_stream</span><span class="p">)</span>
         <span class="n">pgms</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1075,26 +1076,26 @@
         <span class="n">damping</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">iter</span><span class="p">():</span>
             <span class="n">etag</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">tag</span>
-            <span class="k">if</span> <span class="n">etag</span> <span class="o">==</span> <span class="s2">"waveform_metrics"</span><span class="p">:</span>
-                <span class="n">station_code</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">"station_code"</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">etag</span> <span class="o">==</span> <span class="s2">&quot;waveform_metrics&quot;</span><span class="p">:</span>
+                <span class="n">station_code</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;station_code&quot;</span><span class="p">]</span>
                 <span class="k">continue</span>
             <span class="k">elif</span> <span class="n">etag</span> <span class="ow">in</span> <span class="n">imtlist</span><span class="p">:</span>
                 <span class="n">tdict</span> <span class="o">=</span> <span class="p">{}</span>
-                <span class="k">if</span> <span class="n">etag</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"sa"</span><span class="p">,</span> <span class="s2">"fas"</span><span class="p">]:</span>
-                    <span class="n">period</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">"period"</span><span class="p">]</span>
-                    <span class="k">if</span> <span class="s2">"damping"</span> <span class="ow">in</span> <span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
-                        <span class="n">damping</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">"damping"</span><span class="p">])</span>
-                    <span class="n">imt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">etag</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">period</span><span class="si">}</span><span class="s2">)"</span>
-                <span class="k">elif</span> <span class="n">etag</span> <span class="o">==</span> <span class="s2">"duration"</span><span class="p">:</span>
-                    <span class="n">interval</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">"interval"</span><span class="p">]</span>
-                    <span class="n">imt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">etag</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}{</span><span class="n">interval</span><span class="si">}</span><span class="s2">"</span>
+                <span class="k">if</span> <span class="n">etag</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;sa&quot;</span><span class="p">,</span> <span class="s2">&quot;fas&quot;</span><span class="p">]:</span>
+                    <span class="n">period</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;period&quot;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="s2">&quot;damping&quot;</span> <span class="ow">in</span> <span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+                        <span class="n">damping</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;damping&quot;</span><span class="p">])</span>
+                    <span class="n">imt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">etag</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">period</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="k">elif</span> <span class="n">etag</span> <span class="o">==</span> <span class="s2">&quot;duration&quot;</span><span class="p">:</span>
+                    <span class="n">interval</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;interval&quot;</span><span class="p">]</span>
+                    <span class="n">imt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">etag</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}{</span><span class="n">interval</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">imt</span> <span class="o">=</span> <span class="n">etag</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
                 <span class="k">for</span> <span class="n">imc_element</span> <span class="ow">in</span> <span class="n">element</span><span class="o">.</span><span class="n">getchildren</span><span class="p">():</span>
                     <span class="n">imc</span> <span class="o">=</span> <span class="n">imc_element</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-                    <span class="k">if</span> <span class="n">imc</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"H1"</span><span class="p">,</span> <span class="s2">"H2"</span><span class="p">,</span> <span class="s2">"Z"</span><span class="p">]:</span>
-                        <span class="k">if</span> <span class="s2">"original_channel"</span> <span class="ow">in</span> <span class="n">imc_element</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
-                            <span class="n">channel_dict</span><span class="p">[</span><span class="n">imc</span><span class="p">]</span> <span class="o">=</span> <span class="n">imc_element</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">"original_channel"</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">imc</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;H1&quot;</span><span class="p">,</span> <span class="s2">&quot;H2&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">]:</span>
+                        <span class="k">if</span> <span class="s2">&quot;original_channel&quot;</span> <span class="ow">in</span> <span class="n">imc_element</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+                            <span class="n">channel_dict</span><span class="p">[</span><span class="n">imc</span><span class="p">]</span> <span class="o">=</span> <span class="n">imc_element</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;original_channel&quot;</span><span class="p">]</span>
                     <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">imc_element</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
                     <span class="n">tdict</span><span class="p">[</span><span class="n">imc</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
@@ -1105,24 +1106,24 @@
         <span class="c1"># extract info from station metrics, fill in metadata</span>
         <span class="n">root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">xml_station</span><span class="p">)</span>  <span class="c1"># station metrics element</span>
         <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">iterchildren</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">"distances"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;distances&quot;</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">dist_type</span> <span class="ow">in</span> <span class="n">element</span><span class="o">.</span><span class="n">iterchildren</span><span class="p">():</span>
                     <span class="n">station</span><span class="o">.</span><span class="n">_distances</span><span class="p">[</span><span class="n">dist_type</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">dist_type</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">"vs30"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;vs30&quot;</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">vs30_type</span> <span class="ow">in</span> <span class="n">element</span><span class="o">.</span><span class="n">iterchildren</span><span class="p">():</span>
                     <span class="n">station</span><span class="o">.</span><span class="n">_vs30</span><span class="p">[</span><span class="n">vs30_type</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                        <span class="s2">"value"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">vs30_type</span><span class="o">.</span><span class="n">text</span><span class="p">),</span>
-                        <span class="s2">"column_header"</span><span class="p">:</span> <span class="n">vs30_type</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">"column_header"</span><span class="p">],</span>
-                        <span class="s2">"readme_entry"</span><span class="p">:</span> <span class="n">vs30_type</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">"readme_entry"</span><span class="p">],</span>
-                        <span class="s2">"units"</span><span class="p">:</span> <span class="n">vs30_type</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">"units"</span><span class="p">],</span>
+                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">vs30_type</span><span class="o">.</span><span class="n">text</span><span class="p">),</span>
+                        <span class="s2">&quot;column_header&quot;</span><span class="p">:</span> <span class="n">vs30_type</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;column_header&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;readme_entry&quot;</span><span class="p">:</span> <span class="n">vs30_type</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;readme_entry&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="n">vs30_type</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">],</span>
                     <span class="p">}</span>
-            <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">"back_azimuth"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;back_azimuth&quot;</span><span class="p">:</span>
                 <span class="n">station</span><span class="o">.</span><span class="n">_back_azimuth</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">station</span></div>
 
 <div class="viewcode-block" id="StationSummary.compute_station_metrics"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/station_summary/index.html#gmprocess.metrics.station_summary.StationSummary.compute_station_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">compute_station_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rupture</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vs30_grids</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes station metrics (distances, vs30, back azimuth) for the</span>
 <span class="sd">        StationSummary.</span>
 
@@ -1132,16 +1133,16 @@
 <span class="sd">            vs30_grids (dict):</span>
 <span class="sd">                A dictionary containing the vs30 grid files, names, and</span>
 <span class="sd">                descriptions (see config).</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span>
         <span class="n">elev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elevation</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">event</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span>
             <span class="n">dist</span><span class="p">,</span> <span class="n">baz</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">gps2dist_azimuth</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_distances</span><span class="p">[</span><span class="s2">"epicentral"</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist</span> <span class="o">/</span> <span class="n">M_PER_KM</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_distances</span><span class="p">[</span><span class="s2">&quot;epicentral&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist</span> <span class="o">/</span> <span class="n">M_PER_KM</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_back_azimuth</span> <span class="o">=</span> <span class="n">baz</span>
             <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">depth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_distances</span><span class="p">[</span><span class="s2">"hypocentral"</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_distances</span><span class="p">[</span><span class="s2">&quot;hypocentral&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span>
                     <span class="n">lon</span><span class="p">,</span>
                     <span class="n">lat</span><span class="p">,</span>
                     <span class="o">-</span><span class="n">elev</span> <span class="o">/</span> <span class="n">M_PER_KM</span><span class="p">,</span>
@@ -1163,7 +1164,7 @@
                 <span class="n">rrup_var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">rrup</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
                 <span class="n">rjb_var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">rjb</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
 
-                <span class="c1"># If we don't have a point rupture, then back azimuth needs</span>
+                <span class="c1"># If we don&#39;t have a point rupture, then back azimuth needs</span>
                 <span class="c1"># to be calculated to the closest point on the rupture</span>
                 <span class="n">dists</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="n">bazs</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1179,15 +1180,15 @@
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_distances</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
                 <span class="p">{</span>
-                    <span class="s2">"rupture"</span><span class="p">:</span> <span class="n">rrup</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                    <span class="s2">"rupture_var"</span><span class="p">:</span> <span class="n">rrup_var</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                    <span class="s2">"joyner_boore"</span><span class="p">:</span> <span class="n">rjb</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                    <span class="s2">"joyner_boore_var"</span><span class="p">:</span> <span class="n">rjb_var</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                    <span class="s2">"gc2_rx"</span><span class="p">:</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">"rx"</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
-                    <span class="s2">"gc2_ry"</span><span class="p">:</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">"ry"</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
-                    <span class="s2">"gc2_ry0"</span><span class="p">:</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">"ry0"</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
-                    <span class="s2">"gc2_U"</span><span class="p">:</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">"U"</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
-                    <span class="s2">"gc2_T"</span><span class="p">:</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">"T"</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="s2">&quot;rupture&quot;</span><span class="p">:</span> <span class="n">rrup</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="s2">&quot;rupture_var&quot;</span><span class="p">:</span> <span class="n">rrup_var</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="s2">&quot;joyner_boore&quot;</span><span class="p">:</span> <span class="n">rjb</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="s2">&quot;joyner_boore_var&quot;</span><span class="p">:</span> <span class="n">rjb_var</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="s2">&quot;gc2_rx&quot;</span><span class="p">:</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">&quot;rx&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="s2">&quot;gc2_ry&quot;</span><span class="p">:</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">&quot;ry&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="s2">&quot;gc2_ry0&quot;</span><span class="p">:</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">&quot;ry0&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="s2">&quot;gc2_U&quot;</span><span class="p">:</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">&quot;U&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="s2">&quot;gc2_T&quot;</span><span class="p">:</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
                 <span class="p">}</span>
             <span class="p">)</span>
 
@@ -1195,22 +1196,22 @@
             <span class="k">for</span> <span class="n">vs30_name</span> <span class="ow">in</span> <span class="n">vs30_grids</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                 <span class="n">tmpgrid</span> <span class="o">=</span> <span class="n">vs30_grids</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_vs30</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s2">"value"</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">"grid_object"</span><span class="p">]</span><span class="o">.</span><span class="n">getValue</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">lat</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">lon</span><span class="p">)),</span>
-                    <span class="s2">"column_header"</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">"column_header"</span><span class="p">],</span>
-                    <span class="s2">"readme_entry"</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">"readme_entry"</span><span class="p">],</span>
-                    <span class="s2">"units"</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">"units"</span><span class="p">],</span>
+                    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">&quot;grid_object&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">getValue</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">lat</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">lon</span><span class="p">)),</span>
+                    <span class="s2">&quot;column_header&quot;</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">&quot;column_header&quot;</span><span class="p">],</span>
+                    <span class="s2">&quot;readme_entry&quot;</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">&quot;readme_entry&quot;</span><span class="p">],</span>
+                    <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">],</span>
                 <span class="p">}</span></div>
 
 <div class="viewcode-block" id="StationSummary.get_metric_xml"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/station_summary/index.html#gmprocess.metrics.station_summary.StationSummary.get_metric_xml">[docs]</a>    <span class="k">def</span> <span class="nf">get_metric_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Return waveform metrics XML as defined for our ASDF implementation.</span>
+        <span class="sd">&quot;&quot;&quot;Return waveform metrics XML as defined for our ASDF implementation.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: XML in the form:</span>
 <span class="sd">                &lt;waveform_metrics&gt;</span>
 <span class="sd">                    &lt;rot_d50&gt;</span>
-<span class="sd">                        &lt;pga units="m/s**2"&gt;0.45&lt;/pga&gt;</span>
-<span class="sd">                        &lt;sa percent_damping="5.0" units="g"&gt;</span>
-<span class="sd">                        &lt;value period="2.0"&gt;0.2&lt;/value&gt;</span>
+<span class="sd">                        &lt;pga units=&quot;m/s**2&quot;&gt;0.45&lt;/pga&gt;</span>
+<span class="sd">                        &lt;sa percent_damping=&quot;5.0&quot; units=&quot;g&quot;&gt;</span>
+<span class="sd">                        &lt;value period=&quot;2.0&quot;&gt;0.2&lt;/value&gt;</span>
 <span class="sd">                    &lt;/rot_d50&gt;</span>
 <span class="sd">                    &lt;maximum_component&gt;</span>
 <span class="sd">                    &lt;/maximum_component&gt;</span>
@@ -1218,9 +1219,9 @@
 
 <span class="sd">        Raises:</span>
 <span class="sd">            KeyError: if the requrested imt is not present.</span>
-<span class="sd">        """</span>
-        <span class="n">FLOAT_MATCH</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"[0-9]*\.[0-9]*"</span>
-        <span class="n">root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s2">"waveform_metrics"</span><span class="p">,</span> <span class="n">station_code</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">station_code</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">FLOAT_MATCH</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;[0-9]*\.[0-9]*&quot;</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s2">&quot;waveform_metrics&quot;</span><span class="p">,</span> <span class="n">station_code</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">station_code</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">imt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">imts</span><span class="p">:</span>
             <span class="n">imtstr</span> <span class="o">=</span> <span class="n">imt</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="n">units</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1232,37 +1233,37 @@
                         <span class="n">units</span> <span class="o">=</span> <span class="n">XML_UNITS</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
                         <span class="k">break</span>
             <span class="k">if</span> <span class="n">units</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Could not find units for IMT </span><span class="si">{</span><span class="n">imtstr</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find units for IMT </span><span class="si">{</span><span class="n">imtstr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="n">period</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">if</span> <span class="n">imtstr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"sa"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">imtstr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"fas"</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">imtstr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;sa&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">imtstr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;fas&quot;</span><span class="p">):</span>
                 <span class="n">period</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">FLOAT_MATCH</span><span class="p">,</span> <span class="n">imtstr</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
                 <span class="n">attdict</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s2">"period"</span><span class="p">:</span> <span class="p">(</span><span class="n">METRICS_XML_FLOAT_STRING_FORMAT</span><span class="p">[</span><span class="s2">"period"</span><span class="p">]</span> <span class="o">%</span> <span class="n">period</span><span class="p">),</span>
-                    <span class="s2">"units"</span><span class="p">:</span> <span class="n">units</span><span class="p">,</span>
+                    <span class="s2">&quot;period&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">METRICS_XML_FLOAT_STRING_FORMAT</span><span class="p">[</span><span class="s2">&quot;period&quot;</span><span class="p">]</span> <span class="o">%</span> <span class="n">period</span><span class="p">),</span>
+                    <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="n">units</span><span class="p">,</span>
                 <span class="p">}</span>
-                <span class="k">if</span> <span class="n">imtstr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"sa"</span><span class="p">):</span>
-                    <span class="n">imtstr</span> <span class="o">=</span> <span class="s2">"sa"</span>
+                <span class="k">if</span> <span class="n">imtstr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;sa&quot;</span><span class="p">):</span>
+                    <span class="n">imtstr</span> <span class="o">=</span> <span class="s2">&quot;sa&quot;</span>
                     <span class="n">damping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_damping</span>
                     <span class="k">if</span> <span class="n">damping</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="n">damping</span> <span class="o">=</span> <span class="n">DEFAULT_DAMPING</span>
-                    <span class="n">attdict</span><span class="p">[</span><span class="s2">"damping"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="n">METRICS_XML_FLOAT_STRING_FORMAT</span><span class="p">[</span><span class="s2">"damping"</span><span class="p">]</span> <span class="o">%</span> <span class="n">damping</span>
+                    <span class="n">attdict</span><span class="p">[</span><span class="s2">&quot;damping&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">METRICS_XML_FLOAT_STRING_FORMAT</span><span class="p">[</span><span class="s2">&quot;damping&quot;</span><span class="p">]</span> <span class="o">%</span> <span class="n">damping</span>
                     <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">imtstr</span> <span class="o">=</span> <span class="s2">"fas"</span>
+                    <span class="n">imtstr</span> <span class="o">=</span> <span class="s2">&quot;fas&quot;</span>
                 <span class="n">imt_tag</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">imtstr</span><span class="p">,</span> <span class="n">attrib</span><span class="o">=</span><span class="n">attdict</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">imtstr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"duration"</span><span class="p">):</span>
-                <span class="n">attdict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"interval"</span><span class="p">:</span> <span class="n">imtstr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"duration"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="s2">"units"</span><span class="p">:</span> <span class="n">units</span><span class="p">}</span>
-                <span class="n">imtstr</span> <span class="o">=</span> <span class="s2">"duration"</span>
+            <span class="k">elif</span> <span class="n">imtstr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;duration&quot;</span><span class="p">):</span>
+                <span class="n">attdict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="n">imtstr</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;duration&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="n">units</span><span class="p">}</span>
+                <span class="n">imtstr</span> <span class="o">=</span> <span class="s2">&quot;duration&quot;</span>
                 <span class="n">imt_tag</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">imtstr</span><span class="p">,</span> <span class="n">attrib</span><span class="o">=</span><span class="n">attdict</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">imt_tag</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">imtstr</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">imc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
-                <span class="n">imcstr</span> <span class="o">=</span> <span class="n">imc</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"("</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">")"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">imc</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"H1"</span><span class="p">,</span> <span class="s2">"H2"</span><span class="p">,</span> <span class="s2">"Z"</span><span class="p">]:</span>
-                    <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"original_channel"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_dict</span><span class="p">[</span><span class="n">imc</span><span class="p">]}</span>
+                <span class="n">imcstr</span> <span class="o">=</span> <span class="n">imc</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">imc</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;H1&quot;</span><span class="p">,</span> <span class="s2">&quot;H2&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">]:</span>
+                    <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;original_channel&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_dict</span><span class="p">[</span><span class="n">imc</span><span class="p">]}</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
                 <span class="n">imc_tag</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">imt_tag</span><span class="p">,</span> <span class="n">imcstr</span><span class="p">,</span> <span class="n">attrib</span><span class="o">=</span><span class="n">attributes</span><span class="p">)</span>
@@ -1270,61 +1271,61 @@
                     <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pgms</span><span class="o">.</span><span class="n">Result</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">imt</span><span class="p">,</span> <span class="n">imc</span><span class="p">]</span>
                 <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                     <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-                <span class="n">imc_tag</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">METRICS_XML_FLOAT_STRING_FORMAT</span><span class="p">[</span><span class="s2">"pgm"</span><span class="p">]</span> <span class="o">%</span> <span class="n">value</span>
-        <span class="n">xmlstr</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"unicode"</span><span class="p">)</span>
+                <span class="n">imc_tag</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">METRICS_XML_FLOAT_STRING_FORMAT</span><span class="p">[</span><span class="s2">&quot;pgm&quot;</span><span class="p">]</span> <span class="o">%</span> <span class="n">value</span>
+        <span class="n">xmlstr</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;unicode&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">xmlstr</span></div>
 
 <div class="viewcode-block" id="StationSummary.get_station_xml"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/station_summary/index.html#gmprocess.metrics.station_summary.StationSummary.get_station_xml">[docs]</a>    <span class="k">def</span> <span class="nf">get_station_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return XML for station metrics as defined for our ASDF</span>
 <span class="sd">        implementation.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: XML in the form specified by format.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s2">"station_metrics"</span><span class="p">,</span> <span class="n">station_code</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">station_code</span><span class="p">)</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s2">&quot;station_metrics&quot;</span><span class="p">,</span> <span class="n">station_code</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">station_code</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_back_azimuth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">back_azimuth</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">"back_azimuth"</span><span class="p">)</span>
+            <span class="n">back_azimuth</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">&quot;back_azimuth&quot;</span><span class="p">)</span>
             <span class="n">back_azimuth</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">METRICS_XML_FLOAT_STRING_FORMAT</span><span class="p">[</span><span class="s2">"back_azimuth"</span><span class="p">]</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_back_azimuth</span>
+                <span class="n">METRICS_XML_FLOAT_STRING_FORMAT</span><span class="p">[</span><span class="s2">&quot;back_azimuth&quot;</span><span class="p">]</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_back_azimuth</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distances</span><span class="p">:</span>
-            <span class="n">distances</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">"distances"</span><span class="p">)</span>
+            <span class="n">distances</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">&quot;distances&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">dist_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distances</span><span class="p">:</span>
-                <span class="n">element</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">distances</span><span class="p">,</span> <span class="n">dist_type</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">"km"</span><span class="p">)</span>
+                <span class="n">element</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">distances</span><span class="p">,</span> <span class="n">dist_type</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;km&quot;</span><span class="p">)</span>
                 <span class="n">element</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">METRICS_XML_FLOAT_STRING_FORMAT</span><span class="p">[</span><span class="s2">"distance"</span><span class="p">]</span>
+                    <span class="n">METRICS_XML_FLOAT_STRING_FORMAT</span><span class="p">[</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span>
                     <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distances</span><span class="p">[</span><span class="n">dist_type</span><span class="p">]</span>
                 <span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vs30</span><span class="p">:</span>
-            <span class="n">vs30</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">"vs30"</span><span class="p">)</span>
+            <span class="n">vs30</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s2">&quot;vs30&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">vs30_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vs30</span><span class="p">:</span>
                 <span class="n">element</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span>
                     <span class="n">vs30</span><span class="p">,</span>
                     <span class="n">vs30_type</span><span class="p">,</span>
-                    <span class="n">units</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_vs30</span><span class="p">[</span><span class="n">vs30_type</span><span class="p">][</span><span class="s2">"units"</span><span class="p">],</span>
-                    <span class="n">column_header</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_vs30</span><span class="p">[</span><span class="n">vs30_type</span><span class="p">][</span><span class="s2">"column_header"</span><span class="p">],</span>
-                    <span class="n">readme_entry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_vs30</span><span class="p">[</span><span class="n">vs30_type</span><span class="p">][</span><span class="s2">"readme_entry"</span><span class="p">],</span>
+                    <span class="n">units</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_vs30</span><span class="p">[</span><span class="n">vs30_type</span><span class="p">][</span><span class="s2">&quot;units&quot;</span><span class="p">],</span>
+                    <span class="n">column_header</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_vs30</span><span class="p">[</span><span class="n">vs30_type</span><span class="p">][</span><span class="s2">&quot;column_header&quot;</span><span class="p">],</span>
+                    <span class="n">readme_entry</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_vs30</span><span class="p">[</span><span class="n">vs30_type</span><span class="p">][</span><span class="s2">&quot;readme_entry&quot;</span><span class="p">],</span>
                 <span class="p">)</span>
                 <span class="n">element</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">METRICS_XML_FLOAT_STRING_FORMAT</span><span class="p">[</span><span class="s2">"vs30"</span><span class="p">]</span>
-                    <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vs30</span><span class="p">[</span><span class="n">vs30_type</span><span class="p">][</span><span class="s2">"value"</span><span class="p">]</span>
+                    <span class="n">METRICS_XML_FLOAT_STRING_FORMAT</span><span class="p">[</span><span class="s2">&quot;vs30&quot;</span><span class="p">]</span>
+                    <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vs30</span><span class="p">[</span><span class="n">vs30_type</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
                 <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">etree</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"unicode"</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">etree</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;unicode&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="StationSummary.toSeries"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/station_summary/index.html#gmprocess.metrics.station_summary.StationSummary.toSeries">[docs]</a>    <span class="k">def</span> <span class="nf">toSeries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Render StationSummary as a Pandas Series object.</span>
+        <span class="sd">&quot;&quot;&quot;Render StationSummary as a Pandas Series object.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Series:</span>
 <span class="sd">                Multi-Indexed Pandas Series where IMTs are top-level indices</span>
 <span class="sd">                and components are sub-indices.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">imts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imts</span>
         <span class="n">imcs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span>
         <span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_product</span><span class="p">([</span><span class="n">imts</span><span class="p">,</span> <span class="n">imcs</span><span class="p">])</span>
@@ -1342,7 +1343,7 @@
         <span class="k">return</span> <span class="n">series</span></div>
 
 <div class="viewcode-block" id="StationSummary.get_imc_dict"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/station_summary/index.html#gmprocess.metrics.station_summary.StationSummary.get_imc_dict">[docs]</a>    <span class="k">def</span> <span class="nf">get_imc_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Get an IMC table.</span>
+        <span class="sd">&quot;&quot;&quot;Get an IMC table.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            imc (str or list):</span>
@@ -1351,17 +1352,17 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            A dictionary with keys corresponding to IMCs, where the associated</span>
 <span class="sd">            value is a dictionary with keys corresponding to IMTs.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">imc_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">pgms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pgms</span>
         <span class="k">if</span> <span class="n">imc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">imclist</span> <span class="o">=</span> <span class="n">pgms</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s2">"IMC"</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="n">imclist</span> <span class="o">=</span> <span class="n">pgms</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s2">&quot;IMC&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">imc</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="n">imclist</span> <span class="o">=</span> <span class="p">[</span><span class="n">imc</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">imclist</span> <span class="o">=</span> <span class="n">imc</span>
 
-        <span class="c1"># Note: in this situation, we can only have 1 row per "table" where the</span>
+        <span class="c1"># Note: in this situation, we can only have 1 row per &quot;table&quot; where the</span>
         <span class="c1"># different IMTs are the different columns.</span>
         <span class="k">for</span> <span class="n">imc</span> <span class="ow">in</span> <span class="n">imclist</span><span class="p">:</span>
             <span class="n">row</span> <span class="o">=</span> <span class="n">_get_table_row</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stream</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="p">,</span> <span class="n">imc</span><span class="p">)</span>
@@ -1371,7 +1372,7 @@
         <span class="k">return</span> <span class="n">imc_dict</span></div>
 
 <div class="viewcode-block" id="StationSummary.get_sa_arrays"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/station_summary/index.html#gmprocess.metrics.station_summary.StationSummary.get_sa_arrays">[docs]</a>    <span class="k">def</span> <span class="nf">get_sa_arrays</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""Get an SA arrays for selected IMCs.</span>
+        <span class="sd">&quot;&quot;&quot;Get an SA arrays for selected IMCs.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            imc (str or list):</span>
@@ -1379,9 +1380,9 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A dictionary with keys corresponding to IMCs, where the associated</span>
-<span class="sd">            value is a dictionary with keys of 'period' and 'sa' which are</span>
+<span class="sd">            value is a dictionary with keys of &#39;period&#39; and &#39;sa&#39; which are</span>
 <span class="sd">            numpy arrays.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">imc_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_imc_dict</span><span class="p">(</span><span class="n">imc</span><span class="p">)</span>
         <span class="n">sa_arrays</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">imc_key</span><span class="p">,</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">imc_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -1395,7 +1396,7 @@
             <span class="n">period</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
             <span class="n">sa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sa</span><span class="p">)</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
-            <span class="n">sa_arrays</span><span class="p">[</span><span class="n">imc_key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"period"</span><span class="p">:</span> <span class="n">period</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="s2">"sa"</span><span class="p">:</span> <span class="n">sa</span><span class="p">[</span><span class="n">idx</span><span class="p">]}</span>
+            <span class="n">sa_arrays</span><span class="p">[</span><span class="n">imc_key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;period&quot;</span><span class="p">:</span> <span class="n">period</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="s2">&quot;sa&quot;</span><span class="p">:</span> <span class="n">sa</span><span class="p">[</span><span class="n">idx</span><span class="p">]}</span>
         <span class="k">return</span> <span class="n">sa_arrays</span></div></div>
 </pre></div>
         </article>

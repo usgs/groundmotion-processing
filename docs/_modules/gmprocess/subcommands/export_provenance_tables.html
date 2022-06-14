@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.subcommands.export_provenance_tables - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.subcommands.export_provenance_tables - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -488,33 +489,33 @@
 
 <span class="kn">from</span> <span class="nn">gmprocess.subcommands.lazy_loader</span> <span class="kn">import</span> <span class="n">LazyLoader</span>
 
-<span class="n">arg_dicts</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"arg_dicts"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.arg_dicts"</span><span class="p">)</span>
-<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"base"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.subcommands.base"</span><span class="p">)</span>
-<span class="n">ws</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"ws"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.io.asdf.stream_workspace"</span><span class="p">)</span>
-<span class="n">const</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"const"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.constants"</span><span class="p">)</span>
+<span class="n">arg_dicts</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;arg_dicts&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.subcommands.arg_dicts&quot;</span><span class="p">)</span>
+<span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;base&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.subcommands.base&quot;</span><span class="p">)</span>
+<span class="n">ws</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;ws&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.io.asdf.stream_workspace&quot;</span><span class="p">)</span>
+<span class="n">const</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;const&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.utils.constants&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="ExportProvenanceTablesModule"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/export_provenance_tables/index.html#gmprocess.subcommands.export_provenance_tables.ExportProvenanceTablesModule">[docs]</a><span class="k">class</span> <span class="nc">ExportProvenanceTablesModule</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">SubcommandModule</span><span class="p">):</span>
-    <span class="sd">"""Export provenance tables."""</span>
+    <span class="sd">&quot;&quot;&quot;Export provenance tables.&quot;&quot;&quot;</span>
 
-    <span class="n">command_name</span> <span class="o">=</span> <span class="s2">"export_provenance_tables"</span>
-    <span class="n">aliases</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"ptables"</span><span class="p">,)</span>
+    <span class="n">command_name</span> <span class="o">=</span> <span class="s2">&quot;export_provenance_tables&quot;</span>
+    <span class="n">aliases</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;ptables&quot;</span><span class="p">,)</span>
 
     <span class="n">arguments</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"eventid"</span><span class="p">],</span>
-        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"textfile"</span><span class="p">],</span>
-        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"label"</span><span class="p">],</span>
-        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">"output_format"</span><span class="p">],</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">&quot;eventid&quot;</span><span class="p">],</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">&quot;textfile&quot;</span><span class="p">],</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">],</span>
+        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">&quot;output_format&quot;</span><span class="p">],</span>
     <span class="p">]</span>
 
 <div class="viewcode-block" id="ExportProvenanceTablesModule.main"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/export_provenance_tables/index.html#gmprocess.subcommands.export_provenance_tables.ExportProvenanceTablesModule.main">[docs]</a>    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gmrecords</span><span class="p">):</span>
-        <span class="sd">"""Export provenance tables.</span>
+        <span class="sd">&quot;&quot;&quot;Export provenance tables.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            gmrecords:</span>
 <span class="sd">                GMrecordsApp instance.</span>
-<span class="sd">        """</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Running subcommand '</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running subcommand &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span> <span class="o">=</span> <span class="n">gmrecords</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_arguments</span><span class="p">()</span>
@@ -522,25 +523,25 @@
 
         <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Creating provenance tables for event </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">eventid</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating provenance tables for event </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">eventid</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
             <span class="n">event_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="n">workname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="n">const</span><span class="o">.</span><span class="n">WORKSPACE_NAME</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">workname</span><span class="p">):</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                    <span class="s2">"No workspace file found for event </span><span class="si">%s</span><span class="s2">. Please run "</span>
-                    <span class="s2">"subcommand 'assemble' to generate workspace file."</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span>
+                    <span class="s2">&quot;No workspace file found for event </span><span class="si">%s</span><span class="s2">. Please run &quot;</span>
+                    <span class="s2">&quot;subcommand &#39;assemble&#39; to generate workspace file.&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span>
                 <span class="p">)</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Continuing to next event."</span><span class="p">)</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Continuing to next event.&quot;</span><span class="p">)</span>
                 <span class="k">continue</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span> <span class="o">=</span> <span class="n">ws</span><span class="o">.</span><span class="n">StreamWorkspace</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">workname</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_get_pstreams</span><span class="p">()</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"pstreams"</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pstreams</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;pstreams&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pstreams</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                    <span class="s2">"No processed waveforms available. No provenance tables created."</span>
+                    <span class="s2">&quot;No processed waveforms available. No provenance tables created.&quot;</span>
                 <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
                 <span class="k">continue</span>
@@ -550,14 +551,14 @@
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">workspace</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-            <span class="n">basename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">project</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s2">_provenance"</span>
-            <span class="k">if</span> <span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">output_format</span> <span class="o">==</span> <span class="s2">"csv"</span><span class="p">:</span>
-                <span class="n">csvfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">basename</span><span class="si">}</span><span class="s2">.csv"</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">append_file</span><span class="p">(</span><span class="s2">"Provenance"</span><span class="p">,</span> <span class="n">csvfile</span><span class="p">)</span>
+            <span class="n">basename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">project</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s2">_provenance&quot;</span>
+            <span class="k">if</span> <span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">output_format</span> <span class="o">==</span> <span class="s2">&quot;csv&quot;</span><span class="p">:</span>
+                <span class="n">csvfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">basename</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">append_file</span><span class="p">(</span><span class="s2">&quot;Provenance&quot;</span><span class="p">,</span> <span class="n">csvfile</span><span class="p">)</span>
                 <span class="n">provdata</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csvfile</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">excelfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">basename</span><span class="si">}</span><span class="s2">.xlsx"</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">append_file</span><span class="p">(</span><span class="s2">"Provenance"</span><span class="p">,</span> <span class="n">excelfile</span><span class="p">)</span>
+                <span class="n">excelfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">basename</span><span class="si">}</span><span class="s2">.xlsx&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">append_file</span><span class="p">(</span><span class="s2">&quot;Provenance&quot;</span><span class="p">,</span> <span class="n">excelfile</span><span class="p">)</span>
                 <span class="n">provdata</span><span class="o">.</span><span class="n">to_excel</span><span class="p">(</span><span class="n">excelfile</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_summarize_files_created</span><span class="p">()</span></div></div>

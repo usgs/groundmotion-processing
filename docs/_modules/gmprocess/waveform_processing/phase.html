@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.waveform_processing.phase - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.waveform_processing.phase - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -502,14 +503,14 @@
 <span class="kn">from</span> <span class="nn">gmprocess.utils.config</span> <span class="kn">import</span> <span class="n">get_config</span>
 <span class="kn">from</span> <span class="nn">gmprocess.utils.event</span> <span class="kn">import</span> <span class="n">ScalarEvent</span>
 
-<span class="n">NAN_TIME</span> <span class="o">=</span> <span class="n">UTCDateTime</span><span class="p">(</span><span class="s2">"1970-01-01T00:00:00"</span><span class="p">)</span>
+<span class="n">NAN_TIME</span> <span class="o">=</span> <span class="n">UTCDateTime</span><span class="p">(</span><span class="s2">&quot;1970-01-01T00:00:00&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="butter_bandpass"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/phase/index.html#gmprocess.waveform_processing.phase.butter_bandpass">[docs]</a><span class="k">def</span> <span class="nf">butter_bandpass</span><span class="p">(</span><span class="n">lowcut</span><span class="p">,</span> <span class="n">highcut</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
     <span class="n">nyq</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">fs</span>
     <span class="n">low</span> <span class="o">=</span> <span class="n">lowcut</span> <span class="o">/</span> <span class="n">nyq</span>
     <span class="n">high</span> <span class="o">=</span> <span class="n">highcut</span> <span class="o">/</span> <span class="n">nyq</span>
-    <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">butter</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="p">[</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">],</span> <span class="n">btype</span><span class="o">=</span><span class="s2">"band"</span><span class="p">)</span>
+    <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">butter</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="p">[</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">],</span> <span class="n">btype</span><span class="o">=</span><span class="s2">&quot;band&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span></div>
 
 
@@ -567,7 +568,7 @@
 <span class="p">):</span>
     <span class="n">data_hil</span> <span class="o">=</span> <span class="n">hilbert</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
     <span class="n">envelope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data_hil</span><span class="p">)</span>
-    <span class="n">envelope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">envelope</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">hanning</span><span class="p">(</span><span class="n">hanning</span> <span class="o">*</span> <span class="n">sps</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"same"</span><span class="p">)</span>
+    <span class="n">envelope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">convolve</span><span class="p">(</span><span class="n">envelope</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">hanning</span><span class="p">(</span><span class="n">hanning</span> <span class="o">*</span> <span class="n">sps</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">)</span>
 
     <span class="n">sta_samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">STAW</span> <span class="o">*</span> <span class="n">sps</span><span class="p">)</span>
     <span class="n">sta_samples2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">STAW2</span> <span class="o">*</span> <span class="n">sps</span><span class="p">)</span>
@@ -639,7 +640,7 @@
     <span class="n">threshDetect2</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
     <span class="n">threshRestart</span><span class="o">=</span><span class="mi">99999999</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">"""Pick P-wave arrival time.</span>
+    <span class="sd">&quot;&quot;&quot;Pick P-wave arrival time.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        tr (StationTrace):</span>
@@ -670,7 +671,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        float:</span>
 <span class="sd">            P-wave pick time as number of seconds after start of trace.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">tr_copy</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">tr_copy</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
     <span class="n">tr_copy</span><span class="o">.</span><span class="n">detrend</span><span class="p">()</span>
@@ -699,7 +700,7 @@
 
 
 <div class="viewcode-block" id="pick_kalkan"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/phase/index.html#gmprocess.waveform_processing.phase.pick_kalkan">[docs]</a><span class="k">def</span> <span class="nf">pick_kalkan</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">picker_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""Wrapper around the Kalkan P-phase picker.</span>
+    <span class="sd">&quot;&quot;&quot;Wrapper around the Kalkan P-phase picker.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        stream (StationStream):</span>
@@ -716,13 +717,13 @@
 <span class="sd">        tuple:</span>
 <span class="sd">            - Best estimate for p-wave arrival time (s since start of trace).</span>
 <span class="sd">            - Mean signal to noise ratio based on the pick.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">picker_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">picker_config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">section</span><span class="o">=</span><span class="s2">"pickers"</span><span class="p">)</span>
+        <span class="n">picker_config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">section</span><span class="o">=</span><span class="s2">&quot;pickers&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
-    <span class="n">min_noise_dur</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"windows"</span><span class="p">][</span><span class="s2">"window_checks"</span><span class="p">][</span><span class="s2">"min_noise_duration"</span><span class="p">]</span>
-    <span class="n">params</span> <span class="o">=</span> <span class="n">picker_config</span><span class="p">[</span><span class="s2">"kalkan"</span><span class="p">]</span>
+    <span class="n">min_noise_dur</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;windows&quot;</span><span class="p">][</span><span class="s2">&quot;window_checks&quot;</span><span class="p">][</span><span class="s2">&quot;min_noise_duration&quot;</span><span class="p">]</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">picker_config</span><span class="p">[</span><span class="s2">&quot;kalkan&quot;</span><span class="p">]</span>
     <span class="n">locs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
         <span class="n">loc</span> <span class="o">=</span> <span class="n">pphase_pick</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
@@ -734,7 +735,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">minloc</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="k">if</span> <span class="n">minloc</span> <span class="o">&lt;</span> <span class="n">min_noise_dur</span><span class="p">:</span>
-        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"Noise window (</span><span class="si">%.1f</span><span class="s2"> s) less than minimum (</span><span class="si">%.1f</span><span class="s2">)"</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;Noise window (</span><span class="si">%.1f</span><span class="s2"> s) less than minimum (</span><span class="si">%.1f</span><span class="s2">)&quot;</span>
         <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="n">minloc</span><span class="p">,</span> <span class="n">min_noise_dur</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="n">tpl</span><span class="p">)</span>
     <span class="n">mean_snr</span> <span class="o">=</span> <span class="n">calc_snr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">minloc</span><span class="p">)</span>
@@ -743,7 +744,7 @@
 
 
 <div class="viewcode-block" id="pick_ar"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/phase/index.html#gmprocess.waveform_processing.phase.pick_ar">[docs]</a><span class="k">def</span> <span class="nf">pick_ar</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">picker_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""Wrapper around the AR P-phase picker.</span>
+    <span class="sd">&quot;&quot;&quot;Wrapper around the AR P-phase picker.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        stream (StationStream):</span>
@@ -759,28 +760,28 @@
 <span class="sd">        tuple:</span>
 <span class="sd">            - Best estimate for p-wave arrival time (s since start of trace).</span>
 <span class="sd">            - Mean signal to noise ratio based on the pick.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">picker_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">picker_config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">section</span><span class="o">=</span><span class="s2">"pickers"</span><span class="p">)</span>
+        <span class="n">picker_config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">section</span><span class="o">=</span><span class="s2">&quot;pickers&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
-    <span class="n">min_noise_dur</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"windows"</span><span class="p">][</span><span class="s2">"window_checks"</span><span class="p">][</span><span class="s2">"min_noise_duration"</span><span class="p">]</span>
-    <span class="n">params</span> <span class="o">=</span> <span class="n">picker_config</span><span class="p">[</span><span class="s2">"ar"</span><span class="p">]</span>
+    <span class="n">min_noise_dur</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;windows&quot;</span><span class="p">][</span><span class="s2">&quot;window_checks&quot;</span><span class="p">][</span><span class="s2">&quot;min_noise_duration&quot;</span><span class="p">]</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">picker_config</span><span class="p">[</span><span class="s2">&quot;ar&quot;</span><span class="p">]</span>
     <span class="c1"># Get the east, north, and vertical components from the stream</span>
-    <span class="n">st_e</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s2">"??[E1]"</span><span class="p">)</span>
-    <span class="n">st_n</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s2">"??[N2]"</span><span class="p">)</span>
-    <span class="n">st_z</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s2">"??[Z3]"</span><span class="p">)</span>
+    <span class="n">st_e</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s2">&quot;??[E1]&quot;</span><span class="p">)</span>
+    <span class="n">st_n</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s2">&quot;??[N2]&quot;</span><span class="p">)</span>
+    <span class="n">st_z</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s2">&quot;??[Z3]&quot;</span><span class="p">)</span>
 
     <span class="c1"># Check if we found one of each component</span>
     <span class="c1"># If not, use the next picker in the order of preference</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">st_e</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">st_n</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">st_z</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">BaseException</span><span class="p">(</span><span class="s2">"Unable to perform AR picker."</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">BaseException</span><span class="p">(</span><span class="s2">&quot;Unable to perform AR picker.&quot;</span><span class="p">)</span>
 
     <span class="n">minloc</span> <span class="o">=</span> <span class="n">ar_pick</span><span class="p">(</span>
         <span class="n">st_z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">st_n</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">st_e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">st_z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span>
     <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">minloc</span> <span class="o">&lt;</span> <span class="n">min_noise_dur</span><span class="p">:</span>
-        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"Noise window (</span><span class="si">%.1f</span><span class="s2"> s) less than minimum (</span><span class="si">%.1f</span><span class="s2">)"</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;Noise window (</span><span class="si">%.1f</span><span class="s2"> s) less than minimum (</span><span class="si">%.1f</span><span class="s2">)&quot;</span>
         <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="n">minloc</span><span class="p">,</span> <span class="n">min_noise_dur</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="n">tpl</span><span class="p">)</span>
     <span class="n">mean_snr</span> <span class="o">=</span> <span class="n">calc_snr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">minloc</span><span class="p">)</span>
@@ -789,7 +790,7 @@
 
 
 <div class="viewcode-block" id="pick_baer"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/phase/index.html#gmprocess.waveform_processing.phase.pick_baer">[docs]</a><span class="k">def</span> <span class="nf">pick_baer</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">picker_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""Wrapper around the Baer P-phase picker.</span>
+    <span class="sd">&quot;&quot;&quot;Wrapper around the Baer P-phase picker.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        stream (StationStream):</span>
@@ -805,13 +806,13 @@
 <span class="sd">        tuple:</span>
 <span class="sd">            - Best estimate for p-wave arrival time (s since start of trace).</span>
 <span class="sd">            - Mean signal to noise ratio based on the pick.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">picker_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">picker_config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">section</span><span class="o">=</span><span class="s2">"pickers"</span><span class="p">)</span>
+        <span class="n">picker_config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">section</span><span class="o">=</span><span class="s2">&quot;pickers&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
-    <span class="n">min_noise_dur</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"windows"</span><span class="p">][</span><span class="s2">"window_checks"</span><span class="p">][</span><span class="s2">"min_noise_duration"</span><span class="p">]</span>
-    <span class="n">params</span> <span class="o">=</span> <span class="n">picker_config</span><span class="p">[</span><span class="s2">"baer"</span><span class="p">]</span>
+    <span class="n">min_noise_dur</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;windows&quot;</span><span class="p">][</span><span class="s2">&quot;window_checks&quot;</span><span class="p">][</span><span class="s2">&quot;min_noise_duration&quot;</span><span class="p">]</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">picker_config</span><span class="p">[</span><span class="s2">&quot;baer&quot;</span><span class="p">]</span>
     <span class="n">locs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
         <span class="n">pick_sample</span> <span class="o">=</span> <span class="n">pk_baer</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
@@ -824,7 +825,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">minloc</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="k">if</span> <span class="n">minloc</span> <span class="o">&lt;</span> <span class="n">min_noise_dur</span><span class="p">:</span>
-        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"Noise window (</span><span class="si">%.1f</span><span class="s2"> s) less than minimum (</span><span class="si">%.1f</span><span class="s2">)"</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;Noise window (</span><span class="si">%.1f</span><span class="s2"> s) less than minimum (</span><span class="si">%.1f</span><span class="s2">)&quot;</span>
         <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="n">minloc</span><span class="p">,</span> <span class="n">min_noise_dur</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="n">tpl</span><span class="p">)</span>
     <span class="n">mean_snr</span> <span class="o">=</span> <span class="n">calc_snr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">minloc</span><span class="p">)</span>
@@ -833,7 +834,7 @@
 
 
 <div class="viewcode-block" id="pick_travel"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/phase/index.html#gmprocess.waveform_processing.phase.pick_travel">[docs]</a><span class="k">def</span> <span class="nf">pick_travel</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">picker_config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""Use TauP travel time model to find P-Phase arrival time.</span>
+    <span class="sd">&quot;&quot;&quot;Use TauP travel time model to find P-Phase arrival time.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        stream (StationStream):</span>
@@ -846,11 +847,11 @@
 <span class="sd">        tuple:</span>
 <span class="sd">            - Best estimate for p-wave arrival time (s since start of trace).</span>
 <span class="sd">            - Mean signal to noise ratio based on the pick.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">picker_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">picker_config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">section</span><span class="o">=</span><span class="s2">"pickers"</span><span class="p">)</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">TauPyModel</span><span class="p">(</span><span class="n">picker_config</span><span class="p">[</span><span class="s2">"travel_time"</span><span class="p">][</span><span class="s2">"model"</span><span class="p">])</span>
+            <span class="n">picker_config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">section</span><span class="o">=</span><span class="s2">&quot;pickers&quot;</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">TauPyModel</span><span class="p">(</span><span class="n">picker_config</span><span class="p">[</span><span class="s2">&quot;travel_time&quot;</span><span class="p">][</span><span class="s2">&quot;model&quot;</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span> <span class="o">==</span> <span class="n">NAN_TIME</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">lat</span> <span class="o">=</span> <span class="n">origin</span><span class="o">.</span><span class="n">latitude</span>
@@ -867,10 +868,10 @@
         <span class="n">arrivals</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_travel_times</span><span class="p">(</span>
             <span class="n">source_depth_in_km</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span>
             <span class="n">distance_in_degree</span><span class="o">=</span><span class="n">dist_deg</span><span class="p">,</span>
-            <span class="n">phase_list</span><span class="o">=</span><span class="p">[</span><span class="s2">"P"</span><span class="p">,</span> <span class="s2">"p"</span><span class="p">,</span> <span class="s2">"Pn"</span><span class="p">],</span>
+            <span class="n">phase_list</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;Pn&quot;</span><span class="p">],</span>
         <span class="p">)</span>
     <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">fmt</span> <span class="o">=</span> <span class="s1">'Exception "</span><span class="si">%s</span><span class="s1">" generated by get_travel_times() '</span> <span class="s2">"dist=</span><span class="si">%.3f</span><span class="s2"> depth=</span><span class="si">%.1f</span><span class="s2">"</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;Exception &quot;</span><span class="si">%s</span><span class="s1">&quot; generated by get_travel_times() &#39;</span> <span class="s2">&quot;dist=</span><span class="si">%.3f</span><span class="s2"> depth=</span><span class="si">%.1f</span><span class="s2">&quot;</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">dist_deg</span><span class="p">,</span> <span class="n">depth</span><span class="p">))</span>
         <span class="n">arrivals</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">arrivals</span><span class="p">):</span>
@@ -885,7 +886,7 @@
 
 
 <div class="viewcode-block" id="pick_yeck"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/phase/index.html#gmprocess.waveform_processing.phase.pick_yeck">[docs]</a><span class="k">def</span> <span class="nf">pick_yeck</span><span class="p">(</span><span class="n">stream</span><span class="p">):</span>
-    <span class="sd">"""IN DEVELOPMENT! SNR based P-phase picker.</span>
+    <span class="sd">&quot;&quot;&quot;IN DEVELOPMENT! SNR based P-phase picker.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        stream (StationStream):</span>
@@ -894,10 +895,10 @@
 <span class="sd">        tuple:</span>
 <span class="sd">            - Best estimate for p-wave arrival time (s since start of trace).</span>
 <span class="sd">            - Mean signal to noise ratio based on the pick.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">min_window</span> <span class="o">=</span> <span class="mf">5.0</span>  <span class="c1"># put into config</span>
     <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
-    <span class="n">min_noise_dur</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"windows"</span><span class="p">][</span><span class="s2">"window_checks"</span><span class="p">][</span><span class="s2">"min_noise_duration"</span><span class="p">]</span>
+    <span class="n">min_noise_dur</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;windows&quot;</span><span class="p">][</span><span class="s2">&quot;window_checks&quot;</span><span class="p">][</span><span class="s2">&quot;min_noise_duration&quot;</span><span class="p">]</span>
     <span class="n">locs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">data</span>
@@ -918,7 +919,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">minloc</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="k">if</span> <span class="n">minloc</span> <span class="o">&lt;</span> <span class="n">min_noise_dur</span><span class="p">:</span>
-        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"Noise window (</span><span class="si">%.1f</span><span class="s2"> s) less than minimum (</span><span class="si">%.1f</span><span class="s2">)"</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;Noise window (</span><span class="si">%.1f</span><span class="s2"> s) less than minimum (</span><span class="si">%.1f</span><span class="s2">)&quot;</span>
         <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="n">minloc</span><span class="p">,</span> <span class="n">min_noise_dur</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="n">tpl</span><span class="p">)</span>
     <span class="n">mean_snr</span> <span class="o">=</span> <span class="n">calc_snr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">minloc</span><span class="p">)</span>
@@ -927,7 +928,7 @@
 
 
 <div class="viewcode-block" id="pick_power"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/phase/index.html#gmprocess.waveform_processing.phase.pick_power">[docs]</a><span class="k">def</span> <span class="nf">pick_power</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">picker_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""Wrapper around the PowerPicker.</span>
+    <span class="sd">&quot;&quot;&quot;Wrapper around the PowerPicker.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        stream (StationStream):</span>
@@ -943,13 +944,13 @@
 <span class="sd">        tuple:</span>
 <span class="sd">            - Best estimate for p-wave arrival time (s since start of trace).</span>
 <span class="sd">            - Mean signal to noise ratio based on the pick.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">picker_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">picker_config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">section</span><span class="o">=</span><span class="s2">"pickers"</span><span class="p">)</span>
+        <span class="n">picker_config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">section</span><span class="o">=</span><span class="s2">&quot;pickers&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
-    <span class="n">min_noise_dur</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"windows"</span><span class="p">][</span><span class="s2">"window_checks"</span><span class="p">][</span><span class="s2">"min_noise_duration"</span><span class="p">]</span>
-    <span class="n">params</span> <span class="o">=</span> <span class="n">picker_config</span><span class="p">[</span><span class="s2">"power"</span><span class="p">]</span>
+    <span class="n">min_noise_dur</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;windows&quot;</span><span class="p">][</span><span class="s2">&quot;window_checks&quot;</span><span class="p">][</span><span class="s2">&quot;min_noise_duration&quot;</span><span class="p">]</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">picker_config</span><span class="p">[</span><span class="s2">&quot;power&quot;</span><span class="p">]</span>
     <span class="n">locs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
         <span class="n">loc</span> <span class="o">=</span> <span class="n">PowerPicker</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
@@ -961,7 +962,7 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">minloc</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="k">if</span> <span class="n">minloc</span> <span class="o">&lt;</span> <span class="n">min_noise_dur</span><span class="p">:</span>
-        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"Noise window (</span><span class="si">%.1f</span><span class="s2"> s) less than minimum (</span><span class="si">%.1f</span><span class="s2">)"</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;Noise window (</span><span class="si">%.1f</span><span class="s2"> s) less than minimum (</span><span class="si">%.1f</span><span class="s2">)&quot;</span>
         <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="n">minloc</span><span class="p">,</span> <span class="n">min_noise_dur</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="n">tpl</span><span class="p">)</span>
     <span class="n">mean_snr</span> <span class="o">=</span> <span class="n">calc_snr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">minloc</span><span class="p">)</span>
@@ -1002,7 +1003,7 @@
 
 
 <div class="viewcode-block" id="calc_snr"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/phase/index.html#gmprocess.waveform_processing.phase.calc_snr">[docs]</a><span class="k">def</span> <span class="nf">calc_snr</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">minloc</span><span class="p">):</span>
-    <span class="sd">"""Calculate mean SNR for all Traces in a StationStream.</span>
+    <span class="sd">&quot;&quot;&quot;Calculate mean SNR for all Traces in a StationStream.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        stream (StationStream):</span>
@@ -1015,7 +1016,7 @@
 <span class="sd">            Ratio of signal window (minloc-&gt;end of trace) over</span>
 <span class="sd">            noise window (start of trace-&gt;minloc)</span>
 
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">snr_values</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
         <span class="n">dt</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span>
@@ -1023,7 +1024,7 @@
         <span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)[</span><span class="mi">0</span> <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">minloc</span> <span class="o">/</span> <span class="n">dt</span><span class="p">)]</span>
         <span class="n">aps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># average power of signal</span>
         <span class="k">if</span> <span class="n">aps</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">trace</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"Signal window mean is 0."</span><span class="p">)</span>
+            <span class="n">trace</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;Signal window mean is 0.&quot;</span><span class="p">)</span>
             <span class="n">snr_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
             <span class="k">continue</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">noise</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
@@ -1035,7 +1036,7 @@
         <span class="c1"># even if len &gt; 0.</span>
         <span class="k">if</span> <span class="n">apn</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">apn</span> <span class="o">=</span> <span class="mf">0.00001</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Noise window for </span><span class="si">{</span><span class="n">trace</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span><span class="si">}</span><span class="s2"> has mean of zero."</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Noise window for </span><span class="si">{</span><span class="n">trace</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span><span class="si">}</span><span class="s2"> has mean of zero.&quot;</span><span class="p">)</span>
         <span class="c1"># signal-to-noise ratio in decibel</span>
         <span class="n">snr_i</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">aps</span> <span class="o">/</span> <span class="n">apn</span><span class="p">)</span>
         <span class="n">snr_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">snr_i</span><span class="p">)</span>
@@ -1044,13 +1045,13 @@
 
 
 <div class="viewcode-block" id="pphase_pick"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/phase/index.html#gmprocess.waveform_processing.phase.pphase_pick">[docs]</a><span class="k">def</span> <span class="nf">pphase_pick</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">peak_selection</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">"""Compute P-phase arrival time.</span>
+    <span class="sd">&quot;&quot;&quot;Compute P-phase arrival time.</span>
 
 <span class="sd">    Adapted from Python code written by Francisco Hernandez of the Puerto Rico</span>
 <span class="sd">    Strong Motion Program. That code was in turn adapted from Matlab code written by</span>
 <span class="sd">    Dr. Erol Kalkan, P.E. The algorithms are described here in full:</span>
 
-<span class="sd">    Kalkan, E. (2016). "An automatic P-phase arrival time picker", Bull. of</span>
+<span class="sd">    Kalkan, E. (2016). &quot;An automatic P-phase arrival time picker&quot;, Bull. of</span>
 <span class="sd">    Seismol. Soc. of Am., 106, No. 3, doi: 10.1785/0120150111</span>
 
 <span class="sd">    Args:</span>
@@ -1075,19 +1076,19 @@
 <span class="sd">        tuple:</span>
 <span class="sd">            - Float number of seconds from start of trace to P-Phase beginning.</span>
 <span class="sd">            - Signal-to-noise ratio in decibels</span>
-<span class="sd">    """</span>
-    <span class="n">WAVEFORM_TYPES</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"acc"</span><span class="p">:</span> <span class="s2">"sm"</span><span class="p">,</span> <span class="s2">"vel"</span><span class="p">:</span> <span class="s2">"wm"</span><span class="p">}</span>
-    <span class="n">wftype</span> <span class="o">=</span> <span class="n">WAVEFORM_TYPES</span><span class="p">[</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">"units_type"</span><span class="p">]]</span>
-    <span class="k">if</span> <span class="n">period</span> <span class="o">==</span> <span class="s2">"None"</span><span class="p">:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">WAVEFORM_TYPES</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;acc&quot;</span><span class="p">:</span> <span class="s2">&quot;sm&quot;</span><span class="p">,</span> <span class="s2">&quot;vel&quot;</span><span class="p">:</span> <span class="s2">&quot;wm&quot;</span><span class="p">}</span>
+    <span class="n">wftype</span> <span class="o">=</span> <span class="n">WAVEFORM_TYPES</span><span class="p">[</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">&quot;units_type&quot;</span><span class="p">]]</span>
+    <span class="k">if</span> <span class="n">period</span> <span class="o">==</span> <span class="s2">&quot;None&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">:</span>
             <span class="n">period</span> <span class="o">=</span> <span class="mf">0.01</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">period</span> <span class="o">=</span> <span class="mf">0.1</span>
 
-    <span class="k">if</span> <span class="n">nbins</span> <span class="o">==</span> <span class="s2">"None"</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">nbins</span> <span class="o">==</span> <span class="s2">&quot;None&quot;</span><span class="p">:</span>
         <span class="n">nbins</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span>
 
-    <span class="k">if</span> <span class="n">wftype</span> <span class="o">==</span> <span class="s2">"wm"</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">wftype</span> <span class="o">==</span> <span class="s2">&quot;wm&quot;</span><span class="p">:</span>
         <span class="n">filtflag</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">flp</span> <span class="o">=</span> <span class="mf">0.1</span>
         <span class="n">fhp</span> <span class="o">=</span> <span class="mf">10.0</span>
@@ -1105,11 +1106,11 @@
 
     <span class="k">if</span> <span class="n">filtflag</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">trace_copy</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-            <span class="nb">type</span><span class="o">=</span><span class="s2">"bandpass"</span><span class="p">,</span> <span class="n">freqmin</span><span class="o">=</span><span class="n">flp</span><span class="p">,</span> <span class="n">freqmax</span><span class="o">=</span><span class="n">fhp</span><span class="p">,</span> <span class="n">corners</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">zerophase</span><span class="o">=</span><span class="kc">True</span>
+            <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;bandpass&quot;</span><span class="p">,</span> <span class="n">freqmin</span><span class="o">=</span><span class="n">flp</span><span class="p">,</span> <span class="n">freqmax</span><span class="o">=</span><span class="n">fhp</span><span class="p">,</span> <span class="n">corners</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">zerophase</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
-        <span class="n">trace_copy</span><span class="o">.</span><span class="n">detrend</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">"linear"</span><span class="p">)</span>
+        <span class="n">trace_copy</span><span class="o">.</span><span class="n">detrend</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">peak_selection</span> <span class="o">==</span> <span class="s2">"True"</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">peak_selection</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">:</span>
         <span class="n">ind_peak</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span>
             <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">trace_copy</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">trace_copy</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
         <span class="p">)</span>
@@ -1215,7 +1216,7 @@
 
 
 <div class="viewcode-block" id="create_travel_time_dataframe"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/phase/index.html#gmprocess.waveform_processing.phase.create_travel_time_dataframe">[docs]</a><span class="k">def</span> <span class="nf">create_travel_time_dataframe</span><span class="p">(</span><span class="n">streams</span><span class="p">,</span> <span class="n">catalog_file</span><span class="p">,</span> <span class="n">ddepth</span><span class="p">,</span> <span class="n">ddist</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates a travel time dataframe, which contains the phase arrrival times</span>
 <span class="sd">    for each station the StreamCollection, for each event in the catalog.</span>
 <span class="sd">    This uses an interpolation method to save time, and the fineness of the</span>
@@ -1239,23 +1240,23 @@
 <span class="sd">    Retuns:</span>
 <span class="sd">        A tuple, containing the travel time dataframe and the catalog</span>
 <span class="sd">        (list of ScalarEvent objects).</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Read the catalog file and create a catalog (list) of ScalarEvent objects</span>
     <span class="n">df_catalog</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">catalog_file</span><span class="p">)</span>
 
     <span class="c1"># Replace any negative depths with 0</span>
-    <span class="n">df_catalog</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">lower</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df_catalog</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">lower</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">catalog</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df_catalog</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
         <span class="n">event</span> <span class="o">=</span> <span class="n">ScalarEvent</span><span class="p">()</span>
         <span class="n">event</span><span class="o">.</span><span class="n">fromParams</span><span class="p">(</span>
-            <span class="n">row</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span>
-            <span class="n">row</span><span class="p">[</span><span class="s2">"time"</span><span class="p">],</span>
-            <span class="n">row</span><span class="p">[</span><span class="s2">"latitude"</span><span class="p">],</span>
-            <span class="n">row</span><span class="p">[</span><span class="s2">"longitude"</span><span class="p">],</span>
-            <span class="n">row</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">],</span>
-            <span class="n">row</span><span class="p">[</span><span class="s2">"mag"</span><span class="p">],</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">],</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">],</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">],</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">],</span>
+            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">],</span>
         <span class="p">)</span>
         <span class="n">catalog</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
 
@@ -1264,7 +1265,7 @@
     <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">:</span>
         <span class="n">st_lats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span>
         <span class="n">st_lons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
-        <span class="n">st_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span> <span class="o">+</span> <span class="s2">"."</span> <span class="o">+</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span><span class="p">)</span>
+        <span class="n">st_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span><span class="p">)</span>
 
     <span class="c1"># Calculate the distance for each stream, for each event</span>
     <span class="c1"># Store distances in a matrix</span>
@@ -1273,26 +1274,26 @@
         <span class="n">distances_matrix</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">locations2degrees</span><span class="p">(</span>
             <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">st_lats</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">catalog</span><span class="p">)),</span>
             <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">st_lons</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">catalog</span><span class="p">)),</span>
-            <span class="n">df_catalog</span><span class="p">[</span><span class="s2">"latitude"</span><span class="p">],</span>
-            <span class="n">df_catalog</span><span class="p">[</span><span class="s2">"longitude"</span><span class="p">],</span>
+            <span class="n">df_catalog</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">],</span>
+            <span class="n">df_catalog</span><span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">],</span>
         <span class="p">)</span>
     <span class="n">distances_matrix</span> <span class="o">=</span> <span class="n">distances_matrix</span><span class="o">.</span><span class="n">T</span>
 
     <span class="c1"># Calculate the minimum depth/distance values for the inteprolation grid</span>
     <span class="c1"># This includes a buffer to avoid interpolating at the endpoints</span>
-    <span class="c1"># Make sure that the minimum depth/distance values aren't negative</span>
-    <span class="n">minimum_depth</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">df_catalog</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">])</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ddepth</span><span class="p">])</span>
+    <span class="c1"># Make sure that the minimum depth/distance values aren&#39;t negative</span>
+    <span class="n">minimum_depth</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">df_catalog</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">])</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ddepth</span><span class="p">])</span>
     <span class="n">minimum_dist</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">distances_matrix</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ddist</span><span class="p">])</span>
-    <span class="n">depth_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">minimum_depth</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">df_catalog</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">])</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ddepth</span><span class="p">,</span> <span class="n">ddepth</span><span class="p">)</span>
+    <span class="n">depth_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">minimum_depth</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">df_catalog</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ddepth</span><span class="p">,</span> <span class="n">ddepth</span><span class="p">)</span>
     <span class="n">distance_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">minimum_dist</span><span class="p">,</span> <span class="n">distances_matrix</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">ddist</span><span class="p">,</span> <span class="n">ddist</span><span class="p">)</span>
 
     <span class="c1"># For each distance and each depth, compute the travel time</span>
-    <span class="c1"># Store values in the "times" 2D matrix</span>
+    <span class="c1"># Store values in the &quot;times&quot; 2D matrix</span>
     <span class="n">taupy_model</span> <span class="o">=</span> <span class="n">TauPyModel</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
     <span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">depth_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">distance_grid</span><span class="p">)))</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">depth</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">depth_grid</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">dist</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">distance_grid</span><span class="p">):</span>
-            <span class="n">arrivals</span> <span class="o">=</span> <span class="n">taupy_model</span><span class="o">.</span><span class="n">get_travel_times</span><span class="p">(</span><span class="n">depth</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="p">[</span><span class="s2">"p"</span><span class="p">,</span> <span class="s2">"P"</span><span class="p">,</span> <span class="s2">"Pn"</span><span class="p">])</span>
+            <span class="n">arrivals</span> <span class="o">=</span> <span class="n">taupy_model</span><span class="o">.</span><span class="n">get_travel_times</span><span class="p">(</span><span class="n">depth</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="s2">&quot;Pn&quot;</span><span class="p">])</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">arrivals</span><span class="p">:</span>
                 <span class="n">times</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="k">else</span><span class="p">:</span>
@@ -1306,17 +1307,17 @@
         <span class="p">]</span>
     <span class="p">)</span>
     <span class="n">new_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">distances_matrix</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">df_catalog</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">streams</span><span class="p">)))</span>
+        <span class="p">(</span><span class="n">distances_matrix</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">df_catalog</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">streams</span><span class="p">)))</span>
     <span class="p">)</span><span class="o">.</span><span class="n">T</span>
     <span class="n">interpolated_times</span> <span class="o">=</span> <span class="n">griddata</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">times</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">new_points</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
         <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">streams</span><span class="p">))</span>
     <span class="p">)</span>
-    <span class="n">utcdatetimes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">UTCDateTime</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">df_catalog</span><span class="p">[</span><span class="s2">"time"</span><span class="p">]])</span>
+    <span class="n">utcdatetimes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">UTCDateTime</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">df_catalog</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]])</span>
     <span class="n">interpolated_times</span> <span class="o">=</span> <span class="n">utcdatetimes</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">interpolated_times</span>
 
     <span class="c1"># Store travel time information in a DataFrame</span>
     <span class="c1"># Column indicies are the station ids, rows are the earthquake ids</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">interpolated_times</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">df_catalog</span><span class="p">[</span><span class="s2">"id"</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="n">st_ids</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">interpolated_times</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">df_catalog</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="n">st_ids</span><span class="p">)</span>
 
     <span class="c1"># Remove any duplicate columns which might result from a station with</span>
     <span class="c1"># multiple instruments</span>

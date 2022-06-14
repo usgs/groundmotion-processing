@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.metrics.station_summary" href="../station_summary/index.html" /><link rel="prev" title="gmprocess.metrics.gather" href="../gather/index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.metrics.metrics_controller - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.metrics.metrics_controller - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -486,35 +487,40 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.metrics.metrics_controller.MetricsController" title="gmprocess.metrics.metrics_controller.MetricsController"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetricsController</span></code></a></p></td>
 <td><p>Class for compiling metrics.</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.metrics.metrics_controller._get_channel_dict" title="gmprocess.metrics.metrics_controller._get_channel_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_channel_dict</span></code></a>(channel_names)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.metrics.metrics_controller._get_channel_dict">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.metrics.metrics_controller.</span></span><span class="sig-name descname"><span class="pre">_get_channel_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel_names</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/metrics/metrics_controller.html#_get_channel_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.metrics_controller._get_channel_dict" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="gmprocess.metrics.metrics_controller.MetricsController">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gmprocess.metrics.metrics_controller.</span></span><span class="sig-name descname"><span class="pre">MetricsController</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imcs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeseries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bandwidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">damping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_nans</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/metrics/metrics_controller.html#MetricsController"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.metrics_controller.MetricsController" title="Permalink to this definition">#</a></dt>
@@ -590,6 +596,7 @@ an earthquake hypocenter. Default is None.</p></li>
 Currently the only acceptied smoothing type is ‘konno_ohmachi’,
 and the options for spacing are ‘linspace’ or ‘logspace’.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.metrics_controller.MetricsController.step_sets">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">step_sets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gmprocess.metrics.metrics_controller.MetricsController.step_sets" title="Permalink to this definition">#</a></dt>
@@ -603,6 +610,7 @@ and the options for spacing are ‘linspace’ or ‘logspace’.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.metrics_controller.MetricsController.get_steps">
 <span class="sig-name descname"><span class="pre">get_steps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/metrics/metrics_controller.html#MetricsController.get_steps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.metrics_controller.MetricsController.get_steps" title="Permalink to this definition">#</a></dt>
@@ -618,6 +626,7 @@ and the options for spacing are ‘linspace’ or ‘logspace’.</p>
 <p class="rubric">Notes</p>
 <p>Invalid imcs and imts will not be added to the dictionary.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.metrics_controller.MetricsController.execute_steps">
 <span class="sig-name descname"><span class="pre">execute_steps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/metrics/metrics_controller.html#MetricsController.execute_steps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.metrics_controller.MetricsController.execute_steps" title="Permalink to this definition">#</a></dt>
@@ -635,6 +644,7 @@ and the options for spacing are ‘linspace’ or ‘logspace’.</p>
 next step set will begin. The result cell of the dataframe will be
 filled with a np.nan value.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.metrics_controller.MetricsController.perform_first_steps">
 <span class="sig-name descname"><span class="pre">perform_first_steps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/metrics/metrics_controller.html#MetricsController.perform_first_steps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.metrics_controller.MetricsController.perform_first_steps" title="Permalink to this definition">#</a></dt>
@@ -650,6 +660,7 @@ first three steps.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.metrics_controller.MetricsController.validate_stream">
 <span class="sig-name descname"><span class="pre">validate_stream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/metrics/metrics_controller.html#MetricsController.validate_stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.metrics_controller.MetricsController.validate_stream" title="Permalink to this definition">#</a></dt>
@@ -664,6 +675,7 @@ first three steps.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.metrics_controller.MetricsController.add_upsampled_traces">
 <span class="sig-name descname"><span class="pre">add_upsampled_traces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/metrics/metrics_controller.html#MetricsController.add_upsampled_traces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.metrics_controller.MetricsController.add_upsampled_traces" title="Permalink to this definition">#</a></dt>
@@ -671,6 +683,7 @@ first three steps.</p>
 <p>This adds a <em>single</em> upsampled version of the waveform to each trace
 for the smallest requested oscillator period.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.metrics_controller.MetricsController._format">
 <span class="sig-name descname"><span class="pre">_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/metrics/metrics_controller.html#MetricsController._format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.metrics_controller.MetricsController._format" title="Permalink to this definition">#</a></dt>
@@ -698,6 +711,7 @@ imt imc result</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.metrics_controller.MetricsController._get_horizontal_time">
 <span class="sig-name descname"><span class="pre">_get_horizontal_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/metrics/metrics_controller.html#MetricsController._get_horizontal_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.metrics_controller.MetricsController._get_horizontal_time" title="Permalink to this definition">#</a></dt>
@@ -715,6 +729,7 @@ spectral accelerations where a rotation (rotd) is requested.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.metrics_controller.MetricsController._get_time">
 <span class="sig-name descname"><span class="pre">_get_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/metrics/metrics_controller.html#MetricsController._get_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.metrics_controller.MetricsController._get_time" title="Permalink to this definition">#</a></dt>
@@ -728,6 +743,7 @@ spectral accelerations where a rotation (rotd) is requested.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.metrics_controller.MetricsController._get_subclass">
 <span class="sig-name descname"><span class="pre">_get_subclass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_class</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/metrics/metrics_controller.html#MetricsController._get_subclass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.metrics_controller.MetricsController._get_subclass" title="Permalink to this definition">#</a></dt>
@@ -748,6 +764,7 @@ while ignoring the base class.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.metrics_controller.MetricsController._parse_period">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_parse_period</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/metrics/metrics_controller.html#MetricsController._parse_period"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.metrics_controller.MetricsController._parse_period" title="Permalink to this definition">#</a></dt>
@@ -774,6 +791,7 @@ while ignoring the base class.</p>
 <p class="rubric">Notes</p>
 <p>Can be either a float or integer.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.metrics_controller.MetricsController._parse_interval">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_parse_interval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/metrics/metrics_controller.html#MetricsController._parse_interval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.metrics_controller.MetricsController._parse_interval" title="Permalink to this definition">#</a></dt>
@@ -797,6 +815,7 @@ while ignoring the base class.</p>
 <p class="rubric">Notes</p>
 <p>Can be either a float or integer.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.metrics_controller.MetricsController._parse_percentile">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_parse_percentile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/metrics/metrics_controller.html#MetricsController._parse_percentile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.metrics_controller.MetricsController._parse_percentile" title="Permalink to this definition">#</a></dt>
@@ -823,19 +842,24 @@ while ignoring the base class.</p>
 <p class="rubric">Notes</p>
 <p>Can be either a float or integer.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.metrics_controller.MetricsController._get_max_period">
 <span class="sig-name descname"><span class="pre">_get_max_period</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/metrics/metrics_controller.html#MetricsController._get_max_period"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.metrics_controller.MetricsController._get_max_period" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.metrics_controller.MetricsController._get_min_period">
 <span class="sig-name descname"><span class="pre">_get_min_period</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/metrics/metrics_controller.html#MetricsController._get_min_period"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.metrics_controller.MetricsController._get_min_period" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.metrics_controller.MetricsController.clean_imts">
 <span class="sig-name descname"><span class="pre">clean_imts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/metrics/metrics_controller.html#MetricsController.clean_imts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.metrics_controller.MetricsController.clean_imts" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 </dd></dl>
+
 </section>
 </section>
 </section>

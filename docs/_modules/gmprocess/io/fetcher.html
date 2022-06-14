@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.fetcher - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.io.fetcher - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -502,7 +503,7 @@
         <span class="n">drop_non_free</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">stream_collection</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="sd">"""Create a DataFetcher instance.</span>
+        <span class="sd">&quot;&quot;&quot;Create a DataFetcher instance.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            time (datetime):</span>
@@ -526,12 +527,12 @@
 <span class="sd">                structures, etc.)</span>
 <span class="sd">            stream_collection (bool):</span>
 <span class="sd">                Construct and return a StreamCollection instance?</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># this method should be implemented in the child class</span>
         <span class="k">pass</span>
 
 <div class="viewcode-block" id="DataFetcher.getMatchingEvents"><a class="viewcode-back" href="../../../autoapi/gmprocess/io/fetcher/index.html#gmprocess.io.fetcher.DataFetcher.getMatchingEvents">[docs]</a>    <span class="k">def</span> <span class="nf">getMatchingEvents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solve</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        For appropriate fetchers, return a list of dictionaries matching</span>
 <span class="sd">        input parameters.</span>
 
@@ -547,11 +548,11 @@
 <span class="sd">                  - lon Event longitude</span>
 <span class="sd">                  - depth Event depth</span>
 <span class="sd">                  - mag Event magnitude</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="DataFetcher.retrieveData"><a class="viewcode-back" href="../../../autoapi/gmprocess/io/fetcher/index.html#gmprocess.io.fetcher.DataFetcher.retrieveData">[docs]</a>    <span class="k">def</span> <span class="nf">retrieveData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="sd">"""Retrieve data from remote source, turn into StreamCollection.</span>
+        <span class="sd">&quot;&quot;&quot;Retrieve data from remote source, turn into StreamCollection.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            event (dict):</span>
@@ -560,11 +561,11 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            StreamCollection: StreamCollection object.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="DataFetcher.solveEvents"><a class="viewcode-back" href="../../../autoapi/gmprocess/io/fetcher/index.html#gmprocess.io.fetcher.DataFetcher.solveEvents">[docs]</a>    <span class="k">def</span> <span class="nf">solveEvents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">events</span><span class="p">):</span>
-        <span class="sd">"""Reduce a list of events down to one that best matches the input.</span>
+        <span class="sd">&quot;&quot;&quot;Reduce a list of events down to one that best matches the input.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            events (list):</span>
@@ -577,13 +578,13 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: Event dictionary (see above)</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">edict</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">"time"</span><span class="p">:</span> <span class="n">UTCDateTime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">),</span>
-            <span class="s2">"lat"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span>
-            <span class="s2">"lon"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span>
-            <span class="s2">"depth"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span>
-            <span class="s2">"mag"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">UTCDateTime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">),</span>
+            <span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span>
+            <span class="s2">&quot;lon&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span>
+            <span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span>
+            <span class="s2">&quot;mag&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="n">zmin</span> <span class="o">=</span> <span class="mf">9e12</span>
@@ -591,12 +592,12 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)):</span>
             <span class="n">event</span> <span class="o">=</span> <span class="n">events</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">ddist</span> <span class="o">=</span> <span class="n">geodetic_distance</span><span class="p">(</span>
-                <span class="n">edict</span><span class="p">[</span><span class="s2">"lon"</span><span class="p">],</span> <span class="n">edict</span><span class="p">[</span><span class="s2">"lat"</span><span class="p">],</span> <span class="n">event</span><span class="p">[</span><span class="s2">"lon"</span><span class="p">],</span> <span class="n">event</span><span class="p">[</span><span class="s2">"lat"</span><span class="p">]</span>
+                <span class="n">edict</span><span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">],</span> <span class="n">edict</span><span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">],</span> <span class="n">event</span><span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">],</span> <span class="n">event</span><span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">]</span>
             <span class="p">)</span>
             <span class="n">ddist_norm</span> <span class="o">=</span> <span class="n">ddist</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span>
-            <span class="n">dt_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">edict</span><span class="p">[</span><span class="s2">"time"</span><span class="p">]</span> <span class="o">-</span> <span class="n">event</span><span class="p">[</span><span class="s2">"time"</span><span class="p">])</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span>
-            <span class="n">ddepth_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">edict</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">]</span> <span class="o">-</span> <span class="n">event</span><span class="p">[</span><span class="s2">"depth"</span><span class="p">])</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">ddepth</span>
-            <span class="n">dmag_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">edict</span><span class="p">[</span><span class="s2">"mag"</span><span class="p">]</span> <span class="o">-</span> <span class="n">event</span><span class="p">[</span><span class="s2">"mag"</span><span class="p">])</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dmag</span>
+            <span class="n">dt_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">edict</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">event</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span>
+            <span class="n">ddepth_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">edict</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">event</span><span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">ddepth</span>
+            <span class="n">dmag_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">edict</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">event</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dmag</span>
             <span class="n">ddsq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">ddist_norm</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
             <span class="n">dtsq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">dt_norm</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
             <span class="n">dzsq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">ddepth_norm</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>

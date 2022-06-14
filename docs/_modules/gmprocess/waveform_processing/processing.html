@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.waveform_processing.processing - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.waveform_processing.processing - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -483,9 +484,9 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Processing methods.</span>
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">logging</span>
@@ -546,45 +547,45 @@
 <span class="c1"># List of processing steps that require an origin</span>
 <span class="c1"># besides the arguments in the conf file.</span>
 <span class="n">REQ_ORIGIN</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">"fit_spectra"</span><span class="p">,</span>
-    <span class="s2">"trim_multiple_events"</span><span class="p">,</span>
-    <span class="s2">"check_clipping"</span><span class="p">,</span>
-    <span class="s2">"get_corner_frequencies"</span><span class="p">,</span>
+    <span class="s2">&quot;fit_spectra&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;trim_multiple_events&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_clipping&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_corner_frequencies&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <span class="n">TAPER_TYPES</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"cosine"</span><span class="p">:</span> <span class="s2">"Cosine"</span><span class="p">,</span>
-    <span class="s2">"barthann"</span><span class="p">:</span> <span class="s2">"Bartlett-Hann"</span><span class="p">,</span>
-    <span class="s2">"bartlett"</span><span class="p">:</span> <span class="s2">"Bartlett"</span><span class="p">,</span>
-    <span class="s2">"blackman"</span><span class="p">:</span> <span class="s2">"Blackman"</span><span class="p">,</span>
-    <span class="s2">"blackmanharris"</span><span class="p">:</span> <span class="s2">"Blackman-Harris"</span><span class="p">,</span>
-    <span class="s2">"bohman"</span><span class="p">:</span> <span class="s2">"Bohman"</span><span class="p">,</span>
-    <span class="s2">"boxcar"</span><span class="p">:</span> <span class="s2">"Boxcar"</span><span class="p">,</span>
-    <span class="s2">"chebwin"</span><span class="p">:</span> <span class="s2">"Dolph-Chebyshev"</span><span class="p">,</span>
-    <span class="s2">"flattop"</span><span class="p">:</span> <span class="s2">"Flat top"</span><span class="p">,</span>
-    <span class="s2">"gaussian"</span><span class="p">:</span> <span class="s2">"Gaussian"</span><span class="p">,</span>
-    <span class="s2">"general_gaussian"</span><span class="p">:</span> <span class="s2">"Generalized Gaussian"</span><span class="p">,</span>
-    <span class="s2">"hamming"</span><span class="p">:</span> <span class="s2">"Hamming"</span><span class="p">,</span>
-    <span class="s2">"hann"</span><span class="p">:</span> <span class="s2">"Hann"</span><span class="p">,</span>
-    <span class="s2">"kaiser"</span><span class="p">:</span> <span class="s2">"Kaiser"</span><span class="p">,</span>
-    <span class="s2">"nuttall"</span><span class="p">:</span> <span class="s2">"Blackman-Harris according to Nuttall"</span><span class="p">,</span>
-    <span class="s2">"parzen"</span><span class="p">:</span> <span class="s2">"Parzen"</span><span class="p">,</span>
-    <span class="s2">"slepian"</span><span class="p">:</span> <span class="s2">"Slepian"</span><span class="p">,</span>
-    <span class="s2">"triang"</span><span class="p">:</span> <span class="s2">"Triangular"</span><span class="p">,</span>
+    <span class="s2">&quot;cosine&quot;</span><span class="p">:</span> <span class="s2">&quot;Cosine&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;barthann&quot;</span><span class="p">:</span> <span class="s2">&quot;Bartlett-Hann&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;bartlett&quot;</span><span class="p">:</span> <span class="s2">&quot;Bartlett&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;blackman&quot;</span><span class="p">:</span> <span class="s2">&quot;Blackman&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;blackmanharris&quot;</span><span class="p">:</span> <span class="s2">&quot;Blackman-Harris&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;bohman&quot;</span><span class="p">:</span> <span class="s2">&quot;Bohman&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;boxcar&quot;</span><span class="p">:</span> <span class="s2">&quot;Boxcar&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;chebwin&quot;</span><span class="p">:</span> <span class="s2">&quot;Dolph-Chebyshev&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;flattop&quot;</span><span class="p">:</span> <span class="s2">&quot;Flat top&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gaussian&quot;</span><span class="p">:</span> <span class="s2">&quot;Gaussian&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;general_gaussian&quot;</span><span class="p">:</span> <span class="s2">&quot;Generalized Gaussian&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hamming&quot;</span><span class="p">:</span> <span class="s2">&quot;Hamming&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hann&quot;</span><span class="p">:</span> <span class="s2">&quot;Hann&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;kaiser&quot;</span><span class="p">:</span> <span class="s2">&quot;Kaiser&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nuttall&quot;</span><span class="p">:</span> <span class="s2">&quot;Blackman-Harris according to Nuttall&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;parzen&quot;</span><span class="p">:</span> <span class="s2">&quot;Parzen&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;slepian&quot;</span><span class="p">:</span> <span class="s2">&quot;Slepian&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;triang&quot;</span><span class="p">:</span> <span class="s2">&quot;Triangular&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="n">ABBREV_UNITS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"ACC"</span><span class="p">:</span> <span class="s2">"cm/s^2"</span><span class="p">,</span> <span class="s2">"VEL"</span><span class="p">:</span> <span class="s2">"cm/s"</span><span class="p">,</span> <span class="s2">"DISP"</span><span class="p">:</span> <span class="s2">"cm"</span><span class="p">}</span>
+<span class="n">ABBREV_UNITS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ACC&quot;</span><span class="p">:</span> <span class="s2">&quot;cm/s^2&quot;</span><span class="p">,</span> <span class="s2">&quot;VEL&quot;</span><span class="p">:</span> <span class="s2">&quot;cm/s&quot;</span><span class="p">,</span> <span class="s2">&quot;DISP&quot;</span><span class="p">:</span> <span class="s2">&quot;cm&quot;</span><span class="p">}</span>
 
 
 <div class="viewcode-block" id="process_streams"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.process_streams">[docs]</a><span class="k">def</span> <span class="nf">process_streams</span><span class="p">(</span><span class="n">streams</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">old_streams</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Run processing steps from the config file.</span>
 
-<span class="sd">    This method looks in the 'processing' config section and loops over those</span>
+<span class="sd">    This method looks in the &#39;processing&#39; config section and loops over those</span>
 <span class="sd">    steps and hands off the config options to the appropriate prcessing method.</span>
 <span class="sd">    Streams that fail any of the tests are kepth in the StreamCollection but</span>
-<span class="sd">    the parameter 'passed_checks' is set to False and subsequent processing</span>
+<span class="sd">    the parameter &#39;passed_checks&#39; is set to False and subsequent processing</span>
 <span class="sd">    steps are not applied once a check has failed.</span>
 
 <span class="sd">    Args:</span>
@@ -600,10 +601,10 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A StreamCollection object.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">streams</span><span class="p">,</span> <span class="p">(</span><span class="n">StreamCollection</span><span class="p">,</span> <span class="n">StreamArray</span><span class="p">)):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"streams must be a StreamCollection instance."</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;streams must be a StreamCollection instance.&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
@@ -615,23 +616,23 @@
     <span class="c1"># -------------------------------------------------------------------------</span>
     <span class="c1"># Compute a travel-time matrix for interpolation later in the</span>
     <span class="c1"># trim_multiple events step</span>
-    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="s2">"trim_multiple_events"</span> <span class="ow">in</span> <span class="nb">dict</span> <span class="k">for</span> <span class="nb">dict</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">"processing"</span><span class="p">]):</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="s2">&quot;trim_multiple_events&quot;</span> <span class="ow">in</span> <span class="nb">dict</span> <span class="k">for</span> <span class="nb">dict</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;processing&quot;</span><span class="p">]):</span>
         <span class="n">travel_time_df</span><span class="p">,</span> <span class="n">catalog</span> <span class="o">=</span> <span class="n">create_travel_time_dataframe</span><span class="p">(</span>
-            <span class="n">streams</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">[</span><span class="s2">"travel_time"</span><span class="p">]</span>
+            <span class="n">streams</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;travel_time&quot;</span><span class="p">]</span>
         <span class="p">)</span>
 
-    <span class="n">window_conf</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"windows"</span><span class="p">]</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">TauPyModel</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">"pickers"</span><span class="p">][</span><span class="s2">"travel_time"</span><span class="p">][</span><span class="s2">"model"</span><span class="p">])</span>
+    <span class="n">window_conf</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;windows&quot;</span><span class="p">]</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">TauPyModel</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;pickers&quot;</span><span class="p">][</span><span class="s2">&quot;travel_time&quot;</span><span class="p">][</span><span class="s2">&quot;model&quot;</span><span class="p">])</span>
 
     <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Checking stream </span><span class="si">{</span><span class="n">st</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Checking stream </span><span class="si">{</span><span class="n">st</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
         <span class="c1"># Estimate noise/signal split time</span>
         <span class="n">st</span> <span class="o">=</span> <span class="n">signal_split</span><span class="p">(</span>
-            <span class="n">st</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">picker_config</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s2">"pickers"</span><span class="p">],</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span>
+            <span class="n">st</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">picker_config</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;pickers&quot;</span><span class="p">],</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span>
         <span class="p">)</span>
 
         <span class="c1"># Estimate end of signal</span>
-        <span class="n">end_conf</span> <span class="o">=</span> <span class="n">window_conf</span><span class="p">[</span><span class="s2">"signal_end"</span><span class="p">]</span>
+        <span class="n">end_conf</span> <span class="o">=</span> <span class="n">window_conf</span><span class="p">[</span><span class="s2">&quot;signal_end&quot;</span><span class="p">]</span>
         <span class="n">event_mag</span> <span class="o">=</span> <span class="n">origin</span><span class="o">.</span><span class="n">magnitude</span>
         <span class="n">st</span> <span class="o">=</span> <span class="n">signal_end</span><span class="p">(</span>
             <span class="n">st</span><span class="p">,</span>
@@ -641,21 +642,21 @@
             <span class="n">event_mag</span><span class="o">=</span><span class="n">event_mag</span><span class="p">,</span>
             <span class="o">**</span><span class="n">end_conf</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">wcheck_conf</span> <span class="o">=</span> <span class="n">window_conf</span><span class="p">[</span><span class="s2">"window_checks"</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">wcheck_conf</span><span class="p">[</span><span class="s2">"do_check"</span><span class="p">]:</span>
+        <span class="n">wcheck_conf</span> <span class="o">=</span> <span class="n">window_conf</span><span class="p">[</span><span class="s2">&quot;window_checks&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">wcheck_conf</span><span class="p">[</span><span class="s2">&quot;do_check&quot;</span><span class="p">]:</span>
             <span class="n">st</span> <span class="o">=</span> <span class="n">window_checks</span><span class="p">(</span>
                 <span class="n">st</span><span class="p">,</span>
-                <span class="n">min_noise_duration</span><span class="o">=</span><span class="n">wcheck_conf</span><span class="p">[</span><span class="s2">"min_noise_duration"</span><span class="p">],</span>
-                <span class="n">min_signal_duration</span><span class="o">=</span><span class="n">wcheck_conf</span><span class="p">[</span><span class="s2">"min_signal_duration"</span><span class="p">],</span>
+                <span class="n">min_noise_duration</span><span class="o">=</span><span class="n">wcheck_conf</span><span class="p">[</span><span class="s2">&quot;min_noise_duration&quot;</span><span class="p">],</span>
+                <span class="n">min_signal_duration</span><span class="o">=</span><span class="n">wcheck_conf</span><span class="p">[</span><span class="s2">&quot;min_signal_duration&quot;</span><span class="p">],</span>
             <span class="p">)</span>
 
     <span class="c1"># -------------------------------------------------------------------------</span>
     <span class="c1"># Begin processing steps</span>
-    <span class="n">processing_steps</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"processing"</span><span class="p">]</span>
+    <span class="n">processing_steps</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;processing&quot;</span><span class="p">]</span>
 
     <span class="c1"># Loop over streams</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">stream</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">streams</span><span class="p">):</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Stream: </span><span class="si">{</span><span class="n">stream</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stream: </span><span class="si">{</span><span class="n">stream</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="c1"># Check if we are reprocessing (indicated by presence of old_streams)</span>
         <span class="k">if</span> <span class="n">old_streams</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">old_stream</span> <span class="o">=</span> <span class="n">old_streams</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -663,38 +664,38 @@
                 <span class="n">tr_old</span> <span class="o">=</span> <span class="n">old_stream</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
                 <span class="c1"># Check if old_streams have review parameters because it is not</span>
                 <span class="c1"># guaranteed</span>
-                <span class="k">if</span> <span class="n">tr_old</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">"review"</span><span class="p">):</span>
-                    <span class="n">review_dict</span> <span class="o">=</span> <span class="n">tr_old</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"review"</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">tr_old</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;review&quot;</span><span class="p">):</span>
+                    <span class="n">review_dict</span> <span class="o">=</span> <span class="n">tr_old</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;review&quot;</span><span class="p">)</span>
                     <span class="c1"># Transfer review parameter from old stream to new</span>
-                    <span class="n">stream</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">"review"</span><span class="p">,</span> <span class="n">review_dict</span><span class="p">)</span>
+                    <span class="n">stream</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">&quot;review&quot;</span><span class="p">,</span> <span class="n">review_dict</span><span class="p">)</span>
                     <span class="c1"># Was it failed via manual review?</span>
-                    <span class="k">if</span> <span class="s2">"accepted"</span> <span class="ow">in</span> <span class="n">review_dict</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="ow">not</span> <span class="n">review_dict</span><span class="p">[</span><span class="s2">"accepted"</span><span class="p">]:</span>
-                            <span class="n">stream</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"Manual review"</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="s2">&quot;accepted&quot;</span> <span class="ow">in</span> <span class="n">review_dict</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">review_dict</span><span class="p">[</span><span class="s2">&quot;accepted&quot;</span><span class="p">]:</span>
+                            <span class="n">stream</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;Manual review&quot;</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">processing_step_dict</span> <span class="ow">in</span> <span class="n">processing_steps</span><span class="p">:</span>
 
             <span class="n">key_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">processing_step_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">key_list</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Each processing step must contain exactly one key."</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Each processing step must contain exactly one key.&quot;</span><span class="p">)</span>
             <span class="n">step_name</span> <span class="o">=</span> <span class="n">key_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Processing step: </span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing step: </span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">step_args</span> <span class="o">=</span> <span class="n">processing_step_dict</span><span class="p">[</span><span class="n">step_name</span><span class="p">]</span>
-            <span class="c1"># Using globals doesn't seem like a great solution here, but it</span>
+            <span class="c1"># Using globals doesn&#39;t seem like a great solution here, but it</span>
             <span class="c1"># works.</span>
             <span class="k">if</span> <span class="n">step_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">():</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Processing step </span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s2"> is not valid."</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing step </span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s2"> is not valid.&quot;</span><span class="p">)</span>
 
             <span class="c1"># Origin is required by some steps and has to be handled specially.</span>
             <span class="c1"># There must be a better solution for this...</span>
             <span class="k">if</span> <span class="n">step_name</span> <span class="ow">in</span> <span class="n">REQ_ORIGIN</span><span class="p">:</span>
-                <span class="n">step_args</span><span class="p">[</span><span class="s2">"origin"</span><span class="p">]</span> <span class="o">=</span> <span class="n">origin</span>
-            <span class="k">if</span> <span class="n">step_name</span> <span class="o">==</span> <span class="s2">"trim_multiple_events"</span><span class="p">:</span>
-                <span class="n">step_args</span><span class="p">[</span><span class="s2">"catalog"</span><span class="p">]</span> <span class="o">=</span> <span class="n">catalog</span>
-                <span class="n">step_args</span><span class="p">[</span><span class="s2">"travel_time_df"</span><span class="p">]</span> <span class="o">=</span> <span class="n">travel_time_df</span>
-            <span class="k">if</span> <span class="n">step_name</span> <span class="o">==</span> <span class="s2">"compute_snr"</span><span class="p">:</span>
-                <span class="n">step_args</span><span class="p">[</span><span class="s2">"mag"</span><span class="p">]</span> <span class="o">=</span> <span class="n">origin</span><span class="o">.</span><span class="n">magnitude</span>
+                <span class="n">step_args</span><span class="p">[</span><span class="s2">&quot;origin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">origin</span>
+            <span class="k">if</span> <span class="n">step_name</span> <span class="o">==</span> <span class="s2">&quot;trim_multiple_events&quot;</span><span class="p">:</span>
+                <span class="n">step_args</span><span class="p">[</span><span class="s2">&quot;catalog&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">catalog</span>
+                <span class="n">step_args</span><span class="p">[</span><span class="s2">&quot;travel_time_df&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">travel_time_df</span>
+            <span class="k">if</span> <span class="n">step_name</span> <span class="o">==</span> <span class="s2">&quot;compute_snr&quot;</span><span class="p">:</span>
+                <span class="n">step_args</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">origin</span><span class="o">.</span><span class="n">magnitude</span>
 
             <span class="k">if</span> <span class="n">step_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">stream</span> <span class="o">=</span> <span class="nb">globals</span><span class="p">()[</span><span class="n">step_name</span><span class="p">](</span><span class="n">stream</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
@@ -703,22 +704,23 @@
 
     <span class="c1"># -------------------------------------------------------------------------</span>
     <span class="c1"># Begin colocated instrument selection</span>
-    <span class="n">colocated_conf</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"colocated"</span><span class="p">]</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">streams</span><span class="p">,</span> <span class="n">StreamCollection</span><span class="p">):</span>
-        <span class="n">streams</span><span class="o">.</span><span class="n">select_colocated</span><span class="p">(</span><span class="o">**</span><span class="n">colocated_conf</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;colocated&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+        <span class="n">colocated_conf</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;colocated&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">streams</span><span class="p">,</span> <span class="n">StreamCollection</span><span class="p">):</span>
+            <span class="n">streams</span><span class="o">.</span><span class="n">select_colocated</span><span class="p">(</span><span class="o">**</span><span class="n">colocated_conf</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">process_level</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="s2">"V2"</span><span class="p">]</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">process_level</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="s2">&quot;V2&quot;</span><span class="p">]</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Finished processing streams."</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished processing streams.&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">streams</span></div>
 
 
 <div class="viewcode-block" id="remove_response"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.remove_response">[docs]</a><span class="k">def</span> <span class="nf">remove_response</span><span class="p">(</span>
     <span class="n">st</span><span class="p">,</span> <span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">f3</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f4</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">water_level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Performs instrument response correction. If the response information is</span>
 <span class="sd">    not already attached to the stream, then an inventory object must be</span>
 <span class="sd">    provided. If the instrument is a strong-motion accelerometer, then</span>
@@ -747,8 +749,8 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        StationStream: Instrument-response-corrected stream.</span>
-<span class="sd">    """</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="s2">"ACC"</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="s2">&quot;ACC&quot;</span>
 
     <span class="k">if</span> <span class="n">inv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">inv</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">getInventory</span><span class="p">()</span>
@@ -757,10 +759,10 @@
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
 
         <span class="c1"># Check if this trace has already been converted to physical units</span>
-        <span class="k">if</span> <span class="s2">"remove_response"</span> <span class="ow">in</span> <span class="n">tr</span><span class="o">.</span><span class="n">getProvenanceKeys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s2">&quot;remove_response&quot;</span> <span class="ow">in</span> <span class="n">tr</span><span class="o">.</span><span class="n">getProvenanceKeys</span><span class="p">():</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                <span class="s2">"Trace has already had instrument response removed. "</span>
-                <span class="s2">"Nothing to be done."</span>
+                <span class="s2">&quot;Trace has already had instrument response removed. &quot;</span>
+                <span class="s2">&quot;Nothing to be done.&quot;</span>
             <span class="p">)</span>
             <span class="k">continue</span>
 
@@ -773,47 +775,47 @@
             <span class="n">resp</span> <span class="o">=</span> <span class="n">inv</span><span class="o">.</span><span class="n">get_response</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="p">)</span>
             <span class="n">paz</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">get_paz</span><span class="p">()</span>
             <span class="c1"># Check if we have an instrument measuring velocity or accleration</span>
-            <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"H"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;H&quot;</span><span class="p">:</span>
                 <span class="c1"># Attempting to remove instrument response can cause a variety</span>
                 <span class="c1"># errors due to bad response metadata</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="c1"># Note: rater than set output to 'ACC' we are are setting</span>
-                    <span class="c1"># it to 'VEl" and then differentiating.</span>
+                    <span class="c1"># Note: rater than set output to &#39;ACC&#39; we are are setting</span>
+                    <span class="c1"># it to &#39;VEl&quot; and then differentiating.</span>
                     <span class="n">tr</span><span class="o">.</span><span class="n">remove_response</span><span class="p">(</span>
                         <span class="n">inventory</span><span class="o">=</span><span class="n">inv</span><span class="p">,</span>
-                        <span class="n">output</span><span class="o">=</span><span class="s2">"VEL"</span><span class="p">,</span>
+                        <span class="n">output</span><span class="o">=</span><span class="s2">&quot;VEL&quot;</span><span class="p">,</span>
                         <span class="n">water_level</span><span class="o">=</span><span class="n">water_level</span><span class="p">,</span>
                         <span class="n">pre_filt</span><span class="o">=</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">f3</span><span class="p">,</span> <span class="n">f4</span><span class="p">),</span>
                         <span class="n">zero_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                         <span class="n">taper</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="n">tr</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span>
-                        <span class="s2">"remove_response"</span><span class="p">,</span>
+                        <span class="s2">&quot;remove_response&quot;</span><span class="p">,</span>
                         <span class="p">{</span>
-                            <span class="s2">"method"</span><span class="p">:</span> <span class="s2">"remove_response"</span><span class="p">,</span>
-                            <span class="s2">"input_units"</span><span class="p">:</span> <span class="s2">"counts"</span><span class="p">,</span>
-                            <span class="s2">"output_units"</span><span class="p">:</span> <span class="n">ABBREV_UNITS</span><span class="p">[</span><span class="s2">"VEL"</span><span class="p">],</span>
-                            <span class="s2">"water_level"</span><span class="p">:</span> <span class="n">water_level</span><span class="p">,</span>
-                            <span class="s2">"pre_filt_freqs"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">f1</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">f2</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">f3</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">f4</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;remove_response&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;input_units&quot;</span><span class="p">:</span> <span class="s2">&quot;counts&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;output_units&quot;</span><span class="p">:</span> <span class="n">ABBREV_UNITS</span><span class="p">[</span><span class="s2">&quot;VEL&quot;</span><span class="p">],</span>
+                            <span class="s2">&quot;water_level&quot;</span><span class="p">:</span> <span class="n">water_level</span><span class="p">,</span>
+                            <span class="s2">&quot;pre_filt_freqs&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">f1</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">f2</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">f3</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">f4</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                         <span class="p">},</span>
                     <span class="p">)</span>
                     <span class="n">tr</span><span class="o">.</span><span class="n">differentiate</span><span class="p">()</span>
                     <span class="n">tr</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span>
-                        <span class="s2">"differentiate"</span><span class="p">,</span>
+                        <span class="s2">&quot;differentiate&quot;</span><span class="p">,</span>
                         <span class="p">{</span>
-                            <span class="s2">"differentiation_method"</span><span class="p">:</span> <span class="s2">"remove_response"</span><span class="p">,</span>
-                            <span class="s2">"input_units"</span><span class="p">:</span> <span class="n">ABBREV_UNITS</span><span class="p">[</span><span class="s2">"VEL"</span><span class="p">],</span>
-                            <span class="s2">"output_units"</span><span class="p">:</span> <span class="n">ABBREV_UNITS</span><span class="p">[</span><span class="n">output</span><span class="p">],</span>
+                            <span class="s2">&quot;differentiation_method&quot;</span><span class="p">:</span> <span class="s2">&quot;remove_response&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;input_units&quot;</span><span class="p">:</span> <span class="n">ABBREV_UNITS</span><span class="p">[</span><span class="s2">&quot;VEL&quot;</span><span class="p">],</span>
+                            <span class="s2">&quot;output_units&quot;</span><span class="p">:</span> <span class="n">ABBREV_UNITS</span><span class="p">[</span><span class="n">output</span><span class="p">],</span>
                         <span class="p">},</span>
                     <span class="p">)</span>
                     <span class="n">tr</span><span class="o">.</span><span class="n">data</span> <span class="o">*=</span> <span class="n">M_TO_CM</span>  <span class="c1"># Convert from m to cm</span>
                     <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">ABBREV_UNITS</span><span class="p">[</span><span class="n">output</span><span class="p">]</span>
                     <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-                    <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">process_level</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="s2">"V1"</span><span class="p">]</span>
+                    <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">process_level</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="s2">&quot;V1&quot;</span><span class="p">]</span>
                 <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="n">reason</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="s2">"Encountered an error when attempting to remove "</span>
-                        <span class="s2">"instrument response: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                        <span class="s2">&quot;Encountered an error when attempting to remove &quot;</span>
+                        <span class="s2">&quot;instrument response: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
                     <span class="p">)</span>
                     <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="n">reason</span><span class="p">)</span>
                     <span class="k">continue</span>
@@ -822,13 +824,13 @@
                 <span class="c1"># metadata, so check that data contains no NaN or inf values</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
                     <span class="n">reason</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="s2">"Non-finite values encountered after removing "</span>
-                        <span class="s2">"instrument response."</span>
+                        <span class="s2">&quot;Non-finite values encountered after removing &quot;</span>
+                        <span class="s2">&quot;instrument response.&quot;</span>
                     <span class="p">)</span>
                     <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="n">reason</span><span class="p">)</span>
                     <span class="k">continue</span>
 
-            <span class="k">elif</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"N"</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;N&quot;</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="c1"># If no poles and zeros are present in the xml file,</span>
                     <span class="c1"># use the sensitivity method.</span>
@@ -836,16 +838,16 @@
                         <span class="n">tr</span><span class="o">.</span><span class="n">remove_sensitivity</span><span class="p">(</span><span class="n">inventory</span><span class="o">=</span><span class="n">inv</span><span class="p">)</span>
                         <span class="n">tr</span><span class="o">.</span><span class="n">data</span> <span class="o">*=</span> <span class="n">M_TO_CM</span>  <span class="c1"># Convert from m to cm</span>
                         <span class="n">tr</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span>
-                            <span class="s2">"remove_response"</span><span class="p">,</span>
+                            <span class="s2">&quot;remove_response&quot;</span><span class="p">,</span>
                             <span class="p">{</span>
-                                <span class="s2">"method"</span><span class="p">:</span> <span class="s2">"remove_sensitivity"</span><span class="p">,</span>
-                                <span class="s2">"input_units"</span><span class="p">:</span> <span class="s2">"counts"</span><span class="p">,</span>
-                                <span class="s2">"output_units"</span><span class="p">:</span> <span class="n">ABBREV_UNITS</span><span class="p">[</span><span class="n">output</span><span class="p">],</span>
+                                <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;remove_sensitivity&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;input_units&quot;</span><span class="p">:</span> <span class="s2">&quot;counts&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;output_units&quot;</span><span class="p">:</span> <span class="n">ABBREV_UNITS</span><span class="p">[</span><span class="n">output</span><span class="p">],</span>
                             <span class="p">},</span>
                         <span class="p">)</span>
                         <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">ABBREV_UNITS</span><span class="p">[</span><span class="n">output</span><span class="p">]</span>
                         <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-                        <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">process_level</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="s2">"V1"</span><span class="p">]</span>
+                        <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">process_level</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="s2">&quot;V1&quot;</span><span class="p">]</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">tr</span><span class="o">.</span><span class="n">remove_response</span><span class="p">(</span>
                             <span class="n">inventory</span><span class="o">=</span><span class="n">inv</span><span class="p">,</span>
@@ -856,57 +858,57 @@
                         <span class="p">)</span>
                         <span class="n">tr</span><span class="o">.</span><span class="n">data</span> <span class="o">*=</span> <span class="n">M_TO_CM</span>  <span class="c1"># Convert from m to cm</span>
                         <span class="n">tr</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span>
-                            <span class="s2">"remove_response"</span><span class="p">,</span>
+                            <span class="s2">&quot;remove_response&quot;</span><span class="p">,</span>
                             <span class="p">{</span>
-                                <span class="s2">"method"</span><span class="p">:</span> <span class="s2">"remove_response"</span><span class="p">,</span>
-                                <span class="s2">"input_units"</span><span class="p">:</span> <span class="s2">"counts"</span><span class="p">,</span>
-                                <span class="s2">"output_units"</span><span class="p">:</span> <span class="n">ABBREV_UNITS</span><span class="p">[</span><span class="n">output</span><span class="p">],</span>
-                                <span class="s2">"water_level"</span><span class="p">:</span> <span class="n">water_level</span><span class="p">,</span>
-                                <span class="s2">"pre_filt_freqs"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">f1</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">f2</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">f3</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">f4</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                                <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;remove_response&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;input_units&quot;</span><span class="p">:</span> <span class="s2">&quot;counts&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;output_units&quot;</span><span class="p">:</span> <span class="n">ABBREV_UNITS</span><span class="p">[</span><span class="n">output</span><span class="p">],</span>
+                                <span class="s2">&quot;water_level&quot;</span><span class="p">:</span> <span class="n">water_level</span><span class="p">,</span>
+                                <span class="s2">&quot;pre_filt_freqs&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">f1</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">f2</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">f3</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">f4</span><span class="si">:</span><span class="s2">f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                             <span class="p">},</span>
                         <span class="p">)</span>
                         <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">ABBREV_UNITS</span><span class="p">[</span><span class="n">output</span><span class="p">]</span>
                         <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-                        <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">process_level</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="s2">"V1"</span><span class="p">]</span>
+                        <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">process_level</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="s2">&quot;V1&quot;</span><span class="p">]</span>
                 <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="n">reason</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="s2">"Encountered an error when attempting to remove "</span>
-                        <span class="s2">"instrument sensitivity: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                        <span class="s2">&quot;Encountered an error when attempting to remove &quot;</span>
+                        <span class="s2">&quot;instrument sensitivity: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
                     <span class="p">)</span>
                     <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="n">reason</span><span class="p">)</span>
                     <span class="k">continue</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">reason</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="s2">"This instrument type is not supported. "</span>
-                    <span class="s2">"The instrument code must be either H "</span>
-                    <span class="s2">"(high gain seismometer) or N (accelerometer)."</span>
+                    <span class="s2">&quot;This instrument type is not supported. &quot;</span>
+                    <span class="s2">&quot;The instrument code must be either H &quot;</span>
+                    <span class="s2">&quot;(high gain seismometer) or N (accelerometer).&quot;</span>
                 <span class="p">)</span>
                 <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="n">reason</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="s2">"Encountered an error when obtaining the poles and "</span>
-                <span class="s2">"zeros information: </span><span class="si">%s</span><span class="s2">. Now using remove_sensitivity "</span>
-                <span class="s2">"instead of remove_response."</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="s2">&quot;Encountered an error when obtaining the poles and &quot;</span>
+                <span class="s2">&quot;zeros information: </span><span class="si">%s</span><span class="s2">. Now using remove_sensitivity &quot;</span>
+                <span class="s2">&quot;instead of remove_response.&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="n">tr</span><span class="o">.</span><span class="n">remove_sensitivity</span><span class="p">(</span><span class="n">inventory</span><span class="o">=</span><span class="n">inv</span><span class="p">)</span>
             <span class="n">tr</span><span class="o">.</span><span class="n">data</span> <span class="o">*=</span> <span class="n">M_TO_CM</span>  <span class="c1"># Convert from m to cm</span>
             <span class="n">tr</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span>
-                <span class="s2">"remove_response"</span><span class="p">,</span>
+                <span class="s2">&quot;remove_response&quot;</span><span class="p">,</span>
                 <span class="p">{</span>
-                    <span class="s2">"method"</span><span class="p">:</span> <span class="s2">"remove_sensitivity"</span><span class="p">,</span>
-                    <span class="s2">"input_units"</span><span class="p">:</span> <span class="s2">"counts"</span><span class="p">,</span>
-                    <span class="s2">"output_units"</span><span class="p">:</span> <span class="n">ABBREV_UNITS</span><span class="p">[</span><span class="n">output</span><span class="p">],</span>
+                    <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;remove_sensitivity&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;input_units&quot;</span><span class="p">:</span> <span class="s2">&quot;counts&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;output_units&quot;</span><span class="p">:</span> <span class="n">ABBREV_UNITS</span><span class="p">[</span><span class="n">output</span><span class="p">],</span>
                 <span class="p">},</span>
             <span class="p">)</span>
             <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="n">ABBREV_UNITS</span><span class="p">[</span><span class="n">output</span><span class="p">]</span>
             <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">units_type</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">process_level</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="s2">"V1"</span><span class="p">]</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">process_level</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="s2">&quot;V1&quot;</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 
 
 <div class="viewcode-block" id="lowpass_max_frequency"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.lowpass_max_frequency">[docs]</a><span class="k">def</span> <span class="nf">lowpass_max_frequency</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">fn_fac</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Cap lowpass corner as a fraction of the Nyquist.</span>
 
 <span class="sd">    Args:</span>
@@ -919,23 +921,34 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        StationStream: Resampled stream.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">st</span>
 
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;review&quot;</span><span class="p">):</span>
+            <span class="n">rdict</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;review&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;corner_frequencies&quot;</span> <span class="ow">in</span> <span class="n">rdict</span><span class="p">:</span>
+                <span class="n">rev_fc_dict</span> <span class="o">=</span> <span class="n">rdict</span><span class="p">[</span><span class="s2">&quot;corner_frequencies&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">&quot;lowpass&quot;</span> <span class="ow">in</span> <span class="n">rev_fc_dict</span><span class="p">:</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Not applying lowpass_max_frequency for </span><span class="si">{</span><span class="n">tr</span><span class="si">}</span><span class="s2"> because the &quot;</span>
+                        <span class="s2">&quot;lowpass filter corner was set by manual review.&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">continue</span>
+
         <span class="n">fn</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span>
         <span class="n">max_flp</span> <span class="o">=</span> <span class="n">fn</span> <span class="o">*</span> <span class="n">fn_fac</span>
-        <span class="n">freq_dict</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"corner_frequencies"</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">freq_dict</span><span class="p">[</span><span class="s2">"lowpass"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_flp</span><span class="p">:</span>
-            <span class="n">freq_dict</span><span class="p">[</span><span class="s2">"lowpass"</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_flp</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">"corner_frequencies"</span><span class="p">,</span> <span class="n">freq_dict</span><span class="p">)</span>
+        <span class="n">freq_dict</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;corner_frequencies&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">freq_dict</span><span class="p">[</span><span class="s2">&quot;lowpass&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max_flp</span><span class="p">:</span>
+            <span class="n">freq_dict</span><span class="p">[</span><span class="s2">&quot;lowpass&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_flp</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">&quot;corner_frequencies&quot;</span><span class="p">,</span> <span class="n">freq_dict</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 
 
 <div class="viewcode-block" id="min_sample_rate"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.min_sample_rate">[docs]</a><span class="k">def</span> <span class="nf">min_sample_rate</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">min_sps</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Discard records if the sample rate doers not exceed minimum.</span>
 
 <span class="sd">    Args:</span>
@@ -948,59 +961,59 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        StationStream: Stream checked for sample rate criteria.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">st</span>
 
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
         <span class="n">actual_sps</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span>
         <span class="k">if</span> <span class="n">actual_sps</span> <span class="o">&lt;</span> <span class="n">min_sps</span><span class="p">:</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Minimum sample rate of </span><span class="si">{</span><span class="n">min_sps</span><span class="si">}</span><span class="s2"> not exceeded."</span><span class="p">)</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Minimum sample rate of </span><span class="si">{</span><span class="n">min_sps</span><span class="si">}</span><span class="s2"> not exceeded.&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 
 
 <div class="viewcode-block" id="detrend"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.detrend">[docs]</a><span class="k">def</span> <span class="nf">detrend</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">detrending_method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Detrend stream.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        st (StationStream):</span>
 <span class="sd">            Stream of data.</span>
-<span class="sd">        method (str): Method to detrend; valid options include the 'type'</span>
+<span class="sd">        method (str): Method to detrend; valid options include the &#39;type&#39;</span>
 <span class="sd">            options supported by obspy.core.trace.Trace.detrend as well as:</span>
-<span class="sd">                - 'baseline_sixth_order', which is for a baseline correction</span>
+<span class="sd">                - &#39;baseline_sixth_order&#39;, which is for a baseline correction</span>
 <span class="sd">                   method that fits a sixth-order polynomial to the</span>
 <span class="sd">                   displacement time series, and sets the zeroth- and</span>
 <span class="sd">                   first-order terms to be zero. The second derivative of the</span>
 <span class="sd">                   fit polynomial is then removed from the acceleration time</span>
 <span class="sd">                   series.</span>
-<span class="sd">                - 'pre', for removing the mean of the pre-event noise window.</span>
+<span class="sd">                - &#39;pre&#39;, for removing the mean of the pre-event noise window.</span>
 <span class="sd">        config (dict):</span>
 <span class="sd">            Configuration dictionary (or None). See get_config().</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        StationStream: Detrended stream.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">st</span>
 
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">detrending_method</span> <span class="o">==</span> <span class="s2">"baseline_sixth_order"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">detrending_method</span> <span class="o">==</span> <span class="s2">&quot;baseline_sixth_order&quot;</span><span class="p">:</span>
             <span class="n">tr</span> <span class="o">=</span> <span class="n">correct_baseline</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">detrending_method</span> <span class="o">==</span> <span class="s2">"pre"</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">detrending_method</span> <span class="o">==</span> <span class="s2">&quot;pre&quot;</span><span class="p">:</span>
             <span class="n">tr</span> <span class="o">=</span> <span class="n">_detrend_pre_event_mean</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">tr</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">detrend</span><span class="p">(</span><span class="n">detrending_method</span><span class="p">)</span>
 
-        <span class="n">tr</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s2">"detrend"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"detrending_method"</span><span class="p">:</span> <span class="n">detrending_method</span><span class="p">})</span>
+        <span class="n">tr</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s2">&quot;detrend&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;detrending_method&quot;</span><span class="p">:</span> <span class="n">detrending_method</span><span class="p">})</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 
 
 <div class="viewcode-block" id="resample"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.resample">[docs]</a><span class="k">def</span> <span class="nf">resample</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">new_sampling_rate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Resample stream.</span>
 
 <span class="sd">    Args:</span>
@@ -1009,7 +1022,7 @@
 <span class="sd">        sampling_rate (float):</span>
 <span class="sd">            New sampling rate, in Hz.</span>
 <span class="sd">        method (str):</span>
-<span class="sd">            Method for interpolation. Currently only supports 'lanczos'.</span>
+<span class="sd">            Method for interpolation. Currently only supports &#39;lanczos&#39;.</span>
 <span class="sd">        a (int):</span>
 <span class="sd">            Width of the Lanczos window, in number of samples.</span>
 <span class="sd">        config (dict):</span>
@@ -1017,24 +1030,24 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        StationStream: Resampled stream.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">st</span>
 
-    <span class="k">if</span> <span class="n">method</span> <span class="o">!=</span> <span class="s2">"lanczos"</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Only lanczos interpolation method is supported."</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">!=</span> <span class="s2">&quot;lanczos&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only lanczos interpolation method is supported.&quot;</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
         <span class="n">tr</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">sampling_rate</span><span class="o">=</span><span class="n">new_sampling_rate</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">)</span>
-        <span class="n">tr</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s2">"resample"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"new_sampling_rate"</span><span class="p">:</span> <span class="n">new_sampling_rate</span><span class="p">})</span>
+        <span class="n">tr</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s2">&quot;resample&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;new_sampling_rate&quot;</span><span class="p">:</span> <span class="n">new_sampling_rate</span><span class="p">})</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 
 
 <div class="viewcode-block" id="get_corner_frequencies"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.get_corner_frequencies">[docs]</a><span class="k">def</span> <span class="nf">get_corner_frequencies</span><span class="p">(</span>
-    <span class="n">st</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"constant"</span><span class="p">,</span> <span class="n">constant</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">snr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">magnitude</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">st</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span><span class="p">,</span> <span class="n">constant</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">snr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">magnitude</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Select corner frequencies.</span>
 
 <span class="sd">    Args:</span>
@@ -1043,7 +1056,7 @@
 <span class="sd">        origin (ScalarEvent):</span>
 <span class="sd">            ScalarEvent object.</span>
 <span class="sd">        method (str):</span>
-<span class="sd">            Which method to use; currently allowed "snr" or "constant".</span>
+<span class="sd">            Which method to use; currently allowed &quot;snr&quot; or &quot;constant&quot;.</span>
 <span class="sd">        constant(dict):</span>
 <span class="sd">            Dictionary of `constant` method config options.</span>
 <span class="sd">        snr (dict):</span>
@@ -1055,61 +1068,61 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        strea: Stream with selected corner frequencies added.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Setting corner frequencies..."</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">"constant"</span><span class="p">:</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting corner frequencies...&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;constant&quot;</span><span class="p">:</span>
         <span class="n">st</span> <span class="o">=</span> <span class="n">corner_frequencies</span><span class="o">.</span><span class="n">from_constant</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="o">**</span><span class="n">constant</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">"magnitude"</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;magnitude&quot;</span><span class="p">:</span>
         <span class="n">st</span> <span class="o">=</span> <span class="n">corner_frequencies</span><span class="o">.</span><span class="n">from_magnitude</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="o">**</span><span class="n">magnitude</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">"snr"</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;snr&quot;</span><span class="p">:</span>
         <span class="n">st</span> <span class="o">=</span> <span class="n">corner_frequencies</span><span class="o">.</span><span class="n">from_snr</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="o">**</span><span class="n">snr</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">snr</span><span class="p">[</span><span class="s2">"same_horiz"</span><span class="p">]</span> <span class="ow">and</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span> <span class="ow">and</span> <span class="n">st</span><span class="o">.</span><span class="n">num_horizontal</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">lps</span> <span class="o">=</span> <span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"corner_frequencies"</span><span class="p">)[</span><span class="s2">"lowpass"</span><span class="p">]</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">]</span>
-            <span class="n">hps</span> <span class="o">=</span> <span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"corner_frequencies"</span><span class="p">)[</span><span class="s2">"highpass"</span><span class="p">]</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">snr</span><span class="p">[</span><span class="s2">&quot;same_horiz&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span> <span class="ow">and</span> <span class="n">st</span><span class="o">.</span><span class="n">num_horizontal</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">lps</span> <span class="o">=</span> <span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;corner_frequencies&quot;</span><span class="p">)[</span><span class="s2">&quot;lowpass&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">]</span>
+            <span class="n">hps</span> <span class="o">=</span> <span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;corner_frequencies&quot;</span><span class="p">)[</span><span class="s2">&quot;highpass&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">]</span>
             <span class="n">chs</span> <span class="o">=</span> <span class="p">[</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">]</span>
             <span class="n">hlps</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">hhps</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">chs</span><span class="p">)):</span>
-                <span class="k">if</span> <span class="s2">"z"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">chs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="k">if</span> <span class="s2">&quot;z&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">chs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
                     <span class="n">hlps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lps</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
                     <span class="n">hhps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hps</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="n">llp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">hlps</span><span class="p">)</span>
             <span class="n">hhp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">hhps</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">chs</span><span class="p">)):</span>
-                <span class="k">if</span> <span class="s2">"z"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">chs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
-                    <span class="n">cfdict</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"corner_frequencies"</span><span class="p">)</span>
-                    <span class="n">cfdict</span><span class="p">[</span><span class="s2">"lowpass"</span><span class="p">]</span> <span class="o">=</span> <span class="n">llp</span>
-                    <span class="n">cfdict</span><span class="p">[</span><span class="s2">"highpass"</span><span class="p">]</span> <span class="o">=</span> <span class="n">hhp</span>
-                    <span class="n">st</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">"corner_frequencies"</span><span class="p">,</span> <span class="n">cfdict</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s2">&quot;z&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">chs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                    <span class="n">cfdict</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;corner_frequencies&quot;</span><span class="p">)</span>
+                    <span class="n">cfdict</span><span class="p">[</span><span class="s2">&quot;lowpass&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">llp</span>
+                    <span class="n">cfdict</span><span class="p">[</span><span class="s2">&quot;highpass&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hhp</span>
+                    <span class="n">st</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">&quot;corner_frequencies&quot;</span><span class="p">,</span> <span class="n">cfdict</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">"Corner frequency 'method' must be one of: 'constant', 'magnitude', or "</span>
-            <span class="s2">"'snr'."</span>
+            <span class="s2">&quot;Corner frequency &#39;method&#39; must be one of: &#39;constant&#39;, &#39;magnitude&#39;, or &quot;</span>
+            <span class="s2">&quot;&#39;snr&#39;.&quot;</span>
         <span class="p">)</span>
 
     <span class="c1"># Replace corners set in manual review</span>
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">"review"</span><span class="p">):</span>
-            <span class="n">review_dict</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"review"</span><span class="p">)</span>
-            <span class="k">if</span> <span class="s2">"corner_frequencies"</span> <span class="ow">in</span> <span class="n">review_dict</span><span class="p">:</span>
-                <span class="n">rev_fc_dict</span> <span class="o">=</span> <span class="n">review_dict</span><span class="p">[</span><span class="s2">"corner_frequencies"</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">"corner_frequencies"</span><span class="p">):</span>
-                    <span class="n">base_fc_dict</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"corner_frequencies"</span><span class="p">)</span>
-                    <span class="n">base_fc_dict</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"reviewed"</span>
+        <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;review&quot;</span><span class="p">):</span>
+            <span class="n">review_dict</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;review&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;corner_frequencies&quot;</span> <span class="ow">in</span> <span class="n">review_dict</span><span class="p">:</span>
+                <span class="n">rev_fc_dict</span> <span class="o">=</span> <span class="n">review_dict</span><span class="p">[</span><span class="s2">&quot;corner_frequencies&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;corner_frequencies&quot;</span><span class="p">):</span>
+                    <span class="n">base_fc_dict</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;corner_frequencies&quot;</span><span class="p">)</span>
+                    <span class="n">base_fc_dict</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;reviewed&quot;</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">base_fc_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"reviewed"</span><span class="p">}</span>
-                <span class="k">if</span> <span class="p">(</span><span class="s2">"highpass"</span> <span class="ow">in</span> <span class="n">rev_fc_dict</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">"lowpass"</span> <span class="ow">in</span> <span class="n">rev_fc_dict</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="s2">"highpass"</span> <span class="ow">in</span> <span class="n">rev_fc_dict</span><span class="p">:</span>
-                        <span class="n">base_fc_dict</span><span class="p">[</span><span class="s2">"highpass"</span><span class="p">]</span> <span class="o">=</span> <span class="n">rev_fc_dict</span><span class="p">[</span><span class="s2">"highpass"</span><span class="p">]</span>
-                    <span class="k">if</span> <span class="s2">"lowpass"</span> <span class="ow">in</span> <span class="n">rev_fc_dict</span><span class="p">:</span>
-                        <span class="n">base_fc_dict</span><span class="p">[</span><span class="s2">"lowpass"</span><span class="p">]</span> <span class="o">=</span> <span class="n">rev_fc_dict</span><span class="p">[</span><span class="s2">"lowpass"</span><span class="p">]</span>
-                    <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">"corner_frequencies"</span><span class="p">,</span> <span class="n">base_fc_dict</span><span class="p">)</span>
+                    <span class="n">base_fc_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;reviewed&quot;</span><span class="p">}</span>
+                <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;highpass&quot;</span> <span class="ow">in</span> <span class="n">rev_fc_dict</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">&quot;lowpass&quot;</span> <span class="ow">in</span> <span class="n">rev_fc_dict</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="s2">&quot;highpass&quot;</span> <span class="ow">in</span> <span class="n">rev_fc_dict</span><span class="p">:</span>
+                        <span class="n">base_fc_dict</span><span class="p">[</span><span class="s2">&quot;highpass&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rev_fc_dict</span><span class="p">[</span><span class="s2">&quot;highpass&quot;</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="s2">&quot;lowpass&quot;</span> <span class="ow">in</span> <span class="n">rev_fc_dict</span><span class="p">:</span>
+                        <span class="n">base_fc_dict</span><span class="p">[</span><span class="s2">&quot;lowpass&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rev_fc_dict</span><span class="p">[</span><span class="s2">&quot;lowpass&quot;</span><span class="p">]</span>
+                    <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">&quot;corner_frequencies&quot;</span><span class="p">,</span> <span class="n">base_fc_dict</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">st</span></div>
 
 
-<div class="viewcode-block" id="taper"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.taper">[docs]</a><span class="k">def</span> <span class="nf">taper</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"hann"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">"both"</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
+<div class="viewcode-block" id="taper"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.taper">[docs]</a><span class="k">def</span> <span class="nf">taper</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;hann&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Taper streams.</span>
 
 <span class="sd">    Args:</span>
@@ -1120,13 +1133,13 @@
 <span class="sd">        width (float):</span>
 <span class="sd">            Taper width as percentage of trace length.</span>
 <span class="sd">        side (str):</span>
-<span class="sd">            Valid options: "both", "left", "right".</span>
+<span class="sd">            Valid options: &quot;both&quot;, &quot;left&quot;, &quot;right&quot;.</span>
 <span class="sd">        config (dict):</span>
 <span class="sd">            Configuration dictionary (or None). See get_config().</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        stream: tapered streams.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">st</span>
 
@@ -1134,13 +1147,13 @@
         <span class="n">tr</span><span class="o">.</span><span class="n">taper</span><span class="p">(</span><span class="n">max_percentage</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">type</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="n">side</span><span class="p">)</span>
         <span class="n">window_type</span> <span class="o">=</span> <span class="n">TAPER_TYPES</span><span class="p">[</span><span class="nb">type</span><span class="p">]</span>
         <span class="n">tr</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span>
-            <span class="s2">"taper"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"window_type"</span><span class="p">:</span> <span class="n">window_type</span><span class="p">,</span> <span class="s2">"taper_width"</span><span class="p">:</span> <span class="n">width</span><span class="p">,</span> <span class="s2">"side"</span><span class="p">:</span> <span class="n">side</span><span class="p">}</span>
+            <span class="s2">&quot;taper&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;window_type&quot;</span><span class="p">:</span> <span class="n">window_type</span><span class="p">,</span> <span class="s2">&quot;taper_width&quot;</span><span class="p">:</span> <span class="n">width</span><span class="p">,</span> <span class="s2">&quot;side&quot;</span><span class="p">:</span> <span class="n">side</span><span class="p">}</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">st</span></div>
 
 
 <div class="viewcode-block" id="check_instrument"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.check_instrument">[docs]</a><span class="k">def</span> <span class="nf">check_instrument</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_min</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">require_two_horiz</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test the channels of the station.</span>
 
 <span class="sd">    The purpose of the maximum limit is to skip over stations with muliple</span>
@@ -1165,22 +1178,22 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Stream with adjusted failed fields.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">st</span>
 
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Starting check_instrument"</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"len(st) = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">st</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Starting check_instrument&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;len(st) = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">st</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">failed_test</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="p">[</span>
-        <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">st</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">n_max</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"More than </span><span class="si">{</span><span class="n">n_max</span><span class="si">}</span><span class="s2"> traces in stream."</span><span class="p">),</span>
-        <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">st</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n_min</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"Less than </span><span class="si">{</span><span class="n">n_min</span><span class="si">}</span><span class="s2"> traces in stream."</span><span class="p">),</span>
+        <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">st</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">n_max</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;More than </span><span class="si">{</span><span class="n">n_max</span><span class="si">}</span><span class="s2"> traces in stream.&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">st</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n_min</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Less than </span><span class="si">{</span><span class="n">n_min</span><span class="si">}</span><span class="s2"> traces in stream.&quot;</span><span class="p">),</span>
         <span class="p">(</span>
             <span class="n">require_two_horiz</span> <span class="ow">and</span> <span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">num_horizontal</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">),</span>
-            <span class="s2">"Not two horizontal components"</span><span class="p">,</span>
+            <span class="s2">&quot;Not two horizontal components&quot;</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]:</span>
         <span class="k">if</span> <span class="n">failed_test</span><span class="p">:</span>
@@ -1193,7 +1206,7 @@
 
 
 <div class="viewcode-block" id="max_traces"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing.max_traces">[docs]</a><span class="k">def</span> <span class="nf">max_traces</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reject a stream if it has more than n_max traces.</span>
 
 <span class="sd">    The purpose of this is to skip over stations with muliple strong motion</span>
@@ -1210,25 +1223,25 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Stream with adjusted failed fields.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-        <span class="s2">"This function is deprecated. Please replace with "</span>
-        <span class="s2">"check_instrument, which includes additional "</span>
-        <span class="s2">"functionality."</span>
+        <span class="s2">&quot;This function is deprecated. Please replace with &quot;</span>
+        <span class="s2">&quot;check_instrument, which includes additional &quot;</span>
+        <span class="s2">&quot;functionality.&quot;</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">st</span>
 
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Starting max_traces"</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"len(st) = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">st</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Starting max_traces&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;len(st) = </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">st</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">st</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">n_max</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="sa">f</span><span class="s2">"More than </span><span class="si">{</span><span class="n">n_max</span><span class="si">}</span><span class="s2"> traces in stream."</span><span class="p">)</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;More than </span><span class="si">{</span><span class="n">n_max</span><span class="si">}</span><span class="s2"> traces in stream.&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">st</span></div>
 
 
 <div class="viewcode-block" id="_detrend_pre_event_mean"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/processing/index.html#gmprocess.waveform_processing.processing._detrend_pre_event_mean">[docs]</a><span class="k">def</span> <span class="nf">_detrend_pre_event_mean</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Subtraces the mean of the pre-event noise window from the full trace.</span>
 
 <span class="sd">    Args:</span>
@@ -1239,11 +1252,11 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        trace: Detrended trace.</span>
-<span class="sd">    """</span>
-    <span class="n">split_prov</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"signal_split"</span><span class="p">)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">split_prov</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;signal_split&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">split_prov</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">split_prov</span> <span class="o">=</span> <span class="n">split_prov</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">split_time</span> <span class="o">=</span> <span class="n">split_prov</span><span class="p">[</span><span class="s2">"split_time"</span><span class="p">]</span>
+    <span class="n">split_time</span> <span class="o">=</span> <span class="n">split_prov</span><span class="p">[</span><span class="s2">&quot;split_time&quot;</span><span class="p">]</span>
     <span class="n">noise</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">trim</span><span class="p">(</span><span class="n">endtime</span><span class="o">=</span><span class="n">split_time</span><span class="p">)</span>
     <span class="n">noise_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">noise</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
     <span class="n">trace</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">data</span> <span class="o">-</span> <span class="n">noise_mean</span>

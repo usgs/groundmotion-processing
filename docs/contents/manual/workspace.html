@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Configuration File" href="config_file.html" /><link rel="prev" title="Data Structures" href="data_structures.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>Workspace - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>Workspace - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -534,7 +535,7 @@ histories on a surface.</p></li>
 <li><p>(Potential future addition) <code class="docutils literal notranslate"><span class="pre">RuptureModels</span></code> for finite-fault earthquake
 rupture models.</p></li>
 </ul>
-<a class="reference internal image-reference" href="../../_images/asdf_layout.png"><img alt="Diagram of group and dataset hierarchy in extension of the ASDF HDF-5 layout." src="../../_images/asdf_layout.png" style="width: 600px;"/></a>
+<a class="reference internal image-reference" href="../../_images/asdf_layout.png"><img alt="Diagram of group and dataset hierarchy in extension of the ASDF HDF-5 layout." src="../../_images/asdf_layout.png" style="width: 600px;" /></a>
 </section>
 <section id="waveform-metrics">
 <h2>Waveform Metrics<a class="headerlink" href="#waveform-metrics" title="Permalink to this headline">#</a></h2>
@@ -569,22 +570,22 @@ RotD50, etc)</p></li>
 <p>Sample XML for a waveform metrics dataset:</p>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;waveform_metrics&gt;</span>
     <span class="nt">&lt;pga&gt;</span>
-        <span class="nt">&lt;rot_d50</span> <span class="na">units=</span><span class="s">"m/s**2"</span><span class="nt">&gt;</span>0.45<span class="nt">&lt;/rot_d50&gt;</span>
-        <span class="nt">&lt;maximum_component</span> <span class="na">units=</span><span class="s">"m/s**2"</span><span class="nt">&gt;</span>0.23<span class="nt">&lt;/maximum_component&gt;</span>
-        <span class="nt">&lt;component</span> <span class="na">name=</span><span class="s">"east"</span> <span class="na">units=</span><span class="s">"m/s**2"</span><span class="nt">&gt;</span>0.23<span class="nt">&lt;/component&gt;</span>
-        <span class="nt">&lt;component</span> <span class="na">name=</span><span class="s">"up"</span> <span class="na">units=</span><span class="s">"m/s**2"</span><span class="nt">&gt;</span>0.11<span class="nt">&lt;/component&gt;</span>
+        <span class="nt">&lt;rot_d50</span> <span class="na">units=</span><span class="s">&quot;m/s**2&quot;</span><span class="nt">&gt;</span>0.45<span class="nt">&lt;/rot_d50&gt;</span>
+        <span class="nt">&lt;maximum_component</span> <span class="na">units=</span><span class="s">&quot;m/s**2&quot;</span><span class="nt">&gt;</span>0.23<span class="nt">&lt;/maximum_component&gt;</span>
+        <span class="nt">&lt;component</span> <span class="na">name=</span><span class="s">&quot;east&quot;</span> <span class="na">units=</span><span class="s">&quot;m/s**2&quot;</span><span class="nt">&gt;</span>0.23<span class="nt">&lt;/component&gt;</span>
+        <span class="nt">&lt;component</span> <span class="na">name=</span><span class="s">&quot;up&quot;</span> <span class="na">units=</span><span class="s">&quot;m/s**2&quot;</span><span class="nt">&gt;</span>0.11<span class="nt">&lt;/component&gt;</span>
     <span class="nt">&lt;/pga&gt;</span>
-    <span class="nt">&lt;sa</span> <span class="na">percent_damping=</span><span class="s">"5.0"</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;rot_d50</span> <span class="na">units=</span><span class="s">"g"</span><span class="nt">&gt;</span>
-          <span class="nt">&lt;value</span> <span class="na">period=</span><span class="s">"3.0"</span><span class="nt">&gt;</span>0.2<span class="nt">&lt;/value&gt;</span>
-          <span class="nt">&lt;value</span> <span class="na">period=</span><span class="s">"1.0"</span><span class="nt">&gt;</span>0.6<span class="nt">&lt;/value&gt;</span>
-          <span class="nt">&lt;value</span> <span class="na">period=</span><span class="s">"0.3"</span><span class="nt">&gt;</span>0.3<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;sa</span> <span class="na">percent_damping=</span><span class="s">&quot;5.0&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;rot_d50</span> <span class="na">units=</span><span class="s">&quot;g&quot;</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;value</span> <span class="na">period=</span><span class="s">&quot;3.0&quot;</span><span class="nt">&gt;</span>0.2<span class="nt">&lt;/value&gt;</span>
+          <span class="nt">&lt;value</span> <span class="na">period=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span>0.6<span class="nt">&lt;/value&gt;</span>
+          <span class="nt">&lt;value</span> <span class="na">period=</span><span class="s">&quot;0.3&quot;</span><span class="nt">&gt;</span>0.3<span class="nt">&lt;/value&gt;</span>
         <span class="nt">&lt;/rot_d50&gt;</span>
     <span class="nt">&lt;/sa&gt;</span>
     <span class="nt">&lt;pgv&gt;</span>
-        <span class="nt">&lt;maximum_component</span> <span class="na">units=</span><span class="s">"m/s"</span><span class="nt">&gt;</span>0.012<span class="nt">&lt;/maximum_component&gt;</span>
-        <span class="nt">&lt;component</span> <span class="na">name=</span><span class="s">"east"</span> <span class="na">units=</span><span class="s">"m/s"</span><span class="nt">&gt;</span>0.012<span class="nt">&lt;/component&gt;</span>
-        <span class="nt">&lt;component</span> <span class="na">name=</span><span class="s">"up"</span> <span class="na">units=</span><span class="s">"m/s"</span><span class="nt">&gt;</span>0.008<span class="nt">&lt;/component&gt;</span>
+        <span class="nt">&lt;maximum_component</span> <span class="na">units=</span><span class="s">&quot;m/s&quot;</span><span class="nt">&gt;</span>0.012<span class="nt">&lt;/maximum_component&gt;</span>
+        <span class="nt">&lt;component</span> <span class="na">name=</span><span class="s">&quot;east&quot;</span> <span class="na">units=</span><span class="s">&quot;m/s&quot;</span><span class="nt">&gt;</span>0.012<span class="nt">&lt;/component&gt;</span>
+        <span class="nt">&lt;component</span> <span class="na">name=</span><span class="s">&quot;up&quot;</span> <span class="na">units=</span><span class="s">&quot;m/s&quot;</span><span class="nt">&gt;</span>0.008<span class="nt">&lt;/component&gt;</span>
     <span class="nt">&lt;/pgv&gt;</span>
 <span class="nt">&lt;/waveform_metrics&gt;</span>
 </pre></div>
@@ -621,8 +622,8 @@ hierarchy is</p>
 <p>The dataset is a byte string corresponding to JSON.</p>
 <p>Sample JSON for a trace processing parameters dataset:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
-<span class="w">  </span><span class="nt">"baseline"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"polynomial_coefs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;baseline&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;polynomial_coefs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
 <span class="w">      </span><span class="mf">-3.1244715639196995e-24</span><span class="p">,</span><span class="w"></span>
 <span class="w">      </span><span class="mf">1.1046838180719736e-19</span><span class="p">,</span><span class="w"></span>
 <span class="w">      </span><span class="mf">-1.2610591147149431e-15</span><span class="p">,</span><span class="w"></span>
@@ -632,29 +633,29 @@ hierarchy is</p>
 <span class="w">      </span><span class="mi">0</span><span class="w"></span>
 <span class="w">    </span><span class="p">]</span><span class="w"></span>
 <span class="w">  </span><span class="p">},</span><span class="w"></span>
-<span class="w">  </span><span class="nt">"corner_frequencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"snr"</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"lowpass"</span><span class="p">:</span><span class="w"> </span><span class="mf">30.778610333622925</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"highpass"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.008053637150713472</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;corner_frequencies&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;snr&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;lowpass&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">30.778610333622925</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;highpass&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.008053637150713472</span><span class="w"></span>
 <span class="w">  </span><span class="p">},</span><span class="w"></span>
-<span class="w">  </span><span class="nt">"snr_conf"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"threshold"</span><span class="p">:</span><span class="w"> </span><span class="mf">3.0</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"min_freq"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"bandwidth"</span><span class="p">:</span><span class="w"> </span><span class="mf">20.0</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"max_freq"</span><span class="p">:</span><span class="w"> </span><span class="mf">5.0</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;snr_conf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;threshold&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">3.0</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;min_freq&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;bandwidth&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">20.0</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;max_freq&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">5.0</span><span class="w"></span>
 <span class="w">  </span><span class="p">},</span><span class="w"></span>
-<span class="w">  </span><span class="nt">"signal_split"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"picker_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"travel_time"</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"p_arrival"</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"split_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-07-06T03:20:46.346556Z"</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;signal_split&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;picker_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;travel_time&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;p_arrival&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;split_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2019-07-06T03:20:46.346556Z&quot;</span><span class="w"></span>
 <span class="w">  </span><span class="p">},</span><span class="w"></span>
-<span class="w">  </span><span class="nt">"signal_end"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"vsplit"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"floor"</span><span class="p">:</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"epsilon"</span><span class="p">:</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"end_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-07-06T03:23:09.315515Z"</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"AS16"</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"model"</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;signal_end&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;vsplit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;floor&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;epsilon&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">2.0</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;end_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2019-07-06T03:23:09.315515Z&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AS16&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;model&quot;</span><span class="w"></span>
 <span class="w">  </span><span class="p">}</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
 </pre></div>
