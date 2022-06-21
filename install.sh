@@ -120,7 +120,7 @@ conda config --set channel_priority strict
 
 echo "Creating the $VENV virtual environment:"
 # conda create -n $VENV -y --file requirements.txt
-mamba create -n $VENV -y --file requirements.txt
+mamba create python=$py_ver -n $VENV -y --file requirements.txt
 
 # Bail out at this point if the conda create command fails.
 # Clean up zip files we've downloaded

@@ -52,8 +52,11 @@ def ridder_fchp(st, target=0.02, tol=0.001, maxiter=30, maxfc=0.5, config=None):
     ps_names = [list(ps.keys())[0] for ps in processing_steps]
     ind = int(np.where(np.array(ps_names) == "highpass_filter")[0][0])
     hp_args = processing_steps[ind]["highpass_filter"]
-
     frequency_domain = hp_args["frequency_domain"]
+
+    ind2 = int(np.where(np.array(ps_names) == "taper")[0][0])
+    taper_args = processing_steps[ind2]["taper"]
+    taper_width = taper_args["width"]
 
     if frequency_domain:
         filter_code = 1
@@ -74,6 +77,7 @@ def ridder_fchp(st, target=0.02, tol=0.001, maxiter=30, maxfc=0.5, config=None):
             tol=tol,
             poly_order=FORDER,
             maxiter=maxiter,
+            tukey_alpha=taper_width,
             fchp_max=maxfc,
             filter_type=filter_code,
         )
