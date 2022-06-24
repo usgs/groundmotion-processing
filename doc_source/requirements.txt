@@ -1,0 +1,13 @@
+sphinx>3.0.0
+requests>=2
+furo
+myst-nb
+myst-parser
+altair
+nbsphinx
+recommonmark
+sphinx-autoapi
+setuptools_scm
+sphinx-copybutton
+sphinx-inline-tabs
+sphinxcontrib-programoutput

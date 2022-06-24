@@ -9,9 +9,17 @@ from gmprocess.core.stationstream import StationStream
 class Differentiate(Transform):
     """Class for computing the derivative."""
 
-    def __init__(self, transform_data, damping=None, period=None, times=None,
-                 max_period=None, allow_nans=None, bandwidth=None,
-                 config=None):
+    def __init__(
+        self,
+        transform_data,
+        damping=None,
+        period=None,
+        times=None,
+        max_period=None,
+        allow_nans=None,
+        bandwidth=None,
+        config=None,
+    ):
         """
         Args:
             transform_data (obspy.core.stream.Stream or numpy.ndarray):
@@ -29,9 +37,16 @@ class Differentiate(Transform):
             config (dict):
                 Configuration options.
         """
-        super().__init__(transform_data, damping=None, period=None, times=None,
-                         max_period=None, allow_nans=None, bandwidth=None,
-                         config=None)
+        super().__init__(
+            transform_data,
+            damping=damping,
+            period=period,
+            times=times,
+            max_period=max_period,
+            allow_nans=allow_nans,
+            bandwidth=bandwidth,
+            config=config,
+        )
         self.result = self.get_derivative()
 
     def get_derivative(self):
@@ -55,7 +70,9 @@ class Differentiate(Transform):
         """
         stream = StationStream([])
         for trace in self.transform_data:
-            differentiated_trace = trace.copy().differentiate()
-            differentiated_trace.stats['units'] = 'acc'
+            diff_conf = self.config["differentiation"]
+            differentiated_trace = trace.copy().differentiate(
+                frequency=diff_conf["frequency"]
+            )
             stream.append(differentiated_trace)
         return stream

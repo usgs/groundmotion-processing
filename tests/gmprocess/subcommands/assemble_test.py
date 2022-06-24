@@ -14,31 +14,27 @@ def test_assemble(script_runner):
         # Need to create profile first.
         cdir = constants.PROJECTS_PATH_TEST
         ddir = pkg_resources.resource_filename(
-            'gmprocess', os.path.join('data', 'testdata', 'demo'))
-        setup_inputs = io.StringIO(
-            "2\ntest\n%s\n%s\nname\ntest@email.com\n" % (cdir, ddir)
+            "gmprocess", os.path.join("data", "testdata", "demo")
         )
-        ret = script_runner.run(
-            'gmrecords', 'projects', '-c', stdin=setup_inputs)
+        setup_inputs = io.StringIO(f"2\ntest\n{cdir}\n{ddir}\nname\ntest@email.com\n")
+        ret = script_runner.run("gmrecords", "projects", "-c", stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
 
-        ret = script_runner.run('gmrecords', 'assemble', '-h')
+        ret = script_runner.run("gmrecords", "assemble", "-h")
         assert ret.success
 
-        ret = script_runner.run('gmrecords', 'assemble')
+        ret = script_runner.run("gmrecords", "assemble")
         assert ret.success
 
-        ret = script_runner.run(
-            'gmrecords', 'assemble', '-e', 'ci38457511', '-o')
+        ret = script_runner.run("gmrecords", "assemble", "-e", "ci38457511", "-o")
         assert ret.success
 
-        ret = script_runner.run(
-            'gmrecords', 'assemble', '-n', '2', '-o')
+        ret = script_runner.run("gmrecords", "assemble", "-n", "2", "-o")
         assert ret.success
 
-        events = ['ci38457511', 'ci38038071']
-        out_names = ['workspace.h5']
+        events = ["ci38457511", "ci38038071"]
+        out_names = ["workspace.h5"]
         for event in events:
             for outname in out_names:
                 dfile = os.path.join(ddir, event, outname)
@@ -50,7 +46,7 @@ def test_assemble(script_runner):
     finally:
         shutil.rmtree(constants.PROJECTS_PATH_TEST)
         # Remove workspace and image files
-        pattern = ['workspace.h5', '.png']
+        pattern = ["workspace.h5", ".png"]
         for root, _, files in os.walk(ddir):
             for file in files:
                 if any(file.endswith(ext) for ext in pattern):
@@ -59,5 +55,5 @@ def test_assemble(script_runner):
         # shutil.rmtree(rmdir)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_assemble()

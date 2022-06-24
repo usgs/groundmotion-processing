@@ -1,0 +1,14 @@
+:py:mod:`gmprocess.version`
+===========================
+
+.. py:module:: gmprocess.version
+
+
+Module Contents
+---------------
+
+.. py:data:: __version__
+   :annotation: = 1.1.11.dev453+g4662ef57.d20220522
+
+   
+

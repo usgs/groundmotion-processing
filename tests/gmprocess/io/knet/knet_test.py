@@ -4,16 +4,16 @@ import os.path
 import numpy as np
 from gmprocess.io.knet.core import is_knet, read_knet
 import pkg_resources
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 
 
 def test():
-    dpath = os.path.join('data', 'testdata', 'knet', 'us2000cnnl')
-    datadir = pkg_resources.resource_filename('gmprocess', dpath)
+    dpath = os.path.join("data", "testdata", "knet", "us2000cnnl")
+    datadir = pkg_resources.resource_filename("gmprocess", dpath)
 
-    knet_file1 = os.path.join(datadir, 'AOM0051801241951.EW')
-    knet_file2 = os.path.join(datadir, 'AOM0051801241951.NS')
-    knet_file3 = os.path.join(datadir, 'AOM0051801241951.UD')
+    knet_file1 = os.path.join(datadir, "AOM0051801241951.EW")
+    knet_file2 = os.path.join(datadir, "AOM0051801241951.NS")
+    knet_file3 = os.path.join(datadir, "AOM0051801241951.UD")
     assert is_knet(knet_file1)
     assert is_knet(os.path.abspath(__file__)) is False
 
@@ -26,9 +26,9 @@ def test():
     np.testing.assert_almost_equal(stream3[0].max(), 49.000, decimal=2)
 
     # test a file that has a number of points divisible by 8
-    knet_file4 = os.path.join(datadir, 'AOM0011801241951.EW')
-    knet_file5 = os.path.join(datadir, 'AOM0011801241951.NS')
-    knet_file6 = os.path.join(datadir, 'AOM0011801241951.UD')
+    knet_file4 = os.path.join(datadir, "AOM0011801241951.EW")
+    knet_file5 = os.path.join(datadir, "AOM0011801241951.NS")
+    knet_file6 = os.path.join(datadir, "AOM0011801241951.UD")
     stream4 = read_knet(knet_file4)[0]
     stream5 = read_knet(knet_file5)[0]
     stream6 = read_knet(knet_file6)[0]
@@ -39,9 +39,8 @@ def test():
     # test that a file that is not knet format raises an Exception
     try:
         knet_files, _ = read_data_dir(
-            'geonet',
-            'nz2018p115908',
-            '20161113_110256_WTMC_20.V1A')
+            "geonet", "nz2018p115908", "20161113_110256_WTMC_20.V1A"
+        )
 
         knet_file = knet_files[0]
         read_knet(knet_file)[0]
@@ -51,18 +50,18 @@ def test():
     assert not success
 
     # test some kiknet files
-    dpath = os.path.join('data', 'testdata', 'kiknet', 'usp000a1b0')
-    datadir = pkg_resources.resource_filename('gmprocess', dpath)
-    kiknet_file1 = os.path.join(datadir, 'AICH040010061330.EW2')
-    kiknet_file2 = os.path.join(datadir, 'AICH040010061330.NS2')
-    kiknet_file3 = os.path.join(datadir, 'AICH040010061330.UD2')
+    dpath = os.path.join("data", "testdata", "kiknet", "usp000a1b0")
+    datadir = pkg_resources.resource_filename("gmprocess", dpath)
+    kiknet_file1 = os.path.join(datadir, "AICH040010061330.EW2")
+    kiknet_file2 = os.path.join(datadir, "AICH040010061330.NS2")
+    kiknet_file3 = os.path.join(datadir, "AICH040010061330.UD2")
     assert is_knet(knet_file1)
     stream1 = read_knet(kiknet_file1)[0]  # east-west
     stream2 = read_knet(kiknet_file2)[0]  # north-south
     stream3 = read_knet(kiknet_file3)[0]  # vertical
-    assert stream1[0].stats['channel'] == 'HN2'
-    assert stream2[0].stats['channel'] == 'HN1'
-    assert stream3[0].stats['channel'] == 'HNZ'
+    assert stream1[0].stats["channel"] == "HN2"
+    assert stream2[0].stats["channel"] == "HN1"
+    assert stream3[0].stats["channel"] == "HNZ"
     ewmax = np.abs(stream1[0].data).max()
     nsmax = np.abs(stream2[0].data).max()
     udmax = np.abs(stream3[0].data).max()
@@ -71,6 +70,6 @@ def test():
     np.testing.assert_almost_equal(udmax, 9.111, decimal=1)
 
 
-if __name__ == '__main__':
-    os.environ['CALLED_FROM_PYTEST'] = 'True'
+if __name__ == "__main__":
+    os.environ["CALLED_FROM_PYTEST"] = "True"
     test()

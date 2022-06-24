@@ -11,7 +11,7 @@ htmlcov
 gmprocess.egg-info/
 .pytest_cache
 *.so
-gmprocess/smoothing/konno_ohmachi.c
+gmprocess/waveform_processing/smoothing/konno_ohmachi.c
 gmprocess/metrics/oscillators.c
 docs/_site
 docs/Gemfile.lock
@@ -21,7 +21,9 @@ gmprocess/_version.py
 gmprocess/version.py
 .vscode/
 dask-worker-space/
-docs/_build
 MANIFEST.in
 # Vim tags
 tags
+# Ignore the C code that gets built by cython
+gmprocess/waveform_processing/smoothing/konno_ohmachi.c
+gmprocess/waveform_processing/auto_fchp.c

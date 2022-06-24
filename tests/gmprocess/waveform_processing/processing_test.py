@@ -14,11 +14,11 @@ from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.io.read import read_data
 from gmprocess.waveform_processing.processing import process_streams
 from gmprocess.utils.logging import setup_logger
-from gmprocess.io.test_utils import read_data_dir
-from gmprocess.io.fetch_utils import update_config
+from gmprocess.utils.test_utils import read_data_dir
+from gmprocess.utils.config import update_config
 
-datapath = os.path.join('data', 'testdata')
-datadir = pkg_resources.resource_filename('gmprocess', datapath)
+datapath = os.path.join("data", "testdata")
+datadir = pkg_resources.resource_filename("gmprocess", datapath)
 
 setup_logger()
 
@@ -26,7 +26,7 @@ setup_logger()
 def test_process_streams():
     # Loma Prieta test station (nc216859)
 
-    data_files, origin = read_data_dir('geonet', 'us1000778i', '*.V1A')
+    data_files, origin = read_data_dir("geonet", "us1000778i", "*.V1A")
     streams = []
     for f in data_files:
         streams += read_data(f)
@@ -35,11 +35,11 @@ def test_process_streams():
 
     sc.describe()
 
-    config = update_config(os.path.join(datadir, 'config_min_freq_0p2.yml'))
+    config = update_config(os.path.join(datadir, "config_min_freq_0p2.yml"))
 
     test = process_streams(sc, origin, config=config)
 
-    logging.info('Testing trace: %s' % test[0][1])
+    logging.info(f"Testing trace: {test[0][1]}")
 
     assert len(test) == 3
     assert len(test[0]) == 3
@@ -51,17 +51,16 @@ def test_process_streams():
     # not care about trace order.
 
     trace_maxes = np.sort(
-        [np.max(np.abs(t.data)) for t in test.select(station='HSES')[0]])
+        [np.max(np.abs(t.data)) for t in test.select(station="HSES")[0]]
+    )
 
     np.testing.assert_allclose(
-        trace_maxes,
-        np.array([157.81975508, 240.33718094, 263.67804256]),
-        rtol=1e-5
+        trace_maxes, np.array([157.812449, 240.379521, 263.601519]), rtol=1e-5
     )
 
 
 def test_free_field():
-    data_files, origin = read_data_dir('kiknet', 'usp000hzq8')
+    data_files, origin = read_data_dir("kiknet", "usp000hzq8")
     raw_streams = []
     for dfile in data_files:
         raw_streams += read_data(dfile)
@@ -75,19 +74,19 @@ def test_free_field():
     assert npassed == 0
     for pstream in processed_streams:
         is_free = pstream[0].free_field
-        reason = ''
+        reason = ""
         for trace in pstream:
-            if trace.hasParameter('failure'):
-                reason = trace.getParameter('failure')['reason']
+            if trace.hasParameter("failure"):
+                reason = trace.getParameter("failure")["reason"]
                 break
         if is_free:
-            assert reason.startswith('Failed')
+            assert reason.startswith("Failed")
         else:
-            assert reason == 'Failed free field sensor check.'
+            assert reason == "Failed free field sensor check."
 
 
 def test_check_instrument():
-    data_files, origin = read_data_dir('fdsn', 'nc51194936', '*.mseed')
+    data_files, origin = read_data_dir("fdsn", "nc51194936", "*.mseed")
     streams = []
     for f in data_files:
         streams += read_data(f)
@@ -95,17 +94,16 @@ def test_check_instrument():
     sc = StreamCollection(streams)
     sc.describe()
 
-    config = update_config(
-        os.path.join(datadir, 'config_test_check_instr.yml'))
+    config = update_config(os.path.join(datadir, "config_test_check_instr.yml"))
     test = process_streams(sc, origin, config=config)
 
-    for sta, expected in [('CVS', True), ('GASB', True), ('SBT', False)]:
+    for sta, expected in [("CVS", True), ("GASB", True), ("SBT", False)]:
         st = test.select(station=sta)[0]
-        logging.info('Testing stream: %s' % st)
+        logging.info(f"Testing stream: {st}")
         assert st.passed == expected
 
 
-if __name__ == '__main__':
-    os.environ['CALLED_FROM_PYTEST'] = 'True'
+if __name__ == "__main__":
+    os.environ["CALLED_FROM_PYTEST"] = "True"
     test_process_streams()
     test_free_field()

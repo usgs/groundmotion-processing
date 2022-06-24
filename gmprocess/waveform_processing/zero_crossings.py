@@ -4,7 +4,7 @@
 import numpy as np
 
 
-def check_zero_crossings(st, min_crossings=1.0):
+def check_zero_crossings(st, min_crossings=1.0, config=None):
     """
     Check for a large enough density.
 
@@ -18,6 +18,10 @@ def check_zero_crossings(st, min_crossings=1.0):
         min_crossings (float):
             Minimum average number of zero crossings per second for the full
             trace.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
+
+
     """
 
     zero_count_tr = []
@@ -29,9 +33,9 @@ def check_zero_crossings(st, min_crossings=1.0):
         # not want to modify the trace but we only want to count the crossings
         # within the trimmed window
 
-        if tr.hasParameter('signal_end'):
-            etime = tr.getParameter('signal_end')['end_time']
-            split_time = tr.getParameter('signal_split')['split_time']
+        if tr.hasParameter("signal_end") and (not tr.hasParameter("failure")):
+            etime = tr.getParameter("signal_end")["end_time"]
+            split_time = tr.getParameter("signal_split")["split_time"]
 
             sig_start = int((split_time - tr.stats.starttime) / tr.stats.delta)
             sig_end = int((etime - tr.stats.starttime) / tr.stats.delta)
@@ -44,11 +48,10 @@ def check_zero_crossings(st, min_crossings=1.0):
             z_rate = zero_count_tr / dur
 
             # Put results back into the original trace, not the copy
-            tr.setParameter('ZeroCrossingRate',
-                            {'crossing_rate': z_rate})
+            tr.setParameter("ZeroCrossingRate", {"crossing_rate": z_rate})
 
             # Fail if zero crossing rate is too low
             if z_rate <= min_crossings:
-                tr.fail('Zero crossing rate too low.')
+                tr.fail("Zero crossing rate too low.")
 
     return st

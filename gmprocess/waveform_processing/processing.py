@@ -9,68 +9,93 @@ import numpy as np
 import logging
 
 from obspy.taup import TauPyModel
-from scipy.optimize import curve_fit
-from scipy.integrate import cumtrapz
 
 from gmprocess.core.stationtrace import PROCESS_LEVELS
 from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.core.streamarray import StreamArray
 from gmprocess.utils.config import get_config
-from gmprocess.waveform_processing.windows import \
-    signal_split, signal_end, window_checks
+from gmprocess.waveform_processing.windows import (
+    signal_split,
+    signal_end,
+    window_checks,
+)
 from gmprocess.waveform_processing.phase import create_travel_time_dataframe
 from gmprocess.waveform_processing import corner_frequencies
+from gmprocess.waveform_processing.baseline_correction import correct_baseline
 
 # -----------------------------------------------------------------------------
 # Note: no QA on following imports because they need to be in namespace to be
 # discovered. They are not called directly so linters will think this is a
 # mistake.
-from gmprocess.waveform_processing.pretesting import (  # NOQA
+from gmprocess.waveform_processing.pretesting import (  # noqa: F401
     check_max_amplitude,
     check_sta_lta,
-    check_free_field)
-from gmprocess.waveform_processing.filtering import lowpass_filter, highpass_filter  # NOQA
-from gmprocess.waveform_processing.adjust_highpass import adjust_highpass_corner  # NOQA
-from gmprocess.waveform_processing.zero_crossings import check_zero_crossings  # NOQA
-from gmprocess.waveform_processing.nn_quality_assurance import NNet_QA  # NOQA
-from gmprocess.waveform_processing.snr import compute_snr  # NOQA
-from gmprocess.waveform_processing.spectrum import fit_spectra  # NOQA
-from gmprocess.waveform_processing.windows import cut, trim_multiple_events  # NOQA
+    check_free_field,
+)
+from gmprocess.waveform_processing.filtering import (  # noqa: F401
+    lowpass_filter,
+    highpass_filter,
+)
+from gmprocess.waveform_processing.adjust_highpass import (  # noqa: F401
+    adjust_highpass_corner,
+)
+from gmprocess.waveform_processing.adjust_highpass_ridder import (  # noqa: F401
+    ridder_fchp,
+)
+from gmprocess.waveform_processing.zero_crossings import (  # noqa: F401
+    check_zero_crossings,
+)
+from gmprocess.waveform_processing.nn_quality_assurance import NNet_QA  # noqa: F401
+from gmprocess.waveform_processing.snr import compute_snr  # noqa: F401
+from gmprocess.waveform_processing.spectrum import fit_spectra  # noqa: F401
+from gmprocess.waveform_processing.windows import (  # noqa: F401
+    cut,
+    trim_multiple_events,
+)
+from gmprocess.waveform_processing.clipping.clipping_check import (  # noqa: F401
+    check_clipping,
+)
+from gmprocess.waveform_processing.sanity_checks import check_tail  # noqa: F401
+
 # -----------------------------------------------------------------------------
 
 M_TO_CM = 100.0
 
 # List of processing steps that require an origin
 # besides the arguments in the conf file.
-REQ_ORIGIN = ['fit_spectra', 'trim_multiple_events']
+REQ_ORIGIN = [
+    "fit_spectra",
+    "trim_multiple_events",
+    "check_clipping",
+    "get_corner_frequencies",
+]
 
 
 TAPER_TYPES = {
-    'cosine': 'Cosine',
-    'barthann': 'Bartlett-Hann',
-    'bartlett': 'Bartlett',
-    'blackman': 'Blackman',
-    'blackmanharris': 'Blackman-Harris',
-    'bohman': 'Bohman',
-    'boxcar': 'Boxcar',
-    'chebwin': 'Dolph-Chebyshev',
-    'flattop': 'Flat top',
-    'gaussian': 'Gaussian',
-    'general_gaussian': 'Generalized Gaussian',
-    'hamming': 'Hamming',
-    'hann': 'Hann',
-    'kaiser': 'Kaiser',
-    'nuttall': 'Blackman-Harris according to Nuttall',
-    'parzen': 'Parzen',
-    'slepian': 'Slepian',
-    'triang': 'Triangular'
+    "cosine": "Cosine",
+    "barthann": "Bartlett-Hann",
+    "bartlett": "Bartlett",
+    "blackman": "Blackman",
+    "blackmanharris": "Blackman-Harris",
+    "bohman": "Bohman",
+    "boxcar": "Boxcar",
+    "chebwin": "Dolph-Chebyshev",
+    "flattop": "Flat top",
+    "gaussian": "Gaussian",
+    "general_gaussian": "Generalized Gaussian",
+    "hamming": "Hamming",
+    "hann": "Hann",
+    "kaiser": "Kaiser",
+    "nuttall": "Blackman-Harris according to Nuttall",
+    "parzen": "Parzen",
+    "slepian": "Slepian",
+    "triang": "Triangular",
 }
 
-ABBREV_UNITS = {'ACC': 'cm/s^2',
-                'VEL': 'cm/s',
-                'DISP': 'cm'}
+ABBREV_UNITS = {"ACC": "cm/s^2", "VEL": "cm/s", "DISP": "cm"}
 
 
-def process_streams(streams, origin, config=None):
+def process_streams(streams, origin, config=None, old_streams=None):
     """
     Run processing steps from the config file.
 
@@ -81,19 +106,22 @@ def process_streams(streams, origin, config=None):
     steps are not applied once a check has failed.
 
     Args:
-        streams (list):
-            A StreamCollection object.
+        streams (StreamCollection):
+            A StreamCollection object of unprocessed streams.
         origin (ScalarEvent):
             ScalarEvent object.
         config (dict):
             Configuration dictionary (or None). See get_config().
+        old_streams (StreamCollection):
+            A StreamCollection object of previously processed streams that contain
+            manually reviewed information. None if not reprocessing.
 
     Returns:
         A StreamCollection object.
     """
 
-    if not isinstance(streams, StreamCollection):
-        raise ValueError('streams must be a StreamCollection instance.')
+    if not isinstance(streams, (StreamCollection, StreamArray)):
+        raise ValueError("streams must be a StreamCollection instance.")
 
     if config is None:
         config = get_config()
@@ -105,25 +133,23 @@ def process_streams(streams, origin, config=None):
     # -------------------------------------------------------------------------
     # Compute a travel-time matrix for interpolation later in the
     # trim_multiple events step
-    if any('trim_multiple_events' in dict for dict in config['processing']):
+    if any("trim_multiple_events" in dict for dict in config["processing"]):
         travel_time_df, catalog = create_travel_time_dataframe(
-            streams, **config['travel_time'])
+            streams, **config["travel_time"]
+        )
 
-    window_conf = config['windows']
-    model = TauPyModel(config['pickers']['travel_time']['model'])
+    window_conf = config["windows"]
+    model = TauPyModel(config["pickers"]["travel_time"]["model"])
 
     for st in streams:
-        logging.debug('Checking stream %s...' % st.get_id())
+        logging.debug(f"Checking stream {st.get_id()}...")
         # Estimate noise/signal split time
         st = signal_split(
-            st,
-            origin,
-            model,
-            picker_config=config['pickers'],
-            config=config)
+            st, origin, model, picker_config=config["pickers"], config=config
+        )
 
         # Estimate end of signal
-        end_conf = window_conf['signal_end']
+        end_conf = window_conf["signal_end"]
         event_mag = origin.magnitude
         st = signal_end(
             st,
@@ -131,69 +157,86 @@ def process_streams(streams, origin, config=None):
             event_lon=event_lon,
             event_lat=event_lat,
             event_mag=event_mag,
-            **end_conf
+            **end_conf,
         )
-        wcheck_conf = window_conf['window_checks']
-        if wcheck_conf['do_check']:
+        wcheck_conf = window_conf["window_checks"]
+        if wcheck_conf["do_check"]:
             st = window_checks(
                 st,
-                min_noise_duration=wcheck_conf['min_noise_duration'],
-                min_signal_duration=wcheck_conf['min_signal_duration']
+                min_noise_duration=wcheck_conf["min_noise_duration"],
+                min_signal_duration=wcheck_conf["min_signal_duration"],
             )
 
     # -------------------------------------------------------------------------
     # Begin processing steps
-    processing_steps = config['processing']
+    processing_steps = config["processing"]
 
     # Loop over streams
-    for stream in streams:
-        logging.info('Stream: %s' % stream.get_id())
+    for i, stream in enumerate(streams):
+        logging.info(f"Stream: {stream.get_id()}")
+        # Check if we are reprocessing (indicated by presence of old_streams)
+        if old_streams is not None:
+            old_stream = old_streams[i]
+            for j in range(len(old_stream)):
+                tr_old = old_stream[j]
+                # Check if old_streams have review parameters because it is not
+                # guaranteed
+                if tr_old.hasParameter("review"):
+                    review_dict = tr_old.getParameter("review")
+                    # Transfer review parameter from old stream to new
+                    stream[j].setParameter("review", review_dict)
+                    # Was it failed via manual review?
+                    if "accepted" in review_dict:
+                        if not review_dict["accepted"]:
+                            stream[j].fail("Manual review")
+
         for processing_step_dict in processing_steps:
 
             key_list = list(processing_step_dict.keys())
             if len(key_list) != 1:
-                raise ValueError(
-                    'Each processing step must contain exactly one key.')
+                raise ValueError("Each processing step must contain exactly one key.")
             step_name = key_list[0]
 
-            logging.debug('Processing step: %s' % step_name)
+            logging.debug(f"Processing step: {step_name}")
             step_args = processing_step_dict[step_name]
             # Using globals doesn't seem like a great solution here, but it
             # works.
             if step_name not in globals():
-                raise ValueError(
-                    'Processing step %s is not valid.' % step_name)
+                raise ValueError(f"Processing step {step_name} is not valid.")
 
             # Origin is required by some steps and has to be handled specially.
             # There must be a better solution for this...
             if step_name in REQ_ORIGIN:
-                step_args['origin'] = origin
-            if step_name == 'trim_multiple_events':
-                step_args['catalog'] = catalog
-                step_args['travel_time_df'] = travel_time_df
-            if step_name == 'compute_snr':
-                step_args['mag'] = origin.magnitude
+                step_args["origin"] = origin
+            if step_name == "trim_multiple_events":
+                step_args["catalog"] = catalog
+                step_args["travel_time_df"] = travel_time_df
+            if step_name == "compute_snr":
+                step_args["mag"] = origin.magnitude
 
             if step_args is None:
-                stream = globals()[step_name](stream)
+                stream = globals()[step_name](stream, config)
             else:
-                stream = globals()[step_name](stream, **step_args)
+                stream = globals()[step_name](stream, **step_args, config=config)
 
     # -------------------------------------------------------------------------
     # Begin colocated instrument selection
-    colocated_conf = config['colocated']
-    streams.select_colocated(**colocated_conf)
+    if "colocated" in config:
+        colocated_conf = config["colocated"]
+        if isinstance(streams, StreamCollection):
+            streams.select_colocated(**colocated_conf, origin=origin)
 
     for st in streams:
         for tr in st:
-            tr.stats.standard.process_level = PROCESS_LEVELS['V2']
+            tr.stats.standard.process_level = PROCESS_LEVELS["V2"]
 
-    logging.info('Finished processing streams.')
+    logging.info("Finished processing streams.")
     return streams
 
 
-def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
-                    output='ACC', inv=None):
+def remove_response(
+    st, f1, f2, f3=None, f4=None, water_level=None, inv=None, config=None
+):
     """
     Performs instrument response correction. If the response information is
     not already attached to the stream, then an inventory object must be
@@ -216,28 +259,28 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
             Frequency 4 for pre-filter.
         water_level (float):
             Water level for deconvolution.
-        output (str):
-            Outuput units. Must be 'ACC', 'VEL', or 'DISP'.
         inv (obspy.core.inventory.inventory):
             Obspy inventory object containing response information.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         StationStream: Instrument-response-corrected stream.
     """
+    output = "ACC"
+
     if inv is None:
         inv = st.getInventory()
-    if output not in ['ACC', 'VEL', 'DISP']:
-        raise ValueError('Output value of %s is invalid. Must be ACC, VEL, '
-                         'or DISP.' % output)
 
     # Check if the response information is already attached in the trace stats
     for tr in st:
 
         # Check if this trace has already been converted to physical units
-        if 'remove_response' in tr.getProvenanceKeys():
+        if "remove_response" in tr.getProvenanceKeys():
             logging.debug(
-                'Trace has already had instrument response removed. '
-                'Nothing to be done.')
+                "Trace has already had instrument response removed. "
+                "Nothing to be done."
+            )
             continue
 
         f_n = 0.5 / tr.stats.delta
@@ -246,104 +289,135 @@ def remove_response(st, f1, f2, f3=None, f4=None, water_level=None,
         if f4 is None:
             f4 = f_n
         try:
-            paz = inv[0][0][0].response.get_paz()
+            resp = inv.get_response(tr.id, tr.stats.starttime)
+            paz = resp.get_paz()
             # Check if we have an instrument measuring velocity or accleration
-            if tr.stats.channel[1] == 'H':
+            if tr.stats.channel[1] == "H":
                 # Attempting to remove instrument response can cause a variety
                 # errors due to bad response metadata
                 try:
+                    # Note: rater than set output to 'ACC' we are are setting
+                    # it to 'VEl" and then differentiating.
                     tr.remove_response(
-                        inventory=inv, output=output, water_level=water_level,
-                        pre_filt=(f1, f2, f3, f4))
-                    tr.stats.standard.units = output.lower()
-                    tr.stats.standard.process_level = PROCESS_LEVELS['V1']
+                        inventory=inv,
+                        output="VEL",
+                        water_level=water_level,
+                        pre_filt=(f1, f2, f3, f4),
+                        zero_mean=True,
+                        taper=False,
+                    )
+                    tr.setProvenance(
+                        "remove_response",
+                        {
+                            "method": "remove_response",
+                            "input_units": "counts",
+                            "output_units": ABBREV_UNITS["VEL"],
+                            "water_level": water_level,
+                            "pre_filt_freqs": f"{f1:f}, {f2:f}, {f3:f}, {f4:f}",
+                        },
+                    )
+                    diff_conf = config["differentiation"]
+                    tr.differentiate(frequency=diff_conf["frequency"])
+                    tr.data *= M_TO_CM  # Convert from m to cm
+                    tr.stats.standard.units = ABBREV_UNITS[output]
+                    tr.stats.standard.units_type = output.lower()
+                    tr.stats.standard.process_level = PROCESS_LEVELS["V1"]
                 except BaseException as e:
-                    reason = ('Encountered an error when attempting to remove '
-                              'instrument response: %s' % str(e))
+                    reason = (
+                        "Encountered an error when attempting to remove "
+                        "instrument response: %s" % str(e)
+                    )
                     tr.fail(reason)
                     continue
 
                 # Response removal can also result in NaN values due to bad
                 # metadata, so check that data contains no NaN or inf values
                 if not np.isfinite(tr.data).all():
-                    reason = ('Non-finite values encountered after removing '
-                              'instrument response.')
+                    reason = (
+                        "Non-finite values encountered after removing "
+                        "instrument response."
+                    )
                     tr.fail(reason)
                     continue
 
-                tr.data *= M_TO_CM  # Convert from m to cm
-                tr.setProvenance(
-                    'remove_response',
-                    {
-                        'method': 'remove_response',
-                        'input_units': 'counts',
-                        'output_units': ABBREV_UNITS[output]
-                    }
-                )
-            elif tr.stats.channel[1] == 'N':
+            elif tr.stats.channel[1] == "N":
                 try:
                     # If no poles and zeros are present in the xml file,
                     # use the sensitivity method.
                     if len(paz.poles) == 0 and len(paz.zeros) == 0:
                         tr.remove_sensitivity(inventory=inv)
                         tr.data *= M_TO_CM  # Convert from m to cm
-                        tr.stats.standard.units = output.lower()
-                        tr.stats.standard.process_level = PROCESS_LEVELS['V1']
                         tr.setProvenance(
-                            'remove_response',
+                            "remove_response",
                             {
-                                'method': 'remove_sensitivity',
-                                'input_units': 'counts',
-                                'output_units': ABBREV_UNITS[output]
-                            }
+                                "method": "remove_sensitivity",
+                                "input_units": "counts",
+                                "output_units": ABBREV_UNITS[output],
+                            },
                         )
+                        tr.stats.standard.units = ABBREV_UNITS[output]
+                        tr.stats.standard.units_type = output.lower()
+                        tr.stats.standard.process_level = PROCESS_LEVELS["V1"]
                     else:
                         tr.remove_response(
-                            inventory=inv, output=output,
-                            water_level=water_level
+                            inventory=inv,
+                            output=output,
+                            water_level=water_level,
+                            zero_mean=True,
+                            taper=False,
                         )
                         tr.data *= M_TO_CM  # Convert from m to cm
-                        tr.stats.standard.units = output.lower()
-                        tr.stats.standard.process_level = PROCESS_LEVELS['V1']
                         tr.setProvenance(
-                            'remove_response',
+                            "remove_response",
                             {
-                                'method': 'remove_response',
-                                'input_units': 'counts',
-                                'output_units': ABBREV_UNITS[output]
-                            }
+                                "method": "remove_response",
+                                "input_units": "counts",
+                                "output_units": ABBREV_UNITS[output],
+                                "water_level": water_level,
+                                "pre_filt_freqs": f"{f1:f}, {f2:f}, {f3:f}, {f4:f}",
+                            },
                         )
+                        tr.stats.standard.units = ABBREV_UNITS[output]
+                        tr.stats.standard.units_type = output.lower()
+                        tr.stats.standard.process_level = PROCESS_LEVELS["V1"]
                 except BaseException as e:
-                    reason = ('Encountered an error when attempting to remove '
-                              'instrument sensitivity: %s' % str(e))
+                    reason = (
+                        "Encountered an error when attempting to remove "
+                        "instrument sensitivity: %s" % str(e)
+                    )
                     tr.fail(reason)
                     continue
             else:
-                reason = ('This instrument type is not supported. '
-                          'The instrument code must be either H '
-                          '(high gain seismometer) or N (accelerometer).')
+                reason = (
+                    "This instrument type is not supported. "
+                    "The instrument code must be either H "
+                    "(high gain seismometer) or N (accelerometer)."
+                )
                 tr.fail(reason)
         except BaseException as e:
-            logging.info('Encountered an error when obtaining the poles and '
-                         'zeros information: %s. Now using remove_sensitivity '
-                         'instead of remove_response.' % str(e))
+            logging.info(
+                "Encountered an error when obtaining the poles and "
+                "zeros information: %s. Now using remove_sensitivity "
+                "instead of remove_response." % str(e)
+            )
             tr.remove_sensitivity(inventory=inv)
             tr.data *= M_TO_CM  # Convert from m to cm
-            tr.stats.standard.units = output.lower()
-            tr.stats.standard.process_level = PROCESS_LEVELS['V1']
             tr.setProvenance(
-                'remove_response',
+                "remove_response",
                 {
-                    'method': 'remove_sensitivity',
-                    'input_units': 'counts',
-                    'output_units': ABBREV_UNITS[output]
-                }
+                    "method": "remove_sensitivity",
+                    "input_units": "counts",
+                    "output_units": ABBREV_UNITS[output],
+                },
             )
+            tr.stats.standard.units = ABBREV_UNITS[output]
+            tr.stats.standard.units_type = output.lower()
+            tr.stats.standard.process_level = PROCESS_LEVELS["V1"]
 
     return st
 
 
-def lowpass_max_frequency(st, fn_fac=0.9):
+def lowpass_max_frequency(st, fn_fac=0.9, config=None):
     """
     Cap lowpass corner as a fraction of the Nyquist.
 
@@ -352,6 +426,8 @@ def lowpass_max_frequency(st, fn_fac=0.9):
             Stream of data.
         fn_fac (float):
             Factor to be multiplied by the Nyquist to cap the lowpass filter.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         StationStream: Resampled stream.
@@ -360,17 +436,28 @@ def lowpass_max_frequency(st, fn_fac=0.9):
         return st
 
     for tr in st:
+        if tr.hasParameter("review"):
+            rdict = tr.getParameter("review")
+            if "corner_frequencies" in rdict:
+                rev_fc_dict = rdict["corner_frequencies"]
+                if "lowpass" in rev_fc_dict:
+                    logging.warning(
+                        f"Not applying lowpass_max_frequency for {tr} because the "
+                        "lowpass filter corner was set by manual review."
+                    )
+                    continue
+
         fn = 0.5 * tr.stats.sampling_rate
         max_flp = fn * fn_fac
-        freq_dict = tr.getParameter('corner_frequencies')
-        if freq_dict['lowpass'] > max_flp:
-            freq_dict['lowpass'] = max_flp
-            tr.setParameter('corner_frequencies', freq_dict)
+        freq_dict = tr.getParameter("corner_frequencies")
+        if freq_dict["lowpass"] > max_flp:
+            freq_dict["lowpass"] = max_flp
+            tr.setParameter("corner_frequencies", freq_dict)
 
     return st
 
 
-def min_sample_rate(st, min_sps=20.0):
+def min_sample_rate(st, min_sps=20.0, config=None):
     """
     Discard records if the sample rate doers not exceed minimum.
 
@@ -379,6 +466,8 @@ def min_sample_rate(st, min_sps=20.0):
             Stream of data.
         min_sps (float):
             Minimum samples per second.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         StationStream: Stream checked for sample rate criteria.
@@ -389,12 +478,12 @@ def min_sample_rate(st, min_sps=20.0):
     for tr in st:
         actual_sps = tr.stats.sampling_rate
         if actual_sps < min_sps:
-            tr.fail('Minimum sample rate of %s not exceeded.' % min_sps)
+            tr.fail(f"Minimum sample rate of {min_sps} not exceeded.")
 
     return st
 
 
-def detrend(st, detrending_method=None):
+def detrend(st, detrending_method=None, config=None):
     """
     Detrend stream.
 
@@ -402,12 +491,16 @@ def detrend(st, detrending_method=None):
         st (StationStream):
             Stream of data.
         method (str): Method to detrend; valid options include the 'type'
-            options supported by obspy.core.trace.Trace.detrend as well as
-            'baseline_sixth_order', which is for a baseline correction method
-            that fits a sixth-order polynomial to the displacement time series,
-            and sets the zeroth- and first-order terms to be zero. The second
-            derivative of the fit polynomial is then removed from the
-            acceleration time series.
+            options supported by obspy.core.trace.Trace.detrend as well as:
+                - 'baseline_sixth_order', which is for a baseline correction
+                   method that fits a sixth-order polynomial to the
+                   displacement time series, and sets the zeroth- and
+                   first-order terms to be zero. The second derivative of the
+                   fit polynomial is then removed from the acceleration time
+                   series.
+                - 'pre', for removing the mean of the pre-event noise window.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         StationStream: Detrended stream.
@@ -417,22 +510,19 @@ def detrend(st, detrending_method=None):
         return st
 
     for tr in st:
-        if detrending_method == 'baseline_sixth_order':
-            tr = _correct_baseline(tr)
+        if detrending_method == "baseline_sixth_order":
+            tr = correct_baseline(tr, config)
+        elif detrending_method == "pre":
+            tr = _detrend_pre_event_mean(tr, config)
         else:
             tr = tr.detrend(detrending_method)
 
-        tr.setProvenance(
-            'detrend',
-            {
-                'detrending_method': detrending_method
-            }
-        )
+        tr.setProvenance("detrend", {"detrending_method": detrending_method})
 
     return st
 
 
-def resample(st, new_sampling_rate=None, method=None, a=None):
+def resample(st, new_sampling_rate=None, method=None, a=None, config=None):
     """
     Resample stream.
 
@@ -445,6 +535,8 @@ def resample(st, new_sampling_rate=None, method=None, a=None):
             Method for interpolation. Currently only supports 'lanczos'.
         a (int):
             Width of the Lanczos window, in number of samples.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         StationStream: Resampled stream.
@@ -452,49 +544,52 @@ def resample(st, new_sampling_rate=None, method=None, a=None):
     if not st.passed:
         return st
 
-    if method != 'lanczos':
-        raise ValueError('Only lanczos interpolation method is supported.')
+    if method != "lanczos":
+        raise ValueError("Only lanczos interpolation method is supported.")
 
     for tr in st:
         tr.interpolate(sampling_rate=new_sampling_rate, method=method, a=a)
-        tr.setProvenance(
-            'resample',
-            {
-                'new_sampling_rate': new_sampling_rate
-            }
-        )
+        tr.setProvenance("resample", {"new_sampling_rate": new_sampling_rate})
 
     return st
 
 
-def get_corner_frequencies(st, method='constant', constant=None, snr=None):
+def get_corner_frequencies(
+    st, origin, method="constant", constant=None, snr=None, magnitude=None, config=None
+):
     """
     Select corner frequencies.
 
     Args:
         st (StationStream):
             Stream of data.
+        origin (ScalarEvent):
+            ScalarEvent object.
         method (str):
             Which method to use; currently allowed "snr" or "constant".
         constant(dict):
             Dictionary of `constant` method config options.
         snr (dict):
             Dictionary of `snr` method config options.
+        magnitude (dict):
+            Dictionary of `magnitude` method config options.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         strea: Stream with selected corner frequencies added.
     """
 
-    logging.debug('Setting corner frequencies...')
-    if method == 'constant':
-        st = corner_frequencies.get_constant(st, **constant)
-    elif method == 'snr':
-        st = corner_frequencies.get_snr(st, **snr)
-        if snr['same_horiz'] and st.passed and st.num_horizontal > 1:
-            lps = [tr.getParameter('corner_frequencies')[
-                'lowpass'] for tr in st]
-            hps = [tr.getParameter('corner_frequencies')[
-                'highpass'] for tr in st]
+    logging.debug("Setting corner frequencies...")
+    if method == "constant":
+        st = corner_frequencies.from_constant(st, **constant)
+    elif method == "magnitude":
+        st = corner_frequencies.from_magnitude(st, origin, **magnitude)
+    elif method == "snr":
+        st = corner_frequencies.from_snr(st, **snr)
+        if snr["same_horiz"] and st.passed and st.num_horizontal > 1:
+            lps = [tr.getParameter("corner_frequencies")["lowpass"] for tr in st]
+            hps = [tr.getParameter("corner_frequencies")["highpass"] for tr in st]
             chs = [tr.stats.channel for tr in st]
             hlps = []
             hhps = []
@@ -506,17 +601,37 @@ def get_corner_frequencies(st, method='constant', constant=None, snr=None):
             hhp = np.max(hhps)
             for i in range(len(chs)):
                 if "z" not in chs[i].lower():
-                    cfdict = st[i].getParameter('corner_frequencies')
-                    cfdict['lowpass'] = llp
-                    cfdict['highpass'] = hhp
-                    st[i].setParameter('corner_frequencies', cfdict)
+                    cfdict = st[i].getParameter("corner_frequencies")
+                    cfdict["lowpass"] = llp
+                    cfdict["highpass"] = hhp
+                    st[i].setParameter("corner_frequencies", cfdict)
     else:
-        raise ValueError("Corner frequency 'method' must be either "
-                         "'constant' or 'snr'.")
+        raise ValueError(
+            "Corner frequency 'method' must be one of: 'constant', 'magnitude', or "
+            "'snr'."
+        )
+
+    # Replace corners set in manual review
+    for tr in st:
+        if tr.hasParameter("review"):
+            review_dict = tr.getParameter("review")
+            if "corner_frequencies" in review_dict:
+                rev_fc_dict = review_dict["corner_frequencies"]
+                if tr.hasParameter("corner_frequencies"):
+                    base_fc_dict = tr.getParameter("corner_frequencies")
+                    base_fc_dict["type"] = "reviewed"
+                else:
+                    base_fc_dict = {"type": "reviewed"}
+                if ("highpass" in rev_fc_dict) or ("lowpass" in rev_fc_dict):
+                    if "highpass" in rev_fc_dict:
+                        base_fc_dict["highpass"] = rev_fc_dict["highpass"]
+                    if "lowpass" in rev_fc_dict:
+                        base_fc_dict["lowpass"] = rev_fc_dict["lowpass"]
+                    tr.setParameter("corner_frequencies", base_fc_dict)
     return st
 
 
-def taper(st, type="hann", width=0.05, side="both"):
+def taper(st, type="hann", width=0.05, side="both", config=None):
     """
     Taper streams.
 
@@ -529,6 +644,8 @@ def taper(st, type="hann", width=0.05, side="both"):
             Taper width as percentage of trace length.
         side (str):
             Valid options: "both", "left", "right".
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         stream: tapered streams.
@@ -540,16 +657,12 @@ def taper(st, type="hann", width=0.05, side="both"):
         tr.taper(max_percentage=width, type=type, side=side)
         window_type = TAPER_TYPES[type]
         tr.setProvenance(
-            'taper',
-            {
-                'window_type': window_type,
-                'taper_width': width,
-                'side': side}
+            "taper", {"window_type": window_type, "taper_width": width, "side": side}
         )
     return st
 
 
-def check_instrument(st, n_max=3, n_min=1, require_two_horiz=False):
+def check_instrument(st, n_max=3, n_min=1, require_two_horiz=False, config=None):
     """
     Test the channels of the station.
 
@@ -570,6 +683,8 @@ def check_instrument(st, n_max=3, n_min=1, require_two_horiz=False):
             Minimum allowed number of streams; default to 1.
         require_two_horiz (bool):
             Require two horizontal components; default to `False`.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         Stream with adjusted failed fields.
@@ -577,14 +692,19 @@ def check_instrument(st, n_max=3, n_min=1, require_two_horiz=False):
     if not st.passed:
         return st
 
-    logging.debug('Starting check_instrument')
-    logging.debug('len(st) = %s' % len(st))
+    if config is None:
+        config = get_config()
+
+    logging.debug("Starting check_instrument")
+    logging.debug(f"len(st) = {len(st)}")
 
     for failed_test, message in [
-            (len(st) > n_max, 'More than %s traces in stream.' % n_max),
-            (len(st) < n_min, 'Less than %s traces in stream.' % n_min),
-            (require_two_horiz and (st.num_horizontal != 2),
-             'Not two horizontal components')
+        (len(st) > n_max, f"More than {n_max} traces in stream."),
+        (len(st) < n_min, f"Less than {n_min} traces in stream."),
+        (
+            require_two_horiz and (st.num_horizontal != 2),
+            "Not two horizontal components",
+        ),
     ]:
         if failed_test:
             for tr in st:
@@ -595,7 +715,7 @@ def check_instrument(st, n_max=3, n_min=1, require_two_horiz=False):
     return st
 
 
-def max_traces(st, n_max=3):
+def max_traces(st, n_max=3, config=None):
     """
     Reject a stream if it has more than n_max traces.
 
@@ -608,63 +728,46 @@ def max_traces(st, n_max=3):
             Stream of data.
         n_max (int):
             Maximum allowed number of streams; default to 3.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         Stream with adjusted failed fields.
     """
-    logging.warning('This function is deprecated. Please replace with '
-                    'check_instrument, which includes additional '
-                    'functionality.')
+    logging.warning(
+        "This function is deprecated. Please replace with "
+        "check_instrument, which includes additional "
+        "functionality."
+    )
     if not st.passed:
         return st
 
-    logging.debug('Starting max_traces')
-    logging.debug('len(st) = %s' % len(st))
+    logging.debug("Starting max_traces")
+    logging.debug(f"len(st) = {len(st)}")
     if len(st) > n_max:
         for tr in st:
-            tr.fail('More than %s traces in stream.' % n_max)
+            tr.fail(f"More than {n_max} traces in stream.")
     return st
 
 
-def _correct_baseline(trace):
+def _detrend_pre_event_mean(trace, config=None):
     """
-    Performs a baseline correction following the method of Ancheta
-    et al. (2013). This removes low-frequency, non-physical trends
-    that remain in the time series following filtering.
+    Subtraces the mean of the pre-event noise window from the full trace.
 
     Args:
         trace (obspy.core.trace.Trace):
             Trace of strong motion data.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
-        trace: Baseline-corrected trace.
+        trace: Detrended trace.
     """
-
-    # Integrate twice to get the displacement time series
-    disp_data = cumtrapz(cumtrapz(trace.data, dx=trace.stats.delta, initial=0),
-                         dx=trace.stats.delta, initial=0)
-
-    # Fit a sixth order polynomial to displacement time series, requiring
-    # that the 1st and 0th order coefficients are zero
-    time_values = np.linspace(0, trace.stats.npts - 1, trace.stats.npts)
-    poly_cofs = list(curve_fit(_poly_func, time_values, disp_data)[0])
-    poly_cofs += [0, 0]
-
-    # Construct a polynomial from the coefficients and compute
-    # the second derivative
-    polynomial = np.poly1d(poly_cofs)
-    polynomial_second_derivative = np.polyder(polynomial, 2)
-
-    # Subtract the second derivative of the polynomial from the
-    # acceleration trace
-    trace.data -= polynomial_second_derivative(time_values)
-    trace.setParameter('baseline', {'polynomial_coefs': poly_cofs})
-
+    split_prov = trace.getParameter("signal_split")
+    if isinstance(split_prov, list):
+        split_prov = split_prov[0]
+    split_time = split_prov["split_time"]
+    noise = trace.copy().trim(endtime=split_time)
+    noise_mean = np.mean(noise.data)
+    trace.data = trace.data - noise_mean
     return trace
-
-
-def _poly_func(x, a, b, c, d, e):
-    """
-    Model polynomial function for polynomial baseline correction.
-    """
-    return a * x**6 + b * x**5 + c * x**4 + d * x**3 + e * x**2

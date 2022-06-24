@@ -1,0 +1,93 @@
+:py:mod:`gmprocess.utils.config`
+================================
+
+.. py:module:: gmprocess.utils.config
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.utils.config.update_dict
+   gmprocess.utils.config.merge_dicts
+   gmprocess.utils.config.get_config
+   gmprocess.utils.config.update_config
+   gmprocess.utils.config.__proj_to_conf_file
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.utils.config.CONF_SCHEMA
+
+
+.. py:data:: CONF_SCHEMA
+   
+
+   
+
+.. py:function:: update_dict(target, source)
+
+   Merge values from source dictionary into target dictionary.
+
+   :param target: Dictionary to be updated with values from source dictionary.
+   :type target: dict
+   :param source: Dictionary with values to be transferred to target dictionary.
+   :type source: dict
+
+
+.. py:function:: merge_dicts(dicts)
+
+   Merges a list of dictionaries into a new dictionary.
+
+   The order of the dictionaries in the list provides precedence of the
+   values, with values from subsequent dictionaries overriding earlier
+   ones.
+
+   :param dicts: List of dictionaries to be merged.
+   :type dicts: list of dictionaries
+
+   :returns: Merged dictionary.
+   :rtype: dictionary
+
+
+.. py:function:: get_config(config_file=None, section=None, use_default=False)
+
+   Gets the user defined config and validates it.
+
+   :param config_file: Path to config file to use. If None, uses defaults.
+   :param section: Name of section in the config to extract (i.e., 'fetchers', 'processing',
+                   'pickers', etc.) If None, whole config is returned.
+   :type section: str
+   :param use_default: Use the default "production" config; this takes precedence  over project
+                       config settings. Only intended for tutorials/documentation.
+   :type use_default: bool
+
+   :returns:     Configuration parameters.
+   :rtype: dictionary
+
+   :raises IndexError: If input section name is not found.
+
+
+.. py:function:: update_config(custom_cfg_file)
+
+   Merge custom config with default.
+
+   :param custom_cfg_file: Path to custom config.
+   :type custom_cfg_file: str
+
+   :returns: Merged config dictionary.
+   :rtype: dict
+
+
+.. py:function:: __proj_to_conf_file(path)
+
+

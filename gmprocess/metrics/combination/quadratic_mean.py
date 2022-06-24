@@ -34,18 +34,16 @@ class Quadratic_Mean(Combination):
             if isinstance(h1, dict):
                 # this is the case where IMT is FAS
                 qm = {
-                    'freqs': h1['freqs'],
-                    'spectra': np.sqrt((h1['spectra']**2 +
-                                        h2['spectra']**2) / 2)
+                    "freqs": h1["freqs"],
+                    "spectra": np.sqrt((h1["spectra"] ** 2 + h2["spectra"] ** 2) / 2),
                 }
             else:
-                qm = {'': np.sqrt(np.mean([h1**2, h2**2]))}
+                qm = {"": np.sqrt(np.mean([h1 ** 2, h2 ** 2]))}
         else:
             # Just for tests?
             horizontals = self.combination_data
             time_freq = horizontals[0]
             h1, h2 = horizontals[1], horizontals[2]
             qm = [time_freq]
-            qm += [np.sqrt(np.mean(
-                [np.abs(trace)**2 for trace in [h1, h2]], axis=0))]
+            qm += [np.sqrt(np.mean([np.abs(trace) ** 2 for trace in [h1, h2]], axis=0))]
         return qm

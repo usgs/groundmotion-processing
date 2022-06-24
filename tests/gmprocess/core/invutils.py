@@ -12,7 +12,8 @@ def get_inventory():
         # We'll add networks later.
         networks=[],
         # The source should be the id whoever create the file.
-        source="ObsPy-Tutorial")
+        source="ObsPy-Tutorial",
+    )
 
     net = Network(
         # This is the network code according to the SEED standard.
@@ -21,7 +22,9 @@ def get_inventory():
         stations=[],
         description="A test stations.",
         # Start-and end dates are optional.
-        start_date=UTCDateTime(2016, 1, 2))
+        start_date=UTCDateTime(2009, 1, 2),
+        end_date=UTCDateTime(2016, 1, 2),
+    )
 
     sta = Station(
         # This is the station code according to the SEED standard.
@@ -30,7 +33,8 @@ def get_inventory():
         longitude=2.0,
         elevation=345.0,
         creation_date=UTCDateTime(2016, 1, 2),
-        site=Site(name="First station"))
+        site=Site(name="First station"),
+    )
 
     cha1 = Channel(
         # This is the channel code according to the SEED standard.
@@ -44,7 +48,8 @@ def get_inventory():
         depth=10.0,
         azimuth=0.0,
         dip=-90.0,
-        sample_rate=1)
+        sample_rate=1,
+    )
     cha2 = Channel(
         # This is the channel code according to the SEED standard.
         code="HN2",
@@ -57,7 +62,8 @@ def get_inventory():
         depth=10.0,
         azimuth=90.0,
         dip=-90.0,
-        sample_rate=1)
+        sample_rate=1,
+    )
     cha3 = Channel(
         # This is the channel code according to the SEED standard.
         code="HNZ",
@@ -70,7 +76,8 @@ def get_inventory():
         depth=10.0,
         azimuth=0.0,
         dip=-90.0,
-        sample_rate=1)
+        sample_rate=1,
+    )
 
     # Now tie it all together.
     sta.channels.append(cha1)

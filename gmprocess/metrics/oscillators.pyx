@@ -17,7 +17,7 @@ from obspy import read
 from gmprocess.utils.constants import GAL_TO_PCTG
 
 cdef extern from "cfuncs.h":
-    void calculate_spectrals_c(double *acc, int np, double dt,
+    void calculate_spectrals_c(double *acc, int npoints, double dt,
                                double period, double damping, double *sacc,
                                double *svel, double *sdis);
 
@@ -26,13 +26,12 @@ cpdef list calculate_spectrals(trace, period, damping):
     Returns a list of spectral responses for acceleration, velocity,
             and displacement.
     Args:
-        trace (obspy Trace object):
+        trace (StationTrace):
             The trace to be acted upon
         period (float):
             Period in seconds.
         damping (float):
             Fraction of critical damping.
-
     Returns:
         list: List of spectral responses (np.ndarray).
     """
@@ -113,26 +112,72 @@ def get_spectral(period, stream, damping=0.05, times=None, config=None):
     Args:
         period (float):
             Period for spectral response.
-        stream (obspy.core.stream.Stream):
+        stream (StationStream):
             Strong motion timeseries for one station.
         damping (float):
             Damping of oscillator.
         times (np.ndarray):
             Array of times for the horizontal channels. Default is None.
         config (dict):
-            Configuraiton options.
+            StationStream.
 
     Returns:
-        obpsy.core.stream.Stream or numpy.ndarray: stream of spectral response.
+        StationStream.
     """
-    traces = []
-    num_trace_range = range(len(stream))
     cdef int len_data = stream[0].data.shape[0]
 
-    if isinstance(stream, (StationStream, Stream)):
-        for idx in num_trace_range:
+    # Use as-recorded or upsampled record?
+    use_upsampled = False
+    dt = stream[0].stats.delta
+    ns = (int)(10. * dt / period - 0.01) + 1
+    if ns > 1:
+        use_upsampled = True
+        dt = stream[0].getCached('upsampled')['dt']
+
+    if 'rotated' in stream.getStreamParamKeys():
+        # For ROTD and GMROTD
+        rotated = []
+        if use_upsampled:
+            rotated_data = stream.getStreamParam('upsampled_rotated')
+        else:
+            rotated_data = stream.getStreamParam('rotated')
+
+        for idx in range(len(rotated_data)):
+            rot_matrix = rotated_data[idx]
+            rotated_spectrals = []
+            # This is the loop over rotation angles
+            for idy in range(0, len(rot_matrix)):
+                stats = {
+                    'npts': len(rot_matrix[idy]),
+                    'delta': dt,
+                    'sampling_rate': 1.0 / dt
+                }
+                new_trace = Trace(data=rot_matrix[idy], header=stats)
+                sa_list = calculate_spectrals(new_trace, period, damping)
+                acc_sa = sa_list[0]
+                acc_sa *= GAL_TO_PCTG
+                rotated_spectrals.append(acc_sa)
+            rotated += [rotated_spectrals]
+
+        # Add rotated data to stream parameters
+        stream.setStreamParam('rotated_oscillator', rotated)
+        return stream
+    else:
+        traces = []
+        # For anything but ROTD and GMROTD
+        for idx in range(len(stream)):
             trace = stream[idx]
-            sa_list = calculate_spectrals(trace, period, damping)
+            if use_upsampled:
+                trace_dict = stream[idx].getCached('upsampled')
+                stats = {
+                    'npts': trace_dict['np'],
+                    'delta': dt,
+                    'sampling_rate': 1.0 / dt
+                }
+                temp_trace = Trace(data=trace_dict['data'], header=stats)
+            else:
+                temp_trace = trace
+            sa_list = calculate_spectrals(temp_trace, period, damping)
             acc_sa = sa_list[0]
             acc_sa *= GAL_TO_PCTG
             stats = trace.stats.copy()
@@ -144,42 +189,3 @@ def get_spectral(period, stream, damping=0.05, times=None, config=None):
             traces += [spect_trace]
         spect_stream = StationStream(traces)
         return spect_stream
-    else:
-        rotated = []
-        for idx in range(0, len(stream)):
-            rot_matrix = stream[idx]
-            rotated_spectrals = []
-            for idy in range(0, len(rot_matrix)):
-                stats = {
-                    'npts': len(rot_matrix[idy]),
-                    'delta': times[1] - times[0],
-                    'sampling_rate': 1.0 / (times[1] - times[0])
-                }
-                new_trace = Trace(data=rot_matrix[idy], header=stats)
-                sa_list = calculate_spectrals(new_trace, period, damping)
-                acc_sa = sa_list[0]
-                acc_sa *= GAL_TO_PCTG
-                rotated_spectrals.append(acc_sa)
-            rotated += [rotated_spectrals]
-        return rotated
-
-
-def get_velocity(stream):
-    """
-    Returns a stream of velocity with units of cm/s.
-    Args:
-        stream (obspy.core.stream.Stream):
-            Strong motion timeseries for one station.
-
-    Returns:
-        obpsy.core.stream.Stream: stream of velocity.
-    """
-    cdef int idx
-    veloc_stream = Stream()
-    for idx in range(len(stream)):
-        trace = stream[idx]
-        veloc_trace = trace.copy()
-        veloc_trace.integrate()
-        veloc_trace.stats['units'] = 'cm/s'
-        veloc_stream.append(veloc_trace)
-    return veloc_stream

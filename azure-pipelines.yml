@@ -3,11 +3,11 @@ schedules:
   displayName: Daily midnight build
   branches:
     include:
-    - master
+    - main
   always: true
 
 trigger:
-- master
+- main
 
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
@@ -16,33 +16,33 @@ jobs:
   timeoutInMinutes: 120
   strategy:
     matrix:
-      Linux_py37:
-        imageName: 'ubuntu-latest'
-        python.version: '3.7'
       Linux_py38:
         imageName: 'ubuntu-latest'
         python.version: '3.8'
       Linux_py39:
         imageName: 'ubuntu-latest'
         python.version: '3.9'
-      MacOS_py37:
-        imageName: 'macOS-10.15'
-        python.version: '3.7'
+      Linux_py310:
+        imageName: 'ubuntu-latest'
+        python.version: '3.10'
       MacOS_py38:
-        imageName: 'macOS-10.15'
+        imageName: 'macOS-latest'
         python.version: '3.8'
       MacOS_py39:
-        imageName: 'macOS-10.15'
+        imageName: 'macOS-latest'
         python.version: '3.9'
-      Windows_py37:
-        imageName: 'windows-latest'
-        python.version: '3.7'
+      MacOS_py310:
+        imageName: 'macOS-latest'
+        python.version: '3.10'
       Windows_py38:
         imageName: 'windows-latest'
         python.version: '3.8'
       Windows_py39:
         imageName: 'windows-latest'
         python.version: '3.9'
+      Windows_py310:
+        imageName: 'windows-latest'
+        python.version: '3.10'
 
   pool:
     vmImage: $(imageName)
@@ -75,6 +75,8 @@ jobs:
           export CPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include
           echo "MacOS 10.15"
         fi
+      else
+        rm /usr/share/miniconda/pkgs/cache/*.json
       fi
       echo $(Agent.NAME)
       echo $(python.version)
@@ -83,20 +85,17 @@ jobs:
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
   - script: |
-      conda create --name gmprocess  python=$(python.version) --file requirements.txt --strict-channel-priority -c conda-forge -y -v
+      conda create --name gmprocess  python=$(python.version) --file requirements.txt -c conda-forge -y -v
     displayName: Create conda environment (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
   - script: |
       call activate gmprocess
+      pip install --upgrade --no-dependencies https://github.com/gem/oq-engine/archive/engine-3.12.zip
       pip install -e . --no-deps --force-reinstall -vv
       pip install -U pytest-console-scripts
     displayName: Install gmprocess packages (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
-
-  - bash: conda init bash
-    displayName: Init conda for bash
-    condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
   - bash: |
       source activate gmprocess

@@ -14,7 +14,7 @@ class Arias(IMT):
     # 2) information can now be retrieved without
     #    instantiating first
     imts, imcs = gather_pgms()
-    _invalid_imcs = ['gmrotd', 'rotd']
+    _invalid_imcs = ["gmrotd", "rotd"]
 
     def __init__(self, imt, imc, period=None):
         """
@@ -29,8 +29,8 @@ class Arias(IMT):
         """
         super().__init__(imt, imc, period=None)
         self._steps = {
-            'Transform2': 'null_transform',
-            'Transform3': 'null_transform',
-            'Combination1': 'null_combination',
-            'Reduction': 'arias',
+            "Transform2": "null_transform",
+            "Transform3": "null_transform",
+            "Combination1": "null_combination",
+            "Reduction": "arias",
         }

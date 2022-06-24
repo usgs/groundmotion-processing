@@ -3,8 +3,8 @@ requires = [
   "setuptools>=42",
   "wheel",
   "setuptools_scm[toml]>=3.4",
-  "Cython",
-  "numpy",
+  "cython",
+  "numpy<1.22",
 ]
 [tool.setuptools_scm]
 write_to = "gmprocess/version.py"

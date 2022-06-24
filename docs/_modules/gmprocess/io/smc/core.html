@@ -1,0 +1,1089 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
+
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
+        <title>gmprocess.io.smc.core - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<div class="announcement">
+  <aside class="announcement-content">
+     
+    <a href='https://www.usgs.gov/' style='text-decoration: none'>
+        <img id="announcement_left_img" valign="middle" src="https://usgs.github.io/groundmotion-processing/_static/usgs.png""></a>
+    Ground-Motion Processing Software
+    <a href='https://github.com/usgs/groundmotion-processing' style='text-decoration: none'>
+        <img id="announcement_right_img" valign="middle"
+            src="https://usgs.github.io/groundmotion-processing/_static/GitHub-Mark/PNG/GitHub-Mark-Light-120px-plus.png"></a>
+ 
+  </aside>
+</div>
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand centered" href="../../../../index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../../../_static/gmprocess_logo.png" alt="Logo"/>
+  </div>
+  
+  
+</a><form class="sidebar-search-container" method="get" action="../../../../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contents/overview/index.html">Overview</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../contents/getting-started/index.html">Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/getting-started/install.html">   Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/getting-started/initial_setup.html">   Initial Setup</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../contents/tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/cli.html">Command Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/response_spectra.html">Response Spectra Calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/lme.html">Linear Mixed Effects Regressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/asdf_to_waveforms.html">Processed Waveforms from ASDF File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/station_map.html">Plotting Seismograms on Station Map</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../contents/manual/index.html">Manual</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/data_structures.html">   Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/workspace.html">   Workspace</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../contents/manual/config_file.html">   Configuration File</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/user.html">   user</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/fetchers.html">   fetchers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/read.html">   read</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/windows.html">   windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/processing.html">   processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/colocated.html">   colocated</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/duplicate.html">   duplicate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/build_report.html">   build_report</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/metrics.html">   metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/pickers.html">   pickers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/processing.html">   Processing Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/utilities.html">   Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../contents/developer/index.html">Developer Resources</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/developer/contributing.html">   Contributing Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/developer/new_readers.html">   Adding New Data Readers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/developer/build_docs.html">   Building the Documentation</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/index.html">   API</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/apps/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.apps</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/apps/gmrecords/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.apps.gmrecords</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/cwb_gather/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.cwb_gather</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/gmconvert/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmconvert</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/gminfo/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gminfo</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/gmrecords/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmrecords</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/gmworkspace/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmworkspace</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/bin/list_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.list_metrics</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/core/stationstream/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.stationstream</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/core/stationtrace/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.stationtrace</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/core/streamarray/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.streamarray</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/core/streamcollection/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.streamcollection</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/asdf/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/asdf/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf.core</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/asdf/stream_workspace/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf.stream_workspace</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/asdf/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf.utils</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/bhrc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.bhrc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/bhrc/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.bhrc.core</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/cosmos/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cosmos</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/cosmos/cesmd_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cosmos.cesmd_fetcher</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/cosmos/cesmd_search/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cosmos.cesmd_search</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/cosmos/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cosmos.core</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/cosmos/cosmos_writer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cosmos.cosmos_writer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/cwb/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cwb</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/cwb/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cwb.core</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/dmg/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.dmg</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/dmg/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.dmg.core</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/esm/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.esm</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/esm/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.esm.core</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/geonet/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.geonet</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/geonet/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.geonet.core</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/geonet/geonet_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.geonet.geonet_fetcher</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/knet/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.knet</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/knet/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.knet.core</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/knet/knet_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.knet.knet_fetcher</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/nsmn/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nsmn</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/nsmn/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nsmn.core</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/nsmn/turkey_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nsmn.turkey_fetcher</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/obspy/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.obspy</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/obspy/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.obspy.core</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/obspy/fdsn_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.obspy.fdsn_fetcher</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/renadic/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.renadic</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/renadic/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.renadic.core</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/smc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.smc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/smc/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.smc.core</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/unam/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.unam</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/unam/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.unam.core</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/usc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.usc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/usc/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.usc.core</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/io/catalog/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.catalog</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/io/fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.fetcher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/io/global_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.global_fetcher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/io/nga/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nga</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/io/read/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.read</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/io/read_directory/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.read_directory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/io/report/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.report</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/io/seedname/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.seedname</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/io/stream/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.stream</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/io/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.utils</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/combination/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.combination</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/combination/arithmetic_mean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.combination.arithmetic_mean</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/combination/combination/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.combination.combination</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/combination/geometric_mean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.combination.geometric_mean</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/combination/greater_of_two_horizontals/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.combination.greater_of_two_horizontals</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/combination/null_combination/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.combination.null_combination</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/combination/quadratic_mean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.combination.quadratic_mean</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imc/arithmetic_mean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc.arithmetic_mean</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imc/channels/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc.channels</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imc/geometric_mean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc.geometric_mean</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imc/gmrotd/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc.gmrotd</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imc/greater_of_two_horizontals/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc.greater_of_two_horizontals</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imc/imc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc.imc</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imc/quadratic_mean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc.quadratic_mean</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imc/radial_transverse/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc.radial_transverse</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imc/rotd/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc.rotd</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imt/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imt/arias/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt.arias</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imt/duration/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt.duration</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imt/fas/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt.fas</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imt/imt/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt.imt</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imt/pga/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt.pga</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imt/pgv/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt.pgv</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imt/sa/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt.sa</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/imt/sorted_duration/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt.sorted_duration</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/reduction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/reduction/arias/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction.arias</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/reduction/duration/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction.duration</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/reduction/max/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction.max</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/reduction/null_reduction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction.null_reduction</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/reduction/percentile/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction.percentile</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/reduction/reduction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction.reduction</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/reduction/smooth_select/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction.smooth_select</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/reduction/sorted_duration/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction.sorted_duration</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/rotation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.rotation</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/rotation/gmrotd/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.rotation.gmrotd</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/rotation/null_rotation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.rotation.null_rotation</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/rotation/radial_transverse/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.rotation.radial_transverse</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/rotation/rotation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.rotation.rotation</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/rotation/rotd/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.rotation.rotd</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/transform/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.transform</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/transform/differentiate/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.transform.differentiate</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/transform/fft/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.transform.fft</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/transform/integrate/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.transform.integrate</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/transform/null_transform/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.transform.null_transform</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/transform/oscillator/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.transform.oscillator</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/transform/transform/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.transform.transform</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/exception/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.exception</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/gather/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.gather</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/metrics_controller/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.metrics_controller</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/metrics/station_summary/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.station_summary</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-32" name="toctree-checkbox-32" role="switch" type="checkbox"/><label for="toctree-checkbox-32"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/arg_dicts/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.arg_dicts</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/assemble/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.assemble</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/auto_shakemap/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.auto_shakemap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/base/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.base</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/clean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.clean</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/compute_station_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_station_metrics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/compute_waveform_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_waveform_metrics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/download/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.download</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/export_failure_tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_failure_tables</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/export_metric_tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_metric_tables</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/export_provenance_tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_provenance_tables</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/export_shakemap/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_shakemap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/generate_regression_plot/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.generate_regression_plot</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/generate_report/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.generate_report</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/generate_station_maps/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.generate_station_maps</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/import_data/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.import_data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/init/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.init</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/lazy_loader/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.lazy_loader</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/process_waveforms/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.process_waveforms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/projects/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.projects</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/args/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.args</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/assemble_utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.assemble_utils</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/base_utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.base_utils</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.config</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/constants/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.constants</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/download_utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.download_utils</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/event/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.event</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/export_shakemap_utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.export_shakemap_utils</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/logging/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.logging</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/misc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.misc</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/models/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.models</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/plot/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.plot</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/prompt/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.prompt</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/report_utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.report_utils</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/rupture_utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.rupture_utils</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.tables</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/test_utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.test_utils</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/utils/usgs_id_cross_reference/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.usgs_id_cross_reference</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-34" name="toctree-checkbox-34" role="switch" type="checkbox"/><label for="toctree-checkbox-34"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/adjust_highpass/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/adjust_highpass_ridder/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass_ridder</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/baseline_correction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/corner_frequencies/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.corner_frequencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/fft/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.fft</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/filtering/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.filtering</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/integrate/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.integrate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/nn_quality_assurance/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/phase/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.phase</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/pretesting/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.pretesting</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/processing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.processing</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/sanity_checks/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.sanity_checks</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/snr/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.snr</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/spectrum/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.spectrum</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/windows/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.windows</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/zero_crossings/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.zero_crossings</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../autoapi/gmprocess/version/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.version</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for gmprocess.io.smc.core</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+
+<span class="c1"># stdlib imports</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="c1"># third party</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># local imports</span>
+<span class="kn">from</span> <span class="nn">gmprocess.io.seedname</span> <span class="kn">import</span> <span class="n">get_channel_name</span><span class="p">,</span> <span class="n">get_units_type</span>
+<span class="kn">from</span> <span class="nn">gmprocess.core.stationtrace</span> <span class="kn">import</span> <span class="n">StationTrace</span><span class="p">,</span> <span class="n">PROCESS_LEVELS</span>
+<span class="kn">from</span> <span class="nn">gmprocess.core.stationstream</span> <span class="kn">import</span> <span class="n">StationStream</span>
+<span class="kn">from</span> <span class="nn">gmprocess.io.utils</span> <span class="kn">import</span> <span class="n">is_binary</span>
+
+<span class="n">ASCII_HEADER_LINES</span> <span class="o">=</span> <span class="mi">11</span>
+<span class="n">INTEGER_HEADER_LINES</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">FLOAT_HEADER_LINES</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">INT_HEADER_WIDTHS</span> <span class="o">=</span> <span class="mi">8</span> <span class="o">*</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">FLOAT_HEADER_WIDTHS</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="p">[</span><span class="mi">15</span><span class="p">]</span>
+<span class="n">DATA_COLUMNS</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">FLOAT_DATA_WIDTHS</span> <span class="o">=</span> <span class="mi">8</span> <span class="o">*</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+
+<span class="c1"># some smc records have nonsensically high sampling rate values</span>
+<span class="c1"># in the header. This is what we think is the upper end</span>
+<span class="c1"># of sensical.</span>
+<span class="n">MAX_ALLOWED_SAMPLE_RATE</span> <span class="o">=</span> <span class="mf">1e5</span>
+
+<span class="n">VALID_HEADERS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"1 UNCORRECTED ACCELEROGRAM"</span><span class="p">:</span> <span class="s2">"V1"</span><span class="p">,</span> <span class="s2">"2 CORRECTED ACCELEROGRAM"</span><span class="p">:</span> <span class="s2">"V2"</span><span class="p">}</span>
+
+<span class="n">INSTRUMENTS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">"Sprengnether SA-3000 3-component fba"</span><span class="p">,</span>
+    <span class="mi">30</span><span class="p">:</span> <span class="s2">"Kinemetrics FBA-13 3-component fba"</span><span class="p">,</span>
+    <span class="mi">31</span><span class="p">:</span> <span class="s2">"Kinemetrics FBA-11 1-component fba"</span><span class="p">,</span>
+    <span class="mi">101</span><span class="p">:</span> <span class="s2">"SMA-1"</span><span class="p">,</span>
+    <span class="mi">125</span><span class="p">:</span> <span class="s2">"Kinemetrics FBA-23"</span><span class="p">,</span>
+    <span class="mi">102</span><span class="p">:</span> <span class="s2">"C&amp;GS Standard"</span><span class="p">,</span>
+    <span class="mi">126</span><span class="p">:</span> <span class="s2">"Kinemetrics Episensor"</span><span class="p">,</span>
+    <span class="mi">103</span><span class="p">:</span> <span class="s2">"AR-240"</span><span class="p">,</span>
+    <span class="mi">127</span><span class="p">:</span> <span class="s2">"Kinemetrics FBA-4g"</span><span class="p">,</span>
+    <span class="mi">104</span><span class="p">:</span> <span class="s2">"RFT-250"</span><span class="p">,</span>
+    <span class="mi">128</span><span class="p">:</span> <span class="s2">"Kinemetrics FBA-2g"</span><span class="p">,</span>
+    <span class="mi">105</span><span class="p">:</span> <span class="s2">"RFT-350"</span><span class="p">,</span>
+    <span class="mi">129</span><span class="p">:</span> <span class="s2">"Kinemetrics FBA-1g"</span><span class="p">,</span>
+    <span class="mi">106</span><span class="p">:</span> <span class="s2">"MO-2"</span><span class="p">,</span>
+    <span class="mi">130</span><span class="p">:</span> <span class="s2">"Kinemetrics FBA-0.5g"</span><span class="p">,</span>
+    <span class="mi">107</span><span class="p">:</span> <span class="s2">"RMT-280"</span><span class="p">,</span>
+    <span class="mi">131</span><span class="p">:</span> <span class="s2">"Kinemetrics FBA-0.25g"</span><span class="p">,</span>
+    <span class="mi">108</span><span class="p">:</span> <span class="s2">"SMA-2/3"</span><span class="p">,</span>
+    <span class="mi">132</span><span class="p">:</span> <span class="s2">"Kinemetrics FBA-0.1g"</span><span class="p">,</span>
+    <span class="mi">109</span><span class="p">:</span> <span class="s2">"DSA-1/DSA-3	133 WR1"</span><span class="p">,</span>
+    <span class="mi">110</span><span class="p">:</span> <span class="s2">"DCA-300"</span><span class="p">,</span>
+    <span class="mi">134</span><span class="p">:</span> <span class="s2">"S6000"</span><span class="p">,</span>
+    <span class="mi">111</span><span class="p">:</span> <span class="s2">"DCA-333"</span><span class="p">,</span>
+    <span class="mi">135</span><span class="p">:</span> <span class="s2">"Mark Products L22"</span><span class="p">,</span>
+    <span class="mi">112</span><span class="p">:</span> <span class="s2">"A-700"</span><span class="p">,</span>
+    <span class="mi">136</span><span class="p">:</span> <span class="s2">"Products L4C"</span><span class="p">,</span>
+    <span class="mi">113</span><span class="p">:</span> <span class="s2">"SSA-1"</span><span class="p">,</span>
+    <span class="mi">137</span><span class="p">:</span> <span class="s2">"CMG3"</span><span class="p">,</span>
+    <span class="mi">114</span><span class="p">:</span> <span class="s2">"CRA-1"</span><span class="p">,</span>
+    <span class="mi">138</span><span class="p">:</span> <span class="s2">"CMG3T"</span><span class="p">,</span>
+    <span class="mi">115</span><span class="p">:</span> <span class="s2">"MO-2"</span><span class="p">,</span>
+    <span class="mi">139</span><span class="p">:</span> <span class="s2">"CMG40T"</span><span class="p">,</span>
+    <span class="mi">116</span><span class="p">:</span> <span class="s2">"FBA-3"</span><span class="p">,</span>
+    <span class="mi">140</span><span class="p">:</span> <span class="s2">"CMG5"</span><span class="p">,</span>
+    <span class="mi">117</span><span class="p">:</span> <span class="s2">"SMA-2"</span><span class="p">,</span>
+    <span class="mi">141</span><span class="p">:</span> <span class="s2">"KS-2000"</span><span class="p">,</span>
+    <span class="mi">118</span><span class="p">:</span> <span class="s2">"DCA-310"</span><span class="p">,</span>
+    <span class="mi">900</span><span class="p">:</span> <span class="s2">"custom instrument"</span><span class="p">,</span>
+    <span class="mi">119</span><span class="p">:</span> <span class="s2">"FBA-13"</span><span class="p">,</span>
+    <span class="mi">1302</span><span class="p">:</span> <span class="s2">"Reftek Model 130-ANSS/02"</span><span class="p">,</span>
+    <span class="mi">120</span><span class="p">:</span> <span class="s2">"SSA-2"</span><span class="p">,</span>
+    <span class="mi">121</span><span class="p">:</span> <span class="s2">"SSR-1"</span><span class="p">,</span>
+    <span class="mi">122</span><span class="p">:</span> <span class="s2">"BIDRA"</span><span class="p">,</span>
+    <span class="mi">123</span><span class="p">:</span> <span class="s2">"CR-1"</span><span class="p">,</span>
+    <span class="mi">124</span><span class="p">:</span> <span class="s2">"PDR-1"</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">CONSTRUCTION_TYPES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">"Reinforced concrete gravity"</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">"Reinforced concrete arch"</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">"earth fill"</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">"other"</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">STRUCTURES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">"building"</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">"bridge"</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">"dam"</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">"other"</span><span class="p">,</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">:</span> <span class="s2">"not a structure"</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">BRIDGE_LOCATIONS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">"free field"</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">"at the base of a pier or abutment"</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">"on an abutment"</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">"on the deck at the top of a pier"</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">"on the deck between piers or between an abutment and a pier"</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">DAM_LOCATIONS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">"upstream or downstream free field"</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">"at the base of the dam"</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">"on the crest of the dam"</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">"on the abutment of the dam"</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="is_smc"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/smc/core/index.html#gmprocess.io.smc.core.is_smc">[docs]</a><span class="k">def</span> <span class="nf">is_smc</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">"""Check to see if file is a SMC (corrected, in acc.) strong motion file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        filename (str):</span>
+<span class="sd">            Path to possible SMC corrected data file.</span>
+<span class="sd">        config (dict):</span>
+<span class="sd">            Dictionary containing configuration.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True if SMC, False otherwise.</span>
+<span class="sd">    """</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Checking if format is smc."</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">is_binary</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"rt"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">firstline</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">firstline</span> <span class="ow">in</span> <span class="n">VALID_HEADERS</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="s2">"DISPLACEMENT"</span> <span class="ow">in</span> <span class="n">firstline</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">BaseException</span><span class="p">(</span><span class="s2">"SMC: Diplacement records are not supported."</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="s2">"VELOCITY"</span> <span class="ow">in</span> <span class="n">firstline</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">BaseException</span><span class="p">(</span><span class="s2">"SMC: Velocity records are not supported."</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="s2">"*"</span> <span class="ow">in</span> <span class="n">firstline</span><span class="p">:</span>
+                <span class="n">end_ascii</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">"*"</span> <span class="ow">in</span> <span class="n">end_ascii</span><span class="p">:</span>
+                    <span class="n">comment_row</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">27</span><span class="p">,</span> <span class="mi">27</span> <span class="o">+</span> <span class="n">comment_row</span><span class="p">):</span>
+                        <span class="n">row</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">r</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">row</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"|"</span><span class="p">):</span>
+                            <span class="k">return</span> <span class="kc">False</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="read_smc"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/smc/core/index.html#gmprocess.io.smc.core.read_smc">[docs]</a><span class="k">def</span> <span class="nf">read_smc</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">"""Read SMC strong motion file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        filename (str):</span>
+<span class="sd">            Path to possible SMC data file.</span>
+<span class="sd">        config (dict):</span>
+<span class="sd">            Dictionary containing configuration.</span>
+<span class="sd">        kwargs (ref):</span>
+<span class="sd">            any_structure (bool): Read data from any type of structure,</span>
+<span class="sd">                raise Exception if False and structure type is not free-field.</span>
+<span class="sd">            accept_flagged (bool): accept problem flagged data.</span>
+<span class="sd">            set_location (str): Two character code for location.</span>
+<span class="sd">            Other arguments will be ignored.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Stream: Obspy Stream containing one channel of acceleration data</span>
+<span class="sd">        (cm/s**2).</span>
+<span class="sd">    """</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Starting read_smc."</span><span class="p">)</span>
+    <span class="n">any_structure</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"any_structure"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">accept_flagged</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"accept_flagged"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"location"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_smc</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> is not a valid SMC file"</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"rt"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s2">"DISPLACEMENT"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">BaseException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"SMC: Diplacement records are not supported: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">."</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="s2">"VELOCITY"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">BaseException</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SMC: Velocity records are not supported: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">line</span> <span class="o">==</span> <span class="s2">"*"</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">BaseException</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SMC: No record volume specified in file: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+
+    <span class="n">stats</span><span class="p">,</span> <span class="n">num_comments</span> <span class="o">=</span> <span class="n">_get_header_info</span><span class="p">(</span>
+        <span class="n">filename</span><span class="p">,</span>
+        <span class="n">any_structure</span><span class="o">=</span><span class="n">any_structure</span><span class="p">,</span>
+        <span class="n">accept_flagged</span><span class="o">=</span><span class="n">accept_flagged</span><span class="p">,</span>
+        <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">skip</span> <span class="o">=</span> <span class="n">ASCII_HEADER_LINES</span> <span class="o">+</span> <span class="n">INTEGER_HEADER_LINES</span> <span class="o">+</span> <span class="n">num_comments</span> <span class="o">+</span> <span class="n">FLOAT_HEADER_LINES</span>
+
+    <span class="c1"># read float data (8 columns per line)</span>
+    <span class="n">nrows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">/</span> <span class="n">DATA_COLUMNS</span><span class="p">))</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span>
+        <span class="n">filename</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="n">nrows</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="n">skip</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">FLOAT_DATA_WIDTHS</span>
+    <span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">stats</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">%</span> <span class="n">DATA_COLUMNS</span><span class="p">:</span>
+        <span class="n">lastrow</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span>
+            <span class="n">filename</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="n">skip</span> <span class="o">+</span> <span class="n">nrows</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">FLOAT_DATA_WIDTHS</span>
+        <span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">lastrow</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span> <span class="p">:</span> <span class="n">stats</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]]</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">StationTrace</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">stats</span><span class="p">)</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"input_units"</span><span class="p">:</span> <span class="s2">"counts"</span><span class="p">,</span> <span class="s2">"output_units"</span><span class="p">:</span> <span class="s2">"cm/s^2"</span><span class="p">}</span>
+    <span class="n">trace</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s2">"remove_response"</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+
+    <span class="n">stream</span> <span class="o">=</span> <span class="n">StationStream</span><span class="p">(</span><span class="n">traces</span><span class="o">=</span><span class="p">[</span><span class="n">trace</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">stream</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="_get_header_info"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/smc/core/index.html#gmprocess.io.smc.core._get_header_info">[docs]</a><span class="k">def</span> <span class="nf">_get_header_info</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">any_structure</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">accept_flagged</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">""</span><span class="p">):</span>
+    <span class="sd">"""Return stats structure from various headers.</span>
+
+<span class="sd">    Output is a dictionary like this:</span>
+<span class="sd">     - network</span>
+<span class="sd">     - station</span>
+<span class="sd">     - channel</span>
+<span class="sd">     - location (str): Set to floor the sensor is located on. If not a</span>
+<span class="sd">            multi-sensor array, default is '--'. Can be set manually by</span>
+<span class="sd">            the user.</span>
+<span class="sd">     - starttime</span>
+<span class="sd">     - sampling_rate</span>
+<span class="sd">     - npts</span>
+<span class="sd">     - coordinates:</span>
+<span class="sd">       - latitude</span>
+<span class="sd">       - longitude</span>
+<span class="sd">       - elevation</span>
+<span class="sd">    - standard</span>
+<span class="sd">      - horizontal_orientation</span>
+<span class="sd">      - instrument_period</span>
+<span class="sd">      - instrument_damping</span>
+<span class="sd">      - process_level</span>
+<span class="sd">      - station_name</span>
+<span class="sd">      - sensor_serial_number</span>
+<span class="sd">      - instrument</span>
+<span class="sd">      - comments</span>
+<span class="sd">      - structure_type</span>
+<span class="sd">      - corner_frequency</span>
+<span class="sd">      - units</span>
+<span class="sd">      - source</span>
+<span class="sd">      - source_format</span>
+<span class="sd">    - format_specific</span>
+<span class="sd">      - vertical_orientation</span>
+<span class="sd">      - building_floor (0=basement, 1=floor above basement,</span>
+<span class="sd">        -1=1st sub-basement, etc.</span>
+<span class="sd">      - bridge_number_spans</span>
+<span class="sd">      - bridge_transducer_location (</span>
+<span class="sd">            "free field",</span>
+<span class="sd">            "at the base of a pier or abutment",</span>
+<span class="sd">            "on an abutment",</span>
+<span class="sd">            "on the deck at the top of a pier"</span>
+<span class="sd">            "on the deck between piers or between an</span>
+<span class="sd">            abutment and a pier.")</span>
+<span class="sd">        dam_transducer_location (</span>
+<span class="sd">            "upstream or downstream free field",</span>
+<span class="sd">            "at the base of the dam",</span>
+<span class="sd">            "on the crest of the dam",</span>
+<span class="sd">            on the abutment of the dam")</span>
+<span class="sd">        construction_type (</span>
+<span class="sd">            "Reinforced concrete gravity",</span>
+<span class="sd">            "Reinforced concrete arch",</span>
+<span class="sd">            "earth fill",</span>
+<span class="sd">            "other")</span>
+
+<span class="sd">        filter_poles</span>
+<span class="sd">        data_source</span>
+<span class="sd">    """</span>
+    <span class="n">stats</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">standard</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">format_specific</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># read the ascii header lines</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">ascheader</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ASCII_HEADER_LINES</span><span class="p">)]</span>
+
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"process_level"</span><span class="p">]</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="n">VALID_HEADERS</span><span class="p">[</span><span class="n">ascheader</span><span class="p">[</span><span class="mi">0</span><span class="p">]]]</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"process_level: </span><span class="si">{</span><span class="n">standard</span><span class="p">[</span><span class="s1">'process_level'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="c1"># station code is in the third line</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"station"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ascheader</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="n">stats</span><span class="p">[</span><span class="s2">"station"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ascheader</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">stats</span><span class="p">[</span><span class="s2">"station"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[</span><span class="s2">"station"</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">"</span><span class="se">\x00</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"station: </span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">'station'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"process_time"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"station_name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ascheader</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">10</span><span class="p">:</span><span class="mi">40</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="c1"># sometimes the data source has nothing in it,</span>
+    <span class="c1"># most of the time it seems has has USGS in it</span>
+    <span class="c1"># sometimes it's something like JPL/USGS, CDOT/USGS, etc.</span>
+    <span class="c1"># if it's got USGS in it, let's just say network=US, otherwise "--"</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"network"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"--"</span>
+    <span class="k">if</span> <span class="n">ascheader</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"USGS"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">stats</span><span class="p">[</span><span class="s2">"network"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"US"</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ascheader</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"="</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"USGS"</span>
+    <span class="k">if</span> <span class="n">standard</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"USGS"</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"source_format"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"smc"</span>
+
+    <span class="c1"># read integer header data</span>
+
+    <span class="n">intheader</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span>
+        <span class="n">filename</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span>
+        <span class="n">max_rows</span><span class="o">=</span><span class="n">INTEGER_HEADER_LINES</span><span class="p">,</span>
+        <span class="n">skip_header</span><span class="o">=</span><span class="n">ASCII_HEADER_LINES</span><span class="p">,</span>
+        <span class="n">delimiter</span><span class="o">=</span><span class="n">INT_HEADER_WIDTHS</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># 8 columns per line</span>
+    <span class="c1"># first line is start time information, and then inst. serial number</span>
+    <span class="n">missing_data</span> <span class="o">=</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># sometimes the year field has a 0 in it. When this happens, we</span>
+    <span class="c1"># can try to get a timestamp from line 4 of the ascii header.</span>
+    <span class="k">if</span> <span class="n">year</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">ascheader</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">ve</span><span class="p">:</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">"Could not find year in SMC file </span><span class="si">%s</span><span class="s2">. Not present "</span>
+                <span class="s2">"in integer header and not parseable from line "</span>
+                <span class="s1">'4 of ASCII header. Error: "</span><span class="si">%s</span><span class="s1">"'</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">ve</span><span class="p">)))</span>
+
+    <span class="n">jday</span> <span class="o">=</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">hour</span> <span class="o">=</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="n">minute</span> <span class="o">=</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">year</span> <span class="o">!=</span> <span class="n">missing_data</span>
+        <span class="ow">and</span> <span class="n">jday</span> <span class="o">!=</span> <span class="n">missing_data</span>
+        <span class="ow">and</span> <span class="n">hour</span> <span class="o">!=</span> <span class="n">missing_data</span>
+        <span class="ow">and</span> <span class="n">minute</span> <span class="o">!=</span> <span class="n">missing_data</span>
+    <span class="p">):</span>
+
+        <span class="c1"># Handle second if missing</span>
+        <span class="n">second</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="n">missing_data</span><span class="p">:</span>
+            <span class="n">second</span> <span class="o">=</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+
+        <span class="c1"># Handle microsecond if missing and convert milliseconds to</span>
+        <span class="c1"># microseconds</span>
+        <span class="n">microsecond</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="o">==</span> <span class="n">missing_data</span><span class="p">:</span>
+            <span class="n">microsecond</span> <span class="o">=</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1e3</span>
+        <span class="n">datestr</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%i</span><span class="s2"> </span><span class="si">%00i</span><span class="s2"> </span><span class="si">%i</span><span class="s2"> </span><span class="si">%i</span><span class="s2"> </span><span class="si">%i</span><span class="s2"> </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">year</span><span class="p">,</span>
+            <span class="n">jday</span><span class="p">,</span>
+            <span class="n">hour</span><span class="p">,</span>
+            <span class="n">minute</span><span class="p">,</span>
+            <span class="n">second</span><span class="p">,</span>
+            <span class="n">microsecond</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">stats</span><span class="p">[</span><span class="s2">"starttime"</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">datestr</span><span class="p">,</span> <span class="s2">"%Y %j %H %M %S </span><span class="si">%f</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s2">"No start time provided. "</span>
+            <span class="s2">"This must be set manually for network/station: "</span>
+            <span class="s2">"</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">."</span> <span class="o">%</span> <span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="s2">"network"</span><span class="p">],</span> <span class="n">stats</span><span class="p">[</span><span class="s2">"station"</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">"comments"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Missing start time."</span>
+
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"sensor_serial_number"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="k">if</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="n">missing_data</span><span class="p">:</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">"sensor_serial_number"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">intheader</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+
+    <span class="c1"># we never get a two character location code so floor location is used</span>
+    <span class="k">if</span> <span class="n">location</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">intheader</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[</span><span class="mi">24</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">location</span> <span class="o">!=</span> <span class="n">missing_data</span><span class="p">:</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">location</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">location</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">stats</span><span class="p">[</span><span class="s2">"location"</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">stats</span><span class="p">[</span><span class="s2">"location"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"--"</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">stats</span><span class="p">[</span><span class="s2">"location"</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span>
+
+    <span class="c1"># second line is information about number of channels, orientations</span>
+    <span class="c1"># we care about orientations</span>
+    <span class="n">format_specific</span><span class="p">[</span><span class="s2">"vertical_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">if</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">!=</span> <span class="n">missing_data</span><span class="p">:</span>
+        <span class="n">format_specific</span><span class="p">[</span><span class="s2">"vertical_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">intheader</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"horizontal_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"vertical_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">if</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">!=</span> <span class="n">missing_data</span><span class="p">:</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">"horizontal_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">intheader</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="o">==</span> <span class="n">missing_data</span> <span class="ow">or</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">INSTRUMENTS</span><span class="p">:</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument"</span><span class="p">]</span> <span class="o">=</span> <span class="n">INSTRUMENTS</span><span class="p">[</span><span class="n">intheader</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]</span>
+
+    <span class="n">num_comments</span> <span class="o">=</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+
+    <span class="c1"># third line contains number of data points</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">=</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">problem_flag</span> <span class="o">=</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">problem_flag</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">accept_flagged</span><span class="p">:</span>
+            <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"SMC: Record found in file </span><span class="si">%s</span><span class="s2"> has a problem flag!"</span>
+            <span class="k">raise</span> <span class="ne">BaseException</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">"SMC: Data contains a problem flag for network/station: "</span>
+                <span class="s2">"</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">. See comments."</span> <span class="o">%</span> <span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="s2">"network"</span><span class="p">],</span> <span class="n">stats</span><span class="p">[</span><span class="s2">"station"</span><span class="p">])</span>
+            <span class="p">)</span>
+    <span class="n">stype</span> <span class="o">=</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">stype</span> <span class="o">==</span> <span class="n">missing_data</span><span class="p">:</span>
+        <span class="n">stype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">elif</span> <span class="n">stype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">STRUCTURES</span><span class="p">:</span>
+        <span class="c1"># structure type is not defined and should will be considered 'other'</span>
+        <span class="n">stype</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"SMC: Record found in file </span><span class="si">%s</span><span class="s2"> is not a free-field sensor!"</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"structure_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">STRUCTURES</span><span class="p">[</span><span class="n">stype</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">standard</span><span class="p">[</span><span class="s2">"structure_type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"building"</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">any_structure</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+
+    <span class="n">format_specific</span><span class="p">[</span><span class="s2">"building_floor"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">if</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">missing_data</span><span class="p">:</span>
+        <span class="n">format_specific</span><span class="p">[</span><span class="s2">"building_floor"</span><span class="p">]</span> <span class="o">=</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">format_specific</span><span class="p">[</span><span class="s2">"bridge_number_spans"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">if</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">missing_data</span><span class="p">:</span>
+        <span class="n">format_specific</span><span class="p">[</span><span class="s2">"bridge_number_spans"</span><span class="p">]</span> <span class="o">=</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">format_specific</span><span class="p">[</span><span class="s2">"bridge_transducer_location"</span><span class="p">]</span> <span class="o">=</span> <span class="n">BRIDGE_LOCATIONS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="n">missing_data</span><span class="p">:</span>
+        <span class="n">bridge_number</span> <span class="o">=</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">format_specific</span><span class="p">[</span><span class="s2">"bridge_transducer_location"</span><span class="p">]</span> <span class="o">=</span> <span class="n">BRIDGE_LOCATIONS</span><span class="p">[</span><span class="n">bridge_number</span><span class="p">]</span>
+
+    <span class="n">format_specific</span><span class="p">[</span><span class="s2">"dam_transducer_location"</span><span class="p">]</span> <span class="o">=</span> <span class="n">DAM_LOCATIONS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="n">missing_data</span><span class="p">:</span>
+        <span class="n">dam_number</span> <span class="o">=</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="n">format_specific</span><span class="p">[</span><span class="s2">"dam_transducer_location"</span><span class="p">]</span> <span class="o">=</span> <span class="n">DAM_LOCATIONS</span><span class="p">[</span><span class="n">dam_number</span><span class="p">]</span>
+
+    <span class="n">c1</span> <span class="o">=</span> <span class="n">format_specific</span><span class="p">[</span><span class="s2">"bridge_transducer_location"</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"free field"</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">c2</span> <span class="o">=</span> <span class="n">format_specific</span><span class="p">[</span><span class="s2">"dam_transducer_location"</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"free field"</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">c1</span> <span class="ow">or</span> <span class="n">c2</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">any_structure</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+
+    <span class="n">format_specific</span><span class="p">[</span><span class="s2">"construction_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">CONSTRUCTION_TYPES</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">!=</span> <span class="n">missing_data</span><span class="p">:</span>
+        <span class="n">format_specific</span><span class="p">[</span><span class="s2">"construction_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">CONSTRUCTION_TYPES</span><span class="p">[</span><span class="n">intheader</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]]</span>
+
+    <span class="c1"># station is repeated here if all numeric</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="s2">"station"</span><span class="p">]):</span>
+        <span class="n">stats</span><span class="p">[</span><span class="s2">"station"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="n">intheader</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+
+    <span class="c1"># read float header data</span>
+    <span class="n">skip</span> <span class="o">=</span> <span class="n">ASCII_HEADER_LINES</span> <span class="o">+</span> <span class="n">INTEGER_HEADER_LINES</span>
+    <span class="n">floatheader</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span>
+        <span class="n">filename</span><span class="p">,</span>
+        <span class="n">max_rows</span><span class="o">=</span><span class="n">FLOAT_HEADER_LINES</span><span class="p">,</span>
+        <span class="n">skip_header</span><span class="o">=</span><span class="n">skip</span><span class="p">,</span>
+        <span class="n">delimiter</span><span class="o">=</span><span class="n">FLOAT_HEADER_WIDTHS</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># float headers are 10 lines of 5 floats each</span>
+    <span class="n">missing_data</span> <span class="o">=</span> <span class="n">floatheader</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"sampling_rate"</span><span class="p">]</span> <span class="o">=</span> <span class="n">floatheader</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">stats</span><span class="p">[</span><span class="s2">"sampling_rate"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">MAX_ALLOWED_SAMPLE_RATE</span><span class="p">:</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"Sampling rate of </span><span class="si">%.2g</span><span class="s2"> samples/second is nonsensical."</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="n">stats</span><span class="p">[</span><span class="s2">"sampling_rate"</span><span class="p">])</span>
+    <span class="n">coordinates</span><span class="p">[</span><span class="s2">"latitude"</span><span class="p">]</span> <span class="o">=</span> <span class="n">floatheader</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># the documentation for SMC says that sometimes longitudes are</span>
+    <span class="c1"># positive in the western hemisphere. Since it is very unlikely</span>
+    <span class="c1"># any of these files exist for the eastern hemisphere, check for</span>
+    <span class="c1"># positive longitudes and fix them.</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="n">floatheader</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">lon</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">lon</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">lon</span>
+    <span class="n">coordinates</span><span class="p">[</span><span class="s2">"longitude"</span><span class="p">]</span> <span class="o">=</span> <span class="n">lon</span>
+    <span class="n">coordinates</span><span class="p">[</span><span class="s2">"elevation"</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">if</span> <span class="n">floatheader</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="n">missing_data</span><span class="p">:</span>
+        <span class="n">coordinates</span><span class="p">[</span><span class="s2">"elevation"</span><span class="p">]</span> <span class="o">=</span> <span class="n">floatheader</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Setting elevation to 0.0"</span><span class="p">)</span>
+
+    <span class="c1"># figure out the channel code</span>
+    <span class="k">if</span> <span class="n">format_specific</span><span class="p">[</span><span class="s2">"vertical_orientation"</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">]:</span>
+        <span class="n">stats</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_channel_name</span><span class="p">(</span>
+            <span class="n">stats</span><span class="p">[</span><span class="s2">"sampling_rate"</span><span class="p">],</span>
+            <span class="n">is_acceleration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">is_vertical</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">is_north</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ho</span> <span class="o">=</span> <span class="n">standard</span><span class="p">[</span><span class="s2">"horizontal_orientation"</span><span class="p">]</span>
+        <span class="n">quad1</span> <span class="o">=</span> <span class="n">ho</span> <span class="o">&gt;</span> <span class="mi">315</span> <span class="ow">and</span> <span class="n">ho</span> <span class="o">&lt;=</span> <span class="mi">360</span>
+        <span class="n">quad2</span> <span class="o">=</span> <span class="n">ho</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">ho</span> <span class="o">&lt;=</span> <span class="mi">45</span>
+        <span class="n">quad3</span> <span class="o">=</span> <span class="n">ho</span> <span class="o">&gt;</span> <span class="mi">135</span> <span class="ow">and</span> <span class="n">ho</span> <span class="o">&lt;=</span> <span class="mi">225</span>
+        <span class="k">if</span> <span class="n">quad1</span> <span class="ow">or</span> <span class="n">quad2</span> <span class="ow">or</span> <span class="n">quad3</span><span class="p">:</span>
+            <span class="n">stats</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_channel_name</span><span class="p">(</span>
+                <span class="n">stats</span><span class="p">[</span><span class="s2">"sampling_rate"</span><span class="p">],</span>
+                <span class="n">is_acceleration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">is_vertical</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">is_north</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">stats</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_channel_name</span><span class="p">(</span>
+                <span class="n">stats</span><span class="p">[</span><span class="s2">"sampling_rate"</span><span class="p">],</span>
+                <span class="n">is_acceleration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">is_vertical</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">is_north</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"channel: </span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">'channel'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">sensor_frequency</span> <span class="o">=</span> <span class="n">floatheader</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument_period"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">sensor_frequency</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument_damping"</span><span class="p">]</span> <span class="o">=</span> <span class="n">floatheader</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"corner_frequency"</span><span class="p">]</span> <span class="o">=</span> <span class="n">floatheader</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+    <span class="n">format_specific</span><span class="p">[</span><span class="s2">"filter_poles"</span><span class="p">]</span> <span class="o">=</span> <span class="n">floatheader</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"units"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"cm/s/s"</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"units_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_units_type</span><span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">])</span>
+
+    <span class="c1"># these fields can be used for instrument correction</span>
+    <span class="c1"># when data is in counts</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument_sensitivity"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"volts_to_counts"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="c1"># read in the comment lines</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">skip</span> <span class="o">=</span> <span class="n">ASCII_HEADER_LINES</span> <span class="o">+</span> <span class="n">INTEGER_HEADER_LINES</span> <span class="o">+</span> <span class="n">FLOAT_HEADER_LINES</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">skip</span><span class="p">)]</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">"comments"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">"|"</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_comments</span><span class="p">)</span>
+        <span class="p">]</span>
+
+    <span class="n">standard</span><span class="p">[</span><span class="s2">"comments"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">standard</span><span class="p">[</span><span class="s2">"comments"</span><span class="p">])</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"coordinates"</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinates</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">]</span> <span class="o">=</span> <span class="n">standard</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"format_specific"</span><span class="p">]</span> <span class="o">=</span> <span class="n">format_specific</span>
+
+    <span class="n">head</span><span class="p">,</span> <span class="n">tail</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">stats</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"source_file"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tail</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="n">num_comments</span><span class="p">)</span></div>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; Unlicense
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/scripts/furo.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/tabs.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    </body>
+</html>

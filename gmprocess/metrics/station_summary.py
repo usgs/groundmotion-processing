@@ -16,17 +16,19 @@ from gmprocess.utils.config import get_config
 from gmprocess.metrics.gather import gather_pgms
 from gmprocess.metrics.metrics_controller import MetricsController
 from gmprocess.utils.constants import (
-    ELEVATION_FOR_DISTANCE_CALCS, METRICS_XML_FLOAT_STRING_FORMAT)
+    ELEVATION_FOR_DISTANCE_CALCS,
+    METRICS_XML_FLOAT_STRING_FORMAT,
+)
 from gmprocess.utils.tables import _get_table_row, find_float
 
 XML_UNITS = {
-    'pga': '%g',
-    'pgv': 'cm/s',
-    'sa': '%g',
-    'arias': 'm/s',
-    'fas': 'cm/s',
-    'duration': 's',
-    'sorted_duration': 's'
+    "pga": "%g",
+    "pgv": "cm/s",
+    "sa": "%g",
+    "arias": "m/s",
+    "fas": "cm/s",
+    "duration": "s",
+    "sorted_duration": "s",
 }
 
 DEFAULT_DAMPING = 0.05
@@ -140,9 +142,16 @@ class StationSummary(object):
         return self._distances
 
     @classmethod
-    def from_config(cls, stream, config=None, event=None,
-                    calc_waveform_metrics=True, calc_station_metrics=True,
-                    rupture=None, vs30_grids=None):
+    def from_config(
+        cls,
+        stream,
+        config=None,
+        event=None,
+        calc_waveform_metrics=True,
+        calc_station_metrics=True,
+        rupture=None,
+        vs30_grids=None,
+    ):
         """
         Args:
             stream (obspy.core.stream.Stream):
@@ -172,9 +181,9 @@ class StationSummary(object):
             config = get_config()
         station = cls()
 
-        damping = config['metrics']['sa']['damping']
-        smoothing = config['metrics']['fas']['smoothing']
-        bandwidth = config['metrics']['fas']['bandwidth']
+        damping = config["metrics"]["sa"]["damping"]
+        smoothing = config["metrics"]["fas"]["smoothing"]
+        bandwidth = config["metrics"]["fas"]["bandwidth"]
 
         station._damping = damping
         station._smoothing = smoothing
@@ -184,8 +193,7 @@ class StationSummary(object):
         station.set_metadata()
 
         if stream.passed and calc_waveform_metrics:
-            metrics = MetricsController.from_config(
-                stream, config=config, event=event)
+            metrics = MetricsController.from_config(stream, config=config, event=event)
 
             station.channel_dict = metrics.channel_dict.copy()
 
@@ -193,14 +201,12 @@ class StationSummary(object):
             if pgms is None:
                 station._components = metrics.imcs
                 station._imts = metrics.imts
-                station.pgms = pd.DataFrame.from_dict({
-                    'IMT': [],
-                    'IMC': [],
-                    'Result': []
-                })
+                station.pgms = pd.DataFrame.from_dict(
+                    {"IMT": [], "IMC": [], "Result": []}
+                )
             else:
-                station._components = set(pgms.index.get_level_values('IMC'))
-                station._imts = set(pgms.index.get_level_values('IMT'))
+                station._components = set(pgms.index.get_level_values("IMC"))
+                station._imts = set(pgms.index.get_level_values("IMT"))
                 station.pgms = pgms
         if calc_station_metrics:
             station.compute_station_metrics(rupture, vs30_grids)
@@ -240,13 +246,13 @@ class StationSummary(object):
         """
         station = cls()
         station._station_code = station_code
-        dfdict = {'IMT': [], 'IMC': [], 'Result': []}
+        dfdict = {"IMT": [], "IMC": [], "Result": []}
         for imt in pgms:
             for imc in pgms[imt]:
-                dfdict['IMT'] += [imt]
-                dfdict['IMC'] += [imc]
-                dfdict['Result'] += [pgms[imt][imc]]
-        pgmdf = pd.DataFrame.from_dict(dfdict).set_index(['IMT', 'IMC'])
+                dfdict["IMT"] += [imt]
+                dfdict["IMC"] += [imc]
+                dfdict["Result"] += [pgms[imt][imc]]
+        pgmdf = pd.DataFrame.from_dict(dfdict).set_index(["IMT", "IMC"])
         station.pgms = pgmdf
         imts = [key for key in pgms]
         components = []
@@ -260,10 +266,22 @@ class StationSummary(object):
         return station
 
     @classmethod
-    def from_stream(cls, stream, components, imts, event=None,
-                    damping=None, smoothing=None, bandwidth=None,
-                    allow_nans=None, config=None, calc_waveform_metrics=True,
-                    calc_station_metrics=True, rupture=None, vs30_grids=None):
+    def from_stream(
+        cls,
+        stream,
+        components,
+        imts,
+        event=None,
+        damping=None,
+        smoothing=None,
+        bandwidth=None,
+        allow_nans=None,
+        config=None,
+        calc_waveform_metrics=True,
+        calc_station_metrics=True,
+        rupture=None,
+        vs30_grids=None,
+    ):
         """
         Args:
             stream (obspy.core.stream.Stream):
@@ -307,13 +325,13 @@ class StationSummary(object):
         components = np.sort(components)
 
         if damping is None:
-            damping = config['metrics']['sa']['damping']
+            damping = config["metrics"]["sa"]["damping"]
         if smoothing is None:
-            smoothing = config['metrics']['fas']['smoothing']
+            smoothing = config["metrics"]["fas"]["smoothing"]
         if bandwidth is None:
-            bandwidth = config['metrics']['fas']['bandwidth']
+            bandwidth = config["metrics"]["fas"]["bandwidth"]
         if allow_nans is None:
-            allow_nans = config['metrics']['fas']['allow_nans']
+            allow_nans = config["metrics"]["fas"]["allow_nans"]
 
         station._damping = damping
         station._smoothing = smoothing
@@ -324,23 +342,27 @@ class StationSummary(object):
 
         if stream.passed and calc_waveform_metrics:
             metrics = MetricsController(
-                imts, components, stream, bandwidth=bandwidth,
-                allow_nans=allow_nans, damping=damping, event=event,
-                smooth_type=smoothing)
+                imts,
+                components,
+                stream,
+                bandwidth=bandwidth,
+                allow_nans=allow_nans,
+                damping=damping,
+                event=event,
+                smooth_type=smoothing,
+            )
             station.channel_dict = metrics.channel_dict.copy()
             pgms = metrics.pgms
 
             if pgms.empty:
                 station._components = metrics.imcs
                 station._imts = metrics.imts
-                station.pgms = pd.DataFrame.from_dict({
-                    'IMT': [],
-                    'IMC': [],
-                    'Result': []
-                })
+                station.pgms = pd.DataFrame.from_dict(
+                    {"IMT": [], "IMC": [], "Result": []}
+                )
             else:
-                station._components = set(pgms.index.get_level_values('IMC'))
-                station._imts = set(pgms.index.get_level_values('IMT'))
+                station._components = set(pgms.index.get_level_values("IMC"))
+                station._imts = set(pgms.index.get_level_values("IMT"))
                 station.pgms = pgms
         if calc_station_metrics:
             station.compute_station_metrics(rupture, vs30_grids)
@@ -367,29 +389,28 @@ class StationSummary(object):
             return self.pgms.Result.loc[imt, imc]
 
     def get_summary(self):
-        columns = ['STATION', 'NAME', 'SOURCE',
-                   'NETID', 'LAT', 'LON', 'ELEVATION']
+        columns = ["STATION", "NAME", "SOURCE", "NETID", "LAT", "LON", "ELEVATION"]
         if self._distances is not None:
             for dist_type in self._distances:
-                columns.append(dist_type.upper() + '_DISTANCE')
+                columns.append(dist_type.upper() + "_DISTANCE")
         if self._vs30 is not None:
             for vs30_type in self._vs30:
                 columns.append(vs30_type.upper())
         # set meta_data
         row = np.zeros(len(columns), dtype=list)
         row[0] = self.station_code
-        name_str = self.stream[0].stats['standard']['station_name']
+        name_str = self.stream[0].stats["standard"]["station_name"]
         row[1] = name_str
-        source = self.stream[0].stats.standard['source']
+        source = self.stream[0].stats.standard["source"]
         row[2] = source
-        row[3] = self.stream[0].stats['network']
+        row[3] = self.stream[0].stats["network"]
         row[4] = self.coordinates[0]
         row[5] = self.coordinates[1]
         row[6] = self.elevation
         imcs = self.components
         imts = self.imts
         pgms = self.pgms
-        meta_columns = pd.MultiIndex.from_product([columns, ['']])
+        meta_columns = pd.MultiIndex.from_product([columns, [""]])
         meta_dataframe = pd.DataFrame(np.array([row]), columns=meta_columns)
         pgm_columns = pd.MultiIndex.from_product([imcs, imts])
         pgm_data = np.zeros((1, len(imts) * len(imcs)))
@@ -444,14 +465,15 @@ class StationSummary(object):
         stats = self.stream[0].stats
         self._starttime = stats.starttime
         self._station_code = stats.station
-        if 'coordinates' not in stats:
+        if "coordinates" not in stats:
             self._elevation = np.nan
             self._coordinates = (np.nan, np.nan)
             return
         lat = stats.coordinates.latitude
         lon = stats.coordinates.longitude
-        if ('elevation' not in stats.coordinates
-                or np.isnan(stats.coordinates.elevation)):
+        if "elevation" not in stats.coordinates or np.isnan(
+            stats.coordinates.elevation
+        ):
             elev = 0
         else:
             elev = stats.coordinates.elevation
@@ -509,16 +531,17 @@ class StationSummary(object):
         """
         if self.stream is not None:
             logging.warning(
-                'Setting failed: the stream object cannot be '
-                'changed. A new instance of StationSummary must be created.')
+                "Setting failed: the stream object cannot be "
+                "changed. A new instance of StationSummary must be created."
+            )
         else:
             if not isinstance(stream, Stream):
-                logging.warning('Setting failed: not a stream object.')
-            elif (stream[0].stats['station'].upper()
-                  != self.station_code.upper()):
+                logging.warning("Setting failed: not a stream object.")
+            elif stream[0].stats["station"].upper() != self.station_code.upper():
                 logging.warning(
-                    'Setting failed: stream station does not match '
-                    'StationSummary.station_code.')
+                    "Setting failed: stream station does not match "
+                    "StationSummary.station_code."
+                )
             else:
                 self._stream = stream
 
@@ -570,27 +593,26 @@ class StationSummary(object):
         damping = None
         for element in root.iter():
             etag = element.tag
-            if etag == 'waveform_metrics':
-                station_code = element.attrib['station_code']
+            if etag == "waveform_metrics":
+                station_code = element.attrib["station_code"]
                 continue
             elif etag in imtlist:
                 tdict = {}
-                if etag in ['sa', 'fas']:
-                    period = element.attrib['period']
-                    if 'damping' in element.attrib:
-                        damping = float(element.attrib['damping'])
-                    imt = '%s(%s)' % (etag.upper(), period)
-                elif etag == 'duration':
-                    interval = element.attrib['interval']
-                    imt = '%s%s' % (etag.upper(), interval)
+                if etag in ["sa", "fas"]:
+                    period = element.attrib["period"]
+                    if "damping" in element.attrib:
+                        damping = float(element.attrib["damping"])
+                    imt = f"{etag.upper()}({period})"
+                elif etag == "duration":
+                    interval = element.attrib["interval"]
+                    imt = f"{etag.upper()}{interval}"
                 else:
                     imt = etag.upper()
                 for imc_element in element.getchildren():
                     imc = imc_element.tag.upper()
-                    if imc in ['H1', 'H2', 'Z']:
-                        if 'original_channel' in imc_element.attrib:
-                            channel_dict[imc] = \
-                                imc_element.attrib['original_channel']
+                    if imc in ["H1", "H2", "Z"]:
+                        if "original_channel" in imc_element.attrib:
+                            channel_dict[imc] = imc_element.attrib["original_channel"]
                     value = float(imc_element.text)
                     tdict[imc] = value
 
@@ -601,17 +623,18 @@ class StationSummary(object):
         # extract info from station metrics, fill in metadata
         root = etree.fromstring(xml_station)  # station metrics element
         for element in root.iterchildren():
-            if element.tag == 'distances':
+            if element.tag == "distances":
                 for dist_type in element.iterchildren():
                     station._distances[dist_type.tag] = float(dist_type.text)
-            if element.tag == 'vs30':
+            if element.tag == "vs30":
                 for vs30_type in element.iterchildren():
                     station._vs30[vs30_type.tag] = {
-                        'value': float(vs30_type.text),
-                        'column_header': vs30_type.attrib['column_header'],
-                        'readme_entry': vs30_type.attrib['readme_entry'],
-                        'units': vs30_type.attrib['units']}
-            if element.tag == 'back_azimuth':
+                        "value": float(vs30_type.text),
+                        "column_header": vs30_type.attrib["column_header"],
+                        "readme_entry": vs30_type.attrib["readme_entry"],
+                        "units": vs30_type.attrib["units"],
+                    }
+            if element.tag == "back_azimuth":
                 station._back_azimuth = float(element.text)
 
         return station
@@ -632,14 +655,18 @@ class StationSummary(object):
         elev = self.elevation
         if self.event is not None:
             event = self.event
-            dist, baz, _ = gps2dist_azimuth(lat, lon, event.latitude,
-                                            event.longitude)
-            self._distances['epicentral'] = dist / M_PER_KM
+            dist, baz, _ = gps2dist_azimuth(lat, lon, event.latitude, event.longitude)
+            self._distances["epicentral"] = dist / M_PER_KM
             self._back_azimuth = baz
             if event.depth is not None:
-                self._distances['hypocentral'] = distance(
-                    lon, lat, -elev / M_PER_KM, event.longitude,
-                    event.latitude, event.depth / M_PER_KM)
+                self._distances["hypocentral"] = distance(
+                    lon,
+                    lat,
+                    -elev / M_PER_KM,
+                    event.longitude,
+                    event.latitude,
+                    event.depth / M_PER_KM,
+                )
 
         if rupture is not None:
             lon = np.array([lon])
@@ -661,35 +688,35 @@ class StationSummary(object):
                 for quad in rupture._quadrilaterals:
                     P0, P1, P2, P3 = quad
                     for point in [P0, P1]:
-                        dist, az, baz = gps2dist_azimuth(
-                            point.y, point.x, lat, lon)
+                        dist, az, baz = gps2dist_azimuth(point.y, point.x, lat, lon)
                         dists.append(dist)
                         bazs.append(baz)
                 self._back_azimuth = bazs[np.argmin(dists)]
             else:
                 gc2_dict = {x: [np.nan] for x in gc2_dict}
 
-            self._distances.update({
-                'rupture': rrup[0],
-                'rupture_var': rrup_var[0],
-                'joyner_boore': rjb[0],
-                'joyner_boore_var': rjb_var[0],
-                'gc2_rx': gc2_dict['rx'][0],
-                'gc2_ry': gc2_dict['ry'][0],
-                'gc2_ry0': gc2_dict['ry0'][0],
-                'gc2_U': gc2_dict['U'][0],
-                'gc2_T': gc2_dict['T'][0]
-            })
+            self._distances.update(
+                {
+                    "rupture": rrup[0],
+                    "rupture_var": rrup_var[0],
+                    "joyner_boore": rjb[0],
+                    "joyner_boore_var": rjb_var[0],
+                    "gc2_rx": gc2_dict["rx"][0],
+                    "gc2_ry": gc2_dict["ry"][0],
+                    "gc2_ry0": gc2_dict["ry0"][0],
+                    "gc2_U": gc2_dict["U"][0],
+                    "gc2_T": gc2_dict["T"][0],
+                }
+            )
 
         if vs30_grids is not None:
             for vs30_name in vs30_grids.keys():
                 tmpgrid = vs30_grids[vs30_name]
                 self._vs30[vs30_name] = {
-                    'value': tmpgrid['grid_object'].getValue(
-                        float(lat), float(lon)),
-                    'column_header': tmpgrid['column_header'],
-                    'readme_entry': tmpgrid['readme_entry'],
-                    'units': tmpgrid['units']
+                    "value": tmpgrid["grid_object"].getValue(float(lat), float(lon)),
+                    "column_header": tmpgrid["column_header"],
+                    "readme_entry": tmpgrid["readme_entry"],
+                    "units": tmpgrid["units"],
                 }
 
     def get_metric_xml(self):
@@ -710,9 +737,8 @@ class StationSummary(object):
         Raises:
             KeyError: if the requrested imt is not present.
         """
-        FLOAT_MATCH = r'[0-9]*\.[0-9]*'
-        root = etree.Element('waveform_metrics',
-                             station_code=self.station_code)
+        FLOAT_MATCH = r"[0-9]*\.[0-9]*"
+        root = etree.Element("waveform_metrics", station_code=self.station_code)
         for imt in self.imts:
             imtstr = imt.lower()
             units = None
@@ -724,42 +750,37 @@ class StationSummary(object):
                         units = XML_UNITS[key]
                         break
             if units is None:
-                raise KeyError('Could not find units for IMT %s' % imtstr)
+                raise KeyError(f"Could not find units for IMT {imtstr}")
 
             period = None
-            if imtstr.startswith('sa') or imtstr.startswith('fas'):
+            if imtstr.startswith("sa") or imtstr.startswith("fas"):
                 period = float(re.search(FLOAT_MATCH, imtstr).group())
                 attdict = {
-                    'period': (METRICS_XML_FLOAT_STRING_FORMAT['period']
-                               % period),
-                    'units': units
+                    "period": (METRICS_XML_FLOAT_STRING_FORMAT["period"] % period),
+                    "units": units,
                 }
-                if imtstr.startswith('sa'):
-                    imtstr = 'sa'
+                if imtstr.startswith("sa"):
+                    imtstr = "sa"
                     damping = self._damping
                     if damping is None:
                         damping = DEFAULT_DAMPING
-                    attdict['damping'] = \
-                        METRICS_XML_FLOAT_STRING_FORMAT['damping'] % damping
+                    attdict["damping"] = (
+                        METRICS_XML_FLOAT_STRING_FORMAT["damping"] % damping
+                    )
                 else:
-                    imtstr = 'fas'
+                    imtstr = "fas"
                 imt_tag = etree.SubElement(root, imtstr, attrib=attdict)
-            elif imtstr.startswith('duration'):
-                attdict = {
-                    'interval': imtstr.replace('duration', ''),
-                    'units': units
-                }
-                imtstr = 'duration'
+            elif imtstr.startswith("duration"):
+                attdict = {"interval": imtstr.replace("duration", ""), "units": units}
+                imtstr = "duration"
                 imt_tag = etree.SubElement(root, imtstr, attrib=attdict)
             else:
                 imt_tag = etree.SubElement(root, imtstr, units=units)
 
             for imc in self.components:
-                imcstr = imc.lower().replace('(', '').replace(')', '')
-                if imc in ['H1', 'H2', 'Z']:
-                    attributes = {
-                        'original_channel': self.channel_dict[imc]
-                    }
+                imcstr = imc.lower().replace("(", "").replace(")", "")
+                if imc in ["H1", "H2", "Z"]:
+                    attributes = {"original_channel": self.channel_dict[imc]}
                 else:
                     attributes = {}
                 imc_tag = etree.SubElement(imt_tag, imcstr, attrib=attributes)
@@ -767,8 +788,8 @@ class StationSummary(object):
                     value = self.pgms.Result.loc[imt, imc]
                 except KeyError:
                     value = np.nan
-                imc_tag.text = METRICS_XML_FLOAT_STRING_FORMAT['pgm'] % value
-        xmlstr = etree.tostring(root, pretty_print=True, encoding='unicode')
+                imc_tag.text = METRICS_XML_FLOAT_STRING_FORMAT["pgm"] % value
+        xmlstr = etree.tostring(root, pretty_print=True, encoding="unicode")
         return xmlstr
 
     def get_station_xml(self):
@@ -780,32 +801,39 @@ class StationSummary(object):
             str: XML in the form specified by format.
         """
 
-        root = etree.Element('station_metrics',
-                             station_code=self.station_code)
+        root = etree.Element("station_metrics", station_code=self.station_code)
 
         if self._back_azimuth is not None:
-            back_azimuth = etree.SubElement(root, 'back_azimuth')
-            back_azimuth.text = METRICS_XML_FLOAT_STRING_FORMAT[
-                'back_azimuth'] % self._back_azimuth
+            back_azimuth = etree.SubElement(root, "back_azimuth")
+            back_azimuth.text = (
+                METRICS_XML_FLOAT_STRING_FORMAT["back_azimuth"] % self._back_azimuth
+            )
 
         if self._distances:
-            distances = etree.SubElement(root, 'distances')
+            distances = etree.SubElement(root, "distances")
             for dist_type in self._distances:
-                element = etree.SubElement(distances, dist_type, units='km')
-                element.text = METRICS_XML_FLOAT_STRING_FORMAT[
-                    'distance'] % self._distances[dist_type]
+                element = etree.SubElement(distances, dist_type, units="km")
+                element.text = (
+                    METRICS_XML_FLOAT_STRING_FORMAT["distance"]
+                    % self._distances[dist_type]
+                )
 
         if self._vs30:
-            vs30 = etree.SubElement(root, 'vs30')
+            vs30 = etree.SubElement(root, "vs30")
             for vs30_type in self._vs30:
                 element = etree.SubElement(
-                    vs30, vs30_type, units=self._vs30[vs30_type]['units'],
-                    column_header=self._vs30[vs30_type]['column_header'],
-                    readme_entry=self._vs30[vs30_type]['readme_entry'])
-                element.text = METRICS_XML_FLOAT_STRING_FORMAT[
-                    'vs30'] % self._vs30[vs30_type]['value']
+                    vs30,
+                    vs30_type,
+                    units=self._vs30[vs30_type]["units"],
+                    column_header=self._vs30[vs30_type]["column_header"],
+                    readme_entry=self._vs30[vs30_type]["readme_entry"],
+                )
+                element.text = (
+                    METRICS_XML_FLOAT_STRING_FORMAT["vs30"]
+                    % self._vs30[vs30_type]["value"]
+                )
 
-        return etree.tostring(root, pretty_print=True, encoding='unicode')
+        return etree.tostring(root, pretty_print=True, encoding="unicode")
 
     def toSeries(self):
         """Render StationSummary as a Pandas Series object.
@@ -845,7 +873,7 @@ class StationSummary(object):
         imc_dict = {}
         pgms = self.pgms
         if imc is None:
-            imclist = pgms.index.get_level_values('IMC').unique().tolist()
+            imclist = pgms.index.get_level_values("IMC").unique().tolist()
         elif not isinstance(imc, list):
             imclist = [imc]
         else:
@@ -854,8 +882,7 @@ class StationSummary(object):
         # Note: in this situation, we can only have 1 row per "table" where the
         # different IMTs are the different columns.
         for imc in imclist:
-            row = _get_table_row(
-                self._stream, self, self.event, imc)
+            row = _get_table_row(self._stream, self, self.event, imc)
             if not len(row):
                 continue
             imc_dict[imc] = row
@@ -886,8 +913,5 @@ class StationSummary(object):
             period = np.array(period)
             sa = np.array(sa)
             idx = np.argsort(period)
-            sa_arrays[imc_key] = {
-                'period': period[idx],
-                'sa': sa[idx]
-            }
+            sa_arrays[imc_key] = {"period": period[idx], "sa": sa[idx]}
         return sa_arrays

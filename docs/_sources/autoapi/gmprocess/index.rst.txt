@@ -1,0 +1,39 @@
+:py:mod:`gmprocess`
+===================
+
+.. py:module:: gmprocess
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   apps/index.rst
+   bin/index.rst
+   core/index.rst
+   io/index.rst
+   metrics/index.rst
+   subcommands/index.rst
+   utils/index.rst
+   waveform_processing/index.rst
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   version/index.rst
+
+
+Package Contents
+----------------
+
+.. py:data:: __version__
+   :annotation: = 1.1.11.dev453+g4662ef57.d20220522
+
+   
+

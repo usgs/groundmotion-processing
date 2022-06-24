@@ -8,10 +8,18 @@ import numpy as np
 
 
 class DataFetcher(object):
-    def __init__(self, time, lat, lon, depth, magnitude,
-                 user=None, password=None, radius=100, dt=16, ddepth=30,
-                 dmag=0.3, rawdir=None, config=None,
-                 drop_non_free=True, stream_collection=True):
+    def __init__(
+        self,
+        time,
+        lat,
+        lon,
+        depth,
+        magnitude,
+        config=None,
+        rawdir=None,
+        drop_non_free=True,
+        stream_collection=True,
+    ):
         """Create a DataFetcher instance.
 
         Args:
@@ -25,24 +33,12 @@ class DataFetcher(object):
                 Origin depth.
             magnitude (float):
                 Origin magnitude.
-            user (str):
-                (Optional) username for site.
-            password (str):
-                (Optional) password for site.
-            radius (float):
-                Search radius (km).
-            dt (float):
-                Search time window (sec).
-            ddepth (float):
-                Search depth window (km).
-            dmag (float):
-                Search magnitude window (magnitude units).
-            rawdir (str):
-                Path to location where raw data will be stored.
-                If not specified, raw data will be deleted.
             config (dict):
                 Dictionary containing configuration.
                 If None, retrieve global config.
+            rawdir (str):
+                Path to location where raw data will be stored.
+                If not specified, raw data will be deleted.
             drop_non_free (bool):
                 Option to ignore non-free-field (borehole, sensors on
                 structures, etc.)
@@ -100,22 +96,25 @@ class DataFetcher(object):
         Returns:
             dict: Event dictionary (see above)
         """
-        edict = {'time': UTCDateTime(self.time),
-                 'lat': self.lat,
-                 'lon': self.lon,
-                 'depth': self.depth,
-                 'mag': self.magnitude}
+        edict = {
+            "time": UTCDateTime(self.time),
+            "lat": self.lat,
+            "lon": self.lon,
+            "depth": self.depth,
+            "mag": self.magnitude,
+        }
 
         zmin = 9e12
         minevent = None
         for i in range(0, len(events)):
             event = events[i]
-            ddist = geodetic_distance(edict['lon'], edict['lat'],
-                                      event['lon'], event['lat'])
+            ddist = geodetic_distance(
+                edict["lon"], edict["lat"], event["lon"], event["lat"]
+            )
             ddist_norm = ddist / self.radius
-            dt_norm = np.abs(edict['time'] - event['time']) / self.dt
-            ddepth_norm = np.abs(edict['depth'] - event['depth']) / self.ddepth
-            dmag_norm = np.abs(edict['mag'] - event['mag']) / self.dmag
+            dt_norm = np.abs(edict["time"] - event["time"]) / self.dt
+            ddepth_norm = np.abs(edict["depth"] - event["depth"]) / self.ddepth
+            dmag_norm = np.abs(edict["mag"] - event["mag"]) / self.dmag
             ddsq = np.power(ddist_norm, 2)
             dtsq = np.power(dt_norm, 2)
             dzsq = np.power(ddepth_norm, 2)

@@ -1,8 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-def get_channel_name(sample_rate, is_acceleration=True,
-                     is_vertical=False, is_north=True):
+
+from multiprocessing.sharedctypes import Value
+
+
+def get_channel_name(
+    sample_rate, is_acceleration=True, is_vertical=False, is_north=True
+):
     """Create a SEED compliant channel name.
 
     SEED spec: http://www.fdsn.org/seed_manual/SEEDManual_V2.4_Appendix-A.pdf
@@ -17,20 +22,20 @@ def get_channel_name(sample_rate, is_acceleration=True,
         str: Three character channel name according to SEED spec.
 
     """
-    band = 'H'  # High Broad Band
+    band = "H"  # High Broad Band
     if sample_rate < 80 and sample_rate >= 10:
-        band = 'B'
+        band = "B"
 
-    code = 'N'
+    code = "N"
     if not is_acceleration:
-        code = 'H'  # low-gain velocity sensors are very rare
+        code = "H"  # low-gain velocity sensors are very rare
 
     if is_vertical:
-        number = 'Z'
+        number = "Z"
     else:
-        number = '2'
+        number = "2"
         if is_north:
-            number = '1'
+            number = "1"
 
     channel = band + code + number
     return channel
@@ -42,15 +47,19 @@ def get_units_type(channel):
     channel code. The units type indicates whether the instrument natively
     measures acceleration or velocity.
     """
-
-    if channel[1] == 'N':
-        return 'acc'
+    inst_code = channel[1]
+    ACC_CODES = ["N"]
+    VEL_CODES = ["H", "L", "M", "P"]
+    if inst_code in ACC_CODES:
+        return "acc"
+    elif inst_code in VEL_CODES:
+        return "vel"
     else:
-        return 'vel'
+        raise ValueError("Unsupported instrument code.")
 
 
 def is_channel_north(angle):
-    '''Determine whether horizontal angle is closer to North/South than
+    """Determine whether horizontal angle is closer to North/South than
     East/West.
 
     Args:
@@ -60,7 +69,7 @@ def is_channel_north(angle):
     Returns:
         bool:
             True if closer to North/South than East/West, False otherwise.
-    '''
+    """
     if (angle > 315 or angle < 45) or (angle > 135 and angle < 225):
         return True
     else:

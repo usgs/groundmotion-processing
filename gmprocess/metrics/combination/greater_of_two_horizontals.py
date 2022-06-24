@@ -7,7 +7,7 @@ import numpy as np
 
 class Greater_Of_Two_Horizontals(Combination):
     """Class for extracting the maximum value between the two horizontal
-            channels."""
+    channels."""
 
     def __init__(self, combination_data):
         """
@@ -26,5 +26,5 @@ class Greater_Of_Two_Horizontals(Combination):
         """
         horizontals = self._get_horizontals()
         h1, h2 = horizontals[0], horizontals[1]
-        g2h = {'': np.abs(max([h1, h2]))}
+        g2h = {"": np.abs(max([h1, h2]))}
         return g2h

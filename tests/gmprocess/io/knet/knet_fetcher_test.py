@@ -13,12 +13,13 @@ def fetcher_test(user, passwd):
     eqlon = 146.948
     eqdepth = 10.0
     eqmag = 6.0
-    rawdir = os.path.join(os.path.expanduser('~'), 'tmp', 'knet')
-    fetcher = KNETFetcher(utime, eqlat, eqlon, eqdepth, eqmag,
-                          user=user, password=passwd, rawdir=rawdir)
+    rawdir = os.path.join(os.path.expanduser("~"), "tmp", "knet")
+    fetcher = KNETFetcher(
+        utime, eqlat, eqlon, eqdepth, eqmag, user=user, password=passwd, rawdir=rawdir
+    )
     events = fetcher.getMatchingEvents(solve=False)
     assert len(events) == 1
-    assert events[0]['mag'] == 6.2
+    assert events[0]["mag"] == 6.2
     stream_collection = fetcher.retrieveData(events[0])
     assert len(stream_collection) == 43
 
@@ -27,15 +28,24 @@ def fetcher_test(user, passwd):
     eqlon = 135.17
     eqdepth = 5.0
     eqmag = 2.8
-    rawdir = os.path.join(os.path.expanduser('~'), 'tmp', 'knet')
-    fetcher = KNETFetcher(utime, eqlat, eqlon, eqdepth, eqmag,
-                          user=user, password=passwd, rawdir=rawdir, dt=125)
+    rawdir = os.path.join(os.path.expanduser("~"), "tmp", "knet")
+    fetcher = KNETFetcher(
+        utime,
+        eqlat,
+        eqlon,
+        eqdepth,
+        eqmag,
+        user=user,
+        password=passwd,
+        rawdir=rawdir,
+        dt=125,
+    )
     events = fetcher.getMatchingEvents(solve=True)
     stream_collection = fetcher.retrieveData(events[0])
     assert len(stream_collection) == 78
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     username = sys.argv[1]
     passwd = sys.argv[2]
     fetcher_test(username, passwd)

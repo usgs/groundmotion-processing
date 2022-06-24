@@ -29,9 +29,9 @@ class Arithmetic_Mean(IMC):
         """
         super().__init__(imc, imt, percentile=None, period=None)
         self._steps = {
-            'Rotation': 'null_rotation',
-            'Combination2': 'arithmetic_mean',
+            "Rotation": "null_rotation",
+            "Combination2": "arithmetic_mean",
         }
-        if imt.startswith('fas'):
-            self._steps['Combination1'] = 'arithmetic_mean'
-            self._steps['Combination2'] = 'null_combination'
+        if imt.startswith("fas"):
+            self._steps["Combination1"] = "arithmetic_mean"
+            self._steps["Combination2"] = "null_combination"

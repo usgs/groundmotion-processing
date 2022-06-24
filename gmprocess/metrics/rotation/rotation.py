@@ -21,6 +21,7 @@ class Rotation(object):
                 an earthquake hypocenter. Default is None.
         """
         self.rotation_data = rotation_data
+        self.event = event
 
     def _get_horizontals(self):
         """
@@ -28,27 +29,25 @@ class Rotation(object):
 
         Returns:
             horizontal_channels: list of horizontal channels
-                    (obspy.core.trac.Trace).
+            (obspy.core.trac.Trace).
 
         Raises:
             PGMException: if there are less than or greater than two
-                    horizontal channels.
+                horizontal channels.
         """
         horizontal_channels = []
         for trace in self.rotation_data:
             # Group all of the max values from traces without
             # Z in the channel name
-            if 'Z' not in trace.stats['channel'].upper():
+            if "Z" not in trace.stats["channel"].upper():
                 horizontal_channels += [trace]
         # Test the horizontals
         if len(horizontal_channels) > 2:
-            raise PGMException('Rotation: More than two horizontal channels.')
+            raise PGMException("Rotation: More than two horizontal channels.")
         elif len(horizontal_channels) < 2:
-            raise PGMException('Rotation: Less than two horizontal channels.')
-        elif (len(horizontal_channels[0].data) !=
-              len(horizontal_channels[1].data)):
-            raise PGMException(
-                'Rotation: Horizontal channels have different lengths.')
+            raise PGMException("Rotation: Less than two horizontal channels.")
+        elif len(horizontal_channels[0].data) != len(horizontal_channels[1].data):
+            raise PGMException("Rotation: Horizontal channels have different lengths.")
         return horizontal_channels
 
     def get_max(self, tr1, pick_peak, tr2=None, percentiles=50):
@@ -79,8 +78,8 @@ class Rotation(object):
                     - "gm" for geometric mean
                     - "am" for arithmetic mean
                     - "max" for maximum
-            percentiles (list): percentile(s) to return the requested values.
-                Default is 50.
+            percentiles (list):
+                Percentile(s) to return the requested values. Default is 50.
 
         Returns:
             If 1D input:
@@ -94,63 +93,63 @@ class Rotation(object):
         # working with 1D or 2D traces. Trace 1 and Trace 2 must have the same
         # dimension (either both 1D or 2D).
         if tr2 is None:
-            if (len(tr1.shape) == 1):
-                input_dim = '1D'
-            elif (len(tr1.shape) == 2):
-                input_dim = '2D'
+            if len(tr1.shape) == 1:
+                input_dim = "1D"
+            elif len(tr1.shape) == 2:
+                input_dim = "2D"
             else:
-                raise PGMException('Trace one must be either 1D or 2D.')
+                raise PGMException("Trace one must be either 1D or 2D.")
         else:
-            if (len(tr1.shape) != len(tr2.shape)):
-                raise PGMException('Traces must have the same dimensions.')
-            elif (len(tr1.shape) == 1):
-                input_dim = '1D'
-            elif (len(tr1.shape) == 2):
-                input_dim = '2D'
+            if len(tr1.shape) != len(tr2.shape):
+                raise PGMException("Traces must have the same dimensions.")
+            elif len(tr1.shape) == 1:
+                input_dim = "1D"
+            elif len(tr1.shape) == 2:
+                input_dim = "2D"
             else:
-                raise PGMException('Traces must be either 1D or 2D.')
+                raise PGMException("Traces must be either 1D or 2D.")
 
         # Set the axis from which to pull the maximums based on
         # the input dimension.
-        if input_dim == '1D':
+        if input_dim == "1D":
             axis = 0
         else:
             axis = 1
 
         # Geometric mean
-        if (pick_peak.lower() == 'gm'):
+        if pick_peak.lower() == "gm":
             if tr2 is None:
-                raise PGMException('Two traces must be provided to find mean.')
+                raise PGMException("Two traces must be provided to find mean.")
             tr1_max = np.amax(tr1, axis)
             tr2_max = np.amax(tr2, axis)
             geo_means = np.sqrt(tr1_max * tr2_max)
 
-            if (input_dim == '1D'):
+            if input_dim == "1D":
                 return geo_means
             else:
                 return geo_means, np.percentile(geo_means, percentiles)
 
         # Arithmetic mean
-        elif (pick_peak.lower() == 'am'):
+        elif pick_peak.lower() == "am":
             if tr2 is None:
-                raise PGMException('Two traces must be provided to find mean.')
+                raise PGMException("Two traces must be provided to find mean.")
             tr1_max = np.amax(tr1, axis)
             tr2_max = np.amax(tr2, axis)
             arith_means = 0.5 * (tr1_max + tr2_max)
 
-            if (input_dim == '1D'):
+            if input_dim == "1D":
                 return arith_means
             else:
                 return arith_means, np.percentile(arith_means, percentiles)
 
         # Maximum
-        elif (pick_peak.lower() == 'max'):
+        elif pick_peak.lower() == "max":
             if tr2 is not None:
                 tr1_max = np.amax(np.abs(tr1), axis)
                 tr2_max = np.amax(np.abs(tr2), axis)
 
                 # Maximum of two horizontals
-                if (input_dim == '1D'):
+                if input_dim == "1D":
                     return np.amax([tr1_max, tr2_max])
                 else:
                     maximums = []
@@ -160,12 +159,12 @@ class Rotation(object):
                     return maximums, np.percentile(maximums, percentiles)
             else:
                 maximums = np.amax(np.abs(tr1), axis)
-                if (input_dim == '1D'):
+                if input_dim == "1D":
                     return maximums
                 else:
                     return maximums, np.percentile(maximums, percentiles)
         else:
-            raise PGMException('Not a valid pick for the peak.')
+            raise PGMException("Not a valid pick for the peak.")
 
     def rotate(self, tr1, tr2, combine=False, delta=1.0):
         """
@@ -173,10 +172,10 @@ class Rotation(object):
         data at each degree.
 
         Args:
-            tr1 (obspy.core.trace.Trace):
-                Trace 1 of strong motion data.
-            tr2 (obspy.core.trace.Trace):
-                Trace 2 of strong motion data.
+            tr1 (ndarray):
+                Array of trace data.
+            tr2 (ndarray):
+                Array of trace data.
             combine (bool):
                 Whether rotated traces should be combined. Default is False.
             delta (float):
@@ -194,8 +193,7 @@ class Rotation(object):
             max_deg = 90
 
         num_rows = int(max_deg * (1.0 / delta) + 1)
-        degrees = np.deg2rad(np.linspace(
-            0, max_deg, num_rows)).reshape((-1, 1))
+        degrees = np.deg2rad(np.linspace(0, max_deg, num_rows)).reshape((-1, 1))
         cos_deg = np.cos(degrees)
         sin_deg = np.sin(degrees)
 

@@ -93,6 +93,7 @@ read:
     # Resampling rate if times are unevenly spaced
     resample_rate: 200
 
+    use_streamcollection: True
 # -----------------------------------------------------------------------------
 # Options for separating noise/signal windows
 #
@@ -177,9 +178,6 @@ processing:
     #     threshold: 3.0
 
     - remove_response:
-        # Outuput units. Must be 'ACC', 'VEL', or 'DISP'.
-        output: 'ACC'
-
         # Pre-filtering frequencies. See obspy.core.trace.Trace.remove_response
         # for details. Note: if f3 is Null it will be set to 0.9*fn, if f4 is
         # Null it will be set to fn.
@@ -304,12 +302,15 @@ processing:
     - highpass_filter:
         # Applies a Butterworth highpass filter using the highpass corner
         # determined with 'corner_frequencies' section.
+        # If true, use gmprocess frequency domain implementation; if false, use ObsPy filters
+        frequency_domain: False
         filter_order: 5
         number_of_passes: 2
 
     - lowpass_filter:
         # Applies a Butterworth lowpass filter using the lowpass corner
         # determined with 'corner_frequencies' section.
+        frequency_domain: False
         filter_order: 5
         number_of_passes: 2
 

@@ -13,8 +13,16 @@ from gmprocess.core.stationstream import StationStream
 class Max(Reduction):
     """Class for calculation of maximum value."""
 
-    def __init__(self, reduction_data, bandwidth=None, percentile=None,
-                 period=None, smoothing=None, interval=[5, 95]):
+    def __init__(
+        self,
+        reduction_data,
+        bandwidth=None,
+        percentile=None,
+        period=None,
+        smoothing=None,
+        interval=[5, 95],
+        config=None,
+    ):
         """
         Args:
             reduction_data (obspy.core.stream.Stream or numpy.ndarray):
@@ -31,9 +39,18 @@ class Max(Reduction):
             interval (list):
                 List of length 2 with the quantiles (0-1) for duration interval
                 calculation.
+            config (dict):
+                Config dictionary.
         """
-        super().__init__(reduction_data, bandwidth=None, percentile=None,
-                         period=None, smoothing=None, interval=[5, 95])
+        super().__init__(
+            reduction_data,
+            bandwidth=bandwidth,
+            percentile=percentile,
+            period=period,
+            smoothing=smoothing,
+            interval=interval,
+            config=config,
+        )
         self.result = self.get_max()
 
     def get_max(self):
@@ -47,18 +64,18 @@ class Max(Reduction):
         times = {}
         if isinstance(self.reduction_data, (Stream, StationStream)):
             for trace in self.reduction_data:
-                if trace.stats.standard.units == 'acc':
-                    key = 'pga_time'
-                elif trace.stats.standard.units == 'vel':
-                    key = 'pgv_time'
-                elif trace.stats.standard.units == 'disp':
-                    key = 'pgd_time'
+                if trace.stats.standard.units_type == "acc":
+                    key = "pga_time"
+                elif trace.stats.standard.units_type == "vel":
+                    key = "pgv_time"
+                elif trace.stats.standard.units_type == "disp":
+                    key = "pgd_time"
                 else:
-                    key = 'peak_time'
+                    key = "peak_time"
                 idx = np.argmax(np.abs(trace.data))
                 dtimes = np.linspace(
-                    0.0, trace.stats.endtime - trace.stats.starttime,
-                    trace.stats.npts)
+                    0.0, trace.stats.endtime - trace.stats.starttime, trace.stats.npts
+                )
                 dtime = dtimes[idx]
                 max_value = np.abs(trace.data[idx])
                 max_time = trace.stats.starttime + dtime

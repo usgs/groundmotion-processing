@@ -3,7 +3,6 @@
 
 # Third party imports
 import numpy as np
-from scipy import integrate
 
 # Local imports
 from gmprocess.utils.constants import GAL_TO_PCTG
@@ -15,8 +14,16 @@ from gmprocess.core.stationtrace import StationTrace
 class Arias(Reduction):
     """Class for calculation of arias intensity."""
 
-    def __init__(self, reduction_data, bandwidth=None, percentile=None,
-                 period=None, smoothing=None, interval=[5, 95]):
+    def __init__(
+        self,
+        reduction_data,
+        bandwidth=None,
+        percentile=None,
+        period=None,
+        smoothing=None,
+        interval=[5, 95],
+        config=None,
+    ):
         """
         Args:
             reduction_data (obspy.core.stream.Stream or numpy.ndarray):
@@ -33,9 +40,18 @@ class Arias(Reduction):
             interval (list):
                 List of length 2 with the quantiles (0-1) for duration interval
                 calculation.
+            config (dict):
+                Config dictionary.
         """
-        super().__init__(reduction_data, bandwidth=None, percentile=None,
-                         period=None, smoothing=None, interval=[5, 95])
+        super().__init__(
+            reduction_data=reduction_data,
+            bandwidth=bandwidth,
+            percentile=percentile,
+            period=period,
+            smoothing=smoothing,
+            interval=interval,
+            config=config,
+        )
         self.arias_stream = None
         self.result = self.get_arias()
 
@@ -49,18 +65,20 @@ class Arias(Reduction):
         arias_intensities = {}
         arias_stream = StationStream([])
         for trace in self.reduction_data:
-            dt = trace.stats['delta']
+            tr = trace.copy()
             # convert from cm/s/s to m/s/s
-            acc = trace.data * 0.01
+            tr.data *= 0.01
+            # square accel
+            tr.data *= tr.data
 
             # Calculate Arias Intensity
-            integrated_acc2 = integrate.cumtrapz(acc * acc, dx=dt)
-            arias_intensity = integrated_acc2 * np.pi * GAL_TO_PCTG / 2
+            tr.integrate(self.config)
+            arias_intensity = tr.data * np.pi * GAL_TO_PCTG / 2
 
             # Create a copy of stats so we don't modify original data
             stats = trace.stats.copy()
             channel = stats.channel
-            stats.standard.units = 'vel'
+            stats.standard.units_type = "vel"
             stats.npts = len(arias_intensity)
             arias_stream.append(StationTrace(arias_intensity, stats))
             arias_intensities[channel] = np.abs(np.max(arias_intensity))

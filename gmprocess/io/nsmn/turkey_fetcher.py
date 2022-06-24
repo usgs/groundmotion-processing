@@ -7,6 +7,7 @@ import os.path
 import logging
 
 # third party imports
+import logging
 import pytz
 import numpy as np
 import requests
@@ -22,35 +23,35 @@ from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.utils.config import get_config
 
 
-SEARCH_URL = 'http://kyhdata.deprem.gov.tr/2K/kyhdata_v4.php?dst=TU9EVUxFX05BTUU9ZWFydGhxdWFrZSZNT0RVTEVfVEFTSz1zZWFyY2g%3D'
+SEARCH_URL = "http://kyhdata.deprem.gov.tr/2K/kyhdata_v4.php?dst=TU9EVUxFX05BTUU9ZWFydGhxdWFrZSZNT0RVTEVfVEFTSz1zZWFyY2g%3D"
 
 EQ_FORM_DATA = {
-    'from_day': '',
-    'from_month': '',
-    'from_year': '',
-    'from_md': '',
-    'to_md': '',
-    'to_day': '',
-    'to_month': '',
-    'to_year': '',
-    'from_ml': '',
-    'to_ml': '',
-    'from_epi_lat': '34.00',
-    'to_epi_lat': '43.00',
-    'from_ms': '',
-    'to_ms': '',
-    'from_epi_lon': '24.0',
-    'to_epi_lon': '45.82',
-    'from_mw': '',
-    'to_mw': '',
-    'from_depth': '',
-    'to_depth': '',
-    'from_mb': '',
-    'to_mb': ''
+    "from_day": "",
+    "from_month": "",
+    "from_year": "",
+    "from_md": "",
+    "to_md": "",
+    "to_day": "",
+    "to_month": "",
+    "to_year": "",
+    "from_ml": "",
+    "to_ml": "",
+    "from_epi_lat": "34.00",
+    "to_epi_lat": "43.00",
+    "from_ms": "",
+    "to_ms": "",
+    "from_epi_lon": "24.0",
+    "to_epi_lon": "45.82",
+    "from_mw": "",
+    "to_mw": "",
+    "from_depth": "",
+    "to_depth": "",
+    "from_mb": "",
+    "to_mb": "",
 }
 
 # 2019/03/13-13:48:00.00
-TIMEFMT = '%Y-%m-%dT%H:%M:%S'
+TIMEFMT = "%Y-%m-%dT%H:%M:%S"
 
 # default values for this fetcher
 # if None specified in constructor, AND no parameters specified in
@@ -62,12 +63,26 @@ DMAG = 0.3
 
 
 class TurkeyFetcher(DataFetcher):
-    def __init__(self, time, lat, lon,
-                 depth, magnitude,
-                 user=None, password=None,
-                 radius=100, dt=16, ddepth=30,
-                 dmag=0.3,
-                 rawdir=None, config=None, drop_non_free=True):
+    # this announces to the world the valid bounds for this fetcher.
+    BOUNDS = [25.664, 46.67, 34.132, 43.555]
+
+    def __init__(
+        self,
+        time,
+        lat,
+        lon,
+        depth,
+        magnitude,
+        user=None,
+        password=None,
+        radius=100,
+        dt=16,
+        ddepth=30,
+        dmag=0.3,
+        rawdir=None,
+        config=None,
+        drop_non_free=True,
+    ):
         """Create a TurkeyFetcher instance.
 
         Download Turkish strong motion data from the Turkish NSMN site:
@@ -114,17 +129,17 @@ class TurkeyFetcher(DataFetcher):
         cfg_ddepth = None
         cfg_dmag = None
 
-        if 'fetchers' in config:
-            if 'TurkeyFetcher' in config['fetchers']:
-                fetch_cfg = config['fetchers']['TurkeyFetcher']
-                if 'radius' in fetch_cfg:
-                    cfg_radius = float(fetch_cfg['radius'])
-                if 'dt' in fetch_cfg:
-                    cfg_dt = float(fetch_cfg['dt'])
-                if 'ddepth' in fetch_cfg:
-                    cfg_ddepth = float(fetch_cfg['ddepth'])
-                if 'dmag' in fetch_cfg:
-                    cfg_dmag = float(fetch_cfg['dmag'])
+        if "fetchers" in config:
+            if "TurkeyFetcher" in config["fetchers"]:
+                fetch_cfg = config["fetchers"]["TurkeyFetcher"]
+                if "radius" in fetch_cfg:
+                    cfg_radius = float(fetch_cfg["radius"])
+                if "dt" in fetch_cfg:
+                    cfg_dt = float(fetch_cfg["dt"])
+                if "ddepth" in fetch_cfg:
+                    cfg_ddepth = float(fetch_cfg["ddepth"])
+                if "dmag" in fetch_cfg:
+                    cfg_dmag = float(fetch_cfg["dmag"])
 
         radius = _get_first_value(radius, cfg_radius, RADIUS)
         dt = _get_first_value(dt, cfg_dt, DT)
@@ -144,12 +159,6 @@ class TurkeyFetcher(DataFetcher):
         self.magnitude = magnitude
         self.ddepth = ddepth
         self.dmag = dmag
-        xmin = 25.664
-        xmax = 46.67
-        ymin = 34.132
-        ymax = 43.555
-        # this announces to the world the valid bounds for this fetcher.
-        self.BOUNDS = [xmin, xmax, ymin, ymax]
         self.drop_non_free = drop_non_free
 
     def getMatchingEvents(self, solve=True):
@@ -171,22 +180,24 @@ class TurkeyFetcher(DataFetcher):
         df = get_turkey_dataframe(self.time, 1)
         if df is None:
             return []
-        lats = df['latitude'].to_numpy()
-        lons = df['longitude'].to_numpy()
+        lats = df["latitude"].to_numpy()
+        lons = df["longitude"].to_numpy()
         etime = pd.Timestamp(self.time)
-        dtimes = np.abs(df['origintime'] - etime)
+        dtimes = np.abs(df["origintime"] - etime)
         distances = geodetic_distance(self.lon, self.lat, lons, lats)
         didx = distances <= self.radius
-        tidx = (dtimes <= np.timedelta64(int(self.dt), 's')).to_numpy()
+        tidx = (dtimes <= np.timedelta64(int(self.dt), "s")).to_numpy()
         newdf = df[didx & tidx]
         events = []
         for idx, row in newdf.iterrows():
-            eventdict = {'time': UTCDateTime(row['origintime']),
-                         'lat': row['latitude'],
-                         'lon': row['longitude'],
-                         'depth': row['depth'],
-                         'url': row['url'],
-                         'mag': row['magnitude']}
+            eventdict = {
+                "time": UTCDateTime(row["origintime"]),
+                "lat": row["latitude"],
+                "lon": row["longitude"],
+                "depth": row["depth"],
+                "url": row["url"],
+                "mag": row["magnitude"],
+            }
             events.append(eventdict)
 
         if solve and len(events) > 1:
@@ -214,43 +225,52 @@ class TurkeyFetcher(DataFetcher):
                 os.makedirs(rawdir)
 
         urlparts = urlparse(SEARCH_URL)
-        req = requests.get(event_dict['url'])
+        req = requests.get(event_dict["url"])
+
+        logging.debug("TurkeyFetcher event url: %s", str(event_dict["url"]))
+        logging.debug("TurkeyFetcher event response code: %s", req.status_code)
+
         data = req.text
         soup = BeautifulSoup(data, features="lxml")
-        table = soup.find_all('table', 'tableType_01')[1]
+        table = soup.find_all("table", "tableType_01")[1]
         datafiles = []
-        for row in table.find_all('tr'):
-            if 'class' in row.attrs:
+        for row in table.find_all("tr"):
+            if "class" in row.attrs:
                 continue
-            col = row.find_all('td', 'coltype01')[0]
-            href = col.contents[0].attrs['href']
+            col = row.find_all("td", "coltype01")[0]
+            href = col.contents[0].attrs["href"]
             station_id = col.contents[0].contents[0]
-            station_url = urljoin('http://' + urlparts.netloc, href)
+            station_url = urljoin("http://" + urlparts.netloc, href)
             req2 = requests.get(station_url)
+            logging.debug("TurkeyFetcher station url: %s", str(station_url))
+            logging.debug("TurkeyFetcher station response code: %s", req2.status_code)
             data2 = req2.text
             soup2 = BeautifulSoup(data2, features="lxml")
-            center = soup2.find_all('center')[0]
-            anchor = center.find_all('a')[0]
-            href2 = anchor.attrs['href']
-            data_url = urljoin('http://' + urlparts.netloc, href2)
+            center = soup2.find_all("center")[0]
+            anchor = center.find_all("a")[0]
+            href2 = anchor.attrs["href"]
+            data_url = urljoin("http://" + urlparts.netloc, href2)
             req3 = requests.get(data_url)
+            logging.debug("TurkeyFetcher data url: %s", str(data_url))
+            logging.debug("TurkeyFetcher data response code: %s", req3.status_code)
             data = req3.text
-            localfile = os.path.join(rawdir, '%s.txt' % station_id)
-            logging.info('Downloading Turkish data file %s...' % station_id)
-            with open(localfile, 'wt') as f:
+            localfile = os.path.join(rawdir, f"{station_id}.txt")
+            logging.info(f"Downloading Turkish data file {station_id}...")
+            with open(localfile, "wt") as f:
                 f.write(data)
             datafiles.append(localfile)
 
         streams = []
         for dfile in datafiles:
-            logging.info('Reading datafile %s...' % dfile)
+            logging.info(f"Reading datafile {dfile}...")
             streams += read_nsmn(dfile)
 
         if self.rawdir is None:
             shutil.rmtree(rawdir)
 
-        stream_collection = StreamCollection(streams=streams,
-                                             drop_non_free=self.drop_non_free)
+        stream_collection = StreamCollection(
+            streams=streams, drop_non_free=self.drop_non_free
+        )
         return stream_collection
 
 
@@ -279,30 +299,38 @@ def get_turkey_dataframe(time, dt):
     params = EQ_FORM_DATA.copy()
     start_time = time - timedelta(days=dt)
     end_time = time + timedelta(days=dt)
-    params['from_year'] = str(start_time.year)
-    params['from_month'] = '%02i' % start_time.month
-    params['from_day'] = '%02i' % start_time.day
-    params['to_year'] = str(end_time.year)
-    params['to_month'] = '%02i' % end_time.month
-    params['to_day'] = '%02i' % end_time.day
+    params["from_year"] = str(start_time.year)
+    params["from_month"] = "%02i" % start_time.month
+    params["from_day"] = "%02i" % start_time.day
+    params["to_year"] = str(end_time.year)
+    params["to_month"] = "%02i" % end_time.month
+    params["to_day"] = "%02i" % end_time.day
     req = requests.post(url, params)
+    logging.debug("TurkeyFetcher dataframe url: %s", str(url))
+    logging.debug("TurkeyFetcher dataframe response code: %s", req.status_code)
     if req.status_code != 200:
         return None
     data = req.text
     soup = BeautifulSoup(data, features="lxml")
-    all_table = soup.find_all('table', 'tableType_01')
+    all_table = soup.find_all("table", "tableType_01")
     if len(all_table):
         table = all_table[0]
-        cols = ['id', 'origintime', 'latitude',
-                'longitude', 'depth', 'magnitude', 'url']
+        cols = [
+            "id",
+            "origintime",
+            "latitude",
+            "longitude",
+            "depth",
+            "magnitude",
+            "url",
+        ]
         df = pd.DataFrame(columns=cols)
-        for row in table.find_all('tr'):
-            if 'class' in row.attrs and row.attrs['class'] == [
-                    'headerRowType_01']:
+        for row in table.find_all("tr"):
+            if "class" in row.attrs and row.attrs["class"] == ["headerRowType_01"]:
                 continue
-            cols = row.find_all('td', 'coltype01')
-            href = cols[0].contents[0].attrs['href']
-            event_url = urljoin('http://' + urlparts.netloc, href)
+            cols = row.find_all("td", "coltype01")
+            href = cols[0].contents[0].attrs["href"]
+            event_url = urljoin("http://" + urlparts.netloc, href)
             eid = cols[0].contents[0].contents[0]
             datestr = str(cols[1].contents[0])
             timestr = str(cols[2].contents[0])
@@ -316,19 +344,21 @@ def get_turkey_dataframe(time, dt):
                     mag = float(str(cols[i].contents[0]))
                     mags.append(mag)
             mag = max(mags)
-            time = datetime.strptime(datestr + 'T' + timestr, TIMEFMT)
-            time = pd.Timestamp(time).tz_localize('UTC')
-            edict = {'id': eid,
-                     'url': event_url,
-                     'origintime': time,
-                     'latitude': lat,
-                     'longitude': lon,
-                     'depth': depth,
-                     'magnitude': mag}
+            time = datetime.strptime(datestr + "T" + timestr, TIMEFMT)
+            time = pd.Timestamp(time).tz_localize("UTC")
+            edict = {
+                "id": eid,
+                "url": event_url,
+                "origintime": time,
+                "latitude": lat,
+                "longitude": lon,
+                "depth": depth,
+                "magnitude": mag,
+            }
             df = df.append(edict, ignore_index=True)
 
         # make sure that origintime is actually a time
-        df['origintime'] = pd.to_datetime(df['origintime'])
+        df["origintime"] = pd.to_datetime(df["origintime"])
         return df
     else:
         return None

@@ -4,19 +4,16 @@ import os.path
 import numpy as np
 from gmprocess.io.esm.core import is_esm, read_esm
 import pkg_resources
-from gmprocess.io.test_utils import read_data_dir
+from gmprocess.utils.test_utils import read_data_dir
 
 
 def test():
-    dpath = os.path.join('data', 'testdata', 'esm', 'us60004wsq')
-    datadir = pkg_resources.resource_filename('gmprocess', dpath)
+    dpath = os.path.join("data", "testdata", "esm", "us60004wsq")
+    datadir = pkg_resources.resource_filename("gmprocess", dpath)
 
-    esm_file1 = os.path.join(
-        datadir, 'HI.ARS1..HNE.D.20190728.160908.C.ACC.ASC')
-    esm_file2 = os.path.join(
-        datadir, 'HI.ARS1..HNN.D.20190728.160908.C.ACC.ASC')
-    esm_file3 = os.path.join(
-        datadir, 'HI.ARS1..HNZ.D.20190728.160908.C.ACC.ASC')
+    esm_file1 = os.path.join(datadir, "HI.ARS1..HNE.D.20190728.160908.C.ACC.ASC")
+    esm_file2 = os.path.join(datadir, "HI.ARS1..HNN.D.20190728.160908.C.ACC.ASC")
+    esm_file3 = os.path.join(datadir, "HI.ARS1..HNZ.D.20190728.160908.C.ACC.ASC")
     assert is_esm(esm_file1)
     try:
         assert is_esm(os.path.abspath(__file__))
@@ -33,9 +30,9 @@ def test():
 
     # test that a file that is not esm format raises an Exception
     try:
-        esm_files, _ = read_data_dir('geonet',
-                                     'nz2018p115908',
-                                     '20161113_110256_WTMC_20.V1A')
+        esm_files, _ = read_data_dir(
+            "geonet", "nz2018p115908", "20161113_110256_WTMC_20.V1A"
+        )
 
         esm_file = esm_files[0]
         read_esm(esm_file)[0]
@@ -45,6 +42,6 @@ def test():
     assert not success
 
 
-if __name__ == '__main__':
-    os.environ['CALLED_FROM_PYTEST'] = 'True'
+if __name__ == "__main__":
+    os.environ["CALLED_FROM_PYTEST"] = "True"
     test()

@@ -15,16 +15,15 @@ def fetcher_test():
     eqlon = 38.042
     eqdepth = 10.0
     eqmag = 4.4
-    rawdir = os.path.join(os.path.expanduser('~'), 'tmp', 'turkey')
-    fetcher = TurkeyFetcher(utime, eqlat, eqlon, eqdepth, eqmag,
-                            rawdir=rawdir)
+    rawdir = os.path.join(os.path.expanduser("~"), "tmp", "turkey")
+    fetcher = TurkeyFetcher(utime, eqlat, eqlon, eqdepth, eqmag, rawdir=rawdir)
     events = fetcher.getMatchingEvents(solve=False)
     assert len(events) == 1
-    assert events[0]['mag'] == 4.1
+    assert events[0]["mag"] == 4.1
     stream_collection = fetcher.retrieveData(events[0])
     assert len(stream_collection) == 27
 
 
-if __name__ == '__main__':
-    os.environ['CALLED_FROM_PYTEST'] = 'True'
+if __name__ == "__main__":
+    os.environ["CALLED_FROM_PYTEST"] = "True"
     fetcher_test()

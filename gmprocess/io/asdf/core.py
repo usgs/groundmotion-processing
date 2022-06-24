@@ -1,24 +1,33 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import os
+
 # third party imports
 import h5py
 
 # local imports
 from .stream_workspace import StreamWorkspace
+from ... import __version__ as VERSION
 
-TIMEPAT = '[0-9]{4}-[0-9]{2}-[0-9]{2}T'
+TIMEPAT = "[0-9]{4}-[0-9]{2}-[0-9]{2}T"
 
 
-def is_asdf(filename):
+def is_asdf(filename, config=None):
     """Verify that the input file is an ASDF file.
 
     Args:
-        filename (str): Path to candidate ASDF file.
+        filename (str):
+            Path to candidate ASDF file.
+        config (dict):
+            Dictionary containing configuration.
 
     Returns:
         bool: True if ASDF, False if not.
     """
     try:
-        f = h5py.File(filename, 'r')
-        if 'AuxiliaryData' in f:
+        f = h5py.File(filename, "r")
+        if "AuxiliaryData" in f:
             return True
         else:
             return False
@@ -49,8 +58,7 @@ def read_asdf(filename, eventid=None, stations=None, label=None):
             labels = workspace.getLabels()
         else:
             labels = [label]
-        streams = workspace.getStreams(eventid, stations=stations,
-                                       labels=labels)
+        streams = workspace.getStreams(eventid, stations=stations, labels=labels)
         allstreams += streams
 
     workspace.close()
@@ -71,5 +79,5 @@ def write_asdf(filename, streams, event, label=None):
             Label to append to all streams being added to ASDF file.
     """
     workspace = StreamWorkspace(filename)
-    workspace.addStreams(event, streams, label=label)
+    workspace.addStreams(event, streams, label=label, gmprocess_version=VERSION)
     workspace.close()

@@ -9,20 +9,23 @@ import logging
 import numpy as np
 from obspy.core.stream import Stream
 from obspy.core.utcdatetime import UTCDateTime
-from obspy.core.inventory import (Inventory, Network, Station,
-                                  Channel, Site, Equipment, Comment,
-                                  Response, InstrumentSensitivity)
+from obspy.core.inventory import (
+    Inventory,
+    Network,
+    Station,
+    Channel,
+    Site,
+    Equipment,
+    Comment,
+    Response,
+    InstrumentSensitivity,
+)
+
 # local imports
 from .stationtrace import StationTrace
 
-UNITS = {
-    'acc': 'cm/s/s',
-    'vel': 'cm/s'
-}
-REVERSE_UNITS = {
-    'cm/s/s': 'acc',
-    'cm/s': 'vel'
-}
+UNITS = {"acc": "cm/s/s", "vel": "cm/s"}
+REVERSE_UNITS = {"cm/s/s": "acc", "cm/s": "vel"}
 
 # Number of samples for Landzos interpolation.
 N_LANCZOS = 20
@@ -33,14 +36,14 @@ N_LANCZOS = 20
 # combined with the format_specific dictionary,
 # serialized to json and stored in the station description.
 UNUSED_STANDARD_PARAMS = [
-    'instrument_period',
-    'instrument_damping',
-    'process_time',
-    'process_level',
-    'structure_type',
-    'corner_frequency',
-    'source_file',
-    'source_format'
+    "instrument_period",
+    "instrument_damping",
+    "process_time",
+    "process_level",
+    "structure_type",
+    "corner_frequency",
+    "source_file",
+    "source_format",
 ]
 
 
@@ -56,7 +59,7 @@ class StationStream(Stream):
     The StationStream class is meant for grouping Traces from the same
     "station". In practice, what this really means is usually all of the
     channels from one instrument, with the same start and end times. Thus,
-    he StationStream object has a get_id method, which returns a string that
+    the StationStream object has a get_id method, which returns a string that
     consists of the network code, station code, and the first two characters
     of the channel code, since these should all be applicable to all traces in
     the StationStream object.
@@ -82,9 +85,9 @@ class StationStream(Stream):
                 if newstart >= newend:
                     for trace in traces:
                         trace.fail(
-                            'Trimming start/end times across traces for '
-                            'this stream resulting in a start time after '
-                            'the end time.'
+                            "Trimming start/end times across traces for "
+                            "this stream resulting in a start time after "
+                            "the end time."
                         )
                         self.append(trace)
                 else:
@@ -94,26 +97,22 @@ class StationStream(Stream):
                         if inventory is None:
                             if not isinstance(trace, StationTrace):
                                 raise ValueError(
-                                    'Input Traces to StationStream must be of '
-                                    'subtype StationTrace unless an invenotry '
-                                    'is also provided.')
+                                    "Input Traces to StationStream must be of "
+                                    "subtype StationTrace unless an invenotry "
+                                    "is also provided."
+                                )
                         else:
                             if not isinstance(trace, StationTrace):
                                 trace = StationTrace(
                                     data=trace.data,
                                     header=trace.stats,
-                                    inventory=inventory
+                                    inventory=inventory,
                                 )
 
                         # Apply the new start/end times
-                        trace = trace.slice(starttime=newstart,
-                                            endtime=newend)
+                        trace = trace.slice(starttime=newstart, endtime=newend)
                         trace.setProvenance(
-                            'cut',
-                            {
-                                'new_start_time': newstart,
-                                'new_end_time': newend
-                            }
+                            "cut", {"new_start_time": newstart, "new_end_time": newend}
                         )
 
                         self.append(trace)
@@ -136,33 +135,33 @@ class StationStream(Stream):
                         for tr in self.traces:
                             tr.interpolate(
                                 sampling_rate=1 / new_delta,
-                                method='lanczos',
+                                method="lanczos",
                                 starttime=newstart,
                                 npts=new_npts,
-                                a=N_LANCZOS)
+                                a=N_LANCZOS,
+                            )
                             tr.setProvenance(
-                                'interpolate',
+                                "interpolate",
                                 {
-                                    'interpolation_method': 'lanczos',
-                                    'new_number_of_samples': new_npts,
-                                    'new_start_time': newstart,
-                                    'a': N_LANCZOS
-                                }
+                                    "interpolation_method": "lanczos",
+                                    "new_number_of_samples": new_npts,
+                                    "new_start_time": newstart,
+                                    "a": N_LANCZOS,
+                                },
                             )
             else:
                 for trace in traces:
                     if inventory is None:
                         if not isinstance(trace, StationTrace):
                             raise ValueError(
-                                'Input Traces to StationStream must be of '
-                                'subtype StationTrace unless an invenotry '
-                                'is also provided.')
+                                "Input Traces to StationStream must be of "
+                                "subtype StationTrace unless an invenotry "
+                                "is also provided."
+                            )
                     else:
                         if not isinstance(trace, StationTrace):
                             trace = StationTrace(
-                                data=trace.data,
-                                header=trace.stats,
-                                inventory=inventory
+                                data=trace.data, header=trace.stats, inventory=inventory
                             )
                     self.append(trace)
 
@@ -191,67 +190,87 @@ class StationStream(Stream):
         unique_sampling_rates = set([tr.stats.sampling_rate for tr in self])
         if len(unique_sampling_rates) > 1:
             for tr in self:
-                tr.fail('StationStream traces have different sampling rates.')
+                tr.fail("StationStream traces have different sampling rates.")
 
     def __check_npts(self):
         unique_npts = set([len(tr) for tr in self])
         if len(unique_npts) > 1:
             for tr in self:
-                tr.fail('StationStream traces have a different number '
-                        'of points.')
+                tr.fail("StationStream traces have a different number of points.")
 
     def __check_starts(self):
         unique_starts = set([tr.stats.starttime.timestamp for tr in self])
         if len(unique_starts) > 1:
             for tr in self:
-                tr.fail('StationStream traces have different start '
-                        'times.')
+                tr.fail("StationStream traces have different start times.")
 
     def __check_channels(self):
         if len(self):
             all_codes = []
             for tr in self:
                 stats = tr.stats
-                all_codes.append(
-                    "%s.%s.%s" % (stats.network, stats.station, stats.channel))
+                all_codes.append(f"{stats.network}.{stats.station}.{stats.channel}")
             if len(set(all_codes)) != len(all_codes):
                 for tr in self:
-                    tr.fail('Nonunique channel code in StationStream.')
+                    tr.fail("Nonunique channel code in StationStream.")
 
     def __check_id(self):
         # Check that id is consistent, and set id if it passes the check.
         if len(self):
             stats = self.traces[0].stats
-            id_str = ("%s.%s.%s" %
-                      (stats.network, stats.station, stats.channel[0:2]))
+            if hasattr(self, "use_array") and self.use_array:
+                id_str = ".".join(
+                    [
+                        self[0].stats.network,
+                        self[0].stats.station,
+                        self[0].stats.location,
+                        self[0].stats.channel,
+                    ],
+                )
+            else:
+                id_str = f"{stats.network}.{stats.station}.{stats.channel[0:2]}"
 
             # Check that the id would be the same for all traces
             for tr in self:
                 stats = tr.stats
-                test_str = ("%s.%s.%s" %
-                            (stats.network, stats.station, stats.channel[0:2]))
+                if hasattr(self, "use_array") and self.use_array:
+                    test_str = ".".join(
+                        [
+                            stats.network,
+                            stats.station,
+                            stats.location,
+                            stats.channel,
+                        ],
+                    )
+                else:
+                    test_str = f"{stats.network}.{stats.station}.{stats.channel[0:2]}"
+
                 if id_str != test_str:
-                    raise ValueError(
-                        'Inconsistent stream ID for different traces.')
+                    raise ValueError("Inconsistent stream ID for different traces.")
             self.id = id_str
 
     def get_id(self):
-        """Get the StationStream ID.
+        """Unique identifier for the StationStream.
 
-        This consists of the network, station, and first two characters of the
-        channel (to indicate instrument type). This is currently consistent
-        with how the channels are grouped and ignores the location code because
-        it doesn't seem like it is defined in a consistent fashion.
+        For StreamArrays, this is the network, station, location, and channel code.
+
+        For StreamCollections, this is the network, station, and first two characters
+        of the channel (to indicate instrument type).
         """
         return self.id
 
     def get_net_sta(self):
         """Get just the network and station compopnent of the ID."""
-        return '.'.join(self.get_id().split('.')[0:2])
+        return ".".join(self.get_id().split(".")[0:2])
+
+    def get_net_sta_loc(self):
+        """Get network, station, and location codes."""
+        stats = self[0].stats
+        return ".".join([stats.network, stats.station, stats.location])
 
     def get_inst(self):
-        """Get just the network and station compopnent of the ID."""
-        return self.get_id().split('.')[2]
+        """Get first two characters of the channel code."""
+        return self[0].stats.channel[0:2]
 
     @property
     def passed(self):
@@ -265,7 +284,7 @@ class StationStream(Stream):
     @property
     def num_horizontal(self):
         """Get the number of horizontal components in the StationStream."""
-        return len([tr for tr in self if tr.stats.channel[2].upper() != 'Z'])
+        return len([tr for tr in self if tr.stats.channel[2].upper() != "Z"])
 
     def __str__(self, extended=False, indent=0):
         """String summary of the StationStream.
@@ -281,12 +300,15 @@ class StationStream(Stream):
         else:
             id_length = 0
         if self.passed:
-            pass_str = ' (passed)'
+            pass_str = " (passed)"
         else:
-            pass_str = ' (failed)'
-        ind_str = ' ' * indent
-        out = ('%s StationTrace(s) in StationStream%s:\n%s'
-               % (ind_str + str(len(self.traces)), pass_str, ind_str))
+            pass_str = " (failed)"
+        ind_str = " " * indent
+        out = "%s StationTrace(s) in StationStream%s:\n%s" % (
+            ind_str + str(len(self.traces)),
+            pass_str,
+            ind_str,
+        )
         lc = [_i.__str__(id_length, indent) for _i in self]
         out += ("\n" + ind_str).join(lc)
         return out
@@ -322,11 +344,10 @@ class StationStream(Stream):
                 Parameters for the given key.
         """
         if param_id not in self.parameters:
-            raise KeyError(
-                'Parameter %s not found in StationStream' % param_id)
+            raise KeyError(f"Parameter {param_id} not found in StationStream")
         return self.parameters[param_id]
 
-    def getProvenanceDocuments(self, base_prov=None):
+    def getProvenanceDocuments(self, base_prov=None, gmprocess_version="unknown"):
         """Generate provenance Document.
 
         Args:
@@ -338,7 +359,9 @@ class StationStream(Stream):
         """
         provdocs = []
         for trace in self.traces:
-            provdoc = trace.getProvenanceDocument(base_prov)
+            provdoc = trace.getProvenanceDocument(
+                base_prov=base_prov, gmprocess_version=gmprocess_version
+            )
             provdocs.append(provdoc)
         return provdocs
 
@@ -346,19 +369,19 @@ class StationStream(Stream):
         """Extract an ObsPy inventory object from a StationStream."""
         networks = [trace.stats.network for trace in self]
         if len(set(networks)) > 1:
-            raise Exception(
-                "Input stream has stations from multiple networks.")
+            raise Exception("Input stream has stations from multiple networks.")
 
         # We'll first create all the various objects. These strongly follow the
         # hierarchy of StationXML files.
-        source = ''
-        if 'standard' in self[0].stats and 'source' in self[0].stats.standard:
+        source = ""
+        if "standard" in self[0].stats and "source" in self[0].stats.standard:
             source = self[0].stats.standard.source
         inv = Inventory(
             # We'll add networks later.
             networks=[],
             # The source should be the id whoever create the file.
-            source=source)
+            source=source,
+        )
 
         net = Network(
             # This is the network code according to the SEED standard.
@@ -370,7 +393,7 @@ class StationStream(Stream):
         )
         channels = []
         for trace in self:
-            logging.debug('trace: %s' % trace)
+            logging.debug(f"trace: {trace}")
             channel = _channel_from_stats(trace.stats)
             channels.append(channel)
 
@@ -380,13 +403,10 @@ class StationStream(Stream):
                 subdict[k] = self[0].stats.standard[k]
 
         format_specific = {}
-        if 'format_specific' in self[0].stats:
+        if "format_specific" in self[0].stats:
             format_specific = dict(self[0].stats.format_specific)
 
-        big_dict = {
-            'standard': subdict,
-            'format_specific': format_specific
-        }
+        big_dict = {"standard": subdict, "format_specific": format_specific}
         jsonstr = json.dumps(big_dict)
         sta = Station(
             # This is the station code according to the SEED standard.
@@ -398,7 +418,8 @@ class StationStream(Stream):
             site=Site(name=self[0].stats.standard.station_name),
             description=jsonstr,
             creation_date=UTCDateTime(1970, 1, 1),  # this is bogus
-            total_number_of_channels=len(self))
+            total_number_of_channels=len(self),
+        )
 
         net.stations.append(sta)
         inv.networks.append(net)
@@ -415,7 +436,7 @@ class StationStream(Stream):
         """
         stream_checks = []
         for tr in self:
-            stream_checks.append(tr.hasParameter('failure'))
+            stream_checks.append(tr.hasParameter("failure"))
         if any(stream_checks):
             return False
         else:
@@ -423,20 +444,19 @@ class StationStream(Stream):
 
 
 def _channel_from_stats(stats):
-    if stats.standard.units in UNITS:
-        units = UNITS[stats.standard.units]
+    if stats.standard.units_type in UNITS:
+        units = UNITS[stats.standard.units_type]
     else:
-        units = ''
+        units = ""
     instrument = stats.standard.instrument
     serialnum = stats.standard.sensor_serial_number
     if len(instrument) or len(serialnum):
-        equipment = Equipment(
-            type=instrument, serial_number=serialnum)
+        equipment = Equipment(type=instrument, serial_number=serialnum)
     else:
         equipment = None
     depth = 0.0
     azimuth = None
-    c1 = 'horizontal_orientation' in stats.standard
+    c1 = "horizontal_orientation" in stats.standard
     c2 = c1 and not np.isnan(stats.standard.horizontal_orientation)
     if c2:
         azimuth = stats.standard.horizontal_orientation
@@ -447,35 +467,35 @@ def _channel_from_stats(stats):
         azimuth = 0
 
     response = None
-    if 'response' in stats:
-        response = stats['response']
+    if "response" in stats:
+        response = stats["response"]
     else:
         # we may have instrument sensitivity...
-        frequency = 1 / stats['standard']['instrument_period']
-        units = stats.standard.units
-        if not np.isnan(stats['standard']['instrument_sensitivity']):
-            sens = stats['standard']['instrument_sensitivity']
+        frequency = 1 / stats["standard"]["instrument_period"]
+        units = stats.standard.units_type
+        if not np.isnan(stats["standard"]["instrument_sensitivity"]):
+            sens = stats["standard"]["instrument_sensitivity"]
         else:
             sens = 1.0
         sensitivity = InstrumentSensitivity(
-            sens, frequency=frequency, input_units=units,
-            output_units='COUNTS')
+            sens, frequency=frequency, input_units=units, output_units="COUNTS"
+        )
         response = Response(instrument_sensitivity=sensitivity)
 
     comments = Comment(stats.standard.comments)
-    logging.debug('channel: %s' % stats.channel)
+    logging.debug(f"channel: {stats.channel}")
     channel = Channel(
         stats.channel,
         stats.location,
-        stats.coordinates['latitude'],
-        stats.coordinates['longitude'],
-        stats.coordinates['elevation'],
+        stats.coordinates["latitude"],
+        stats.coordinates["longitude"],
+        stats.coordinates["elevation"],
         depth,
         azimuth=azimuth,
         sample_rate=stats.sampling_rate,
         calibration_units=units,
         comments=[comments],
         response=response,
-        sensor=equipment
+        sensor=equipment,
     )
     return channel

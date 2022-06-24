@@ -1,0 +1,144 @@
+:py:mod:`gmprocess.subcommands.projects`
+========================================
+
+.. py:module:: gmprocess.subcommands.projects
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.subcommands.projects.ProjectsModule
+   gmprocess.subcommands.projects.Project
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.subcommands.projects.check_project_config
+   gmprocess.subcommands.projects.create
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.subcommands.projects.distributed
+   gmprocess.subcommands.projects.ryaml
+   gmprocess.subcommands.projects.pkg_resources
+   gmprocess.subcommands.projects.base
+   gmprocess.subcommands.projects.constants
+   gmprocess.subcommands.projects.prompt
+   gmprocess.subcommands.projects.re_email
+   gmprocess.subcommands.projects.current_markers
+
+
+.. py:data:: distributed
+   
+
+   
+
+.. py:data:: ryaml
+   
+
+   
+
+.. py:data:: pkg_resources
+   
+
+   
+
+.. py:data:: base
+   
+
+   
+
+.. py:data:: constants
+   
+
+   
+
+.. py:data:: prompt
+   
+
+   
+
+.. py:data:: re_email
+   :annotation: = ^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$
+
+   
+
+.. py:class:: ProjectsModule
+
+   Bases: :py:obj:`base`
+
+   Manage gmrecords projects.
+
+   .. py:attribute:: command_name
+      :annotation: = projects
+
+      
+
+   .. py:attribute:: aliases
+      :annotation: = ['proj']
+
+      
+
+   .. py:attribute:: arguments
+      
+
+      
+
+   .. py:method:: main(self, gmrecords)
+
+      Manage gmrecords projects.
+
+      :param gmrecords: GMrecordsApp instance.
+
+
+
+.. py:data:: current_markers
+   
+
+   
+
+.. py:class:: Project(name, indict, filename, is_current=False)
+
+   Bases: :py:obj:`object`
+
+   .. py:method:: __repr__(self)
+
+      Return repr(self).
+
+
+
+.. py:function:: check_project_config(config)
+
+   Validation checks on the project config. At least one project must exist
+   (otherwise exit) and the paths for each project should exist, otherwise the
+   project entry is removed.
+
+   :param config: The ConfigObj instance.
+   :type config: ConfigObj
+
+
+.. py:function:: create(config, cwd=False)
+
+   Create a new gmrecords project.
+
+   :param config: ConfigObj instance representing the parsed projects config.
+   :type config: ConfigObj
+   :param cwd: Is this for initializing a "local" project in the current
+               working directory?
+   :type cwd: bool
+
+

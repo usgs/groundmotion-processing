@@ -1,0 +1,87 @@
+:py:mod:`gmprocess.subcommands.generate_station_maps`
+=====================================================
+
+.. py:module:: gmprocess.subcommands.generate_station_maps
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.subcommands.generate_station_maps.GenerateHTMLMapModule
+
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.subcommands.generate_station_maps.arg_dicts
+   gmprocess.subcommands.generate_station_maps.base
+   gmprocess.subcommands.generate_station_maps.ws
+   gmprocess.subcommands.generate_station_maps.const
+   gmprocess.subcommands.generate_station_maps.report_utils
+
+
+.. py:data:: arg_dicts
+   
+
+   
+
+.. py:data:: base
+   
+
+   
+
+.. py:data:: ws
+   
+
+   
+
+.. py:data:: const
+   
+
+   
+
+.. py:data:: report_utils
+   
+
+   
+
+.. py:class:: GenerateHTMLMapModule
+
+   Bases: :py:obj:`base`
+
+   Generate station maps (PNG and HTML).
+
+   .. py:attribute:: command_name
+      :annotation: = generate_station_maps
+
+      
+
+   .. py:attribute:: aliases
+      :annotation: = ['maps']
+
+      
+
+   .. py:attribute:: arguments
+      
+
+      
+
+   .. py:method:: main(self, gmrecords)
+
+      Generate summary report.
+
+      This function generates station map (html and png).
+
+      :param gmrecords: GMrecordsApp instance.
+
+
+
